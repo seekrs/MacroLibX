@@ -6,13 +6,17 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:27:35 by maldavid          #+#    #+#             */
-/*   Updated: 2022/10/05 16:45:55 by maldavid         ###   ########.fr       */
+/*   Updated: 2022/10/05 19:53:18 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <SDL2/SDL.h>
-#include <cstdint>
 #include <array>
+#include <memory>
+#include <vector>
+#include <cstdint>
+#include <SDL2/SDL.h>
+
+#include "window.h"
 
 namespace mlx
 {
@@ -21,7 +25,7 @@ namespace mlx
 	class Input
 	{
 		public:
-			Input();
+			Input(const std::vector<std::shared_ptr<Window>>& wins);
 
 			void update();
 
@@ -37,14 +41,15 @@ namespace mlx
 			inline int getYRel() const noexcept { return _yRel; }
 
 			inline bool is_running() const noexcept { return !_end; }
-			inline void finish() noexcept { _end = true; }
+			inline constexpr void finish() noexcept { _end = true; }
 
 			~Input() = default;
 
 		private:
+			SDL_Event _event;
 			std::array<uint8_t, SDL_NUM_SCANCODES> _keys;
 			std::array<uint8_t, 8> _mouse;
-			SDL_Event _event;
+			std::vector<std::shared_ptr<Window>> _wins;
 
 			int _x = 0;
 			int _y = 0;
