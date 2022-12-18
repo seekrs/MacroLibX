@@ -1,39 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   window.h                                           :+:      :+:    :+:   */
+/*   vk_imageview.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/04 21:53:12 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/18 03:41:53 by maldavid         ###   ########.fr       */
+/*   Created: 2022/10/06 18:20:19 by maldavid          #+#    #+#             */
+/*   Updated: 2022/12/18 01:07:51 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef __MLX_WINDOW__
-#define __MLX_WINDOW__
+#ifndef __MLX_VK_IMAGE_VIEW__
+#define __MLX_VK_IMAGE_VIEW__
 
-#include <SDL2/SDL.h>
-#include <string>
+#include <volk.h>
 
 namespace mlx
 {
-	class MLX_Window
+	class ImageView
 	{
 		public:
-			MLX_Window(std::size_t w, std::size_t h, std::string title, int id);
+			void init(class SwapChain* swapchain, VkImage& image);
+			void destroy() noexcept;
 
-			inline int& get_id() noexcept { return _id; }
-			inline SDL_Window* getNativeWindow() const noexcept { return _win; }
-
-			void pixel_put(int x, int y, int color) {}
-			
-			~MLX_Window();
+            inline VkImageView& operator()() noexcept { return _image; }
+            inline VkImageView& get() noexcept { return _image; }
 
 		private:
-			SDL_Window* _win = nullptr;
-			int _id;
+			VkImageView _image = VK_NULL_HANDLE;
 	};
 }
 
-#endif
+#endif // __MLX_VK_IMAGE_VIEW__

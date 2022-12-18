@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:27:35 by maldavid          #+#    #+#             */
-/*   Updated: 2022/10/05 19:53:18 by maldavid         ###   ########.fr       */
+/*   Updated: 2022/12/18 01:13:19 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ namespace mlx
 	class Input
 	{
 		public:
-			Input(const std::vector<std::shared_ptr<Window>>& wins);
+			Input(const std::vector<std::shared_ptr<MLX_Window>>& wins);
 
 			void update();
 
@@ -49,7 +49,7 @@ namespace mlx
 			SDL_Event _event;
 			std::array<uint8_t, SDL_NUM_SCANCODES> _keys;
 			std::array<uint8_t, 8> _mouse;
-			std::vector<std::shared_ptr<Window>> _wins;
+			std::vector<std::shared_ptr<MLX_Window>> _wins;
 
 			int _x = 0;
 			int _y = 0;

@@ -6,15 +6,15 @@
 #    By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/04 16:43:41 by maldavid          #+#    #+#              #
-#    Updated: 2022/10/05 19:25:51 by maldavid         ###   ########.fr        #
+#    Updated: 2022/12/18 01:57:53 by maldavid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME		= libMicroX.so
+NAME		= libmlx.so
 
 SRCS		=  $(wildcard $(addsuffix /*.cpp, ./src/core))
 SRCS		+= $(wildcard $(addsuffix /*.cpp, ./src/platform))
-SRCS		+= $(wildcard $(addsuffix /*.cpp, ./src/renderer))
+SRCS		+= $(wildcard $(addsuffix /*.cpp, ./src/renderer/**))
 
 OBJS		= $(SRCS:.cpp=.o)
 
@@ -22,7 +22,7 @@ DEBUG		?= false
 
 CXX			= g++
 CXXFLAGS	= -std=c++17 -O3 -fPIC
-INCLUDES	= -I./includes -I./src
+INCLUDES	= -I./includes -I./src -I./third_party
 
 ifeq ($(DEBUG), true)
 	CXXFLAGS += -g

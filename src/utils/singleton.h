@@ -1,26 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   application.cpp                                    :+:      :+:    :+:   */
+/*   singleton.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/04 22:10:52 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/18 02:49:45 by maldavid         ###   ########.fr       */
+/*   Created: 2022/10/08 19:18:46 by maldavid          #+#    #+#             */
+/*   Updated: 2022/10/08 19:22:07 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "application.h"
+#ifndef __MLX_SINGLETON__
+#define __MLX_SINGLETON__
 
-namespace mlx::core
+#include "non_copyable.h"
+
+namespace mlx
 {
-	void Application::run() noexcept
+	template <typename T>
+	class Singleton : public non_copyable
 	{
-		while(_in.is_running())
-		{
-			_in.update();
-			if(_loop_hook)
-				_loop_hook(_param);
-		}
-	}
+		public:
+			inline static T& get()
+			{
+				static T instance;
+				return instance;
+			}
+	};
 }
+
+#endif // __MLX_SINGLETON__

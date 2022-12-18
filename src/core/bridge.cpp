@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:35:20 by maldavid          #+#    #+#             */
-/*   Updated: 2022/10/05 18:45:52 by maldavid         ###   ########.fr       */
+/*   Updated: 2022/12/18 03:42:18 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,52 +17,67 @@
 
 extern "C"
 {
-	static std::unique_ptr<mlx::core::Application> __main_app = nullptr;
-
-	void mlx_init()
+	void* mlx_init()
 	{
-		if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0)
-			mlx::core::error::report(e_kind::fatal_error, "Unable to init the SDL2");
-		__main_app.reset(new mlx::core::Application());
+		return new mlx::core::Application();
 	}
 
-	void* mlx_new_window(int w, int h, const char* title)
+	void* mlx_new_window(void* mlx, int w, int h, const char* title)
 	{
-		if(__main_app == nullptr)
-			mlx::core::error::report(e_kind::fatal_error, "You must initialize the mlx before you can create new windows");
-		return __main_app->new_window(w, h, title);
+		return static_cast<mlx::core::Application*>(mlx)->new_window(w, h, title);
 	}
 
-	int mlx_loop()
+	int	mlx_loop_hook(void* mlx, int (*f)(void*), void* param)
 	{
-		if(__main_app == nullptr)
-			mlx::core::error::report(e_kind::fatal_error, "You must initialize the mlx before you can run the main loop");
-		__main_app->run();
+		static_cast<mlx::core::Application*>(mlx)->loop_hook(f, param);
+		return 0;
+	}
+
+	int mlx_loop(void* mlx)
+	{
+		static_cast<mlx::core::Application*>(mlx)->run();
+		return 0;
+	}
+
+	int mlx_loop_end(void* mlx)
+	{
+		static_cast<mlx::core::Application*>(mlx)->loop_end();
+		return 0;
 	}
 
 	int mlx_mouse_show()
 	{
-		if(__main_app == nullptr)
-			mlx::core::error::report(e_kind::fatal_error, "You must initialize the mlx before you can modify the cursor");
 		return SDL_ShowCursor(SDL_ENABLE);
 	}
 
 	int mlx_mouse_hide()
 	{
-		if(__main_app == nullptr)
-			mlx::core::error::report(e_kind::fatal_error, "You must initialize the mlx before you can modify the cursor");
 		return SDL_ShowCursor(SDL_DISABLE);
 	}
 
 	int mlx_mouse_move(void* win_ptr, int x, int y)
 	{
-		if(__main_app == nullptr)
-			mlx::core::error::report(e_kind::fatal_error, "You must initialize the mlx before you can modify the mouse");
 	}
 
 	int mlx_mouse_get_pos(void* win_ptr, int* x, int* y)
 	{
-		if(__main_app == nullptr)
-			mlx::core::error::report(e_kind::fatal_error, "You must initialize the mlx before you can access to the mouse");
+	}
+
+	int mlx_pixel_put(void* mlx, void* win_ptr, int x, int y, int color)
+	{
+		static_cast<mlx::core::Application*>(mlx)->pixel_put(win_ptr, x, y, color);
+		return 0;
+	}
+
+	int mlx_destroy_window(void* mlx, void* win_ptr)
+	{
+		static_cast<mlx::core::Application*>(mlx)->destroy_window(win_ptr);
+		return 0;
+	}
+
+	int mlx_destroy_display(void* mlx)
+	{
+		delete static_cast<mlx::core::Application*>(mlx);
+		return 0;
 	}
 }
