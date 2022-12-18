@@ -1,39 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   window.h                                           :+:      :+:    :+:   */
+/*   vk_surface.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/04 21:53:12 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/18 03:41:53 by maldavid         ###   ########.fr       */
+/*   Created: 2022/10/08 18:57:55 by maldavid          #+#    #+#             */
+/*   Updated: 2022/12/18 01:07:57 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef __MLX_WINDOW__
-#define __MLX_WINDOW__
+#ifndef __MLX_VK_SURFACE__
+#define __MLX_VK_SURFACE__
 
-#include <SDL2/SDL.h>
-#include <string>
+#include <volk.h>
+#include <vector>
 
 namespace mlx
 {
-	class MLX_Window
+	class Surface
 	{
 		public:
-			MLX_Window(std::size_t w, std::size_t h, std::string title, int id);
-
-			inline int& get_id() noexcept { return _id; }
-			inline SDL_Window* getNativeWindow() const noexcept { return _win; }
-
-			void pixel_put(int x, int y, int color) {}
+			void create();
+			void destroy() noexcept;
 			
-			~MLX_Window();
+			VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
+
+			inline VkSurfaceKHR& operator()() noexcept { return _surface; }
+			inline VkSurfaceKHR& get() noexcept { return _surface; }
 
 		private:
-			SDL_Window* _win = nullptr;
-			int _id;
+			VkSurfaceKHR _surface = VK_NULL_HANDLE;
 	};
 }
 
-#endif
+#endif // __MLX_VK_SURFACE__

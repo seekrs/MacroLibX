@@ -1,26 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   application.cpp                                    :+:      :+:    :+:   */
+/*   vk_ubo.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/04 22:10:52 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/18 02:49:45 by maldavid         ###   ########.fr       */
+/*   Created: 2022/10/06 18:45:29 by maldavid          #+#    #+#             */
+/*   Updated: 2022/10/06 18:45:49 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "application.h"
+#ifndef __MLX_VK_UBO__
+#define __MLX_VK_UBO__
 
-namespace mlx::core
+#include "vk_buffer.h"
+
+namespace mlx
 {
-	void Application::run() noexcept
+	class UBO : public Buffer
 	{
-		while(_in.is_running())
-		{
-			_in.update();
-			if(_loop_hook)
-				_loop_hook(_param);
-		}
-	}
+		public:
+			inline void create(uint32_t size) { Buffer::create(Buffer::kind::dynamic, size, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT); }
+
+			void setData(uint32_t size, const void* data);
+			void setDynamicData(uint32_t size, uint32_t typeSize, const void* data);
+	};
 }
+
+#endif // __MLX_VK_UBO__

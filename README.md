@@ -1,4 +1,4 @@
-# MicroLibX
+# MacroLibX
 
 A rewrite of School 42's MiniLibX using SDL2 and Vulkan. The goal of this version is to give a light, fast and modern graphical tool while keeping the same API as the version currently used at 42.
 
@@ -19,10 +19,16 @@ For Arch based distros
 ~ sudo pacman -S sdl2
 ```
 
-2. Get MicroLibX
+2. Get MacroLibX
 
 ```bash
-~ git clone https://github.com/420verfl0w/MicroLibX.git
-~ cd MicroLibX
+~ git clone https://github.com/420verfl0w/MacroLibX.git
+~ cd MacroLibX
 ~ make
+```
+
+3. Compile your project
+
+```bash
+gcc myApp.c MacroLibX/libmlx.so -lSDL2
 ```

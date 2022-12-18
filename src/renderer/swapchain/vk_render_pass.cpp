@@ -1,0 +1,84 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   vk_render_pass.cpp                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/06 18:21:36 by maldavid          #+#    #+#             */
+/*   Updated: 2022/12/18 01:13:49 by maldavid         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "vk_render_pass.h"
+#include <renderer/core/render_core.h>
+
+namespace mlx
+{
+	void RenderPass::init()
+	{
+		VkAttachmentDescription colorAttachment{};
+		colorAttachment.format = Render_Core::get().getSwapChain()._swapChainImageFormat;
+		colorAttachment.samples = VK_SAMPLE_COUNT_1_BIT;
+		colorAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
+		colorAttachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
+		colorAttachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+		colorAttachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+		colorAttachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+		colorAttachment.finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+
+		VkAttachmentReference colorAttachmentRef{};
+		colorAttachmentRef.attachment = 0;
+		colorAttachmentRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+
+		VkSubpassDescription subpass{};
+		subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
+		subpass.colorAttachmentCount = 1;
+		subpass.pColorAttachments = &colorAttachmentRef;
+
+		VkRenderPassCreateInfo renderPassInfo{};
+		renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
+		renderPassInfo.attachmentCount = 1;
+		renderPassInfo.pAttachments = &colorAttachment;
+		renderPassInfo.subpassCount = 1;
+		renderPassInfo.pSubpasses = &subpass;
+
+		if(vkCreateRenderPass(Render_Core::get().getDevice().get(), &renderPassInfo, nullptr, &_renderPass) != VK_SUCCESS)
+			core::error::report(e_kind::fatal_error, "Vulkan : failed to create render pass");
+	}
+
+	void RenderPass::begin()
+	{
+		if(_is_running)
+			return;
+
+        static const VkClearValue clearColor = {0.0f, 0.0f, 0.0f, 1.0f};
+
+		VkRenderPassBeginInfo renderPassInfo{};
+		renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+		renderPassInfo.renderPass = _renderPass;
+		renderPassInfo.framebuffer = Render_Core::get().getSwapChain()._framebuffers[Render_Core::get().getImageIndex()].get();
+		renderPassInfo.renderArea.offset = { 0, 0 };
+		renderPassInfo.renderArea.extent = Render_Core::get().getSwapChain()._swapChainExtent;
+		renderPassInfo.clearValueCount = 1;
+		renderPassInfo.pClearValues = &clearColor;
+
+		vkCmdBeginRenderPass(Render_Core::get().getActiveCmdBuffer().get(), &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
+
+		_is_running = true;
+	}
+
+	void RenderPass::end()
+	{
+		if(!_is_running)
+			return;
+
+		vkCmdEndRenderPass(Render_Core::get().getActiveCmdBuffer().get());
+		_is_running = false;
+	}
+
+	void RenderPass::destroy() noexcept
+	{
+		vkDestroyRenderPass(Render_Core::get().getDevice().get(), _renderPass, nullptr);
+	}
+}

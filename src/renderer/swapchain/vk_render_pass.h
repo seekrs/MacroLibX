@@ -1,39 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   window.h                                           :+:      :+:    :+:   */
+/*   vk_render_pass.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/04 21:53:12 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/18 03:41:53 by maldavid         ###   ########.fr       */
+/*   Created: 2022/10/06 18:22:00 by maldavid          #+#    #+#             */
+/*   Updated: 2022/12/18 01:07:47 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef __MLX_WINDOW__
-#define __MLX_WINDOW__
+#ifndef __MLX_VK_RENDER_PASS__
+#define __MLX_VK_RENDER_PASS__
 
-#include <SDL2/SDL.h>
-#include <string>
+#include <volk.h>
 
 namespace mlx
 {
-	class MLX_Window
+	class RenderPass
 	{
 		public:
-			MLX_Window(std::size_t w, std::size_t h, std::string title, int id);
+			void init();
+			void destroy() noexcept;
 
-			inline int& get_id() noexcept { return _id; }
-			inline SDL_Window* getNativeWindow() const noexcept { return _win; }
-
-			void pixel_put(int x, int y, int color) {}
+			void begin();
+			void end();
 			
-			~MLX_Window();
+            inline VkRenderPass& operator()() noexcept { return _renderPass; }
+            inline VkRenderPass& get() noexcept { return _renderPass; }
 
 		private:
-			SDL_Window* _win = nullptr;
-			int _id;
+			VkRenderPass _renderPass = VK_NULL_HANDLE;
+			bool _is_running = false;
 	};
 }
 
-#endif
+#endif // __MLX_VK_RENDER_PASS__

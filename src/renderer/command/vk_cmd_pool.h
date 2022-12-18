@@ -1,26 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   application.cpp                                    :+:      :+:    :+:   */
+/*   vk_cmd_pool.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/04 22:10:52 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/18 02:49:45 by maldavid         ###   ########.fr       */
+/*   Created: 2022/10/06 18:24:12 by maldavid          #+#    #+#             */
+/*   Updated: 2022/12/18 01:08:31 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "application.h"
+#ifndef __MLX_VK_CMD_POOL__
+#define __MLX_VK_CMD_POOL__
 
-namespace mlx::core
+#include <volk.h>
+
+namespace mlx
 {
-	void Application::run() noexcept
+	class CmdPool
 	{
-		while(_in.is_running())
-		{
-			_in.update();
-			if(_loop_hook)
-				_loop_hook(_param);
-		}
-	}
+		public:
+			void init();
+			void destroy() noexcept;
+
+			inline VkCommandPool& operator()() noexcept { return _cmd_pool; }
+			inline VkCommandPool& get() noexcept { return _cmd_pool; }
+
+		private:
+			VkCommandPool _cmd_pool = VK_NULL_HANDLE;
+	};
 }
+
+#endif // __MLX_VK_CMD_POOL__
