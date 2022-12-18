@@ -6,20 +6,22 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 18:58:49 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/18 00:35:03 by maldavid         ###   ########.fr       */
+/*   Updated: 2022/12/18 22:20:57 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render_core.h"
 #include <platform/window.h>
+#include <renderer/renderer.h>
 #include <SDL2/SDL_vulkan.h>
+#include <SDL2/SDL.h>
 
 namespace mlx
 {
-	void Surface::create()
+	void Surface::create(Renderer& renderer)
 	{
-		if(SDL_Vulkan_CreateSurface(Render_Core::get().getWindow()->getNativeWindow(), Render_Core::get().getInstance().get(), &_surface) != SDL_TRUE)
-			core::error::report(e_kind::fatal_error, "Vulkan : failed to create a surface");
+		if(SDL_Vulkan_CreateSurface(renderer.getWindow()->getNativeWindow(), Render_Core::get().getInstance().get(), &_surface) != SDL_TRUE)
+			core::error::report(e_kind::fatal_error, "Vulkan : failed to create a surface : %s", SDL_GetError());
 	}
 
 	VkSurfaceFormatKHR Surface::chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats)

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:04:21 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/18 00:34:58 by maldavid         ###   ########.fr       */
+/*   Updated: 2022/12/18 22:37:00 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ namespace mlx
 	{
         VkApplicationInfo appInfo{};
         appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
-        appInfo.pApplicationName = "MicroLibX";
+        appInfo.pApplicationName = "MacroLibX";
         appInfo.applicationVersion = VK_MAKE_VERSION(1, 0, 0);
-        appInfo.pEngineName = "MicroLibX";
+        appInfo.pEngineName = "MacroLibX";
         appInfo.engineVersion = VK_MAKE_VERSION(0, 0, 1);
         appInfo.apiVersion = VK_API_VERSION_1_2;
 
@@ -44,20 +44,27 @@ namespace mlx
 		VkResult res;
         if((res = vkCreateInstance(&createInfo, nullptr, &_instance)) != VK_SUCCESS)
 			core::error::report(e_kind::fatal_error, "Vulkan : failed to create Vulkan instance : %s", RCore::verbaliseResultVk(res));
+		volkLoadInstance(_instance);
 	}
 
 	std::vector<const char*> Instance::getRequiredExtensions()
     {
         unsigned int count = 0;
-        if(!SDL_Vulkan_GetInstanceExtensions(Render_Core::get().getWindow()->getNativeWindow(), &count, nullptr))
+		SDL_Window* window = SDL_CreateWindow("", 0, 0, 1, 1, SDL_WINDOW_VULKAN | SDL_WINDOW_HIDDEN);
+		if(!window)
+			core::error::report(e_kind::fatal_error, "Vulkan : cannot get instance extentions from window : %s",  SDL_GetError());
+
+        if(!SDL_Vulkan_GetInstanceExtensions(window, &count, nullptr))
 			core::error::report(e_kind::fatal_error, "Vulkan : cannot get instance extentions from window : %s",  SDL_GetError());
 
         std::vector<const char*> extensions = { VK_EXT_DEBUG_REPORT_EXTENSION_NAME };
         size_t additional_extension_count = extensions.size();
         extensions.resize(additional_extension_count + count);
 
-        if(!SDL_Vulkan_GetInstanceExtensions(Render_Core::get().getWindow()->getNativeWindow(), &count, extensions.data() + additional_extension_count))
+        if(!SDL_Vulkan_GetInstanceExtensions(window, &count, extensions.data() + additional_extension_count))
 			core::error::report(e_kind::error, "Vulkan : cannot get instance extentions from window : %s", SDL_GetError());
+
+		SDL_DestroyWindow(window);
         return extensions;
     }
 

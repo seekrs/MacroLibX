@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:49:46 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/18 03:45:13 by maldavid         ###   ########.fr       */
+/*   Updated: 2022/12/18 23:10:17 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ namespace mlx::core
 	class Application
 	{
 		public:
-			Application() : _in(_wins) {}
+			Application() : _in() {}
 
 			inline void* new_window(std::size_t w, std::size_t h, std::string title)
 			{

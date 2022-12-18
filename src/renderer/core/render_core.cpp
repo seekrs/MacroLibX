@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 23:33:34 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/18 01:25:02 by maldavid         ###   ########.fr       */
+/*   Updated: 2022/12/18 22:40:58 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,120 +66,14 @@ namespace mlx
 		}
 	}
 
-	Render_Core::Render_Core() : _device(), _queues(), _surface(),
-								 _cmd_pool(), _swapchain(), _instance()
-	{}
-
 	void Render_Core::init()
 	{
+		volkInitialize();
+
 		_instance.init();
-		_surface.create();
 		_device.init();
 		_queues.init();
-		_swapchain.init();
-		_pass.init();
-		_swapchain.initFB();
-		_cmd_pool.init();
-		
-		for(int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
-			_cmd_buffers[i].init();
-
-		_semaphore.init();
-
-		_framebufferResized = false;
 		_is_init = true;
-	}
-
-	bool Render_Core::beginFrame()
-	{
-		if(!_is_init)
-			return false;
-
-		vkWaitForFences(_device(), 1, &_semaphore.getInFlightFence(_active_image_index), VK_TRUE, UINT64_MAX);
-
-		_image_index = 0;
-		VkResult result = vkAcquireNextImageKHR(_device(), _swapchain(), UINT64_MAX, _semaphore.getImageSemaphore(_active_image_index), VK_NULL_HANDLE, &_image_index);
-
-		if(result == VK_ERROR_OUT_OF_DATE_KHR)
-		{
-			_swapchain.recreate();
-			return false;
-		}
-		else if(result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR)
-			core::error::report(e_kind::fatal_error, "Vulkan error : failed to acquire swapchain image");
-
-		vkResetFences(_device(), 1, &_semaphore.getInFlightFence(_active_image_index));
-
-		vkResetCommandBuffer(_cmd_buffers[_active_image_index].get(), 0);
-
-		_cmd_buffers[_active_image_index].beginRecord();
-		_pass.begin();
-
-		return true;
-	}
-
-	void Render_Core::endFrame()
-	{
-		if(!_is_init)
-			return;
-		_pass.end();
-		_cmd_buffers[_active_image_index].endRecord();
-
-		VkSubmitInfo submitInfo{};
-		submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-
-		VkSemaphore waitSemaphores[] = { _semaphore.getImageSemaphore(_active_image_index) };
-		VkPipelineStageFlags waitStages[] = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
-		submitInfo.waitSemaphoreCount = 1;
-		submitInfo.pWaitSemaphores = waitSemaphores;
-		submitInfo.pWaitDstStageMask = waitStages;
-
-		submitInfo.commandBufferCount = 1;
-		submitInfo.pCommandBuffers = &_cmd_buffers[_active_image_index].get();
-
-		VkSemaphore signalSemaphores[] = { _semaphore.getRenderImageSemaphore(_active_image_index) };
-		submitInfo.signalSemaphoreCount = 1;
-		submitInfo.pSignalSemaphores = signalSemaphores;
-
-		if(vkQueueSubmit(_queues.getGraphic(), 1, &submitInfo, _semaphore.getInFlightFence(_active_image_index)) != VK_SUCCESS)
-			core::error::report(e_kind::fatal_error, "Vulkan error : failed to submit draw command buffer");
-
-		VkPresentInfoKHR presentInfo{};
-		presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
-
-		presentInfo.waitSemaphoreCount = 1;
-		presentInfo.pWaitSemaphores = signalSemaphores;
-
-		presentInfo.swapchainCount = 1;
-		presentInfo.pSwapchains = &_swapchain();
-
-		presentInfo.pImageIndices = &_image_index;
-
-		VkResult result = vkQueuePresentKHR(_queues.getPresent(), &presentInfo);
-
-		if(result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || _framebufferResized)
-		{
-			_framebufferResized = false;
-			_swapchain.recreate();
-		}
-		else if(result != VK_SUCCESS)
-			core::error::report(e_kind::fatal_error, "Vulkan error : failed to present swap chain image");
-
-		_active_image_index = (_active_image_index + 1) % MAX_FRAMES_IN_FLIGHT;
-	}
-
-	void Render_Core::destroyCommandBuffers()
-	{
-		std::mutex mutex;
-        std::unique_lock<std::mutex> watchdog(mutex, std::try_to_lock);
-
-		if(!_is_init)
-			return;
-
-        vkDeviceWaitIdle(_device());
-
-		for(int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
-			_cmd_buffers[i].destroy();
 	}
 
 	void Render_Core::destroy()
@@ -192,13 +86,7 @@ namespace mlx
 
         vkDeviceWaitIdle(_device());
 
-		_swapchain.destroyFB();
-		_pass.destroy();
-		_swapchain.destroy();
-		_semaphore.destroy();
-		_cmd_pool.destroy();
 		_device.destroy();
-		_surface.destroy();
 		_instance.destroy();
 
 		_is_init = false;

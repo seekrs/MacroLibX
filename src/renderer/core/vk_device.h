@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:13:42 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/18 01:08:11 by maldavid         ###   ########.fr       */
+/*   Updated: 2022/12/18 22:55:30 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #define __MLX_VK_DEVICE__
 
 #include <volk.h>
+#include "vk_queues.h"
 
 namespace mlx
 {
@@ -30,7 +31,7 @@ namespace mlx
 			
 		private:
 			void pickPhysicalDevice();
-			bool isDeviceSuitable(VkPhysicalDevice device);
+			bool isDeviceSuitable(VkPhysicalDevice device, VkSurfaceKHR surface);
 			bool checkDeviceExtensionSupport(VkPhysicalDevice device);
 
 			VkPhysicalDevice _physicalDevice = VK_NULL_HANDLE;

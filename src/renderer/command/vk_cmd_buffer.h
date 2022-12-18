@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:25:42 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/18 01:08:34 by maldavid         ###   ########.fr       */
+/*   Updated: 2022/12/18 20:32:45 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ namespace mlx
 	class CmdBuffer
 	{
 		public:
-			void init();
+			void init(class Renderer* renderer);
 			void destroy() noexcept;
 
 			void beginRecord(VkCommandBufferUsageFlags usage = 0);
@@ -31,6 +31,7 @@ namespace mlx
 
 		private:
 			VkCommandBuffer _cmd_buffer = VK_NULL_HANDLE;
+			class Renderer* _renderer = nullptr;
 			bool _is_recording = false;
 	};
 }

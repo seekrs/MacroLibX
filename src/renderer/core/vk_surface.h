@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 18:57:55 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/18 01:07:57 by maldavid         ###   ########.fr       */
+/*   Updated: 2022/12/18 19:34:04 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ namespace mlx
 	class Surface
 	{
 		public:
-			void create();
+			void create(class Renderer& renderer);
 			void destroy() noexcept;
 			
 			VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 18:59:38 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/18 01:08:00 by maldavid         ###   ########.fr       */
+/*   Updated: 2022/12/18 19:50:10 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ namespace mlx
 	class Semaphore
 	{
 		public:
-			void init();
+			void init(class Renderer& renderer);
 			void destroy() noexcept;
 
 			inline VkSemaphore& getImageSemaphore(int i) noexcept { return _imageAvailableSemaphores[i]; }

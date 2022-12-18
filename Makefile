@@ -6,7 +6,7 @@
 #    By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/04 16:43:41 by maldavid          #+#    #+#              #
-#    Updated: 2022/12/18 01:57:53 by maldavid         ###   ########.fr        #
+#    Updated: 2022/12/19 00:06:48 by maldavid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,7 @@ NAME		= libmlx.so
 
 SRCS		=  $(wildcard $(addsuffix /*.cpp, ./src/core))
 SRCS		+= $(wildcard $(addsuffix /*.cpp, ./src/platform))
+SRCS		+= $(wildcard $(addsuffix /*.cpp, ./src/renderer))
 SRCS		+= $(wildcard $(addsuffix /*.cpp, ./src/renderer/**))
 
 OBJS		= $(SRCS:.cpp=.o)

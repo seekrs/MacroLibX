@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:19:44 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/18 01:07:54 by maldavid         ###   ########.fr       */
+/*   Updated: 2022/12/18 19:53:00 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ namespace mlx
     class FrameBuffer
     {
         public:
-            void init(class SwapChain* swapchain, class ImageView& image);
+            void init(class Renderer& renderer, class ImageView& image);
             void destroy() noexcept;
 
             inline VkFramebuffer& operator()() noexcept { return _framebuffer; }

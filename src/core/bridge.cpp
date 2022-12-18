@@ -6,19 +6,20 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:35:20 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/18 03:42:18 by maldavid         ###   ########.fr       */
+/*   Updated: 2022/12/18 22:24:25 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>
 #include <SDL2/SDL.h>
 #include "errors.h"
 #include "application.h"
+#include <renderer/core/render_core.h>
 
 extern "C"
 {
 	void* mlx_init()
 	{
+		mlx::Render_Core::get().init();
 		return new mlx::core::Application();
 	}
 
@@ -78,6 +79,7 @@ extern "C"
 	int mlx_destroy_display(void* mlx)
 	{
 		delete static_cast<mlx::core::Application*>(mlx);
+		mlx::Render_Core::get().destroy();
 		return 0;
 	}
 }

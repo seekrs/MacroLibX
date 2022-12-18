@@ -6,21 +6,22 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:01:08 by maldavid          #+#    #+#             */
-/*   Updated: 2022/10/08 19:01:44 by maldavid         ###   ########.fr       */
+/*   Updated: 2022/12/18 20:12:40 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vk_semaphore.h"
 #include "render_core.h"
+#include <renderer/renderer.h>
 
 namespace mlx
 {
-	void Semaphore::init()
+	void Semaphore::init(Renderer& renderer)
 	{
 		_imageAvailableSemaphores.resize(MAX_FRAMES_IN_FLIGHT);
 		_renderFinishedSemaphores.resize(MAX_FRAMES_IN_FLIGHT);
 		_inFlightFences.resize(MAX_FRAMES_IN_FLIGHT);
-		_imagesInFlight.resize(Render_Core::get().getSwapChain().getImagesNumber(), VK_NULL_HANDLE);
+		_imagesInFlight.resize(renderer.getSwapChain().getImagesNumber(), VK_NULL_HANDLE);
 
 		VkSemaphoreCreateInfo semaphoreInfo{};
 		semaphoreInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;

@@ -6,22 +6,25 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:22:28 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/18 01:01:32 by maldavid         ###   ########.fr       */
+/*   Updated: 2022/12/19 00:05:32 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <renderer/core/render_core.h>
+#include <renderer/renderer.h>
 #include <platform/window.h>
 #include <SDL2/SDL_vulkan.h>
 #include <algorithm>
 
 namespace mlx
 {
-    void SwapChain::init()
+    void SwapChain::init(Renderer* renderer)
     {
+		_renderer = renderer;
+
         _swapChainSupport = querySwapChainSupport(Render_Core::get().getDevice().getPhysicalDevice());
 
-        VkSurfaceFormatKHR surfaceFormat = Render_Core::get().getSurface().chooseSwapSurfaceFormat(_swapChainSupport.formats);
+        VkSurfaceFormatKHR surfaceFormat = renderer->getSurface().chooseSwapSurfaceFormat(_swapChainSupport.formats);
         VkPresentModeKHR presentMode = VK_PRESENT_MODE_IMMEDIATE_KHR;
         VkExtent2D extent = chooseSwapExtent(_swapChainSupport.capabilities);
 
@@ -31,7 +34,7 @@ namespace mlx
 
         VkSwapchainCreateInfoKHR createInfo{};
         createInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
-        createInfo.surface = Render_Core::get().getSurface().get();
+        createInfo.surface = renderer->getSurface().get();
 
         createInfo.minImageCount = imageCount;
         createInfo.imageFormat = surfaceFormat.format;
@@ -40,7 +43,7 @@ namespace mlx
         createInfo.imageArrayLayers = 1;
         createInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
 
-        Queues::QueueFamilyIndices indices = Render_Core::get().getQueue().findQueueFamilies(Render_Core::get().getDevice().getPhysicalDevice());
+        Queues::QueueFamilyIndices indices = Render_Core::get().getQueue().getFamilies();
         uint32_t queueFamilyIndices[] = {indices.graphicsFamily.value(), indices.presentFamily.value()};
 
         if(indices.graphicsFamily != indices.presentFamily)
@@ -74,10 +77,7 @@ namespace mlx
         _imageViews.resize(_swapChainImages.size());
 
         for(size_t i = 0; i < _swapChainImages.size(); i++)
-        {
-            _imageViews.emplace_back();
-            _imageViews.back().init(this, _swapChainImages[i]);
-        }
+            _imageViews[i].init(*this, _swapChainImages[i]);
     }
 
     void SwapChain::initFB()
@@ -85,16 +85,13 @@ namespace mlx
         _framebuffers.resize(_imageViews.size());
 
         for(size_t i = 0; i < _imageViews.size(); i++)
-        {
-            _framebuffers.emplace_back();
-            _framebuffers.back().init(this, _imageViews[i]);
-        }
+            _framebuffers[i].init(*_renderer, _imageViews[i]);
     }
 
     SwapChain::SwapChainSupportDetails SwapChain::querySwapChainSupport(VkPhysicalDevice device)
     {
         SwapChain::SwapChainSupportDetails details;
-        VkSurfaceKHR surface = Render_Core::get().getSurface().get();
+        VkSurfaceKHR surface = _renderer->getSurface().get();
 
         vkGetPhysicalDeviceSurfaceCapabilitiesKHR(device, surface, &details.capabilities);
 
@@ -115,7 +112,7 @@ namespace mlx
             return capabilities.currentExtent;
 
         int width, height;
-        SDL_Vulkan_GetDrawableSize(Render_Core::get().getWindow()->getNativeWindow(), &width, &height);
+        SDL_Vulkan_GetDrawableSize(_renderer->getWindow()->getNativeWindow(), &width, &height);
 
         VkExtent2D actualExtent = { static_cast<uint32_t>(width), static_cast<uint32_t>(height) };
 
@@ -129,10 +126,10 @@ namespace mlx
     {
         destroyFB();
         destroy();
-        Render_Core::get().getRenderPass().destroy();
+        _renderer->getRenderPass().destroy();
 
-        init();
-        Render_Core::get().getRenderPass().init();
+        init(_renderer);
+        _renderer->getRenderPass().init(_renderer);
         initFB();
     }
 

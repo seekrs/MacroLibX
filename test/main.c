@@ -6,34 +6,40 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:55:21 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/18 03:51:19 by maldavid         ###   ########.fr       */
+/*   Updated: 2022/12/19 00:55:44 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include "../includes/mlx.h"
 
-int	update(void *mlx)
+typedef struct
+{
+	void	*mlx;
+	void	*win;
+}	t_mlx;
+
+int	update(t_mlx *mlx)
 {
 	static int	i = 0;
 
-	puts("dude");
+	printf("%d\r", i);
+	mlx_pixel_put(mlx->mlx, mlx->win, 0, 0, 0xFF0000);
 	i++;
-	if (i > 1000000)
-		mlx_loop_end(mlx);
+	if (i > 20000)
+		mlx_loop_end(mlx->mlx);
 	return (0);
 }
 
 int	main(void)
 {
-	void	*win_ptr;
-	void	*mlx_ptr;
+	t_mlx	mlx;
 	
-	mlx_ptr = mlx_init();
-	win_ptr = mlx_new_window(mlx_ptr, 400, 400, "My window");
-	mlx_loop_hook(mlx_ptr, update, mlx_ptr);
-	mlx_loop(mlx_ptr);
-	mlx_destroy_window(mlx_ptr, win_ptr);
-	mlx_destroy_display(mlx_ptr);
+	mlx.mlx = mlx_init();
+	mlx.win = mlx_new_window(mlx.mlx, 400, 400, "My window");
+	mlx_loop_hook(mlx.mlx, update, &mlx);
+	mlx_loop(mlx.mlx);
+	mlx_destroy_window(mlx.mlx, mlx.win);
+	mlx_destroy_display(mlx.mlx);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:30:19 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/18 01:13:32 by maldavid         ###   ########.fr       */
+/*   Updated: 2022/12/18 23:09:55 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 namespace mlx
 {
-	Input::Input(const std::vector<std::shared_ptr<MLX_Window>>& wins) : _wins(wins)
+	Input::Input()
 	{
 		std::memset(_keys.data(), 0, SDL_NUM_SCANCODES);
 		std::memset(_mouse.data(), 0, 8);
