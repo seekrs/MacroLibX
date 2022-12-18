@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:20:19 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/18 01:07:51 by maldavid         ###   ########.fr       */
+/*   Updated: 2022/12/18 19:54:44 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ namespace mlx
 	class ImageView
 	{
 		public:
-			void init(class SwapChain* swapchain, VkImage& image);
+			void init(class SwapChain& swapchain, VkImage& image);
 			void destroy() noexcept;
 
             inline VkImageView& operator()() noexcept { return _image; }

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:23:27 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/18 01:07:44 by maldavid         ###   ########.fr       */
+/*   Updated: 2022/12/18 22:08:36 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ namespace mlx
         friend class ImageView;
         friend class GraphicPipeline;
         friend class RenderPass;
-		friend class RendererComponent;
+		friend class Renderer;
 
         public:
             struct SwapChainSupportDetails
@@ -35,7 +35,7 @@ namespace mlx
                 std::vector<VkSurfaceFormatKHR> formats;
             };
 
-            void init();
+            void init(class Renderer* renderer);
             void initFB();
             void destroy() noexcept;
             void destroyFB() noexcept;
@@ -53,12 +53,13 @@ namespace mlx
 
         private:
             SwapChainSupportDetails _swapChainSupport;
-            VkSwapchainKHR _swapChain;
             std::vector<VkImage> _swapChainImages;
-            VkFormat _swapChainImageFormat;
-            VkExtent2D _swapChainExtent;
             std::vector<FrameBuffer> _framebuffers;
             std::vector<ImageView> _imageViews;
+            VkSwapchainKHR _swapChain;
+            VkFormat _swapChainImageFormat;
+            VkExtent2D _swapChainExtent;
+			class Renderer* _renderer = nullptr;
     };
 }
 

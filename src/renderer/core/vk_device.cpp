@@ -6,13 +6,16 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:14:29 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/18 01:10:42 by maldavid         ###   ########.fr       */
+/*   Updated: 2022/12/18 22:56:47 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render_core.h"
 #include <vector>
 #include <set>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_vulkan.h>
+#include <iostream>
 
 namespace mlx
 {
@@ -22,7 +25,7 @@ namespace mlx
 	{
 		pickPhysicalDevice();
 
-		Queues::QueueFamilyIndices indices = Render_Core::get().getQueue().findQueueFamilies(_physicalDevice);
+		Queues::QueueFamilyIndices indices = Render_Core::get().getQueue().getFamilies();
 
 		std::vector<VkDeviceQueueCreateInfo> queueCreateInfos;
 		std::set<uint32_t> uniqueQueueFamilies = { indices.graphicsFamily.value(), indices.presentFamily.value() };
@@ -67,33 +70,42 @@ namespace mlx
 		std::vector<VkPhysicalDevice> devices(deviceCount);
 		vkEnumeratePhysicalDevices(Render_Core::get().getInstance().get(), &deviceCount, devices.data());
 
+		SDL_Window* window = SDL_CreateWindow("", 0, 0, 1, 1, SDL_WINDOW_VULKAN | SDL_WINDOW_HIDDEN);
+		if(!window)
+			core::error::report(e_kind::fatal_error, "Vulkan : failed to create a window to pick physical device");
+
+		VkSurfaceKHR surface = VK_NULL_HANDLE;
+		if(SDL_Vulkan_CreateSurface(window, Render_Core::get().getInstance().get(), &surface) != SDL_TRUE)
+			core::error::report(e_kind::fatal_error, "Vulkan : failed to create a surface to pick physical device");
+
 		for(const auto& device : devices)
 		{
-			if(isDeviceSuitable(device))
+			if(isDeviceSuitable(device, surface))
 			{
 				_physicalDevice = device;
 				break;
 			}
 		}
 
+		vkDestroySurfaceKHR(Render_Core::get().getInstance().get(), surface, nullptr);
+		SDL_DestroyWindow(window);
+
 		if(_physicalDevice == VK_NULL_HANDLE)
 			core::error::report(e_kind::fatal_error, "Vulkan : failed to find a suitable GPU");
 	}
-	bool Device::isDeviceSuitable(VkPhysicalDevice device)
+	
+	bool Device::isDeviceSuitable(VkPhysicalDevice device, VkSurfaceKHR surface)
 	{
-		Queues::QueueFamilyIndices indices = Render_Core::get().getQueue().findQueueFamilies(device);
+		Queues::QueueFamilyIndices indices = Render_Core::get().getQueue().findQueueFamilies(device, surface);
 
 		bool extensionsSupported = checkDeviceExtensionSupport(device);
 
-		bool swapChainAdequate = false;
+		uint32_t formatCount = 0;
 		if(extensionsSupported)
-		{
-			SwapChain::SwapChainSupportDetails swapChainSupport = Render_Core::get().getSwapChain().querySwapChainSupport(device);
-			swapChainAdequate = !swapChainSupport.formats.empty();
-		}
-
-		return indices.isComplete() && extensionsSupported && swapChainAdequate;
+			vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &formatCount, nullptr);
+		return indices.isComplete() && extensionsSupported && formatCount != 0;
 	}
+
 	bool Device::checkDeviceExtensionSupport(VkPhysicalDevice device)
 	{
 		uint32_t extensionCount;

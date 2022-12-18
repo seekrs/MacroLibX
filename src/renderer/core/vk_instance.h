@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:03:04 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/18 01:08:07 by maldavid         ###   ########.fr       */
+/*   Updated: 2022/12/18 17:42:08 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ namespace mlx
 	class Instance
 	{
 		public:
-
 			void init();
 			void destroy() noexcept;
 
