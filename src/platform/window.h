@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:53:12 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/19 00:40:26 by maldavid         ###   ########.fr       */
+/*   Updated: 2022/12/19 14:43:19 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ namespace mlx
 			std::unique_ptr<Renderer> _renderer;
 			VBO _vbo;
 			SDL_Window* _win = nullptr;
+			int _width = 0;
+			int _height = 0;
 			int _id;
 	};
 }

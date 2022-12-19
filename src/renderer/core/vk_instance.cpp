@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:04:21 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/18 22:37:00 by maldavid         ###   ########.fr       */
+/*   Updated: 2022/12/19 14:26:31 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,22 @@ namespace mlx
         createInfo.enabledExtensionCount = static_cast<uint32_t>(extensions.size());
         createInfo.ppEnabledExtensionNames = extensions.data();
 
-        VkDebugUtilsMessengerCreateInfoEXT debugCreateInfo;
-		createInfo.enabledLayerCount = 0;
-		createInfo.pNext = nullptr;
+		VkDebugUtilsMessengerCreateInfoEXT debugCreateInfo;
+		if constexpr(enableValidationLayers)
+        {
+			if(Render_Core::get().getLayers().checkValidationLayerSupport())
+			{
+				createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
+				createInfo.ppEnabledLayerNames = validationLayers.data();
+				Render_Core::get().getLayers().populateDebugMessengerCreateInfo(debugCreateInfo);
+				createInfo.pNext = (VkDebugUtilsMessengerCreateInfoEXT*) &debugCreateInfo;
+			}
+        }
+        else
+        {
+            createInfo.enabledLayerCount = 0;
+            createInfo.pNext = nullptr;
+        }
 
 		VkResult res;
         if((res = vkCreateInstance(&createInfo, nullptr, &_instance)) != VK_SUCCESS)
@@ -63,6 +76,9 @@ namespace mlx
 
         if(!SDL_Vulkan_GetInstanceExtensions(window, &count, extensions.data() + additional_extension_count))
 			core::error::report(e_kind::error, "Vulkan : cannot get instance extentions from window : %s", SDL_GetError());
+
+		if constexpr(enableValidationLayers)
+            extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
 
 		SDL_DestroyWindow(window);
         return extensions;
