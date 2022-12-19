@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:25:16 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/19 00:00:46 by maldavid         ###   ########.fr       */
+/*   Updated: 2022/12/19 15:27:44 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,7 @@ namespace mlx
 		for(int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
 			_cmd_buffers[i].destroy();
 
+		_pipeline.destroy();
 		_swapchain.destroyFB();
 		_pass.destroy();
 		_swapchain.destroy();

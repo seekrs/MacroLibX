@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:27:38 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/18 20:10:12 by maldavid         ###   ########.fr       */
+/*   Updated: 2022/12/19 15:16:42 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,8 @@ namespace mlx
 			inline void create(uint32_t size) { Buffer::create(Buffer::kind::dynamic, size, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT); }
 
 			void setData(uint32_t size, const void* data);
-			void setSubData(uint32_t offset, uint32_t size, const void* data);
 
 			inline void bind(Renderer& renderer) noexcept { vkCmdBindVertexBuffers(renderer.getActiveCmdBuffer().get(), 0, 1, &_buffer, &_offset); }
-
-		private:
-			uint32_t _used_size = 0;
 	};
 }
 
