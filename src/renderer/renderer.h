@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:14:45 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/18 22:15:50 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/01/23 19:08:29 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,9 @@
 #include <renderer/command/vk_cmd_buffer.h>
 #include <renderer/swapchain/vk_swapchain.h>
 #include <renderer/swapchain/vk_render_pass.h>
+#include <renderer/descriptors/vk_descriptor_set.h>
+#include <renderer/descriptors/vk_descriptor_pool.h>
+#include <renderer/descriptors/vk_descriptor_set_layout.h>
 
 #include <core/errors.h>
 
@@ -101,6 +104,9 @@ namespace mlx
             CmdPool _cmd_pool;
             SwapChain _swapchain;
             Semaphore _semaphore;
+			DescriptorPool _desc_pool;
+			std::vector<DescriptorSet> _sets;
+			std::vector<DescriptorSetLayout> _layouts;
             std::array<CmdBuffer, MAX_FRAMES_IN_FLIGHT> _cmd_buffers;
 
 			class MLX_Window* _window;

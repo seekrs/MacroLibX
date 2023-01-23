@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:55:21 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/19 15:52:54 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/01/22 18:17:53 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,6 @@ int	update(t_mlx *mlx)
 
 	printf("%d\n", i);
 	mlx_pixel_put(mlx->mlx, mlx->win, 200, 50, 0xFF0000);
-	mlx_pixel_put(mlx->mlx, mlx->win, 200, 60, 0x00FF00);
-	mlx_pixel_put(mlx->mlx, mlx->win, 200, 70, 0x0000FF);
-	mlx_pixel_put(mlx->mlx, mlx->win, 200, 80, 0xFF00FF);
-	mlx_pixel_put(mlx->mlx, mlx->win, 200, 90, 0xFFFF00);
-	mlx_pixel_put(mlx->mlx, mlx->win, 200, 100, 0xFFFFFF);
 	i++;
 	if (i > 20000)
 		mlx_loop_end(mlx->mlx);
