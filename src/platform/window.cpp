@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:36:44 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/19 15:53:35 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/01/22 18:53:41 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ namespace mlx
 		_renderer->init();
 		_vbo.create(sizeof(Vertex));
 
-		proj = glm::ortho<float>(_width, 0, _height, 0);
+		proj = glm::ortho<float>(0, _width, 0, _height);
 	}
 
 	bool MLX_Window::beginFrame()

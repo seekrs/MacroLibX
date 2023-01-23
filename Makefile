@@ -6,7 +6,7 @@
 #    By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/04 16:43:41 by maldavid          #+#    #+#              #
-#    Updated: 2022/12/19 00:06:48 by maldavid         ###   ########.fr        #
+#    Updated: 2023/01/23 18:30:59 by maldavid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,7 +44,6 @@ $(NAME):	$(OBJS)
 
 clean:
 	@$(RM) $(OBJS)
-	@$(RM) $(OBJS_B)
 
 fclean:		clean
 	@$(RM) $(NAME)
