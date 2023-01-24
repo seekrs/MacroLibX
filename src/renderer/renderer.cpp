@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:25:16 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/19 15:27:44 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/01/24 17:02:39 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,14 @@ namespace mlx
 			_cmd_buffers[i].init(this);
 
 		_semaphore.init(*this);
+	
+		_uniform_buffer.reset(new UBO);
+		_uniform_buffer->create(this, sizeof(glm::mat4));
+		_layout.init(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER);
+		VkDescriptorPoolSize pool_sizes{ VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, MAX_FRAMES_IN_FLIGHT };
+		_desc_pool.init(1, &pool_sizes);
+		_set.init(this, _uniform_buffer.get(), _layout, _desc_pool);
+
 		_pipeline.init(*this);
 
 		_framebufferResized = false;
@@ -135,6 +143,9 @@ namespace mlx
 			_cmd_buffers[i].destroy();
 
 		_pipeline.destroy();
+		_uniform_buffer->destroy();
+		_layout.destroy();
+		_desc_pool.destroy();
 		_swapchain.destroyFB();
 		_pass.destroy();
 		_swapchain.destroy();

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:14:45 by maldavid          #+#    #+#             */
-/*   Updated: 2023/01/23 19:08:29 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/01/24 17:21:02 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <vector>
 #include <memory>
 
+#include <renderer/buffers/vk_ubo.h>
 #include <renderer/core/vk_surface.h>
 #include <renderer/core/render_core.h>
 #include <renderer/core/vk_semaphore.h>
@@ -85,11 +86,15 @@ namespace mlx
 
             inline Surface& getSurface() noexcept { return _surface; }
             inline CmdPool& getCmdPool() noexcept { return _cmd_pool; }
+			inline UBO* getUniformBuffer() noexcept { return _uniform_buffer.get(); }
             inline SwapChain& getSwapChain() noexcept { return _swapchain; }
             inline Semaphore& getSemaphore() noexcept { return _semaphore; }
             inline RenderPass& getRenderPass() noexcept { return _pass; }
             inline CmdBuffer& getCmdBuffer(int i) noexcept { return _cmd_buffers[i]; }
+			inline GraphicPipeline& getPipeline() noexcept { return _pipeline; }
             inline CmdBuffer& getActiveCmdBuffer() noexcept { return _cmd_buffers[_active_image_index]; }
+			inline DescriptorSet& getDescriptorSet() noexcept { return _set; }
+			inline DescriptorSetLayout& getDescriptorSetLayout() noexcept { return _layout; }
             inline uint32_t getActiveImageIndex() noexcept { return _active_image_index; }
             inline uint32_t getImageIndex() noexcept { return _image_index; }
 
@@ -105,9 +110,10 @@ namespace mlx
             SwapChain _swapchain;
             Semaphore _semaphore;
 			DescriptorPool _desc_pool;
-			std::vector<DescriptorSet> _sets;
-			std::vector<DescriptorSetLayout> _layouts;
+			DescriptorSet _set;
+			DescriptorSetLayout _layout;
             std::array<CmdBuffer, MAX_FRAMES_IN_FLIGHT> _cmd_buffers;
+			std::unique_ptr<UBO> _uniform_buffer = nullptr;
 
 			class MLX_Window* _window;
 

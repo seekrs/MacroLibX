@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:36:44 by maldavid          #+#    #+#             */
-/*   Updated: 2023/01/22 18:53:41 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/01/24 17:21:40 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@
 
 namespace mlx
 {
-	static glm::mat4 proj = glm::mat4(1.0);
-
 	MLX_Window::MLX_Window(std::size_t w, std::size_t h, std::string title, int id) : _id(id), _renderer(new Renderer()), _width(w), _height(h)
 	{
 		_win = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, SDL_WINDOW_VULKAN | SDL_WINDOW_SHOWN);
@@ -30,8 +28,6 @@ namespace mlx
 		_renderer->setWindow(this);
 		_renderer->init();
 		_vbo.create(sizeof(Vertex));
-
-		proj = glm::ortho<float>(0, _width, 0, _height);
 	}
 
 	bool MLX_Window::beginFrame()
@@ -39,17 +35,16 @@ namespace mlx
 		bool success = _renderer->beginFrame();
 		if(success)
 			_vbo.bind(*_renderer);
+		_proj = glm::ortho<float>(0, _width, 0, _height);
+		_renderer->getUniformBuffer()->setData(sizeof(_proj), &_proj);
+		vkCmdBindDescriptorSets(_renderer->getActiveCmdBuffer().get(), VK_PIPELINE_BIND_POINT_GRAPHICS, _renderer->getPipeline().getPipelineLayout(), 0, 1, &_renderer->getDescriptorSet().get(), 0, nullptr);
 		return success;
 	}
 
 	void MLX_Window::pixel_put(int x, int y, int color)
 	{
 		Vertex vert;
-		float xf = glm::vec4(glm::vec4((float)x, (float)y, 0.0, 0.0) * proj).x;
-		float yf = glm::vec4(glm::vec4((float)x, (float)y, 0.0, 0.0) * proj).y;
-
-		std::cout << xf << " " << yf << "                                        " << std::endl;
-		vert.pos = glm::vec2(xf, yf);
+		vert.pos = glm::vec2(x, y);
 		vert.color.r = (color >> 16) & 0xFF;
 		vert.color.g = (color >> 8) & 0xFF;
 		vert.color.b = color & 0xFF;
