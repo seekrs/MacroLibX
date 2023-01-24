@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:53:12 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/19 14:43:19 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/01/24 17:15:09 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ namespace mlx
 
 		private:
 			std::unique_ptr<Renderer> _renderer;
+			glm::mat4 _proj = glm::mat4(1.0);
 			VBO _vbo;
 			SDL_Window* _win = nullptr;
 			int _width = 0;
