@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:36:44 by maldavid          #+#    #+#             */
-/*   Updated: 2023/01/24 17:21:40 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/01/24 17:57:19 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ namespace mlx
 
 	void MLX_Window::pixel_put(int x, int y, int color)
 	{
-		Vertex vert;
+		static Vertex vert;
 		vert.pos = glm::vec2(x, y);
 		vert.color.r = (color >> 16) & 0xFF;
 		vert.color.g = (color >> 8) & 0xFF;
