@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 23:18:52 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/18 02:10:08 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/01/25 15:36:47 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ namespace mlx
 	class Buffer
 	{
 		public:
-			enum class kind { dynamic, uniform };
+			enum class kind { dynamic, uniform, constant };
 
 			void create(kind type, VkDeviceSize size, VkBufferUsageFlags usage, const void* data = nullptr);
 			void destroy() noexcept;
@@ -42,6 +42,9 @@ namespace mlx
 			inline VkBuffer& get() noexcept { return _buffer; }
 
 		protected:
+			void pushToGPU() noexcept;
+			void swap(Buffer& buffer) noexcept;
+
 			VkDeviceMemory _memory = VK_NULL_HANDLE;
         	VkDeviceSize _offset = 0;
       		VkDeviceSize _size = 0;

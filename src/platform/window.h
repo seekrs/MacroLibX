@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:53:12 by maldavid          #+#    #+#             */
-/*   Updated: 2023/01/24 17:15:09 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/01/25 15:15:25 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@
 #include <string>
 #include <memory>
 #include <renderer/renderer.h>
+#include <renderer/images/vk_image.h>
+#include <renderer/buffers/vk_buffer.h>
 #include <renderer/buffers/vk_vbo.h>
+#include <renderer/buffers/vk_ibo.h>
 
 namespace mlx
 {
@@ -37,9 +40,12 @@ namespace mlx
 			~MLX_Window();
 
 		private:
-			std::unique_ptr<Renderer> _renderer;
+			Image _vk_image;
+			Buffer _staging_buffer;
+			C_VBO _vbo;
+			C_IBO _ibo;
 			glm::mat4 _proj = glm::mat4(1.0);
-			VBO _vbo;
+			std::unique_ptr<Renderer> _renderer;
 			SDL_Window* _win = nullptr;
 			int _width = 0;
 			int _height = 0;

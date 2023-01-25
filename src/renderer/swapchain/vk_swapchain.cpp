@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:22:28 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/19 15:01:34 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/01/25 11:39:01 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ namespace mlx
         _swapChainSupport = querySwapChainSupport(Render_Core::get().getDevice().getPhysicalDevice());
 
         VkSurfaceFormatKHR surfaceFormat = renderer->getSurface().chooseSwapSurfaceFormat(_swapChainSupport.formats);
-        VkPresentModeKHR presentMode = VK_PRESENT_MODE_IMMEDIATE_KHR;
+        VkPresentModeKHR presentMode = VK_PRESENT_MODE_IMMEDIATE_KHR; // change this to set vsync (if the driver supports it)
         VkExtent2D extent = chooseSwapExtent(_swapChainSupport.capabilities);
 
         uint32_t imageCount = _swapChainSupport.capabilities.minImageCount + 1;
