@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:16:32 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/19 14:16:25 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/01/25 15:23:19 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@
 
 namespace mlx
 {
-    namespace RCore
-    {
-        void checkVk(VkResult result);
-    }
+	namespace RCore
+	{
+		uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
+	}
 
 	#ifndef NDEBUG
         constexpr const bool enableValidationLayers = true;

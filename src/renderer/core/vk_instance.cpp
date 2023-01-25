@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:04:21 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/19 14:26:31 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/01/25 15:28:18 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@
 
 namespace mlx
 {
-	namespace RCore { const char* verbaliseResultVk(VkResult result); }
-
 	void Instance::init()
 	{
         VkApplicationInfo appInfo{};
@@ -56,7 +54,7 @@ namespace mlx
 
 		VkResult res;
         if((res = vkCreateInstance(&createInfo, nullptr, &_instance)) != VK_SUCCESS)
-			core::error::report(e_kind::fatal_error, "Vulkan : failed to create Vulkan instance : %s", RCore::verbaliseResultVk(res));
+			core::error::report(e_kind::fatal_error, "Vulkan : failed to create Vulkan instance");
 		volkLoadInstance(_instance);
 	}
 
