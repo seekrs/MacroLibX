@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:59:07 by maldavid          #+#    #+#             */
-/*   Updated: 2023/01/25 12:01:03 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/03/08 02:24:10 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ namespace mlx
 		core::error::report(e_kind::fatal_error, "Vulkan : failed to find image format");
 	}
 
-	void Image::create(uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, VkMemoryPropertyFlags properties, VkImageAspectFlags aspectFlags)
+	void Image::create(uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, VkMemoryPropertyFlags properties)
 	{
 		_width = width;
 		_height = height;
@@ -65,12 +65,15 @@ namespace mlx
 			core::error::report(e_kind::fatal_error, "Vulkan : failed to allocate memory for an image");
 
 		vkBindImageMemory(Render_Core::get().getDevice().get(), _image, _memory, 0);
+	}
 
+	void Image::createImageView(VkImageViewType type, VkImageAspectFlags aspectFlags) noexcept
+	{
 		VkImageViewCreateInfo viewInfo{};
 		viewInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
 		viewInfo.image = _image;
-		viewInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
-		viewInfo.format = format;
+		viewInfo.viewType = type;
+		viewInfo.format = _format;
 		viewInfo.subresourceRange.aspectMask = aspectFlags;
 		viewInfo.subresourceRange.baseMipLevel = 0;
 		viewInfo.subresourceRange.levelCount = 1;
@@ -81,11 +84,112 @@ namespace mlx
 			core::error::report(e_kind::fatal_error, "Vulkan : failed to create an image view");
 	}
 
-	void Image::destroy() noexcept
+	void Image::createSampler() noexcept
 	{
-		vkDestroyImage(Render_Core::get().getDevice().get(), _image, nullptr);
-	    vkFreeMemory(Render_Core::get().getDevice().get(), _memory, nullptr);
-		vkDestroyImageView(Render_Core::get().getDevice().get(), _image_view, nullptr);
+		VkSamplerCreateInfo info = {};
+		info.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
+		info.magFilter = VK_FILTER_LINEAR;
+		info.minFilter = VK_FILTER_LINEAR;
+		info.mipmapMode = VK_SAMPLER_MIPMAP_MODE_LINEAR;
+		info.addressModeU = VK_SAMPLER_ADDRESS_MODE_REPEAT;
+		info.addressModeV = VK_SAMPLER_ADDRESS_MODE_REPEAT;
+		info.addressModeW = VK_SAMPLER_ADDRESS_MODE_REPEAT;
+		info.minLod = -1000;
+		info.maxLod = 1000;
+		info.anisotropyEnable = VK_FALSE;
+		info.maxAnisotropy = 1.0f;
+
+		if(vkCreateSampler(Render_Core::get().getDevice().get(), &info, nullptr, &_sampler) != VK_SUCCESS)
+			Core::log::report(FATAL_ERROR, "Vulkan : unable to create image sampler");
 	}
 
+	void Image::copyBuffer(Buffer& buffer)
+	{
+		CmdPool cmdpool;
+		cmdpool.init();
+		auto device = Render_Core::get().getDevice().get();
+
+		VkCommandBufferAllocateInfo allocInfo{};
+		allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+		allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+		allocInfo.commandPool = cmdpool.get();
+		allocInfo.commandBufferCount = 1;
+
+		VkCommandBuffer cmdBuffer;
+		vkAllocateCommandBuffers(device, &allocInfo, &cmdBuffer);
+
+		VkCommandBufferBeginInfo beginInfo{};
+		beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+		beginInfo.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
+
+		vkBeginCommandBuffer(cmdBuffer, &beginInfo);
+
+		VkImageMemoryBarrier copy_barrier = {};
+		copy_barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+		copy_barrier.dstAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
+		copy_barrier.oldLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+		copy_barrier.newLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
+		copy_barrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+		copy_barrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+		copy_barrier.image = _image;
+		copy_barrier.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+		copy_barrier.subresourceRange.levelCount = 1;
+		copy_barrier.subresourceRange.layerCount = 1;
+		vkCmdPipelineBarrier(cmdBuffer, VK_PIPELINE_STAGE_HOST_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT, 0, 0, nullptr, 0, nullptr, 1, &copy_barrier);
+
+		VkBufferImageCopy region = {};
+		region.bufferOffset = 0;
+		region.bufferRowLength = 0;
+		region.bufferImageHeight = 0;
+		region.imageSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+		region.imageSubresource.mipLevel = 0;
+		region.imageSubresource.baseArrayLayer = 0;
+		region.imageSubresource.layerCount = 1;
+		region.imageOffset = {0, 0, 0};
+		region.imageExtent = {
+			_width,
+			_height,
+			1
+		};
+		vkCmdCopyBufferToImage(cmdBuffer, buffer.get(), _image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &region);
+
+		VkImageMemoryBarrier use_barrier = {};
+		use_barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+		use_barrier.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
+		use_barrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
+		use_barrier.oldLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
+		use_barrier.newLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+		use_barrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+		use_barrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+		use_barrier.image = _image;
+		use_barrier.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+		use_barrier.subresourceRange.levelCount = 1;
+		use_barrier.subresourceRange.layerCount = 1;
+		vkCmdPipelineBarrier(cmdBuffer, VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT, 0, 0, nullptr, 0, nullptr, 1, &use_barrier);
+
+		vkEndCommandBuffer(cmdBuffer);
+
+		VkSubmitInfo submitInfo{};
+		submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+		submitInfo.commandBufferCount = 1;
+		submitInfo.pCommandBuffers = &cmdBuffer;
+
+		auto graphicsQueue = Render_Core::get().getQueue().getGraphic();
+
+		vkQueueSubmit(graphicsQueue, 1, &submitInfo, VK_NULL_HANDLE);
+		vkQueueWaitIdle(graphicsQueue);
+
+		cmdpool.destroy();
+	}
+
+	void Image::destroy() noexcept
+	{
+		if(_sampler != VK_NULL_HANDLE)
+			vkDestroySampler(Render_Core::get().getDevice().get(), _sampler, nullptr);
+		if(_image_view != VK_NULL_HANDLE)
+			vkDestroyImageView(Render_Core::get().getDevice().get(), _image_view, nullptr);
+
+		vkFreeMemory(Render_Core::get().getDevice().get(), _memory, nullptr);
+		vkDestroyImage(Render_Core::get().getDevice().get(), _image, nullptr);
+	}
 }

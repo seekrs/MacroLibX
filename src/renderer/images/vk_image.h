@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:54:21 by maldavid          #+#    #+#             */
-/*   Updated: 2023/01/25 11:56:03 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/03/08 02:15:00 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 #include <volk.h>
 #include <cstddef>
-#include <vector>
+#include <renderer/descriptors/vk_descriptor_set.h>
 
 namespace mlx
 {
@@ -26,26 +26,32 @@ namespace mlx
 		public:
 			Image() = default;
 
-			virtual void create(uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, VkMemoryPropertyFlags properties, VkImageAspectFlags aspectFlags);
+			void create(uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, VkMemoryPropertyFlags properties);
+			void copyBuffer(class Buffer& buffer);
 			void destroy() noexcept;
 
-			void copyBuffer(class Buffer& buffer);
-
-			inline VkImage& get() noexcept { return _image; }
-			inline VkImage& operator()() noexcept { return _image; }
+			inline VkImage get() noexcept { return _image; }
+			inline VkImage operator()() noexcept { return _image; }
 			inline VkDeviceMemory getDeviceMemory() noexcept { return _memory; }
-			inline VkImageView& getImageView() noexcept { return _image_view; }
-			inline VkFormat& getFormat() noexcept { return _format; }
+			inline VkImageView getImageView() noexcept { return _image_view; }
+			inline VkFormat getFormat() noexcept { return _format; }
+			inline VkSampler getSampler() noexcept { return _sampler; }
 
 			virtual ~Image() = default;
 
+		protected:
+			void createImageView(VkImageViewType type, VkImageAspectFlags aspectFlags) noexcept;
+			void createSampler() noexcept;
+
 		private:
+			DescriptorSet _desc;
 			VkImage _image = VK_NULL_HANDLE;
 			VkDeviceMemory _memory = VK_NULL_HANDLE;
 			VkImageView _image_view = VK_NULL_HANDLE;
+			VkSampler _sampler = VK_NULL_HANDLE;
+			VkFormat _format;
 			uint32_t _width = 0;
 			uint32_t _height = 0;
-			VkFormat _format;
 	};
 }
 
