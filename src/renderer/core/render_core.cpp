@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 23:33:34 by maldavid          #+#    #+#             */
-/*   Updated: 2023/01/25 15:24:19 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/03/31 12:22:34 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 
 namespace mlx
 {
+	std::mutex mutex;
+
 	namespace RCore
 	{
 		uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties)
@@ -42,6 +44,7 @@ namespace mlx
 			return -1; // just to avoid warning
 		}
 	}
+
 	void Render_Core::init()
 	{
 		volkInitialize();
@@ -57,7 +60,6 @@ namespace mlx
 
 	void Render_Core::destroy()
 	{
-		std::mutex mutex;
         std::unique_lock<std::mutex> watchdog(mutex, std::try_to_lock);
 
 		if(!_is_init)

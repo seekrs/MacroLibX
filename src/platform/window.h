@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:53:12 by maldavid          #+#    #+#             */
-/*   Updated: 2023/01/25 15:15:25 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/03/31 22:16:01 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@ namespace mlx
 			~MLX_Window();
 
 		private:
-			Image _vk_image;
-			Buffer _staging_buffer;
 			C_VBO _vbo;
 			C_IBO _ibo;
 			glm::mat4 _proj = glm::mat4(1.0);

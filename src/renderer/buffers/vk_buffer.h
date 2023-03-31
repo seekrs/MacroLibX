@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 23:18:52 by maldavid          #+#    #+#             */
-/*   Updated: 2023/01/25 15:36:47 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/03/31 15:29:01 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,10 @@ namespace mlx
 			{
 				if(vkMapMemory(Render_Core::get().getDevice().get(), _memory, _offset + offset, size, 0, data) != VK_SUCCESS)
 					core::error::report(e_kind::fatal_error, "Vulkan : failed to map a buffer");
+				_is_mapped = true;
 			}
-			inline void unmapMem() noexcept { vkUnmapMemory(Render_Core::get().getDevice().get(), _memory); }
+			inline bool isMapped() const noexcept { return _is_mapped; }
+			inline void unmapMem() noexcept { vkUnmapMemory(Render_Core::get().getDevice().get(), _memory); _is_mapped = false; }
 
 			void flush(VkDeviceSize size = VK_WHOLE_SIZE, VkDeviceSize offset = 0);
 
@@ -55,6 +57,7 @@ namespace mlx
 
 			VkBufferUsageFlags _usage = 0;
 			VkMemoryPropertyFlags _flags = 0;
+			bool _is_mapped = false;
 	};
 }
 

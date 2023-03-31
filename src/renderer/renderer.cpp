@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:25:16 by maldavid          #+#    #+#             */
-/*   Updated: 2023/01/24 17:02:39 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/03/31 18:54:23 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,24 @@ namespace mlx
 	
 		_uniform_buffer.reset(new UBO);
 		_uniform_buffer->create(this, sizeof(glm::mat4));
-		_layout.init(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER);
-		VkDescriptorPoolSize pool_sizes{ VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, MAX_FRAMES_IN_FLIGHT };
-		_desc_pool.init(1, &pool_sizes);
-		_set.init(this, _uniform_buffer.get(), _layout, _desc_pool);
+
+		VkDescriptorPoolSize pool_sizes[] = {
+			{ VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 4096 },
+			{ VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 4096 }
+		};
+		_desc_pool.init(2, pool_sizes);
+		
+		_vert_layout.init({
+				{0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER}
+			}, VK_SHADER_STAGE_VERTEX_BIT);
+		_frag_layout.init({
+				{0, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER}
+			}, VK_SHADER_STAGE_FRAGMENT_BIT);
+		
+		_vert_set.init(this, &_desc_pool, &_vert_layout);
+		_frag_set.init(this, &_desc_pool, &_frag_layout);
+
+		_vert_set.writeDescriptor(0, _uniform_buffer.get());
 
 		_pipeline.init(*this);
 
@@ -134,17 +148,16 @@ namespace mlx
 
 	void Renderer::destroy()
 	{
-		std::mutex mutex;
-        std::unique_lock<std::mutex> watchdog(mutex, std::try_to_lock);
-
         vkDeviceWaitIdle(Render_Core::get().getDevice().get());
 
 		for(int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
 			_cmd_buffers[i].destroy();
 
+		_pixel_put_pipeline.destroy();
 		_pipeline.destroy();
 		_uniform_buffer->destroy();
-		_layout.destroy();
+		_vert_layout.destroy();
+		_frag_layout.destroy();
 		_desc_pool.destroy();
 		_swapchain.destroyFB();
 		_pass.destroy();

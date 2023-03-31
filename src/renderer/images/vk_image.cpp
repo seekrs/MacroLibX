@@ -6,12 +6,14 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:59:07 by maldavid          #+#    #+#             */
-/*   Updated: 2023/03/08 02:24:10 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/03/31 12:26:08 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vk_image.h"
 #include <renderer/core/render_core.h>
+#include <renderer/buffers/vk_buffer.h>
+#include <renderer/command/vk_cmd_pool.h>
 
 namespace mlx
 {
@@ -100,7 +102,7 @@ namespace mlx
 		info.maxAnisotropy = 1.0f;
 
 		if(vkCreateSampler(Render_Core::get().getDevice().get(), &info, nullptr, &_sampler) != VK_SUCCESS)
-			Core::log::report(FATAL_ERROR, "Vulkan : unable to create image sampler");
+			core::error::report(e_kind::fatal_error, "Vulkan : failed to create an image");
 	}
 
 	void Image::copyBuffer(Buffer& buffer)
