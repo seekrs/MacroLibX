@@ -6,7 +6,7 @@
 #    By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/04 16:43:41 by maldavid          #+#    #+#              #
-#    Updated: 2023/01/23 18:30:59 by maldavid         ###   ########.fr        #
+#    Updated: 2023/03/31 12:19:47 by maldavid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,8 +20,14 @@ SRCS		+= $(wildcard $(addsuffix /*.cpp, ./src/renderer/**))
 OBJS		= $(SRCS:.cpp=.o)
 
 DEBUG		?= false
+TOOLCHAIN	?= clang
 
-CXX			= g++
+CXX			= clang++
+
+ifeq ($(TOOLCHAIN), gcc)
+	CXX = g++
+endif
+
 CXXFLAGS	= -std=c++17 -O3 -fPIC
 INCLUDES	= -I./includes -I./src -I./third_party
 
@@ -32,13 +38,13 @@ endif
 RM			= rm -f
 
 %.o: %.cpp
-	@echo "\e[1;32m[compiling...   ]\e[1;00m "$<
+	@echo "\e[1;32m[compiling... "$(CXX)"]\e[1;00m "$<
 	@$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
 
 all:		$(NAME)
 
 $(NAME):	$(OBJS)
-	@echo "\e[1;32m[ linking ...]\e[1;00m "$@
+	@echo "\e[1;32m[linking ...]\e[1;00m "$@
 	@$(CXX) -shared -o $(NAME) $(OBJS)
 	@echo "\e[1;32m[build finished]\e[1;00m"
 
