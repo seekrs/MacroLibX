@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:55:21 by maldavid          #+#    #+#             */
-/*   Updated: 2023/03/31 20:26:59 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/01 13:00:56 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,15 @@ typedef struct
 int	update(t_mlx *mlx)
 {
 	static int	i = 0;
+	int			j;
 
-	mlx_pixel_put(mlx->mlx, mlx->win, 100, 0, 0xFFFFFFFF);
+	j = 0;
+	while (j < 400)
+	{
+		mlx_pixel_put(mlx->mlx, mlx->win, j, j, 0xFFFFFFFF);
+		mlx_pixel_put(mlx->mlx, mlx->win, 399 - j, j, 0xFFFFFFFF);
+		j++;
+	}
 	i++;
 	if (i > 10000)
 		mlx_loop_end(mlx->mlx);
