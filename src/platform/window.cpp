@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:36:44 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/01 15:40:30 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/01 17:50:22 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,11 @@ namespace mlx
 		sets.push_back(texture->getSet());
 		vkCmdBindDescriptorSets(_renderer->getActiveCmdBuffer().get(), VK_PIPELINE_BIND_POINT_GRAPHICS, _renderer->getPipeline().getPipelineLayout(), 0, sets.size(), sets.data(), 0, nullptr);
 		texture->render(*_renderer, x, y);
+	}
+
+	void MLX_Window::clear()
+	{
+		_renderer->getPixelPutPipeline().clear();
 	}
 
 	void MLX_Window::endFrame()

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:53:12 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/01 15:27:51 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/01 17:26:18 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ namespace mlx
 			inline SDL_Window* getNativeWindow() const noexcept { return _win; }
 
 			bool beginFrame();
+			void clear();
 			void endFrame();
 
 			void pixel_put(int x, int y, int color);

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:56:35 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/01 13:50:52 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/01 17:25:25 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ int mlx_loop_end(void* mlx);
 
 int mlx_mouse_show();
 int mlx_mouse_hide();
-int mlx_mouse_move(void* win_ptr, int x, int y);
-int mlx_mouse_get_pos(void* win_ptr, int* x, int* y);
+int mlx_mouse_move(void* mlx, void* win_ptr, int x, int y);
+int mlx_mouse_get_pos(void* mlx, int* x, int* y);
 
 int mlx_pixel_put(void* mlx, void* win_ptr, int x, int y, int color);
 
@@ -35,6 +35,8 @@ int mlx_put_image_to_window(void* mlx_ptr, void* win_ptr, void* img_ptr, int x, 
 int mlx_destroy_image(void* mlx_ptr, void* img_ptr);
 
 void* mlx_png_file_to_image(void* mlx_ptr, char* filename, int* width, int* height);
+
+int mlx_clear_window(void* mlx_ptr, void* win_ptr);
 
 int mlx_destroy_window(void* mlx, void* win_ptr);
 int mlx_destroy_display(void* mlx);

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:55:21 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/01 13:49:21 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/01 17:50:46 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ int	update(t_mlx *mlx)
 		j++;
 	}
 	i++;
+	if (i == 5000)
+		mlx_clear_window(mlx->mlx, mlx->win);
 	if (i > 10000)
 		mlx_loop_end(mlx->mlx);
 	return (0);
@@ -48,8 +50,10 @@ int	main(void)
 	mlx.mlx = mlx_init();
 	mlx.win = mlx_new_window(mlx.mlx, 400, 400, "My window");
 	mlx.logo = mlx_png_file_to_image(mlx.mlx, "42_logo.png", &w, &h);
+	mlx_pixel_put(mlx.mlx, mlx.win, 200, 10, 0xFFFF00FF);
 	mlx_loop_hook(mlx.mlx, update, &mlx);
 	mlx_loop(mlx.mlx);
+	mlx_destroy_image(mlx.mlx, mlx.logo);
 	mlx_destroy_window(mlx.mlx, mlx.win);
 	mlx_destroy_display(mlx.mlx);
 	return (0);

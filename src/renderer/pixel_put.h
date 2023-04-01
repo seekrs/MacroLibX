@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 13:18:50 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/01 15:32:06 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/01 17:26:46 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ namespace mlx
 			void present() noexcept;
 			void render(class Renderer& renderer) noexcept;
 			VkDescriptorSet getDescriptorSet() noexcept;
+
+			void clear();
 
 			void destroy() noexcept;
 

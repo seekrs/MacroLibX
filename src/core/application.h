@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:49:46 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/01 14:46:14 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/01 17:26:10 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,17 @@ namespace mlx::core
 				return static_cast<void*>(&_wins.back()->get_id());
 			}
 
-			inline int get_mouse_pos(void* win_ptr, int* x, int* y) noexcept
+			inline void get_mouse_pos(int* x, int* y) noexcept
 			{
-				if(*static_cast<int*>(win_ptr) > _wins.size())
-					return -1;
+				*x = _in.getX();
+				*y = _in.getY();
+			}
+
+			inline void mouse_move(void* win_ptr, int x, int y) noexcept
+			{
+				SDL_WarpMouseInWindow(_wins[*static_cast<int*>(win_ptr)]->getNativeWindow(), x, y);
+				SDL_PumpEvents();
+				SDL_FlushEvent(SDL_MOUSEMOTION);
 			}
 
 			inline void loop_hook(int (*f)(void*), void* param) { _loop_hook = f; _param = param; }
@@ -53,11 +60,12 @@ namespace mlx::core
 			void texture_put(void* win, void* img, int x, int y);
 			void destroy_texture(void* ptr);
 			
+			inline void clear_window(void* win_ptr) { _wins[*static_cast<int*>(win_ptr)]->clear(); }
 			inline void destroy_window(void* win_ptr) { _wins[*static_cast<int*>(win_ptr)].reset(); }
 
 			void run() noexcept;
 
-			~Application();
+			~Application() = default;
 
 		private:
 			Input _in;

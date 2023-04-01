@@ -6,12 +6,13 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 22:10:52 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/01 15:34:00 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/01 16:03:45 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "application.h"
 #include <renderer/images/texture.h>
+#include <renderer/core/render_core.h>
 
 namespace mlx::core
 {
@@ -47,12 +48,8 @@ namespace mlx::core
 
 	void Application::destroy_texture(void* ptr)
 	{
+        vkDeviceWaitIdle(Render_Core::get().getDevice().get());
 		TextureID id = *static_cast<TextureID*>(ptr);
 		_texture_lib.removeTextureFromLibrary(id);
-	}
-
-	Application::~Application()
-	{
-		_texture_lib.clearLibrary();
 	}
 }
