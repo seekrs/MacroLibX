@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:35:20 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/01 15:32:57 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/01 17:48:21 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,15 @@ extern "C"
 		return SDL_ShowCursor(SDL_DISABLE);
 	}
 
-	int mlx_mouse_move(void* win_ptr, int x, int y)
+	int mlx_mouse_move(void* mlx, void* win_ptr, int x, int y)
 	{
+		static_cast<mlx::core::Application*>(mlx)->mouse_move(win_ptr, x, y);
 		return 0;
 	}
 
-	int mlx_mouse_get_pos(void* win_ptr, int* x, int* y)
+	int mlx_mouse_get_pos(void* mlx, int* x, int* y)
 	{
+		static_cast<mlx::core::Application*>(mlx)->get_mouse_pos(x, y);
 		return 0;
 	}
 
@@ -86,6 +88,12 @@ extern "C"
 	int mlx_pixel_put(void* mlx, void* win_ptr, int x, int y, int color)
 	{
 		static_cast<mlx::core::Application*>(mlx)->pixel_put(win_ptr, x, y, color);
+		return 0;
+	}
+
+	int mlx_clear_window(void* mlx_ptr, void* win_ptr)
+	{
+		static_cast<mlx::core::Application*>(mlx_ptr)->clear_window(win_ptr);
 		return 0;
 	}
 

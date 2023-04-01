@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:59:07 by maldavid          #+#    #+#             */
-/*   Updated: 2023/03/31 12:26:08 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/01 16:05:03 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ namespace mlx
 				return format;
 		}
 		core::error::report(e_kind::fatal_error, "Vulkan : failed to find image format");
+		return VK_FORMAT_R8G8B8A8_UNORM; // to avoid warning;
 	}
 
 	void Image::create(uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, VkMemoryPropertyFlags properties)

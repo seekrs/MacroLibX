@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 15:14:50 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/01 15:32:23 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/01 17:30:54 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,14 @@ namespace mlx
 		
 		unsigned char* mem = static_cast<unsigned char*>(_impl->map) + (y * _impl->width * sizeof(uint32_t)) + (x * sizeof(uint32_t));
 		*reinterpret_cast<uint32_t*>(mem) = color;
+	}
+
+	void PixelPutPipeline::clear()
+	{
+		if(!_impl->buffer.isMapped())
+			_impl->buffer.mapMem(&_impl->map);
+		unsigned char* mem = static_cast<unsigned char*>(_impl->map);
+		std::memset(mem, 0, sizeof(uint32_t) * (_impl->width * _impl->height));
 	}
 
 	void PixelPutPipeline::present() noexcept

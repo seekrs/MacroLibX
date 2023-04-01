@@ -30,5 +30,5 @@ For Arch based distros
 3. Compile your project
 
 ```bash
-gcc myApp.c MacroLibX/libmlx.so -lSDL2
+clang myApp.c MacroLibX/libmlx.so -lSDL2
 ```
