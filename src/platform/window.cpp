@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:36:44 by maldavid          #+#    #+#             */
-/*   Updated: 2023/03/31 20:30:14 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/01 11:55:19 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,6 @@ namespace mlx
 		_renderer->setWindow(this);
 		_renderer->init();
 		_renderer->getPixelPutPipeline().init(w, h, *_renderer);
-
-		std::vector<Vertex> vertexData = {
-			{{0, 0},			{1.f, 0.f, 0.f},	{0.0f, 0.0f}},
-			{{_width, 0},		{1.f, 0.f, 0.f},	{1.0f, 0.0f}},
-			{{_width, _height},	{1.f, 0.f, 0.f},	{1.0f, 1.0f}},
-			{{0, _height},		{1.f, 0.f, 0.},		{0.0f, 1.0f}}
-		};
-
-		std::vector<uint16_t> indexData = { 0, 1, 2, 2, 3, 0 };
-
-		_vbo.create(sizeof(Vertex) * vertexData.size(), vertexData.data());
-		_ibo.create(sizeof(uint16_t) * indexData.size(), indexData.data());
 	}
 
 	bool MLX_Window::beginFrame()
@@ -68,21 +56,15 @@ namespace mlx
 		sets.push_back(_renderer->getPixelPutPipeline().getDescriptorSet());
 
 		vkCmdBindDescriptorSets(cmd_buff, VK_PIPELINE_BIND_POINT_GRAPHICS, _renderer->getPipeline().getPipelineLayout(), 0, sets.size(), sets.data(), 0, nullptr);
+
+		_renderer->getPixelPutPipeline().render(*_renderer);
 		
-		_vbo.bind(*_renderer);
-		_ibo.bind(*_renderer);
-
-		vkCmdDrawIndexed(cmd_buff, static_cast<uint32_t>(_ibo.getSize() / sizeof(uint16_t)), 1, 0, 0, 0);
-
 		_renderer->endFrame();
 	}
 
 	MLX_Window::~MLX_Window()
 	{
 		_renderer->destroy();
-		_staging_buffer.destroy();
-		_vbo.destroy();
-		_ibo.destroy();
 		if(_win)
 			SDL_DestroyWindow(_win);
 	}
