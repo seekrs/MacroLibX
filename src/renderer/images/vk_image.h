@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:54:21 by maldavid          #+#    #+#             */
-/*   Updated: 2023/03/31 18:04:35 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/01 15:22:43 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 #include <volk.h>
 #include <cstddef>
-#include <renderer/descriptors/vk_descriptor_set.h>
+#include <vector>
 
 namespace mlx
 {
@@ -30,7 +30,7 @@ namespace mlx
 			void createImageView(VkImageViewType type, VkImageAspectFlags aspectFlags) noexcept;
 			void createSampler() noexcept;
 			void copyBuffer(class Buffer& buffer);
-			void destroy() noexcept;
+			virtual void destroy() noexcept;
 
 			inline VkImage get() noexcept { return _image; }
 			inline VkImage operator()() noexcept { return _image; }
@@ -42,7 +42,6 @@ namespace mlx
 			virtual ~Image() = default;
 
 		private:
-			DescriptorSet _desc;
 			VkImage _image = VK_NULL_HANDLE;
 			VkDeviceMemory _memory = VK_NULL_HANDLE;
 			VkImageView _image_view = VK_NULL_HANDLE;

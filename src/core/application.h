@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:49:46 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/18 23:10:17 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/01 14:46:14 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 
 #include <platform/inputs.h>
 #include <platform/window.h>
+
+#include <renderer/texture_library.h>
 
 namespace mlx::core
 {
@@ -46,15 +48,21 @@ namespace mlx::core
 			inline void loop_end() noexcept { _in.finish(); }
 
 			inline void pixel_put(void* win_ptr, int x, int y, int color) const noexcept { _wins[*static_cast<int*>(win_ptr)]->pixel_put(x, y, color); }
+
+			void* new_stb_texture(char* file, int* w, int* h); // stb textures are format managed by stb image (png, jpg, bpm, ...)
+			void texture_put(void* win, void* img, int x, int y);
+			void destroy_texture(void* ptr);
 			
 			inline void destroy_window(void* win_ptr) { _wins[*static_cast<int*>(win_ptr)].reset(); }
 
 			void run() noexcept;
 
-			~Application() = default;
+			~Application();
 
 		private:
 			Input _in;
+			TextureLibrary _texture_lib;
+			std::vector<TextureID> _texture_ids;
 			std::vector<std::shared_ptr<MLX_Window>> _wins;
 			std::function<int(void*)> _loop_hook;
 			void* _param = nullptr;
