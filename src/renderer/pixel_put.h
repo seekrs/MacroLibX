@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 13:18:50 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/01 12:10:33 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/01 15:32:06 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ namespace mlx
 			void setPixel(uint32_t x, uint32_t y, int color) noexcept;
 			void present() noexcept;
 			void render(class Renderer& renderer) noexcept;
-			VkDescriptorSet& getDescriptorSet() noexcept;
+			VkDescriptorSet getDescriptorSet() noexcept;
 
 			void destroy() noexcept;
 

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:14:45 by maldavid          #+#    #+#             */
-/*   Updated: 2023/03/31 17:59:09 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/01 15:37:40 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ namespace mlx
 	struct Vertex
 	{
 		glm::vec2 pos;
-		glm::vec3 color;
+		glm::vec4 color;
 		glm::vec2 uv;
 
 		static VkVertexInputBindingDescription getBindingDescription()
@@ -64,7 +64,7 @@ namespace mlx
 
 			attributeDescriptions[1].binding = 0;
 			attributeDescriptions[1].location = 1;
-			attributeDescriptions[1].format = VK_FORMAT_R32G32B32_SFLOAT;
+			attributeDescriptions[1].format = VK_FORMAT_R32G32B32A32_SFLOAT;
 			attributeDescriptions[1].offset = offsetof(Vertex, color);
 
 			attributeDescriptions[2].binding = 0;

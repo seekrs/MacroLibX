@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:55:21 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/01 13:00:56 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/01 13:49:21 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ typedef struct
 {
 	void	*mlx;
 	void	*win;
+	void	*logo;
 }	t_mlx;
 
 int	update(t_mlx *mlx)
@@ -24,11 +25,12 @@ int	update(t_mlx *mlx)
 	static int	i = 0;
 	int			j;
 
+	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->logo, 100, 100);
 	j = 0;
 	while (j < 400)
 	{
-		mlx_pixel_put(mlx->mlx, mlx->win, j, j, 0xFFFFFFFF);
-		mlx_pixel_put(mlx->mlx, mlx->win, 399 - j, j, 0xFFFFFFFF);
+		mlx_pixel_put(mlx->mlx, mlx->win, j, j, 0xFF0000FF);
+		mlx_pixel_put(mlx->mlx, mlx->win, 399 - j, j, 0xFF0000FF);
 		j++;
 	}
 	i++;
@@ -40,9 +42,12 @@ int	update(t_mlx *mlx)
 int	main(void)
 {
 	t_mlx	mlx;
+	int		w;
+	int		h;
 	
 	mlx.mlx = mlx_init();
 	mlx.win = mlx_new_window(mlx.mlx, 400, 400, "My window");
+	mlx.logo = mlx_png_file_to_image(mlx.mlx, "42_logo.png", &w, &h);
 	mlx_loop_hook(mlx.mlx, update, &mlx);
 	mlx_loop(mlx.mlx);
 	mlx_destroy_window(mlx.mlx, mlx.win);

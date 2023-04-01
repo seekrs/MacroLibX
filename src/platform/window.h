@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:53:12 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/01 11:54:09 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/01 15:27:51 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <string>
 #include <memory>
 #include <renderer/renderer.h>
-#include <renderer/images/vk_image.h>
+#include <renderer/images/texture.h>
 #include <renderer/buffers/vk_buffer.h>
 
 namespace mlx
@@ -34,6 +34,7 @@ namespace mlx
 			void endFrame();
 
 			void pixel_put(int x, int y, int color);
+			void texture_put(std::shared_ptr<Texture> texture, int x, int y);
 			
 			~MLX_Window();
 
