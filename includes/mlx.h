@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:56:35 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/01 17:25:25 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/02 22:23:25 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ extern "C" {
 void* mlx_init();
 void* mlx_new_window(void* mlx, int w, int h, const char* title);
 
-int mlx_loop_hook(void* mlx, int (*f)(void*), void* param);
+int mlx_loop_hook(void* mlx, int (*f)(), void* param);
 int mlx_loop(void* mlx);
 int mlx_loop_end(void* mlx);
 
@@ -31,15 +31,19 @@ int mlx_mouse_get_pos(void* mlx, int* x, int* y);
 
 int mlx_pixel_put(void* mlx, void* win_ptr, int x, int y, int color);
 
-int mlx_put_image_to_window(void* mlx_ptr, void* win_ptr, void* img_ptr, int x, int y);
-int mlx_destroy_image(void* mlx_ptr, void* img_ptr);
+void* mlx_new_image(void* mlx, int width, int height);
+char* mlx_get_data_addr(void* mlx, void* img_ptr, int* bits_per_pixel, int* size_line, int* endian);
+int mlx_put_image_to_window(void* mlx, void* win_ptr, void* img_ptr, int x, int y);
+int mlx_destroy_image(void* mlx, void* img_ptr);
 
-void* mlx_png_file_to_image(void* mlx_ptr, char* filename, int* width, int* height);
+void* mlx_png_file_to_image(void* mlx, char* filename, int* width, int* height);
 
-int mlx_clear_window(void* mlx_ptr, void* win_ptr);
+int mlx_clear_window(void* mlx, void* win_ptr);
 
 int mlx_destroy_window(void* mlx, void* win_ptr);
 int mlx_destroy_display(void* mlx);
+
+int mlx_get_screens_size(void* mlx, int* w, int* h);
 
 #ifdef __cplusplus
 }

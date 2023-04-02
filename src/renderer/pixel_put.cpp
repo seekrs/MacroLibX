@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 15:14:50 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/01 17:30:54 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/02 20:02:30 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ namespace mlx
 	{
 		if(_impl->buffer.isMapped())
 			_impl->buffer.unmapMem();
-		_impl->texture.copyBuffer(_impl->buffer);
+		_impl->texture.copyFromBuffer(_impl->buffer);
 		_impl->texture.updateSet(0);
 	}
 

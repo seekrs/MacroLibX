@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:35:20 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/02 15:10:44 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/02 22:23:40 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,16 @@ extern "C"
 		return 0;
 	}
 
+	void* mlx_new_image(void* mlx, int width, int height)
+	{
+		return static_cast<mlx::core::Application*>(mlx)->newTexture(width, height);
+	}
+
+	char* mlx_get_data_addr(void* mlx, void* img_ptr, int* bits_per_pixel, int* size_line, int* endian)
+	{
+		return static_cast<mlx::core::Application*>(mlx)->mapTexture(img_ptr, bits_per_pixel, size_line, endian);
+	}
+
 	int mlx_put_image_to_window(void* mlx_ptr, void* win_ptr, void* img_ptr, int x, int y)
 	{
 		static_cast<mlx::core::Application*>(mlx_ptr)->texturePut(win_ptr, img_ptr, x, y);
@@ -107,6 +117,12 @@ extern "C"
 	{
 		delete static_cast<mlx::core::Application*>(mlx);
 		mlx::Render_Core::get().destroy();
+		return 0;
+	}
+
+	int mlx_get_screens_size(void* mlx, int* w, int* h)
+	{
+		static_cast<mlx::core::Application*>(mlx)->getScreenSize(w, h);
 		return 0;
 	}
 }

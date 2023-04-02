@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:25:42 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/18 20:32:45 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/02 17:57:26 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,31 @@
 #define __MLX_VK_CMD_BUFFER__
 
 #include <volk.h>
+#include <renderer/core/vk_fence.h>
 
 namespace mlx
 {
 	class CmdBuffer
 	{
 		public:
-			void init(class Renderer* renderer);
+			void init(class CmdManager* manager);
 			void destroy() noexcept;
 
 			void beginRecord(VkCommandBufferUsageFlags usage = 0);
+			void submit(class Semaphore& semaphores) noexcept;
+			inline void waitForExecution() noexcept { _fence.waitAndReset(); }
+			inline void reset() noexcept { vkResetCommandBuffer(_cmd_buffer, 0); }
 			void endRecord();
+
+			inline bool isRecording() const noexcept { return _is_recording; }
 
 			inline VkCommandBuffer& operator()() noexcept { return _cmd_buffer; }
 			inline VkCommandBuffer& get() noexcept { return _cmd_buffer; }
 
 		private:
+			Fence _fence;
 			VkCommandBuffer _cmd_buffer = VK_NULL_HANDLE;
-			class Renderer* _renderer = nullptr;
+			class CmdManager* _manager = nullptr;
 			bool _is_recording = false;
 	};
 }

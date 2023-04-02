@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:54:21 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/01 15:22:43 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/02 20:20:55 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ namespace mlx
 			void create(uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, VkMemoryPropertyFlags properties);
 			void createImageView(VkImageViewType type, VkImageAspectFlags aspectFlags) noexcept;
 			void createSampler() noexcept;
-			void copyBuffer(class Buffer& buffer);
+			void copyFromBuffer(class Buffer& buffer);
+			void copyToBuffer(class Buffer& buffer);
 			virtual void destroy() noexcept;
 
 			inline VkImage get() noexcept { return _image; }
@@ -38,6 +39,8 @@ namespace mlx
 			inline VkImageView getImageView() noexcept { return _image_view; }
 			inline VkFormat getFormat() noexcept { return _format; }
 			inline VkSampler getSampler() noexcept { return _sampler; }
+			inline uint32_t getWidth() const noexcept { return _width; }
+			inline uint32_t getHeight() const noexcept { return _height; }
 
 			virtual ~Image() = default;
 

@@ -6,7 +6,7 @@
 /*   By: maldavid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 02:24:58 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/02 17:33:26 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/02 22:36:52 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ namespace mlx
 			void render(class Renderer& renderer, int x, int y);
 			void destroy() noexcept override;
 
+			void* openCPUmap();
+
 			inline void setDescriptor(DescriptorSet set) noexcept { _set = std::move(set); }
 			inline VkDescriptorSet getSet() noexcept { return _set.isInit() ? _set.get() : VK_NULL_HANDLE; }
 			inline void updateSet(int binding) noexcept { _set.writeDescriptor(binding, getImageView(), getSampler()); _has_been_updated = true; }
@@ -44,6 +46,8 @@ namespace mlx
 			C_VBO _vbo;
 			C_IBO _ibo;
 			DescriptorSet _set;
+			std::shared_ptr<Buffer> _cpu_map;
+			void* _cpu_map_adress;
 			bool _has_been_updated = false;
 	};
 

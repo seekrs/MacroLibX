@@ -1,36 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vk_semaphore.h                                     :+:      :+:    :+:   */
+/*   vk_fence.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/08 18:59:38 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/02 17:55:10 by maldavid         ###   ########.fr       */
+/*   Created: 2023/04/02 17:52:09 by maldavid          #+#    #+#             */
+/*   Updated: 2023/04/02 17:52:59 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef __MLX_VK_SEMAPHORE__
-#define __MLX_VK_SEMAPHORE__
+#ifndef __MLX_VK_FENCE__
+#define __MLX_VK_FENCE__
 
 #include <volk.h>
-#include <vector>
+#include <renderer/core/render_core.h>
 
 namespace mlx
 {
-	class Semaphore
+	class Fence
 	{
 		public:
+			Fence() = default;
+
 			void init();
+
+			inline VkFence& get() noexcept { return _fence; }
+			void wait() noexcept;
+			void reset() noexcept;
+			inline void waitAndReset() noexcept { wait(); reset(); }
+
 			void destroy() noexcept;
 
-			inline VkSemaphore& getImageSemaphore() noexcept { return _imageAvailableSemaphores; }
-			inline VkSemaphore& getRenderImageSemaphore() noexcept { return _renderFinishedSemaphores; }
+			~Fence() = default;
 
 		private:
-			VkSemaphore _imageAvailableSemaphores = VK_NULL_HANDLE;
-			VkSemaphore _renderFinishedSemaphores = VK_NULL_HANDLE;
+			VkFence _fence = VK_NULL_HANDLE;
 	};
 }
 
-#endif // __MLX_VK_SEMAPHORE__
+#endif

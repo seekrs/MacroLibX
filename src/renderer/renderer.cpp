@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:25:16 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/02 15:24:40 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/02 18:10:01 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,9 @@ namespace mlx
 		_swapchain.init(this);
 		_pass.init(this);
 		_swapchain.initFB();
-		_cmd_pool.init();
-		
+		_cmd.init();
 		for(int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
-			_cmd_buffers[i].init(this);
-
-		_semaphore.init(*this);
+			_semaphores[i].init();
 	
 		_uniform_buffer.reset(new UBO);
 		_uniform_buffer->create(this, sizeof(glm::mat4));
@@ -59,10 +56,10 @@ namespace mlx
 	{
 		auto device = Render_Core::get().getDevice().get();
 
-		vkWaitForFences(device, 1, &_semaphore.getInFlightFence(_active_image_index), VK_TRUE, UINT64_MAX);
+		_cmd.getCmdBuffer(_active_image_index).waitForExecution();
+		_cmd.getCmdBuffer(_active_image_index).reset();
 
-		_image_index = 0;
-		VkResult result = vkAcquireNextImageKHR(device, _swapchain(), UINT64_MAX, _semaphore.getImageSemaphore(_active_image_index), VK_NULL_HANDLE, &_image_index);
+		VkResult result = vkAcquireNextImageKHR(device, _swapchain(), UINT64_MAX, _semaphores[_active_image_index].getImageSemaphore(), VK_NULL_HANDLE, &_image_index);
 
 		if(result == VK_ERROR_OUT_OF_DATE_KHR)
 		{
@@ -72,14 +69,10 @@ namespace mlx
 		else if(result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR)
 			core::error::report(e_kind::fatal_error, "Vulkan error : failed to acquire swapchain image");
 
-		vkResetFences(device, 1, &_semaphore.getInFlightFence(_active_image_index));
-
-		vkResetCommandBuffer(_cmd_buffers[_active_image_index].get(), 0);
-
-		_cmd_buffers[_active_image_index].beginRecord();
+		_cmd.getCmdBuffer(_active_image_index).beginRecord();
 		_pass.begin();
 
-		_pipeline.bindPipeline(_cmd_buffers[_active_image_index]);
+		_pipeline.bindPipeline(_cmd.getCmdBuffer(_active_image_index));
 
 		VkViewport viewport{};
 		viewport.x = 0.0f;
@@ -88,12 +81,12 @@ namespace mlx
 		viewport.height = (float)_swapchain._swapChainExtent.height;
 		viewport.minDepth = 0.0f;
 		viewport.maxDepth = 1.0f;
-		vkCmdSetViewport(_cmd_buffers[_active_image_index].get(), 0, 1, &viewport);
+		vkCmdSetViewport(_cmd.getCmdBuffer(_active_image_index).get(), 0, 1, &viewport);
 
 		VkRect2D scissor{};
 		scissor.offset = { 0, 0 };
 		scissor.extent = _swapchain._swapChainExtent;
-		vkCmdSetScissor(_cmd_buffers[_active_image_index].get(), 0, 1, &scissor);
+		vkCmdSetScissor(_cmd.getCmdBuffer(_active_image_index).get(), 0, 1, &scissor);
 
 		return true;
 	}
@@ -101,36 +94,18 @@ namespace mlx
 	void Renderer::endFrame()
 	{
 		_pass.end();
-		_cmd_buffers[_active_image_index].endRecord();
+		_cmd.getCmdBuffer(_active_image_index).endRecord();
+		_cmd.getCmdBuffer(_active_image_index).submit(_semaphores[_active_image_index]);
 
-		VkSubmitInfo submitInfo{};
-		submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-
-		VkSemaphore waitSemaphores[] = { _semaphore.getImageSemaphore(_active_image_index) };
-		VkPipelineStageFlags waitStages[] = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
-		submitInfo.waitSemaphoreCount = 1;
-		submitInfo.pWaitSemaphores = waitSemaphores;
-		submitInfo.pWaitDstStageMask = waitStages;
-
-		submitInfo.commandBufferCount = 1;
-		submitInfo.pCommandBuffers = &_cmd_buffers[_active_image_index].get();
-
-		VkSemaphore signalSemaphores[] = { _semaphore.getRenderImageSemaphore(_active_image_index) };
-		submitInfo.signalSemaphoreCount = 1;
-		submitInfo.pSignalSemaphores = signalSemaphores;
-
-		if(vkQueueSubmit(Render_Core::get().getQueue().getGraphic(), 1, &submitInfo, _semaphore.getInFlightFence(_active_image_index)) != VK_SUCCESS)
-			core::error::report(e_kind::fatal_error, "Vulkan error : failed to submit draw command buffer");
+		VkSwapchainKHR swapchain = _swapchain();
+		VkSemaphore signalSemaphores[] = { _semaphores[_active_image_index].getRenderImageSemaphore() };
 
 		VkPresentInfoKHR presentInfo{};
 		presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
-
 		presentInfo.waitSemaphoreCount = 1;
 		presentInfo.pWaitSemaphores = signalSemaphores;
-
 		presentInfo.swapchainCount = 1;
-		presentInfo.pSwapchains = &_swapchain();
-
+		presentInfo.pSwapchains = &swapchain;
 		presentInfo.pImageIndices = &_image_index;
 
 		VkResult result = vkQueuePresentKHR(Render_Core::get().getQueue().getPresent(), &presentInfo);
@@ -150,19 +125,17 @@ namespace mlx
 	{
         vkDeviceWaitIdle(Render_Core::get().getDevice().get());
 
-		for(int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
-			_cmd_buffers[i].destroy();
-
 		_pipeline.destroy();
 		_uniform_buffer->destroy();
 		_vert_layout.destroy();
 		_frag_layout.destroy();
+		_cmd.destroy();
 		_desc_pool.destroy();
 		_swapchain.destroyFB();
 		_pass.destroy();
 		_swapchain.destroy();
-		_semaphore.destroy();
-		_cmd_pool.destroy();
+		for(int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
+			_semaphores[i].destroy();
 		_surface.destroy();
 	}
 }

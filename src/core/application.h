@@ -6,14 +6,14 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:49:46 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/02 15:38:47 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/02 23:38:05 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_APPLICATION__
 #define __MLX_APPLICATION__
 
-#include <vector>
+#include <list>
 #include <memory>
 #include <utility>
 #include <functional>
@@ -35,13 +35,17 @@ namespace mlx::core
 			inline void getMousePos(int* x, int* y) noexcept;
 			inline void mouseMove(void* win_ptr, int x, int y) noexcept;
 
+			inline void getScreenSize(int* w, int* h) noexcept;
+
 			inline void* newGraphicsSuport(std::size_t w, std::size_t h, std::string title);
 			inline void clearGraphicsSupport(void* win_ptr);
 			inline void destroyGraphicsSupport(void* win_ptr);
 
 			inline void pixelPut(void* win_ptr, int x, int y, int color) const noexcept;
 
+			void* newTexture(int w, int h);
 			void* newStbTexture(char* file, int* w, int* h); // stb textures are format managed by stb image (png, jpg, bpm, ...)
+			char* mapTexture(void* img_ptr, int* bits_per_pixel, int* size_line, int* endian);
 			inline void texturePut(void* win_ptr, void* img, int x, int y);
 			void destroyTexture(void* ptr);
 
@@ -55,7 +59,7 @@ namespace mlx::core
 		private:
 			Input _in;
 			TextureLibrary _texture_lib;
-			std::vector<TextureID> _texture_ids;
+			std::list<TextureID> _texture_ids;
 			std::vector<std::unique_ptr<GraphicsSupport>> _graphics;
 			std::function<int(void*)> _loop_hook;
 			void* _param = nullptr;

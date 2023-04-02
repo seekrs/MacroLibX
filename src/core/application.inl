@@ -27,6 +27,14 @@ namespace mlx::core
 		SDL_FlushEvent(SDL_MOUSEMOTION);
 	}
 
+	void Application::getScreenSize(int* w, int* h) noexcept
+	{
+		SDL_DisplayMode DM;
+		SDL_GetDesktopDisplayMode(0, &DM);
+		*w = DM.w;
+		*h = DM.h;
+	}
+
 	void* Application::newGraphicsSuport(std::size_t w, std::size_t h, std::string title)
 	{
 		_graphics.emplace_back(std::make_unique<GraphicsSupport>(w, h, std::move(title), _graphics.size()));
@@ -50,7 +58,8 @@ namespace mlx::core
 
 	void Application::texturePut(void* win_ptr, void* img, int x, int y)
 	{
-		std::shared_ptr<Texture> texture = _texture_lib.getTexture(*static_cast<TextureID*>(img));
+		TextureID id = *static_cast<TextureID*>(img);
+		std::shared_ptr<Texture> texture = _texture_lib.getTexture(id);
 		_graphics[*static_cast<int*>(win_ptr)]->texturePut(texture, x, y);
 	}
 
