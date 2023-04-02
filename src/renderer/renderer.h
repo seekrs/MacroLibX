@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:14:45 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/01 15:37:40 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/02 15:26:59 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,6 @@ namespace mlx
 			inline DescriptorSet& getFragDescriptorSet() noexcept { return _frag_set; }
 			inline DescriptorSetLayout& getVertDescriptorSetLayout() noexcept { return _vert_layout; }
 			inline DescriptorSetLayout& getFragDescriptorSetLayout() noexcept { return _frag_layout; }
-			inline PixelPutPipeline& getPixelPutPipeline() noexcept { return _pixel_put_pipeline; }
             inline uint32_t getActiveImageIndex() noexcept { return _active_image_index; }
             inline uint32_t getImageIndex() noexcept { return _image_index; }
 
@@ -113,7 +112,6 @@ namespace mlx
 			~Renderer() = default;
 
 		private:
-			PixelPutPipeline _pixel_put_pipeline;
 			GraphicPipeline _pipeline;
             RenderPass _pass;
             Surface _surface;
@@ -130,7 +128,7 @@ namespace mlx
 			DescriptorSet _frag_set;
             
 			std::array<CmdBuffer, MAX_FRAMES_IN_FLIGHT> _cmd_buffers;
-			std::unique_ptr<UBO> _uniform_buffer = nullptr;
+			std::unique_ptr<UBO> _uniform_buffer;
 
 			class MLX_Window* _window = nullptr;
 

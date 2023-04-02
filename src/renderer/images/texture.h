@@ -6,7 +6,7 @@
 /*   By: maldavid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 02:24:58 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/01 15:31:26 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/02 17:33:26 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #define __MLX_TEXTURE__
 
 #include <filesystem>
+#include <memory>
+#include <functional>
 #include <renderer/images/vk_image.h>
 #include <renderer/descriptors/vk_descriptor_set.h>
 #include <renderer/buffers/vk_ibo.h>
@@ -32,7 +34,9 @@ namespace mlx
 
 			inline void setDescriptor(DescriptorSet set) noexcept { _set = std::move(set); }
 			inline VkDescriptorSet getSet() noexcept { return _set.isInit() ? _set.get() : VK_NULL_HANDLE; }
-			inline void updateSet(int binding) noexcept { _set.writeDescriptor(binding, getImageView(), getSampler());}
+			inline void updateSet(int binding) noexcept { _set.writeDescriptor(binding, getImageView(), getSampler()); _has_been_updated = true; }
+			inline bool hasBeenUpdated() const noexcept { return _has_been_updated; }
+			inline constexpr void resetUpdate() noexcept { _has_been_updated = false; }
 
 			~Texture() = default;
 
@@ -40,9 +44,32 @@ namespace mlx
 			C_VBO _vbo;
 			C_IBO _ibo;
 			DescriptorSet _set;
+			bool _has_been_updated = false;
 	};
 
-	Texture stb_texture_load(std::filesystem::path file, int* w, int* h);
+	Texture stbTextureLoad(std::filesystem::path file, int* w, int* h);
+
+	struct TextureRenderData
+	{
+		std::shared_ptr<Texture> texture;
+		int x;
+		int y;
+
+		TextureRenderData(std::shared_ptr<Texture> _texture, int _x, int _y) : texture(_texture), x(_x), y(_y) {}
+		bool operator==(const TextureRenderData& rhs) const { return texture == rhs.texture && x == rhs.x && y == rhs.y; }
+	};
+}
+
+namespace std
+{
+	template <>
+	struct hash<mlx::TextureRenderData>
+	{
+		size_t operator()(const mlx::TextureRenderData& td) const noexcept
+		{
+			return std::hash<std::shared_ptr<mlx::Texture>>()(td.texture) + std::hash<int>()(td.x) + std::hash<int>()(td.y);
+		}
+	};
 }
 
 #endif

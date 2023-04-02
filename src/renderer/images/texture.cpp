@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 18:03:35 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/01 15:39:59 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/02 15:47:49 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,9 @@ namespace mlx
 
 	void Texture::render(Renderer& renderer, int x, int y)
 	{
+		auto cmd = renderer.getActiveCmdBuffer().get();
 		_vbo.bind(renderer);
 		_ibo.bind(renderer);
-		auto cmd = renderer.getActiveCmdBuffer().get();
 		glm::vec2 translate(x, y);
 		vkCmdPushConstants(cmd, renderer.getPipeline().getPipelineLayout(), VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(translate), &translate);
 		vkCmdDrawIndexed(cmd, static_cast<uint32_t>(_ibo.getSize() / sizeof(uint16_t)), 1, 0, 0, 0);
@@ -70,7 +70,7 @@ namespace mlx
 		_ibo.destroy();
 	}
 
-	Texture stb_texture_load(std::filesystem::path file, int* w, int* h)
+	Texture stbTextureLoad(std::filesystem::path file, int* w, int* h)
 	{
 		Texture texture;
 		int channels;

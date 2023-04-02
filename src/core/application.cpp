@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 22:10:52 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/01 16:03:45 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/02 15:11:53 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,32 +21,26 @@ namespace mlx::core
 		while(_in.is_running())
 		{
 			_in.update();
-			for(auto win : _wins)
-				win->beginFrame();
+			for(auto& gs : _graphics)
+				gs->beginRender();
 
 			if(_loop_hook)
 				_loop_hook(_param);
 			
-			for(auto win : _wins)
-				win->endFrame();
+			for(auto& gs : _graphics)
+				gs->endRender();
 		}
 	}
 
-	void* Application::new_stb_texture(char* file, int* w, int* h)
+	void* Application::newStbTexture(char* file, int* w, int* h)
 	{
-		std::shared_ptr<Texture> texture = std::make_shared<Texture>(stb_texture_load(file, w, h));
+		std::shared_ptr<Texture> texture = std::make_shared<Texture>(stbTextureLoad(file, w, h));
 		TextureID id = _texture_lib.addTextureToLibrary(texture);
 		_texture_ids.push_back(id);
 		return &_texture_ids.back();
 	}
 
-	void Application::texture_put(void* win, void* img, int x, int y)
-	{
-		std::shared_ptr<Texture> texture = _texture_lib.getTexture(*static_cast<TextureID*>(img));
-		_wins[*static_cast<int*>(win)]->texture_put(texture, x, y);
-	}
-
-	void Application::destroy_texture(void* ptr)
+	void Application::destroyTexture(void* ptr)
 	{
         vkDeviceWaitIdle(Render_Core::get().getDevice().get());
 		TextureID id = *static_cast<TextureID*>(ptr);

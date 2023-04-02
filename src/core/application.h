@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:49:46 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/01 17:26:10 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/02 15:38:47 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@
 #include <utility>
 #include <functional>
 
-#include "errors.h"
+#include <core/errors.h>
 
+#include <core/graphics.h>
 #include <platform/inputs.h>
-#include <platform/window.h>
 
 #include <renderer/texture_library.h>
 
@@ -32,37 +32,22 @@ namespace mlx::core
 		public:
 			Application() : _in() {}
 
-			inline void* new_window(std::size_t w, std::size_t h, std::string title)
-			{
-				_wins.emplace_back(std::make_shared<MLX_Window>(w, h, std::move(title), _wins.size()));
-				return static_cast<void*>(&_wins.back()->get_id());
-			}
+			inline void getMousePos(int* x, int* y) noexcept;
+			inline void mouseMove(void* win_ptr, int x, int y) noexcept;
 
-			inline void get_mouse_pos(int* x, int* y) noexcept
-			{
-				*x = _in.getX();
-				*y = _in.getY();
-			}
+			inline void* newGraphicsSuport(std::size_t w, std::size_t h, std::string title);
+			inline void clearGraphicsSupport(void* win_ptr);
+			inline void destroyGraphicsSupport(void* win_ptr);
 
-			inline void mouse_move(void* win_ptr, int x, int y) noexcept
-			{
-				SDL_WarpMouseInWindow(_wins[*static_cast<int*>(win_ptr)]->getNativeWindow(), x, y);
-				SDL_PumpEvents();
-				SDL_FlushEvent(SDL_MOUSEMOTION);
-			}
+			inline void pixelPut(void* win_ptr, int x, int y, int color) const noexcept;
 
-			inline void loop_hook(int (*f)(void*), void* param) { _loop_hook = f; _param = param; }
-			inline void loop_end() noexcept { _in.finish(); }
+			void* newStbTexture(char* file, int* w, int* h); // stb textures are format managed by stb image (png, jpg, bpm, ...)
+			inline void texturePut(void* win_ptr, void* img, int x, int y);
+			void destroyTexture(void* ptr);
 
-			inline void pixel_put(void* win_ptr, int x, int y, int color) const noexcept { _wins[*static_cast<int*>(win_ptr)]->pixel_put(x, y, color); }
-
-			void* new_stb_texture(char* file, int* w, int* h); // stb textures are format managed by stb image (png, jpg, bpm, ...)
-			void texture_put(void* win, void* img, int x, int y);
-			void destroy_texture(void* ptr);
+			inline void loopHook(int (*f)(void*), void* param);
+			inline void loopEnd() noexcept;
 			
-			inline void clear_window(void* win_ptr) { _wins[*static_cast<int*>(win_ptr)]->clear(); }
-			inline void destroy_window(void* win_ptr) { _wins[*static_cast<int*>(win_ptr)].reset(); }
-
 			void run() noexcept;
 
 			~Application() = default;
@@ -71,11 +56,13 @@ namespace mlx::core
 			Input _in;
 			TextureLibrary _texture_lib;
 			std::vector<TextureID> _texture_ids;
-			std::vector<std::shared_ptr<MLX_Window>> _wins;
+			std::vector<std::unique_ptr<GraphicsSupport>> _graphics;
 			std::function<int(void*)> _loop_hook;
 			void* _param = nullptr;
 			bool _is_loop_running = false;
 	};
 }
+
+#include <core/application.inl>
 
 #endif // __MLX_APPLICATION__
