@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 18:03:35 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/02 15:47:49 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/02 23:50:31 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <renderer/images/texture.h>
 #include <renderer/buffers/vk_buffer.h>
 #include <renderer/renderer.h>
+#include <iostream>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
@@ -24,7 +25,7 @@ namespace mlx
 	{
 		Image::create(width, height, format,
 			VK_IMAGE_TILING_OPTIMAL,
-			VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT,
+			VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT | VK_IMAGE_USAGE_SAMPLED_BIT,
 			VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT
 		);
 
@@ -48,13 +49,32 @@ namespace mlx
 			Buffer staging_buffer;
 			std::size_t size = width * height * (format == VK_FORMAT_R32G32B32A32_SFLOAT ? 16 : 4);
 			staging_buffer.create(Buffer::kind::dynamic, size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, pixels);
-			Image::copyBuffer(staging_buffer);
+			Image::copyFromBuffer(staging_buffer);
 			staging_buffer.destroy();
 		}
+		_cpu_map = nullptr;
+		_cpu_map_adress = nullptr;
+	}
+
+	void* Texture::openCPUmap()
+	{
+		if(_cpu_map == nullptr)
+		{
+			_cpu_map = std::make_shared<Buffer>();
+			_cpu_map->create(Buffer::kind::dynamic, sizeof(uint32_t) * (getWidth() * getHeight()), VK_BUFFER_USAGE_TRANSFER_SRC_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT);
+			Image::copyToBuffer(*_cpu_map);
+		}
+		if(!_cpu_map->isMapped())
+			_cpu_map->mapMem(&_cpu_map_adress);
+		if(_cpu_map_adress == nullptr)
+			core::error::report(e_kind::fatal_error, "Texture : CPU memory mappind failed");
+		return _cpu_map_adress;
 	}
 
 	void Texture::render(Renderer& renderer, int x, int y)
 	{
+		if(_cpu_map_adress != nullptr)
+			Image::copyFromBuffer(*_cpu_map);
 		auto cmd = renderer.getActiveCmdBuffer().get();
 		_vbo.bind(renderer);
 		_ibo.bind(renderer);
@@ -66,6 +86,8 @@ namespace mlx
 	void Texture::destroy() noexcept
 	{
 		Image::destroy();
+		if(_cpu_map != nullptr)
+			_cpu_map->destroy();
 		_vbo.destroy();
 		_ibo.destroy();
 	}

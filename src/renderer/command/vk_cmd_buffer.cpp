@@ -6,28 +6,31 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:26:06 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/18 20:33:04 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/02 18:13:38 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vk_cmd_buffer.h"
 #include <renderer/core/render_core.h>
-#include <renderer/renderer.h>
+#include <renderer/command/cmd_manager.h>
+#include <renderer/core/vk_semaphore.h>
 
 namespace mlx
 {
-	void CmdBuffer::init(Renderer* renderer)
+	void CmdBuffer::init(CmdManager* manager)
 	{
-		_renderer = renderer;
+		_manager = manager;
 
 		VkCommandBufferAllocateInfo allocInfo{};
 		allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
-		allocInfo.commandPool = renderer->getCmdPool().get();
+		allocInfo.commandPool = manager->getCmdPool().get();
 		allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
 		allocInfo.commandBufferCount = 1;
 
 		if(vkAllocateCommandBuffers(Render_Core::get().getDevice().get(), &allocInfo, &_cmd_buffer) != VK_SUCCESS)
 			core::error::report(e_kind::fatal_error, "Vulkan : failed to allocate command buffer");
+
+		_fence.init();
 	}
 
 	void CmdBuffer::beginRecord(VkCommandBufferUsageFlags usage)
@@ -54,8 +57,29 @@ namespace mlx
 		_is_recording = false;
 	}
 
+	void CmdBuffer::submit(Semaphore& semaphores) noexcept
+	{
+		VkSemaphore signalSemaphores[] = { semaphores.getRenderImageSemaphore() };
+		VkSemaphore waitSemaphores[] = { semaphores.getImageSemaphore() };
+		VkPipelineStageFlags waitStages[] = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
+
+		VkSubmitInfo submitInfo{};
+		submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+		submitInfo.waitSemaphoreCount = 1;
+		submitInfo.pWaitSemaphores = waitSemaphores;
+		submitInfo.pWaitDstStageMask = waitStages;
+		submitInfo.commandBufferCount = 1;
+		submitInfo.pCommandBuffers = &_cmd_buffer;
+		submitInfo.signalSemaphoreCount = 1;
+		submitInfo.pSignalSemaphores = signalSemaphores;
+
+		if(vkQueueSubmit(Render_Core::get().getQueue().getGraphic(), 1, &submitInfo, _fence.get()) != VK_SUCCESS)
+			core::error::report(e_kind::fatal_error, "Vulkan error : failed to submit draw command buffer");
+	}
+
 	void CmdBuffer::destroy() noexcept
 	{
-		vkFreeCommandBuffers(Render_Core::get().getDevice().get(), _renderer->getCmdPool().get(), 1, &_cmd_buffer);
+		vkFreeCommandBuffers(Render_Core::get().getDevice().get(), _manager->getCmdPool().get(), 1, &_cmd_buffer);
+		_fence.destroy();
 	}
 }

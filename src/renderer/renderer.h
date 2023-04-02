@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:14:45 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/02 15:26:59 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/02 18:09:14 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,7 @@
 #include <renderer/core/render_core.h>
 #include <renderer/core/vk_semaphore.h>
 #include <renderer/pipeline/pipeline.h>
-#include <renderer/command/vk_cmd_pool.h>
-#include <renderer/command/vk_cmd_buffer.h>
+#include <renderer/command/cmd_manager.h>
 #include <renderer/swapchain/vk_swapchain.h>
 #include <renderer/swapchain/vk_render_pass.h>
 #include <renderer/descriptors/vk_descriptor_set.h>
@@ -92,14 +91,14 @@ namespace mlx
             inline void setWindow(class MLX_Window* window) { _window = window; }
 
             inline Surface& getSurface() noexcept { return _surface; }
-            inline CmdPool& getCmdPool() noexcept { return _cmd_pool; }
+			inline CmdPool& getCmdPool() noexcept { return _cmd.getCmdPool(); }
 			inline UBO* getUniformBuffer() noexcept { return _uniform_buffer.get(); }
             inline SwapChain& getSwapChain() noexcept { return _swapchain; }
-            inline Semaphore& getSemaphore() noexcept { return _semaphore; }
+			inline Semaphore& getSemaphore(int i) noexcept { return _semaphores[i]; }
             inline RenderPass& getRenderPass() noexcept { return _pass; }
-            inline CmdBuffer& getCmdBuffer(int i) noexcept { return _cmd_buffers[i]; }
 			inline GraphicPipeline& getPipeline() noexcept { return _pipeline; }
-            inline CmdBuffer& getActiveCmdBuffer() noexcept { return _cmd_buffers[_active_image_index]; }
+			inline CmdBuffer& getCmdBuffer(int i) noexcept { return _cmd.getCmdBuffer(i); }
+			inline CmdBuffer& getActiveCmdBuffer() noexcept { return _cmd.getCmdBuffer(_active_image_index); }
 			inline DescriptorSet& getVertDescriptorSet() noexcept { return _vert_set; }
 			inline DescriptorSet& getFragDescriptorSet() noexcept { return _frag_set; }
 			inline DescriptorSetLayout& getVertDescriptorSetLayout() noexcept { return _vert_layout; }
@@ -113,11 +112,11 @@ namespace mlx
 
 		private:
 			GraphicPipeline _pipeline;
+			CmdManager _cmd;
             RenderPass _pass;
             Surface _surface;
-            CmdPool _cmd_pool;
             SwapChain _swapchain;
-            Semaphore _semaphore;
+			std::array<Semaphore, MAX_FRAMES_IN_FLIGHT> _semaphores;
 
 			DescriptorPool _desc_pool;
 			
@@ -127,7 +126,6 @@ namespace mlx
 			DescriptorSet _vert_set;
 			DescriptorSet _frag_set;
             
-			std::array<CmdBuffer, MAX_FRAMES_IN_FLIGHT> _cmd_buffers;
 			std::unique_ptr<UBO> _uniform_buffer;
 
 			class MLX_Window* _window = nullptr;
