@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 22:10:52 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/02 23:49:03 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/04 14:54:12 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <renderer/images/texture.h>
 #include <renderer/core/render_core.h>
 #include <X11/X.h> // for LSBFirst
+#include <cstdio>
 
 namespace mlx::core
 {
@@ -59,6 +60,15 @@ namespace mlx::core
 		*size_line = texture->getWidth();
 		*endian = LSBFirst;
 		return map;
+	}
+
+	void* Application::newXpmTexture(char** data, int* w, int* h)
+	{
+		std::shared_ptr<Texture> texture = std::make_shared<Texture>();
+		texture->create(pixels.get(), width, height, VK_FORMAT_R8G8B8A8_UNORM);
+		TextureID id = _texture_lib.addTextureToLibrary(texture);
+		_texture_ids.push_back(id);
+		return &_texture_ids.back();
 	}
 
 	void Application::destroyTexture(void* ptr)
