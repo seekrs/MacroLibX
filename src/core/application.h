@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:49:46 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/04 13:43:04 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/04 20:53:21 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 #include <list>
 #include <memory>
+#include <string>
+#include <vector>
 #include <utility>
 #include <functional>
 
@@ -47,7 +49,10 @@ namespace mlx::core
 			inline void pixelPut(void* win_ptr, int x, int y, int color) const noexcept;
 
 			void* newTexture(int w, int h);
+		#ifndef MLX_NO_XPM
+			void* newXpmTexture(std::string filename, int* w, int* h);
 			void* newXpmTexture(char** data, int* w, int* h);
+		#endif
 			void* newStbTexture(char* file, int* w, int* h); // stb textures are format managed by stb image (png, jpg, bpm, ...)
 			char* mapTexture(void* img_ptr, int* bits_per_pixel, int* size_line, int* endian);
 			inline void texturePut(void* win_ptr, void* img, int x, int y);

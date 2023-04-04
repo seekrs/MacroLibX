@@ -6,14 +6,14 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:55:21 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/04 14:54:04 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/04 21:41:32 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include "../includes/mlx.h"
 
-static char * exemple_xpm[] = {
+static char* exemple_xpm[] = {
 "24 20 3 1",
 " 	c None",
 ".	c #3A32E4",
@@ -102,12 +102,12 @@ int	main(void)
 	mlx.mlx = mlx_init();
 	mlx.win = mlx_new_window(mlx.mlx, 400, 400, "My window");
 	mlx.logo = mlx_png_file_to_image(mlx.mlx, "42_logo.png", &w, &h);
-	pic = mlx_xpm_to_image(mlx.mlx, exemple_xpm, &w, &h);
-	mlx_put_image_to_window(mlx.mlx, mlx.win, pic, 20, 20);
 	mlx_pixel_put(mlx.mlx, mlx.win, 200, 10, 0xFFFF00FF);
 	mlx_put_image_to_window(mlx.mlx, mlx.win, mlx.logo, 200, 200);
 	img = create_image(&mlx);
 	mlx_put_image_to_window(mlx.mlx, mlx.win, img, 200, 20);
+	pic = mlx_xpm_to_image(mlx.mlx, exemple_xpm, &w, &h);
+	mlx_put_image_to_window(mlx.mlx, mlx.win, pic, 100, 20);
 	mlx_loop_hook(mlx.mlx, update, &mlx);
 	mlx_loop(mlx.mlx);
 	mlx_destroy_image(mlx.mlx, img);

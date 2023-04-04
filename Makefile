@@ -6,7 +6,7 @@
 #    By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/04 16:43:41 by maldavid          #+#    #+#              #
-#    Updated: 2023/04/04 13:09:06 by maldavid         ###   ########.fr        #
+#    Updated: 2023/04/04 16:21:17 by maldavid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ ifeq ($(TOOLCHAIN), gcc)
 endif
 
 CXXFLAGS	= -std=c++17 -O3 -fPIC
-INCLUDES	= -I./includes -I./src -I./third_party -I/nfs/homes/maldavid/.xmake/packages/l/libsdl/2.26.4/8dfbcb8049e744a597cd5333e1b399cd/include
+INCLUDES	= -I./includes -I./src -I./third_party
 
 ifeq ($(DEBUG), true)
 	CXXFLAGS += -g
