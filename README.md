@@ -29,6 +29,7 @@ For Arch based distros
 
 3. Compile your project
 
+If you didn't disable Xpm support you'll have to link `libXpm`. You can remove it if you used `#define MLX_NO_XPM` before including `mlx.h`
 ```bash
-clang myApp.c MacroLibX/libmlx.so -lSDL2
+clang myApp.c MacroLibX/libmlx.so -lSDL2 -lXpm
 ```
