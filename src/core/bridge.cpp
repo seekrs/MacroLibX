@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:35:20 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/02 22:23:40 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/03 14:18:50 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "errors.h"
 #include "application.h"
 #include <renderer/core/render_core.h>
+#include <filesystem>
 
 extern "C"
 {
@@ -68,6 +69,18 @@ extern "C"
 		return 0;
 	}
 
+	int mlx_do_key_autorepeaton(void* mlx)
+	{
+		static_cast<mlx::core::Application*>(mlx)->enableAutoRepeat();
+		return 0;
+	}
+
+	int mlx_do_key_autorepeatoff(void* mlx)
+	{
+		static_cast<mlx::core::Application*>(mlx)->disableAutoRepeat();
+		return 0;
+	}
+
 	void* mlx_new_image(void* mlx, int width, int height)
 	{
 		return static_cast<mlx::core::Application*>(mlx)->newTexture(width, height);
@@ -92,6 +105,34 @@ extern "C"
 
 	void* mlx_png_file_to_image(void* mlx_ptr, char* filename, int* width, int* height)
 	{
+		std::filesystem::path file(filename);
+		if(file.extension() != ".png")
+		{
+			mlx::core::error::report(e_kind::error, "PNG loader : not a png file '%s'", filename);
+			return nullptr;
+		}
+		return static_cast<mlx::core::Application*>(mlx_ptr)->newStbTexture(filename, width, height);
+	}
+
+	void* mlx_jpg_file_to_image(void* mlx_ptr, char* filename, int* width, int* height)
+	{
+		std::filesystem::path file(filename);
+		if(file.extension() != ".jpg" && file.extension() != ".jpeg")
+		{
+			mlx::core::error::report(e_kind::error, "PNG loader : not a jpg file '%s'", filename);
+			return nullptr;
+		}
+		return static_cast<mlx::core::Application*>(mlx_ptr)->newStbTexture(filename, width, height);
+	}
+
+	void* mlx_bmp_file_to_image(void* mlx_ptr, char* filename, int* width, int* height)
+	{
+		std::filesystem::path file(filename);
+		if(file.extension() != ".bmp" && file.extension() != ".dib")
+		{
+			mlx::core::error::report(e_kind::error, "PNG loader : not a jpg file '%s'", filename);
+			return nullptr;
+		}
 		return static_cast<mlx::core::Application*>(mlx_ptr)->newStbTexture(filename, width, height);
 	}
 

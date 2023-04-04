@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:30:19 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/01 16:46:13 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/03 12:40:10 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,9 @@ namespace mlx
 	{
 		_xRel = 0;
 		_yRel = 0;
+
+		if(!_auto_repeat)
+			std::memset(_keys.data(), 0, SDL_NUM_SCANCODES);
 		
 		while(SDL_PollEvent(&_event))
 		{

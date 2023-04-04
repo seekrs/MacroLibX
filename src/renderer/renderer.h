@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:14:45 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/02 18:09:14 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/03 14:23:46 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 #include <vector>
 #include <memory>
 
-#include <renderer/pixel_put.h>
 #include <renderer/buffers/vk_ubo.h>
 #include <renderer/core/vk_surface.h>
 #include <renderer/core/render_core.h>
