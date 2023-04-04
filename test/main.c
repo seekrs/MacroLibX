@@ -6,12 +6,38 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:55:21 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/03 00:05:08 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/04 14:54:04 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include "../includes/mlx.h"
+
+static char * exemple_xpm[] = {
+"24 20 3 1",
+" 	c None",
+".	c #3A32E4",
+"+	c #E43232",
+"                        ",
+"    ..                  ",
+"   ....                 ",
+"  ......++++++++        ",
+" .........+++++++       ",
+" ..........+++++++      ",
+" ............++++++     ",
+" .............++++++    ",
+"  ..............++++    ",
+"   +.............+++    ",
+"   ++.............++    ",
+"   +++.............+    ",
+"   +++++.............   ",
+"   ++++++.............. ",
+"   ++++++++............ ",
+"   +++++++++........... ",
+"    +++++++++.........  ",
+"     ++++++++++.......  ",
+"      ++++++++++.....   ",
+"       +++++++++ ...    "};
 
 typedef struct s_mlx
 {
@@ -71,10 +97,13 @@ int	main(void)
 	int		w;
 	int		h;
 	void	*img;
+	void	*pic;
 
 	mlx.mlx = mlx_init();
 	mlx.win = mlx_new_window(mlx.mlx, 400, 400, "My window");
 	mlx.logo = mlx_png_file_to_image(mlx.mlx, "42_logo.png", &w, &h);
+	pic = mlx_xpm_to_image(mlx.mlx, exemple_xpm, &w, &h);
+	mlx_put_image_to_window(mlx.mlx, mlx.win, pic, 20, 20);
 	mlx_pixel_put(mlx.mlx, mlx.win, 200, 10, 0xFFFF00FF);
 	mlx_put_image_to_window(mlx.mlx, mlx.win, mlx.logo, 200, 200);
 	img = create_image(&mlx);
@@ -82,6 +111,7 @@ int	main(void)
 	mlx_loop_hook(mlx.mlx, update, &mlx);
 	mlx_loop(mlx.mlx);
 	mlx_destroy_image(mlx.mlx, img);
+	mlx_destroy_image(mlx.mlx, pic);
 	mlx_destroy_image(mlx.mlx, mlx.logo);
 	mlx_destroy_window(mlx.mlx, mlx.win);
 	mlx_destroy_display(mlx.mlx);
