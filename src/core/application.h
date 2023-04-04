@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:49:46 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/02 23:38:05 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/03 11:18:41 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,9 @@ namespace mlx::core
 
 			inline void getMousePos(int* x, int* y) noexcept;
 			inline void mouseMove(void* win_ptr, int x, int y) noexcept;
+
+			inline constexpr void enableAutoRepeat() noexcept;
+			inline constexpr void disableAutoRepeat() noexcept;
 
 			inline void getScreenSize(int* w, int* h) noexcept;
 

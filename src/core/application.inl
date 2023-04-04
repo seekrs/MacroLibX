@@ -27,6 +27,16 @@ namespace mlx::core
 		SDL_FlushEvent(SDL_MOUSEMOTION);
 	}
 
+	constexpr void Application::enableAutoRepeat() noexcept
+	{
+		_in.enableAutoRepeat();
+	}
+
+	constexpr void Application::disableAutoRepeat() noexcept
+	{
+		_in.disableAutoRepeat();
+	}
+
 	void Application::getScreenSize(int* w, int* h) noexcept
 	{
 		SDL_DisplayMode DM;

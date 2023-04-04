@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:27:35 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/18 23:09:41 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/03 14:19:11 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,9 @@ namespace mlx
 			inline bool is_running() const noexcept { return !_end; }
 			inline constexpr void finish() noexcept { _end = true; }
 
+			inline constexpr void enableAutoRepeat() noexcept { _auto_repeat = true; }
+			inline constexpr void disableAutoRepeat() noexcept { _auto_repeat = false; }
+
 			~Input() = default;
 
 		private:
@@ -56,5 +59,6 @@ namespace mlx
 			int _yRel = 0;
 
 			bool _end = false;
+			bool _auto_repeat = true;
 	};
 }

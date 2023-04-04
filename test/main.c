@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:55:21 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/02 23:58:57 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/03 00:05:08 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	*create_image(t_mlx *mlx)
 		if (i < 10000 || i > 20000)
 		{
 			addr[i + 0] = 0xFF;
-			addr[i + 1] = 0xFF;
+			addr[i + 1] = i;
 			addr[i + 2] = 0x00;
 			addr[i + 3] = 0xFF;
 		}
