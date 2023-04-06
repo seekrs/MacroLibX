@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:55:21 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/04 21:41:32 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/05 13:03:09 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,13 @@ int	update(t_mlx *mlx)
 		mlx_pixel_put(mlx->mlx, mlx->win, 399 - j, j, 0xFF0000FF);
 		j++;
 	}
+	/*
 	i++;
 	if (i == 5000)
 		mlx_clear_window(mlx->mlx, mlx->win);
 	if (i > 10000)
 		mlx_loop_end(mlx->mlx);
+	*/
 	return (0);
 }
 
