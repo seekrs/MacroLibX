@@ -36,6 +36,11 @@ namespace mlx
 		_pixel_put_pipeline.setPixel(x, y, color);
 	}
 
+	void GraphicsSupport::stringPut(int x, int y, int color, std::string str)
+	{
+		_text_put_pipeline.put(x, y, color, str);
+	}
+
 	void GraphicsSupport::texturePut(std::shared_ptr<Texture> texture, int x, int y)
 	{
 		_textures_to_render.emplace(texture, x, y);

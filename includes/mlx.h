@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:56:35 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/06 15:27:07 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/06 16:07:38 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ int mlx_destroy_image(void* mlx, void* img);
 void* mlx_png_file_to_image(void* mlx, char* filename, int* width, int* height);
 void* mlx_jpg_file_to_image(void* mlx, char* filename, int* width, int* height);
 void* mlx_bmp_file_to_image(void* mlx, char* filename, int* width, int* height);
+
+int mlx_string_put(void* mlx, void* win, int x, int y, int color, char* str);
 
 int mlx_clear_window(void* mlx, void* win);
 

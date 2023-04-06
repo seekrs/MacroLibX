@@ -1,26 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   xpm_reader.h                                       :+:      :+:    :+:   */
+/*   text_pipeline.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/05 13:25:55 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/05 13:35:48 by maldavid         ###   ########.fr       */
+/*   Created: 2023/04/06 16:41:13 by maldavid          #+#    #+#             */
+/*   Updated: 2023/04/06 16:42:10 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef __MLX_XPM_READER__
-#define __MLX_XPM_READER__
-
-#include <filesystem>
-#include <cstdint>
-#include <vector>
+#include <renderer/text_pipeline.h>
 
 namespace mlx
 {
-	std::vector<uint8_t> parseXpmData(char** data, int* w, int* h);
-	std::vector<uint8_t> parseXpmFile(std::filesystem::path file, int* w, int* h);
-}
+	void TextPutPipeline::init(Renderer& renderer) noexcept
+	{
 
-#endif
+	}
+
+	void TextPutPipeline::put(int x, int y, int color, std::string str)
+	{
+
+	}
+}

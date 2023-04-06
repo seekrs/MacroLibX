@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:35:20 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/06 15:27:54 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/06 16:09:47 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,12 @@ extern "C"
 	int mlx_pixel_put(void* mlx, void* win, int x, int y, int color)
 	{
 		static_cast<mlx::core::Application*>(mlx)->pixelPut(win, x, y, color);
+		return 0;
+	}
+
+	int mlx_string_put(void* mlx, void* win, int x, int y, int color, char* str)
+	{
+		static_cast<mlx::core::Application*>(mlx)->stringPut(win, x, y, color, str);
 		return 0;
 	}
 
