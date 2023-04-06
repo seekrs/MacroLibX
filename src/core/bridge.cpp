@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:35:20 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/04 21:02:29 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/06 15:27:54 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,6 @@
 #include "application.h"
 #include <renderer/core/render_core.h>
 #include <filesystem>
-
-#ifndef MLX_NO_XPM
-	#include <X11/xpm.h>
-#endif
 
 extern "C"
 {
@@ -139,18 +135,6 @@ extern "C"
 		}
 		return static_cast<mlx::core::Application*>(mlx)->newStbTexture(filename, width, height);
 	}
-
-#ifndef MLX_NO_XPM
-	void* mlx_xpm_file_to_image(void* mlx, char* filename, int* width, int* height)
-	{
-		return static_cast<mlx::core::Application*>(mlx)->newXpmTexture(std::string(filename), width, height);
-	}
-
-	void* mlx_xpm_to_image(void* mlx, char** xpm_data, int* width, int* height)
-	{
-		return static_cast<mlx::core::Application*>(mlx)->newXpmTexture(xpm_data, width, height);
-	}
-#endif
 
 	int mlx_pixel_put(void* mlx, void* win, int x, int y, int color)
 	{
