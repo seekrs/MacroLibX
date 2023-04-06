@@ -6,38 +6,12 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:55:21 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/05 13:03:09 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/06 15:26:57 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include "../includes/mlx.h"
-
-static char* exemple_xpm[] = {
-"24 20 3 1",
-" 	c None",
-".	c #3A32E4",
-"+	c #E43232",
-"                        ",
-"    ..                  ",
-"   ....                 ",
-"  ......++++++++        ",
-" .........+++++++       ",
-" ..........+++++++      ",
-" ............++++++     ",
-" .............++++++    ",
-"  ..............++++    ",
-"   +.............+++    ",
-"   ++.............++    ",
-"   +++.............+    ",
-"   +++++.............   ",
-"   ++++++.............. ",
-"   ++++++++............ ",
-"   +++++++++........... ",
-"    +++++++++.........  ",
-"     ++++++++++.......  ",
-"      ++++++++++.....   ",
-"       +++++++++ ...    "};
 
 typedef struct s_mlx
 {
@@ -59,13 +33,11 @@ int	update(t_mlx *mlx)
 		mlx_pixel_put(mlx->mlx, mlx->win, 399 - j, j, 0xFF0000FF);
 		j++;
 	}
-	/*
 	i++;
 	if (i == 5000)
 		mlx_clear_window(mlx->mlx, mlx->win);
 	if (i > 10000)
 		mlx_loop_end(mlx->mlx);
-	*/
 	return (0);
 }
 
@@ -99,7 +71,6 @@ int	main(void)
 	int		w;
 	int		h;
 	void	*img;
-	void	*pic;
 
 	mlx.mlx = mlx_init();
 	mlx.win = mlx_new_window(mlx.mlx, 400, 400, "My window");
@@ -108,12 +79,9 @@ int	main(void)
 	mlx_put_image_to_window(mlx.mlx, mlx.win, mlx.logo, 200, 200);
 	img = create_image(&mlx);
 	mlx_put_image_to_window(mlx.mlx, mlx.win, img, 200, 20);
-	pic = mlx_xpm_to_image(mlx.mlx, exemple_xpm, &w, &h);
-	mlx_put_image_to_window(mlx.mlx, mlx.win, pic, 100, 20);
 	mlx_loop_hook(mlx.mlx, update, &mlx);
 	mlx_loop(mlx.mlx);
 	mlx_destroy_image(mlx.mlx, img);
-	mlx_destroy_image(mlx.mlx, pic);
 	mlx_destroy_image(mlx.mlx, mlx.logo);
 	mlx_destroy_window(mlx.mlx, mlx.win);
 	mlx_destroy_display(mlx.mlx);

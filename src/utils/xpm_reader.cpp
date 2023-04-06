@@ -6,13 +6,15 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 13:37:21 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/05 13:53:30 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/06 15:20:14 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <utils/xpm_reader.h>
 #include <core/errors.h>
 #include <cstdio>
+#include <sstream>
+#include <iostream>
 
 namespace mlx
 {
@@ -29,12 +31,19 @@ namespace mlx
 			return {};
 		}
 
-		uint32_t width;
-		uint32_t height;
-		uint32_t ncolors;
-		uint32_t cpp; // chars per pixels
+		int32_t width = -1;
+		int32_t height = -1;
+		int32_t ncolors = -1;
+		int32_t cpp = -1; // chars per pixels
+						  //
+		std::stringstream stream;
 
-		if(std::sscanf(data[0], "%d %d %d %d", &width, &height, &ncolors, &cpp) != 4)
+		stream.str(data[0]);
+		stream >> width;
+		stream >> height;
+		stream >> ncolors;
+		stream >> cpp;
+		if(width == -1 || height == -1 || ncolors == -1 || cpp == -1 || !stream.eof())
 		{
 			core::error::report(e_kind::error, "Xpm reader : invalid pixmap description");
 			return {};
@@ -42,5 +51,19 @@ namespace mlx
 
 		*w = width;
 		*h = height;
+
+		stream.clear();
+		std::vector<std::string> colors;
+		colors.reserve(ncolors);
+		std::cout << ncolors << std::endl;
+		for(int32_t i = 1; i < ncolors; ++i)
+		{
+			std::cout << (bool)(i < ncolors) << std::endl;
+			stream.str(data[i]);
+			std::string c;
+			stream >> c;
+			
+			std::cout << ncolors << "	" << i << "	" << c << std::endl;
+		}
 	}
 }

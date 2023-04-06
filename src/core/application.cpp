@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 22:10:52 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/05 13:42:39 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/06 15:27:21 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,27 +61,6 @@ namespace mlx::core
 		*size_line = texture->getWidth();
 		*endian = LSBFirst;
 		return map;
-	}
-
-	void* Application::newXpmTexture(char** data, int* w, int* h)
-	{
-		std::vector<uint8_t> pixels = parseXpmData(data, w, h);
-		std::shared_ptr<Texture> texture = std::make_shared<Texture>();
-		texture->create(pixels.data(), *w, *h, VK_FORMAT_R8G8B8A8_UNORM);
-		TextureID id = _texture_lib.addTextureToLibrary(texture);
-		_texture_ids.push_back(id);
-		return &_texture_ids.back();
-	}
-
-	void* Application::newXpmTexture(std::string filename, int* w, int* h)
-	{
-		/*
-		std::shared_ptr<Texture> texture = std::make_shared<Texture>();
-		texture->create(reinterpret_cast<uint8_t*>(xpm_image.data), *w, *h, VK_FORMAT_R8G8B8A8_UNORM);
-		TextureID id = _texture_lib.addTextureToLibrary(texture);
-		_texture_ids.push_back(id);
-		return &_texture_ids.back();
-		*/
 	}
 
 	void Application::destroyTexture(void* ptr)
