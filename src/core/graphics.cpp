@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 15:13:55 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/02 17:33:47 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/06 16:39:13 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ namespace mlx
 		_renderer->setWindow(_window.get());
 		_renderer->init();
 		_pixel_put_pipeline.init(w, h, *_renderer);
+		_text_put_pipeline.init(*_renderer);
 	}
 
 	void GraphicsSupport::endRender() noexcept

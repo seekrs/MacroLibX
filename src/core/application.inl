@@ -20,9 +20,9 @@ namespace mlx::core
 		*y = _in.getY();
 	}
 
-	void Application::mouseMove(void* win_ptr, int x, int y) noexcept
+	void Application::mouseMove(void* win, int x, int y) noexcept
 	{
-		SDL_WarpMouseInWindow(_graphics[*static_cast<int*>(win_ptr)]->getWindow()->getNativeWindow(), x, y);
+		SDL_WarpMouseInWindow(_graphics[*static_cast<int*>(win)]->getWindow()->getNativeWindow(), x, y);
 		SDL_PumpEvents();
 		SDL_FlushEvent(SDL_MOUSEMOTION);
 	}
@@ -51,26 +51,31 @@ namespace mlx::core
 		return static_cast<void*>(&_graphics.back()->getID());
 	}
 
-	void Application::clearGraphicsSupport(void* win_ptr)
+	void Application::clearGraphicsSupport(void* win)
 	{
-		_graphics[*static_cast<int*>(win_ptr)]->clearRenderData();
+		_graphics[*static_cast<int*>(win)]->clearRenderData();
 	}
 	
-	void Application::destroyGraphicsSupport(void* win_ptr)
+	void Application::destroyGraphicsSupport(void* win)
 	{
-		_graphics[*static_cast<int*>(win_ptr)].reset();
+		_graphics[*static_cast<int*>(win)].reset();
 	}
 
-	void Application::pixelPut(void* win_ptr, int x, int y, int color) const noexcept
+	void Application::pixelPut(void* win, int x, int y, int color) const noexcept
 	{
-		_graphics[*static_cast<int*>(win_ptr)]->pixelPut(x, y, color);
+		_graphics[*static_cast<int*>(win)]->pixelPut(x, y, color);
 	}
 
-	void Application::texturePut(void* win_ptr, void* img, int x, int y)
+	void Application::stringPut(void* win, int x, int y, int color, char* str)
+	{
+
+	}
+
+	void Application::texturePut(void* win, void* img, int x, int y)
 	{
 		TextureID id = *static_cast<TextureID*>(img);
 		std::shared_ptr<Texture> texture = _texture_lib.getTexture(id);
-		_graphics[*static_cast<int*>(win_ptr)]->texturePut(texture, x, y);
+		_graphics[*static_cast<int*>(win)]->texturePut(texture, x, y);
 	}
 
 	void Application::loopHook(int (*f)(void*), void* param)

@@ -6,16 +6,15 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 22:10:52 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/06 15:27:21 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/06 15:35:31 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "application.h"
 #include <renderer/images/texture.h>
 #include <renderer/core/render_core.h>
-#include <X11/X.h> // for LSBFirst
 #include <array>
-#include <utils/xpm_reader.h>
+#include <utils/endian.h>
 
 namespace mlx::core
 {
@@ -59,7 +58,7 @@ namespace mlx::core
 		char* map = static_cast<char*>(texture->openCPUmap());
 		*bits_per_pixel = sizeof(uint32_t) * 8;
 		*size_line = texture->getWidth();
-		*endian = LSBFirst;
+		*endian = isSystemBigEndian();
 		return map;
 	}
 

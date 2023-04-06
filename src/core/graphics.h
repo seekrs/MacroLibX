@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 14:49:49 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/03 14:23:57 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/06 16:38:50 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ namespace mlx
 
 			inline void clearRenderData() noexcept;
 			inline void pixelPut(int x, int y, int color) noexcept;
+			inline void stringPut(int x, int y, int color, std::string str);
 			inline void texturePut(std::shared_ptr<Texture> texture, int x, int y);
 			
 			void endRender() noexcept;
@@ -47,9 +48,10 @@ namespace mlx
 
 		private:
 			std::unordered_set<TextureRenderData> _textures_to_render;
+			PixelPutPipeline _pixel_put_pipeline;
+			TextPutPipeline _text_put_pipeline;
 			glm::mat4 _proj = glm::mat4(1.0);
 			std::shared_ptr<MLX_Window> _window;
-			PixelPutPipeline _pixel_put_pipeline;
 			std::unique_ptr<Renderer> _renderer;
 			int _id;
 	};
