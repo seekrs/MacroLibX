@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   texture.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maldavid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 02:24:58 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/02 22:36:52 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/07 16:39:35 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include <filesystem>
 #include <memory>
+#include <array>
 #include <functional>
 #include <renderer/images/vk_image.h>
 #include <renderer/descriptors/vk_descriptor_set.h>

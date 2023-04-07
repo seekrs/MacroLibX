@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 18:03:35 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/02 23:50:31 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/07 14:23:01 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ namespace mlx
 		if(!_cpu_map->isMapped())
 			_cpu_map->mapMem(&_cpu_map_adress);
 		if(_cpu_map_adress == nullptr)
-			core::error::report(e_kind::fatal_error, "Texture : CPU memory mappind failed");
+			core::error::report(e_kind::fatal_error, "Texture : CPU memory mapping failed");
 		return _cpu_map_adress;
 	}
 
