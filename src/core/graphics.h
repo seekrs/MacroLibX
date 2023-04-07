@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 14:49:49 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/06 16:38:50 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/06 19:01:12 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 #include <platform/window.h>
 #include <renderer/renderer.h>
 #include <renderer/pixel_put.h>
+#include <renderer/text_pipeline.h>
 #include <utils/non_copyable.h>
 #include <renderer/images/texture.h>
 
