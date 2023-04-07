@@ -5,8 +5,7 @@ A rewrite of School 42's MiniLibX using SDL2 and Vulkan. The goal of this versio
 # Installation
 
 ## Linux
-
-1. Necessary packages :
+Dependances :
 
 For Ubuntu/Debian
 ```bash
@@ -19,7 +18,12 @@ For Arch based distros
 ~ sudo pacman -S sdl2
 ```
 
-2. Get MacroLibX
+### MacOS
+Dependances :
+* [MoltenVK](https://github.com/KhronosGroup/MoltenVK/)
+* SDL2 `brew install SDL2`
+
+# Get MacroLibX
 
 ```bash
 ~ git clone https://github.com/420verfl0w/MacroLibX.git
@@ -27,7 +31,7 @@ For Arch based distros
 ~ make
 ```
 
-3. Compile your project
+# Compile your project
 
 ```bash
 clang myApp.c MacroLibX/libmlx.so -lSDL2
