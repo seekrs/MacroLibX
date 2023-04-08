@@ -29,7 +29,7 @@ namespace mlx
 	{
 		_textures_to_render.clear();
 		_pixel_put_pipeline.clear();
-		_text_put_pipeline.clear();
+		_text_put_pipeline->clear();
 	}
 
 	void GraphicsSupport::pixelPut(int x, int y, int color) noexcept
