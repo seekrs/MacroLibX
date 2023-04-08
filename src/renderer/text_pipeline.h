@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 16:24:11 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/08 00:46:36 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/08 20:44:33 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include <string>
 #include <stb_truetype.h>
 #include <cstdint>
-#include <vector>
+#include <unordered_set>
 
 namespace mlx
 {
@@ -37,21 +37,22 @@ namespace mlx
 			~TextPutPipeline() = default;
 
 		private:
-			struct DrawList
+			struct DrawData
 			{
 				std::string text;
-				float x;
-				float y;
+				int x;
+				int y;
 				int color;
 
-				DrawList(std::string _text, int _color, int _x, int _y) :
+				DrawData(std::string _text, int _color, int _x, int _y) :
 					text(std::move(_text)), color(_color), x(_x), y(_y)
 				{}
+				bool operator==(const DrawData& rhs) const { return text == rhs.text && x == rhs.x && y == rhs.y && color == rhs.color; }
 			};
 
 			stbtt_bakedchar _cdata[96];
 			TextureAtlas _atlas;
-			std::vector<DrawList> _drawlist;
+			std::unordered_set<DrawData> _drawlist;
 			Renderer* _renderer = nullptr;
 	};
 }

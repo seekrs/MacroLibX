@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 18:03:35 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/07 14:23:01 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/08 18:41:54 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ namespace mlx
 		if(pixels != nullptr)
 		{
 			Buffer staging_buffer;
-			std::size_t size = width * height * (format == VK_FORMAT_R32G32B32A32_SFLOAT ? 16 : 4);
+			std::size_t size = width * height * formatSize(format);
 			staging_buffer.create(Buffer::kind::dynamic, size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, pixels);
 			Image::copyFromBuffer(staging_buffer);
 			staging_buffer.destroy();
