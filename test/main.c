@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:55:21 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/06 15:26:57 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/08 00:21:38 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ int	main(void)
 	mlx_pixel_put(mlx.mlx, mlx.win, 200, 10, 0xFFFF00FF);
 	mlx_put_image_to_window(mlx.mlx, mlx.win, mlx.logo, 200, 200);
 	img = create_image(&mlx);
+	mlx_string_put(mlx.mlx, mlx.win, 0, 0, 0xFFFF0000, "this is a text");
 	mlx_put_image_to_window(mlx.mlx, mlx.win, img, 200, 20);
 	mlx_loop_hook(mlx.mlx, update, &mlx);
 	mlx_loop(mlx.mlx);

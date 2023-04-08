@@ -68,7 +68,7 @@ namespace mlx::core
 
 	void Application::stringPut(void* win, int x, int y, int color, char* str)
 	{
-
+		_graphics[*static_cast<int*>(win)]->stringPut(x, y, color, str);
 	}
 
 	void Application::texturePut(void* win, void* img, int x, int y)
