@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 14:49:49 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/06 19:01:12 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/08 01:14:22 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ namespace mlx
 		private:
 			std::unordered_set<TextureRenderData> _textures_to_render;
 			PixelPutPipeline _pixel_put_pipeline;
-			TextPutPipeline _text_put_pipeline;
 			glm::mat4 _proj = glm::mat4(1.0);
 			std::shared_ptr<MLX_Window> _window;
+			std::unique_ptr<TextPutPipeline> _text_put_pipeline; // unique_ptr because of the size of the class
 			std::unique_ptr<Renderer> _renderer;
 			int _id;
 	};

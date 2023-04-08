@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 16:40:09 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/07 17:07:46 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/08 00:29:39 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 namespace mlx
 {
-	void TextureAtlas::create(uint8_t* pixels, uint32_t width, uint32_t height, VkFormat format, uint32_t render_width, uint32_t rendre_height)
+	void TextureAtlas::create(uint8_t* pixels, uint32_t width, uint32_t height, VkFormat format)
 	{
 		Image::create(width, height, format,
 			VK_IMAGE_TILING_OPTIMAL,
@@ -25,16 +25,23 @@ namespace mlx
 		Image::createImageView(VK_IMAGE_VIEW_TYPE_2D, VK_IMAGE_ASPECT_COLOR_BIT);
 		Image::createSampler();
 
+		_color = 0xFFFFFFFF;
+
+		float red = (_color & 0x00FF0000) / 255;
+		float green = (_color & 0x0000FF00) / 255;
+		float blue = (_color & 0x000000FF) / 255;
+
 		std::vector<Vertex> vertexData = {
-			{{0, 0},						{1.f, 1.f, 1.f, 1.f},	{0.0f, 0.0f}},
-			{{render_width, 0},				{1.f, 1.f, 1.f, 1.f},	{1.0f, 0.0f}},
-			{{render_width, render_height},	{1.f, 1.f, 1.f, 1.f},	{1.0f, 1.0f}},
-			{{0, render_height},			{1.f, 1.f, 1.f, 1.f},	{0.0f, 1.0f}}
+			{{0, 0},	{red, green, blue, 1.f},	{0.0f, 0.0f}},
+			{{20, 0},	{red, green, blue, 1.f},	{1.0f, 0.0f}},
+			{{20, 20},	{red, green, blue, 1.f},	{1.0f, 1.0f}},
+			{{0, 20},	{red, green, blue, 1.f},	{0.0f, 1.0f}}
 		};
 
 		std::vector<uint16_t> indexData = { 0, 1, 2, 2, 3, 0 };
 
-		_vbo.create(sizeof(Vertex) * vertexData.size(), vertexData.data());
+		_vbo.create(sizeof(Vertex) * vertexData.size());
+		_vbo.setData(sizeof(Vertex) * vertexData.size(), vertexData.data());
 		_ibo.create(sizeof(uint16_t) * indexData.size(), indexData.data());
 
 		if(pixels != nullptr)
@@ -47,15 +54,19 @@ namespace mlx
 		}
 	}
 
-	void TextureAtlas::render(Renderer& renderer, int x, int y, std::array<glm::vec2, 4> uv)
+	void TextureAtlas::render(Renderer& renderer, int x, int y, std::array<glm::vec2, 4> pos, std::array<glm::vec2, 4> uv)
 	{
 		auto cmd = renderer.getActiveCmdBuffer().get();
 
+		float red = (_color & 0x00FF0000) / 255;
+		float green = (_color & 0x0000FF00) / 255;
+		float blue = (_color & 0x000000FF) / 255;
+
 		std::vector<Vertex> vertexData = {
-			{{0, 0},						{1.f, 1.f, 1.f, 1.f}, uv[0]},
-			{{render_width, 0},				{1.f, 1.f, 1.f, 1.f}, uv[1]},
-			{{render_width, render_height},	{1.f, 1.f, 1.f, 1.f}, uv[2]},
-			{{0, render_height},			{1.f, 1.f, 1.f, 1.f}, uv[3]}
+			{pos[0], {red, green, blue, 1.f}, uv[0]},
+			{pos[1], {red, green, blue, 1.f}, uv[1]},
+			{pos[2], {red, green, blue, 1.f}, uv[2]},
+			{pos[3], {red, green, blue, 1.f}, uv[3]}
 		};
 		_vbo.setData(sizeof(Vertex) * vertexData.size(), vertexData.data());
 

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 15:13:55 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/06 16:39:13 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/08 00:19:18 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@ namespace mlx
 {
 	GraphicsSupport::GraphicsSupport(std::size_t w, std::size_t h, std::string title, int id) :
 		_window(std::make_shared<MLX_Window>(w, h, std::move(title))),
-		_renderer(std::make_unique<Renderer>()),
+		_renderer(std::make_unique<Renderer>()), _text_put_pipeline(std::make_unique<TextPutPipeline>()),
 		_id(id)
 	{
 		_renderer->setWindow(_window.get());
 		_renderer->init();
 		_pixel_put_pipeline.init(w, h, *_renderer);
-		_text_put_pipeline.init(*_renderer);
+		_text_put_pipeline->init(_renderer.get());
 	}
 
 	void GraphicsSupport::endRender() noexcept
@@ -49,6 +49,11 @@ namespace mlx
 		sets.push_back(_pixel_put_pipeline.getDescriptorSet());
 		vkCmdBindDescriptorSets(cmd_buff, VK_PIPELINE_BIND_POINT_GRAPHICS, _renderer->getPipeline().getPipelineLayout(), 0, sets.size(), sets.data(), 0, nullptr);
 		_pixel_put_pipeline.render(*_renderer);
+		sets.pop_back();
+
+		sets.push_back(_text_put_pipeline->getDescriptorSet());
+		vkCmdBindDescriptorSets(cmd_buff, VK_PIPELINE_BIND_POINT_GRAPHICS, _renderer->getPipeline().getPipelineLayout(), 0, sets.size(), sets.data(), 0, nullptr);
+		_text_put_pipeline->render();
 		
 		_renderer->endFrame();
 
@@ -60,6 +65,7 @@ namespace mlx
 	{
         vkDeviceWaitIdle(Render_Core::get().getDevice().get());
 		_pixel_put_pipeline.destroy();
+		_text_put_pipeline->destroy();
 		_renderer->destroy();
 	}
 }
