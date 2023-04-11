@@ -6,14 +6,14 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 16:41:13 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/11 12:49:59 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/11 19:16:08 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <renderer/text_pipeline.h>
 #include <fstream>
 
-#include <utils/opensans-regular.h>
+#include <utils/dogica_ttf.h>
 #include <cstdio>
 
 #define STB_TRUETYPE_IMPLEMENTATION
@@ -43,10 +43,10 @@ namespace mlx
 
 			std::size_t index = vertexData.size();
 
-			vertexData.emplace_back(glm::vec2{q.x0, q.y0}, glm::vec4{color & 0x00FF0000, color & 0x0000FF00, color & 0x000000FF, 0xFF}, glm::vec2{q.s0, q.t0});
-			vertexData.emplace_back(glm::vec2{q.x1, q.y0}, glm::vec4{color & 0x00FF0000, color & 0x0000FF00, color & 0x000000FF, 0xFF}, glm::vec2{q.s1, q.t0});
-			vertexData.emplace_back(glm::vec2{q.x1, q.y1}, glm::vec4{color & 0x00FF0000, color & 0x0000FF00, color & 0x000000FF, 0xFF}, glm::vec2{q.s1, q.t1});
-			vertexData.emplace_back(glm::vec2{q.x0, q.y1}, glm::vec4{color & 0x00FF0000, color & 0x0000FF00, color & 0x000000FF, 0xFF}, glm::vec2{q.s0, q.t1});
+			vertexData.emplace_back(glm::vec2{q.x0, q.y0}, glm::vec4{color & 0x00FF0000, color & 0x0000FF00, color & 0x000000FF, 0xFFFFFFFF}, glm::vec2{q.s0, q.t0});
+			vertexData.emplace_back(glm::vec2{q.x1, q.y0}, glm::vec4{color & 0x00FF0000, color & 0x0000FF00, color & 0x000000FF, 0xFFFFFFFF}, glm::vec2{q.s1, q.t0});
+			vertexData.emplace_back(glm::vec2{q.x1, q.y1}, glm::vec4{color & 0x00FF0000, color & 0x0000FF00, color & 0x000000FF, 0xFFFFFFFF}, glm::vec2{q.s1, q.t1});
+			vertexData.emplace_back(glm::vec2{q.x0, q.y1}, glm::vec4{color & 0x00FF0000, color & 0x0000FF00, color & 0x000000FF, 0xFFFFFFFF}, glm::vec2{q.s0, q.t1});
 
 			indexData.emplace_back(index + 0);
 			indexData.emplace_back(index + 1);
@@ -64,7 +64,7 @@ namespace mlx
 	void TextPutPipeline::init(Renderer* renderer) noexcept
 	{
 		_renderer = renderer;
-		stbtt_BakeFontBitmap(opensans_regular_ttf, 0, 18.0f, tmp_bitmap, 512, 512, 32, 96, _cdata.data());
+		stbtt_BakeFontBitmap(dogica_ttf, 0, 6.0f, tmp_bitmap, 512, 512, 32, 96, _cdata.data());
 		_atlas.create(tmp_bitmap, 512, 512, VK_FORMAT_R8_UNORM);
 		_atlas.setDescriptor(renderer->getFragDescriptorSet().duplicate());
 	}
