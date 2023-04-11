@@ -27,6 +27,21 @@ namespace mlx::core
 		SDL_FlushEvent(SDL_MOUSEMOTION);
 	}
 
+	void Application::mouseHook(int (*funct_ptr)(const char*, void*), void* param) noexcept
+	{
+		_in.mouseHook(funct_ptr, param);
+	}
+
+	void Application::keyHook(int (*funct_ptr)(const char*, void*), void* param) noexcept
+	{
+		_in.keyHook(funct_ptr, param);
+	}
+
+	void Application::exposeHook(int (*funct_ptr)(const char*, void*), void* param) noexcept
+	{
+		_in.exposeHook(funct_ptr, param);
+	}
+
 	constexpr void Application::enableAutoRepeat() noexcept
 	{
 		_in.enableAutoRepeat();

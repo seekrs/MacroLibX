@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:49:46 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/11 18:37:05 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/11 21:43:13 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,10 @@ namespace mlx::core
 
 			inline void getMousePos(int* x, int* y) noexcept;
 			inline void mouseMove(void* win, int x, int y) noexcept;
+
+			inline void mouseHook(int (*funct_ptr)(const char*, void*), void* param) noexcept;
+			inline void keyHook(int (*funct_ptr)(const char*, void*), void* param) noexcept;
+			inline void exposeHook(int (*funct_ptr)(const char*, void*), void* param) noexcept;
 
 			inline constexpr void enableAutoRepeat() noexcept;
 			inline constexpr void disableAutoRepeat() noexcept;
