@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:14:45 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/03 14:23:46 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/11 12:33:33 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ namespace mlx
 		glm::vec2 pos;
 		glm::vec4 color;
 		glm::vec2 uv;
+
+		Vertex(glm::vec2 _pos, glm::vec4 _color, glm::vec2 _uv) : pos(std::move(_pos)), color(std::move(_color)), uv(std::move(_uv)) {}
 
 		static VkVertexInputBindingDescription getBindingDescription()
 		{

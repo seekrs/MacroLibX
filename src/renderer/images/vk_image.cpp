@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:59:07 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/08 18:41:15 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/11 13:20:26 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ namespace mlx
 		info.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
 		info.magFilter = VK_FILTER_LINEAR;
 		info.minFilter = VK_FILTER_LINEAR;
-		info.mipmapMode = VK_SAMPLER_MIPMAP_MODE_LINEAR;
+		info.mipmapMode = VK_SAMPLER_MIPMAP_MODE_NEAREST;
 		info.addressModeU = VK_SAMPLER_ADDRESS_MODE_REPEAT;
 		info.addressModeV = VK_SAMPLER_ADDRESS_MODE_REPEAT;
 		info.addressModeW = VK_SAMPLER_ADDRESS_MODE_REPEAT;
