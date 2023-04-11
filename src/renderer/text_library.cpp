@@ -6,13 +6,14 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 11:59:57 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/11 12:28:42 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/11 18:30:09 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <renderer/text_library.h>
 #include <core/errors.h>
 #include <renderer/renderer.h>
+#include <algorithm>
 
 namespace mlx
 {
@@ -43,6 +44,12 @@ namespace mlx
 
 	TextID TextLibrary::addTextToLibrary(std::shared_ptr<TextData> text)
 	{
+		auto it = std::find_if(_cache.begin(), _cache.end(), [=](const std::pair<TextID, std::shared_ptr<TextData>>& v)
+		{
+			return v.second == text;
+		});
+		if(it != _cache.end())
+			return it->first;
 		_cache[_current_id] = text;
 		_current_id++;
 		return _current_id - 1;

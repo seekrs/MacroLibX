@@ -6,11 +6,12 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:24:00 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/01 15:32:35 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/11 18:30:30 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <core/errors.h>
+#include <algorithm>
 #include <renderer/texture_library.h>
 
 namespace mlx
@@ -24,6 +25,12 @@ namespace mlx
 
 	TextureID TextureLibrary::addTextureToLibrary(std::shared_ptr<Texture> texture)
 	{
+		auto it = std::find_if(_cache.begin(), _cache.end(), [=](const std::pair<TextureID, std::shared_ptr<Texture>>& v)
+		{
+			return v.second == texture;
+		});
+		if(it != _cache.end())
+			return it->first;
 		_cache[_current_id] = texture;
 		_current_id++;
 		return _current_id - 1;
