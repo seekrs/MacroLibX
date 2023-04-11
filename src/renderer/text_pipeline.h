@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 16:24:11 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/08 20:44:33 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/11 12:24:59 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,33 @@
 #include <stb_truetype.h>
 #include <cstdint>
 #include <unordered_set>
+#include <renderer/text_library.h>
+
+namespace mlx
+{
+	struct TextDrawData
+	{
+		TextID id;
+		int x;
+		int y;
+		int color;
+
+		TextDrawData(std::string text, int _color, int _x, int _y, TextLibrary& library, std::array<stbtt_bakedchar, 96>& cdata);
+		bool operator==(const TextDrawData& rhs) const { return id == rhs.id && x == rhs.x && y == rhs.y && color == rhs.color; }
+	};
+}
+
+namespace std
+{
+	template <>
+	struct hash<mlx::TextDrawData>
+	{
+		size_t operator()(const mlx::TextDrawData& d) const noexcept
+		{
+			return std::hash<mlx::TextID>()(d.id) + std::hash<int>()(d.x) + std::hash<int>()(d.y) + std::hash<int>()(d.color);
+		}
+	};
+}
 
 namespace mlx
 {
@@ -37,22 +64,10 @@ namespace mlx
 			~TextPutPipeline() = default;
 
 		private:
-			struct DrawData
-			{
-				std::string text;
-				int x;
-				int y;
-				int color;
-
-				DrawData(std::string _text, int _color, int _x, int _y) :
-					text(std::move(_text)), color(_color), x(_x), y(_y)
-				{}
-				bool operator==(const DrawData& rhs) const { return text == rhs.text && x == rhs.x && y == rhs.y && color == rhs.color; }
-			};
-
-			stbtt_bakedchar _cdata[96];
+			std::array<stbtt_bakedchar, 96> _cdata;
 			TextureAtlas _atlas;
-			std::unordered_set<DrawData> _drawlist;
+			TextLibrary _library;
+			std::unordered_set<TextDrawData> _drawlist;
 			Renderer* _renderer = nullptr;
 	};
 }
