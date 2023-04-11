@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:55:21 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/11 19:15:35 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/11 23:33:03 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ int	update(t_mlx *mlx)
 	i++;
 	if (i == 5000)
 		mlx_clear_window(mlx->mlx, mlx->win);
-	if (i > 10000)
-		mlx_loop_end(mlx->mlx);
+	//if (i > 10000)
+	//	mlx_loop_end(mlx->mlx);
 	return (0);
 }
 
@@ -65,6 +65,13 @@ void	*create_image(t_mlx *mlx)
 	return (img);
 }
 
+int	key_hook(const char *key, void *param)
+{
+	(void)param;
+	puts(key);
+	return (0);
+}
+
 int	main(void)
 {
 	t_mlx	mlx;
@@ -74,12 +81,13 @@ int	main(void)
 
 	mlx.mlx = mlx_init();
 	mlx.win = mlx_new_window(mlx.mlx, 400, 400, "My window");
+	mlx_key_hook(mlx.mlx, key_hook, NULL);
 	mlx.logo = mlx_png_file_to_image(mlx.mlx, "42_logo.png", &w, &h);
 	mlx_pixel_put(mlx.mlx, mlx.win, 200, 10, 0xFFFF00FF);
 	mlx_put_image_to_window(mlx.mlx, mlx.win, mlx.logo, 200, 200);
 	img = create_image(&mlx);
-	mlx_string_put(mlx.mlx, mlx.win, 20, 20, 0xFF0000FF, "this is a text");
-	mlx_string_put(mlx.mlx, mlx.win, 20, 50, 0xFFFFFFFF, "this is another text");
+	mlx_string_put(mlx.mlx, mlx.win, 20, 20, 0xFFFF2000, "this is a text");
+	mlx_string_put(mlx.mlx, mlx.win, 20, 50, 0xFFFFFFFF, "that's another text");
 	mlx_put_image_to_window(mlx.mlx, mlx.win, img, 200, 20);
 	mlx_loop_hook(mlx.mlx, update, &mlx);
 	mlx_loop(mlx.mlx);

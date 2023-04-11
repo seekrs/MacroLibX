@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 16:41:13 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/11 19:16:08 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/11 23:27:45 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@
 
 namespace mlx
 {
-	uint8_t tmp_bitmap[512 * 512];
-
 	TextDrawData::TextDrawData(std::string text, int _color, int _x, int _y, TextLibrary& library, std::array<stbtt_bakedchar, 96>& cdata) : x(_x), y(_y), color(_color)
 	{
 		std::vector<Vertex> vertexData;
@@ -64,8 +62,17 @@ namespace mlx
 	void TextPutPipeline::init(Renderer* renderer) noexcept
 	{
 		_renderer = renderer;
+		uint8_t tmp_bitmap[512 * 512];
+		uint8_t vulkan_bitmap[(512 * 512) * 4];
 		stbtt_BakeFontBitmap(dogica_ttf, 0, 6.0f, tmp_bitmap, 512, 512, 32, 96, _cdata.data());
-		_atlas.create(tmp_bitmap, 512, 512, VK_FORMAT_R8_UNORM);
+		for(int i = 0, j = 0; i < 512 * 512; i++, j += 4)
+		{
+			vulkan_bitmap[j + 0] = tmp_bitmap[i];
+			vulkan_bitmap[j + 1] = tmp_bitmap[i];
+			vulkan_bitmap[j + 2] = tmp_bitmap[i];
+			vulkan_bitmap[j + 3] = tmp_bitmap[i];
+		}
+		_atlas.create(vulkan_bitmap, 512, 512, VK_FORMAT_R8G8B8A8_UNORM);
 		_atlas.setDescriptor(renderer->getFragDescriptorSet().duplicate());
 	}
 

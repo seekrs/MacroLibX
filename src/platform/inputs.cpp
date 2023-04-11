@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:30:19 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/03 12:40:10 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/11 21:32:43 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,33 @@ namespace mlx
 
 			switch(_event.type) 
 			{
-				case SDL_KEYDOWN:			_keys[_event.key.keysym.scancode] = static_cast<uint8_t>(action::down); break;
-				case SDL_KEYUP:				_keys[_event.key.keysym.scancode] = static_cast<uint8_t>(action::up); break;
-				case SDL_MOUSEBUTTONDOWN:	_mouse[_event.button.button] = static_cast<uint8_t>(action::down); break;
-				case SDL_MOUSEBUTTONUP:		_mouse[_event.button.button] = static_cast<uint8_t>(action::up); break;
+				case SDL_KEYDOWN:
+				{
+					_keys[_event.key.keysym.scancode] = static_cast<uint8_t>(action::down);
+					break;
+				}
+
+				case SDL_KEYUP:
+				{
+					_keys[_event.key.keysym.scancode] = static_cast<uint8_t>(action::up);
+					if(_key_hook.hook)
+						_key_hook.hook(SDL_GetScancodeName(_event.key.keysym.scancode), _key_hook.param);
+					break;
+				}
+
+				case SDL_MOUSEBUTTONDOWN:
+				{
+					_mouse[_event.button.button] = static_cast<uint8_t>(action::down);
+					break;
+				}
+
+				case SDL_MOUSEBUTTONUP:
+				{
+					_mouse[_event.button.button] = static_cast<uint8_t>(action::up);
+					if(_mouse_hook.hook)
+						_mouse_hook.hook(std::string("mouse").c_str(), _mouse_hook.param);
+					break;
+				}
 
 				default: break;
 			}
