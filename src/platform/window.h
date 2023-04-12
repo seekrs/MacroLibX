@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:53:12 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/02 15:39:53 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/12 19:06:24 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@ namespace mlx
 			inline SDL_Window* getNativeWindow() const noexcept { return _win; }
 			inline int getWidth() const noexcept { return _width; }
 			inline int getHeight() const noexcept { return _height; }
+			inline uint32_t getID() const noexcept { return _id; }
+
+			void destroy() noexcept;
 
 			~MLX_Window();
 
@@ -33,6 +36,7 @@ namespace mlx
 			SDL_Window* _win = nullptr;
 			int _width = 0;
 			int _height = 0;
+			uint32_t _id = -1;
 	};
 }
 

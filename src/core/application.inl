@@ -27,9 +27,9 @@ namespace mlx::core
 		SDL_FlushEvent(SDL_MOUSEMOTION);
 	}
 
-	void Application::onEvent(int event, int (*funct_ptr)(int, void*), void* param) noexcept
+	void Application::onEvent(void* win, int event, int (*funct_ptr)(int, void*), void* param) noexcept
 	{
-		_in->onEvent(event, funct_ptr, param);
+		_in->onEvent(_graphics[*static_cast<int*>(win)]->getWindow()->getID(), event, funct_ptr, param);
 	}
 
 	constexpr void Application::enableAutoRepeat() noexcept
@@ -53,6 +53,7 @@ namespace mlx::core
 	void* Application::newGraphicsSuport(std::size_t w, std::size_t h, std::string title)
 	{
 		_graphics.emplace_back(std::make_unique<GraphicsSupport>(w, h, std::move(title), _graphics.size()));
+		_in->addWindow(_graphics.back()->getWindow());
 		return static_cast<void*>(&_graphics.back()->getID());
 	}
 

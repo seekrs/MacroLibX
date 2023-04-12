@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:27:35 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/12 13:47:02 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/12 20:02:44 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <cstdint>
 #include <functional>
 #include <SDL2/SDL.h>
+#include <unordered_map>
 
 #include "window.h"
 
@@ -53,21 +54,26 @@ namespace mlx
 			inline constexpr void enableAutoRepeat() noexcept { _auto_repeat = true; }
 			inline constexpr void disableAutoRepeat() noexcept { _auto_repeat = false; }
 
-			inline void onEvent(int event, int (*funct_ptr)(int, void*), void* param) noexcept
+			inline void addWindow(std::shared_ptr<MLX_Window> window)
 			{
-				_events_hooks[event].hook = funct_ptr;
-				_events_hooks[event].param = param;
+				_windows[window->getID()] = window;
+				_events_hooks[window->getID()] = {};
+			}
+
+			inline void onEvent(uint32_t id, int event, int (*funct_ptr)(int, void*), void* param) noexcept
+			{
+				_events_hooks[id][event].hook = funct_ptr;
+				_events_hooks[id][event].param = param;
 			}
 
 			~Input() = default;
 
 		private:
 			std::array<uint8_t, SDL_NUM_SCANCODES> _keys;
+			std::unordered_map<uint32_t, std::shared_ptr<MLX_Window>> _windows;
+			std::unordered_map<uint32_t, std::array<Hook, 5>> _events_hooks;
 			SDL_Event _event;
 			std::array<uint8_t, 8> _mouse;
-			std::vector<class* MLX_Window> _window;
-
-			std::array<Hook, 5> _events_hooks;
 
 			int _x = 0;
 			int _y = 0;
