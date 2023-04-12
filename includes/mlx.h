@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:56:35 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/11 20:31:38 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/12 11:12:00 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,15 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+typedef enum
+{
+	MLX_KEYDOWN = 0,
+	MLX_KEYUP = 1,
+	MLX_MOUSEDOWN = 2,
+	MLX_MOUSEUP = 3,
+	MLX_WINDOW_EVENT = 4
+} mlx_event_type;
 
 void* mlx_init();
 void* mlx_new_window(void* mlx, int w, int h, const char* title);
@@ -29,9 +38,7 @@ int mlx_mouse_hide();
 int mlx_mouse_move(void* mlx, void* win, int x, int y);
 int mlx_mouse_get_pos(void* mlx, int* x, int* y);
 
-int mlx_mouse_hook(void* mlx, int (*funct_ptr)(), void* param);
-int mlx_key_hook(void* mlx, int (*funct_ptr)(), void* param);
-int mlx_expose_hook(void* mlx, int (*funct_ptr)(), void* param);
+int mlx_on_event(void* mlx, mlx_event_type event, int (*f)(), void* param);
 
 int mlx_do_key_autorepeaton(void* mlx);
 int mlx_do_key_autorepeatoff(void* mlx);

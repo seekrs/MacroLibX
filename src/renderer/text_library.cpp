@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 11:59:57 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/11 18:30:09 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/12 13:24:19 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,13 @@
 #include <core/errors.h>
 #include <renderer/renderer.h>
 #include <algorithm>
+#include <iostream>
 
 namespace mlx
 {
-	void TextData::init(std::vector<Vertex> vbo_data, std::vector<uint16_t> ibo_data)
+	void TextData::init(std::string text, std::vector<Vertex> vbo_data, std::vector<uint16_t> ibo_data)
 	{
+		_text = std::move(text);
 		_vbo.create(sizeof(Vertex) * vbo_data.size(), vbo_data.data());
 		_ibo.create(sizeof(uint16_t) * ibo_data.size(), ibo_data.data());
 	}
@@ -46,7 +48,7 @@ namespace mlx
 	{
 		auto it = std::find_if(_cache.begin(), _cache.end(), [=](const std::pair<TextID, std::shared_ptr<TextData>>& v)
 		{
-			return v.second == text;
+			return v.second->getText() == text->getText();
 		});
 		if(it != _cache.end())
 			return it->first;

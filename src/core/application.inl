@@ -16,8 +16,8 @@ namespace mlx::core
 {
 	void Application::getMousePos(int* x, int* y) noexcept
 	{
-		*x = _in.getX();
-		*y = _in.getY();
+		*x = _in->getX();
+		*y = _in->getY();
 	}
 
 	void Application::mouseMove(void* win, int x, int y) noexcept
@@ -27,29 +27,19 @@ namespace mlx::core
 		SDL_FlushEvent(SDL_MOUSEMOTION);
 	}
 
-	void Application::mouseHook(int (*funct_ptr)(const char*, void*), void* param) noexcept
+	void Application::onEvent(int event, int (*funct_ptr)(int, void*), void* param) noexcept
 	{
-		_in.mouseHook(funct_ptr, param);
-	}
-
-	void Application::keyHook(int (*funct_ptr)(const char*, void*), void* param) noexcept
-	{
-		_in.keyHook(funct_ptr, param);
-	}
-
-	void Application::exposeHook(int (*funct_ptr)(const char*, void*), void* param) noexcept
-	{
-		_in.exposeHook(funct_ptr, param);
+		_in->onEvent(event, funct_ptr, param);
 	}
 
 	constexpr void Application::enableAutoRepeat() noexcept
 	{
-		_in.enableAutoRepeat();
+		_in->enableAutoRepeat();
 	}
 
 	constexpr void Application::disableAutoRepeat() noexcept
 	{
-		_in.disableAutoRepeat();
+		_in->disableAutoRepeat();
 	}
 
 	void Application::getScreenSize(int* w, int* h) noexcept
@@ -101,6 +91,6 @@ namespace mlx::core
 	
 	void Application::loopEnd() noexcept
 	{
-		_in.finish();
+		_in->finish();
 	}
 }

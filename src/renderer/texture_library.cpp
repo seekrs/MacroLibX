@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:24:00 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/11 18:30:30 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/12 13:26:59 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ namespace mlx
 	{
 		auto it = std::find_if(_cache.begin(), _cache.end(), [=](const std::pair<TextureID, std::shared_ptr<Texture>>& v)
 		{
-			return v.second == texture;
+			return v.second.get() == texture.get();
 		});
 		if(it != _cache.end())
 			return it->first;

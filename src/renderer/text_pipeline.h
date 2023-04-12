@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 16:24:11 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/11 18:36:53 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/12 13:25:33 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,11 @@ namespace mlx
 		int x;
 		int y;
 		int color;
+		std::string text;
 
-		TextDrawData(std::string text, int _color, int _x, int _y, TextLibrary& library, std::array<stbtt_bakedchar, 96>& cdata);
-		bool operator==(const TextDrawData& rhs) const { return id == rhs.id && x == rhs.x && y == rhs.y && color == rhs.color; }
+		TextDrawData(std::string text, int _color, int _x, int _y);
+		void init(TextLibrary& library, std::array<stbtt_bakedchar, 96>& cdata) noexcept;
+		bool operator==(const TextDrawData& rhs) const { return text == rhs.text && x == rhs.x && y == rhs.y && color == rhs.color; }
 	};
 }
 
@@ -40,9 +42,9 @@ namespace std
 	template <>
 	struct hash<mlx::TextDrawData>
 	{
-		size_t operator()(const mlx::TextDrawData& d) const noexcept
+		std::size_t operator()(const mlx::TextDrawData& d) const noexcept
 		{
-			return std::hash<mlx::TextID>()(d.id) + std::hash<int>()(d.x) + std::hash<int>()(d.y) + std::hash<int>()(d.color);
+			return std::hash<std::string>()(d.text) + std::hash<int>()(d.x) + std::hash<int>()(d.y) + std::hash<int>()(d.color);
 		}
 	};
 }

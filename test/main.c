@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:55:21 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/11 23:33:03 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/12 13:44:38 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	update(t_mlx *mlx)
 	int			j;
 
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->logo, 100, 100);
+	mlx_string_put(mlx->mlx, mlx->win, 20, 50, 0xFFFFFFFF, "that's a text");
 	j = 0;
 	while (j < 400)
 	{
@@ -36,8 +37,6 @@ int	update(t_mlx *mlx)
 	i++;
 	if (i == 5000)
 		mlx_clear_window(mlx->mlx, mlx->win);
-	//if (i > 10000)
-	//	mlx_loop_end(mlx->mlx);
 	return (0);
 }
 
@@ -65,10 +64,17 @@ void	*create_image(t_mlx *mlx)
 	return (img);
 }
 
-int	key_hook(const char *key, void *param)
+int	key_hook(int key, t_mlx *param)
+{
+	if (key == 41)
+		mlx_loop_end(param->mlx);
+	return (0);
+}
+
+int	window_hook(int event, t_mlx *param)
 {
 	(void)param;
-	puts(key);
+	printf("%d\n", event);
 	return (0);
 }
 
@@ -81,13 +87,13 @@ int	main(void)
 
 	mlx.mlx = mlx_init();
 	mlx.win = mlx_new_window(mlx.mlx, 400, 400, "My window");
-	mlx_key_hook(mlx.mlx, key_hook, NULL);
+	mlx_on_event(mlx.mlx, MLX_KEYDOWN, key_hook, &mlx);
 	mlx.logo = mlx_png_file_to_image(mlx.mlx, "42_logo.png", &w, &h);
 	mlx_pixel_put(mlx.mlx, mlx.win, 200, 10, 0xFFFF00FF);
 	mlx_put_image_to_window(mlx.mlx, mlx.win, mlx.logo, 200, 200);
 	img = create_image(&mlx);
-	mlx_string_put(mlx.mlx, mlx.win, 20, 20, 0xFFFF2000, "this is a text");
-	mlx_string_put(mlx.mlx, mlx.win, 20, 50, 0xFFFFFFFF, "that's another text");
+	mlx_string_put(mlx.mlx, mlx.win, 20, 20, 0xFFFF2000, \
+			"that text will disappear");
 	mlx_put_image_to_window(mlx.mlx, mlx.win, img, 200, 20);
 	mlx_loop_hook(mlx.mlx, update, &mlx);
 	mlx_loop(mlx.mlx);

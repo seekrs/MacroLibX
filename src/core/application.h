@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:49:46 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/11 21:43:13 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/12 11:14:24 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,12 @@ namespace mlx::core
 	class Application
 	{
 		public:
-			Application() : _in() {}
+			Application() : _in(std::make_unique<Input>()) {}
 
 			inline void getMousePos(int* x, int* y) noexcept;
 			inline void mouseMove(void* win, int x, int y) noexcept;
 
-			inline void mouseHook(int (*funct_ptr)(const char*, void*), void* param) noexcept;
-			inline void keyHook(int (*funct_ptr)(const char*, void*), void* param) noexcept;
-			inline void exposeHook(int (*funct_ptr)(const char*, void*), void* param) noexcept;
+			inline void onEvent(int event, int (*funct_ptr)(int, void*), void* param) noexcept;
 
 			inline constexpr void enableAutoRepeat() noexcept;
 			inline constexpr void disableAutoRepeat() noexcept;
@@ -67,11 +65,11 @@ namespace mlx::core
 			~Application() = default;
 
 		private:
-			Input _in;
 			TextureLibrary _texture_lib;
 			std::list<TextureID> _texture_ids;
 			std::vector<std::unique_ptr<GraphicsSupport>> _graphics;
 			std::function<int(void*)> _loop_hook;
+			std::unique_ptr<Input> _in;
 			void* _param = nullptr;
 			bool _is_loop_running = false;
 	};
