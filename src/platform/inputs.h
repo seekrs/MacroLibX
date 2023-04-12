@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:27:35 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/11 21:41:33 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/12 13:47:02 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ namespace mlx
 
 	struct Hook
 	{
-		std::function<int(const char*, void*)> hook;
+		std::function<int(int, void*)> hook;
 		void* param = nullptr;
 	};
 
@@ -53,9 +53,11 @@ namespace mlx
 			inline constexpr void enableAutoRepeat() noexcept { _auto_repeat = true; }
 			inline constexpr void disableAutoRepeat() noexcept { _auto_repeat = false; }
 
-			inline void mouseHook(int (*funct_ptr)(const char*, void*), void* param) noexcept { _mouse_hook.hook = funct_ptr; _mouse_hook.param = param; }
-			inline void keyHook(int (*funct_ptr)(const char*, void*), void* param) noexcept { _key_hook.hook = funct_ptr; _key_hook.param = param; }
-			inline void exposeHook(int (*funct_ptr)(const char*, void*), void* param) noexcept { _expose_hook.hook = funct_ptr; _expose_hook.param = param; }
+			inline void onEvent(int event, int (*funct_ptr)(int, void*), void* param) noexcept
+			{
+				_events_hooks[event].hook = funct_ptr;
+				_events_hooks[event].param = param;
+			}
 
 			~Input() = default;
 
@@ -63,10 +65,9 @@ namespace mlx
 			std::array<uint8_t, SDL_NUM_SCANCODES> _keys;
 			SDL_Event _event;
 			std::array<uint8_t, 8> _mouse;
+			std::vector<class* MLX_Window> _window;
 
-			Hook _mouse_hook;
-			Hook _key_hook;
-			Hook _expose_hook;
+			std::array<Hook, 5> _events_hooks;
 
 			int _x = 0;
 			int _y = 0;

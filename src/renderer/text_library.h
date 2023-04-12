@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 11:52:30 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/11 12:28:08 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/12 11:38:57 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,10 @@ namespace mlx
 		public:
 			TextData() = default;
 
-			void init(std::vector<Vertex> vbo_data, std::vector<uint16_t> ibo_data);
+			void init(std::string text, std::vector<Vertex> vbo_data, std::vector<uint16_t> ibo_data);
 			void bind(class Renderer& renderer) noexcept;
 			inline uint32_t getIBOsize() noexcept { return _ibo.getSize(); }
+			inline const std::string& getText() const { return _text; }
 			void destroy() noexcept;
 
 			~TextData() = default;
@@ -41,7 +42,7 @@ namespace mlx
 		private:
 			C_VBO _vbo;
 			C_IBO _ibo;
-
+			std::string _text;
 	};
 
 	class TextLibrary

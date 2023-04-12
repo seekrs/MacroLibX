@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:35:20 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/11 21:42:56 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/12 11:16:52 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,21 +69,9 @@ extern "C"
 		return 0;
 	}
 
-	int mlx_mouse_hook(void* mlx, int (*funct_ptr)(const char*, void*), void* param)
+	int mlx_on_event(void* mlx, int event, int (*funct_ptr)(int, void*), void* param)
 	{
-		static_cast<mlx::core::Application*>(mlx)->mouseHook(funct_ptr, param);
-		return 0;
-	}
-
-	int mlx_key_hook(void* mlx, int (*funct_ptr)(const char*, void*), void* param)
-	{
-		static_cast<mlx::core::Application*>(mlx)->keyHook(funct_ptr, param);
-		return 0;
-	}
-
-	int mlx_expose_hook(void* mlx, int (*funct_ptr)(const char*, void*), void* param)
-	{
-		static_cast<mlx::core::Application*>(mlx)->exposeHook(funct_ptr, param);
+		static_cast<mlx::core::Application*>(mlx)->onEvent(event, funct_ptr, param);
 		return 0;
 	}
 

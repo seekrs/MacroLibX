@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 16:41:13 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/11 23:27:45 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/12 13:21:42 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,12 @@
 
 namespace mlx
 {
-	TextDrawData::TextDrawData(std::string text, int _color, int _x, int _y, TextLibrary& library, std::array<stbtt_bakedchar, 96>& cdata) : x(_x), y(_y), color(_color)
+	TextDrawData::TextDrawData(std::string _text, int _color, int _x, int _y) :
+		x(_x), y(_y), color(_color),
+		text(std::move(_text))
+	{}
+
+	void TextDrawData::init(TextLibrary& library, std::array<stbtt_bakedchar, 96>& cdata) noexcept
 	{
 		std::vector<Vertex> vertexData;
 		std::vector<uint16_t> indexData;
@@ -53,9 +58,8 @@ namespace mlx
 			indexData.emplace_back(index + 3);
 			indexData.emplace_back(index + 0);
 		}
-
 		std::shared_ptr<TextData> text_data = std::make_shared<TextData>();
-		text_data->init(std::move(vertexData), std::move(indexData));
+		text_data->init(text, std::move(vertexData), std::move(indexData));
 		id = library.addTextToLibrary(text_data);
 	}
 
@@ -78,7 +82,9 @@ namespace mlx
 
 	void TextPutPipeline::put(int x, int y, int color, std::string str)
 	{
-		_drawlist.emplace(std::move(str), color, x, y, _library, _cdata);
+		auto res = _drawlist.emplace(std::move(str), color, x, y);
+		if(res.second)
+			const_cast<TextDrawData&>(*res.first).init(_library, _cdata);
 	}
 
 	void TextPutPipeline::render()
