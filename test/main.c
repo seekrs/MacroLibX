@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:55:21 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/12 13:44:38 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/12 19:42:33 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ int	key_hook(int key, t_mlx *param)
 
 int	window_hook(int event, t_mlx *param)
 {
-	(void)param;
-	printf("%d\n", event);
+	if (event == 0)
+		mlx_loop_end(param->mlx);
 	return (0);
 }
 
@@ -87,7 +87,8 @@ int	main(void)
 
 	mlx.mlx = mlx_init();
 	mlx.win = mlx_new_window(mlx.mlx, 400, 400, "My window");
-	mlx_on_event(mlx.mlx, MLX_KEYDOWN, key_hook, &mlx);
+	mlx_on_event(mlx.mlx, mlx.win, MLX_KEYDOWN, key_hook, &mlx);
+	mlx_on_event(mlx.mlx, mlx.win, MLX_WINDOW_EVENT, window_hook, &mlx);
 	mlx.logo = mlx_png_file_to_image(mlx.mlx, "42_logo.png", &w, &h);
 	mlx_pixel_put(mlx.mlx, mlx.win, 200, 10, 0xFFFF00FF);
 	mlx_put_image_to_window(mlx.mlx, mlx.win, mlx.logo, 200, 200);
