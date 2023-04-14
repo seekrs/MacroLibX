@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 21:27:38 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/01 15:21:00 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/13 14:52:57 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ namespace mlx
 			layout(location = 1) in vec4 aColor;
 			layout(location = 2) in vec2 aUV;
 
-			layout(set=0, binding=0) uniform uProjection {
+			layout(set = 0, binding = 0) uniform uProjection {
 				mat4 mat;
 			} uProj;
 
@@ -109,7 +109,7 @@ namespace mlx
 
 			layout(location = 0) out vec4 fColor;
 
-			layout(set=1, binding=0) uniform sampler2D sTexture;
+			layout(set = 1, binding = 0) uniform sampler2D sTexture;
 
 			layout(location = 0) in struct {
 				vec4 Color;

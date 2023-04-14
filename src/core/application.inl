@@ -32,12 +32,12 @@ namespace mlx::core
 		_in->onEvent(_graphics[*static_cast<int*>(win)]->getWindow()->getID(), event, funct_ptr, param);
 	}
 
-	constexpr void Application::enableAutoRepeat() noexcept
+	void Application::enableAutoRepeat() noexcept
 	{
 		_in->enableAutoRepeat();
 	}
 
-	constexpr void Application::disableAutoRepeat() noexcept
+	void Application::disableAutoRepeat() noexcept
 	{
 		_in->disableAutoRepeat();
 	}
