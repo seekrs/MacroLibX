@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:49:46 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/12 19:34:45 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/13 10:56:19 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ namespace mlx::core
 
 			inline void onEvent(void* win, int event, int (*funct_ptr)(int, void*), void* param) noexcept;
 
-			inline constexpr void enableAutoRepeat() noexcept;
-			inline constexpr void disableAutoRepeat() noexcept;
+			inline void enableAutoRepeat() noexcept;
+			inline void disableAutoRepeat() noexcept;
 
 			inline void getScreenSize(int* w, int* h) noexcept;
 

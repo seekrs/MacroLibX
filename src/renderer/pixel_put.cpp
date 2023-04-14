@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 15:14:50 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/05 00:28:29 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/13 14:51:37 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ namespace mlx
 		if(!_buffer.isMapped())
 			_buffer.mapMem(&_map);
 		unsigned char* mem = static_cast<unsigned char*>(_map) + (y * _width * sizeof(uint32_t)) + (x * sizeof(uint32_t));
-		int new_color = color & 0xFFFFFF00;
+		uint32_t new_color = color & 0xFFFFFF00;
 		new_color >>= 8;
 		new_color |= (color << 24) & 0xFF000000;
 		*reinterpret_cast<uint32_t*>(mem) = new_color;
