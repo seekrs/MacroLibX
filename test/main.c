@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:55:21 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/13 14:59:32 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/19 11:49:56 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,18 @@ int	update(t_mlx *mlx)
 {
 	static int	i = 0;
 	int			j;
+	int			k;
 
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->logo, 100, 100);
 	mlx_string_put(mlx->mlx, mlx->win, 20, 50, 0xFFFFFFFF, "that's a text");
 	j = 0;
+	k = 0;
 	while (j < 400)
 	{
-		mlx_pixel_put(mlx->mlx, mlx->win, j, j, 0xFF00FF01);
+		mlx_pixel_put(mlx->mlx, mlx->win, j, j, 0xFFFF0000 + k);
 		mlx_pixel_put(mlx->mlx, mlx->win, 399 - j, j, 0xFF0000FF);
+		if (k < 255)
+			k++;
 		j++;
 	}
 	i++;

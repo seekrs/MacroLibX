@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:49:46 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/13 10:56:19 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/19 11:31:51 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ namespace mlx::core
 			inline void clearGraphicsSupport(void* win);
 			inline void destroyGraphicsSupport(void* win);
 
-			inline void pixelPut(void* win, int x, int y, int color) const noexcept;
+			inline void pixelPut(void* win, int x, int y, uint32_t color) const noexcept;
 			inline void stringPut(void* win, int x, int y, int color, char* str);
 
 			void* newTexture(int w, int h);
