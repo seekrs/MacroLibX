@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:27:35 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/13 10:55:46 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/19 12:14:43 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,6 @@ namespace mlx
 			inline bool is_running() const noexcept { return !_end; }
 			inline constexpr void finish() noexcept { _end = true; }
 
-			inline constexpr void enableAutoRepeat() noexcept { _auto_repeat = true; }
-			inline constexpr void disableAutoRepeat() noexcept { _auto_repeat = false; }
-
 			inline void addWindow(std::shared_ptr<MLX_Window> window)
 			{
 				_windows[window->getID()] = window;
@@ -81,6 +78,5 @@ namespace mlx
 			int _yRel = 0;
 
 			bool _end = false;
-			bool _auto_repeat = true;
 	};
 }

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:55:21 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/19 11:49:56 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/19 11:54:51 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,9 @@ int	window_hook(int event, t_mlx *param)
 int	main(void)
 {
 	t_mlx	mlx;
+	void	*img;
 	int		w;
 	int		h;
-	void	*img;
 
 	mlx.mlx = mlx_init();
 	mlx.win = mlx_new_window(mlx.mlx, 400, 400, "My window");

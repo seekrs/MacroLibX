@@ -32,16 +32,6 @@ namespace mlx::core
 		_in->onEvent(_graphics[*static_cast<int*>(win)]->getWindow()->getID(), event, funct_ptr, param);
 	}
 
-	void Application::enableAutoRepeat() noexcept
-	{
-		_in->enableAutoRepeat();
-	}
-
-	void Application::disableAutoRepeat() noexcept
-	{
-		_in->disableAutoRepeat();
-	}
-
 	void Application::getScreenSize(int* w, int* h) noexcept
 	{
 		SDL_DisplayMode DM;
