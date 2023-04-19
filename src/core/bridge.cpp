@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:35:20 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/19 11:49:40 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/19 12:14:02 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,18 +72,6 @@ extern "C"
 	int mlx_on_event(void* mlx, void* win, int event, int (*funct_ptr)(int, void*), void* param)
 	{
 		static_cast<mlx::core::Application*>(mlx)->onEvent(win, event, funct_ptr, param);
-		return 0;
-	}
-
-	int mlx_do_key_autorepeaton(void* mlx)
-	{
-		static_cast<mlx::core::Application*>(mlx)->enableAutoRepeat();
-		return 0;
-	}
-
-	int mlx_do_key_autorepeatoff(void* mlx)
-	{
-		static_cast<mlx::core::Application*>(mlx)->disableAutoRepeat();
 		return 0;
 	}
 
