@@ -67,7 +67,7 @@ namespace mlx::core
 		_graphics[*static_cast<int*>(win)].reset();
 	}
 
-	void Application::pixelPut(void* win, int x, int y, int color) const noexcept
+	void Application::pixelPut(void* win, int x, int y, uint32_t color) const noexcept
 	{
 		_graphics[*static_cast<int*>(win)]->pixelPut(x, y, color);
 	}

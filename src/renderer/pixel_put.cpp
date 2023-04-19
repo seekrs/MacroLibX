@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 15:14:50 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/13 14:51:37 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/19 11:32:54 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,14 @@ namespace mlx
 		return _texture.getSet();
 	}
 
-	void PixelPutPipeline::setPixel(uint32_t x, uint32_t y, int color) noexcept
+	void PixelPutPipeline::setPixel(uint32_t x, uint32_t y, uint32_t color) noexcept
 	{
 		if(x < 0 || y < 0 || x > _width || y > _height)
 			return;
 		if(!_buffer.isMapped())
 			_buffer.mapMem(&_map);
 		unsigned char* mem = static_cast<unsigned char*>(_map) + (y * _width * sizeof(uint32_t)) + (x * sizeof(uint32_t));
-		uint32_t new_color = color & 0xFFFFFF00;
-		new_color >>= 8;
-		new_color |= (color << 24) & 0xFF000000;
-		*reinterpret_cast<uint32_t*>(mem) = new_color;
+		*reinterpret_cast<uint32_t*>(mem) = color;
 		_has_been_modified = true;
 	}
 

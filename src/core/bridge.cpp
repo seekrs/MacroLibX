@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:35:20 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/12 19:34:22 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/19 11:49:40 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,13 +144,23 @@ extern "C"
 
 	int mlx_pixel_put(void* mlx, void* win, int x, int y, int color)
 	{
-		static_cast<mlx::core::Application*>(mlx)->pixelPut(win, x, y, color);
+		unsigned char color_bits[4];
+		color_bits[0] = (color & 0x00FF0000) >> 16;
+		color_bits[1] = (color & 0x0000FF00) >> 8;
+		color_bits[2] = color & 0x000000FF;
+		color_bits[3] = 0xFF;
+		static_cast<mlx::core::Application*>(mlx)->pixelPut(win, x, y, *reinterpret_cast<unsigned int*>(color_bits));
 		return 0;
 	}
 
 	int mlx_string_put(void* mlx, void* win, int x, int y, int color, char* str)
 	{
-		static_cast<mlx::core::Application*>(mlx)->stringPut(win, x, y, color, str);
+		unsigned char color_bits[4];
+		color_bits[0] = (color & 0x00FF0000) >> 16;
+		color_bits[1] = (color & 0x0000FF00) >> 8;
+		color_bits[2] = color & 0x000000FF;
+		color_bits[3] = 0xFF;
+		static_cast<mlx::core::Application*>(mlx)->stringPut(win, x, y, *reinterpret_cast<unsigned int*>(color_bits), str);
 		return 0;
 	}
 
