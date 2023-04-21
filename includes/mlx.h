@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:56:35 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/19 12:35:03 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/19 13:11:27 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,8 @@ int mlx_mouse_move(void* mlx, void* win, int x, int y);
  * @brief			Get cursor's position
  *
  * @param mlx		Internal MLX application
- * @param x			X coordinate
- * @param y			Y coordinate
+ * @param x			Get x coordinate
+ * @param y			Get y coordinate
  *
  * @return (int)	Always return 0, made this to copy the behaviour of the original MLX
  */
@@ -148,7 +148,7 @@ int mlx_pixel_put(void* mlx, void* win, int x, int y, int color);
  * @param width		Width of the image
  * @param height	Height of the image
  *
- * @return (void*)	An opaque pointer to the internal image
+ * @return (void*)	An opaque pointer to the internal image or NULL (0x0) in case of error
  */
 void* mlx_new_image(void* mlx, int width, int height);
 
@@ -161,7 +161,7 @@ void* mlx_new_image(void* mlx, int width, int height);
  * @param size_line			Get size of a line of the image
  * @param endian			Get endian of the processor
  *
- * @return (char*)			Return raw address of the image's data
+ * @return (char*)			Return raw address of the image's data or NULL (0x0) in case of error
  */
 char* mlx_get_data_addr(void* mlx, void* img, int* bits_per_pixel, int* size_line, int* endian);
 
@@ -197,7 +197,7 @@ int mlx_destroy_image(void* mlx, void* img);
  * @param width		Get the width of the image
  * @param heigth	Get the height of the image
  *
- * @return (void*)	An opaque pointer to the internal image
+ * @return (void*)	An opaque pointer to the internal image or NULL (0x0) in case of error
  */
 void* mlx_png_file_to_image(void* mlx, char* filename, int* width, int* height);
 
@@ -209,7 +209,7 @@ void* mlx_png_file_to_image(void* mlx, char* filename, int* width, int* height);
  * @param width		Get the width of the image
  * @param heigth	Get the height of the image
  *
- * @return (void*)	An opaque pointer to the internal image
+ * @return (void*)	An opaque pointer to the internal image or NULL (0x0) in case of error
  */
 void* mlx_jpg_file_to_image(void* mlx, char* filename, int* width, int* height);
 
@@ -221,7 +221,7 @@ void* mlx_jpg_file_to_image(void* mlx, char* filename, int* width, int* height);
  * @param width		Get the width of the image
  * @param heigth	Get the height of the image
  *
- * @return (void*)	An opaque pointer to the internal image
+ * @return (void*)	An opaque pointer to the internal image or NULL (0x0) in case of error
  */
 void* mlx_bmp_file_to_image(void* mlx, char* filename, int* width, int* height);
 

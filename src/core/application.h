@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:49:46 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/19 12:14:07 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/21 19:24:12 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@
 
 #include <core/graphics.h>
 #include <platform/inputs.h>
-
-#include <renderer/texture_library.h>
 
 namespace mlx::core
 {
@@ -50,7 +48,7 @@ namespace mlx::core
 
 			void* newTexture(int w, int h);
 			void* newStbTexture(char* file, int* w, int* h); // stb textures are format managed by stb image (png, jpg, bpm, ...)
-			char* mapTexture(void* img, int* bits_per_pixel, int* size_line, int* endian);
+			char* mapTexture(Texture* img, int* bits_per_pixel, int* size_line, int* endian);
 			inline void texturePut(void* win, void* img, int x, int y);
 			void destroyTexture(void* ptr);
 
@@ -62,8 +60,7 @@ namespace mlx::core
 			~Application() = default;
 
 		private:
-			TextureLibrary _texture_lib;
-			std::list<TextureID> _texture_ids;
+			std::list<Texture> _textures;
 			std::vector<std::unique_ptr<GraphicsSupport>> _graphics;
 			std::function<int(void*)> _loop_hook;
 			std::unique_ptr<Input> _in;

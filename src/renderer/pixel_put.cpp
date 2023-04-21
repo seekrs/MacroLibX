@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 15:14:50 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/19 11:32:54 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/21 14:51:47 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ namespace mlx
 		_texture.setDescriptor(renderer.getFragDescriptorSet().duplicate());
 
 		_buffer.create(Buffer::kind::dynamic, sizeof(uint32_t) * (width * height), VK_BUFFER_USAGE_TRANSFER_SRC_BIT);
+		_buffer.mapMem(&_map);
 		_width = width;
 		_height = height;
 	}
@@ -34,8 +35,6 @@ namespace mlx
 	{
 		if(x < 0 || y < 0 || x > _width || y > _height)
 			return;
-		if(!_buffer.isMapped())
-			_buffer.mapMem(&_map);
 		unsigned char* mem = static_cast<unsigned char*>(_map) + (y * _width * sizeof(uint32_t)) + (x * sizeof(uint32_t));
 		*reinterpret_cast<uint32_t*>(mem) = color;
 		_has_been_modified = true;
@@ -43,8 +42,6 @@ namespace mlx
 
 	void PixelPutPipeline::clear()
 	{
-		if(!_buffer.isMapped())
-			_buffer.mapMem(&_map);
 		unsigned char* mem = static_cast<unsigned char*>(_map);
 		std::memset(mem, 0, sizeof(uint32_t) * (_width * _height));
 		_has_been_modified = true;

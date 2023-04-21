@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:54:21 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/13 10:59:04 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/21 10:58:02 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 #include <volk.h>
 #include <cstddef>
 #include <vector>
+#include <renderer/command/vk_cmd_buffer.h>
+#include <renderer/command/vk_cmd_pool.h>
 
 namespace mlx
 {
@@ -45,6 +47,8 @@ namespace mlx
 			virtual ~Image() = default;
 
 		private:
+			CmdBuffer _transfer_cmd;
+			CmdPool _pool;
 			VkImage _image = VK_NULL_HANDLE;
 			VkDeviceMemory _memory = VK_NULL_HANDLE;
 			VkImageView _image_view = VK_NULL_HANDLE;

@@ -69,8 +69,7 @@ namespace mlx::core
 
 	void Application::texturePut(void* win, void* img, int x, int y)
 	{
-		TextureID id = *static_cast<TextureID*>(img);
-		std::shared_ptr<Texture> texture = _texture_lib.getTexture(id);
+		Texture* texture = static_cast<Texture*>(img);
 		_graphics[*static_cast<int*>(win)]->texturePut(texture, x, y);
 	}
 

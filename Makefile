@@ -6,7 +6,7 @@
 #    By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/04 16:43:41 by maldavid          #+#    #+#              #
-#    Updated: 2023/04/04 16:21:17 by maldavid         ###   ########.fr        #
+#    Updated: 2023/04/21 14:13:15 by maldavid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ SRCS		=  $(wildcard $(addsuffix /*.cpp, ./src/core))
 SRCS		+= $(wildcard $(addsuffix /*.cpp, ./src/platform))
 SRCS		+= $(wildcard $(addsuffix /*.cpp, ./src/renderer))
 SRCS		+= $(wildcard $(addsuffix /*.cpp, ./src/renderer/**))
+SRCS		+= $(wildcard $(addsuffix /*.cpp, ./src/utils/**))
 
 OBJS		= $(SRCS:.cpp=.o)
 
@@ -29,10 +30,10 @@ ifeq ($(TOOLCHAIN), gcc)
 endif
 
 CXXFLAGS	= -std=c++17 -O3 -fPIC
-INCLUDES	= -I./includes -I./src -I./third_party
+INCLUDES	= -I./includes -I./src -I./third_party 
 
 ifeq ($(DEBUG), true)
-	CXXFLAGS += -g
+	CXXFLAGS += -g -D DEBUG
 endif
 
 RM			= rm -f
