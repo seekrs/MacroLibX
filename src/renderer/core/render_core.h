@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:16:32 by maldavid          #+#    #+#             */
-/*   Updated: 2023/01/25 15:23:19 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/21 14:13:32 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ namespace mlx
 		uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
 	}
 
-	#ifndef NDEBUG
+	#ifndef DEBUG
         constexpr const bool enableValidationLayers = true;
     #else
         constexpr const bool enableValidationLayers = false;

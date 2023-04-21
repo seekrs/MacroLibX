@@ -42,7 +42,7 @@ namespace mlx
 		_text_put_pipeline->put(x, y, color, str);
 	}
 
-	void GraphicsSupport::texturePut(std::shared_ptr<Texture> texture, int x, int y)
+	void GraphicsSupport::texturePut(Texture* texture, int x, int y)
 	{
 		_textures_to_render.emplace(texture, x, y);
 	}

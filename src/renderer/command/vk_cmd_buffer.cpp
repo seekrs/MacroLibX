@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:26:06 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/02 18:13:38 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/21 13:24:56 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,16 @@ namespace mlx
 {
 	void CmdBuffer::init(CmdManager* manager)
 	{
-		_manager = manager;
+		init(&manager->getCmdPool());
+	}
+
+	void CmdBuffer::init(CmdPool* pool)
+	{
+		_pool = pool;
 
 		VkCommandBufferAllocateInfo allocInfo{};
 		allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
-		allocInfo.commandPool = manager->getCmdPool().get();
+		allocInfo.commandPool = pool->get();
 		allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
 		allocInfo.commandBufferCount = 1;
 
@@ -57,6 +62,26 @@ namespace mlx
 		_is_recording = false;
 	}
 
+	void CmdBuffer::submitIdle() noexcept
+	{
+		auto device = Render_Core::get().getDevice().get();
+
+		VkSubmitInfo submitInfo = {};
+		submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+		submitInfo.commandBufferCount = 1;
+		submitInfo.pCommandBuffers = &_cmd_buffer;
+
+		VkFenceCreateInfo fenceCreateInfo = {};
+		fenceCreateInfo.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
+
+		VkFence fence;
+		vkCreateFence(device, &fenceCreateInfo, nullptr, &fence);
+		vkResetFences(device, 1, &fence);
+		vkQueueSubmit(Render_Core::get().getQueue().getGraphic(), 1, &submitInfo, fence);
+		vkWaitForFences(device, 1, &fence, VK_TRUE, UINT64_MAX);
+		vkDestroyFence(device, fence, nullptr);
+	}
+
 	void CmdBuffer::submit(Semaphore& semaphores) noexcept
 	{
 		VkSemaphore signalSemaphores[] = { semaphores.getRenderImageSemaphore() };
@@ -79,7 +104,6 @@ namespace mlx
 
 	void CmdBuffer::destroy() noexcept
 	{
-		vkFreeCommandBuffers(Render_Core::get().getDevice().get(), _manager->getCmdPool().get(), 1, &_cmd_buffer);
 		_fence.destroy();
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 18:03:35 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/08 18:41:54 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/21 19:31:15 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,11 @@ namespace mlx
 
 	void* Texture::openCPUmap()
 	{
-		if(_cpu_map == nullptr)
-		{
-			_cpu_map = std::make_shared<Buffer>();
-			_cpu_map->create(Buffer::kind::dynamic, sizeof(uint32_t) * (getWidth() * getHeight()), VK_BUFFER_USAGE_TRANSFER_SRC_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT);
-			Image::copyToBuffer(*_cpu_map);
-		}
+		if(_cpu_map_adress != nullptr)
+			return _cpu_map_adress;
+		_cpu_map = std::make_shared<Buffer>();
+		_cpu_map->create(Buffer::kind::dynamic, sizeof(uint32_t) * (getWidth() * getHeight()), VK_BUFFER_USAGE_TRANSFER_SRC_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT);
+		Image::copyToBuffer(*_cpu_map);
 		if(!_cpu_map->isMapped())
 			_cpu_map->mapMem(&_cpu_map_adress);
 		if(_cpu_map_adress == nullptr)
@@ -103,15 +102,9 @@ namespace mlx
 		if(!std::filesystem::exists(std::move(file)))
 			core::error::report(e_kind::fatal_error, "Image : file not found '%s'", filename.c_str());
 		if(stbi_is_hdr(filename.c_str()))
-		{
-			data = (uint8_t*)stbi_loadf(filename.c_str(), w, h, &channels, 4);
-			format = VK_FORMAT_R32G32B32A32_SFLOAT;
-		}
-		else
-		{
-			data = stbi_load(filename.c_str(), w, h, &channels, 4);
-			format = VK_FORMAT_R8G8B8A8_UNORM;
-		}
+			core::error::report(e_kind::fatal_error, "Texture : unsupported image format '%s'", filename.c_str());
+		data = stbi_load(filename.c_str(), w, h, &channels, 4);
+		format = VK_FORMAT_R8G8B8A8_UNORM;
 		texture.create(data, *w, *h, format);
 		stbi_image_free(data);
 		return texture;
