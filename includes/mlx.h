@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:56:35 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/19 13:11:27 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/22 19:56:48 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,9 @@ int mlx_on_event(void* mlx, void* win, mlx_event_type event, int (*f)(), void* p
  * @param y			Y coordinate
  * @param color		Color of the pixel (coded on 3 bytes in an int, 0x00RRGGBB)
  *
+ * Note : If your're reading pixel colors from an image, don't forget to shift them 
+ * one byte to the right as image pixels are encoded as 0xRRGGBBAA and pixel put takes 0x00RRGGBB.
+ * 
  * @return (int)	Always return 0, made this to copy the behaviour of the original MLX
  */
 int mlx_pixel_put(void* mlx, void* win, int x, int y, int color);

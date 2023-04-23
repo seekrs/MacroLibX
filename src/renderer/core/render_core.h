@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:16:32 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/21 14:13:32 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/23 12:31:42 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #define __MLX_RENDER_CORE__
 
 #include <volk.h>
+#include <optional>
 
 #include "vk_queues.h"
 #include "vk_device.h"
@@ -27,10 +28,10 @@ namespace mlx
 {
 	namespace RCore
 	{
-		uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
+		std::optional<uint32_t> findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties, bool error = true);
 	}
 
-	#ifndef DEBUG
+	#ifdef DEBUG
         constexpr const bool enableValidationLayers = true;
     #else
         constexpr const bool enableValidationLayers = false;

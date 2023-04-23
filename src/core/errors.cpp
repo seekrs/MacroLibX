@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:48:06 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/18 17:47:51 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/23 13:07:56 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ namespace mlx::core::error
 
 		switch(kind)
 		{
-			case e_kind::message: std::cout << "[MacroLibX] Message : " << buffer << std::endl; break;
-			case e_kind::warning: std::cout << "[MacroLibX] Warning : " << buffer << std::endl; break;
-			case e_kind::error: std::cerr << "[MacroLibX] Error : " << buffer << std::endl; break;
+			case e_kind::message: std::cout << "\033[1;34m[MacroLibX] Message : \033[1;0m" << buffer << std::endl; break;
+			case e_kind::warning: std::cout << "\033[1;35m[MacroLibX] Warning : \033[1;0m" << buffer << std::endl; break;
+			case e_kind::error: std::cerr << "\033[1;31m[MacroLibX] Error : \033[1;0m" << buffer << std::endl; break;
 			case e_kind::fatal_error:
-				std::cerr << "[MacroLibX] Fatal Error : " << buffer << std::endl;
+				std::cerr << "\033[1;31m[MacroLibX] Fatal Error : \033[1;0m" << buffer << std::endl;
 				std::exit(EXIT_FAILURE);
 			break;
 		}
