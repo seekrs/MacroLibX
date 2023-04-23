@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:59:07 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/21 13:23:52 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/23 14:59:41 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,12 @@
 
 namespace mlx
 {
-	void Image::create(uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, VkMemoryPropertyFlags properties)
+	void Image::create(uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, std::vector<VkMemoryPropertyFlags> properties)
 	{
 		_width = width;
 		_height = height;
 		_format = format;
+		_tiling = tiling;
 
 		VkImageCreateInfo imageInfo{};
 		imageInfo.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
@@ -44,11 +45,20 @@ namespace mlx
 
 		VkMemoryRequirements memRequirements;
 		vkGetImageMemoryRequirements(Render_Core::get().getDevice().get(), _image, &memRequirements);
-
+		
+		std::optional<uint32_t> memTypeIndex;
+		for(auto prop : properties)
+		{
+			memTypeIndex = RCore::findMemoryType(memRequirements.memoryTypeBits, prop, false);
+			if(memTypeIndex.has_value())
+				break;
+		}
+		if(!memTypeIndex.has_value())
+			core::error::report(e_kind::fatal_error, "Vulkan : failed to find suitable memory type for an image");
 		VkMemoryAllocateInfo allocInfo{};
 		allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
 		allocInfo.allocationSize = memRequirements.size;
-		allocInfo.memoryTypeIndex = RCore::findMemoryType(memRequirements.memoryTypeBits, properties);
+		allocInfo.memoryTypeIndex = *memTypeIndex;
 
 		if(vkAllocateMemory(Render_Core::get().getDevice().get(), &allocInfo, nullptr, &_memory) != VK_SUCCESS)
 			core::error::report(e_kind::fatal_error, "Vulkan : failed to allocate memory for an image");
@@ -123,12 +133,8 @@ namespace mlx
 		region.imageSubresource.mipLevel = 0;
 		region.imageSubresource.baseArrayLayer = 0;
 		region.imageSubresource.layerCount = 1;
-		region.imageOffset = {0, 0, 0};
-		region.imageExtent = {
-			_width,
-			_height,
-			1
-		};
+		region.imageOffset = { 0, 0, 0 };
+		region.imageExtent = { _width, _height, 1 };
 
 		vkCmdCopyBufferToImage(_transfer_cmd.get(), buffer.get(), _image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &region);
 
@@ -179,12 +185,9 @@ namespace mlx
 		region.imageSubresource.mipLevel = 0;
 		region.imageSubresource.baseArrayLayer = 0;
 		region.imageSubresource.layerCount = 1;
-		region.imageOffset = {0, 0, 0};
-		region.imageExtent = {
-			_width,
-			_height,
-			1
-		};
+		region.imageOffset = { 0, 0, 0 };
+		region.imageExtent = { _width, _height, 1 };
+
 		vkCmdCopyImageToBuffer(_transfer_cmd.get(), _image, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, buffer.get(), 1, &region);
 
 		VkImageMemoryBarrier use_barrier = {};

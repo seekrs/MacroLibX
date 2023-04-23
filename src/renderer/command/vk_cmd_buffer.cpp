@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:26:06 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/21 13:24:56 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/23 15:19:08 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,5 +105,6 @@ namespace mlx
 	void CmdBuffer::destroy() noexcept
 	{
 		_fence.destroy();
+		_cmd_buffer = VK_NULL_HANDLE;
 	}
 }
