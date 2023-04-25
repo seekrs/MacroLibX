@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 18:03:35 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/23 15:30:54 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/25 22:13:45 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,33 +20,12 @@
 
 namespace mlx
 {
-	void Texture::create(uint8_t* pixels, uint32_t width, uint32_t height, VkFormat format, bool enable_mapping)
+	void Texture::create(uint8_t* pixels, uint32_t width, uint32_t height, VkFormat format)
 	{
-		if(enable_mapping)
-		{
-			#ifdef DEBUG
-				core::error::report(e_kind::message, "Texture : creating CPU mappable texture");
-			#endif
-			Image::create(width, height, format, VK_IMAGE_TILING_LINEAR,
-				VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT | VK_IMAGE_USAGE_SAMPLED_BIT,
-				{
-					VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
-					VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT | VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
-					VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT,
-					VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT
-				}
-			);
-		}
-		else
-		{
-			#ifdef DEBUG
-				core::error::report(e_kind::message, "Texture : creating non CPU mappable texture");
-			#endif
-			Image::create(width, height, format, VK_IMAGE_TILING_OPTIMAL,
-				VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT | VK_IMAGE_USAGE_SAMPLED_BIT,
-				{ VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT }
-			);
-		}
+		Image::create(width, height, format, VK_IMAGE_TILING_OPTIMAL,
+			VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT | VK_IMAGE_USAGE_SAMPLED_BIT,
+			{ VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT }
+		);
 
 		Image::createImageView(VK_IMAGE_VIEW_TYPE_2D, VK_IMAGE_ASPECT_COLOR_BIT);
 		Image::createSampler();
@@ -72,6 +51,8 @@ namespace mlx
 			staging_buffer.destroy();
 		}
 	}
+
+	void Texture::setPixel()
 
 	void* Texture::openCPUmap()
 	{

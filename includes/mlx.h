@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:56:35 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/22 19:56:48 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/25 15:09:04 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,17 +156,29 @@ int mlx_pixel_put(void* mlx, void* win, int x, int y, int color);
 void* mlx_new_image(void* mlx, int width, int height);
 
 /**
- * @brief					Get data address of the internal image to modify it
+ * @brief					Get image pixel data
  *
  * @param mlx				Internal MLX application
  * @param img				Internal image
- * @param bits_per_pixel	Get bits per pixel information
- * @param size_line			Get size of a line of the image
- * @param endian			Get endian of the processor
+ * @param x					X coordinate in the image
+ * @param y					Y coordinate in the image
  *
- * @return (char*)			Return raw address of the image's data or NULL (0x0) in case of error
+ * @return (int)			Return the pixel data
  */
-char* mlx_get_data_addr(void* mlx, void* img, int* bits_per_pixel, int* size_line, int* endian);
+int mlx_get_image_pixel(void* mlx, void* img, int x, int y);
+
+/**
+ * @brief					Set image pixel data
+ *
+ * @param mlx				Internal MLX application
+ * @param img				Internal image
+ * @param x					X coordinate in the image
+ * @param y					Y coordinate in the image
+ * @param color				Color of the pixel to set
+ *
+ * @return (void)
+ */
+void mlx_set_image_pixel(void* mlx, void* img, int x, int y, int color);
 
 /**
  * @brief			Put image to the given window

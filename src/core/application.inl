@@ -73,6 +73,18 @@ namespace mlx::core
 		_graphics[*static_cast<int*>(win)]->texturePut(texture, x, y);
 	}
 
+	int Application::getTexturePixel(void* img, int x, int y)
+	{
+		Texture* texture = static_cast<Texture*>(img);
+		return texture->getPixel(x, y);
+	}
+
+	void Application::setTexturePixel(void* img, int x, int y, uint32_t color)
+	{
+		Texture* texture = static_cast<Texture*>(img);
+		texture->setPixel(x, y, color);
+	}
+
 	void Application::loopHook(int (*f)(void*), void* param)
 	{
 		_loop_hook = f;
