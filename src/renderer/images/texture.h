@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 02:24:58 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/23 15:23:44 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/25 20:10:44 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,12 @@ namespace mlx
 		public:
 			Texture() = default;
 			
-			void create(uint8_t* pixels, uint32_t width, uint32_t height, VkFormat format, bool enable_mapping = false);
+			void create(uint8_t* pixels, uint32_t width, uint32_t height, VkFormat format);
 			void render(class Renderer& renderer, int x, int y);
 			void destroy() noexcept override;
 
-			void* openCPUmap();
+			void setPixel(int x, int y, uint32_t color) noexcept;
+			int getPixel(int x, int y) noexcept;
 
 			inline void setDescriptor(DescriptorSet set) noexcept { _set = std::move(set); }
 			inline VkDescriptorSet getSet() noexcept { return _set.isInit() ? _set.get() : VK_NULL_HANDLE; }

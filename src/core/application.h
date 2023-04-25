@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:49:46 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/21 19:24:12 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/25 15:23:31 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,9 @@ namespace mlx::core
 
 			void* newTexture(int w, int h);
 			void* newStbTexture(char* file, int* w, int* h); // stb textures are format managed by stb image (png, jpg, bpm, ...)
-			char* mapTexture(Texture* img, int* bits_per_pixel, int* size_line, int* endian);
 			inline void texturePut(void* win, void* img, int x, int y);
+			inline int getTexturePixel(void* img, int x, int y);
+			inline void setTexturePixel(void* img, int x, int y, uint32_t color);
 			void destroyTexture(void* ptr);
 
 			inline void loopHook(int (*f)(void*), void* param);

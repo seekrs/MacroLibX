@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:35:20 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/21 19:29:49 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/25 15:23:05 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,19 @@ extern "C"
 		return mlx->newTexture(width, height);
 	}
 
-	char* mlx_get_data_addr(mlx::core::Application* mlx, mlx::Texture* img, int* bits_per_pixel, int* size_line, int* endian)
+	int mlx_get_image_pixel(mlx::core::Application* mlx, void* img, int x, int y)
 	{
-		return mlx->mapTexture(img, bits_per_pixel, size_line, endian);
+		return mlx->getTexturePixel(img, x, y);
+	}
+
+	void mlx_set_image_pixel(mlx::core::Application* mlx, void* img, int x, int y, int color)
+	{
+		unsigned char color_bits[4];
+		color_bits[0] = (color & 0x00FF0000) >> 16;
+		color_bits[1] = (color & 0x0000FF00) >> 8;
+		color_bits[2] = color & 0x000000FF;
+		color_bits[3] = 0xFF;
+		mlx->setTexturePixel(img, x, y, *reinterpret_cast<unsigned int*>(color_bits));
 	}
 
 	int mlx_put_image_to_window(mlx::core::Application* mlx, void* win, void* img, int x, int y)

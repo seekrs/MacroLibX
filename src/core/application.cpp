@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 22:10:52 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/22 19:39:59 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/25 15:12:57 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,16 +44,6 @@ namespace mlx::core
 	{
 		_textures.emplace_front(stbTextureLoad(file, w, h));
 		return &_textures.front();
-	}
-
-	char* Application::mapTexture(Texture* img, int* bits_per_pixel, int* size_line, int* endian)
-	{
-		static const int endianness = isSystemBigEndian();
-
-		*bits_per_pixel = 32;
-		*size_line = img->getWidth() * 4;
-		*endian = endianness;
-		return static_cast<char*>(img->openCPUmap());
 	}
 
 	void Application::destroyTexture(void* ptr)
