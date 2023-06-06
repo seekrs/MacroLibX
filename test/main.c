@@ -6,11 +6,12 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:55:21 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/19 11:54:51 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/06/06 16:22:26 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
+#include <string.h>
 #include "../includes/mlx.h"
 
 typedef struct s_mlx
@@ -46,24 +47,29 @@ int	update(t_mlx *mlx)
 
 void	*create_image(t_mlx *mlx)
 {
-	int		ignore[3];
-	void	*img;
-	char	*addr;
-	int		i;
+	unsigned char	pixel[4];
+	int				i[3];
+	void			*img;
 
+	memset(i, 0, sizeof(int) * 3);
 	img = mlx_new_image(mlx->mlx, 100, 100);
-	addr = mlx_get_data_addr(mlx->mlx, img, &ignore[0], &ignore[1], &ignore[2]);
-	i = 0;
-	while (i < (100 * 100) * 4)
+	while (i[0] < (100 * 100) * 4)
 	{
-		if (i < 10000 || i > 20000)
+		if (i[0] < 10000 || i[0] > 20000)
 		{
-			addr[i + 0] = 0xFF;
-			addr[i + 1] = i;
-			addr[i + 2] = 0x00;
-			addr[i + 3] = 0xFF;
+			pixel[i[0] + 0] = 0xFF;
+			pixel[i[0] + 1] = i[0];
+			pixel[i[0] + 2] = 0x00;
+			pixel[i[0] + 3] = 0xFF;
 		}
-		i += 4;
+		mlx_set_image_pixel(mlx->mlx, img, i[1], i[2], *((int *)pixel));
+		i[0] += 4;
+		i[1]++;
+		if (i[1] >= 100)
+		{
+			i[1] = 0;
+			i[2]++;
+		}
 	}
 	return (img);
 }

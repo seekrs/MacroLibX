@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 02:24:58 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/25 20:10:44 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/06/06 15:54:44 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,15 @@ namespace mlx
 			~Texture() = default;
 
 		private:
+			void openCPUmap();
+
+		private:
 			C_VBO _vbo;
 			C_IBO _ibo;
 			DescriptorSet _set;
 			std::optional<Buffer> _buf_map = std::nullopt;
 			void* _cpu_map = nullptr;
+			bool _has_been_modified = false;
 			bool _has_been_updated = false;
 	};
 
