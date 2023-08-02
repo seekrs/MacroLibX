@@ -6,11 +6,12 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:55:21 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/13 14:59:32 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/08/02 12:36:11 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
+#include <string.h>
 #include "../includes/mlx.h"
 
 typedef struct s_mlx
@@ -24,14 +25,18 @@ int	update(t_mlx *mlx)
 {
 	static int	i = 0;
 	int			j;
+	int			k;
 
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->logo, 100, 100);
 	mlx_string_put(mlx->mlx, mlx->win, 20, 50, 0xFFFFFFFF, "that's a text");
 	j = 0;
+	k = 0;
 	while (j < 400)
 	{
-		mlx_pixel_put(mlx->mlx, mlx->win, j, j, 0xFF00FF01);
+		mlx_pixel_put(mlx->mlx, mlx->win, j, j, 0xFFFF0000 + k);
 		mlx_pixel_put(mlx->mlx, mlx->win, 399 - j, j, 0xFF0000FF);
+		if (k < 255)
+			k++;
 		j++;
 	}
 	i++;
@@ -42,24 +47,29 @@ int	update(t_mlx *mlx)
 
 void	*create_image(t_mlx *mlx)
 {
-	int		ignore[3];
-	void	*img;
-	char	*addr;
-	int		i;
+	unsigned char	pixel[4];
+	int				i[3];
+	void			*img;
 
+	memset(i, 0, sizeof(int) * 3);
 	img = mlx_new_image(mlx->mlx, 100, 100);
-	addr = mlx_get_data_addr(mlx->mlx, img, &ignore[0], &ignore[1], &ignore[2]);
-	i = 0;
-	while (i < (100 * 100) * 4)
+	while (i[0] < (100 * 100) * 4)
 	{
-		if (i < 10000 || i > 20000)
+		if (i[0] < 10000 || i[0] > 20000)
 		{
-			addr[i + 0] = 0xFF;
-			addr[i + 1] = i;
-			addr[i + 2] = 0x00;
-			addr[i + 3] = 0xFF;
+			pixel[0] = i[0];
+			pixel[1] = i[1];
+			pixel[2] = i[2];
+			pixel[3] = 0xFF;
+			mlx_set_image_pixel(mlx->mlx, img, i[1], i[2], *((int *)pixel));
 		}
-		i += 4;
+		i[0] += 4;
+		i[1]++;
+		if (i[1] >= 100)
+		{
+			i[1] = 0;
+			i[2]++;
+		}
 	}
 	return (img);
 }
@@ -81,9 +91,9 @@ int	window_hook(int event, t_mlx *param)
 int	main(void)
 {
 	t_mlx	mlx;
+	void	*img;
 	int		w;
 	int		h;
-	void	*img;
 
 	mlx.mlx = mlx_init();
 	mlx.win = mlx_new_window(mlx.mlx, 400, 400, "My window");

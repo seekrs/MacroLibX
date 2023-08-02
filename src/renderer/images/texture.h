@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 02:24:58 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/07 16:39:35 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/08/02 12:32:27 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ namespace mlx
 			void render(class Renderer& renderer, int x, int y);
 			void destroy() noexcept override;
 
-			void* openCPUmap();
+			void setPixel(int x, int y, uint32_t color) noexcept;
+			int getPixel(int x, int y) noexcept;
 
 			inline void setDescriptor(DescriptorSet set) noexcept { _set = std::move(set); }
 			inline VkDescriptorSet getSet() noexcept { return _set.isInit() ? _set.get() : VK_NULL_HANDLE; }
@@ -44,11 +45,16 @@ namespace mlx
 			~Texture() = default;
 
 		private:
+			void openCPUmap();
+
+		private:
 			C_VBO _vbo;
 			C_IBO _ibo;
 			DescriptorSet _set;
-			std::shared_ptr<Buffer> _cpu_map;
-			void* _cpu_map_adress;
+			std::vector<uint32_t> _cpu_map;
+			std::optional<Buffer> _buf_map = std::nullopt;
+			void* _map = nullptr;
+			bool _has_been_modified = false;
 			bool _has_been_updated = false;
 	};
 
@@ -56,11 +62,11 @@ namespace mlx
 
 	struct TextureRenderData
 	{
-		std::shared_ptr<Texture> texture;
+		Texture* texture;
 		int x;
 		int y;
 
-		TextureRenderData(std::shared_ptr<Texture> _texture, int _x, int _y) : texture(_texture), x(_x), y(_y) {}
+		TextureRenderData(Texture* _texture, int _x, int _y) : texture(_texture), x(_x), y(_y) {}
 		bool operator==(const TextureRenderData& rhs) const { return texture == rhs.texture && x == rhs.x && y == rhs.y; }
 	};
 }
@@ -72,7 +78,7 @@ namespace std
 	{
 		size_t operator()(const mlx::TextureRenderData& td) const noexcept
 		{
-			return std::hash<std::shared_ptr<mlx::Texture>>()(td.texture) + std::hash<int>()(td.x) + std::hash<int>()(td.y);
+			return std::hash<mlx::Texture*>()(td.texture) + std::hash<int>()(td.x) + std::hash<int>()(td.y);
 		}
 	};
 }

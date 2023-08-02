@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 18:03:35 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/08 18:41:54 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/08/02 12:34:25 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,20 @@
 #include <renderer/images/texture.h>
 #include <renderer/buffers/vk_buffer.h>
 #include <renderer/renderer.h>
-#include <iostream>
+#include <cstring>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
+
+#include <iostream>
 
 namespace mlx
 {
 	void Texture::create(uint8_t* pixels, uint32_t width, uint32_t height, VkFormat format)
 	{
-		Image::create(width, height, format,
-			VK_IMAGE_TILING_OPTIMAL,
+		Image::create(width, height, format, VK_IMAGE_TILING_OPTIMAL,
 			VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT | VK_IMAGE_USAGE_SAMPLED_BIT,
-			VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT
+			{ VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT }
 		);
 
 		Image::createImageView(VK_IMAGE_VIEW_TYPE_2D, VK_IMAGE_ASPECT_COLOR_BIT);
@@ -52,29 +53,58 @@ namespace mlx
 			Image::copyFromBuffer(staging_buffer);
 			staging_buffer.destroy();
 		}
-		_cpu_map = nullptr;
-		_cpu_map_adress = nullptr;
 	}
 
-	void* Texture::openCPUmap()
+	void Texture::setPixel(int x, int y, uint32_t color) noexcept
 	{
-		if(_cpu_map == nullptr)
-		{
-			_cpu_map = std::make_shared<Buffer>();
-			_cpu_map->create(Buffer::kind::dynamic, sizeof(uint32_t) * (getWidth() * getHeight()), VK_BUFFER_USAGE_TRANSFER_SRC_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT);
-			Image::copyToBuffer(*_cpu_map);
-		}
-		if(!_cpu_map->isMapped())
-			_cpu_map->mapMem(&_cpu_map_adress);
-		if(_cpu_map_adress == nullptr)
-			core::error::report(e_kind::fatal_error, "Texture : CPU memory mapping failed");
-		return _cpu_map_adress;
+		if(x < 0 || y < 0 || x > getWidth() || y > getHeight())
+			return;
+		if(_map == nullptr)
+			openCPUmap();
+		_cpu_map[(y * getWidth()) + x] = color;
+		_has_been_modified = true;
+	}
+
+	int Texture::getPixel(int x, int y) noexcept
+	{
+		if(x < 0 || y < 0 || x > getWidth() || y > getHeight())
+			return 0;
+		if(_map == nullptr)
+			openCPUmap();
+		uint32_t color = _cpu_map[(y * getWidth()) + x];
+		color >>= 8;
+		return (color);
+	}
+
+	void Texture::openCPUmap()
+	{
+		if(_map != nullptr)
+			return;
+
+		#ifdef DEBUG
+			core::error::report(e_kind::message, "Texture : enabling CPU mapping");
+		#endif
+
+		std::size_t size = getWidth() * getHeight() * formatSize(getFormat());
+		_buf_map.emplace();
+		_buf_map->create(Buffer::kind::dynamic, size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT);
+		Image::copyToBuffer(*_buf_map);
+		_buf_map->mapMem(&_map);
+		_cpu_map = std::vector<uint32_t>(getWidth() * getHeight(), 0);
+		std::memcpy(_cpu_map.data(), _map, size);
+		#ifdef DEBUG
+			core::error::report(e_kind::message, "Texture : mapped CPU memory using staging buffer");
+		#endif
 	}
 
 	void Texture::render(Renderer& renderer, int x, int y)
 	{
-		if(_cpu_map_adress != nullptr)
-			Image::copyFromBuffer(*_cpu_map);
+		if(_has_been_modified)
+		{
+			std::memcpy(_map, _cpu_map.data(), _cpu_map.size() * formatSize(getFormat()));
+			Image::copyFromBuffer(*_buf_map);
+			_has_been_modified = false;
+		}
 		auto cmd = renderer.getActiveCmdBuffer().get();
 		_vbo.bind(renderer);
 		_ibo.bind(renderer);
@@ -86,8 +116,8 @@ namespace mlx
 	void Texture::destroy() noexcept
 	{
 		Image::destroy();
-		if(_cpu_map != nullptr)
-			_cpu_map->destroy();
+		if(_buf_map.has_value())
+			_buf_map->destroy();
 		_vbo.destroy();
 		_ibo.destroy();
 	}
@@ -96,23 +126,15 @@ namespace mlx
 	{
 		Texture texture;
 		int channels;
-		VkFormat format;
 		uint8_t* data = nullptr;
 		std::string filename = file.string();
 
 		if(!std::filesystem::exists(std::move(file)))
 			core::error::report(e_kind::fatal_error, "Image : file not found '%s'", filename.c_str());
 		if(stbi_is_hdr(filename.c_str()))
-		{
-			data = (uint8_t*)stbi_loadf(filename.c_str(), w, h, &channels, 4);
-			format = VK_FORMAT_R32G32B32A32_SFLOAT;
-		}
-		else
-		{
-			data = stbi_load(filename.c_str(), w, h, &channels, 4);
-			format = VK_FORMAT_R8G8B8A8_UNORM;
-		}
-		texture.create(data, *w, *h, format);
+			core::error::report(e_kind::fatal_error, "Texture : unsupported image format '%s'", filename.c_str());
+		data = stbi_load(filename.c_str(), w, h, &channels, 4);
+		texture.create(data, *w, *h, VK_FORMAT_R8G8B8A8_UNORM);
 		stbi_image_free(data);
 		return texture;
 	}
