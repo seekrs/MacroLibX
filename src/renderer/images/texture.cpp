@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 18:03:35 by maldavid          #+#    #+#             */
-/*   Updated: 2023/08/02 12:34:25 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/08/02 12:52:26 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ namespace mlx
 		if(_map == nullptr)
 			openCPUmap();
 		uint32_t color = _cpu_map[(y * getWidth()) + x];
-		color >>= 8;
 		return (color);
 	}
 
