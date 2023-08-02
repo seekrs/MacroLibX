@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 16:41:13 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/13 10:49:04 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/19 13:43:49 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@
 
 #define STB_TRUETYPE_IMPLEMENTATION
 #include <stb_truetype.h>
-
-#include <iostream>
 
 namespace mlx
 {

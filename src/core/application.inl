@@ -32,16 +32,6 @@ namespace mlx::core
 		_in->onEvent(_graphics[*static_cast<int*>(win)]->getWindow()->getID(), event, funct_ptr, param);
 	}
 
-	void Application::enableAutoRepeat() noexcept
-	{
-		_in->enableAutoRepeat();
-	}
-
-	void Application::disableAutoRepeat() noexcept
-	{
-		_in->disableAutoRepeat();
-	}
-
 	void Application::getScreenSize(int* w, int* h) noexcept
 	{
 		SDL_DisplayMode DM;
@@ -67,7 +57,7 @@ namespace mlx::core
 		_graphics[*static_cast<int*>(win)].reset();
 	}
 
-	void Application::pixelPut(void* win, int x, int y, int color) const noexcept
+	void Application::pixelPut(void* win, int x, int y, uint32_t color) const noexcept
 	{
 		_graphics[*static_cast<int*>(win)]->pixelPut(x, y, color);
 	}
@@ -79,9 +69,20 @@ namespace mlx::core
 
 	void Application::texturePut(void* win, void* img, int x, int y)
 	{
-		TextureID id = *static_cast<TextureID*>(img);
-		std::shared_ptr<Texture> texture = _texture_lib.getTexture(id);
+		Texture* texture = static_cast<Texture*>(img);
 		_graphics[*static_cast<int*>(win)]->texturePut(texture, x, y);
+	}
+
+	int Application::getTexturePixel(void* img, int x, int y)
+	{
+		Texture* texture = static_cast<Texture*>(img);
+		return texture->getPixel(x, y);
+	}
+
+	void Application::setTexturePixel(void* img, int x, int y, uint32_t color)
+	{
+		Texture* texture = static_cast<Texture*>(img);
+		texture->setPixel(x, y, color);
 	}
 
 	void Application::loopHook(int (*f)(void*), void* param)

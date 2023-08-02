@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 11:59:57 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/12 13:24:19 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/19 13:43:43 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include <core/errors.h>
 #include <renderer/renderer.h>
 #include <algorithm>
-#include <iostream>
 
 namespace mlx
 {

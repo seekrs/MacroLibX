@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 18:55:57 by maldavid          #+#    #+#             */
-/*   Updated: 2023/01/25 15:24:40 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/23 12:37:32 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ namespace mlx
 		VkMemoryAllocateInfo allocInfo{};
         allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
         allocInfo.allocationSize = memRequirements.size;
-        allocInfo.memoryTypeIndex = RCore::findMemoryType(memRequirements.memoryTypeBits, properties);
+        allocInfo.memoryTypeIndex = *RCore::findMemoryType(memRequirements.memoryTypeBits, properties);
 
         if(vkAllocateMemory(device, &allocInfo, nullptr, &_memory) != VK_SUCCESS)
             core::error::report(e_kind::fatal_error, "Vulkan : failed to allocate buffer memory");

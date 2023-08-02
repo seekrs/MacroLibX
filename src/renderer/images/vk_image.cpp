@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:59:07 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/13 15:07:01 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/23 14:59:41 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,16 @@
 #include <renderer/core/render_core.h>
 #include <renderer/buffers/vk_buffer.h>
 #include <renderer/command/vk_cmd_pool.h>
+#include <renderer/core/vk_fence.h>
 
 namespace mlx
 {
-	void Image::create(uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, VkMemoryPropertyFlags properties)
+	void Image::create(uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, std::vector<VkMemoryPropertyFlags> properties)
 	{
 		_width = width;
 		_height = height;
 		_format = format;
+		_tiling = tiling;
 
 		VkImageCreateInfo imageInfo{};
 		imageInfo.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
@@ -43,16 +45,27 @@ namespace mlx
 
 		VkMemoryRequirements memRequirements;
 		vkGetImageMemoryRequirements(Render_Core::get().getDevice().get(), _image, &memRequirements);
-
+		
+		std::optional<uint32_t> memTypeIndex;
+		for(auto prop : properties)
+		{
+			memTypeIndex = RCore::findMemoryType(memRequirements.memoryTypeBits, prop, false);
+			if(memTypeIndex.has_value())
+				break;
+		}
+		if(!memTypeIndex.has_value())
+			core::error::report(e_kind::fatal_error, "Vulkan : failed to find suitable memory type for an image");
 		VkMemoryAllocateInfo allocInfo{};
 		allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
 		allocInfo.allocationSize = memRequirements.size;
-		allocInfo.memoryTypeIndex = RCore::findMemoryType(memRequirements.memoryTypeBits, properties);
+		allocInfo.memoryTypeIndex = *memTypeIndex;
 
 		if(vkAllocateMemory(Render_Core::get().getDevice().get(), &allocInfo, nullptr, &_memory) != VK_SUCCESS)
 			core::error::report(e_kind::fatal_error, "Vulkan : failed to allocate memory for an image");
 
 		vkBindImageMemory(Render_Core::get().getDevice().get(), _image, _memory, 0);
+
+		_pool.init();
 	}
 
 	void Image::createImageView(VkImageViewType type, VkImageAspectFlags aspectFlags) noexcept
@@ -93,24 +106,11 @@ namespace mlx
 
 	void Image::copyFromBuffer(Buffer& buffer)
 	{
-		CmdPool cmdpool;
-		cmdpool.init();
-		auto device = Render_Core::get().getDevice().get();
+		if(!_transfer_cmd.isInit())
+			_transfer_cmd.init(&_pool);
 
-		VkCommandBufferAllocateInfo allocInfo{};
-		allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
-		allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
-		allocInfo.commandPool = cmdpool.get();
-		allocInfo.commandBufferCount = 1;
-
-		VkCommandBuffer cmdBuffer;
-		vkAllocateCommandBuffers(device, &allocInfo, &cmdBuffer);
-
-		VkCommandBufferBeginInfo beginInfo{};
-		beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-		beginInfo.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
-
-		vkBeginCommandBuffer(cmdBuffer, &beginInfo);
+		_transfer_cmd.reset();
+		_transfer_cmd.beginRecord();
 
 		VkImageMemoryBarrier copy_barrier = {};
 		copy_barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
@@ -123,7 +123,7 @@ namespace mlx
 		copy_barrier.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
 		copy_barrier.subresourceRange.levelCount = 1;
 		copy_barrier.subresourceRange.layerCount = 1;
-		vkCmdPipelineBarrier(cmdBuffer, VK_PIPELINE_STAGE_HOST_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT, 0, 0, nullptr, 0, nullptr, 1, &copy_barrier);
+		vkCmdPipelineBarrier(_transfer_cmd.get(), VK_PIPELINE_STAGE_HOST_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT, 0, 0, nullptr, 0, nullptr, 1, &copy_barrier);
 
 		VkBufferImageCopy region = {};
 		region.bufferOffset = 0;
@@ -133,13 +133,10 @@ namespace mlx
 		region.imageSubresource.mipLevel = 0;
 		region.imageSubresource.baseArrayLayer = 0;
 		region.imageSubresource.layerCount = 1;
-		region.imageOffset = {0, 0, 0};
-		region.imageExtent = {
-			_width,
-			_height,
-			1
-		};
-		vkCmdCopyBufferToImage(cmdBuffer, buffer.get(), _image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &region);
+		region.imageOffset = { 0, 0, 0 };
+		region.imageExtent = { _width, _height, 1 };
+
+		vkCmdCopyBufferToImage(_transfer_cmd.get(), buffer.get(), _image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &region);
 
 		VkImageMemoryBarrier use_barrier = {};
 		use_barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
@@ -153,43 +150,19 @@ namespace mlx
 		use_barrier.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
 		use_barrier.subresourceRange.levelCount = 1;
 		use_barrier.subresourceRange.layerCount = 1;
-		vkCmdPipelineBarrier(cmdBuffer, VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT, 0, 0, nullptr, 0, nullptr, 1, &use_barrier);
+		vkCmdPipelineBarrier(_transfer_cmd.get(), VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT, 0, 0, nullptr, 0, nullptr, 1, &use_barrier);
 
-		vkEndCommandBuffer(cmdBuffer);
-
-		VkSubmitInfo submitInfo{};
-		submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-		submitInfo.commandBufferCount = 1;
-		submitInfo.pCommandBuffers = &cmdBuffer;
-
-		auto graphicsQueue = Render_Core::get().getQueue().getGraphic();
-
-		vkQueueSubmit(graphicsQueue, 1, &submitInfo, VK_NULL_HANDLE);
-		vkQueueWaitIdle(graphicsQueue);
-
-		cmdpool.destroy();
+		_transfer_cmd.endRecord();
+		_transfer_cmd.submitIdle();
 	}
 
 	void Image::copyToBuffer(Buffer& buffer)
 	{
-		CmdPool cmdpool;
-		cmdpool.init();
-		auto device = Render_Core::get().getDevice().get();
+		if(!_transfer_cmd.isInit())
+			_transfer_cmd.init(&_pool);
 
-		VkCommandBufferAllocateInfo allocInfo{};
-		allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
-		allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
-		allocInfo.commandPool = cmdpool.get();
-		allocInfo.commandBufferCount = 1;
-
-		VkCommandBuffer cmdBuffer;
-		vkAllocateCommandBuffers(device, &allocInfo, &cmdBuffer);
-
-		VkCommandBufferBeginInfo beginInfo{};
-		beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-		beginInfo.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
-
-		vkBeginCommandBuffer(cmdBuffer, &beginInfo);
+		_transfer_cmd.reset();
+		_transfer_cmd.beginRecord();
 
 		VkImageMemoryBarrier copy_barrier = {};
 		copy_barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
@@ -202,7 +175,7 @@ namespace mlx
 		copy_barrier.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
 		copy_barrier.subresourceRange.levelCount = 1;
 		copy_barrier.subresourceRange.layerCount = 1;
-		vkCmdPipelineBarrier(cmdBuffer, VK_PIPELINE_STAGE_HOST_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT, 0, 0, nullptr, 0, nullptr, 1, &copy_barrier);
+		vkCmdPipelineBarrier(_transfer_cmd.get(), VK_PIPELINE_STAGE_HOST_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT, 0, 0, nullptr, 0, nullptr, 1, &copy_barrier);
 
 		VkBufferImageCopy region = {};
 		region.bufferOffset = 0;
@@ -212,13 +185,10 @@ namespace mlx
 		region.imageSubresource.mipLevel = 0;
 		region.imageSubresource.baseArrayLayer = 0;
 		region.imageSubresource.layerCount = 1;
-		region.imageOffset = {0, 0, 0};
-		region.imageExtent = {
-			_width,
-			_height,
-			1
-		};
-		vkCmdCopyImageToBuffer(cmdBuffer, _image, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, buffer.get(), 1, &region);
+		region.imageOffset = { 0, 0, 0 };
+		region.imageExtent = { _width, _height, 1 };
+
+		vkCmdCopyImageToBuffer(_transfer_cmd.get(), _image, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, buffer.get(), 1, &region);
 
 		VkImageMemoryBarrier use_barrier = {};
 		use_barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
@@ -232,21 +202,10 @@ namespace mlx
 		use_barrier.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
 		use_barrier.subresourceRange.levelCount = 1;
 		use_barrier.subresourceRange.layerCount = 1;
-		vkCmdPipelineBarrier(cmdBuffer, VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT, 0, 0, nullptr, 0, nullptr, 1, &use_barrier);
+		vkCmdPipelineBarrier(_transfer_cmd.get(), VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT, 0, 0, nullptr, 0, nullptr, 1, &use_barrier);
 
-		vkEndCommandBuffer(cmdBuffer);
-
-		VkSubmitInfo submitInfo{};
-		submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-		submitInfo.commandBufferCount = 1;
-		submitInfo.pCommandBuffers = &cmdBuffer;
-
-		auto graphicsQueue = Render_Core::get().getQueue().getGraphic();
-
-		vkQueueSubmit(graphicsQueue, 1, &submitInfo, VK_NULL_HANDLE);
-		vkQueueWaitIdle(graphicsQueue);
-
-		cmdpool.destroy();
+		_transfer_cmd.endRecord();
+		_transfer_cmd.submitIdle();
 	}
 
 	void Image::destroy() noexcept
@@ -258,6 +217,9 @@ namespace mlx
 
 		vkFreeMemory(Render_Core::get().getDevice().get(), _memory, nullptr);
 		vkDestroyImage(Render_Core::get().getDevice().get(), _image, nullptr);
+		if(_transfer_cmd.isInit())
+			_transfer_cmd.destroy();
+		_pool.destroy();
 	}
 
 	uint32_t formatSize(VkFormat format)

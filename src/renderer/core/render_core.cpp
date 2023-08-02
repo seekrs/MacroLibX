@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 23:33:34 by maldavid          #+#    #+#             */
-/*   Updated: 2023/03/31 12:22:34 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/23 19:09:21 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,15 @@
 #include "render_core.h"
 #include <mutex>
 
+#ifdef DEBUG
+	#warning "MLX is being compiled in debug mode, this activates Vulkan's validation layers and debug messages and may impact rendering performances"
+#endif
+
 namespace mlx
 {
-	std::mutex mutex;
-
 	namespace RCore
 	{
-		uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties)
+		std::optional<uint32_t> findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties, bool error)
 		{
 			VkPhysicalDeviceMemoryProperties memProperties;
 			vkGetPhysicalDeviceMemoryProperties(Render_Core::get().getDevice().getPhysicalDevice(), &memProperties);
@@ -37,11 +39,11 @@ namespace mlx
 			for(uint32_t i = 0; i < memProperties.memoryTypeCount; i++)
 			{
 				if((typeFilter & (1 << i)) && (memProperties.memoryTypes[i].propertyFlags & properties) == properties)
-				return i;
+					return i;
 			}
-
-			core::error::report(e_kind::fatal_error, "Vulkan : failed to find suitable memory type");
-			return -1; // just to avoid warning
+			if(error)
+				core::error::report(e_kind::fatal_error, "Vulkan : failed to find suitable memory type");
+			return std::nullopt;
 		}
 	}
 
@@ -60,12 +62,10 @@ namespace mlx
 
 	void Render_Core::destroy()
 	{
-        std::unique_lock<std::mutex> watchdog(mutex, std::try_to_lock);
-
 		if(!_is_init)
 			return;
 
-        vkDeviceWaitIdle(_device());
+		vkDeviceWaitIdle(_device());
 
 		_device.destroy();
 		_layers.destroy();

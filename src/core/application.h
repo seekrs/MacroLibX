@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:49:46 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/13 10:56:19 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/04/25 15:23:31 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@
 #include <core/graphics.h>
 #include <platform/inputs.h>
 
-#include <renderer/texture_library.h>
-
 namespace mlx::core
 {
 	class Application
@@ -39,22 +37,20 @@ namespace mlx::core
 
 			inline void onEvent(void* win, int event, int (*funct_ptr)(int, void*), void* param) noexcept;
 
-			inline void enableAutoRepeat() noexcept;
-			inline void disableAutoRepeat() noexcept;
-
 			inline void getScreenSize(int* w, int* h) noexcept;
 
 			inline void* newGraphicsSuport(std::size_t w, std::size_t h, std::string title);
 			inline void clearGraphicsSupport(void* win);
 			inline void destroyGraphicsSupport(void* win);
 
-			inline void pixelPut(void* win, int x, int y, int color) const noexcept;
+			inline void pixelPut(void* win, int x, int y, uint32_t color) const noexcept;
 			inline void stringPut(void* win, int x, int y, int color, char* str);
 
 			void* newTexture(int w, int h);
 			void* newStbTexture(char* file, int* w, int* h); // stb textures are format managed by stb image (png, jpg, bpm, ...)
-			char* mapTexture(void* img, int* bits_per_pixel, int* size_line, int* endian);
 			inline void texturePut(void* win, void* img, int x, int y);
+			inline int getTexturePixel(void* img, int x, int y);
+			inline void setTexturePixel(void* img, int x, int y, uint32_t color);
 			void destroyTexture(void* ptr);
 
 			inline void loopHook(int (*f)(void*), void* param);
@@ -65,8 +61,7 @@ namespace mlx::core
 			~Application() = default;
 
 		private:
-			TextureLibrary _texture_lib;
-			std::list<TextureID> _texture_ids;
+			std::list<Texture> _textures;
 			std::vector<std::unique_ptr<GraphicsSupport>> _graphics;
 			std::function<int(void*)> _loop_hook;
 			std::unique_ptr<Input> _in;
