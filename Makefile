@@ -6,7 +6,7 @@
 #    By: vvaas <vvaas@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/04 16:43:41 by maldavid          #+#    #+#              #
-#    Updated: 2023/08/09 13:44:58 by maldavid         ###   ########.fr        #
+#    Updated: 2023/08/09 13:51:08 by maldavid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,14 +30,17 @@ ifeq ($(TOOLCHAIN), gcc)
 endif
 
 CXXFLAGS	= -std=c++17 -O3 -fPIC
-INCLUDES	= -I./includes -I./src -I./third_party -I ~/.xmake/packages/l/libsdl/2.26.4/8dfbcb8049e744a597cd5333e1b399cd/include
+INCLUDES	= -I./includes -I./src -I./third_party
 
 ifeq ($(DEBUG), true)
 	CXXFLAGS += -g -D DEBUG
+<<<<<<< HEAD
 endif
 
 ifeq ($(IMAGES_OPTIMIZED), true)
 	CXXFLAGS += -D IMAGE_OPTIMIZED
+=======
+>>>>>>> e39dc7ee7e877b2e0fb5dd455742cd15429f3690
 endif
 
 RM			= rm -f
