@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 18:03:35 by maldavid          #+#    #+#             */
-/*   Updated: 2023/06/06 16:05:02 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/08/09 13:42:48 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,24 @@
 #include <renderer/images/texture.h>
 #include <renderer/buffers/vk_buffer.h>
 #include <renderer/renderer.h>
+#include <cstring>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
+
+#include <iostream>
+
+#ifdef IMAGE_OPTIMIZED
+	#define TILING VK_IMAGE_TILING_OPTIMAL
+#else
+	#define TILING VK_IMAGE_TILING_LINEAR
+#endif
 
 namespace mlx
 {
 	void Texture::create(uint8_t* pixels, uint32_t width, uint32_t height, VkFormat format)
 	{
-		Image::create(width, height, format, VK_IMAGE_TILING_OPTIMAL,
+		Image::create(width, height, format, TILING,
 			VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT | VK_IMAGE_USAGE_SAMPLED_BIT,
 			{ VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT }
 		);
@@ -56,10 +65,9 @@ namespace mlx
 	{
 		if(x < 0 || y < 0 || x > getWidth() || y > getHeight())
 			return;
-		if(_cpu_map == nullptr)
+		if(_map == nullptr)
 			openCPUmap();
-		unsigned char* mem = static_cast<unsigned char*>(_cpu_map) + (y * getWidth() * formatSize(getFormat())) + (x * formatSize(getFormat()));
-		*reinterpret_cast<uint32_t*>(mem) = color;
+		_cpu_map[(y * getWidth()) + x] = color;
 		_has_been_modified = true;
 	}
 
@@ -67,18 +75,15 @@ namespace mlx
 	{
 		if(x < 0 || y < 0 || x > getWidth() || y > getHeight())
 			return 0;
-		if(_cpu_map == nullptr)
+		if(_map == nullptr)
 			openCPUmap();
-		uint32_t color = 0;
-		unsigned char* mem = static_cast<unsigned char*>(_cpu_map) + (y * getWidth() * formatSize(getFormat())) + (x * formatSize(getFormat()));
-		color = *reinterpret_cast<uint32_t*>(mem);
-		color >>= 8;
+		uint32_t color = _cpu_map[(y * getWidth()) + x];
 		return (color);
 	}
 
 	void Texture::openCPUmap()
 	{
-		if(_cpu_map != nullptr)
+		if(_map != nullptr)
 			return;
 
 		#ifdef DEBUG
@@ -89,7 +94,9 @@ namespace mlx
 		_buf_map.emplace();
 		_buf_map->create(Buffer::kind::dynamic, size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT);
 		Image::copyToBuffer(*_buf_map);
-		_buf_map->mapMem(&_cpu_map);
+		_buf_map->mapMem(&_map);
+		_cpu_map = std::vector<uint32_t>(getWidth() * getHeight(), 0);
+		std::memcpy(_cpu_map.data(), _map, size);
 		#ifdef DEBUG
 			core::error::report(e_kind::message, "Texture : mapped CPU memory using staging buffer");
 		#endif
@@ -99,6 +106,7 @@ namespace mlx
 	{
 		if(_has_been_modified)
 		{
+			std::memcpy(_map, _cpu_map.data(), _cpu_map.size() * formatSize(getFormat()));
 			Image::copyFromBuffer(*_buf_map);
 			_has_been_modified = false;
 		}
