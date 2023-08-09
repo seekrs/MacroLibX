@@ -36,3 +36,13 @@ Dependances :
 ```bash
 clang myApp.c MacroLibX/libmlx.so -lSDL2
 ```
+
+## /!\ If you run into glitches when writing or reading pixels from images /!\
+
+You need to add `IMAGES_OPTIMIZED=false` to your make mlx command
+
+```bash
+~ git clone https://github.com/420verfl0w/MacroLibX.git
+~ cd MacroLibX
+~ make IMAGES_OPTIMIZED=false
+```

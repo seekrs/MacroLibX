@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 13:18:50 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/19 11:32:34 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/08/02 05:27:27 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,9 @@ namespace mlx
 			void setPixel(uint32_t x, uint32_t y, uint32_t color) noexcept;
 			void present() noexcept;
 			void render(class Renderer& renderer) noexcept;
-			VkDescriptorSet getDescriptorSet() noexcept;
+			inline VkDescriptorSet getDescriptorSet() noexcept { return _texture.getSet(); }
 
 			void clear();
-
 			void destroy() noexcept;
 
 			~PixelPutPipeline();
@@ -39,7 +38,9 @@ namespace mlx
 		private:
 			Texture _texture;
 			Buffer _buffer;
-			void* _map = nullptr;
+			// using vector as CPU map and not directly writting to mapped buffer to improve performances
+			std::vector<uint32_t> _cpu_map;
+			void* _buffer_map = nullptr;
 			uint32_t _width = 0;
 			uint32_t _height = 0;
 			bool _has_been_modified = true;

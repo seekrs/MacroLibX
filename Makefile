@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+         #
+#    By: vvaas <vvaas@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/04 16:43:41 by maldavid          #+#    #+#              #
-#    Updated: 2023/06/06 15:59:27 by maldavid         ###   ########.fr        #
+#    Updated: 2023/08/09 13:44:58 by maldavid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ OBJS		= $(SRCS:.cpp=.o)
 
 DEBUG		?= false
 TOOLCHAIN	?= clang
+IMAGES_OPTIMIZED	?= true
 
 CXX			= clang++
 
@@ -33,6 +34,10 @@ INCLUDES	= -I./includes -I./src -I./third_party -I ~/.xmake/packages/l/libsdl/2.
 
 ifeq ($(DEBUG), true)
 	CXXFLAGS += -g -D DEBUG
+endif
+
+ifeq ($(IMAGES_OPTIMIZED), true)
+	CXXFLAGS += -D IMAGE_OPTIMIZED
 endif
 
 RM			= rm -f

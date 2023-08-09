@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 02:24:58 by maldavid          #+#    #+#             */
-/*   Updated: 2023/06/06 15:54:44 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/08/02 12:32:27 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,9 @@ namespace mlx
 			C_VBO _vbo;
 			C_IBO _ibo;
 			DescriptorSet _set;
+			std::vector<uint32_t> _cpu_map;
 			std::optional<Buffer> _buf_map = std::nullopt;
-			void* _cpu_map = nullptr;
+			void* _map = nullptr;
 			bool _has_been_modified = false;
 			bool _has_been_updated = false;
 	};
