@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+// MacroLibX official repo https://github.com/420verfl0w/MacroLibX
+
 #ifndef __MACRO_LIB_X_H__
 #define __MACRO_LIB_X_H__
 
@@ -164,6 +166,14 @@ void* mlx_new_image(void* mlx, int width, int height);
  * @param y					Y coordinate in the image
  *
  * @return (int)			Return the pixel data
+ *
+ * /!\ If you run into glitches when writing or reading pixels from images /!\
+ * You need to add IMAGES_OPTIMIZED=false to your make mlx command
+ * ```
+ * 	~ git clone https://github.com/420verfl0w/MacroLibX.git
+ * 	~ cd MacroLibX
+ * 	~ make IMAGES_OPTIMIZED=false
+ * ```
  */
 int mlx_get_image_pixel(void* mlx, void* img, int x, int y);
 
@@ -177,6 +187,14 @@ int mlx_get_image_pixel(void* mlx, void* img, int x, int y);
  * @param color				Color of the pixel to set
  *
  * @return (void)
+ *
+ * /!\ If you run into glitches when writing or reading pixels from images /!\
+ * You need to add IMAGES_OPTIMIZED=false to your make mlx command
+ * ```
+ * 	~ git clone https://github.com/420verfl0w/MacroLibX.git
+ * 	~ cd MacroLibX
+ * 	~ make IMAGES_OPTIMIZED=false
+ * ```
  */
 void mlx_set_image_pixel(void* mlx, void* img, int x, int y, int color);
 
