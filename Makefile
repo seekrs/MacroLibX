@@ -34,13 +34,10 @@ INCLUDES	= -I./includes -I./src -I./third_party
 
 ifeq ($(DEBUG), true)
 	CXXFLAGS += -g -D DEBUG
-<<<<<<< HEAD
 endif
 
 ifeq ($(IMAGES_OPTIMIZED), true)
 	CXXFLAGS += -D IMAGE_OPTIMIZED
-=======
->>>>>>> e39dc7ee7e877b2e0fb5dd455742cd15429f3690
 endif
 
 RM			= rm -f
