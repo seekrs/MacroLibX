@@ -6,11 +6,12 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:30:19 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/19 12:14:38 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/08/28 10:49:03 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "inputs.h"
+#include <mlx.h>
 #include <cstring>
 
 namespace mlx
@@ -40,91 +41,93 @@ namespace mlx
 			uint32_t id = _event.window.windowID;
 			if(!_events_hooks.count(id))
 				continue;
+			auto& hooks = _events_hooks[id];
 
 			switch(_event.type) 
 			{
 				case SDL_KEYDOWN:
 				{
 					_keys[_event.key.keysym.scancode] = static_cast<uint8_t>(action::down);
-					if(_events_hooks[id][0].hook)
-						_events_hooks[id][0].hook(_event.key.keysym.scancode, _events_hooks[id][0].param);
+					if(hooks[MLX_KEYDOWN].hook)
+						hooks[MLX_KEYDOWN].hook(_event.key.keysym.scancode, hooks[MLX_KEYDOWN].param);
 					break;
 				}
 
 				case SDL_KEYUP:
 				{
 					_keys[_event.key.keysym.scancode] = static_cast<uint8_t>(action::up);
-					if(_events_hooks[id][1].hook)
-						_events_hooks[id][1].hook(_event.key.keysym.scancode, _events_hooks[id][1].param);
+					if(hooks[MLX_KEYUP].hook)
+						hooks[MLX_KEYUP].hook(_event.key.keysym.scancode, hooks[MLX_KEYUP].param);
 					break;
 				}
 
 				case SDL_MOUSEBUTTONDOWN:
 				{
 					_mouse[_event.button.button] = static_cast<uint8_t>(action::down);
-					if(_events_hooks[id][2].hook)
-						_events_hooks[id][2].hook(_event.button.button, _events_hooks[id][2].param);
+					if(hooks[MLX_MOUSEDOWN].hook)
+						hooks[MLX_MOUSEDOWN].hook(_event.button.button, hooks[MLX_MOUSEDOWN].param);
 					break;
 				}
 
 				case SDL_MOUSEBUTTONUP:
 				{
 					_mouse[_event.button.button] = static_cast<uint8_t>(action::up);
-					if(_events_hooks[id][3].hook)
-						_events_hooks[id][3].hook(_event.button.button, _events_hooks[id][3].param);
+					if(hooks[MLX_MOUSEUP].hook)
+						hooks[MLX_MOUSEUP].hook(_event.button.button, hooks[MLX_MOUSEUP].param);
 					break;
 				}
 
 				case SDL_WINDOWEVENT:
 				{
+					auto& win_hook = hooks[MLX_WINDOW_EVENT];
 					switch(_event.window.event)
 					{
 						case SDL_WINDOWEVENT_CLOSE:
 						{
-							if(_events_hooks[id][4].hook)
-								_events_hooks[id][4].hook(0, _events_hooks[id][4].param);
+							if(win_hook.hook)
+								win_hook.hook(0, win_hook.param);
 							break;
 						}
 						case SDL_WINDOWEVENT_MOVED:
 						{
-							if(_events_hooks[id][4].hook)
-								_events_hooks[id][4].hook(1, _events_hooks[id][4].param);
+							if(win_hook.hook)
+								win_hook.hook(1, win_hook.param);
 							break;
 						}
 						case SDL_WINDOWEVENT_MINIMIZED:
 						{
-							if(_events_hooks[id][4].hook)
-								_events_hooks[id][4].hook(2, _events_hooks[id][4].param);
+							if(win_hook.hook)
+								win_hook.hook(2, win_hook.param);
 							break;
 						}
 						case SDL_WINDOWEVENT_MAXIMIZED:
 						{
-							if(_events_hooks[id][4].hook)
-								_events_hooks[id][4].hook(3, _events_hooks[id][4].param);
+							if(win_hook.hook)
+								win_hook.hook(3, win_hook.param);
 							break;
 						}
 						case SDL_WINDOWEVENT_ENTER:
 						{
-							if(_events_hooks[id][4].hook)
-								_events_hooks[id][4].hook(4, _events_hooks[id][4].param);
+							if(win_hook.hook)
+								win_hook.hook(4, win_hook.param);
 							break;
 						}
 						case SDL_WINDOWEVENT_FOCUS_GAINED:
 						{
-							if(_events_hooks[id][4].hook)
-								_events_hooks[id][4].hook(4, _events_hooks[id][4].param);
+							if(win_hook.hook)
+								win_hook.hook(4, win_hook.param);
 							break;
 						}
 						case SDL_WINDOWEVENT_LEAVE:
 						{
-							if(_events_hooks[id][4].hook)
-								_events_hooks[id][4].hook(5, _events_hooks[id][4].param);
+							if(win_hook.hook)
+								win_hook.hook(5, win_hook.param);
 							break;
 						}
 						case SDL_WINDOWEVENT_FOCUS_LOST:
 						{
-							if(_events_hooks[id][4].hook)
-								_events_hooks[id][4].hook(4, _events_hooks[id][4].param);
+							if(win_hook.hook)
+								win_hook.hook(4, win_hook.param);
 							break;
 						}
 

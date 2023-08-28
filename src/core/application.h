@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:49:46 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/25 15:23:31 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/08/28 10:19:35 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ namespace mlx::core
 	class Application
 	{
 		public:
-			Application() : _in(std::make_unique<Input>()) {}
+			Application();
 
 			inline void getMousePos(int* x, int* y) noexcept;
 			inline void mouseMove(void* win, int x, int y) noexcept;
@@ -58,7 +58,7 @@ namespace mlx::core
 			
 			void run() noexcept;
 
-			~Application() = default;
+			~Application();
 
 		private:
 			std::list<Texture> _textures;
