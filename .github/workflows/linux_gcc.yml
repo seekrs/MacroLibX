@@ -28,17 +28,10 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    # Install system dependencies
-    - name: Install Vulkan SDK
-      uses: humbletim/install-vulkan-sdk@v1.1.1
-      with:
-        version: 1.3.204.1
-        cache: true
-
     - name: Install system dependencies
       run: |
         sudo apt-get update
-        sudo apt-get -y install mesa-common-dev libsdl2-2.0-0 libsdl2-dev build-essential vulkan-utils libvulkan-dev
+        sudo apt-get -y install mesa-common-dev libsdl2-2.0-0 libsdl2-dev build-essential libvulkan-dev
 
     # Build the lib
     - name: Build MacroLibX
