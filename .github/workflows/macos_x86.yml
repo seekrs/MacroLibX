@@ -35,6 +35,10 @@ jobs:
         version: 1.3.204.1
         cache: true
 
+    - name: Install Dependancies
+      run: |
+        brew install SDL2
+
     - name: Setup SDL2 frameworks
       uses: BrettDong/setup-sdl2-frameworks@main
       with:
