@@ -6,7 +6,7 @@
 #    By: vvaas <vvaas@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/04 16:43:41 by maldavid          #+#    #+#              #
-#    Updated: 2023/08/09 13:51:08 by maldavid         ###   ########.fr        #
+#    Updated: 2023/10/19 23:31:27 by maldavid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ SRCS		+= $(wildcard $(addsuffix /*.cpp, ./src/renderer/**))
 
 OBJS		= $(SRCS:.cpp=.o)
 
+OS = $(shell uname -s)
 DEBUG		?= false
 TOOLCHAIN	?= clang
 IMAGES_OPTIMIZED	?= true
@@ -31,6 +32,12 @@ endif
 
 CXXFLAGS	= -std=c++17 -O3 -fPIC
 INCLUDES	= -I./includes -I./src -I./third_party
+
+LDLIBS =
+
+ifeq ($(OS), Darwin)
+	LDLIBS += -framework SDL2
+endif
 
 ifeq ($(DEBUG), true)
 	CXXFLAGS += -g -D DEBUG
@@ -50,7 +57,7 @@ all:		$(NAME)
 
 $(NAME):	$(OBJS)
 	@echo "\e[1;32m[linking ...]\e[1;00m "$@
-	@$(CXX) -shared -o $(NAME) $(OBJS)
+	@$(CXX) -shared -o $(NAME) $(OBJS) $(LDLIBS)
 	@echo "\e[1;32m[build finished]\e[1;00m"
 
 clean:
