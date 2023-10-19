@@ -2,7 +2,7 @@
 
 [![linux clang workflow](https://github.com/420verfl0w/MacroLibX/actions/workflows/linux_clang.yml/badge.svg)](https://github.com/420verfl0w/MacroLibX/actions/workflows/linux_clang.yml)
 [![linux gcc workflow](https://github.com/420verfl0w/MacroLibX/actions/workflows/linux_gcc.yml/badge.svg)](https://github.com/420verfl0w/MacroLibX/actions/workflows/linux_gcc.yml)
-[![macos workflow](https://github.com/420verfl0w/MacroLibX/actions/workflows/macos.yml/badge.svg)](https://github.com/420verfl0w/MacroLibX/actions/workflows/macos.yml)
+[![macos workflow](https://github.com/420verfl0w/MacroLibX/actions/workflows/macos_x86.yml/badge.svg)](https://github.com/420verfl0w/MacroLibX/actions/workflows/macos_x86.yml)
 
 A rewrite of School 42's MiniLibX using SDL2 and Vulkan. The goal of this version is to give a light, fast and modern graphical tool while keeping the same API as the version currently used at 42.
 
