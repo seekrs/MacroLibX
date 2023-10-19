@@ -6,7 +6,7 @@
 #    By: vvaas <vvaas@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/04 16:43:41 by maldavid          #+#    #+#              #
-#    Updated: 2023/10/19 23:44:50 by maldavid         ###   ########.fr        #
+#    Updated: 2023/10/19 23:47:59 by maldavid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ INCLUDES	= -I./includes -I./src -I./third_party
 LDLIBS =
 
 ifeq ($(OS), Darwin)
-	LDLIBS += $(sdl2-config --cflags --libs)
+	LDLIBS += -lSDL2
 endif
 
 ifeq ($(DEBUG), true)
