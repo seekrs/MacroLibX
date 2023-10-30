@@ -1,7 +1,7 @@
 # MacroLibX [![linux clang workflow][linux-clang_badge]][linux-clang_wf] [![linux gcc workflow][linux-gcc_badge]][linux-gcc_wf] [![macos workflow][macos_badge]][macos_wf]
 ###### A rewrite of 42 School's MiniLibX using SDL2 and Vulkan. 
 
-The goal of this version is to provide a light, fast, and modern graphical tool while keeping the same API the same.
+The goal of this version is to provide a light, fast, and modern graphical tool while keeping the same API.
 
 ## 🖥️ Installation
 
