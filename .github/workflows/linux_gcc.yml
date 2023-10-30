@@ -1,4 +1,4 @@
-name: Linux build(gcc)
+name: Linux (gcc)
 
 on:
   pull_request:
