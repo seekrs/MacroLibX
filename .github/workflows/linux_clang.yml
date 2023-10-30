@@ -1,4 +1,4 @@
-name: Linux build(clang)
+name: Linux (clang)
 
 on:
   pull_request:
