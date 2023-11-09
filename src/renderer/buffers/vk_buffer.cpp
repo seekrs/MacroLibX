@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 18:55:57 by maldavid          #+#    #+#             */
-/*   Updated: 2023/10/20 02:02:24 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/08 22:40:00 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ namespace mlx
 {
 	void Buffer::create(Buffer::kind type, VkDeviceSize size, VkBufferUsageFlags usage, const void* data)
 	{
+		VmaAllocationCreateInfo alloc_info{};
 		if(type == Buffer::kind::constant)
 		{
 			if(data == nullptr)
@@ -28,22 +29,22 @@ namespace mlx
 				return;
 			}
 			_usage = usage | VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
-			_flags = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT;
+			alloc_info.usage = VMA_MEMORY_USAGE_GPU_ONLY;
 		}
 		else if(type == Buffer::kind::uniform)
 		{
 			_usage = usage;
-			_flags = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT;
+			alloc_info.usage = VMA_MEMORY_USAGE_CPU_TO_GPU;
 		}
 		else
 		{
 			_usage = usage;
-			_flags = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
+			alloc_info.usage = VMA_MEMORY_USAGE_GPU_TO_CPU;
 		}
 
 		_size = size;
 
-		createBuffer(_usage, _flags);
+		createBuffer(_usage, alloc_info);
 
 		if(type == Buffer::kind::constant || data != nullptr)
 		{
@@ -59,11 +60,10 @@ namespace mlx
 
 	void Buffer::destroy() noexcept
 	{
-		vkDestroyBuffer(Render_Core::get().getDevice().get(), _buffer, nullptr);
-		vkFreeMemory(Render_Core::get().getDevice().get(), _memory, nullptr);
+		Render_Core::get().getAllocator().destroyBuffer(_allocation, _buffer);
 	}
 
-	void Buffer::createBuffer(VkBufferUsageFlags usage, VkMemoryPropertyFlags properties)
+	void Buffer::createBuffer(VkBufferUsageFlags usage, VmaAllocationCreateInfo info)
 	{
 		VkBufferCreateInfo bufferInfo{};
 		bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
@@ -71,32 +71,18 @@ namespace mlx
 		bufferInfo.usage = usage;
 		bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
-		auto device = Render_Core::get().getDevice().get();
-
-		if(vkCreateBuffer(device, &bufferInfo, nullptr, &_buffer) != VK_SUCCESS)
-			core::error::report(e_kind::fatal_error, "Vulkan : failed to create buffer");
-
-		VkMemoryRequirements memRequirements;
-		vkGetBufferMemoryRequirements(device, _buffer, &memRequirements);
-
-		VkMemoryAllocateInfo allocInfo{};
-        allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
-        allocInfo.allocationSize = memRequirements.size;
-        allocInfo.memoryTypeIndex = *RCore::findMemoryType(memRequirements.memoryTypeBits, properties);
-
-        if(vkAllocateMemory(device, &allocInfo, nullptr, &_memory) != VK_SUCCESS)
-            core::error::report(e_kind::fatal_error, "Vulkan : failed to allocate buffer memory");
-		if(vkBindBufferMemory(device, _buffer, _memory, _offset) != VK_SUCCESS)
-			core::error::report(e_kind::fatal_error, "Vulkan : unable to bind device memory to a buffer object");
+		_allocation = Render_Core::get().getAllocator().createBuffer(&bufferInfo, &info, _buffer);
 	}
 
 	void Buffer::pushToGPU() noexcept
 	{
+		VmaAllocationCreateInfo alloc_info{};
+		alloc_info.usage = VMA_MEMORY_USAGE_GPU_ONLY;
+
 		Buffer newBuffer;
 		newBuffer._size = _size;
 		newBuffer._usage = (this->_usage & 0xFFFFFFFC) | VK_BUFFER_USAGE_TRANSFER_DST_BIT;
-		newBuffer._flags = VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
-		newBuffer.createBuffer(newBuffer._usage, newBuffer._flags);
+		newBuffer.createBuffer(newBuffer._usage, alloc_info);
 
 		CmdPool cmdpool;
 		cmdpool.init();
@@ -150,30 +136,12 @@ namespace mlx
 		buffer._size = _size;
 		_size = temp_size;
 
-		VkDeviceSize temp_offset = buffer._offset;
-		buffer._offset = _offset;
-		_offset = temp_offset;
-
-		VkDeviceMemory temp_memory = buffer._memory;
-		buffer._memory = _memory;
-		_memory = temp_memory;
-
 		VkBufferUsageFlags temp_u = _usage;
 		_usage = buffer._usage;
 		buffer._usage = temp_u;
-
-		VkMemoryPropertyFlags temp_f = _flags;
-		_flags = buffer._flags;
-		buffer._flags = temp_f;
 	}
 
 	void Buffer::flush(VkDeviceSize size, VkDeviceSize offset)
 	{
-		VkMappedMemoryRange mappedRange{};
-		mappedRange.sType = VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE;
-		mappedRange.memory = _memory;
-		mappedRange.offset = offset;
-		mappedRange.size = size;
-		vkFlushMappedMemoryRanges(Render_Core::get().getDevice().get(), 1, &mappedRange);
 	}
 }

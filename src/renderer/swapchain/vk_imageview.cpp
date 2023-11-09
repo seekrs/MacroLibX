@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:20:49 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/18 19:55:03 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/08 20:37:17 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@ namespace mlx
 
 		if(vkCreateImageView(Render_Core::get().getDevice().get(), &createInfo, nullptr, &_image) != VK_SUCCESS)
 			core::error::report(e_kind::fatal_error, "Vulkan : failed to create an image view");
+		#ifdef DEBUG
+			core::error::report(e_kind::message, "Vulkan : created new swapchain image view");
+		#endif
 	}
 	
 	void ImageView::destroy() noexcept

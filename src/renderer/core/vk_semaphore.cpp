@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:01:08 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/02 17:55:58 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/08 20:14:36 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@ namespace mlx
 		if(	vkCreateSemaphore(Render_Core::get().getDevice().get(), &semaphoreInfo, nullptr, &_imageAvailableSemaphores) != VK_SUCCESS ||
 			vkCreateSemaphore(Render_Core::get().getDevice().get(), &semaphoreInfo, nullptr, &_renderFinishedSemaphores) != VK_SUCCESS)
 			core::error::report(e_kind::fatal_error, "Vulkan : failed to create GPU synchronization object");
+		#ifdef DEBUG
+			core::error::report(e_kind::message, "Vulkan : created new semaphore");
+		#endif
 	}
 
 	void Semaphore::destroy() noexcept

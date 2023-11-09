@@ -6,7 +6,7 @@
 /*   By: maldavid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 14:05:25 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/19 14:11:12 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/08 20:15:36 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,10 @@ namespace mlx
 		populateDebugMessengerCreateInfo(createInfo);
 		if(createDebugUtilsMessengerEXT(&createInfo, nullptr) != VK_SUCCESS)
 			core::error::report(e_kind::error, "Vulkan : failed to set up debug messenger");
+		#ifdef DEBUG
+		else
+			core::error::report(e_kind::message, "Vulkan : enabled validation layers");
+		#endif
 	}
 
 	bool ValidationLayers::checkValidationLayerSupport()

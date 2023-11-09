@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:14:29 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/18 22:56:47 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/08 20:14:08 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,9 @@ namespace mlx
 
 		if(vkCreateDevice(_physicalDevice, &createInfo, nullptr, &_device) != VK_SUCCESS)
 			core::error::report(e_kind::fatal_error, "Vulkan : failed to create logcal device");
+		#ifdef DEBUG
+			core::error::report(e_kind::message, "Vulkan : created new logical device");
+		#endif
 	}
 
 	void Device::pickPhysicalDevice()
@@ -92,6 +95,9 @@ namespace mlx
 
 		if(_physicalDevice == VK_NULL_HANDLE)
 			core::error::report(e_kind::fatal_error, "Vulkan : failed to find a suitable GPU");
+		#ifdef DEBUG
+			core::error::report(e_kind::message, "Vulkan : picked a physical device");
+		#endif
 	}
 	
 	bool Device::isDeviceSuitable(VkPhysicalDevice device, VkSurfaceKHR surface)

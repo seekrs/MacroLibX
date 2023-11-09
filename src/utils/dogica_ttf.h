@@ -6,16 +6,16 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 16:20:25 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/11 16:20:27 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/08 20:23:23 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_DOGICA_TTF__
 #define __MLX_DOGICA_TTF__
 
-unsigned int dogica_ttf_len = 33860;
+inline unsigned int dogica_ttf_len = 33860;
 
-unsigned char dogica_ttf[] = {
+inline unsigned char dogica_ttf[] = {
   0x00, 0x01, 0x00, 0x00, 0x00, 0x0e, 0x00, 0x80, 0x00, 0x03, 0x00, 0x60,
   0x46, 0x46, 0x54, 0x4d, 0x8f, 0xe1, 0x5b, 0x60, 0x00, 0x00, 0x84, 0x28,
   0x00, 0x00, 0x00, 0x1c, 0x47, 0x44, 0x45, 0x46, 0x00, 0x15, 0x00, 0x14,

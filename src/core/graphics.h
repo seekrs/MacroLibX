@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 14:49:49 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/21 18:43:38 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/08 20:41:29 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ namespace mlx
 	class GraphicsSupport : public non_copyable
 	{
 		public:
-			GraphicsSupport(std::size_t w, std::size_t h, std::string title, int id);
+			GraphicsSupport(std::size_t w, std::size_t h, const std::string& title, int id);
 
 			inline int& getID() noexcept;
 			inline std::shared_ptr<MLX_Window> getWindow();

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 18:58:49 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/18 22:20:57 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/08 20:14:48 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@ namespace mlx
 	{
 		if(SDL_Vulkan_CreateSurface(renderer.getWindow()->getNativeWindow(), Render_Core::get().getInstance().get(), &_surface) != SDL_TRUE)
 			core::error::report(e_kind::fatal_error, "Vulkan : failed to create a surface : %s", SDL_GetError());
+		#ifdef DEBUG
+			core::error::report(e_kind::message, "Vulkan : created new surface");
+		#endif
 	}
 
 	VkSurfaceFormatKHR Surface::chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats)

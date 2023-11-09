@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:16:32 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/23 12:31:42 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/10/21 00:04:39 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include "vk_device.h"
 #include "vk_instance.h"
 #include "vk_validation_layers.h"
+#include "memory.h"
 
 #include <utils/singleton.h>
 #include <core/errors.h>
@@ -52,6 +53,7 @@ namespace mlx
             inline Instance& getInstance() noexcept { return _instance; }
             inline Device& getDevice() noexcept { return _device; }
             inline Queues& getQueue() noexcept { return _queues; }
+			inline GPUallocator& getAllocator() noexcept { return _allocator; }
 			inline ValidationLayers& getLayers() noexcept { return _layers; }
 
 			~Render_Core() = default;
@@ -61,6 +63,7 @@ namespace mlx
             Queues _queues;
             Device _device;
             Instance _instance;
+			GPUallocator _allocator;
             bool _is_init = false;
     };
 }

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 02:13:03 by maldavid          #+#    #+#             */
-/*   Updated: 2023/10/20 03:33:28 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/08 22:41:46 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,27 @@
 
 #include <volk.h>
 #include <vma.h>
+#include <cstdint>
 
 namespace mlx
 {
-	enum class gpu_allocation_type
-	{
-		buffer,
-		image,
-	};
-
 	class GPUallocator
 	{
 		public:
 			GPUallocator() = default;
+
 			void init() noexcept;
-			VkDeviceMemory alloc(gpu_allocation_type type, VkDeviceSize size);
 			void destroy() noexcept;
+			
+			VmaAllocation createBuffer(const VkBufferCreateInfo* binfo, const VmaAllocationCreateInfo* vinfo, VkBuffer& buffer) noexcept;
+			void destroyBuffer(VmaAllocation allocation, VkBuffer buffer) noexcept;
+			
+			VmaAllocation createImage(const VkImageCreateInfo* iminfo, const VmaAllocationCreateInfo* vinfo, VkImage& image) noexcept;
+			void destroyImage(VmaAllocation allocation, VkImage image) noexcept;
+			
+			void mapMemory(VmaAllocation allocation, void** data) noexcept;
+			void unmapMemory(VmaAllocation allocation) noexcept;
+
 			~GPUallocator() = default;
 
 		private:

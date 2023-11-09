@@ -10,8 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <core/application.h>
-
 namespace mlx::core
 {
 	void Application::getMousePos(int* x, int* y) noexcept
@@ -42,7 +40,7 @@ namespace mlx::core
 
 	void* Application::newGraphicsSuport(std::size_t w, std::size_t h, std::string title)
 	{
-		_graphics.emplace_back(std::make_unique<GraphicsSupport>(w, h, std::move(title), _graphics.size()));
+		_graphics.emplace_back(std::make_unique<GraphicsSupport>(w, h, title, _graphics.size()));
 		_in->addWindow(_graphics.back()->getWindow());
 		return static_cast<void*>(&_graphics.back()->getID());
 	}
