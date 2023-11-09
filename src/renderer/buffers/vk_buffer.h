@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 23:18:52 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/08 22:33:18 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/09 19:38:30 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ namespace mlx
 
 			inline VkBuffer& operator()() noexcept { return _buffer; }
 			inline VkBuffer& get() noexcept { return _buffer; }
-			inline VkDeviceSize getSize() const noexcept { return _size; }
+			inline VkDeviceSize getSize() const noexcept { return _alloc_infos.size; }
+			inline VkDeviceSize getOffset() const noexcept { return _alloc_infos.offset; }
 
 		protected:
 			void pushToGPU() noexcept;
@@ -46,11 +47,11 @@ namespace mlx
 
 		protected:
 			VmaAllocation _allocation;
+			VmaAllocationInfo _alloc_infos;
 			VkBuffer _buffer = VK_NULL_HANDLE;
-			VkDeviceSize _size = 0;
 
 		private:
-			void createBuffer(VkBufferUsageFlags usage, VmaAllocationCreateInfo info);
+			void createBuffer(VkBufferUsageFlags usage, VmaAllocationCreateInfo info, VkDeviceSize size);
 
 		private:
 			VkBufferUsageFlags _usage = 0;

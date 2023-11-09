@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 18:55:57 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/08 22:40:00 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/09 20:02:14 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,13 @@ namespace mlx
 			alloc_info.usage = VMA_MEMORY_USAGE_GPU_TO_CPU;
 		}
 
-		_size = size;
-
-		createBuffer(_usage, alloc_info);
+		createBuffer(_usage, alloc_info, size);
 
 		if(type == Buffer::kind::constant || data != nullptr)
 		{
 			void* mapped = nullptr;
 			mapMem(&mapped);
-				std::memcpy(mapped, data, _size);
+				std::memcpy(mapped, data, size);
 			unmapMem();
 
 			if(type == Buffer::kind::constant)
@@ -63,15 +61,15 @@ namespace mlx
 		Render_Core::get().getAllocator().destroyBuffer(_allocation, _buffer);
 	}
 
-	void Buffer::createBuffer(VkBufferUsageFlags usage, VmaAllocationCreateInfo info)
+	void Buffer::createBuffer(VkBufferUsageFlags usage, VmaAllocationCreateInfo info, VkDeviceSize size)
 	{
 		VkBufferCreateInfo bufferInfo{};
 		bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
-		bufferInfo.size = _size;
+		bufferInfo.size = size;
 		bufferInfo.usage = usage;
 		bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
-		_allocation = Render_Core::get().getAllocator().createBuffer(&bufferInfo, &info, _buffer);
+		_allocation = Render_Core::get().getAllocator().createBuffer(&bufferInfo, &info, _buffer, _alloc_infos);
 	}
 
 	void Buffer::pushToGPU() noexcept
@@ -80,9 +78,8 @@ namespace mlx
 		alloc_info.usage = VMA_MEMORY_USAGE_GPU_ONLY;
 
 		Buffer newBuffer;
-		newBuffer._size = _size;
-		newBuffer._usage = (this->_usage & 0xFFFFFFFC) | VK_BUFFER_USAGE_TRANSFER_DST_BIT;
-		newBuffer.createBuffer(newBuffer._usage, alloc_info);
+		newBuffer._usage = (_usage & 0xFFFFFFFC) | VK_BUFFER_USAGE_TRANSFER_DST_BIT;
+		newBuffer.createBuffer(newBuffer._usage, alloc_info, _alloc_infos.size);
 
 		CmdPool cmdpool;
 		cmdpool.init();
@@ -104,7 +101,7 @@ namespace mlx
 		vkBeginCommandBuffer(commandBuffer, &beginInfo);
 
 		VkBufferCopy copyRegion{};
-		copyRegion.size = _size;
+		copyRegion.size = _alloc_infos.size;
 		vkCmdCopyBuffer(commandBuffer, _buffer, newBuffer._buffer, 1, &copyRegion);
 
 		vkEndCommandBuffer(commandBuffer);
@@ -132,9 +129,9 @@ namespace mlx
 		_buffer = buffer._buffer;
 		buffer._buffer = temp_b;
 
-		VkDeviceSize temp_size = buffer._size;
-		buffer._size = _size;
-		_size = temp_size;
+		VmaAllocationInfo temp_i = _alloc_infos;
+		_alloc_infos = buffer._alloc_infos;
+		buffer._alloc_infos = temp_i;
 
 		VkBufferUsageFlags temp_u = _usage;
 		_usage = buffer._usage;
