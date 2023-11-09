@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:59:07 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/23 14:59:41 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/09 19:35:26 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,30 +40,10 @@ namespace mlx
 		imageInfo.samples = VK_SAMPLE_COUNT_1_BIT;
 		imageInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
-		if(vkCreateImage(Render_Core::get().getDevice().get(), &imageInfo, nullptr, &_image) != VK_SUCCESS)
-			core::error::report(e_kind::fatal_error, "Vulkan : failed to create an image");
+		VmaAllocationCreateInfo alloc_info{};
+		alloc_info.usage = VMA_MEMORY_USAGE_GPU_ONLY;
 
-		VkMemoryRequirements memRequirements;
-		vkGetImageMemoryRequirements(Render_Core::get().getDevice().get(), _image, &memRequirements);
-		
-		std::optional<uint32_t> memTypeIndex;
-		for(auto prop : properties)
-		{
-			memTypeIndex = RCore::findMemoryType(memRequirements.memoryTypeBits, prop, false);
-			if(memTypeIndex.has_value())
-				break;
-		}
-		if(!memTypeIndex.has_value())
-			core::error::report(e_kind::fatal_error, "Vulkan : failed to find suitable memory type for an image");
-		VkMemoryAllocateInfo allocInfo{};
-		allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
-		allocInfo.allocationSize = memRequirements.size;
-		allocInfo.memoryTypeIndex = *memTypeIndex;
-
-		if(vkAllocateMemory(Render_Core::get().getDevice().get(), &allocInfo, nullptr, &_memory) != VK_SUCCESS)
-			core::error::report(e_kind::fatal_error, "Vulkan : failed to allocate memory for an image");
-
-		vkBindImageMemory(Render_Core::get().getDevice().get(), _image, _memory, 0);
+		_allocation = Render_Core::get().getAllocator().createImage(&imageInfo, &alloc_info, _image);
 
 		_pool.init();
 	}
@@ -215,8 +195,7 @@ namespace mlx
 		if(_image_view != VK_NULL_HANDLE)
 			vkDestroyImageView(Render_Core::get().getDevice().get(), _image_view, nullptr);
 
-		vkFreeMemory(Render_Core::get().getDevice().get(), _memory, nullptr);
-		vkDestroyImage(Render_Core::get().getDevice().get(), _image, nullptr);
+		Render_Core::get().getAllocator().destroyImage(_allocation, _image);
 		if(_transfer_cmd.isInit())
 			_transfer_cmd.destroy();
 		_pool.destroy();

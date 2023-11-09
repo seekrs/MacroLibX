@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 02:13:03 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/08 22:41:46 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/09 19:58:06 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ namespace mlx
 			void init() noexcept;
 			void destroy() noexcept;
 			
-			VmaAllocation createBuffer(const VkBufferCreateInfo* binfo, const VmaAllocationCreateInfo* vinfo, VkBuffer& buffer) noexcept;
+			VmaAllocation createBuffer(const VkBufferCreateInfo* binfo, const VmaAllocationCreateInfo* vinfo, VkBuffer& buffer, VmaAllocationInfo& allocinfo) noexcept;
 			void destroyBuffer(VmaAllocation allocation, VkBuffer buffer) noexcept;
 			
-			VmaAllocation createImage(const VkImageCreateInfo* iminfo, const VmaAllocationCreateInfo* vinfo, VkImage& image) noexcept;
+			VmaAllocation createImage(const VkImageCreateInfo* iminfo, const VmaAllocationCreateInfo* vinfo, VkImage& image, VmaAllocationInfo& allocinfo) noexcept;
 			void destroyImage(VmaAllocation allocation, VkImage image) noexcept;
 			
 			void mapMemory(VmaAllocation allocation, void** data) noexcept;

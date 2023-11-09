@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:54:21 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/23 14:17:11 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/09 19:29:54 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ namespace mlx
 
 			inline VkImage get() noexcept { return _image; }
 			inline VkImage operator()() noexcept { return _image; }
-			inline VkDeviceMemory getDeviceMemory() noexcept { return _memory; }
 			inline VkImageView getImageView() noexcept { return _image_view; }
 			inline VkFormat getFormat() noexcept { return _format; }
 			inline VkImageTiling getTiling() noexcept { return _tiling; }
@@ -50,8 +49,8 @@ namespace mlx
 		private:
 			CmdBuffer _transfer_cmd;
 			CmdPool _pool;
+			VmaAllocation _allocation;
 			VkImage _image = VK_NULL_HANDLE;
-			VkDeviceMemory _memory = VK_NULL_HANDLE;
 			VkImageView _image_view = VK_NULL_HANDLE;
 			VkSampler _sampler = VK_NULL_HANDLE;
 			VkFormat _format;
