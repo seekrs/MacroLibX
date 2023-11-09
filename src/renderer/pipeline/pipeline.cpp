@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 21:27:38 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/13 14:52:57 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/08 20:36:18 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -301,6 +301,9 @@ namespace mlx
 
         if(vkCreateGraphicsPipelines(Render_Core::get().getDevice().get(), VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &_graphicsPipeline) != VK_SUCCESS)
             core::error::report(e_kind::fatal_error, "Vulkan : failed to create a graphics pipeline");
+		#ifdef DEBUG
+			core::error::report(e_kind::message, "Vulkan : created new graphic pipeline");
+		#endif
 
 		vkDestroyShaderModule(Render_Core::get().getDevice().get(), fshader, nullptr);
         vkDestroyShaderModule(Render_Core::get().getDevice().get(), vshader, nullptr);

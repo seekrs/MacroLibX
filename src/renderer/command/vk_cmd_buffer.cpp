@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:26:06 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/23 15:19:08 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/08 20:17:49 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,9 @@ namespace mlx
 
 		if(vkAllocateCommandBuffers(Render_Core::get().getDevice().get(), &allocInfo, &_cmd_buffer) != VK_SUCCESS)
 			core::error::report(e_kind::fatal_error, "Vulkan : failed to allocate command buffer");
+		#ifdef DEBUG
+			core::error::report(e_kind::message, "Vulkan : created new command buffer");
+		#endif
 
 		_fence.init();
 	}

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 23:33:34 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/23 19:09:21 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/10/21 00:06:36 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 #include <mutex>
 
 #ifdef DEBUG
-	#warning "MLX is being compiled in debug mode, this activates Vulkan's validation layers and debug messages and may impact rendering performances"
+	#warning "MLX is being compiled in debug mode, this activates Vulkan's validation layers and debug messages which may impact rendering performances"
 #endif
 
 namespace mlx
@@ -57,6 +57,7 @@ namespace mlx
 		_device.init();
 		volkLoadDevice(_device.get());
 		_queues.init();
+		_allocator.init();
 		_is_init = true;
 	}
 
@@ -67,6 +68,7 @@ namespace mlx
 
 		vkDeviceWaitIdle(_device());
 
+		_allocator.destroy();
 		_device.destroy();
 		_layers.destroy();
 		_instance.destroy();

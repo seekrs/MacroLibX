@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:18:06 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/18 20:01:51 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/08 20:36:54 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@ namespace mlx
 
 		if(vkCreateFramebuffer(Render_Core::get().getDevice().get(), &framebufferInfo, nullptr, &_framebuffer) != VK_SUCCESS)	
 			core::error::report(e_kind::fatal_error, "Vulkan : failed to create a framebuffer");
+		#ifdef DEBUG
+			core::error::report(e_kind::message, "Vulkan : created new framebuffer");
+		#endif
 	}
 
 	void FrameBuffer::destroy() noexcept

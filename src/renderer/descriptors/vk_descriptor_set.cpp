@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 18:40:44 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/22 19:52:08 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/08 20:16:32 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,9 @@ namespace mlx
 
 		if(vkAllocateDescriptorSets(device, &allocInfo, _desc_set.data()) != VK_SUCCESS)
 			core::error::report(e_kind::fatal_error, "Vulkan : failed to allocate descriptor set");
+		#ifdef DEBUG
+			core::error::report(e_kind::message, "Vulkan : created new descriptor set");
+		#endif
 	}
 
 	void DescriptorSet::writeDescriptor(int binding, UBO* ubo) noexcept

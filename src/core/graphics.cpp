@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 15:13:55 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/08 00:19:18 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/08 21:02:22 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 namespace mlx
 {
-	GraphicsSupport::GraphicsSupport(std::size_t w, std::size_t h, std::string title, int id) :
-		_window(std::make_shared<MLX_Window>(w, h, std::move(title))),
+	GraphicsSupport::GraphicsSupport(std::size_t w, std::size_t h, const std::string& title, int id) :
+		_window(std::make_shared<MLX_Window>(w, h, title)),
 		_renderer(std::make_unique<Renderer>()), _text_put_pipeline(std::make_unique<TextPutPipeline>()),
 		_id(id)
 	{
@@ -29,8 +29,10 @@ namespace mlx
 	{
 		auto cmd_buff = _renderer->getActiveCmdBuffer().get();
 
-		std::vector<VkDescriptorSet> sets;
-		sets.push_back(_renderer->getVertDescriptorSet().get());
+		static std::array<VkDescriptorSet, 2> sets = {
+			_renderer->getVertDescriptorSet().get(), 
+			VK_NULL_HANDLE
+		};
 
 		for(auto& data : _textures_to_render)
 		{
@@ -38,20 +40,18 @@ namespace mlx
 				data.texture->setDescriptor(_renderer->getFragDescriptorSet().duplicate());
 			if(!data.texture->hasBeenUpdated())
 				data.texture->updateSet(0);
-			sets.push_back(data.texture->getSet());
+			sets[1] = data.texture->getSet();
 			vkCmdBindDescriptorSets(cmd_buff, VK_PIPELINE_BIND_POINT_GRAPHICS, _renderer->getPipeline().getPipelineLayout(), 0, sets.size(), sets.data(), 0, nullptr);
 			data.texture->render(*_renderer, data.x, data.y);
-			sets.pop_back();
 		}
 
 		_pixel_put_pipeline.present();
 
-		sets.push_back(_pixel_put_pipeline.getDescriptorSet());
+		sets[1] = _pixel_put_pipeline.getDescriptorSet();
 		vkCmdBindDescriptorSets(cmd_buff, VK_PIPELINE_BIND_POINT_GRAPHICS, _renderer->getPipeline().getPipelineLayout(), 0, sets.size(), sets.data(), 0, nullptr);
 		_pixel_put_pipeline.render(*_renderer);
-		sets.pop_back();
 
-		sets.push_back(_text_put_pipeline->getDescriptorSet());
+		sets[1] = _text_put_pipeline->getDescriptorSet();
 		vkCmdBindDescriptorSets(cmd_buff, VK_PIPELINE_BIND_POINT_GRAPHICS, _renderer->getPipeline().getPipelineLayout(), 0, sets.size(), sets.data(), 0, nullptr);
 		_text_put_pipeline->render();
 		

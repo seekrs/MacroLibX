@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:21:36 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/19 00:06:34 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/08 20:37:32 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,9 @@ namespace mlx
 
 		if(vkCreateRenderPass(Render_Core::get().getDevice().get(), &renderPassInfo, nullptr, &_renderPass) != VK_SUCCESS)
 			core::error::report(e_kind::fatal_error, "Vulkan : failed to create render pass");
+		#ifdef DEBUG
+			core::error::report(e_kind::message, "Vulkan : created new render pass");
+		#endif
 	}
 
 	void RenderPass::begin()

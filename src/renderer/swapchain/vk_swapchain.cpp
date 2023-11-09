@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:22:28 by maldavid          #+#    #+#             */
-/*   Updated: 2023/01/25 11:39:01 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/08 20:37:53 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,9 @@ namespace mlx
 
         if(vkCreateSwapchainKHR(device, &createInfo, nullptr, &_swapChain) != VK_SUCCESS)
 			core::error::report(e_kind::fatal_error, "Vulkan : failed to create swapchain");
+		#ifdef DEBUG
+			core::error::report(e_kind::message, "Vulkan : created new swapchain");
+		#endif
 
         vkGetSwapchainImagesKHR(device, _swapChain, &imageCount, nullptr);
         _swapChainImages.resize(imageCount);

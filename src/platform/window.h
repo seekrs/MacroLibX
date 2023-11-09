@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:53:12 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/12 19:06:24 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/08 20:24:46 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ namespace mlx
 	class MLX_Window
 	{
 		public:
-			MLX_Window(std::size_t w, std::size_t h, std::string title);
+			MLX_Window(std::size_t w, std::size_t h, const std::string& title);
 
 			inline SDL_Window* getNativeWindow() const noexcept { return _win; }
 			inline int getWidth() const noexcept { return _width; }

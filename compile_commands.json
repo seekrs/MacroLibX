@@ -1,0 +1,642 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-O3",
+      "-fPIC",
+      "-D",
+      "IMAGE_OPTIMIZED",
+      "-I./includes",
+      "-I./src",
+      "-I./third_party",
+      "-c",
+      "-o",
+      "src/renderer/text_pipeline.o",
+      "src/renderer/text_pipeline.cpp"
+    ],
+    "directory": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX",
+    "file": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/text_pipeline.cpp",
+    "output": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/text_pipeline.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-O3",
+      "-fPIC",
+      "-D",
+      "IMAGE_OPTIMIZED",
+      "-I./includes",
+      "-I./src",
+      "-I./third_party",
+      "-c",
+      "-o",
+      "src/renderer/buffers/vk_vbo.o",
+      "src/renderer/buffers/vk_vbo.cpp"
+    ],
+    "directory": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX",
+    "file": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/buffers/vk_vbo.cpp",
+    "output": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/buffers/vk_vbo.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-O3",
+      "-fPIC",
+      "-D",
+      "IMAGE_OPTIMIZED",
+      "-I./includes",
+      "-I./src",
+      "-I./third_party",
+      "-c",
+      "-o",
+      "src/renderer/pixel_put.o",
+      "src/renderer/pixel_put.cpp"
+    ],
+    "directory": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX",
+    "file": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/pixel_put.cpp",
+    "output": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/pixel_put.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-O3",
+      "-fPIC",
+      "-D",
+      "IMAGE_OPTIMIZED",
+      "-I./includes",
+      "-I./src",
+      "-I./third_party",
+      "-c",
+      "-o",
+      "src/core/graphics.o",
+      "src/core/graphics.cpp"
+    ],
+    "directory": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX",
+    "file": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/core/graphics.cpp",
+    "output": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/core/graphics.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-O3",
+      "-fPIC",
+      "-D",
+      "IMAGE_OPTIMIZED",
+      "-I./includes",
+      "-I./src",
+      "-I./third_party",
+      "-c",
+      "-o",
+      "src/renderer/buffers/vk_ubo.o",
+      "src/renderer/buffers/vk_ubo.cpp"
+    ],
+    "directory": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX",
+    "file": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/buffers/vk_ubo.cpp",
+    "output": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/buffers/vk_ubo.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-O3",
+      "-fPIC",
+      "-D",
+      "IMAGE_OPTIMIZED",
+      "-I./includes",
+      "-I./src",
+      "-I./third_party",
+      "-c",
+      "-o",
+      "src/platform/inputs.o",
+      "src/platform/inputs.cpp"
+    ],
+    "directory": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX",
+    "file": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/platform/inputs.cpp",
+    "output": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/platform/inputs.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-O3",
+      "-fPIC",
+      "-D",
+      "IMAGE_OPTIMIZED",
+      "-I./includes",
+      "-I./src",
+      "-I./third_party",
+      "-c",
+      "-o",
+      "src/renderer/renderer.o",
+      "src/renderer/renderer.cpp"
+    ],
+    "directory": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX",
+    "file": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/renderer.cpp",
+    "output": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/renderer.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-O3",
+      "-fPIC",
+      "-D",
+      "IMAGE_OPTIMIZED",
+      "-I./includes",
+      "-I./src",
+      "-I./third_party",
+      "-c",
+      "-o",
+      "src/renderer/text_library.o",
+      "src/renderer/text_library.cpp"
+    ],
+    "directory": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX",
+    "file": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/text_library.cpp",
+    "output": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/text_library.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-O3",
+      "-fPIC",
+      "-D",
+      "IMAGE_OPTIMIZED",
+      "-I./includes",
+      "-I./src",
+      "-I./third_party",
+      "-c",
+      "-o",
+      "src/renderer/buffers/vk_buffer.o",
+      "src/renderer/buffers/vk_buffer.cpp"
+    ],
+    "directory": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX",
+    "file": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/buffers/vk_buffer.cpp",
+    "output": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/buffers/vk_buffer.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-O3",
+      "-fPIC",
+      "-D",
+      "IMAGE_OPTIMIZED",
+      "-I./includes",
+      "-I./src",
+      "-I./third_party",
+      "-c",
+      "-o",
+      "src/renderer/command/cmd_manager.o",
+      "src/renderer/command/cmd_manager.cpp"
+    ],
+    "directory": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX",
+    "file": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/command/cmd_manager.cpp",
+    "output": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/command/cmd_manager.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-O3",
+      "-fPIC",
+      "-D",
+      "IMAGE_OPTIMIZED",
+      "-I./includes",
+      "-I./src",
+      "-I./third_party",
+      "-c",
+      "-o",
+      "src/renderer/core/vk_device.o",
+      "src/renderer/core/vk_device.cpp"
+    ],
+    "directory": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX",
+    "file": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/core/vk_device.cpp",
+    "output": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/core/vk_device.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-O3",
+      "-fPIC",
+      "-D",
+      "IMAGE_OPTIMIZED",
+      "-I./includes",
+      "-I./src",
+      "-I./third_party",
+      "-c",
+      "-o",
+      "src/renderer/command/vk_cmd_buffer.o",
+      "src/renderer/command/vk_cmd_buffer.cpp"
+    ],
+    "directory": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX",
+    "file": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/command/vk_cmd_buffer.cpp",
+    "output": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/command/vk_cmd_buffer.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-O3",
+      "-fPIC",
+      "-D",
+      "IMAGE_OPTIMIZED",
+      "-I./includes",
+      "-I./src",
+      "-I./third_party",
+      "-c",
+      "-o",
+      "src/renderer/core/render_core.o",
+      "src/renderer/core/render_core.cpp"
+    ],
+    "directory": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX",
+    "file": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/core/render_core.cpp",
+    "output": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/core/render_core.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-O3",
+      "-fPIC",
+      "-D",
+      "IMAGE_OPTIMIZED",
+      "-I./includes",
+      "-I./src",
+      "-I./third_party",
+      "-c",
+      "-o",
+      "src/renderer/command/vk_cmd_pool.o",
+      "src/renderer/command/vk_cmd_pool.cpp"
+    ],
+    "directory": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX",
+    "file": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/command/vk_cmd_pool.cpp",
+    "output": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/command/vk_cmd_pool.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-O3",
+      "-fPIC",
+      "-D",
+      "IMAGE_OPTIMIZED",
+      "-I./includes",
+      "-I./src",
+      "-I./third_party",
+      "-c",
+      "-o",
+      "src/renderer/core/vk_instance.o",
+      "src/renderer/core/vk_instance.cpp"
+    ],
+    "directory": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX",
+    "file": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/core/vk_instance.cpp",
+    "output": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/core/vk_instance.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-O3",
+      "-fPIC",
+      "-D",
+      "IMAGE_OPTIMIZED",
+      "-I./includes",
+      "-I./src",
+      "-I./third_party",
+      "-c",
+      "-o",
+      "src/renderer/core/vk_semaphore.o",
+      "src/renderer/core/vk_semaphore.cpp"
+    ],
+    "directory": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX",
+    "file": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/core/vk_semaphore.cpp",
+    "output": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/core/vk_semaphore.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-O3",
+      "-fPIC",
+      "-D",
+      "IMAGE_OPTIMIZED",
+      "-I./includes",
+      "-I./src",
+      "-I./third_party",
+      "-c",
+      "-o",
+      "src/renderer/core/vk_queues.o",
+      "src/renderer/core/vk_queues.cpp"
+    ],
+    "directory": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX",
+    "file": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/core/vk_queues.cpp",
+    "output": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/core/vk_queues.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-O3",
+      "-fPIC",
+      "-D",
+      "IMAGE_OPTIMIZED",
+      "-I./includes",
+      "-I./src",
+      "-I./third_party",
+      "-c",
+      "-o",
+      "src/renderer/core/vk_validation_layers.o",
+      "src/renderer/core/vk_validation_layers.cpp"
+    ],
+    "directory": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX",
+    "file": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/core/vk_validation_layers.cpp",
+    "output": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/core/vk_validation_layers.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-O3",
+      "-fPIC",
+      "-D",
+      "IMAGE_OPTIMIZED",
+      "-I./includes",
+      "-I./src",
+      "-I./third_party",
+      "-c",
+      "-o",
+      "src/renderer/core/vk_surface.o",
+      "src/renderer/core/vk_surface.cpp"
+    ],
+    "directory": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX",
+    "file": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/core/vk_surface.cpp",
+    "output": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/core/vk_surface.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-O3",
+      "-fPIC",
+      "-D",
+      "IMAGE_OPTIMIZED",
+      "-I./includes",
+      "-I./src",
+      "-I./third_party",
+      "-c",
+      "-o",
+      "src/renderer/core/vk_fence.o",
+      "src/renderer/core/vk_fence.cpp"
+    ],
+    "directory": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX",
+    "file": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/core/vk_fence.cpp",
+    "output": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/core/vk_fence.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-O3",
+      "-fPIC",
+      "-D",
+      "IMAGE_OPTIMIZED",
+      "-I./includes",
+      "-I./src",
+      "-I./third_party",
+      "-c",
+      "-o",
+      "src/renderer/descriptors/vk_descriptor_pool.o",
+      "src/renderer/descriptors/vk_descriptor_pool.cpp"
+    ],
+    "directory": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX",
+    "file": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/descriptors/vk_descriptor_pool.cpp",
+    "output": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/descriptors/vk_descriptor_pool.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-O3",
+      "-fPIC",
+      "-D",
+      "IMAGE_OPTIMIZED",
+      "-I./includes",
+      "-I./src",
+      "-I./third_party",
+      "-c",
+      "-o",
+      "src/renderer/images/texture_atlas.o",
+      "src/renderer/images/texture_atlas.cpp"
+    ],
+    "directory": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX",
+    "file": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/images/texture_atlas.cpp",
+    "output": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/images/texture_atlas.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-O3",
+      "-fPIC",
+      "-D",
+      "IMAGE_OPTIMIZED",
+      "-I./includes",
+      "-I./src",
+      "-I./third_party",
+      "-c",
+      "-o",
+      "src/renderer/descriptors/vk_descriptor_set.o",
+      "src/renderer/descriptors/vk_descriptor_set.cpp"
+    ],
+    "directory": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX",
+    "file": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/descriptors/vk_descriptor_set.cpp",
+    "output": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/descriptors/vk_descriptor_set.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-O3",
+      "-fPIC",
+      "-D",
+      "IMAGE_OPTIMIZED",
+      "-I./includes",
+      "-I./src",
+      "-I./third_party",
+      "-c",
+      "-o",
+      "src/renderer/swapchain/vk_framebuffer.o",
+      "src/renderer/swapchain/vk_framebuffer.cpp"
+    ],
+    "directory": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX",
+    "file": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/swapchain/vk_framebuffer.cpp",
+    "output": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/swapchain/vk_framebuffer.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-O3",
+      "-fPIC",
+      "-D",
+      "IMAGE_OPTIMIZED",
+      "-I./includes",
+      "-I./src",
+      "-I./third_party",
+      "-c",
+      "-o",
+      "src/renderer/pipeline/pipeline.o",
+      "src/renderer/pipeline/pipeline.cpp"
+    ],
+    "directory": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX",
+    "file": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/pipeline/pipeline.cpp",
+    "output": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/pipeline/pipeline.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-O3",
+      "-fPIC",
+      "-D",
+      "IMAGE_OPTIMIZED",
+      "-I./includes",
+      "-I./src",
+      "-I./third_party",
+      "-c",
+      "-o",
+      "src/renderer/images/vk_image.o",
+      "src/renderer/images/vk_image.cpp"
+    ],
+    "directory": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX",
+    "file": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/images/vk_image.cpp",
+    "output": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/images/vk_image.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-O3",
+      "-fPIC",
+      "-D",
+      "IMAGE_OPTIMIZED",
+      "-I./includes",
+      "-I./src",
+      "-I./third_party",
+      "-c",
+      "-o",
+      "src/renderer/descriptors/vk_descriptor_set_layout.o",
+      "src/renderer/descriptors/vk_descriptor_set_layout.cpp"
+    ],
+    "directory": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX",
+    "file": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/descriptors/vk_descriptor_set_layout.cpp",
+    "output": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/descriptors/vk_descriptor_set_layout.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-O3",
+      "-fPIC",
+      "-D",
+      "IMAGE_OPTIMIZED",
+      "-I./includes",
+      "-I./src",
+      "-I./third_party",
+      "-c",
+      "-o",
+      "src/renderer/swapchain/vk_imageview.o",
+      "src/renderer/swapchain/vk_imageview.cpp"
+    ],
+    "directory": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX",
+    "file": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/swapchain/vk_imageview.cpp",
+    "output": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/swapchain/vk_imageview.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-O3",
+      "-fPIC",
+      "-D",
+      "IMAGE_OPTIMIZED",
+      "-I./includes",
+      "-I./src",
+      "-I./third_party",
+      "-c",
+      "-o",
+      "src/renderer/swapchain/vk_swapchain.o",
+      "src/renderer/swapchain/vk_swapchain.cpp"
+    ],
+    "directory": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX",
+    "file": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/swapchain/vk_swapchain.cpp",
+    "output": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/swapchain/vk_swapchain.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-O3",
+      "-fPIC",
+      "-D",
+      "IMAGE_OPTIMIZED",
+      "-I./includes",
+      "-I./src",
+      "-I./third_party",
+      "-c",
+      "-o",
+      "src/renderer/swapchain/vk_render_pass.o",
+      "src/renderer/swapchain/vk_render_pass.cpp"
+    ],
+    "directory": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX",
+    "file": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/swapchain/vk_render_pass.cpp",
+    "output": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/swapchain/vk_render_pass.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-O3",
+      "-fPIC",
+      "-D",
+      "IMAGE_OPTIMIZED",
+      "-I./includes",
+      "-I./src",
+      "-I./third_party",
+      "-c",
+      "-o",
+      "src/platform/window.o",
+      "src/platform/window.cpp"
+    ],
+    "directory": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX",
+    "file": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/platform/window.cpp",
+    "output": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/platform/window.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-O3",
+      "-fPIC",
+      "-D",
+      "IMAGE_OPTIMIZED",
+      "-I./includes",
+      "-I./src",
+      "-I./third_party",
+      "-c",
+      "-o",
+      "src/renderer/images/texture.o",
+      "src/renderer/images/texture.cpp"
+    ],
+    "directory": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX",
+    "file": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/images/texture.cpp",
+    "output": "/home/kbz_8/Documents/Programmation/42/other/MacroLibX/src/renderer/images/texture.o"
+  }
+]
