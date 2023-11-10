@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:54:21 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/09 19:29:54 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/10 08:23:59 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ namespace mlx
 			CmdBuffer _transfer_cmd;
 			CmdPool _pool;
 			VmaAllocation _allocation;
+			VmaAllocationInfo _alloc_infos;
 			VkImage _image = VK_NULL_HANDLE;
 			VkImageView _image_view = VK_NULL_HANDLE;
 			VkSampler _sampler = VK_NULL_HANDLE;

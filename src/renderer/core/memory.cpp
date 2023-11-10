@@ -6,14 +6,27 @@
 /*   By: kbz_8 <kbz_8.dev@akel-engine.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 22:02:37 by kbz_8             #+#    #+#             */
-/*   Updated: 2023/11/08 22:31:27 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/10 09:07:33 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include <core/profile.h>
+#include <cstdio>
 
 #define VMA_STATIC_VULKAN_FUNCTIONS 0
 #define VMA_DYNAMIC_VULKAN_FUNCTIONS 0
 #define VMA_VULKAN_VERSION 1002000
-#include <renderer/core/memory.h>
+#define VMA_IMPLEMENTATION
+
+#ifdef MLX_COMPILER_CLANG
+	#pragma clang diagnostic push
+	#pragma clang diagnostic ignored "-Wnullability-completeness"
+		#include <renderer/core/memory.h>
+	#pragma clang diagnostic pop
+#else
+	#include <renderer/core/memory.h>
+#endif
+
 #include <renderer/core/render_core.h>
 
 namespace mlx
@@ -53,7 +66,7 @@ namespace mlx
 		#endif
 	}
 
-	VmaAllocation GPUallocator::createBuffer(const VkBufferCreateInfo* binfo, const VmaAllocationCreateInfo* vinfo, VkBuffer& buffer) noexcept
+	VmaAllocation GPUallocator::createBuffer(const VkBufferCreateInfo* binfo, const VmaAllocationCreateInfo* vinfo, VkBuffer& buffer, VmaAllocationInfo& allocinfo) noexcept
 	{
 		VmaAllocation allocation;
 		if(vmaCreateBuffer(_allocator, binfo, vinfo, &buffer, &allocation, nullptr) != VK_SUCCESS)
@@ -61,6 +74,7 @@ namespace mlx
 		#ifdef DEBUG
 			core::error::report(e_kind::message, "Graphics Allocator : created new buffer");
 		#endif
+		vmaGetAllocationInfo(_allocator, allocation, &allocinfo);
 		return allocation;
 	}
 
@@ -69,7 +83,7 @@ namespace mlx
 		vmaDestroyBuffer(_allocator, buffer, allocation);
 	}
 
-	VmaAllocation GPUallocator::createImage(const VkImageCreateInfo* iminfo, const VmaAllocationCreateInfo* vinfo, VkImage& image) noexcept
+	VmaAllocation GPUallocator::createImage(const VkImageCreateInfo* iminfo, const VmaAllocationCreateInfo* vinfo, VkImage& image, VmaAllocationInfo& allocinfo) noexcept
 	{
 		VmaAllocation allocation;
 		if(vmaCreateImage(_allocator, iminfo, vinfo, &image, &allocation, nullptr) != VK_SUCCESS)
@@ -77,6 +91,7 @@ namespace mlx
 		#ifdef DEBUG
 			core::error::report(e_kind::message, "Graphics Allocator : created new image");
 		#endif
+		vmaGetAllocationInfo(_allocator, allocation, &allocinfo);
 		return allocation;
 	}
 
@@ -94,6 +109,11 @@ namespace mlx
 	void GPUallocator::unmapMemory(VmaAllocation allocation) noexcept
 	{
 		vmaUnmapMemory(_allocator, allocation);
+	}
+	
+	void GPUallocator::flush(VmaAllocation allocation, VkDeviceSize size, VkDeviceSize offset) noexcept
+	{
+		vmaFlushAllocation(_allocator, allocation, offset, size);
 	}
 
 	void GPUallocator::destroy() noexcept
