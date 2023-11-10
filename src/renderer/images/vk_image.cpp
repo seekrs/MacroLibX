@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:59:07 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/09 19:35:26 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/10 08:24:11 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ namespace mlx
 		VmaAllocationCreateInfo alloc_info{};
 		alloc_info.usage = VMA_MEMORY_USAGE_GPU_ONLY;
 
-		_allocation = Render_Core::get().getAllocator().createImage(&imageInfo, &alloc_info, _image);
+		_allocation = Render_Core::get().getAllocator().createImage(&imageInfo, &alloc_info, _image, _alloc_infos);
 
 		_pool.init();
 	}

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:45:29 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/22 19:51:59 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/10 07:54:29 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ namespace mlx
 
 			inline unsigned int getSize(int i) noexcept { return _buffers[i].getSize(); }
 			inline unsigned int getOffset(int i) noexcept { return _buffers[i].getOffset(); }
-			inline VkDeviceMemory getDeviceMemory(int i) noexcept { return _buffers[i].getDeviceMemory(); }
 			inline VkBuffer& operator()(int i) noexcept { return _buffers[i].get(); }
 			inline VkBuffer& get(int i) noexcept { return _buffers[i].get(); }
 

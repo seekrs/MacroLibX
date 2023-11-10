@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:28:08 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/19 15:38:45 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/10 08:33:52 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ namespace mlx
 {
 	void VBO::setData(uint32_t size, const void* data)
 	{
-		if(size > _size)
-			core::error::report(e_kind::error, "Vulkan : trying to store to much data in a vertex buffer (%d bytes in %d bytes)", size, _size);
+		if(size > getSize())
+			core::error::report(e_kind::error, "Vulkan : trying to store to much data in a vertex buffer (%d bytes in %d bytes)", size, getSize());
 
 		if(data == nullptr)
 			core::error::report(e_kind::warning, "Vulkan : mapping null data in a vertex buffer");

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:45:52 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/22 19:51:56 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/10 07:54:48 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,6 @@ namespace mlx
 	unsigned int UBO::getOffset() noexcept
 	{
 		return _buffers[_renderer->getActiveImageIndex()].getOffset();
-	}
-
-	VkDeviceMemory UBO::getDeviceMemory() noexcept
-	{
-		return _buffers[_renderer->getActiveImageIndex()].getDeviceMemory();
 	}
 
 	VkBuffer& UBO::operator()() noexcept

@@ -4,3 +4,4 @@
 *.a
 *.so
 *.out
+.cache/
