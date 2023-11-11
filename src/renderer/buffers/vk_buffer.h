@@ -23,7 +23,6 @@ namespace mlx
 		public:
 			enum class kind { dynamic, uniform, constant };
 
-:q
 			void create(kind type, VkDeviceSize size, VkBufferUsageFlags usage, const void* data = nullptr);
 			void destroy() noexcept;
 
