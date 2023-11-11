@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:14:29 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/08 20:14:08 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/11 02:14:58 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_vulkan.h>
 #include <iostream>
+#include <algorithm>
 
 namespace mlx
 {
@@ -81,35 +82,57 @@ namespace mlx
 		if(SDL_Vulkan_CreateSurface(window, Render_Core::get().getInstance().get(), &surface) != SDL_TRUE)
 			core::error::report(e_kind::fatal_error, "Vulkan : failed to create a surface to pick physical device");
 
+		std::vector<std::pair<int, VkPhysicalDevice>> devices_score;
+
 		for(const auto& device : devices)
-		{
-			if(isDeviceSuitable(device, surface))
-			{
-				_physicalDevice = device;
-				break;
-			}
-		}
+			devices_score.emplace_back(deviceScore(device, surface), device);
 
 		vkDestroySurfaceKHR(Render_Core::get().getInstance().get(), surface, nullptr);
 		SDL_DestroyWindow(window);
 
+		using device_pair = std::pair<int, VkPhysicalDevice>;
+		std::sort(devices_score.begin(), devices_score.end(), [](const device_pair& a, const device_pair& b)
+		{
+			return a.first > b.first;
+		});
+
+		if(devices_score.front().first > 0)
+			_physicalDevice = devices_score.front().second;
+
 		if(_physicalDevice == VK_NULL_HANDLE)
 			core::error::report(e_kind::fatal_error, "Vulkan : failed to find a suitable GPU");
+		VkPhysicalDeviceProperties props;
+		vkGetPhysicalDeviceProperties(_physicalDevice, &props);
 		#ifdef DEBUG
-			core::error::report(e_kind::message, "Vulkan : picked a physical device");
+			core::error::report(e_kind::message, "Vulkan : picked a physical device, %s", props.deviceName);
 		#endif
 	}
-	
-	bool Device::isDeviceSuitable(VkPhysicalDevice device, VkSurfaceKHR surface)
+
+	int Device::deviceScore(VkPhysicalDevice device, VkSurfaceKHR surface)
 	{
 		Queues::QueueFamilyIndices indices = Render_Core::get().getQueue().findQueueFamilies(device, surface);
-
 		bool extensionsSupported = checkDeviceExtensionSupport(device);
 
 		uint32_t formatCount = 0;
 		if(extensionsSupported)
 			vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &formatCount, nullptr);
-		return indices.isComplete() && extensionsSupported && formatCount != 0;
+
+		VkPhysicalDeviceProperties props;
+		vkGetPhysicalDeviceProperties(device, &props);
+		if(!indices.isComplete() || !extensionsSupported || formatCount == 0)
+			return -1;
+
+		int score = 0;
+		#ifndef FORCE_INTEGRATED_GPU
+			if(props.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU)
+				score += 1000;
+		#else
+			if(props.deviceType != VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU)
+				return -1;
+		#endif
+		score += props.limits.maxImageDimension2D;
+		score += props.limits.maxBoundDescriptorSets;
+		return score;
 	}
 
 	bool Device::checkDeviceExtensionSupport(VkPhysicalDevice device)

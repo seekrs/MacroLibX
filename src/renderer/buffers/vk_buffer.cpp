@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 18:55:57 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/10 08:14:42 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/11 03:27:31 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,15 @@
 #include <renderer/core/render_core.h>
 #include <vma.h>
 #include <cstring>
+#include <iostream>
 
 namespace mlx
 {
 	void Buffer::create(Buffer::kind type, VkDeviceSize size, VkBufferUsageFlags usage, const void* data)
 	{
+		_usage = usage;
 		VmaAllocationCreateInfo alloc_info{};
+		alloc_info.flags = VMA_ALLOCATION_CREATE_HOST_ACCESS_RANDOM_BIT;
 		if(type == Buffer::kind::constant)
 		{
 			if(data == nullptr)
@@ -28,19 +31,13 @@ namespace mlx
 				core::error::report(e_kind::warning, "Vulkan : trying to create constant buffer without data (constant buffers cannot be modified after creation)");
 				return;
 			}
-			_usage = usage | VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
-			alloc_info.usage = VMA_MEMORY_USAGE_GPU_ONLY;
+			_usage |= VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
+			alloc_info.usage = VMA_MEMORY_USAGE_AUTO_PREFER_HOST;
 		}
 		else if(type == Buffer::kind::uniform)
-		{
-			_usage = usage;
-			alloc_info.usage = VMA_MEMORY_USAGE_CPU_TO_GPU;
-		}
+			alloc_info.usage = VMA_MEMORY_USAGE_AUTO_PREFER_HOST;
 		else
-		{
-			_usage = usage;
-			alloc_info.usage = VMA_MEMORY_USAGE_GPU_TO_CPU;
-		}
+			alloc_info.usage = VMA_MEMORY_USAGE_AUTO;
 
 		createBuffer(_usage, alloc_info, size);
 
@@ -58,6 +55,8 @@ namespace mlx
 
 	void Buffer::destroy() noexcept
 	{
+		if(_is_mapped)
+			unmapMem();
 		Render_Core::get().getAllocator().destroyBuffer(_allocation, _buffer);
 	}
 
@@ -75,7 +74,7 @@ namespace mlx
 	void Buffer::pushToGPU() noexcept
 	{
 		VmaAllocationCreateInfo alloc_info{};
-		alloc_info.usage = VMA_MEMORY_USAGE_GPU_ONLY;
+		alloc_info.usage = VMA_MEMORY_USAGE_AUTO_PREFER_DEVICE;
 
 		Buffer newBuffer;
 		newBuffer._usage = (_usage & 0xFFFFFFFC) | VK_BUFFER_USAGE_TRANSFER_DST_BIT;

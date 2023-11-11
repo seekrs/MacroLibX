@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:13:42 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/18 22:55:30 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/11 01:51:26 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,13 @@ namespace mlx
 			inline VkDevice& get() noexcept { return _device; }
 
 			inline VkPhysicalDevice& getPhysicalDevice() noexcept { return _physicalDevice; }
-			
+
 		private:
 			void pickPhysicalDevice();
-			bool isDeviceSuitable(VkPhysicalDevice device, VkSurfaceKHR surface);
 			bool checkDeviceExtensionSupport(VkPhysicalDevice device);
+			int deviceScore(VkPhysicalDevice device, VkSurfaceKHR surface);
 
+		private:
 			VkPhysicalDevice _physicalDevice = VK_NULL_HANDLE;
 			VkDevice _device = VK_NULL_HANDLE;
 	};

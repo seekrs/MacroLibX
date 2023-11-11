@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 23:18:52 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/09 19:38:30 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/11 03:29:40 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,11 @@ namespace mlx
 		public:
 			enum class kind { dynamic, uniform, constant };
 
+:q
 			void create(kind type, VkDeviceSize size, VkBufferUsageFlags usage, const void* data = nullptr);
 			void destroy() noexcept;
 
-			inline void mapMem(void** data = nullptr) noexcept
-			{
-				Render_Core::get().getAllocator().mapMemory(_allocation, data);
-				_is_mapped = true;
-			}
+			inline void mapMem(void** data = nullptr) noexcept { Render_Core::get().getAllocator().mapMemory(_allocation, data); _is_mapped = true; }
 			inline bool isMapped() const noexcept { return _is_mapped; }
 			inline void unmapMem() noexcept { Render_Core::get().getAllocator().unmapMemory(_allocation);_is_mapped = false; }
 
@@ -39,7 +36,7 @@ namespace mlx
 			inline VkBuffer& operator()() noexcept { return _buffer; }
 			inline VkBuffer& get() noexcept { return _buffer; }
 			inline VkDeviceSize getSize() const noexcept { return _alloc_infos.size; }
-			inline VkDeviceSize getOffset() const noexcept { return _alloc_infos.offset; }
+			inline VkDeviceSize getOffset() const noexcept { return _offset; }
 
 		protected:
 			void pushToGPU() noexcept;
@@ -49,6 +46,7 @@ namespace mlx
 			VmaAllocation _allocation;
 			VmaAllocationInfo _alloc_infos;
 			VkBuffer _buffer = VK_NULL_HANDLE;
+			VkDeviceSize _offset = 0;
 
 		private:
 			void createBuffer(VkBufferUsageFlags usage, VmaAllocationCreateInfo info, VkDeviceSize size);

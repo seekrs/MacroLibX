@@ -6,7 +6,7 @@
 /*   By: kbz_8 <kbz_8.dev@akel-engine.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 22:02:37 by kbz_8             #+#    #+#             */
-/*   Updated: 2023/11/10 09:07:33 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/10 23:29:56 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,23 +34,28 @@ namespace mlx
 	void GPUallocator::init() noexcept
 	{
 		VmaVulkanFunctions vma_vulkan_func{};
-		vma_vulkan_func.vkAllocateMemory                    = vkAllocateMemory;
-		vma_vulkan_func.vkBindBufferMemory                  = vkBindBufferMemory;
-		vma_vulkan_func.vkBindImageMemory                   = vkBindImageMemory;
-		vma_vulkan_func.vkCreateBuffer                      = vkCreateBuffer;
-		vma_vulkan_func.vkCreateImage                       = vkCreateImage;
-		vma_vulkan_func.vkDestroyBuffer                     = vkDestroyBuffer;
-		vma_vulkan_func.vkDestroyImage                      = vkDestroyImage;
-		vma_vulkan_func.vkFlushMappedMemoryRanges           = vkFlushMappedMemoryRanges;
-		vma_vulkan_func.vkFreeMemory                        = vkFreeMemory;
-		vma_vulkan_func.vkGetBufferMemoryRequirements       = vkGetBufferMemoryRequirements;
-		vma_vulkan_func.vkGetImageMemoryRequirements        = vkGetImageMemoryRequirements;
-		vma_vulkan_func.vkGetPhysicalDeviceMemoryProperties = vkGetPhysicalDeviceMemoryProperties;
-		vma_vulkan_func.vkGetPhysicalDeviceProperties       = vkGetPhysicalDeviceProperties;
-		vma_vulkan_func.vkInvalidateMappedMemoryRanges      = vkInvalidateMappedMemoryRanges;
-		vma_vulkan_func.vkMapMemory                         = vkMapMemory;
-		vma_vulkan_func.vkUnmapMemory                       = vkUnmapMemory;
-		vma_vulkan_func.vkCmdCopyBuffer                     = vkCmdCopyBuffer;
+		vma_vulkan_func.vkAllocateMemory                        = vkAllocateMemory;
+		vma_vulkan_func.vkBindBufferMemory                      = vkBindBufferMemory;
+		vma_vulkan_func.vkBindImageMemory                       = vkBindImageMemory;
+		vma_vulkan_func.vkCreateBuffer                          = vkCreateBuffer;
+		vma_vulkan_func.vkCreateImage                           = vkCreateImage;
+		vma_vulkan_func.vkDestroyBuffer                         = vkDestroyBuffer;
+		vma_vulkan_func.vkDestroyImage                          = vkDestroyImage;
+		vma_vulkan_func.vkFlushMappedMemoryRanges               = vkFlushMappedMemoryRanges;
+		vma_vulkan_func.vkFreeMemory                            = vkFreeMemory;
+		vma_vulkan_func.vkGetBufferMemoryRequirements           = vkGetBufferMemoryRequirements;
+		vma_vulkan_func.vkGetImageMemoryRequirements            = vkGetImageMemoryRequirements;
+		vma_vulkan_func.vkGetPhysicalDeviceMemoryProperties     = vkGetPhysicalDeviceMemoryProperties;
+		vma_vulkan_func.vkGetPhysicalDeviceProperties           = vkGetPhysicalDeviceProperties;
+		vma_vulkan_func.vkInvalidateMappedMemoryRanges          = vkInvalidateMappedMemoryRanges;
+		vma_vulkan_func.vkMapMemory                             = vkMapMemory;
+		vma_vulkan_func.vkUnmapMemory                           = vkUnmapMemory;
+		vma_vulkan_func.vkCmdCopyBuffer                         = vkCmdCopyBuffer;
+		vma_vulkan_func.vkGetBufferMemoryRequirements2KHR       = vkGetBufferMemoryRequirements2;
+		vma_vulkan_func.vkGetImageMemoryRequirements2KHR        = vkGetImageMemoryRequirements2;
+		vma_vulkan_func.vkBindBufferMemory2KHR                  = vkBindBufferMemory2;
+		vma_vulkan_func.vkBindImageMemory2KHR                   = vkBindImageMemory2;
+		vma_vulkan_func.vkGetPhysicalDeviceMemoryProperties2KHR = vkGetPhysicalDeviceMemoryProperties2;
 
 		VmaAllocatorCreateInfo allocatorCreateInfo{};
 		allocatorCreateInfo.vulkanApiVersion = VK_API_VERSION_1_2;
