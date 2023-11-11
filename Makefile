@@ -6,7 +6,7 @@
 #    By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/04 16:43:41 by maldavid          #+#    #+#              #
-#    Updated: 2023/10/20 00:03:33 by maldavid         ###   ########.fr        #
+#    Updated: 2023/11/10 23:55:12 by maldavid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ OS = $(shell uname -s)
 DEBUG		?= false
 TOOLCHAIN	?= clang
 IMAGES_OPTIMIZED	?= true
+FORCE_INTEGRATED_GPU ?= false
 
 CXX			= clang++
 
@@ -41,6 +42,10 @@ endif
 
 ifeq ($(DEBUG), true)
 	CXXFLAGS += -g -D DEBUG
+endif
+
+ifeq ($(FORCE_INTEGRATED_GPU), true)
+	CXXFLAGS += -D FORCE_INTEGRATED_GPU
 endif
 
 ifeq ($(IMAGES_OPTIMIZED), true)
