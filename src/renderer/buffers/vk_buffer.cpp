@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 18:55:57 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/14 07:06:17 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/14 07:17:06 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,13 +65,14 @@ namespace mlx
 		bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
 		_name = name;
+		std::string alloc_name = _name;
 		if(usage & VK_BUFFER_USAGE_INDEX_BUFFER_BIT)
-			_name.append("_index_buffer");
+			alloc_name.append("_index_buffer");
 		else if(usage & VK_BUFFER_USAGE_VERTEX_BUFFER_BIT)
-			_name.append("_vertex_buffer");
+			alloc_name.append("_vertex_buffer");
 		else if((usage & VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT) != 1)
-			_name.append("_buffer");
-		_allocation = Render_Core::get().getAllocator().createBuffer(&bufferInfo, &info, _buffer, _name.c_str());
+			alloc_name.append("_buffer");
+		_allocation = Render_Core::get().getAllocator().createBuffer(&bufferInfo, &info, _buffer, alloc_name.c_str());
 		_size = size;
 	}
 
