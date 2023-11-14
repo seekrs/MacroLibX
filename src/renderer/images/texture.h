@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 02:24:58 by maldavid          #+#    #+#             */
-/*   Updated: 2023/08/02 12:32:27 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/14 04:57:39 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ namespace mlx
 		public:
 			Texture() = default;
 			
-			void create(uint8_t* pixels, uint32_t width, uint32_t height, VkFormat format);
+			void create(uint8_t* pixels, uint32_t width, uint32_t height, VkFormat format, const char* name, bool dedicated_memory = false);
 			void render(class Renderer& renderer, int x, int y);
 			void destroy() noexcept override;
 
@@ -50,6 +50,7 @@ namespace mlx
 		private:
 			C_VBO _vbo;
 			C_IBO _ibo;
+			std::string _name;
 			DescriptorSet _set;
 			std::vector<uint32_t> _cpu_map;
 			std::optional<Buffer> _buf_map = std::nullopt;

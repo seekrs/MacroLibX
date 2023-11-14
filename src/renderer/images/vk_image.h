@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:54:21 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/10 08:23:59 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/14 03:15:18 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ namespace mlx
 		public:
 			Image() = default;
 
-			void create(uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, std::vector<VkMemoryPropertyFlags> properties);
+			void create(uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, const char* name, bool decated_memory = false);
 			void createImageView(VkImageViewType type, VkImageAspectFlags aspectFlags) noexcept;
 			void createSampler() noexcept;
 			void copyFromBuffer(class Buffer& buffer);
@@ -50,7 +50,6 @@ namespace mlx
 			CmdBuffer _transfer_cmd;
 			CmdPool _pool;
 			VmaAllocation _allocation;
-			VmaAllocationInfo _alloc_infos;
 			VkImage _image = VK_NULL_HANDLE;
 			VkImageView _image_view = VK_NULL_HANDLE;
 			VkSampler _sampler = VK_NULL_HANDLE;

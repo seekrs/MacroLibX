@@ -6,7 +6,7 @@
 /*   By: kbz_8 <kbz_8.dev@akel-engine.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 22:02:37 by kbz_8             #+#    #+#             */
-/*   Updated: 2023/11/10 23:29:56 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/14 06:25:19 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 #endif
 
 #include <renderer/core/render_core.h>
+#include <fstream>
 
 namespace mlx
 {
@@ -65,44 +66,52 @@ namespace mlx
 		allocatorCreateInfo.pVulkanFunctions = &vma_vulkan_func;
 
 		if(vmaCreateAllocator(&allocatorCreateInfo, &_allocator) != VK_SUCCESS)
-			core::error::report(e_kind::fatal_error, "Vulkan : failed to create allocator");
+			core::error::report(e_kind::fatal_error, "Vulkan : failed to create graphics memory allocator");
 		#ifdef DEBUG
 			core::error::report(e_kind::message, "Vulkan : created new allocator");
 		#endif
 	}
 
-	VmaAllocation GPUallocator::createBuffer(const VkBufferCreateInfo* binfo, const VmaAllocationCreateInfo* vinfo, VkBuffer& buffer, VmaAllocationInfo& allocinfo) noexcept
+	VmaAllocation GPUallocator::createBuffer(const VkBufferCreateInfo* binfo, const VmaAllocationCreateInfo* vinfo, VkBuffer& buffer, const char* name) noexcept
 	{
 		VmaAllocation allocation;
 		if(vmaCreateBuffer(_allocator, binfo, vinfo, &buffer, &allocation, nullptr) != VK_SUCCESS)
 			core::error::report(e_kind::fatal_error, "Vulkan : failed to allocate a buffer");
+		if(name != nullptr)
+			vmaSetAllocationName(_allocator, allocation, name);
 		#ifdef DEBUG
 			core::error::report(e_kind::message, "Graphics Allocator : created new buffer");
 		#endif
-		vmaGetAllocationInfo(_allocator, allocation, &allocinfo);
 		return allocation;
 	}
 
 	void GPUallocator::destroyBuffer(VmaAllocation allocation, VkBuffer buffer) noexcept
 	{
 		vmaDestroyBuffer(_allocator, buffer, allocation);
+		#ifdef DEBUG
+			core::error::report(e_kind::message, "Graphics Allocator : destroyed buffer");
+		#endif
 	}
 
-	VmaAllocation GPUallocator::createImage(const VkImageCreateInfo* iminfo, const VmaAllocationCreateInfo* vinfo, VkImage& image, VmaAllocationInfo& allocinfo) noexcept
+	VmaAllocation GPUallocator::createImage(const VkImageCreateInfo* iminfo, const VmaAllocationCreateInfo* vinfo, VkImage& image, const char* name) noexcept
 	{
 		VmaAllocation allocation;
 		if(vmaCreateImage(_allocator, iminfo, vinfo, &image, &allocation, nullptr) != VK_SUCCESS)
 			core::error::report(e_kind::fatal_error, "Vulkan : failed to allocate an image");
+		if(name != nullptr)
+			vmaSetAllocationName(_allocator, allocation, name);
 		#ifdef DEBUG
 			core::error::report(e_kind::message, "Graphics Allocator : created new image");
 		#endif
-		vmaGetAllocationInfo(_allocator, allocation, &allocinfo);
 		return allocation;
 	}
 
 	void GPUallocator::destroyImage(VmaAllocation allocation, VkImage image) noexcept
 	{
 		vmaDestroyImage(_allocator, image, allocation);
+		#ifdef DEBUG
+			core::error::report(e_kind::message, "Graphics Allocator : destroyed image");
+		#endif
 	}
 
 	void GPUallocator::mapMemory(VmaAllocation allocation, void** data) noexcept
@@ -114,6 +123,25 @@ namespace mlx
 	void GPUallocator::unmapMemory(VmaAllocation allocation) noexcept
 	{
 		vmaUnmapMemory(_allocator, allocation);
+	}
+
+	void GPUallocator::dumpMemoryToJson()
+	{
+		static uint32_t id = 0;
+		std::string name("memory_dump");
+		name.append(std::to_string(id) + ".json");
+		std::ofstream file(name);
+		if(!file.is_open())
+		{
+			core::error::report(e_kind::error, "Graphics allocator : unable to dump memory to a json file");
+			return;
+		}
+		char* str = nullptr;
+		vmaBuildStatsString(_allocator, &str, true);
+			file << str;
+		vmaFreeStatsString(_allocator, str);
+		file.close();
+		id++;
 	}
 	
 	void GPUallocator::flush(VmaAllocation allocation, VkDeviceSize size, VkDeviceSize offset) noexcept

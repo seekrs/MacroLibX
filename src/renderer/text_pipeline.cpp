@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 16:41:13 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/19 13:43:49 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/14 05:36:09 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ namespace mlx
 			vulkan_bitmap[j + 2] = tmp_bitmap[i];
 			vulkan_bitmap[j + 3] = tmp_bitmap[i];
 		}
-		_atlas.create(vulkan_bitmap, 512, 512, VK_FORMAT_R8G8B8A8_UNORM);
+		_atlas.create(vulkan_bitmap, 512, 512, VK_FORMAT_R8G8B8A8_UNORM, "__mlx_texts_pipeline_texture_atlas", true);
 		_atlas.setDescriptor(renderer->getFragDescriptorSet().duplicate());
 	}
 

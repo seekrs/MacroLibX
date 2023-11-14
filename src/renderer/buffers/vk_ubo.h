@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:45:29 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/10 07:54:29 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/14 03:26:10 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ namespace mlx
 	class UBO
 	{
 		public:
-			void create(class Renderer* renderer, uint32_t size);
+			void create(class Renderer* renderer, uint32_t size, const char* name);
 
 			void setData(uint32_t size, const void* data);
 			void setDynamicData(uint32_t size, const void* data);

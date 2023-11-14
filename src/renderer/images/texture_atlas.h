@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 16:36:33 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/11 12:04:16 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/14 05:36:30 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ namespace mlx
 		public:
 			TextureAtlas() = default;
 
-			void create(uint8_t* pixels, uint32_t width, uint32_t height, VkFormat format);
+			void create(uint8_t* pixels, uint32_t width, uint32_t height, VkFormat format, const char* name, bool dedicated_memory = false);
 			void render(class Renderer& renderer, int x, int y, uint32_t ibo_size);
 			void destroy() noexcept override;
 

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:59:07 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/10 08:24:11 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/14 03:15:33 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 namespace mlx
 {
-	void Image::create(uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, std::vector<VkMemoryPropertyFlags> properties)
+	void Image::create(uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, const char* name, bool dedicated_memory)
 	{
 		_width = width;
 		_height = height;
@@ -41,9 +41,14 @@ namespace mlx
 		imageInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
 		VmaAllocationCreateInfo alloc_info{};
-		alloc_info.usage = VMA_MEMORY_USAGE_GPU_ONLY;
+		alloc_info.usage = VMA_MEMORY_USAGE_AUTO_PREFER_DEVICE;
+		if(dedicated_memory)
+		{
+			alloc_info.flags = VMA_ALLOCATION_CREATE_DEDICATED_MEMORY_BIT;
+			alloc_info.priority = 1.0f;
+		}
 
-		_allocation = Render_Core::get().getAllocator().createImage(&imageInfo, &alloc_info, _image, _alloc_infos);
+		_allocation = Render_Core::get().getAllocator().createImage(&imageInfo, &alloc_info, _image, name);
 
 		_pool.init();
 	}
@@ -67,7 +72,7 @@ namespace mlx
 
 	void Image::createSampler() noexcept
 	{
-		VkSamplerCreateInfo info = {};
+		VkSamplerCreateInfo info{};
 		info.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
 		info.magFilter = VK_FILTER_NEAREST;
 		info.minFilter = VK_FILTER_NEAREST;
@@ -92,7 +97,7 @@ namespace mlx
 		_transfer_cmd.reset();
 		_transfer_cmd.beginRecord();
 
-		VkImageMemoryBarrier copy_barrier = {};
+		VkImageMemoryBarrier copy_barrier{};
 		copy_barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
 		copy_barrier.dstAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
 		copy_barrier.oldLayout = VK_IMAGE_LAYOUT_UNDEFINED;
@@ -105,7 +110,7 @@ namespace mlx
 		copy_barrier.subresourceRange.layerCount = 1;
 		vkCmdPipelineBarrier(_transfer_cmd.get(), VK_PIPELINE_STAGE_HOST_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT, 0, 0, nullptr, 0, nullptr, 1, &copy_barrier);
 
-		VkBufferImageCopy region = {};
+		VkBufferImageCopy region{};
 		region.bufferOffset = 0;
 		region.bufferRowLength = 0;
 		region.bufferImageHeight = 0;
@@ -118,7 +123,7 @@ namespace mlx
 
 		vkCmdCopyBufferToImage(_transfer_cmd.get(), buffer.get(), _image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &region);
 
-		VkImageMemoryBarrier use_barrier = {};
+		VkImageMemoryBarrier use_barrier{};
 		use_barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
 		use_barrier.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
 		use_barrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
@@ -144,7 +149,7 @@ namespace mlx
 		_transfer_cmd.reset();
 		_transfer_cmd.beginRecord();
 
-		VkImageMemoryBarrier copy_barrier = {};
+		VkImageMemoryBarrier copy_barrier{};
 		copy_barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
 		copy_barrier.dstAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
 		copy_barrier.oldLayout = VK_IMAGE_LAYOUT_UNDEFINED;
@@ -157,7 +162,7 @@ namespace mlx
 		copy_barrier.subresourceRange.layerCount = 1;
 		vkCmdPipelineBarrier(_transfer_cmd.get(), VK_PIPELINE_STAGE_HOST_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT, 0, 0, nullptr, 0, nullptr, 1, &copy_barrier);
 
-		VkBufferImageCopy region = {};
+		VkBufferImageCopy region{};
 		region.bufferOffset = 0;
 		region.bufferRowLength = 0;
 		region.bufferImageHeight = 0;
@@ -170,7 +175,7 @@ namespace mlx
 
 		vkCmdCopyImageToBuffer(_transfer_cmd.get(), _image, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, buffer.get(), 1, &region);
 
-		VkImageMemoryBarrier use_barrier = {};
+		VkImageMemoryBarrier use_barrier{};
 		use_barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
 		use_barrier.srcAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
 		use_barrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;

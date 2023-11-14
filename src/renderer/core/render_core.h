@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:16:32 by maldavid          #+#    #+#             */
-/*   Updated: 2023/10/21 00:04:39 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/11/14 05:00:44 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ namespace mlx
 
 	const std::vector<const char*> validationLayers = { "VK_LAYER_KHRONOS_validation" };
 
-    constexpr const int MAX_FRAMES_IN_FLIGHT = 2;
+    constexpr const int MAX_FRAMES_IN_FLIGHT = 3;
 
     class Render_Core : public Singleton<Render_Core>
     {
