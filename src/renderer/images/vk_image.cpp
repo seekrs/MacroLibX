@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:59:07 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/14 03:15:33 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/14 09:31:39 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,7 +200,9 @@ namespace mlx
 		if(_image_view != VK_NULL_HANDLE)
 			vkDestroyImageView(Render_Core::get().getDevice().get(), _image_view, nullptr);
 
-		Render_Core::get().getAllocator().destroyImage(_allocation, _image);
+		if(_image != VK_NULL_HANDLE)
+			Render_Core::get().getAllocator().destroyImage(_allocation, _image);
+		_image = VK_NULL_HANDLE;
 		if(_transfer_cmd.isInit())
 			_transfer_cmd.destroy();
 		_pool.destroy();

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 18:55:57 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/14 07:35:22 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/14 09:31:58 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,9 @@ namespace mlx
 	{
 		if(_is_mapped)
 			unmapMem();
-		Render_Core::get().getAllocator().destroyBuffer(_allocation, _buffer);
+		if(_buffer != VK_NULL_HANDLE)
+			Render_Core::get().getAllocator().destroyBuffer(_allocation, _buffer);
+		_buffer = VK_NULL_HANDLE;
 	}
 
 	void Buffer::createBuffer(VkBufferUsageFlags usage, VmaAllocationCreateInfo info, VkDeviceSize size, const char* name)
