@@ -47,6 +47,11 @@ cd MacroLibX
 make
 ```
 
+If you want to build using GCC you can add `TOOLCHAIN=gcc` to your `make` command
+```bash
+make TOOLCHAIN=gcc
+```
+
 ## 🔨 Compile your project
 
 To compile your project with MacroLibX, you just provide the shared library path in your compilation/linking command:

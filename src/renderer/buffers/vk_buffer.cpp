@@ -6,12 +6,13 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 18:55:57 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/14 07:17:06 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/14 07:35:22 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vk_buffer.h"
 #include <renderer/command/vk_cmd_pool.h>
+#include <renderer/command/vk_cmd_buffer.h>
 #include <renderer/core/render_core.h>
 #include <vma.h>
 #include <cstring>
@@ -89,39 +90,19 @@ namespace mlx
 
 		CmdPool cmdpool;
 		cmdpool.init();
-		auto device = Render_Core::get().getDevice().get();
+		CmdBuffer cmdBuffer;
+		cmdBuffer.init(&cmdpool);
 
-		VkCommandBufferAllocateInfo allocInfo{};
-		allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
-		allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
-		allocInfo.commandPool = cmdpool.get();
-		allocInfo.commandBufferCount = 1;
-
-		VkCommandBuffer commandBuffer;
-		vkAllocateCommandBuffers(device, &allocInfo, &commandBuffer);
-
-		VkCommandBufferBeginInfo beginInfo{};
-		beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-		beginInfo.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
-
-		vkBeginCommandBuffer(commandBuffer, &beginInfo);
+		cmdBuffer.beginRecord(VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT);
 
 		VkBufferCopy copyRegion{};
 		copyRegion.size = _size;
-		vkCmdCopyBuffer(commandBuffer, _buffer, newBuffer._buffer, 1, &copyRegion);
+		vkCmdCopyBuffer(cmdBuffer.get(), _buffer, newBuffer._buffer, 1, &copyRegion);
 
-		vkEndCommandBuffer(commandBuffer);
+		cmdBuffer.endRecord();
+		cmdBuffer.submitIdle();
 
-		VkSubmitInfo submitInfo{};
-		submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-		submitInfo.commandBufferCount = 1;
-		submitInfo.pCommandBuffers = &commandBuffer;
-
-		auto graphicsQueue = Render_Core::get().getQueue().getGraphic();
-
-		vkQueueSubmit(graphicsQueue, 1, &submitInfo, VK_NULL_HANDLE);
-		vkQueueWaitIdle(graphicsQueue);
-
+		cmdBuffer.destroy();
 		cmdpool.destroy();
 
 		this->swap(newBuffer);
