@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 23:18:52 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/11 03:29:40 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/14 03:24:12 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,18 @@ namespace mlx
 		public:
 			enum class kind { dynamic, uniform, constant };
 
-			void create(kind type, VkDeviceSize size, VkBufferUsageFlags usage, const void* data = nullptr);
+			void create(kind type, VkDeviceSize size, VkBufferUsageFlags usage, const char* name, const void* data = nullptr);
 			void destroy() noexcept;
 
-			inline void mapMem(void** data = nullptr) noexcept { Render_Core::get().getAllocator().mapMemory(_allocation, data); _is_mapped = true; }
+			inline void mapMem(void** data) noexcept { Render_Core::get().getAllocator().mapMemory(_allocation, data); _is_mapped = true; }
 			inline bool isMapped() const noexcept { return _is_mapped; }
-			inline void unmapMem() noexcept { Render_Core::get().getAllocator().unmapMemory(_allocation);_is_mapped = false; }
+			inline void unmapMem() noexcept { Render_Core::get().getAllocator().unmapMemory(_allocation); _is_mapped = false; }
 
 			void flush(VkDeviceSize size = VK_WHOLE_SIZE, VkDeviceSize offset = 0);
 
 			inline VkBuffer& operator()() noexcept { return _buffer; }
 			inline VkBuffer& get() noexcept { return _buffer; }
-			inline VkDeviceSize getSize() const noexcept { return _alloc_infos.size; }
+			inline VkDeviceSize getSize() const noexcept { return _size; }
 			inline VkDeviceSize getOffset() const noexcept { return _offset; }
 
 		protected:
@@ -43,14 +43,15 @@ namespace mlx
 
 		protected:
 			VmaAllocation _allocation;
-			VmaAllocationInfo _alloc_infos;
 			VkBuffer _buffer = VK_NULL_HANDLE;
 			VkDeviceSize _offset = 0;
+			VkDeviceSize _size = 0;
 
 		private:
-			void createBuffer(VkBufferUsageFlags usage, VmaAllocationCreateInfo info, VkDeviceSize size);
+			void createBuffer(VkBufferUsageFlags usage, VmaAllocationCreateInfo info, VkDeviceSize size, const char* name);
 
 		private:
+			std::string _name;
 			VkBufferUsageFlags _usage = 0;
 			bool _is_mapped = false;
 	};

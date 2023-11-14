@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 15:13:55 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/08 21:02:22 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/14 06:59:12 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,21 @@ namespace mlx
 		sets[1] = _text_put_pipeline->getDescriptorSet();
 		vkCmdBindDescriptorSets(cmd_buff, VK_PIPELINE_BIND_POINT_GRAPHICS, _renderer->getPipeline().getPipelineLayout(), 0, sets.size(), sets.data(), 0, nullptr);
 		_text_put_pipeline->render();
-		
+
 		_renderer->endFrame();
 
 		for(auto& data : _textures_to_render)
 			data.texture->resetUpdate();
+
+		#ifdef GRAPHICS_MEMORY_DUMP
+			// dump memory to file every two seconds
+			static uint64_t timer = SDL_GetTicks64();
+			if(SDL_GetTicks64() - timer > 2000)
+			{
+				Render_Core::get().getAllocator().dumpMemoryToJson();
+				timer += 2000;
+			}
+		#endif
 	}
 
 	GraphicsSupport::~GraphicsSupport()

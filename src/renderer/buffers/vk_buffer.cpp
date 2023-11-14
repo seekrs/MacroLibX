@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 18:55:57 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/11 03:27:31 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/14 07:06:17 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,9 @@
 
 namespace mlx
 {
-	void Buffer::create(Buffer::kind type, VkDeviceSize size, VkBufferUsageFlags usage, const void* data)
+	void Buffer::create(Buffer::kind type, VkDeviceSize size, VkBufferUsageFlags usage, const char* name, const void* data)
 	{
 		_usage = usage;
-		VmaAllocationCreateInfo alloc_info{};
-		alloc_info.flags = VMA_ALLOCATION_CREATE_HOST_ACCESS_RANDOM_BIT;
 		if(type == Buffer::kind::constant)
 		{
 			if(data == nullptr)
@@ -32,22 +30,20 @@ namespace mlx
 				return;
 			}
 			_usage |= VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
-			alloc_info.usage = VMA_MEMORY_USAGE_AUTO_PREFER_HOST;
 		}
-		else if(type == Buffer::kind::uniform)
-			alloc_info.usage = VMA_MEMORY_USAGE_AUTO_PREFER_HOST;
-		else
-			alloc_info.usage = VMA_MEMORY_USAGE_AUTO;
 
-		createBuffer(_usage, alloc_info, size);
+		VmaAllocationCreateInfo alloc_info{};
+		alloc_info.flags = VMA_ALLOCATION_CREATE_HOST_ACCESS_SEQUENTIAL_WRITE_BIT;
+		alloc_info.usage = VMA_MEMORY_USAGE_AUTO;
 
-		if(type == Buffer::kind::constant || data != nullptr)
+		createBuffer(_usage, alloc_info, size, name);
+
+		if(data != nullptr)
 		{
 			void* mapped = nullptr;
 			mapMem(&mapped);
 				std::memcpy(mapped, data, size);
 			unmapMem();
-
 			if(type == Buffer::kind::constant)
 				pushToGPU();
 		}
@@ -60,7 +56,7 @@ namespace mlx
 		Render_Core::get().getAllocator().destroyBuffer(_allocation, _buffer);
 	}
 
-	void Buffer::createBuffer(VkBufferUsageFlags usage, VmaAllocationCreateInfo info, VkDeviceSize size)
+	void Buffer::createBuffer(VkBufferUsageFlags usage, VmaAllocationCreateInfo info, VkDeviceSize size, const char* name)
 	{
 		VkBufferCreateInfo bufferInfo{};
 		bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
@@ -68,7 +64,15 @@ namespace mlx
 		bufferInfo.usage = usage;
 		bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
-		_allocation = Render_Core::get().getAllocator().createBuffer(&bufferInfo, &info, _buffer, _alloc_infos);
+		_name = name;
+		if(usage & VK_BUFFER_USAGE_INDEX_BUFFER_BIT)
+			_name.append("_index_buffer");
+		else if(usage & VK_BUFFER_USAGE_VERTEX_BUFFER_BIT)
+			_name.append("_vertex_buffer");
+		else if((usage & VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT) != 1)
+			_name.append("_buffer");
+		_allocation = Render_Core::get().getAllocator().createBuffer(&bufferInfo, &info, _buffer, _name.c_str());
+		_size = size;
 	}
 
 	void Buffer::pushToGPU() noexcept
@@ -76,9 +80,11 @@ namespace mlx
 		VmaAllocationCreateInfo alloc_info{};
 		alloc_info.usage = VMA_MEMORY_USAGE_AUTO_PREFER_DEVICE;
 
+		std::string new_name = _name + "_GPU";
+
 		Buffer newBuffer;
 		newBuffer._usage = (_usage & 0xFFFFFFFC) | VK_BUFFER_USAGE_TRANSFER_DST_BIT;
-		newBuffer.createBuffer(newBuffer._usage, alloc_info, _alloc_infos.size);
+		newBuffer.createBuffer(newBuffer._usage, alloc_info, _size, new_name.c_str());
 
 		CmdPool cmdpool;
 		cmdpool.init();
@@ -100,7 +106,7 @@ namespace mlx
 		vkBeginCommandBuffer(commandBuffer, &beginInfo);
 
 		VkBufferCopy copyRegion{};
-		copyRegion.size = _alloc_infos.size;
+		copyRegion.size = _size;
 		vkCmdCopyBuffer(commandBuffer, _buffer, newBuffer._buffer, 1, &copyRegion);
 
 		vkEndCommandBuffer(commandBuffer);
@@ -128,9 +134,17 @@ namespace mlx
 		_buffer = buffer._buffer;
 		buffer._buffer = temp_b;
 
-		VmaAllocationInfo temp_i = _alloc_infos;
-		_alloc_infos = buffer._alloc_infos;
-		buffer._alloc_infos = temp_i;
+		VmaAllocation temp_a = buffer._allocation;
+		buffer._allocation = _allocation;
+		_allocation = temp_a;
+
+		VkDeviceSize temp_size = buffer._size;
+		buffer._size = _size;
+		_size = temp_size;
+
+		VkDeviceSize temp_offset = buffer._offset;
+		buffer._offset = _offset;
+		_offset = temp_offset;
 
 		VkBufferUsageFlags temp_u = _usage;
 		_usage = buffer._usage;

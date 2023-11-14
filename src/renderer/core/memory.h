@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 02:13:03 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/10 08:14:06 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/14 03:12:59 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,16 @@ namespace mlx
 			void init() noexcept;
 			void destroy() noexcept;
 
-			VmaAllocation createBuffer(const VkBufferCreateInfo* binfo, const VmaAllocationCreateInfo* vinfo, VkBuffer& buffer, VmaAllocationInfo& allocinfo) noexcept;
+			VmaAllocation createBuffer(const VkBufferCreateInfo* binfo, const VmaAllocationCreateInfo* vinfo, VkBuffer& buffer, const char* name = nullptr) noexcept;
 			void destroyBuffer(VmaAllocation allocation, VkBuffer buffer) noexcept;
 
-			VmaAllocation createImage(const VkImageCreateInfo* iminfo, const VmaAllocationCreateInfo* vinfo, VkImage& image, VmaAllocationInfo& allocinfo) noexcept;
+			VmaAllocation createImage(const VkImageCreateInfo* iminfo, const VmaAllocationCreateInfo* vinfo, VkImage& image, const char* name = nullptr) noexcept;
 			void destroyImage(VmaAllocation allocation, VkImage image) noexcept;
 
 			void mapMemory(VmaAllocation allocation, void** data) noexcept;
 			void unmapMemory(VmaAllocation allocation) noexcept;
+
+			void dumpMemoryToJson();
 
 			void flush(VmaAllocation allocation, VkDeviceSize size, VkDeviceSize offset) noexcept;
 

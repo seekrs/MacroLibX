@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:14:29 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/11 02:14:58 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/11 10:38:01 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,9 +101,9 @@ namespace mlx
 
 		if(_physicalDevice == VK_NULL_HANDLE)
 			core::error::report(e_kind::fatal_error, "Vulkan : failed to find a suitable GPU");
-		VkPhysicalDeviceProperties props;
-		vkGetPhysicalDeviceProperties(_physicalDevice, &props);
 		#ifdef DEBUG
+			VkPhysicalDeviceProperties props;
+			vkGetPhysicalDeviceProperties(_physicalDevice, &props);
 			core::error::report(e_kind::message, "Vulkan : picked a physical device, %s", props.deviceName);
 		#endif
 	}

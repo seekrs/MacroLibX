@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:25:16 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/21 20:56:51 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/14 04:59:38 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ namespace mlx
 			_semaphores[i].init();
 	
 		_uniform_buffer.reset(new UBO);
-		_uniform_buffer->create(this, sizeof(glm::mat4));
+		_uniform_buffer->create(this, sizeof(glm::mat4), "__mlx_matrices_uniform_buffer_");
 
 		VkDescriptorPoolSize pool_sizes[] = {
 			{ VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 4096 },

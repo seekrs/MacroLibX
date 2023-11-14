@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:45:52 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/10 07:54:48 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/14 03:27:08 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,15 @@
 
 namespace mlx
 {
-	void UBO::create(Renderer* renderer, uint32_t size)
+	void UBO::create(Renderer* renderer, uint32_t size, const char* name)
 	{
 		_renderer = renderer;
 
 		for(int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
 		{
-			_buffers[i].create(Buffer::kind::uniform, size, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT);
+			std::string name_frame = name;
+			name_frame.append(std::to_string(i));
+			_buffers[i].create(Buffer::kind::uniform, size, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, name_frame.c_str());
 			_buffers[i].mapMem(&_maps[i]);
 			if(_maps[i] == nullptr)
 				core::error::report(e_kind::fatal_error, "Vulkan : unable to map a uniform buffer");

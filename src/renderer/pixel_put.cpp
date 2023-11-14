@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 15:14:50 by maldavid          #+#    #+#             */
-/*   Updated: 2023/08/02 05:28:49 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/14 04:58:13 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ namespace mlx
 {
 	void PixelPutPipeline::init(uint32_t width, uint32_t height, Renderer& renderer) noexcept
 	{
-		_texture.create(nullptr, width, height, VK_FORMAT_R8G8B8A8_UNORM);
+		_texture.create(nullptr, width, height, VK_FORMAT_R8G8B8A8_UNORM, "__mlx_pixel_put_pipeline_texture", true);
 		_texture.setDescriptor(renderer.getFragDescriptorSet().duplicate());
 
-		_buffer.create(Buffer::kind::dynamic, sizeof(uint32_t) * (width * height), VK_BUFFER_USAGE_TRANSFER_SRC_BIT);
+		_buffer.create(Buffer::kind::dynamic, sizeof(uint32_t) * (width * height), VK_BUFFER_USAGE_TRANSFER_SRC_BIT, "__mlx_pixel_put_pipeline_texture");
 		_buffer.mapMem(&_buffer_map);
 		_cpu_map = std::vector<uint32_t>(height * width, 0);
 		_width = width;

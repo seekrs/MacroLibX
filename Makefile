@@ -6,7 +6,7 @@
 #    By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/04 16:43:41 by maldavid          #+#    #+#              #
-#    Updated: 2023/11/10 23:55:12 by maldavid         ###   ########.fr        #
+#    Updated: 2023/11/13 06:08:16 by maldavid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ DEBUG		?= false
 TOOLCHAIN	?= clang
 IMAGES_OPTIMIZED	?= true
 FORCE_INTEGRATED_GPU ?= false
+GRAPHICS_MEMORY_DUMP ?= false
 
 CXX			= clang++
 
@@ -50,6 +51,10 @@ endif
 
 ifeq ($(IMAGES_OPTIMIZED), true)
 	CXXFLAGS += -D IMAGE_OPTIMIZED
+endif
+
+ifeq ($(GRAPHICS_MEMORY_DUMP), true)
+	CXXFLAGS += -D GRAPHICS_MEMORY_DUMP
 endif
 
 RM			= rm -f

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 18:03:35 by maldavid          #+#    #+#             */
-/*   Updated: 2023/08/09 13:51:35 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/14 04:57:55 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,9 @@
 
 namespace mlx
 {
-	void Texture::create(uint8_t* pixels, uint32_t width, uint32_t height, VkFormat format)
+	void Texture::create(uint8_t* pixels, uint32_t width, uint32_t height, VkFormat format, const char* name, bool dedicated_memory)
 	{
-		Image::create(width, height, format, TILING,
-			VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT | VK_IMAGE_USAGE_SAMPLED_BIT,
-			{ VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT }
-		);
-
+		Image::create(width, height, format, TILING, VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT | VK_IMAGE_USAGE_SAMPLED_BIT, name, dedicated_memory);
 		Image::createImageView(VK_IMAGE_VIEW_TYPE_2D, VK_IMAGE_ASPECT_COLOR_BIT);
 		Image::createSampler();
 
@@ -48,17 +44,18 @@ namespace mlx
 
 		std::vector<uint16_t> indexData = { 0, 1, 2, 2, 3, 0 };
 
-		_vbo.create(sizeof(Vertex) * vertexData.size(), vertexData.data());
-		_ibo.create(sizeof(uint16_t) * indexData.size(), indexData.data());
+		_vbo.create(sizeof(Vertex) * vertexData.size(), vertexData.data(), name);
+		_ibo.create(sizeof(uint16_t) * indexData.size(), indexData.data(), name);
 
 		if(pixels != nullptr)
 		{
 			Buffer staging_buffer;
 			std::size_t size = width * height * formatSize(format);
-			staging_buffer.create(Buffer::kind::dynamic, size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, pixels);
+			staging_buffer.create(Buffer::kind::dynamic, size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, name, pixels);
 			Image::copyFromBuffer(staging_buffer);
 			staging_buffer.destroy();
 		}
+		_name = name;
 	}
 
 	void Texture::setPixel(int x, int y, uint32_t color) noexcept
@@ -89,10 +86,9 @@ namespace mlx
 		#ifdef DEBUG
 			core::error::report(e_kind::message, "Texture : enabling CPU mapping");
 		#endif
-
 		std::size_t size = getWidth() * getHeight() * formatSize(getFormat());
 		_buf_map.emplace();
-		_buf_map->create(Buffer::kind::dynamic, size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT);
+		_buf_map->create(Buffer::kind::dynamic, size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT, _name.c_str());
 		Image::copyToBuffer(*_buf_map);
 		_buf_map->mapMem(&_map);
 		_cpu_map = std::vector<uint32_t>(getWidth() * getHeight(), 0);
@@ -139,7 +135,7 @@ namespace mlx
 		if(stbi_is_hdr(filename.c_str()))
 			core::error::report(e_kind::fatal_error, "Texture : unsupported image format '%s'", filename.c_str());
 		data = stbi_load(filename.c_str(), w, h, &channels, 4);
-		texture.create(data, *w, *h, VK_FORMAT_R8G8B8A8_UNORM);
+		texture.create(data, *w, *h, VK_FORMAT_R8G8B8A8_UNORM, filename.c_str());
 		stbi_image_free(data);
 		return texture;
 	}
