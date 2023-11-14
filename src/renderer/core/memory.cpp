@@ -6,16 +6,18 @@
 /*   By: kbz_8 <kbz_8.dev@akel-engine.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 22:02:37 by kbz_8             #+#    #+#             */
-/*   Updated: 2023/11/14 06:25:19 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/14 12:45:29 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <core/profile.h>
+#include <core/errors.h>
 #include <cstdio>
 
 #define VMA_STATIC_VULKAN_FUNCTIONS 0
 #define VMA_DYNAMIC_VULKAN_FUNCTIONS 0
 #define VMA_VULKAN_VERSION 1002000
+#define VMA_ASSERT(expr) (static_cast<bool>(expr) ? void(0) : mlx::core::error::report(e_kind::fatal_error, "Graphics allocator : an assertion has been catched : '%s'", #expr))
 #define VMA_IMPLEMENTATION
 
 #ifdef MLX_COMPILER_CLANG
@@ -87,6 +89,7 @@ namespace mlx
 
 	void GPUallocator::destroyBuffer(VmaAllocation allocation, VkBuffer buffer) noexcept
 	{
+		vkDeviceWaitIdle(Render_Core::get().getDevice().get());
 		vmaDestroyBuffer(_allocator, buffer, allocation);
 		#ifdef DEBUG
 			core::error::report(e_kind::message, "Graphics Allocator : destroyed buffer");
@@ -108,6 +111,7 @@ namespace mlx
 
 	void GPUallocator::destroyImage(VmaAllocation allocation, VkImage image) noexcept
 	{
+		vkDeviceWaitIdle(Render_Core::get().getDevice().get());
 		vmaDestroyImage(_allocator, image, allocation);
 		#ifdef DEBUG
 			core::error::report(e_kind::message, "Graphics Allocator : destroyed image");

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:35:20 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/25 15:23:05 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/14 11:43:30 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,14 @@ extern "C"
 {
 	void* mlx_init()
 	{
+		static bool init = false;
+		if(init)
+		{
+			mlx::core::error::report(e_kind::error, "MLX cannot be initialized multiple times");
+			return NULL;
+		}
 		mlx::Render_Core::get().init();
+		init = true;
 		return new mlx::core::Application();
 	}
 

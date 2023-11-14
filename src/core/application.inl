@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <core/application.h>
+
 namespace mlx::core
 {
 	void Application::getMousePos(int* x, int* y) noexcept

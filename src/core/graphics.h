@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 14:49:49 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/08 20:41:29 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/14 11:39:55 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,12 @@ namespace mlx
 			inline std::shared_ptr<MLX_Window> getWindow();
 
 			inline void beginRender() noexcept;
+			void endRender() noexcept;
 
 			inline void clearRenderData() noexcept;
 			inline void pixelPut(int x, int y, uint32_t color) noexcept;
 			inline void stringPut(int x, int y, int color, std::string str);
 			inline void texturePut(Texture* texture, int x, int y);
-			
-			void endRender() noexcept;
 
 			~GraphicsSupport();
 
