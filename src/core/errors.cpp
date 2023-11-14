@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:48:06 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/23 13:07:56 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/14 07:14:57 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,17 @@
 
 #include "errors.h"
 
+constexpr const int BUFFER_SIZE = 4096;
+
 namespace mlx::core::error
 {
 	void report(e_kind kind, std::string msg, ...)
 	{
-		char buffer[4096];
+		char buffer[BUFFER_SIZE];
 
 		va_list al;
 		va_start(al, msg);
-		std::vsprintf(buffer, msg.c_str(), al);
+		std::vsnprintf(buffer, BUFFER_SIZE, msg.c_str(), al);
 		va_end(al);
 
 		switch(kind)
