@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 23:18:52 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/14 03:24:12 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/16 13:56:19 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,9 @@ namespace mlx
 			void createBuffer(VkBufferUsageFlags usage, VmaAllocationCreateInfo info, VkDeviceSize size, const char* name);
 
 		private:
-			std::string _name;
+			#ifdef DEBUG
+				std::string _name;
+			#endif
 			VkBufferUsageFlags _usage = 0;
 			bool _is_mapped = false;
 	};
