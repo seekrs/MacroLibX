@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 18:55:57 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/14 09:31:58 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/16 13:54:25 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,15 +67,19 @@ namespace mlx
 		bufferInfo.usage = usage;
 		bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
-		_name = name;
-		std::string alloc_name = _name;
-		if(usage & VK_BUFFER_USAGE_INDEX_BUFFER_BIT)
-			alloc_name.append("_index_buffer");
-		else if(usage & VK_BUFFER_USAGE_VERTEX_BUFFER_BIT)
-			alloc_name.append("_vertex_buffer");
-		else if((usage & VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT) != 1)
-			alloc_name.append("_buffer");
-		_allocation = Render_Core::get().getAllocator().createBuffer(&bufferInfo, &info, _buffer, alloc_name.c_str());
+		#ifdef DEBUG
+			_name = name;
+			std::string alloc_name = _name;
+			if(usage & VK_BUFFER_USAGE_INDEX_BUFFER_BIT)
+				alloc_name.append("_index_buffer");
+			else if(usage & VK_BUFFER_USAGE_VERTEX_BUFFER_BIT)
+				alloc_name.append("_vertex_buffer");
+			else if((usage & VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT) != 1)
+				alloc_name.append("_buffer");
+			_allocation = Render_Core::get().getAllocator().createBuffer(&bufferInfo, &info, _buffer, alloc_name.c_str());
+		#else
+			_allocation = Render_Core::get().getAllocator().createBuffer(&bufferInfo, &info, _buffer, nullptr);
+		#endif
 		_size = size;
 	}
 
@@ -84,11 +88,14 @@ namespace mlx
 		VmaAllocationCreateInfo alloc_info{};
 		alloc_info.usage = VMA_MEMORY_USAGE_AUTO_PREFER_DEVICE;
 
-		std::string new_name = _name + "_GPU";
-
 		Buffer newBuffer;
 		newBuffer._usage = (_usage & 0xFFFFFFFC) | VK_BUFFER_USAGE_TRANSFER_DST_BIT;
-		newBuffer.createBuffer(newBuffer._usage, alloc_info, _size, new_name.c_str());
+		#ifdef DEBUG
+			std::string new_name = _name + "_GPU";
+			newBuffer.createBuffer(newBuffer._usage, alloc_info, _size, new_name.c_str());
+		#else
+			newBuffer.createBuffer(newBuffer._usage, alloc_info, _size, nullptr);
+		#endif
 
 		CmdPool cmdpool;
 		cmdpool.init();

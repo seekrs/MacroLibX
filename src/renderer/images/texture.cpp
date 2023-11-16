@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 18:03:35 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/14 04:57:55 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/16 14:01:47 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,18 +44,27 @@ namespace mlx
 
 		std::vector<uint16_t> indexData = { 0, 1, 2, 2, 3, 0 };
 
-		_vbo.create(sizeof(Vertex) * vertexData.size(), vertexData.data(), name);
-		_ibo.create(sizeof(uint16_t) * indexData.size(), indexData.data(), name);
+		#ifdef DEBUG
+			_vbo.create(sizeof(Vertex) * vertexData.size(), vertexData.data(), name);
+			_ibo.create(sizeof(uint16_t) * indexData.size(), indexData.data(), name);
+			_name = name;
+		#else
+			_vbo.create(sizeof(Vertex) * vertexData.size(), vertexData.data(), nullptr);
+			_ibo.create(sizeof(uint16_t) * indexData.size(), indexData.data(), nullptr);
+		#endif
 
 		if(pixels != nullptr)
 		{
 			Buffer staging_buffer;
 			std::size_t size = width * height * formatSize(format);
-			staging_buffer.create(Buffer::kind::dynamic, size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, name, pixels);
+			#ifdef DEBUG
+				staging_buffer.create(Buffer::kind::dynamic, size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, name, pixels);
+			#else
+				staging_buffer.create(Buffer::kind::dynamic, size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, nullptr, pixels);
+			#endif
 			Image::copyFromBuffer(staging_buffer);
 			staging_buffer.destroy();
 		}
-		_name = name;
 	}
 
 	void Texture::setPixel(int x, int y, uint32_t color) noexcept
@@ -88,7 +97,11 @@ namespace mlx
 		#endif
 		std::size_t size = getWidth() * getHeight() * formatSize(getFormat());
 		_buf_map.emplace();
-		_buf_map->create(Buffer::kind::dynamic, size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT, _name.c_str());
+		#ifdef DEBUG
+			_buf_map->create(Buffer::kind::dynamic, size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT, _name.c_str());
+		#else
+			_buf_map->create(Buffer::kind::dynamic, size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT, nullptr);
+		#endif
 		Image::copyToBuffer(*_buf_map);
 		_buf_map->mapMem(&_map);
 		_cpu_map = std::vector<uint32_t>(getWidth() * getHeight(), 0);
@@ -135,7 +148,11 @@ namespace mlx
 		if(stbi_is_hdr(filename.c_str()))
 			core::error::report(e_kind::fatal_error, "Texture : unsupported image format '%s'", filename.c_str());
 		data = stbi_load(filename.c_str(), w, h, &channels, 4);
-		texture.create(data, *w, *h, VK_FORMAT_R8G8B8A8_UNORM, filename.c_str());
+		#ifdef DEBUG
+			texture.create(data, *w, *h, VK_FORMAT_R8G8B8A8_UNORM, filename.c_str());
+		#else
+			texture.create(data, *w, *h, VK_FORMAT_R8G8B8A8_UNORM, nullptr);
+		#endif
 		stbi_image_free(data);
 		return texture;
 	}

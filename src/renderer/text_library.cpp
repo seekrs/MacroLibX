@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 11:59:57 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/14 05:39:40 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/16 13:45:31 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,13 @@ namespace mlx
 	void TextData::init(std::string text, std::vector<Vertex> vbo_data, std::vector<uint16_t> ibo_data)
 	{
 		_text = std::move(text);
-		_vbo.create(sizeof(Vertex) * vbo_data.size(), vbo_data.data(), _text.c_str());
-		_ibo.create(sizeof(uint16_t) * ibo_data.size(), ibo_data.data(), _text.c_str());
+		#ifdef DEBUG
+			_vbo.create(sizeof(Vertex) * vbo_data.size(), vbo_data.data(), _text.c_str());
+			_ibo.create(sizeof(uint16_t) * ibo_data.size(), ibo_data.data(), _text.c_str());
+		#else
+			_vbo.create(sizeof(Vertex) * vbo_data.size(), vbo_data.data(), nullptr);
+			_ibo.create(sizeof(uint16_t) * ibo_data.size(), ibo_data.data(), nullptr);
+		#endif
 	}
 
 	void TextData::bind(Renderer& renderer) noexcept

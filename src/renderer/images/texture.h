@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 02:24:58 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/14 04:57:39 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/16 14:01:05 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,9 @@ namespace mlx
 		private:
 			C_VBO _vbo;
 			C_IBO _ibo;
-			std::string _name;
+			#ifdef DEBUG
+				std::string _name;
+			#endif
 			DescriptorSet _set;
 			std::vector<uint32_t> _cpu_map;
 			std::optional<Buffer> _buf_map = std::nullopt;
