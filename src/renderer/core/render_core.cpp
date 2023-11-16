@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 23:33:34 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/14 08:15:42 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/16 14:06:46 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 #include <mutex>
 
 #ifdef DEBUG
-	#warning MLX is being compiled in debug mode, this activates Vulkan's validation layers and debug messages which may impact rendering performances
+	#warning "MLX is being compiled in debug mode, this activates Vulkan's validation layers and debug messages which may impact rendering performances"
 #endif
 
 namespace mlx
