@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:55:21 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/14 11:14:16 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/17 09:08:51 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ typedef struct s_mlx
 	void	*mlx;
 	void	*win;
 	void	*logo;
+	void	*img;
 }	t_mlx;
 
 int	update(t_mlx *mlx)
@@ -28,6 +29,7 @@ int	update(t_mlx *mlx)
 	int			k;
 
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->logo, 100, 100);
+	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 220, 20);
 	mlx_string_put(mlx->mlx, mlx->win, 20, 50, 0xFFFFFFFF, "that's a text");
 	j = 0;
 	k = 0;
@@ -102,13 +104,12 @@ int	main(void)
 	mlx.logo = mlx_png_file_to_image(mlx.mlx, "42_logo.png", &w, &h);
 	mlx_pixel_put(mlx.mlx, mlx.win, 200, 10, 0xFFFF00FF);
 	mlx_put_image_to_window(mlx.mlx, mlx.win, mlx.logo, 200, 200);
-	img = create_image(&mlx);
+	mlx.img = create_image(&mlx);
 	mlx_string_put(mlx.mlx, mlx.win, 20, 20, 0xFFFF2000, \
 			"that text will disappear");
-	mlx_put_image_to_window(mlx.mlx, mlx.win, img, 200, 20);
 	mlx_loop_hook(mlx.mlx, update, &mlx);
 	mlx_loop(mlx.mlx);
-	mlx_destroy_image(mlx.mlx, img);
+	mlx_destroy_image(mlx.mlx, mlx.img);
 	mlx_destroy_image(mlx.mlx, mlx.logo);
 	mlx_destroy_window(mlx.mlx, mlx.win);
 	mlx_destroy_display(mlx.mlx);

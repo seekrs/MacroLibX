@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:59:07 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/14 09:31:39 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/18 17:21:14 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,124 @@
 
 namespace mlx
 {
+	bool isStencilFormat(VkFormat format)
+	{
+		switch(format)
+		{
+			case VK_FORMAT_D32_SFLOAT_S8_UINT:
+			case VK_FORMAT_D24_UNORM_S8_UINT:
+				return true;
+
+			default: return false;
+		}
+	}
+
+	bool isDepthFormat(VkFormat format)
+	{
+		switch(format)
+		{
+			case VK_FORMAT_D16_UNORM:
+			case VK_FORMAT_D32_SFLOAT:
+			case VK_FORMAT_D32_SFLOAT_S8_UINT:
+			case VK_FORMAT_D24_UNORM_S8_UINT:
+			case VK_FORMAT_D16_UNORM_S8_UINT:
+				return true;
+
+			default: return false;
+		}
+	}
+
+	VkFormat bitsToFormat(uint32_t bits)
+	{
+		switch(bits)
+		{
+			case 8:   return VK_FORMAT_R8_UNORM;
+			case 16:  return VK_FORMAT_R8G8_UNORM;
+			case 24:  return VK_FORMAT_R8G8B8_UNORM;
+			case 32:  return VK_FORMAT_R8G8B8A8_UNORM;
+			case 48:  return VK_FORMAT_R16G16B16_SFLOAT;
+			case 64:  return VK_FORMAT_R16G16B16A16_SFLOAT;
+			case 96:  return VK_FORMAT_R32G32B32_SFLOAT;
+			case 128: return VK_FORMAT_R32G32B32A32_SFLOAT;
+
+			default:
+				core::error::report(e_kind::fatal_error, "Vulkan : unsupported image bit-depth");
+				return VK_FORMAT_R8G8B8A8_UNORM;
+		}
+	}
+
+	VkPipelineStageFlags layoutToAccessMask(VkImageLayout layout, bool isDestination)
+	{
+		VkPipelineStageFlags accessMask = 0;
+
+		switch(layout)
+		{
+			case VK_IMAGE_LAYOUT_UNDEFINED:
+				if(isDestination)
+					core::error::report(e_kind::error, "Vulkan : the new layout used in a transition must not be VK_IMAGE_LAYOUT_UNDEFINED");
+			break;
+			case VK_IMAGE_LAYOUT_GENERAL: accessMask = VK_ACCESS_SHADER_READ_BIT | VK_ACCESS_SHADER_WRITE_BIT; break;
+			case VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL: accessMask = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT; break;
+			case VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL: accessMask = VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT; break;
+			case VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL:
+				accessMask = VK_ACCESS_SHADER_READ_BIT; // VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT;
+			break;
+			case VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL: accessMask = VK_ACCESS_SHADER_READ_BIT | VK_ACCESS_INPUT_ATTACHMENT_READ_BIT; break;
+			case VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL: accessMask = VK_ACCESS_TRANSFER_READ_BIT; break;
+			case VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL: accessMask = VK_ACCESS_TRANSFER_WRITE_BIT; break;
+			case VK_IMAGE_LAYOUT_PREINITIALIZED:
+				if(!isDestination)
+					accessMask = VK_ACCESS_HOST_WRITE_BIT;
+				else
+					core::error::report(e_kind::error, "Vulkan : the new layout used in a transition must not be VK_IMAGE_LAYOUT_PREINITIALIZED");
+			break;
+			case VK_IMAGE_LAYOUT_DEPTH_READ_ONLY_STENCIL_ATTACHMENT_OPTIMAL: accessMask = VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT; break;
+			case VK_IMAGE_LAYOUT_DEPTH_ATTACHMENT_STENCIL_READ_ONLY_OPTIMAL: accessMask = VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT; break;
+			case VK_IMAGE_LAYOUT_PRESENT_SRC_KHR: accessMask = VK_ACCESS_MEMORY_READ_BIT; break;
+
+			default: core::error::report(e_kind::error, "Vulkan : unexpected image layout"); break;
+		}
+
+		return accessMask;
+	}
+
+	VkPipelineStageFlags accessFlagsToPipelineStage(VkAccessFlags accessFlags, VkPipelineStageFlags stageFlags)
+	{
+		VkPipelineStageFlags stages = 0;
+
+		while(accessFlags != 0)
+		{
+			VkAccessFlagBits AccessFlag = static_cast<VkAccessFlagBits>(accessFlags & (~(accessFlags - 1)));
+			if(AccessFlag == 0 || (AccessFlag & (AccessFlag - 1)) != 0)
+				core::error::report(e_kind::fatal_error, "Vulkan : an error has been caught during access flag to pipeline stage operation");
+			accessFlags &= ~AccessFlag;
+
+			switch(AccessFlag)
+			{
+				case VK_ACCESS_INDIRECT_COMMAND_READ_BIT: stages |= VK_PIPELINE_STAGE_DRAW_INDIRECT_BIT; break;
+				case VK_ACCESS_INDEX_READ_BIT: stages |= VK_PIPELINE_STAGE_VERTEX_INPUT_BIT; break;
+				case VK_ACCESS_VERTEX_ATTRIBUTE_READ_BIT: stages |= VK_PIPELINE_STAGE_VERTEX_INPUT_BIT; break;
+				case VK_ACCESS_UNIFORM_READ_BIT: stages |= stageFlags | VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT; break;
+				case VK_ACCESS_INPUT_ATTACHMENT_READ_BIT: stages |= VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT; break;
+				case VK_ACCESS_SHADER_READ_BIT: stages |= stageFlags | VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT; break;
+				case VK_ACCESS_SHADER_WRITE_BIT: stages |= stageFlags | VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT; break;
+				case VK_ACCESS_COLOR_ATTACHMENT_READ_BIT: stages |= VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT; break;
+				case VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT: stages |= VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT; break;
+				case VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT: stages |= VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT | VK_PIPELINE_STAGE_LATE_FRAGMENT_TESTS_BIT; break;
+				case VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT: stages |= VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT | VK_PIPELINE_STAGE_LATE_FRAGMENT_TESTS_BIT; break;
+				case VK_ACCESS_TRANSFER_READ_BIT: stages |= VK_PIPELINE_STAGE_TRANSFER_BIT; break;
+				case VK_ACCESS_TRANSFER_WRITE_BIT: stages |= VK_PIPELINE_STAGE_TRANSFER_BIT; break;
+				case VK_ACCESS_HOST_READ_BIT: stages |= VK_PIPELINE_STAGE_HOST_BIT; break;
+				case VK_ACCESS_HOST_WRITE_BIT: stages |= VK_PIPELINE_STAGE_HOST_BIT; break;
+				case VK_ACCESS_MEMORY_READ_BIT: break;
+				case VK_ACCESS_MEMORY_WRITE_BIT: break;
+
+				default: core::error::report(e_kind::error, "Vulkan : unknown access flag"); break;
+			}
+		}
+		return stages;
+	}
+
 	void Image::create(uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, const char* name, bool dedicated_memory)
 	{
 		_width = width;
@@ -193,19 +311,79 @@ namespace mlx
 		_transfer_cmd.submitIdle();
 	}
 
-	void Image::destroy() noexcept
+	void Image::transitionLayout(VkImageLayout new_layout)
+	{
+		if(new_layout == _layout)
+			return;
+
+		if(!_transfer_cmd.isInit())
+			_transfer_cmd.init(&_pool);
+		_transfer_cmd.reset();
+		_transfer_cmd.beginRecord();
+
+		VkImageMemoryBarrier barrier{};
+		barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+		barrier.oldLayout = _layout;
+		barrier.newLayout = new_layout;
+		barrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+		barrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+		barrier.image = _image;
+		barrier.subresourceRange.aspectMask = isDepthFormat(_format) ? VK_IMAGE_ASPECT_DEPTH_BIT : VK_IMAGE_ASPECT_COLOR_BIT;
+		barrier.subresourceRange.baseMipLevel = 0;
+		barrier.subresourceRange.levelCount = 1;
+		barrier.subresourceRange.baseArrayLayer = 0;
+		barrier.subresourceRange.layerCount = 1;
+		barrier.srcAccessMask = layoutToAccessMask(_layout, false);
+		barrier.dstAccessMask = layoutToAccessMask(new_layout, true);
+		if(isStencilFormat(_format))
+			barrier.subresourceRange.aspectMask |= VK_IMAGE_ASPECT_STENCIL_BIT;
+
+		VkPipelineStageFlags sourceStage = 0;
+		if(barrier.oldLayout == VK_IMAGE_LAYOUT_PRESENT_SRC_KHR)
+			sourceStage = VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;
+		else if(barrier.srcAccessMask != 0)
+			sourceStage = accessFlagsToPipelineStage(barrier.srcAccessMask, VK_PIPELINE_STAGE_VERTEX_SHADER_BIT | VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT | VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT);
+		else
+			sourceStage = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
+
+		VkPipelineStageFlags destinationStage = 0;
+		if(barrier.newLayout == VK_IMAGE_LAYOUT_PRESENT_SRC_KHR)
+			destinationStage = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
+		else if(barrier.dstAccessMask != 0)
+			destinationStage = accessFlagsToPipelineStage(barrier.dstAccessMask, VK_PIPELINE_STAGE_VERTEX_SHADER_BIT | VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT | VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT);
+		else
+			destinationStage = VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;
+
+		vkCmdPipelineBarrier(_transfer_cmd.get(), sourceStage, destinationStage, 0, 0, nullptr, 0, nullptr, 1, &barrier);
+
+		_transfer_cmd.endRecord();
+		_transfer_cmd.submitIdle();
+		_layout = new_layout;
+	}
+
+	void Image::destroySampler() noexcept
 	{
 		if(_sampler != VK_NULL_HANDLE)
 			vkDestroySampler(Render_Core::get().getDevice().get(), _sampler, nullptr);
+		_sampler = VK_NULL_HANDLE;
+	}
+
+	void Image::destroyImageView() noexcept
+	{
 		if(_image_view != VK_NULL_HANDLE)
 			vkDestroyImageView(Render_Core::get().getDevice().get(), _image_view, nullptr);
+		_image_view = VK_NULL_HANDLE;
+	}
+
+	void Image::destroy() noexcept
+	{
+		destroySampler();
+		destroyImageView();
+		destroyCmdPool();
 
 		if(_image != VK_NULL_HANDLE)
 			Render_Core::get().getAllocator().destroyImage(_allocation, _image);
 		_image = VK_NULL_HANDLE;
-		if(_transfer_cmd.isInit())
-			_transfer_cmd.destroy();
-		_pool.destroy();
 	}
 
 	uint32_t formatSize(VkFormat format)

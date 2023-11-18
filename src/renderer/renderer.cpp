@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:25:16 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/16 13:48:42 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/18 17:08:19 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,11 @@ namespace mlx
 	{
 		_surface.create(*this);
 		_swapchain.init(this);
-		_pass.init(this);
-		_swapchain.initFB();
+		_pass.init(_swapchain.getImagesFormat());
 		_cmd.init();
+
+		for(int i = 0; i < _swapchain.getImagesNumber(); i++)
+			_framebuffers.emplace_back().init(_pass, _swapchain.getImage(i));
 		for(int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
 			_semaphores[i].init();
 	
@@ -55,15 +57,15 @@ namespace mlx
 
 		_framebufferResized = false;
 	}
-	
+
 	bool Renderer::beginFrame()
 	{
 		auto device = Render_Core::get().getDevice().get();
 
-		_cmd.getCmdBuffer(_active_image_index).waitForExecution();
-		_cmd.getCmdBuffer(_active_image_index).reset();
+		_cmd.getCmdBuffer(_current_frame_index).waitForExecution();
+		_cmd.getCmdBuffer(_current_frame_index).reset();
 
-		VkResult result = vkAcquireNextImageKHR(device, _swapchain(), UINT64_MAX, _semaphores[_active_image_index].getImageSemaphore(), VK_NULL_HANDLE, &_image_index);
+		VkResult result = vkAcquireNextImageKHR(device, _swapchain(), UINT64_MAX, _semaphores[_current_frame_index].getImageSemaphore(), VK_NULL_HANDLE, &_image_index);
 
 		if(result == VK_ERROR_OUT_OF_DATE_KHR)
 		{
@@ -73,36 +75,37 @@ namespace mlx
 		else if(result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR)
 			core::error::report(e_kind::fatal_error, "Vulkan error : failed to acquire swapchain image");
 
-		_cmd.getCmdBuffer(_active_image_index).beginRecord();
-		_pass.begin();
+		_cmd.getCmdBuffer(_current_frame_index).beginRecord();
+		auto& fb = _framebuffers[_image_index];
+		_pass.begin(getActiveCmdBuffer(), fb);
 
-		_pipeline.bindPipeline(_cmd.getCmdBuffer(_active_image_index));
+		_pipeline.bindPipeline(_cmd.getCmdBuffer(_current_frame_index));
 
 		VkViewport viewport{};
 		viewport.x = 0.0f;
 		viewport.y = 0.0f;
-		viewport.width = (float)_swapchain._swapChainExtent.width;
-		viewport.height = (float)_swapchain._swapChainExtent.height;
+		viewport.width = static_cast<float>(fb.getWidth());
+		viewport.height = static_cast<float>(fb.getHeight());
 		viewport.minDepth = 0.0f;
 		viewport.maxDepth = 1.0f;
-		vkCmdSetViewport(_cmd.getCmdBuffer(_active_image_index).get(), 0, 1, &viewport);
+		vkCmdSetViewport(_cmd.getCmdBuffer(_current_frame_index).get(), 0, 1, &viewport);
 
 		VkRect2D scissor{};
 		scissor.offset = { 0, 0 };
-		scissor.extent = _swapchain._swapChainExtent;
-		vkCmdSetScissor(_cmd.getCmdBuffer(_active_image_index).get(), 0, 1, &scissor);
+		scissor.extent = _swapchain.getExtent();
+		vkCmdSetScissor(_cmd.getCmdBuffer(_current_frame_index).get(), 0, 1, &scissor);
 
 		return true;
 	}
 
 	void Renderer::endFrame()
 	{
-		_pass.end();
-		_cmd.getCmdBuffer(_active_image_index).endRecord();
-		_cmd.getCmdBuffer(_active_image_index).submit(_semaphores[_active_image_index]);
+		_pass.end(getActiveCmdBuffer());
+		_cmd.getCmdBuffer(_current_frame_index).endRecord();
+		_cmd.getCmdBuffer(_current_frame_index).submit(_semaphores[_current_frame_index]);
 
 		VkSwapchainKHR swapchain = _swapchain();
-		VkSemaphore signalSemaphores[] = { _semaphores[_active_image_index].getRenderImageSemaphore() };
+		VkSemaphore signalSemaphores[] = { _semaphores[_current_frame_index].getRenderImageSemaphore() };
 
 		VkPresentInfoKHR presentInfo{};
 		presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
@@ -122,7 +125,7 @@ namespace mlx
 		else if(result != VK_SUCCESS)
 			core::error::report(e_kind::fatal_error, "Vulkan error : failed to present swap chain image");
 
-		_active_image_index = (_active_image_index + 1) % MAX_FRAMES_IN_FLIGHT;
+		_current_frame_index = (_current_frame_index + 1) % MAX_FRAMES_IN_FLIGHT;
 	}
 
 	void Renderer::destroy()
@@ -135,9 +138,10 @@ namespace mlx
 		_frag_layout.destroy();
 		_cmd.destroy();
 		_desc_pool.destroy();
-		_swapchain.destroyFB();
 		_pass.destroy();
 		_swapchain.destroy();
+		for(auto& fb : _framebuffers)
+			fb.destroy();
 		for(int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
 			_semaphores[i].destroy();
 		_surface.destroy();

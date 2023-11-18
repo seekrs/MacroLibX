@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 18:58:49 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/08 20:14:48 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/18 17:22:38 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,6 @@ namespace mlx
 	void Surface::destroy() noexcept
 	{
 		vkDestroySurfaceKHR(Render_Core::get().getInstance().get(), _surface, nullptr);
+		_surface = VK_NULL_HANDLE;
 	}
 }

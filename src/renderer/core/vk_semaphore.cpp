@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:01:08 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/08 20:14:36 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/18 17:22:29 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ namespace mlx
 	void Semaphore::destroy() noexcept
 	{
 		vkDestroySemaphore(Render_Core::get().getDevice().get(), _renderFinishedSemaphores, nullptr);
+		_renderFinishedSemaphores = VK_NULL_HANDLE;
 		vkDestroySemaphore(Render_Core::get().getDevice().get(), _imageAvailableSemaphores, nullptr);
+		_imageAvailableSemaphores = VK_NULL_HANDLE;
 	}
 }

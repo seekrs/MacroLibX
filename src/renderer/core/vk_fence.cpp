@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 17:53:06 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/08 20:14:23 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/18 17:07:21 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ namespace mlx
 
 	void Fence::destroy() noexcept
 	{
-		vkDestroyFence(Render_Core::get().getDevice().get(), _fence, nullptr);
+		if(_fence != VK_NULL_HANDLE)
+			vkDestroyFence(Render_Core::get().getDevice().get(), _fence, nullptr);
+		_fence = VK_NULL_HANDLE;
 	}
 }

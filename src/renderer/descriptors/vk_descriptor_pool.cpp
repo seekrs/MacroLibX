@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 18:34:23 by maldavid          #+#    #+#             */
-/*   Updated: 2023/01/23 18:44:51 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/18 17:23:05 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,6 @@ namespace mlx
 	void DescriptorPool::destroy() noexcept    
 	{
 		vkDestroyDescriptorPool(Render_Core::get().getDevice().get(), _pool, nullptr);
+		_pool = VK_NULL_HANDLE;
 	}
 }

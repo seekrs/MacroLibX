@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:24:33 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/18 22:56:26 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/18 17:23:38 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,6 @@ namespace mlx
 	void CmdPool::destroy() noexcept
 	{
 		vkDestroyCommandPool(Render_Core::get().getDevice().get(), _cmd_pool, nullptr);
+		_cmd_pool = VK_NULL_HANDLE;
 	}
 }
