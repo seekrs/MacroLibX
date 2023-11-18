@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 18:37:28 by maldavid          #+#    #+#             */
-/*   Updated: 2023/03/31 16:37:09 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/18 17:23:16 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,6 @@ namespace mlx
 	void DescriptorSetLayout::destroy() noexcept
 	{
 		vkDestroyDescriptorSetLayout(Render_Core::get().getDevice().get(), _layout, nullptr);
+		_layout = VK_NULL_HANDLE;
 	}
 }

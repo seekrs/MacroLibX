@@ -6,24 +6,23 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:21:36 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/08 20:37:32 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/18 15:58:26 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vk_render_pass.h"
 #include <renderer/core/render_core.h>
 #include <renderer/renderer.h>
+#include <renderer/renderpass/vk_framebuffer.h>
 
 namespace mlx
 {
 	static const VkClearValue clearColor = { 0.0f, 0.0f, 0.0f, 1.0f };
 
-	void RenderPass::init(Renderer* renderer)
+	void RenderPass::init(VkFormat attachement_format)
 	{
-		_renderer = renderer;
-
 		VkAttachmentDescription colorAttachment{};
-		colorAttachment.format = renderer->getSwapChain()._swapChainImageFormat;
+		colorAttachment.format = attachement_format;
 		colorAttachment.samples = VK_SAMPLE_COUNT_1_BIT;
 		colorAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
 		colorAttachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
@@ -55,7 +54,7 @@ namespace mlx
 		#endif
 	}
 
-	void RenderPass::begin()
+	void RenderPass::begin(class CmdBuffer& cmd, class FrameBuffer& fb)
 	{
 		if(_is_running)
 			return;
@@ -63,23 +62,23 @@ namespace mlx
 		VkRenderPassBeginInfo renderPassInfo{};
 		renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
 		renderPassInfo.renderPass = _renderPass;
-		renderPassInfo.framebuffer = _renderer->getSwapChain()._framebuffers[_renderer->getImageIndex()].get();
+		renderPassInfo.framebuffer = fb.get();
 		renderPassInfo.renderArea.offset = { 0, 0 };
-		renderPassInfo.renderArea.extent = _renderer->getSwapChain()._swapChainExtent;
+		renderPassInfo.renderArea.extent = { fb.getWidth(), fb.getHeight() };
 		renderPassInfo.clearValueCount = 1;
 		renderPassInfo.pClearValues = &clearColor;
 
-		vkCmdBeginRenderPass(_renderer->getActiveCmdBuffer().get(), &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
+		vkCmdBeginRenderPass(cmd.get(), &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
 
 		_is_running = true;
 	}
 
-	void RenderPass::end()
+	void RenderPass::end(class CmdBuffer& cmd)
 	{
 		if(!_is_running)
 			return;
 
-		vkCmdEndRenderPass(_renderer->getActiveCmdBuffer().get());
+		vkCmdEndRenderPass(cmd.get());
 		_is_running = false;
 	}
 

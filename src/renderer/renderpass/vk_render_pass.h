@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:22:00 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/18 20:33:28 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/18 15:58:12 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,17 @@ namespace mlx
 	class RenderPass
 	{
 		public:
-			void init(class Renderer* renderer);
+			void init(VkFormat attachement_format);
 			void destroy() noexcept;
 
-			void begin();
-			void end();
+			void begin(class CmdBuffer& cmd, class FrameBuffer& fb);
+			void end(class CmdBuffer& cmd);
 			
             inline VkRenderPass& operator()() noexcept { return _renderPass; }
             inline VkRenderPass& get() noexcept { return _renderPass; }
 
 		private:
 			VkRenderPass _renderPass = VK_NULL_HANDLE;
-			class Renderer* _renderer = nullptr;
 			bool _is_running = false;
 	};
 }

@@ -6,27 +6,31 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:18:06 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/08 20:36:54 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/18 17:20:23 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <volk.h>
 #include <renderer/core/render_core.h>
 #include <renderer/renderer.h>
+#include <renderer/images/vk_image.h>
 
 namespace mlx
 {
-	void FrameBuffer::init(Renderer& renderer, ImageView& image)
+	void FrameBuffer::init(RenderPass& renderpass, Image& image)
 	{
-		VkImageView attachments[] = { image() };
+		VkImageView attachments[] = { image.getImageView() };
+
+		_width = image.getWidth();
+		_height = image.getHeight();
 
 		VkFramebufferCreateInfo framebufferInfo{};
 		framebufferInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
-		framebufferInfo.renderPass = renderer.getRenderPass().get();
+		framebufferInfo.renderPass = renderpass.get();
 		framebufferInfo.attachmentCount = 1;
 		framebufferInfo.pAttachments = attachments;
-		framebufferInfo.width = renderer.getSwapChain()._swapChainExtent.width;
-		framebufferInfo.height = renderer.getSwapChain()._swapChainExtent.height;
+		framebufferInfo.width = _width;
+		framebufferInfo.height = _height;
 		framebufferInfo.layers = 1;
 
 		if(vkCreateFramebuffer(Render_Core::get().getDevice().get(), &framebufferInfo, nullptr, &_framebuffer) != VK_SUCCESS)	
@@ -39,5 +43,6 @@ namespace mlx
 	void FrameBuffer::destroy() noexcept
 	{
 	    vkDestroyFramebuffer(Render_Core::get().getDevice().get(), _framebuffer, nullptr);
+		_framebuffer = VK_NULL_HANDLE;
 	}
 }

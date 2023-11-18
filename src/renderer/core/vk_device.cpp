@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:14:29 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/11 10:38:01 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/18 17:22:02 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,5 +154,6 @@ namespace mlx
 	void Device::destroy() noexcept
 	{
 		vkDestroyDevice(_device, nullptr);
+		_device = VK_NULL_HANDLE;
 	}
 }

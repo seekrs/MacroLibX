@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:14:45 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/11 12:33:33 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/18 16:56:09 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@
 #include <renderer/pipeline/pipeline.h>
 #include <renderer/command/cmd_manager.h>
 #include <renderer/swapchain/vk_swapchain.h>
-#include <renderer/swapchain/vk_render_pass.h>
+#include <renderer/renderpass/vk_render_pass.h>
+#include <renderer/renderpass/vk_framebuffer.h>
 #include <renderer/descriptors/vk_descriptor_set.h>
 #include <renderer/descriptors/vk_descriptor_pool.h>
 #include <renderer/descriptors/vk_descriptor_set_layout.h>
@@ -99,12 +100,12 @@ namespace mlx
             inline RenderPass& getRenderPass() noexcept { return _pass; }
 			inline GraphicPipeline& getPipeline() noexcept { return _pipeline; }
 			inline CmdBuffer& getCmdBuffer(int i) noexcept { return _cmd.getCmdBuffer(i); }
-			inline CmdBuffer& getActiveCmdBuffer() noexcept { return _cmd.getCmdBuffer(_active_image_index); }
+			inline CmdBuffer& getActiveCmdBuffer() noexcept { return _cmd.getCmdBuffer(_current_frame_index); }
 			inline DescriptorSet& getVertDescriptorSet() noexcept { return _vert_set; }
 			inline DescriptorSet& getFragDescriptorSet() noexcept { return _frag_set; }
 			inline DescriptorSetLayout& getVertDescriptorSetLayout() noexcept { return _vert_layout; }
 			inline DescriptorSetLayout& getFragDescriptorSetLayout() noexcept { return _frag_layout; }
-            inline uint32_t getActiveImageIndex() noexcept { return _active_image_index; }
+            inline uint32_t getActiveImageIndex() noexcept { return _current_frame_index; }
             inline uint32_t getImageIndex() noexcept { return _image_index; }
 
             constexpr inline void requireFrameBufferResize(int index) noexcept { _framebufferResized = true; }
@@ -118,6 +119,7 @@ namespace mlx
             Surface _surface;
             SwapChain _swapchain;
 			std::array<Semaphore, MAX_FRAMES_IN_FLIGHT> _semaphores;
+			std::vector<FrameBuffer> _framebuffers;
 
 			DescriptorPool _desc_pool;
 			
@@ -131,7 +133,7 @@ namespace mlx
 
 			class MLX_Window* _window = nullptr;
 
-            uint32_t _active_image_index = 0;
+            uint32_t _current_frame_index = 0;
             uint32_t _image_index = 0;
             bool _framebufferResized = false;
 	};

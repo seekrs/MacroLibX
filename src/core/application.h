@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:49:46 by maldavid          #+#    #+#             */
-/*   Updated: 2023/08/28 10:19:35 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/17 11:57:42 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ namespace mlx::core
 
 			inline void loopHook(int (*f)(void*), void* param);
 			inline void loopEnd() noexcept;
-			
+
 			void run() noexcept;
 
 			~Application();
