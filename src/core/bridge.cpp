@@ -130,7 +130,7 @@ extern "C"
 		std::filesystem::path file(filename);
 		if(file.extension() != ".jpg" && file.extension() != ".jpeg")
 		{
-			mlx::core::error::report(e_kind::error, "PNG loader : not a jpg file '%s'", filename);
+			mlx::core::error::report(e_kind::error, "JPG loader : not a jpg file '%s'", filename);
 			return nullptr;
 		}
 		return mlx->newStbTexture(filename, width, height);
@@ -141,7 +141,7 @@ extern "C"
 		std::filesystem::path file(filename);
 		if(file.extension() != ".bmp" && file.extension() != ".dib")
 		{
-			mlx::core::error::report(e_kind::error, "PNG loader : not a jpg file '%s'", filename);
+			mlx::core::error::report(e_kind::error, "BMP loader : not a bmp file '%s'", filename);
 			return nullptr;
 		}
 		return mlx->newStbTexture(filename, width, height);
