@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 22:10:52 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/20 07:17:18 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/20 07:29:12 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 #include <renderer/core/render_core.h>
 #include <array>
 #include <core/errors.h>
-#include <utils/endian.h>
 #include <core/profile.h>
 
 namespace mlx::core
