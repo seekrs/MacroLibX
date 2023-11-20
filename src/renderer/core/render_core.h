@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:16:32 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/14 05:00:44 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/20 07:20:43 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,39 +33,39 @@ namespace mlx
 	}
 
 	#ifdef DEBUG
-        constexpr const bool enableValidationLayers = true;
-    #else
-        constexpr const bool enableValidationLayers = false;
-    #endif
+		constexpr const bool enableValidationLayers = true;
+	#else
+		constexpr const bool enableValidationLayers = false;
+	#endif
 
 	const std::vector<const char*> validationLayers = { "VK_LAYER_KHRONOS_validation" };
 
-    constexpr const int MAX_FRAMES_IN_FLIGHT = 3;
+	constexpr const int MAX_FRAMES_IN_FLIGHT = 3;
 
-    class Render_Core : public Singleton<Render_Core>
-    {
-        public:
-            Render_Core() = default;
+	class Render_Core : public Singleton<Render_Core>
+	{
+		public:
+			Render_Core() = default;
 
-            void init();
-            void destroy();
+			void init();
+			void destroy();
 
-            inline Instance& getInstance() noexcept { return _instance; }
-            inline Device& getDevice() noexcept { return _device; }
-            inline Queues& getQueue() noexcept { return _queues; }
+			inline Instance& getInstance() noexcept { return _instance; }
+			inline Device& getDevice() noexcept { return _device; }
+			inline Queues& getQueue() noexcept { return _queues; }
 			inline GPUallocator& getAllocator() noexcept { return _allocator; }
 			inline ValidationLayers& getLayers() noexcept { return _layers; }
 
 			~Render_Core() = default;
 
-        private:
+		private:
 			ValidationLayers _layers;
-            Queues _queues;
-            Device _device;
-            Instance _instance;
+			Queues _queues;
+			Device _device;
+			Instance _instance;
 			GPUallocator _allocator;
-            bool _is_init = false;
-    };
+			bool _is_init = false;
+	};
 }
 
 #endif // __MLX_RENDER_CORE__

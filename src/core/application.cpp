@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 22:10:52 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/16 13:47:50 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/20 07:17:18 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ namespace mlx::core
 
 	void Application::destroyTexture(void* ptr)
 	{
-        vkDeviceWaitIdle(Render_Core::get().getDevice().get());
+		vkDeviceWaitIdle(Render_Core::get().getDevice().get());
 		Texture* texture = static_cast<Texture*>(ptr);
 		texture->destroy();
 	}

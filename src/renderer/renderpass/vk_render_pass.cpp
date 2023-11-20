@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:21:36 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/18 15:58:26 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/20 07:24:40 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <renderer/core/render_core.h>
 #include <renderer/renderer.h>
 #include <renderer/renderpass/vk_framebuffer.h>
+#include <vulkan/vulkan_core.h>
 
 namespace mlx
 {
@@ -85,5 +86,6 @@ namespace mlx
 	void RenderPass::destroy() noexcept
 	{
 		vkDestroyRenderPass(Render_Core::get().getDevice().get(), _renderPass, nullptr);
+		_renderPass = VK_NULL_HANDLE;
 	}
 }
