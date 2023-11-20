@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:23:27 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/18 17:15:18 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/20 07:25:30 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,26 +19,26 @@
 
 namespace mlx
 {
-    class SwapChain
-    {
-        friend class GraphicPipeline;
-        friend class RenderPass;
+	class SwapChain
+	{
+		friend class GraphicPipeline;
+		friend class RenderPass;
 		friend class Renderer;
 
-        public:
-            struct SwapChainSupportDetails
-            {
-                VkSurfaceCapabilitiesKHR capabilities;
-                std::vector<VkSurfaceFormatKHR> formats;
+		public:
+			struct SwapChainSupportDetails
+			{
+				VkSurfaceCapabilitiesKHR capabilities;
+				std::vector<VkSurfaceFormatKHR> formats;
 				std::vector<VkPresentModeKHR> presentModes;
-            };
+			};
 
 		public:
 			SwapChain() = default;
 
-            void init(class Renderer* renderer);
-            void recreate();
-            void destroy() noexcept;
+			void init(class Renderer* renderer);
+			void recreate();
+			void destroy() noexcept;
 
 			SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device);
 			VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
@@ -54,14 +54,14 @@ namespace mlx
 
 			~SwapChain() = default;
 
-        private:
+		private:
 			SwapChainSupportDetails _swapChainSupport;
 			VkSwapchainKHR _swapChain;
 			std::vector<Image> _images;
 			VkFormat _swapChainImageFormat;
 			VkExtent2D _extent;
 			class Renderer* _renderer = nullptr;
-    };
+	};
 }
 
 #endif // __MLX_VK_SWAPCHAIN__

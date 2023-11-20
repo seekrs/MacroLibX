@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:22:00 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/18 15:58:12 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/20 07:24:48 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ namespace mlx
 			void begin(class CmdBuffer& cmd, class FrameBuffer& fb);
 			void end(class CmdBuffer& cmd);
 			
-            inline VkRenderPass& operator()() noexcept { return _renderPass; }
-            inline VkRenderPass& get() noexcept { return _renderPass; }
+			inline VkRenderPass& operator()() noexcept { return _renderPass; }
+			inline VkRenderPass& get() noexcept { return _renderPass; }
 
 		private:
 			VkRenderPass _renderPass = VK_NULL_HANDLE;

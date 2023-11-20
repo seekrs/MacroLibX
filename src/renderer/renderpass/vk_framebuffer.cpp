@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:18:06 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/18 17:20:23 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/20 07:24:26 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ namespace mlx
 
 	void FrameBuffer::destroy() noexcept
 	{
-	    vkDestroyFramebuffer(Render_Core::get().getDevice().get(), _framebuffer, nullptr);
+		vkDestroyFramebuffer(Render_Core::get().getDevice().get(), _framebuffer, nullptr);
 		_framebuffer = VK_NULL_HANDLE;
 	}
 }

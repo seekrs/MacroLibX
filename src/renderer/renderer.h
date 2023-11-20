@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:14:45 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/18 16:56:09 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/20 07:26:12 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,22 +82,22 @@ namespace mlx
 		public:
 			Renderer() = default;
 
-            void init();
+			void init();
 
-            bool beginFrame();
-            void endFrame();
+			bool beginFrame();
+			void endFrame();
 
 			void destroy();
-            
-			inline class MLX_Window* getWindow() { return _window; }
-            inline void setWindow(class MLX_Window* window) { _window = window; }
 
-            inline Surface& getSurface() noexcept { return _surface; }
+			inline class MLX_Window* getWindow() { return _window; }
+			inline void setWindow(class MLX_Window* window) { _window = window; }
+
+			inline Surface& getSurface() noexcept { return _surface; }
 			inline CmdPool& getCmdPool() noexcept { return _cmd.getCmdPool(); }
 			inline UBO* getUniformBuffer() noexcept { return _uniform_buffer.get(); }
-            inline SwapChain& getSwapChain() noexcept { return _swapchain; }
+			inline SwapChain& getSwapChain() noexcept { return _swapchain; }
 			inline Semaphore& getSemaphore(int i) noexcept { return _semaphores[i]; }
-            inline RenderPass& getRenderPass() noexcept { return _pass; }
+			inline RenderPass& getRenderPass() noexcept { return _pass; }
 			inline GraphicPipeline& getPipeline() noexcept { return _pipeline; }
 			inline CmdBuffer& getCmdBuffer(int i) noexcept { return _cmd.getCmdBuffer(i); }
 			inline CmdBuffer& getActiveCmdBuffer() noexcept { return _cmd.getCmdBuffer(_current_frame_index); }
@@ -105,37 +105,37 @@ namespace mlx
 			inline DescriptorSet& getFragDescriptorSet() noexcept { return _frag_set; }
 			inline DescriptorSetLayout& getVertDescriptorSetLayout() noexcept { return _vert_layout; }
 			inline DescriptorSetLayout& getFragDescriptorSetLayout() noexcept { return _frag_layout; }
-            inline uint32_t getActiveImageIndex() noexcept { return _current_frame_index; }
-            inline uint32_t getImageIndex() noexcept { return _image_index; }
+			inline uint32_t getActiveImageIndex() noexcept { return _current_frame_index; }
+			inline uint32_t getImageIndex() noexcept { return _image_index; }
 
-            constexpr inline void requireFrameBufferResize(int index) noexcept { _framebufferResized = true; }
+			constexpr inline void requireFrameBufferResize(int index) noexcept { _framebufferResized = true; }
 
 			~Renderer() = default;
 
 		private:
 			GraphicPipeline _pipeline;
 			CmdManager _cmd;
-            RenderPass _pass;
-            Surface _surface;
-            SwapChain _swapchain;
+			RenderPass _pass;
+			Surface _surface;
+			SwapChain _swapchain;
 			std::array<Semaphore, MAX_FRAMES_IN_FLIGHT> _semaphores;
 			std::vector<FrameBuffer> _framebuffers;
 
 			DescriptorPool _desc_pool;
-			
+
 			DescriptorSetLayout _vert_layout;
 			DescriptorSetLayout _frag_layout;
-			
+
 			DescriptorSet _vert_set;
 			DescriptorSet _frag_set;
-            
+
 			std::unique_ptr<UBO> _uniform_buffer;
 
 			class MLX_Window* _window = nullptr;
 
-            uint32_t _current_frame_index = 0;
-            uint32_t _image_index = 0;
-            bool _framebufferResized = false;
+			uint32_t _current_frame_index = 0;
+			uint32_t _image_index = 0;
+			bool _framebufferResized = false;
 	};
 }
 

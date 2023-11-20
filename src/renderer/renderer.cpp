@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:25:16 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/18 17:08:19 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/20 07:25:47 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ namespace mlx
 
 	void Renderer::destroy()
 	{
-        vkDeviceWaitIdle(Render_Core::get().getDevice().get());
+		vkDeviceWaitIdle(Render_Core::get().getDevice().get());
 
 		_pipeline.destroy();
 		_uniform_buffer->destroy();
