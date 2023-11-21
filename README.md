@@ -73,7 +73,7 @@ make IMAGES_OPTIMIZED=false
 
 ## License
 
-This project and all its files, except the [`third_party`](./third_party) directory or unless otherwise mentionned, are licenced under the [MIT](./LICENSE).
+This project and all its files, except the [`third_party`](./third_party) directory or unless otherwise mentionned, are licenced under the [MIT license](./LICENSE).
 
 <!-- Links -->
 
