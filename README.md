@@ -73,7 +73,7 @@ make IMAGES_OPTIMIZED=false
 
 ## License
 
-This project and all its files, except the [`third_party`](./third_party) directory or unless otherwise mentionned, are licenced under the [GNU GPL v2.0](./LICENSE).
+This project and all its files, except the [`third_party`](./third_party) directory or unless otherwise mentionned, are licenced under the [MIT](./LICENSE).
 
 <!-- Links -->
 
