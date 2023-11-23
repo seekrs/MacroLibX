@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:56:35 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/25 15:09:04 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/23 14:32:06 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -272,6 +272,30 @@ void* mlx_bmp_file_to_image(void* mlx, char* filename, int* width, int* height);
  * @return (int)	Always return 0, made this to copy the behaviour of the original MLX
  */
 int mlx_string_put(void* mlx, void* win, int x, int y, int color, char* str);
+
+
+/**
+ * @brief			Loads a font to be used by `mlx_string_put`
+ *
+ * @param mlx		Internal MLX application
+ * @param win		Internal window
+ * @param filepath	Filepath to the font
+ *
+ * @return (void)	
+ */
+void mlx_set_font(void* mlx, void* win, char* filepath);
+
+/**
+ * @brief			Loads a font to be used by `mlx_string_put` and scales it
+ *
+ * @param mlx		Internal MLX application
+ * @param win		Internal window
+ * @param filepath	Filepath to the font
+ * @param scale		Scale to apply to the font
+ *
+ * @return (void)	
+ */
+void mlx_set_font_scale(void* mlx, void* win, char* filepath, float scale);
 
 
 /**

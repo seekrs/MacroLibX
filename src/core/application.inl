@@ -67,6 +67,11 @@ namespace mlx::core
 		_graphics[*static_cast<int*>(win)]->stringPut(x, y, color, str);
 	}
 
+	void Application::loadFont(void* win, const std::filesystem::path& filepath, float scale)
+	{
+		_graphics[*static_cast<int*>(win)]->loadFont(filepath, scale);
+	}
+
 	void Application::texturePut(void* win, void* img, int x, int y)
 	{
 		Texture* texture = static_cast<Texture*>(img);

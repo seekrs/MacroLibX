@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:35:20 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/14 11:43:30 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/23 14:32:41 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,11 @@ extern "C"
 			return NULL;
 		}
 		mlx::Render_Core::get().init();
+		mlx::core::Application* app = new mlx::core::Application;
+		if(app == nullptr)
+			mlx::core::error::report(e_kind::fatal_error, "Tout a pété");
 		init = true;
-		return new mlx::core::Application();
+		return app;
 	}
 
 	void* mlx_new_window(mlx::core::Application* mlx, int w, int h, const char* title)
@@ -167,6 +170,28 @@ extern "C"
 		color_bits[3] = 0xFF;
 		mlx->stringPut(win, x, y, *reinterpret_cast<unsigned int*>(color_bits), str);
 		return 0;
+	}
+
+	void mlx_set_font(mlx::core::Application* mlx, void* win, char* filepath)
+	{
+		std::filesystem::path file(filepath);
+		if(file.extension() != ".ttf" && file.extension() != ".tte")
+		{
+			mlx::core::error::report(e_kind::error, "TTF loader : not a truetype font file '%s'", filepath);
+			return;
+		}
+		mlx->loadFont(win, file, 16.f);
+	}
+
+	void mlx_set_font_scale(mlx::core::Application* mlx, void* win, char* filepath, float scale)
+	{
+		std::filesystem::path file(filepath);
+		if(file.extension() != ".ttf" && file.extension() != ".tte")
+		{
+			mlx::core::error::report(e_kind::error, "TTF loader : not a truetype font file '%s'", filepath);
+			return;
+		}
+		mlx->loadFont(win, file, scale);
 	}
 
 	int mlx_clear_window(mlx::core::Application* mlx, void* win)

@@ -46,4 +46,9 @@ namespace mlx
 	{
 		_textures_to_render.emplace(texture, x, y);
 	}
+
+	void GraphicsSupport::loadFont(const std::filesystem::path& filepath, float scale)
+	{
+		_text_put_pipeline->loadFont(filepath, scale);
+	}
 }
