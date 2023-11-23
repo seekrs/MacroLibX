@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 16:41:13 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/14 05:36:09 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/23 14:26:48 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,13 @@
 #include <fstream>
 
 #include <utils/dogica_ttf.h>
+#include <iostream>
 #include <cstdio>
 
 #define STB_TRUETYPE_IMPLEMENTATION
 #include <stb_truetype.h>
+
+constexpr const int RANGE = 1024;
 
 namespace mlx
 {
@@ -40,7 +43,7 @@ namespace mlx
 				continue;
 
 			stbtt_aligned_quad q;
-			stbtt_GetBakedQuad(cdata.data(), 512, 512, c - 32, &stb_x, &stb_y, &q, 1);
+			stbtt_GetBakedQuad(cdata.data(), RANGE, RANGE, c - 32, &stb_x, &stb_y, &q, 1);
 
 			std::size_t index = vertexData.size();
 
@@ -59,23 +62,57 @@ namespace mlx
 		std::shared_ptr<TextData> text_data = std::make_shared<TextData>();
 		text_data->init(text, std::move(vertexData), std::move(indexData));
 		id = library.addTextToLibrary(text_data);
+
+		#ifdef DEBUG
+			core::error::report(e_kind::message, "Text put : registered new text to render");
+		#endif
 	}
 
 	void TextPutPipeline::init(Renderer* renderer) noexcept
 	{
 		_renderer = renderer;
-		uint8_t tmp_bitmap[512 * 512];
-		uint8_t vulkan_bitmap[(512 * 512) * 4];
-		stbtt_BakeFontBitmap(dogica_ttf, 0, 6.0f, tmp_bitmap, 512, 512, 32, 96, _cdata.data());
-		for(int i = 0, j = 0; i < 512 * 512; i++, j += 4)
+		uint8_t tmp_bitmap[RANGE * RANGE];
+		uint8_t vulkan_bitmap[RANGE * RANGE * 4];
+		stbtt_BakeFontBitmap(dogica_ttf, 0, 6.0f, tmp_bitmap, RANGE, RANGE, 32, 96, _cdata.data());
+		for(int i = 0, j = 0; i < RANGE * RANGE; i++, j += 4)
 		{
 			vulkan_bitmap[j + 0] = tmp_bitmap[i];
 			vulkan_bitmap[j + 1] = tmp_bitmap[i];
 			vulkan_bitmap[j + 2] = tmp_bitmap[i];
 			vulkan_bitmap[j + 3] = tmp_bitmap[i];
 		}
-		_atlas.create(vulkan_bitmap, 512, 512, VK_FORMAT_R8G8B8A8_UNORM, "__mlx_texts_pipeline_texture_atlas", true);
+		_atlas.create(vulkan_bitmap, RANGE, RANGE, VK_FORMAT_R8G8B8A8_UNORM, "__mlx_texts_pipeline_texture_atlas", true);
 		_atlas.setDescriptor(renderer->getFragDescriptorSet().duplicate());
+	}
+
+	void TextPutPipeline::loadFont(const std::filesystem::path& filepath, float scale)
+	{
+		uint8_t tmp_bitmap[RANGE * RANGE];
+		uint8_t vulkan_bitmap[RANGE * RANGE * 4];
+
+		std::ifstream file(filepath, std::ios::binary);
+		if(!file.is_open())
+		{
+			core::error::report(e_kind::error, "Font load : cannot open font file, %s", filepath.string().c_str());
+			return;
+		}
+		std::ifstream::pos_type fileSize = std::filesystem::file_size(filepath);
+	    file.seekg(0, std::ios::beg);
+		std::vector<uint8_t> bytes(fileSize);
+		file.read(reinterpret_cast<char*>(bytes.data()), fileSize);
+		file.close();
+
+		stbtt_BakeFontBitmap(bytes.data(), 0, scale, tmp_bitmap, RANGE, RANGE, 32, 96, _cdata.data());
+		for(int i = 0, j = 0; i < RANGE * RANGE; i++, j += 4)
+		{
+			vulkan_bitmap[j + 0] = tmp_bitmap[i];
+			vulkan_bitmap[j + 1] = tmp_bitmap[i];
+			vulkan_bitmap[j + 2] = tmp_bitmap[i];
+			vulkan_bitmap[j + 3] = tmp_bitmap[i];
+		}
+		destroy();
+		_atlas.create(vulkan_bitmap, RANGE, RANGE, VK_FORMAT_R8G8B8A8_UNORM, "__mlx_texts_pipeline_texture_atlas", true);
+		_atlas.setDescriptor(_renderer->getFragDescriptorSet().duplicate());
 	}
 
 	void TextPutPipeline::put(int x, int y, int color, std::string str)
@@ -99,6 +136,7 @@ namespace mlx
 	void TextPutPipeline::destroy() noexcept
 	{
 		_library.clearLibrary();
+		_drawlist.clear();
 		_atlas.destroy();
 	}
 }

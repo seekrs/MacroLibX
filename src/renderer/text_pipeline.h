@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 16:24:11 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/14 12:43:45 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/23 14:26:34 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ namespace mlx
 			void put(int x, int y, int color, std::string str);
 			inline VkDescriptorSet getDescriptorSet() noexcept { return _atlas.getSet(); }
 			inline void clear() { _drawlist.clear(); _library.clearLibrary(); }
+			void loadFont(const std::filesystem::path& filepath, float scale);
 			void render();
 			void destroy() noexcept;
 

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:55:21 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/17 09:08:51 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/23 14:32:15 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,10 @@ int	update(t_mlx *mlx)
 	}
 	i++;
 	if (i == 5000)
+	{
 		mlx_clear_window(mlx->mlx, mlx->win);
+		mlx_set_font_scale(mlx->mlx, mlx->win, "font.ttf", 16.f);
+	}
 	return (0);
 }
 
