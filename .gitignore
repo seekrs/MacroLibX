@@ -5,3 +5,4 @@
 *.so
 *.out
 .cache/
+test/.gdb_history

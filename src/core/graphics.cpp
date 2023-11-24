@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 15:13:55 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/20 07:18:35 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/24 19:19:25 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,8 @@ namespace mlx
 	GraphicsSupport::~GraphicsSupport()
 	{
 		vkDeviceWaitIdle(Render_Core::get().getDevice().get());
-		_pixel_put_pipeline.destroy();
 		_text_put_pipeline->destroy();
+		_pixel_put_pipeline.destroy();
 		_renderer->destroy();
 	}
 }
