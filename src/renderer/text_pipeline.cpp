@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 16:41:13 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/23 14:26:48 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/24 19:03:50 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@
 #include <utils/dogica_ttf.h>
 #include <iostream>
 #include <cstdio>
+
+#define STB_RECT_PACK_IMPLEMENTATION
+#include <stb_rect_pack.h>
 
 #define STB_TRUETYPE_IMPLEMENTATION
 #include <stb_truetype.h>
@@ -29,7 +32,7 @@ namespace mlx
 		text(std::move(_text))
 	{}
 
-	void TextDrawData::init(TextLibrary& library, std::array<stbtt_bakedchar, 96>& cdata) noexcept
+	void TextDrawData::init(TextLibrary& library, std::array<stbtt_packedchar, 96>& cdata) noexcept
 	{
 		std::vector<Vertex> vertexData;
 		std::vector<uint16_t> indexData;
@@ -43,7 +46,7 @@ namespace mlx
 				continue;
 
 			stbtt_aligned_quad q;
-			stbtt_GetBakedQuad(cdata.data(), RANGE, RANGE, c - 32, &stb_x, &stb_y, &q, 1);
+			stbtt_GetPackedQuad(cdata.data(), RANGE, RANGE, c - 32, &stb_x, &stb_y, &q, 1);
 
 			std::size_t index = vertexData.size();
 
@@ -73,7 +76,10 @@ namespace mlx
 		_renderer = renderer;
 		uint8_t tmp_bitmap[RANGE * RANGE];
 		uint8_t vulkan_bitmap[RANGE * RANGE * 4];
-		stbtt_BakeFontBitmap(dogica_ttf, 0, 6.0f, tmp_bitmap, RANGE, RANGE, 32, 96, _cdata.data());
+		stbtt_pack_context pc;
+		stbtt_PackBegin(&pc, tmp_bitmap, RANGE, RANGE, RANGE, 1, nullptr);
+		stbtt_PackFontRange(&pc, dogica_ttf, 0, 6.0, 32, 96, _cdata.data());
+		stbtt_PackEnd(&pc);
 		for(int i = 0, j = 0; i < RANGE * RANGE; i++, j += 4)
 		{
 			vulkan_bitmap[j + 0] = tmp_bitmap[i];
@@ -102,7 +108,10 @@ namespace mlx
 		file.read(reinterpret_cast<char*>(bytes.data()), fileSize);
 		file.close();
 
-		stbtt_BakeFontBitmap(bytes.data(), 0, scale, tmp_bitmap, RANGE, RANGE, 32, 96, _cdata.data());
+		stbtt_pack_context pc;
+		stbtt_PackBegin(&pc, tmp_bitmap, RANGE, RANGE, RANGE, 1, nullptr);
+		stbtt_PackFontRange(&pc, bytes.data(), 0, scale, 32, 96, _cdata.data());
+		stbtt_PackEnd(&pc);
 		for(int i = 0, j = 0; i < RANGE * RANGE; i++, j += 4)
 		{
 			vulkan_bitmap[j + 0] = tmp_bitmap[i];

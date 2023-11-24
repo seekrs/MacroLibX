@@ -6,7 +6,7 @@
 #    By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/04 16:43:41 by maldavid          #+#    #+#              #
-#    Updated: 2023/11/13 06:08:16 by maldavid         ###   ########.fr        #
+#    Updated: 2023/11/24 10:03:17 by maldavid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,8 @@ SRCS		+= $(wildcard $(addsuffix /*.cpp, ./src/platform))
 SRCS		+= $(wildcard $(addsuffix /*.cpp, ./src/renderer))
 SRCS		+= $(wildcard $(addsuffix /*.cpp, ./src/renderer/**))
 
-OBJS		= $(SRCS:.cpp=.o)
+OBJ_DIR		= objs
+OBJS		= $(addprefix $(OBJ_DIR)/, $(SRCS:.cpp=.o))
 
 OS = $(shell uname -s)
 DEBUG		?= false
@@ -26,7 +27,9 @@ IMAGES_OPTIMIZED	?= true
 FORCE_INTEGRATED_GPU ?= false
 GRAPHICS_MEMORY_DUMP ?= false
 
-CXX			= clang++
+MODE	= "release"
+
+CXX		= clang++
 
 ifeq ($(TOOLCHAIN), gcc)
 	CXX = g++
@@ -43,6 +46,7 @@ endif
 
 ifeq ($(DEBUG), true)
 	CXXFLAGS += -g -D DEBUG
+	MODE = "debug"
 endif
 
 ifeq ($(FORCE_INTEGRATED_GPU), true)
@@ -57,24 +61,30 @@ ifeq ($(GRAPHICS_MEMORY_DUMP), true)
 	CXXFLAGS += -D GRAPHICS_MEMORY_DUMP
 endif
 
-RM			= rm -f
+RM = rm -rf
 
-%.o: %.cpp
-	@echo "\e[1;32m[compiling... "$(CXX)"]\e[1;00m "$<
+$(OBJ_DIR)/%.o: %.cpp
+	@printf "\033[1;32m[compiling... "$(MODE)" "$(CXX)"]\033[1;00m "$<"\n"
 	@$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
 
 all:		$(NAME)
 
-$(NAME):	$(OBJS)
-	@echo "\e[1;32m[linking ...]\e[1;00m "$@
+$(NAME):	$(OBJ_DIR) $(OBJS)
+	@printf "\033[1;32m[linking ... "$(MODE)"]\033[1;00m "$@"\n"
 	@$(CXX) -shared -o $(NAME) $(OBJS) $(LDLIBS)
-	@echo "\e[1;32m[build finished]\e[1;00m"
+	@printf "\033[1;32m[build finished]\033[1;00m\n"
+
+$(OBJ_DIR):
+	@mkdir -p $(sort $(addprefix $(OBJ_DIR)/, $(dir $(SRCS))))
+	@printf "\033[1;32m[created objs directory]\033[1;00m\n"
 
 clean:
-	@$(RM) $(OBJS)
+	@$(RM) $(OBJ_DIR)
+	@printf "\033[1;32m[object files removed]\033[1;00m\n"
 
 fclean:		clean
 	@$(RM) $(NAME)
+	@printf "\033[1;32m["$(NAME)" removed]\033[1;00m\n"
 
 re:			fclean all
 

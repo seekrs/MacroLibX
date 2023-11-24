@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 16:24:11 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/23 14:26:34 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/24 19:08:04 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ namespace mlx
 		std::string text;
 
 		TextDrawData(std::string text, int _color, int _x, int _y);
-		void init(TextLibrary& library, std::array<stbtt_bakedchar, 96>& cdata) noexcept;
+		void init(TextLibrary& library, std::array<stbtt_packedchar, 96>& cdata) noexcept;
 		bool operator==(const TextDrawData& rhs) const { return text == rhs.text && x == rhs.x && y == rhs.y && color == rhs.color; }
 	};
 }
@@ -59,7 +59,7 @@ namespace mlx
 			void init(Renderer* renderer) noexcept;
 			void put(int x, int y, int color, std::string str);
 			inline VkDescriptorSet getDescriptorSet() noexcept { return _atlas.getSet(); }
-			inline void clear() { _drawlist.clear(); _library.clearLibrary(); }
+			inline void clear() { _drawlist.clear(); }
 			void loadFont(const std::filesystem::path& filepath, float scale);
 			void render();
 			void destroy() noexcept;
@@ -67,7 +67,7 @@ namespace mlx
 			~TextPutPipeline() = default;
 
 		private:
-			std::array<stbtt_bakedchar, 96> _cdata;
+			std::array<stbtt_packedchar, 96> _cdata;
 			TextureAtlas _atlas;
 			TextLibrary _library;
 			std::unordered_set<TextDrawData> _drawlist;
