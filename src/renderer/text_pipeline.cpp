@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 16:41:13 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/24 19:03:50 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/25 10:40:39 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ namespace mlx
 			return;
 		}
 		std::ifstream::pos_type fileSize = std::filesystem::file_size(filepath);
-	    file.seekg(0, std::ios::beg);
+		file.seekg(0, std::ios::beg);
 		std::vector<uint8_t> bytes(fileSize);
 		file.read(reinterpret_cast<char*>(bytes.data()), fileSize);
 		file.close();
