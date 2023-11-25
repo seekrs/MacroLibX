@@ -3,6 +3,10 @@
 
 The goal of this version is to provide a light, fast, and modern graphical tool while keeping the same API.
 
+<p align="center">
+    <img src="https://raw.githubusercontent.com/420verfl0w/MacroLibX/res/screenshot_test.png" alt="drawing" width="500"/>
+</p>
+
 ## 🖥️ Installation
 
 ### Dependencies
