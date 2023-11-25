@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:53:12 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/08 20:24:46 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/25 11:33:32 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ namespace mlx
 			~MLX_Window();
 
 		private:
+			SDL_Surface* _icon = nullptr;
 			SDL_Window* _win = nullptr;
 			int _width = 0;
 			int _height = 0;
