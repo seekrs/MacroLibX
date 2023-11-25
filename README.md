@@ -1,10 +1,13 @@
-
-# MacroLibX [![linux clang workflow][linux-clang_badge]][linux-clang_wf] [![linux gcc workflow][linux-gcc_badge]][linux-gcc_wf] [![macos workflow][macos_badge]][macos_wf]
-###### A rewrite of 42 School's MiniLibX using SDL2 and Vulkan. 
-
-<p align="center">
+<div align="center">
     <img src="./res/logo.png" alt="drawing" width="200"/>
-</p>
+    <div align="center">
+        <a href="https://github.com/420verfl0w/MacroLibX/actions/workflows/linux_clang.yml"><img src="https://github.com/420verfl0w/MacroLibX/actions/workflows/linux_clang.yml/badge.svg"></a>
+        <a href="https://github.com/420verfl0w/MacroLibX/actions/workflows/linux_gcc.yml"><img src="https://github.com/420verfl0w/MacroLibX/actions/workflows/linux_gcc.yml/badge.svg"></a>
+        <a href="https://github.com/420verfl0w/MacroLibX/actions/workflows/macos_x86.yml"><img src="https://github.com/420verfl0w/MacroLibX/actions/workflows/macos_x86.yml/badge.svg"></a>
+    </div>
+</div>
+
+###### MacroLibX a rewrite of 42 School's MiniLibX using SDL2 and Vulkan. 
 The goal of this version is to provide a light, fast, and modern graphical tool while keeping the same API.
 
 ## 🖥️ Installation
@@ -84,12 +87,3 @@ make IMAGES_OPTIMIZED=false
 ## License
 
 This project and all its files, except the [`third_party`](./third_party) directory or unless otherwise mentionned, are licenced under the [MIT license](./LICENSE).
-
-<!-- Links -->
-
-[linux-clang_badge]: https://github.com/420verfl0w/MacroLibX/actions/workflows/linux_clang.yml/badge.svg
-[linux-gcc_badge]: https://github.com/420verfl0w/MacroLibX/actions/workflows/linux_gcc.yml/badge.svg
-[macos_badge]: https://github.com/420verfl0w/MacroLibX/actions/workflows/macos_x86.yml/badge.svg
-[linux-clang_wf]: https://github.com/420verfl0w/MacroLibX/actions/workflows/linux_clang.yml
-[linux-gcc_wf]: https://github.com/420verfl0w/MacroLibX/actions/workflows/linux_gcc.yml
-[macos_wf]: https://github.com/420verfl0w/MacroLibX/actions/workflows/macos_x86.yml
