@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:35:20 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/23 14:32:41 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/25 10:12:36 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,8 @@ extern "C"
 		unsigned char color_bits[4];
 		color_bits[0] = (color & 0x00FF0000) >> 16;
 		color_bits[1] = (color & 0x0000FF00) >> 8;
-		color_bits[2] = color & 0x000000FF;
-		color_bits[3] = 0xFF;
+		color_bits[2] = (color & 0x000000FF);
+		color_bits[3] = (color & 0xFF000000) >> 24;
 		mlx->setTexturePixel(img, x, y, *reinterpret_cast<unsigned int*>(color_bits));
 	}
 

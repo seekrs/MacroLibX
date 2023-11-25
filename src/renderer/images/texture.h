@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 02:24:58 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/16 14:01:05 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/11/25 10:01:35 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ namespace mlx
 	struct TextureRenderData
 	{
 		Texture* texture;
+		std::size_t hash = 0;
 		int x;
 		int y;
 
