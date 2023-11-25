@@ -1,15 +1,11 @@
-<p align="center">
-    <img src="https://raw.githubusercontent.com/420verfl0w/MacroLibX/master/res/logo.png" alt="drawing" width="400"/>
-</p>
 
 # MacroLibX [![linux clang workflow][linux-clang_badge]][linux-clang_wf] [![linux gcc workflow][linux-gcc_badge]][linux-gcc_wf] [![macos workflow][macos_badge]][macos_wf]
 ###### A rewrite of 42 School's MiniLibX using SDL2 and Vulkan. 
 
-The goal of this version is to provide a light, fast, and modern graphical tool while keeping the same API.
-
 <p align="center">
-    <img src="https://raw.githubusercontent.com/420verfl0w/MacroLibX/master/res/screenshot_test.png" alt="drawing" width="400"/>
+    <img src="./res/logo.png" alt="drawing" width="200"/>
 </p>
+The goal of this version is to provide a light, fast, and modern graphical tool while keeping the same API.
 
 ## 🖥️ Installation
 
@@ -67,6 +63,12 @@ To compile your project with MacroLibX, you just provide the shared library path
 ```sh
 clang myApp.c /path/to/MacroLibX/libmlx.so -lSDL2
 ```
+
+And you can enjoy your project
+
+<p align="center">
+    <img src="./res/screenshot_test.png" alt="drawing" width="400"/>
+</p>
 
 ### ⚠️ Troubleshooting
 
