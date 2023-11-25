@@ -4,7 +4,7 @@
 The goal of this version is to provide a light, fast, and modern graphical tool while keeping the same API.
 
 <p align="center">
-    <img src="https://raw.githubusercontent.com/420verfl0w/MacroLibX/master/res/screenshot_test.png" alt="drawing" width="500"/>
+    <img src="https://raw.githubusercontent.com/420verfl0w/MacroLibX/master/res/screenshot_test.png" alt="drawing" width="200"/>
 </p>
 
 ## 🖥️ Installation
