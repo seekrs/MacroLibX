@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 16:41:13 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/25 10:40:39 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/07 22:29:45 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,11 @@
 #define STB_RECT_PACK_IMPLEMENTATION
 #include <stb_rect_pack.h>
 
+#include <core/memory.h>
+
 #define STB_TRUETYPE_IMPLEMENTATION
+#define STB_malloc(x, u) ((void)(u), MemManager::get().alloc(x))
+#define STB_free(x, u) ((void)(u), MemManager::get().free(x))
 #include <stb_truetype.h>
 
 constexpr const int RANGE = 1024;
@@ -74,10 +78,10 @@ namespace mlx
 	void TextPutPipeline::init(Renderer* renderer) noexcept
 	{
 		_renderer = renderer;
-		uint8_t tmp_bitmap[RANGE * RANGE];
-		uint8_t vulkan_bitmap[RANGE * RANGE * 4];
+		std::vector<uint8_t> tmp_bitmap(RANGE * RANGE);
+		std::vector<uint8_t> vulkan_bitmap(RANGE * RANGE * 4);
 		stbtt_pack_context pc;
-		stbtt_PackBegin(&pc, tmp_bitmap, RANGE, RANGE, RANGE, 1, nullptr);
+		stbtt_PackBegin(&pc, tmp_bitmap.data(), RANGE, RANGE, RANGE, 1, nullptr);
 		stbtt_PackFontRange(&pc, dogica_ttf, 0, 6.0, 32, 96, _cdata.data());
 		stbtt_PackEnd(&pc);
 		for(int i = 0, j = 0; i < RANGE * RANGE; i++, j += 4)
@@ -87,14 +91,14 @@ namespace mlx
 			vulkan_bitmap[j + 2] = tmp_bitmap[i];
 			vulkan_bitmap[j + 3] = tmp_bitmap[i];
 		}
-		_atlas.create(vulkan_bitmap, RANGE, RANGE, VK_FORMAT_R8G8B8A8_UNORM, "__mlx_texts_pipeline_texture_atlas", true);
+		_atlas.create(vulkan_bitmap.data(), RANGE, RANGE, VK_FORMAT_R8G8B8A8_UNORM, "__mlx_texts_pipeline_texture_atlas", true);
 		_atlas.setDescriptor(renderer->getFragDescriptorSet().duplicate());
 	}
 
 	void TextPutPipeline::loadFont(const std::filesystem::path& filepath, float scale)
 	{
-		uint8_t tmp_bitmap[RANGE * RANGE];
-		uint8_t vulkan_bitmap[RANGE * RANGE * 4];
+		std::vector<uint8_t> tmp_bitmap(RANGE * RANGE);
+		std::vector<uint8_t> vulkan_bitmap(RANGE * RANGE * 4);
 
 		std::ifstream file(filepath, std::ios::binary);
 		if(!file.is_open())
@@ -109,7 +113,7 @@ namespace mlx
 		file.close();
 
 		stbtt_pack_context pc;
-		stbtt_PackBegin(&pc, tmp_bitmap, RANGE, RANGE, RANGE, 1, nullptr);
+		stbtt_PackBegin(&pc, tmp_bitmap.data(), RANGE, RANGE, RANGE, 1, nullptr);
 		stbtt_PackFontRange(&pc, bytes.data(), 0, scale, 32, 96, _cdata.data());
 		stbtt_PackEnd(&pc);
 		for(int i = 0, j = 0; i < RANGE * RANGE; i++, j += 4)
@@ -120,7 +124,7 @@ namespace mlx
 			vulkan_bitmap[j + 3] = tmp_bitmap[i];
 		}
 		destroy();
-		_atlas.create(vulkan_bitmap, RANGE, RANGE, VK_FORMAT_R8G8B8A8_UNORM, "__mlx_texts_pipeline_texture_atlas", true);
+		_atlas.create(vulkan_bitmap.data(), RANGE, RANGE, VK_FORMAT_R8G8B8A8_UNORM, "__mlx_texts_pipeline_texture_atlas", true);
 		_atlas.setDescriptor(_renderer->getFragDescriptorSet().duplicate());
 	}
 

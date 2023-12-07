@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 16:36:33 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/14 05:36:30 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/07 18:50:53 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ namespace mlx
 			void render(class Renderer& renderer, int x, int y, uint32_t ibo_size);
 			void destroy() noexcept override;
 
-			inline void setDescriptor(DescriptorSet set) noexcept { _set = std::move(set); }
+			inline void setDescriptor(DescriptorSet&& set) noexcept { _set = set; }
 			inline VkDescriptorSet getSet() noexcept { return _set.isInit() ? _set.get() : VK_NULL_HANDLE; }
 			inline void updateSet(int binding) noexcept { _set.writeDescriptor(binding, getImageView(), getSampler()); }
 
