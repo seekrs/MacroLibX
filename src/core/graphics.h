@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 14:49:49 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/25 09:59:39 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/08 19:04:59 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,11 @@
 #include <renderer/text_pipeline.h>
 #include <utils/non_copyable.h>
 #include <renderer/images/texture.h>
+#include <core/profile.h>
 
 namespace mlx
 {
-	class GraphicsSupport : public non_copyable
+	class MLX_API GraphicsSupport : public non_copyable
 	{
 		public:
 			GraphicsSupport(std::size_t w, std::size_t h, const std::string& title, int id);

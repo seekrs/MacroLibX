@@ -4,6 +4,7 @@
         <a href="https://github.com/420verfl0w/MacroLibX/actions/workflows/linux_clang.yml"><img src="https://github.com/420verfl0w/MacroLibX/actions/workflows/linux_clang.yml/badge.svg"></a>
         <a href="https://github.com/420verfl0w/MacroLibX/actions/workflows/linux_gcc.yml"><img src="https://github.com/420verfl0w/MacroLibX/actions/workflows/linux_gcc.yml/badge.svg"></a>
         <a href="https://github.com/420verfl0w/MacroLibX/actions/workflows/macos_x86.yml"><img src="https://github.com/420verfl0w/MacroLibX/actions/workflows/macos_x86.yml/badge.svg"></a>
+        <a href="https://github.com/420verfl0w/MacroLibX/actions/workflows/windows.yml"><img src="https://github.com/420verfl0w/MacroLibX/actions/workflows/windows.yml/badge.svg"></a>
     </div>
 </div>
 

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:23:27 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/20 07:25:30 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/08 19:11:30 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,19 @@
 
 #include <vector>
 #include <volk.h>
+#include <core/profile.h>
 #include <renderer/images/vk_image.h>
 
 namespace mlx
 {
-	class SwapChain
+	class MLX_API SwapChain
 	{
 		friend class GraphicPipeline;
 		friend class RenderPass;
 		friend class Renderer;
 
 		public:
-			struct SwapChainSupportDetails
+			struct MLX_API SwapChainSupportDetails
 			{
 				VkSurfaceCapabilitiesKHR capabilities;
 				std::vector<VkSurfaceFormatKHR> formats;

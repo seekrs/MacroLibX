@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 16:36:33 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/07 18:50:53 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/08 19:10:22 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,11 @@
 #include <renderer/images/texture.h>
 #include <array>
 #include <glm/glm.hpp>
+#include <core/profile.h>
 
 namespace mlx
 {
-	class TextureAtlas : public Image
+	class MLX_API TextureAtlas : public Image
 	{
 		public:
 			TextureAtlas() = default;
