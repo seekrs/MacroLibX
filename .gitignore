@@ -6,6 +6,7 @@
 *.out
 *.dll
 *.json
+*.tmp
 .xmake/
 .cache/
 build/
