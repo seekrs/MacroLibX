@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:24:12 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/18 01:08:31 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/08 19:07:22 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 #define __MLX_VK_CMD_POOL__
 
 #include <volk.h>
+#include <core/profile.h>
 
 namespace mlx
 {
-	class CmdPool
+	class MLX_API CmdPool
 	{
 		public:
 			void init();

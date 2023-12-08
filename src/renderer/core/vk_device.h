@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:13:42 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/11 01:51:26 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/08 19:07:49 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,11 @@
 
 #include <volk.h>
 #include "vk_queues.h"
+#include <core/profile.h>
 
 namespace mlx
 {
-	class Device
+	class MLX_API Device
 	{
 		public:
 			void init();

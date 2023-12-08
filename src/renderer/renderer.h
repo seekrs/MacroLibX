@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:14:45 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/20 07:26:12 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/08 19:12:06 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,13 @@
 #include <renderer/descriptors/vk_descriptor_set_layout.h>
 
 #include <core/errors.h>
+#include <core/profile.h>
 
 #include <glm/glm.hpp>
 
 namespace mlx
 {
-	struct Vertex
+	struct MLX_API Vertex
 	{
 		glm::vec2 pos;
 		glm::vec4 color;
@@ -77,7 +78,7 @@ namespace mlx
 		}
 	};
 
-	class Renderer
+	class MLX_API Renderer
 	{
 		public:
 			Renderer() = default;

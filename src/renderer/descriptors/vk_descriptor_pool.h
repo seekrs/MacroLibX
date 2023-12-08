@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 18:32:43 by maldavid          #+#    #+#             */
-/*   Updated: 2023/01/23 18:44:40 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/08 19:09:20 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,11 @@
 
 #include <volk.h>
 #include <cstddef>
+#include <core/profile.h>
 
 namespace mlx
 {
-	class DescriptorPool
+	class MLX_API DescriptorPool
 	{
 		public:
 			void init(std::size_t n, VkDescriptorPoolSize* size);

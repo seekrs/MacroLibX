@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 15:05:05 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/14 03:25:59 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/08 19:06:07 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,11 @@
 #include <volk.h>
 #include "vk_buffer.h"
 #include <renderer/renderer.h>
+#include <core/profile.h>
 
 namespace mlx
 {
-	class C_IBO : public Buffer
+	class MLX_API C_IBO : public Buffer
 	{
 		public:
 			inline void create(uint32_t size, const uint16_t* data, const char* name) { Buffer::create(Buffer::kind::constant, size, VK_BUFFER_USAGE_INDEX_BUFFER_BIT, name, data); }

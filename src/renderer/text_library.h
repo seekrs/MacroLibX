@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 11:52:30 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/12 11:38:57 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/08 19:12:24 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,14 @@
 #include <memory>
 #include <vector>
 #include <cstdint>
+#include <core/profile.h>
 
 namespace mlx
 {
 	using TextID = uint32_t;
 	constexpr TextID nulltext = 0;
 
-	class TextData
+	class MLX_API TextData
 	{
 		public:
 			TextData() = default;
@@ -45,7 +46,7 @@ namespace mlx
 			std::string _text;
 	};
 
-	class TextLibrary
+	class MLX_API TextLibrary
 	{
 		public:
 			TextLibrary() = default;

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 02:24:58 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/25 10:01:35 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/08 19:10:09 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,11 @@
 #include <renderer/descriptors/vk_descriptor_set.h>
 #include <renderer/buffers/vk_ibo.h>
 #include <renderer/buffers/vk_vbo.h>
+#include <core/profile.h>
 
 namespace mlx
 {
-	class Texture : public Image
+	class MLX_API Texture : public Image
 	{
 		public:
 			Texture() = default;
@@ -61,9 +62,9 @@ namespace mlx
 			bool _has_been_updated = false;
 	};
 
-	Texture stbTextureLoad(std::filesystem::path file, int* w, int* h);
+	MLX_API Texture stbTextureLoad(std::filesystem::path file, int* w, int* h);
 
-	struct TextureRenderData
+	struct MLX_API TextureRenderData
 	{
 		Texture* texture;
 		std::size_t hash = 0;
@@ -78,7 +79,7 @@ namespace mlx
 namespace std
 {
 	template <>
-	struct hash<mlx::TextureRenderData>
+	struct MLX_API hash<mlx::TextureRenderData>
 	{
 		size_t operator()(const mlx::TextureRenderData& td) const noexcept
 		{

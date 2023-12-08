@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:22:00 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/20 07:24:48 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/08 19:11:14 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 #define __MLX_VK_RENDER_PASS__
 
 #include <volk.h>
+#include <core/profile.h>
 
 namespace mlx
 {
-	class RenderPass
+	class MLX_API RenderPass
 	{
 		public:
 			void init(VkFormat attachement_format);

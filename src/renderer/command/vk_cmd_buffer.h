@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:25:42 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/21 13:20:49 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/08 19:07:11 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,11 @@
 
 #include <volk.h>
 #include <renderer/core/vk_fence.h>
+#include <core/profile.h>
 
 namespace mlx
 {
-	class CmdBuffer
+	class MLX_API CmdBuffer
 	{
 		public:
 			void init(class CmdManager* manager);

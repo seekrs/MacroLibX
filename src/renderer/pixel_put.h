@@ -6,19 +6,20 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 13:18:50 by maldavid          #+#    #+#             */
-/*   Updated: 2023/08/02 05:27:27 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/08 19:11:43 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_PIXEL_PUT__
 #define __MLX_PIXEL_PUT__
 
+#include <core/profile.h>
 #include <renderer/images/texture.h>
 #include <renderer/descriptors/vk_descriptor_set.h>
 
 namespace mlx
 {
-	class PixelPutPipeline
+	class MLX_API PixelPutPipeline
 	{
 		public:
 			PixelPutPipeline() = default;

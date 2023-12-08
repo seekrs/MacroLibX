@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 18:59:38 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/02 17:55:10 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/08 19:08:36 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,11 @@
 
 #include <volk.h>
 #include <vector>
+#include <core/profile.h>
 
 namespace mlx
 {
-	class Semaphore
+	class MLX_API Semaphore
 	{
 		public:
 			void init();

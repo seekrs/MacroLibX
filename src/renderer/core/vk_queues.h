@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:01:49 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/18 22:44:37 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/08 19:08:25 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,11 @@
 #include <volk.h>
 #include <optional>
 #include <cstdint>
+#include <core/profile.h>
 
 namespace mlx
 {
-	class Queues
+	class MLX_API Queues
 	{
 		public:
 			struct QueueFamilyIndices

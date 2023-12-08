@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 18:36:22 by maldavid          #+#    #+#             */
-/*   Updated: 2023/03/31 17:54:03 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/08 19:09:44 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,11 @@
 #include <cstddef>
 #include <vector>
 #include <map>
+#include <core/profile.h>
 
 namespace mlx
 {
-	class DescriptorSetLayout
+	class MLX_API DescriptorSetLayout
 	{
 		public:
 			void init(std::vector<std::pair<int, VkDescriptorType>> binds, VkShaderStageFlagBits stage);
