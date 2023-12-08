@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:42:32 by maldavid          #+#    #+#             */
-/*   Updated: 2022/10/08 19:06:41 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/08 18:53:11 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #define __MLX_ERRORS__
 
 #include <string>
+#include <core/profile.h>
 
 enum class e_kind
 {
@@ -25,7 +26,7 @@ enum class e_kind
 
 namespace mlx::core::error
 {
-	void report(e_kind kind, std::string msg, ...);
+	void MLX_API report(e_kind kind, std::string msg, ...);
 }
 
 #endif // __MLX_ERRORS__
