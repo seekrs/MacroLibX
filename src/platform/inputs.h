@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:27:35 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/08 12:14:39 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/08 18:54:03 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 #include <functional>
 #include <SDL2/SDL.h>
 #include <unordered_map>
+
+#include <core/profile.h>
 
 #include "window.h"
 
@@ -30,7 +32,7 @@ namespace mlx
 		void* param = nullptr;
 	};
 
-	class Input
+	class MLX_API Input
 	{
 		public:
 			Input();

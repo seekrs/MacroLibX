@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:49:46 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/23 14:25:43 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/08 18:52:47 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,11 @@
 
 #include <core/graphics.h>
 #include <platform/inputs.h>
+#include <core/profile.h>
 
 namespace mlx::core
 {
-	class Application
+	class MLX_API Application
 	{
 		public:
 			Application();

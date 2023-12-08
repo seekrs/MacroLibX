@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 08:49:17 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/10 09:05:56 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/08 18:49:38 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,20 @@
 #else
 	#define MLX_COMPILER_UNKNOWN
 	#warning "This compiler is not fully supported"
+#endif
+
+#if defined(_WIN32) || defined(_WIN64)
+	#define MLX_EXPORT __declspec(dllexport)
+	#define MLX_IMPORT __declspec(dllexport)
+#else
+	#define MLX_EXPORT
+	#define MLX_IMPORT
+#endif
+
+#ifdef MLX_BUILD
+	#define MLX_API MLX_EXPORT
+#else
+	#define MLX_API MLX_IMPORT
 #endif
 
 // Checking common assumptions

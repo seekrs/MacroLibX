@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:16:32 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/20 07:20:43 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/08 18:53:36 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 
 #include <utils/singleton.h>
 #include <core/errors.h>
+#include <core/profile.h>
 
 namespace mlx
 {
@@ -42,7 +43,7 @@ namespace mlx
 
 	constexpr const int MAX_FRAMES_IN_FLIGHT = 3;
 
-	class Render_Core : public Singleton<Render_Core>
+	class MLX_API Render_Core : public Singleton<Render_Core>
 	{
 		public:
 			Render_Core() = default;
