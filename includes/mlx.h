@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:56:35 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/08 14:09:31 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/08 18:07:40 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ MLX_API void* mlx_new_window(void* mlx, int w, int h, const char* title);
  * @return (int)	Always return 0, made this to copy the behaviour of the original MLX
  */
 
-MLX_API int mlx_loop_hook(void* mlx, int (*f)(), void* param);
+MLX_API int mlx_loop_hook(void* mlx, int (*f)(void*), void* param);
 
 /**
  * @brief			Starts the internal main loop
@@ -141,7 +141,7 @@ MLX_API int mlx_mouse_get_pos(void* mlx, int* x, int* y);
  *
  * @return (int)	Always return 0, made this to copy the behaviour of the original MLX
  */
-MLX_API int mlx_on_event(void* mlx, void* win, mlx_event_type event, int (*f)(), void* param);
+MLX_API int mlx_on_event(void* mlx, void* win, mlx_event_type event, int (*f)(int, void*), void* param);
 
 
 /**
