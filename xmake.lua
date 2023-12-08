@@ -15,7 +15,7 @@
 add_requires("libsdl", "vulkan-headers")
 
 add_rules("mode.debug", "mode.release")
-set_languages("cxx17")
+set_languages("cxx17", "c99")
 
 set_objectdir("objs/xmake/$(os)_$(arch)")
 set_targetdir("./")
