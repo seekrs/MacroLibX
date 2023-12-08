@@ -43,7 +43,7 @@ namespace mlx
 
 	constexpr const int MAX_FRAMES_IN_FLIGHT = 3;
 
-	class MLX_API Render_Core : public Singleton<Render_Core>
+	class Render_Core : public Singleton<Render_Core>
 	{
 		public:
 			Render_Core() = default;

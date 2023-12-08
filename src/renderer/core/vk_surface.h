@@ -19,7 +19,7 @@
 
 namespace mlx
 {
-	class MLX_API Surface
+	class Surface
 	{
 		public:
 			void create(class Renderer& renderer);

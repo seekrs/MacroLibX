@@ -19,7 +19,7 @@
 
 namespace mlx
 {
-	class MLX_API Fence
+	class Fence
 	{
 		public:
 			Fence() = default;

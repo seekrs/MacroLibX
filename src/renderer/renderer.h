@@ -37,7 +37,7 @@
 
 namespace mlx
 {
-	struct MLX_API Vertex
+	struct Vertex
 	{
 		glm::vec2 pos;
 		glm::vec4 color;
@@ -78,7 +78,7 @@ namespace mlx
 		}
 	};
 
-	class MLX_API Renderer
+	class Renderer
 	{
 		public:
 			Renderer() = default;

@@ -20,7 +20,7 @@
 
 namespace mlx
 {
-	class MLX_API TextureAtlas : public Image
+	class TextureAtlas : public Image
 	{
 		public:
 			TextureAtlas() = default;

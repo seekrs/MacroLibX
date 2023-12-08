@@ -32,7 +32,7 @@ namespace mlx
 		void* param = nullptr;
 	};
 
-	class MLX_API Input
+	class Input
 	{
 		public:
 			Input();

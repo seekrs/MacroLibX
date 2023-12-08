@@ -5,10 +5,16 @@
 *.so
 *.out
 *.dll
+*.lib
+*.exp
 *.json
 *.tmp
+*.ilk
+*.pdb
+.vs/
 .xmake/
 .cache/
+objs/
 build/
 test/.gdb_history
 test/Test

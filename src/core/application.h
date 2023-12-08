@@ -28,7 +28,7 @@
 
 namespace mlx::core
 {
-	class MLX_API Application
+	class Application
 	{
 		public:
 			Application();

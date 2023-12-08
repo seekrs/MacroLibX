@@ -19,7 +19,7 @@
 
 namespace mlx
 {
-	class MLX_API MemManager : public Singleton<MemManager>
+	class MemManager : public Singleton<MemManager>
 	{
 		friend class Singleton<MemManager>;
 

@@ -20,7 +20,7 @@
 
 namespace mlx
 {
-	class MLX_API UBO
+	class UBO
 	{
 		public:
 			void create(class Renderer* renderer, uint32_t size, const char* name);

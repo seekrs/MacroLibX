@@ -27,7 +27,7 @@ namespace mlx
 	using TextID = uint32_t;
 	constexpr TextID nulltext = 0;
 
-	class MLX_API TextData
+	class TextData
 	{
 		public:
 			TextData() = default;
@@ -46,7 +46,7 @@ namespace mlx
 			std::string _text;
 	};
 
-	class MLX_API TextLibrary
+	class TextLibrary
 	{
 		public:
 			TextLibrary() = default;

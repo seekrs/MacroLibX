@@ -19,7 +19,7 @@
 
 namespace mlx
 {
-	class MLX_API GraphicPipeline
+	class GraphicPipeline
 	{
 		public:
 			void init(class Renderer& renderer);
