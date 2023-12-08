@@ -20,7 +20,7 @@
 
 namespace mlx
 {
-	class MLX_API C_IBO : public Buffer
+	class C_IBO : public Buffer
 	{
 		public:
 			inline void create(uint32_t size, const uint16_t* data, const char* name) { Buffer::create(Buffer::kind::constant, size, VK_BUFFER_USAGE_INDEX_BUFFER_BIT, name, data); }

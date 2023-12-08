@@ -22,9 +22,9 @@
 
 namespace mlx
 {
-	MLX_API uint32_t formatSize(VkFormat format);
+	uint32_t formatSize(VkFormat format);
 
-	class MLX_API Image
+	class Image
 	{
 		friend class SwapChain;
 

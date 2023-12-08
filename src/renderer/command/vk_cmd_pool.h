@@ -18,7 +18,7 @@
 
 namespace mlx
 {
-	class MLX_API CmdPool
+	class CmdPool
 	{
 		public:
 			void init();

@@ -18,7 +18,7 @@
 
 namespace mlx
 {
-	class MLX_API FrameBuffer
+	class FrameBuffer
 	{
 		public:
 			void init(class RenderPass& renderpass, class Image& image);

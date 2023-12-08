@@ -20,7 +20,7 @@
 
 namespace mlx
 {
-	class MLX_API Queues
+	class Queues
 	{
 		public:
 			struct QueueFamilyIndices

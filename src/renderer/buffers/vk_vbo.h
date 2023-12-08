@@ -19,7 +19,7 @@
 
 namespace mlx
 {
-	class MLX_API VBO : public Buffer
+	class VBO : public Buffer
 	{
 		public:
 			inline void create(uint32_t size, const char* name) { Buffer::create(Buffer::kind::dynamic, size, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, name); }
@@ -27,7 +27,7 @@ namespace mlx
 			inline void bind(Renderer& renderer) noexcept { vkCmdBindVertexBuffers(renderer.getActiveCmdBuffer().get(), 0, 1, &_buffer, &_offset); }
 	};
 
-	class MLX_API C_VBO : public Buffer
+	class C_VBO : public Buffer
 	{
 		public:
 			inline void create(uint32_t size, const void* data, const char* name) { Buffer::create(Buffer::kind::constant, size, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, name, data); }

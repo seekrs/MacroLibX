@@ -24,7 +24,7 @@
 
 namespace mlx
 {
-	struct MLX_API TextDrawData
+	struct TextDrawData
 	{
 		TextID id;
 		int x;
@@ -41,7 +41,7 @@ namespace mlx
 namespace std
 {
 	template <>
-	struct MLX_API hash<mlx::TextDrawData>
+	struct hash<mlx::TextDrawData>
 	{
 		std::size_t operator()(const mlx::TextDrawData& d) const noexcept
 		{
@@ -52,7 +52,7 @@ namespace std
 
 namespace mlx
 {
-	class MLX_API TextPutPipeline
+	class TextPutPipeline
 	{
 		public:
 			TextPutPipeline() = default;
