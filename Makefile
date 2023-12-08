@@ -6,7 +6,7 @@
 #    By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/04 16:43:41 by maldavid          #+#    #+#              #
-#    Updated: 2023/11/24 10:03:17 by maldavid         ###   ########.fr        #
+#    Updated: 2023/12/07 15:25:52 by kbz_8            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ SRCS		+= $(wildcard $(addsuffix /*.cpp, ./src/platform))
 SRCS		+= $(wildcard $(addsuffix /*.cpp, ./src/renderer))
 SRCS		+= $(wildcard $(addsuffix /*.cpp, ./src/renderer/**))
 
-OBJ_DIR		= objs
+OBJ_DIR		= objs/makefile
 OBJS		= $(addprefix $(OBJ_DIR)/, $(SRCS:.cpp=.o))
 
 OS = $(shell uname -s)
