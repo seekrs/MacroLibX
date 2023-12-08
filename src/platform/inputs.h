@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:27:35 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/19 12:14:43 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/08 12:14:39 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ namespace mlx
 		private:
 			std::array<uint8_t, SDL_NUM_SCANCODES> _keys;
 			std::unordered_map<uint32_t, std::shared_ptr<MLX_Window>> _windows;
-			std::unordered_map<uint32_t, std::array<Hook, 5>> _events_hooks;
+			std::unordered_map<uint32_t, std::array<Hook, 6>> _events_hooks;
 			SDL_Event _event;
 			std::array<uint8_t, 8> _mouse;
 

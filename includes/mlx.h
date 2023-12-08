@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:56:35 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/23 14:32:06 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/08 12:14:31 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ typedef enum
 	MLX_KEYUP = 1,
 	MLX_MOUSEDOWN = 2,
 	MLX_MOUSEUP = 3,
-	MLX_WINDOW_EVENT = 4
+	MLX_MOUSEWHEEL = 4,
+	MLX_WINDOW_EVENT = 5
 } mlx_event_type;
 
 /**

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:30:19 by maldavid          #+#    #+#             */
-/*   Updated: 2023/08/28 10:49:03 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/08 12:17:40 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,23 @@ namespace mlx
 					_mouse[_event.button.button] = static_cast<uint8_t>(action::up);
 					if(hooks[MLX_MOUSEUP].hook)
 						hooks[MLX_MOUSEUP].hook(_event.button.button, hooks[MLX_MOUSEUP].param);
+					break;
+				}
+
+				case SDL_MOUSEWHEEL:
+				{
+					if(hooks[MLX_MOUSEWHEEL].hook)
+					{
+						if(_event.wheel.y > 0) // scroll up
+							hooks[MLX_MOUSEWHEEL].hook(1, hooks[MLX_MOUSEWHEEL].param);
+						else if(_event.wheel.y < 0) // scroll down
+							hooks[MLX_MOUSEWHEEL].hook(2, hooks[MLX_MOUSEWHEEL].param);
+
+						if(_event.wheel.x > 0) // scroll right
+							hooks[MLX_MOUSEWHEEL].hook(3, hooks[MLX_MOUSEWHEEL].param);
+						else if(_event.wheel.x < 0) // scroll left
+							hooks[MLX_MOUSEWHEEL].hook(4, hooks[MLX_MOUSEWHEEL].param);
+					}
 					break;
 				}
 
