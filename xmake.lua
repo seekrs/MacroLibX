@@ -66,6 +66,8 @@ target("Test")
 	set_kind("binary")
 	set_targetdir("test")
 
+	add_linkdirs("./")
+
 	add_deps("mlx")
 
 	add_files("test/main.c")
