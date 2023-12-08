@@ -4,5 +4,10 @@
 *.a
 *.so
 *.out
+*.dll
+*.json
+.xmake/
 .cache/
+build/
 test/.gdb_history
+test/Test

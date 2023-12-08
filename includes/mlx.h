@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:56:35 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/08 12:14:31 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/08 14:09:31 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,20 @@
 
 #ifdef __cplusplus
 extern "C" {
+#endif
+
+#if defined(_WIN32) || defined(_WIN64)
+	#define MLX_EXPORT __declspec(dllexport)
+	#define MLX_IMPORT __declspec(dllexport)
+#else
+	#define MLX_EXPORT
+	#define MLX_IMPORT
+#endif
+
+#ifdef MLX_BUILD
+	#define MLX_API MLX_EXPORT
+#else
+	#define MLX_API MLX_IMPORT
 #endif
 
 typedef enum
@@ -34,7 +48,7 @@ typedef enum
  *
  * @return (void*)	An opaque pointer to the internal MLX application or NULL (0x0) in case of error
  */
-void* mlx_init();
+MLX_API void* mlx_init();
 
 /**
  * @brief			Creates a new window
@@ -46,7 +60,7 @@ void* mlx_init();
  *
  * @return (void*)	An opaque pointer to the internal MLX window or NULL (0x0) in case of error
  */
-void* mlx_new_window(void* mlx, int w, int h, const char* title);
+MLX_API void* mlx_new_window(void* mlx, int w, int h, const char* title);
 
 /**
  * @brief			Gives a function to be executed at each loop turn
@@ -58,7 +72,7 @@ void* mlx_new_window(void* mlx, int w, int h, const char* title);
  * @return (int)	Always return 0, made this to copy the behaviour of the original MLX
  */
 
-int mlx_loop_hook(void* mlx, int (*f)(), void* param);
+MLX_API int mlx_loop_hook(void* mlx, int (*f)(), void* param);
 
 /**
  * @brief			Starts the internal main loop
@@ -67,7 +81,7 @@ int mlx_loop_hook(void* mlx, int (*f)(), void* param);
  *
  * @return (int)	Always return 0, made this to copy the behaviour of the original MLX
  */
-int mlx_loop(void* mlx);
+MLX_API int mlx_loop(void* mlx);
 
 /**
  * @brief			Ends the internal main loop
@@ -76,21 +90,21 @@ int mlx_loop(void* mlx);
  *
  * @return (int)	Always return 0, made this to copy the behaviour of the original MLX
  */
-int mlx_loop_end(void* mlx);
+MLX_API int mlx_loop_end(void* mlx);
 
 /**
  * @brief			Shows mouse cursor
  *
  * @return (int)	Always return 0, made this to copy the behaviour of the original MLX
  */
-int mlx_mouse_show();
+MLX_API int mlx_mouse_show();
 
 /**
  * @brief			Hides mouse cursor
  *
  * @return (int)	Always return 0, made this to copy the behaviour of the original MLX
  */
-int mlx_mouse_hide();
+MLX_API int mlx_mouse_hide();
 
 /**
  * @brief			Moves cursor to givent position
@@ -102,7 +116,7 @@ int mlx_mouse_hide();
  *
  * @return (int)	Always return 0, made this to copy the behaviour of the original MLX
  */
-int mlx_mouse_move(void* mlx, void* win, int x, int y);
+MLX_API int mlx_mouse_move(void* mlx, void* win, int x, int y);
 
 /**
  * @brief			Get cursor's position
@@ -113,7 +127,7 @@ int mlx_mouse_move(void* mlx, void* win, int x, int y);
  *
  * @return (int)	Always return 0, made this to copy the behaviour of the original MLX
  */
-int mlx_mouse_get_pos(void* mlx, int* x, int* y);
+MLX_API int mlx_mouse_get_pos(void* mlx, int* x, int* y);
 
 
 /**
@@ -127,7 +141,7 @@ int mlx_mouse_get_pos(void* mlx, int* x, int* y);
  *
  * @return (int)	Always return 0, made this to copy the behaviour of the original MLX
  */
-int mlx_on_event(void* mlx, void* win, mlx_event_type event, int (*f)(), void* param);
+MLX_API int mlx_on_event(void* mlx, void* win, mlx_event_type event, int (*f)(), void* param);
 
 
 /**
@@ -144,7 +158,7 @@ int mlx_on_event(void* mlx, void* win, mlx_event_type event, int (*f)(), void* p
  * 
  * @return (int)	Always return 0, made this to copy the behaviour of the original MLX
  */
-int mlx_pixel_put(void* mlx, void* win, int x, int y, int color);
+MLX_API int mlx_pixel_put(void* mlx, void* win, int x, int y, int color);
 
 
 /**
@@ -156,7 +170,7 @@ int mlx_pixel_put(void* mlx, void* win, int x, int y, int color);
  *
  * @return (void*)	An opaque pointer to the internal image or NULL (0x0) in case of error
  */
-void* mlx_new_image(void* mlx, int width, int height);
+MLX_API void* mlx_new_image(void* mlx, int width, int height);
 
 /**
  * @brief					Get image pixel data
@@ -176,7 +190,7 @@ void* mlx_new_image(void* mlx, int width, int height);
  * 	~ make IMAGES_OPTIMIZED=false
  * ```
  */
-int mlx_get_image_pixel(void* mlx, void* img, int x, int y);
+MLX_API int mlx_get_image_pixel(void* mlx, void* img, int x, int y);
 
 /**
  * @brief					Set image pixel data
@@ -197,7 +211,7 @@ int mlx_get_image_pixel(void* mlx, void* img, int x, int y);
  * 	~ make IMAGES_OPTIMIZED=false
  * ```
  */
-void mlx_set_image_pixel(void* mlx, void* img, int x, int y, int color);
+MLX_API void mlx_set_image_pixel(void* mlx, void* img, int x, int y, int color);
 
 /**
  * @brief			Put image to the given window
@@ -210,7 +224,7 @@ void mlx_set_image_pixel(void* mlx, void* img, int x, int y, int color);
  *
  * @return (int)	Always return 0, made this to copy the behaviour of the original MLX
  */
-int mlx_put_image_to_window(void* mlx, void* win, void* img, int x, int y);
+MLX_API int mlx_put_image_to_window(void* mlx, void* win, void* img, int x, int y);
 
 /**
  * @brief			Destroys internal image
@@ -220,7 +234,7 @@ int mlx_put_image_to_window(void* mlx, void* win, void* img, int x, int y);
  *
  * @return (int)	Always return 0, made this to copy the behaviour of the original MLX
  */
-int mlx_destroy_image(void* mlx, void* img);
+MLX_API int mlx_destroy_image(void* mlx, void* img);
 
 
 /**
@@ -233,7 +247,7 @@ int mlx_destroy_image(void* mlx, void* img);
  *
  * @return (void*)	An opaque pointer to the internal image or NULL (0x0) in case of error
  */
-void* mlx_png_file_to_image(void* mlx, char* filename, int* width, int* height);
+MLX_API void* mlx_png_file_to_image(void* mlx, char* filename, int* width, int* height);
 
 /**
  * @brief			Create a new image from a jpg file
@@ -245,7 +259,7 @@ void* mlx_png_file_to_image(void* mlx, char* filename, int* width, int* height);
  *
  * @return (void*)	An opaque pointer to the internal image or NULL (0x0) in case of error
  */
-void* mlx_jpg_file_to_image(void* mlx, char* filename, int* width, int* height);
+MLX_API void* mlx_jpg_file_to_image(void* mlx, char* filename, int* width, int* height);
 
 /**
  * @brief			Create a new image from a bmp file
@@ -257,7 +271,7 @@ void* mlx_jpg_file_to_image(void* mlx, char* filename, int* width, int* height);
  *
  * @return (void*)	An opaque pointer to the internal image or NULL (0x0) in case of error
  */
-void* mlx_bmp_file_to_image(void* mlx, char* filename, int* width, int* height);
+MLX_API void* mlx_bmp_file_to_image(void* mlx, char* filename, int* width, int* height);
 
 
 /**
@@ -272,7 +286,7 @@ void* mlx_bmp_file_to_image(void* mlx, char* filename, int* width, int* height);
  *
  * @return (int)	Always return 0, made this to copy the behaviour of the original MLX
  */
-int mlx_string_put(void* mlx, void* win, int x, int y, int color, char* str);
+MLX_API int mlx_string_put(void* mlx, void* win, int x, int y, int color, char* str);
 
 
 /**
@@ -284,7 +298,7 @@ int mlx_string_put(void* mlx, void* win, int x, int y, int color, char* str);
  *
  * @return (void)	
  */
-void mlx_set_font(void* mlx, void* win, char* filepath);
+MLX_API void mlx_set_font(void* mlx, void* win, char* filepath);
 
 /**
  * @brief			Loads a font to be used by `mlx_string_put` and scales it
@@ -296,7 +310,7 @@ void mlx_set_font(void* mlx, void* win, char* filepath);
  *
  * @return (void)	
  */
-void mlx_set_font_scale(void* mlx, void* win, char* filepath, float scale);
+MLX_API void mlx_set_font_scale(void* mlx, void* win, char* filepath, float scale);
 
 
 /**
@@ -307,7 +321,7 @@ void mlx_set_font_scale(void* mlx, void* win, char* filepath, float scale);
  *
  * @return (int)	Always return 0, made this to copy the behaviour of the original MLX
  */
-int mlx_clear_window(void* mlx, void* win);
+MLX_API int mlx_clear_window(void* mlx, void* win);
 
 
 /**
@@ -318,7 +332,7 @@ int mlx_clear_window(void* mlx, void* win);
  *
  * @return (int)	Always return 0, made this to copy the behaviour of the original MLX
  */
-int mlx_destroy_window(void* mlx, void* win);
+MLX_API int mlx_destroy_window(void* mlx, void* win);
 
 /**
  * @brief			Destroy internal MLX application
@@ -327,7 +341,7 @@ int mlx_destroy_window(void* mlx, void* win);
  *
  * @return (int)	Always return 0, made this to copy the behaviour of the original MLX
  */
-int mlx_destroy_display(void* mlx);
+MLX_API int mlx_destroy_display(void* mlx);
 
 
 /**
@@ -339,7 +353,7 @@ int mlx_destroy_display(void* mlx);
  *
  * @return (int)	Always return 0, made this to copy the behaviour of the original MLX
  */
-int mlx_get_screens_size(void* mlx, int* w, int* h);
+MLX_API int mlx_get_screens_size(void* mlx, int* w, int* h);
 
 #ifdef __cplusplus
 }
