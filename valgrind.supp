@@ -1,0 +1,339 @@
+{
+   name
+   Memcheck:ReallocZero
+   fun:realloc
+   obj:/usr/lib/libnvidia-glcore.so.545.29.06
+   obj:/usr/lib/libGLX_nvidia.so.545.29.06
+   obj:/usr/lib/libGLX_nvidia.so.545.29.06
+   obj:/usr/lib/libGLX_nvidia.so.545.29.06
+}
+{
+   name
+   Memcheck:BadSize
+   fun:posix_memalign
+   obj:/usr/lib/libnvidia-glcore.so.545.29.06
+   obj:/usr/lib/libGLX_nvidia.so.545.29.06
+   obj:/usr/lib/libGLX_nvidia.so.545.29.06
+   obj:/usr/lib/libGLX_nvidia.so.545.29.06
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:realloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:SDL_DBus_Init_Spinlocked.lto_priv.0
+   fun:UnknownInlinedFun
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   obj:*
+   obj:*
+   fun:SDL_DBus_Init_Spinlocked.lto_priv.0
+   fun:UnknownInlinedFun
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   obj:*
+   obj:*
+   fun:SDL_DBus_Init_Spinlocked.lto_priv.0
+   fun:UnknownInlinedFun
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   obj:*
+   obj:*
+   fun:SDL_DBus_Init_Spinlocked.lto_priv.0
+   fun:UnknownInlinedFun
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   obj:*
+   obj:*
+   fun:SDL_DBus_Init_Spinlocked.lto_priv.0
+   fun:UnknownInlinedFun
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:SDL_DBus_Init_Spinlocked.lto_priv.0
+   fun:UnknownInlinedFun
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:SDL_DBus_Init_Spinlocked.lto_priv.0
+   fun:UnknownInlinedFun
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+}
