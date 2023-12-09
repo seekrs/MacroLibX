@@ -5,6 +5,9 @@
         <a href="https://github.com/420verfl0w/MacroLibX/actions/workflows/linux_gcc.yml"><img src="https://github.com/420verfl0w/MacroLibX/actions/workflows/linux_gcc.yml/badge.svg"></a>
         <a href="https://github.com/420verfl0w/MacroLibX/actions/workflows/macos_x86.yml"><img src="https://github.com/420verfl0w/MacroLibX/actions/workflows/macos_x86.yml/badge.svg"></a>
     </div>
+    <div align="center">
+        <a href="https://github.com/420verfl0w/MacroLibX/actions/workflows/windows.yml"><img src="https://github.com/420verfl0w/MacroLibX/actions/workflows/windows.yml/badge.svg"></a>
+    </div>
 </div>
 
 ###### MacroLibX, a rewrite of 42 School's MiniLibX using SDL2 and Vulkan. 
@@ -44,6 +47,10 @@ sudo apt install libsdl2-2.0-0 libsdl2-dev build-essential
 brew install molten-vk
 brew install SDL2
 ```
+
+### 🪟 Windows
+
+To build on Windows you may need to use the [xmake](https://xmake.io) build. [Here's](./XMAKE_BUILD.md) how you can use it.
 
 ### Clone and Build
 

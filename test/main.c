@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:55:21 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/08 12:23:07 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/08 18:08:13 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,14 @@ typedef struct s_mlx
 	void	*img;
 }	t_mlx;
 
-int	update(t_mlx *mlx)
+int	update(void *param)
 {
 	static int	i = 0;
 	int			j;
 	int			k;
+	t_mlx		*mlx;
 
+	mlx = (t_mlx *)param;
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->logo, 100, 100);
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 150, 60);
 	mlx_string_put(mlx->mlx, mlx->win, 20, 50, 0xFFFFFFFF, "that's a text");
@@ -41,8 +43,7 @@ int	update(t_mlx *mlx)
 			k++;
 		j++;
 	}
-	i++;
-	if (i == 5000)
+	if (++i == 5000)
 	{
 		mlx_clear_window(mlx->mlx, mlx->win);
 		mlx_set_font_scale(mlx->mlx, mlx->win, "font.ttf", 16.f);
@@ -79,17 +80,17 @@ void	*create_image(t_mlx *mlx)
 	return (img);
 }
 
-int	key_hook(int key, t_mlx *param)
+int	key_hook(int key, void *param)
 {
 	if (key == 41)
-		mlx_loop_end(param->mlx);
+		mlx_loop_end(((t_mlx *)param)->mlx);
 	return (0);
 }
 
-int	window_hook(int event, t_mlx *param)
+int	window_hook(int event, void *param)
 {
 	if (event == 0)
-		mlx_loop_end(param->mlx);
+		mlx_loop_end(((t_mlx *)param)->mlx);
 	return (0);
 }
 

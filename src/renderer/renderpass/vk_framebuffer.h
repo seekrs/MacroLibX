@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:19:44 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/18 16:44:16 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/08 19:11:04 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #define __MLX_VK_FRAMEBUFFER__
 
 #include <volk.h>
+#include <core/profile.h>
 
 namespace mlx
 {

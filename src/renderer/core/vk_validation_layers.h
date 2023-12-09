@@ -6,7 +6,7 @@
 /*   By: maldavid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 14:04:25 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/19 14:05:19 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/08 19:09:02 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #define __VK_VALIDATION_LAYERS__
 
 #include <volk.h>
+#include <core/profile.h>
 
 namespace mlx
 {
