@@ -74,14 +74,14 @@ And you can enjoy your project
 ### 📦 Compile mode
 By default the mlx is built in release mode but you can switch to debug by using `make DEBUG=true`.
 
-### 🛠️ Set the toolcha
+### 🛠️ Set the toolchain
 If you want to use `GCC` to build the mlx you can use `make TOOLCHAIN=gcc`
 
 ### ⚠️⚠️⚠️ 🖼️ Image optimisations ⚠️⚠️⚠️
 If you run into glitches when writing or reading pixels from images you can turn off images optimisations by using `make IMAGES_OPTIMIZED=false`.
 
 ### 🖥️ Force the integrated GPU (not recommended)
-You can force the mlx to use your integrated GPU using `make FORCE_INTEGRATED_GPU=true`. Note that there are a lot of chances that your application crashes by using that.
+You can force the mlx to use your integrated GPU by using `make FORCE_INTEGRATED_GPU=true`. Note that there are a lot of chances that your application crashes by using that.
 
 ### 💽 Dump the graphics memory
 The mlx can dump it's graphics memory use to json files every two seconds by enabling this option `make GRAPHICS_MEMORY_DUMP=true`.
