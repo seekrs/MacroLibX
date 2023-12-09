@@ -1,0 +1,3246 @@
+{
+   name
+   Memcheck:Leak
+   fun:*alloc
+   ...
+   obj:*libmlx*
+   ...
+}
+{
+   name
+   Memcheck:Leak
+   fun:*alloc
+   ...
+   obj:*SDL*
+   ...
+}
+{
+   name
+   Memcheck:Leak
+   fun:*alloc
+   ...
+   obj:*X11*
+   ...
+}
+{
+   name
+   Memcheck:Leak
+   fun:*alloc
+   ...
+   obj:*libGLX_nvidia.so*
+   ...
+}
+{
+   name
+   Memcheck:ReallocZero
+   fun:realloc
+   ...
+   obj:*libGLX_nvidia.so*
+   ...
+}
+{
+   name
+   Memcheck:BadSize
+   fun:posix_memalign
+   ...
+   obj:*libGLX_nvidia.so*
+   ...
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   fun:strdup
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   fun:strdup
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   fun:strdup
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   fun:strdup
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:realloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:SDL_DBus_Init_Spinlocked.lto_priv.0
+   fun:UnknownInlinedFun
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   fun:strdup
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:realloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:realloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   fun:SDL_DBus_Init_Spinlocked.lto_priv.0
+   fun:UnknownInlinedFun
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   fun:SDL_DBus_Init_Spinlocked.lto_priv.0
+   fun:UnknownInlinedFun
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:SDL_DBus_Init_Spinlocked.lto_priv.0
+   fun:UnknownInlinedFun
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:realloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   obj:*
+   obj:*
+   fun:SDL_DBus_Init_Spinlocked.lto_priv.0
+   fun:UnknownInlinedFun
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   obj:*
+   obj:*
+   fun:SDL_DBus_Init_Spinlocked.lto_priv.0
+   fun:UnknownInlinedFun
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:realloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:realloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   obj:*
+   obj:*
+   fun:SDL_DBus_Init_Spinlocked.lto_priv.0
+   fun:UnknownInlinedFun
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:realloc
+   fun:SDL_GetErrBuf
+   fun:SDL_SetError_REAL
+   fun:destroy
+   fun:_ZN3mlx10MLX_WindowD1Ev
+   fun:_M_release
+   fun:~__shared_count
+   fun:~__shared_ptr
+   fun:~pair
+   fun:destroy<std::pair<const unsigned int, std::shared_ptr<mlx::MLX_Window> > >
+   fun:destroy<std::pair<const unsigned int, std::shared_ptr<mlx::MLX_Window> > >
+   fun:_M_deallocate_node
+   fun:_M_deallocate_nodes
+   fun:clear
+   fun:_ZNSt10_HashtableIjSt4pairIKjSt10shared_ptrIN3mlx10MLX_WindowEEESaIS6_ENSt8__detail10_Select1stESt8equal_toIjESt4hashIjENS8_18_Mod_range_hashingENS8_20_Default_ranged_hashENS8_20_Prime_rehash_policyENS8_17_Hashtable_traitsILb0ELb0ELb1EEEED2Ev
+   fun:~unordered_map
+   fun:~Input
+   fun:operator()
+   fun:~unique_ptr
+   fun:_ZN3mlx4core11ApplicationD1Ev
+   fun:mlx_destroy_display
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:realloc
+   fun:SDL_SetError_REAL
+   fun:destroy
+   fun:_ZN3mlx10MLX_WindowD1Ev
+   fun:_M_release
+   fun:~__shared_count
+   fun:~__shared_ptr
+   fun:~pair
+   fun:destroy<std::pair<const unsigned int, std::shared_ptr<mlx::MLX_Window> > >
+   fun:destroy<std::pair<const unsigned int, std::shared_ptr<mlx::MLX_Window> > >
+   fun:_M_deallocate_node
+   fun:_M_deallocate_nodes
+   fun:clear
+   fun:_ZNSt10_HashtableIjSt4pairIKjSt10shared_ptrIN3mlx10MLX_WindowEEESaIS6_ENSt8__detail10_Select1stESt8equal_toIjESt4hashIjENS8_18_Mod_range_hashingENS8_20_Default_ranged_hashENS8_20_Prime_rehash_policyENS8_17_Hashtable_traitsILb0ELb0ELb1EEEED2Ev
+   fun:~unordered_map
+   fun:~Input
+   fun:operator()
+   fun:~unique_ptr
+   fun:_ZN3mlx4core11ApplicationD1Ev
+   fun:mlx_destroy_display
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:realloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:realloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:UnknownInlinedFun
+   fun:SDL_strdup_REAL
+   fun:SDL_IBus_Init
+   fun:SDL_IME_Init.isra.0
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:realloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:malloc
+   fun:strdup
+   fun:_dl_load_cache_lookup
+   fun:_dl_map_object
+   fun:openaux
+   fun:_dl_catch_exception
+   fun:_dl_map_object_deps
+   fun:dl_open_worker_begin
+   fun:_dl_catch_exception
+   fun:dl_open_worker
+   fun:_dl_catch_exception
+   fun:_dl_open
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:malloc
+   fun:_dl_new_object
+   fun:_dl_map_object_from_fd
+   fun:_dl_map_object
+   fun:openaux
+   fun:_dl_catch_exception
+   fun:_dl_map_object_deps
+   fun:dl_open_worker_begin
+   fun:_dl_catch_exception
+   fun:dl_open_worker
+   fun:_dl_catch_exception
+   fun:_dl_open
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:realloc
+   fun:SDL_realloc_REAL
+   fun:UnknownInlinedFun
+   fun:SDL_TLSSet_REAL
+   fun:SDL_GetErrBuf
+   fun:SDL_SetError_REAL
+   fun:destroy
+   fun:_ZN3mlx10MLX_WindowD1Ev
+   fun:_M_release
+   fun:~__shared_count
+   fun:~__shared_ptr
+   fun:~pair
+   fun:destroy<std::pair<const unsigned int, std::shared_ptr<mlx::MLX_Window> > >
+   fun:destroy<std::pair<const unsigned int, std::shared_ptr<mlx::MLX_Window> > >
+   fun:_M_deallocate_node
+   fun:_M_deallocate_nodes
+   fun:clear
+   fun:_ZNSt10_HashtableIjSt4pairIKjSt10shared_ptrIN3mlx10MLX_WindowEEESaIS6_ENSt8__detail10_Select1stESt8equal_toIjESt4hashIjENS8_18_Mod_range_hashingENS8_20_Default_ranged_hashENS8_20_Prime_rehash_policyENS8_17_Hashtable_traitsILb0ELb0ELb1EEEED2Ev
+   fun:~unordered_map
+   fun:~Input
+   fun:operator()
+   fun:~unique_ptr
+   fun:_ZN3mlx4core11ApplicationD1Ev
+   fun:mlx_destroy_display
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:realloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:malloc
+   fun:strdup
+   fun:_dl_load_cache_lookup
+   fun:_dl_map_object
+   fun:dl_open_worker_begin
+   fun:_dl_catch_exception
+   fun:dl_open_worker
+   fun:_dl_catch_exception
+   fun:_dl_open
+   fun:dlopen_doit
+   fun:_dl_catch_exception
+   fun:_dl_catch_error
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:malloc
+   fun:_dl_new_object
+   fun:_dl_map_object_from_fd
+   fun:_dl_map_object
+   fun:dl_open_worker_begin
+   fun:_dl_catch_exception
+   fun:dl_open_worker
+   fun:_dl_catch_exception
+   fun:_dl_open
+   fun:dlopen_doit
+   fun:_dl_catch_exception
+   fun:_dl_catch_error
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:realloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:realloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:realloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:SDL_DBus_Init_Spinlocked.lto_priv.0
+   fun:UnknownInlinedFun
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   fun:strdup
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:realloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:SDL_DBus_Init_Spinlocked.lto_priv.0
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:realloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:SDL_DBus_Init_Spinlocked.lto_priv.0
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:realloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:SDL_DBus_CallMethodInternal
+   fun:SDL_DBus_CallMethodOnConnection
+   fun:IBus_SetupConnection
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:realloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:SDL_DBus_CallMethodInternal
+   fun:SDL_DBus_CallMethod
+   fun:SDL_DBus_ScreensaverInhibit
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   fun:strdup
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:realloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:SDL_DBus_CallMethodInternal
+   fun:SDL_DBus_CallMethod
+   fun:SDL_DBus_ScreensaverInhibit
+   fun:X11_SuspendScreenSaver
+   fun:UnknownInlinedFun
+   fun:SDL_VideoInit_REAL
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:realloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:SDL_DBus_CallMethodInternal
+   fun:SDL_DBus_CallMethodOnConnection
+   fun:IBus_SetupConnection
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:realloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:SDL_DBus_CallVoidMethodInternal
+   fun:SDL_DBus_CallVoidMethod
+   fun:X11_SuspendScreenSaver
+   fun:UnknownInlinedFun
+   fun:SDL_VideoInit_REAL
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:malloc
+   fun:_dl_close_worker
+   fun:_dl_close
+   fun:_dl_catch_exception
+   fun:_dl_catch_error
+   fun:_dlerror_run
+   fun:dlclose@@GLIBC_2.34
+   fun:UnknownInlinedFun
+   fun:loader_scanned_icd_clear.constprop.0
+   fun:UnknownInlinedFun
+   fun:UnknownInlinedFun
+   fun:vkDestroyInstance
+   fun:_ZN3mlx8Instance7destroyEv
+   fun:_ZN3mlx11Render_Core7destroyEv
+   fun:mlx_destroy_display
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:SDL_DBus_Init_Spinlocked.lto_priv.0
+   fun:UnknownInlinedFun
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   obj:*
+   obj:*
+   fun:SDL_DBus_Init_Spinlocked.lto_priv.0
+   fun:UnknownInlinedFun
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:realloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:SDL_DBus_Init_Spinlocked.lto_priv.0
+   fun:UnknownInlinedFun
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+   fun:main
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   fun:strdup
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:realloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   fun:strdup
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:calloc
+   fun:calloc
+   fun:_dl_check_map_versions
+   fun:dl_open_worker_begin
+   fun:_dl_catch_exception
+   fun:dl_open_worker
+   fun:_dl_catch_exception
+   fun:_dl_open
+   fun:dlopen_doit
+   fun:_dl_catch_exception
+   fun:_dl_catch_error
+   fun:_dlerror_run
+   fun:dlopen_implementation
+   fun:dlopen@@GLIBC_2.34
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:realloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:realloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:calloc
+   fun:calloc
+   fun:_dl_new_object
+   fun:_dl_map_object_from_fd
+   fun:_dl_map_object
+   fun:openaux
+   fun:_dl_catch_exception
+   fun:_dl_map_object_deps
+   fun:dl_open_worker_begin
+   fun:_dl_catch_exception
+   fun:dl_open_worker
+   fun:_dl_catch_exception
+   fun:_dl_open
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:calloc
+   fun:calloc
+   fun:_dl_new_object
+   fun:_dl_map_object_from_fd
+   fun:_dl_map_object
+   fun:dl_open_worker_begin
+   fun:_dl_catch_exception
+   fun:dl_open_worker
+   fun:_dl_catch_exception
+   fun:_dl_open
+   fun:dlopen_doit
+   fun:_dl_catch_exception
+   fun:_dl_catch_error
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:SDL_DBus_Init_Spinlocked.lto_priv.0
+   fun:UnknownInlinedFun
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+}
+{
+   name
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   fun:X11_InitKeyboard
+   fun:X11_VideoInit.lto_priv.0
+   fun:SDL_VideoInit_REAL
+   fun:SDL_InitSubSystem_REAL.part.0
+   fun:_ZN3mlx4core11ApplicationC1Ev
+   fun:mlx_init
+}

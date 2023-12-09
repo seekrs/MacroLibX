@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 16:24:11 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/24 19:08:04 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/08 19:12:40 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include <cstdint>
 #include <unordered_set>
 #include <renderer/text_library.h>
+#include <core/profile.h>
 
 namespace mlx
 {
