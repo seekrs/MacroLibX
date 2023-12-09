@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 22:10:52 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/08 13:32:18 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/09 17:44:13 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ namespace mlx::core
 
 			if(_loop_hook)
 				_loop_hook(_param);
-			
+
 			for(auto& gs : _graphics)
 				gs->endRender();
 		}
@@ -66,6 +66,7 @@ namespace mlx::core
 
 	Application::~Application()
 	{
+		SDL_QuitSubSystem(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS);
 		SDL_Quit();
 	}
 }
