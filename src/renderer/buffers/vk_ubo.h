@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:45:29 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/14 03:26:10 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/08 19:06:28 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "vk_buffer.h"
 #include <array>
 #include <cstddef>
+#include <core/profile.h>
 
 namespace mlx
 {

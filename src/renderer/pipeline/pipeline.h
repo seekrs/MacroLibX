@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 21:23:52 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/19 00:27:29 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/08 19:10:51 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #define __PIPELINE__
 
 #include <volk.h>
+#include <core/profile.h>
 #include <renderer/command/vk_cmd_buffer.h>
 
 namespace mlx
