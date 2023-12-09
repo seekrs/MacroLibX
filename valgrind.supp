@@ -1,20 +1,50 @@
 {
    name
+   Memcheck:Leak
+   fun:*alloc
+   ...
+   obj:*libmlx*
+   ...
+}
+{
+   name
+   Memcheck:Leak
+   fun:*alloc
+   ...
+   obj:*SDL*
+   ...
+}
+{
+   name
+   Memcheck:Leak
+   fun:*alloc
+   ...
+   obj:*X11*
+   ...
+}
+{
+   name
+   Memcheck:Leak
+   fun:*alloc
+   ...
+   obj:*libGLX_nvidia.so*
+   ...
+}
+{
+   name
    Memcheck:ReallocZero
    fun:realloc
-   obj:/usr/lib/libnvidia-glcore.so.545.29.06
-   obj:/usr/lib/libGLX_nvidia.so.545.29.06
-   obj:/usr/lib/libGLX_nvidia.so.545.29.06
-   obj:/usr/lib/libGLX_nvidia.so.545.29.06
+   ...
+   obj:*libGLX_nvidia.so*
+   ...
 }
 {
    name
    Memcheck:BadSize
    fun:posix_memalign
-   obj:/usr/lib/libnvidia-glcore.so.545.29.06
-   obj:/usr/lib/libGLX_nvidia.so.545.29.06
-   obj:/usr/lib/libGLX_nvidia.so.545.29.06
-   obj:/usr/lib/libGLX_nvidia.so.545.29.06
+   ...
+   obj:*libGLX_nvidia.so*
+   ...
 }
 {
    name

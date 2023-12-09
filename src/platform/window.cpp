@@ -6,13 +6,14 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:36:44 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/25 11:48:26 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/09 16:52:29 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <platform/window.h>
 #include <core/errors.h>
 #include <utils/icon_mlx.h>
+#include <iostream>
 
 namespace mlx
 {
@@ -40,14 +41,16 @@ namespace mlx
 
 	void MLX_Window::destroy() noexcept
 	{
-		if(_win)
+		std::cout << "prout" << std::endl;
+		if(_win != nullptr)
+		{
 			SDL_DestroyWindow(_win);
-		if(_icon)
+			_win = nullptr;
+		}
+		if(_icon != nullptr)
+		{
 			SDL_FreeSurface(_icon);
-	}
-
-	MLX_Window::~MLX_Window()
-	{
-		destroy();
+			_icon = nullptr;
+		}
 	}
 }
