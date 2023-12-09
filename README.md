@@ -16,11 +16,9 @@ The goal of this version is to provide a light, fast, and modern graphical tool 
 ## 🖥️ Installation
 
 ### Dependencies
-
 You first need to install the proper dependencies for your operating-system. 
 
 #### 🐧 Linux
-
 Here are a few common cases for different Linux distributions:
 
 <details>
@@ -41,7 +39,6 @@ sudo apt install libsdl2-2.0-0 libsdl2-dev build-essential
 </details>
 
 #### 🍎 macOS
-
 [MacroLibX](#) on macOS requires [SDL2](#) and [MoltenVK](https://github.com/KhronosGroup/MoltenVK). You can install both using the [Homebrew](https://brew.sh) package manager:
 ```sh
 brew install molten-vk
@@ -49,11 +46,9 @@ brew install SDL2
 ```
 
 ### 🪟 Windows
-
 To build on Windows you may need to use the [xmake](https://xmake.io) build. [Here's](./XMAKE_BUILD.md) how you can use it.
 
 ### Clone and Build
-
 Finally, you can clone the Git repository. When inside it, run the GNU `make` command to compile MacroLibX. 
 ```bash
 git clone https://github.com/420verfl0w/MacroLibX.git
@@ -61,13 +56,7 @@ cd MacroLibX
 make
 ```
 
-If you want to build using GCC you can add `TOOLCHAIN=gcc` to your `make` command
-```bash
-make TOOLCHAIN=gcc
-```
-
 ## 🔨 Compile your project
-
 To compile your project with MacroLibX, you just provide the shared library path in your compilation/linking command:
 
 ```sh
@@ -80,16 +69,22 @@ And you can enjoy your project
     <img src="./res/screenshot_test.png" alt="drawing" width="400"/>
 </p>
 
-### ⚠️ Troubleshooting
+## ⚙️ Some compilation configurations
 
-#### If you run into glitches when writing or reading pixels from images
+### 📦 Compile mode
+By default the mlx is built in release mode but you can switch to debug by using `make DEBUG=true`.
 
-You need to add `IMAGES_OPTIMIZED=false` to your `make` command:
+### 🛠️ Set the toolcha
+If you want to use `GCC` to build the mlx you can use `make TOOLCHAIN=gcc`
 
-```sh
-# In your cloned environment, inside the MacroLibX folder
-make IMAGES_OPTIMIZED=false
-```
+### ⚠️⚠️⚠️ 🖼️ Image optimisations ⚠️⚠️⚠️
+If you run into glitches when writing or reading pixels from images you can turn off images optimisations by using `make IMAGES_OPTIMIZED=false`.
+
+### 🖥️ Force the integrated GPU (not recommended)
+You can force the mlx to use your integrated GPU using `make FORCE_INTEGRATED_GPU=true`. Note that there are a lot of chances that your application crashes by using that.
+
+### 💽 Dump the graphics memory
+The mlx can dump it's graphics memory use to json files every two seconds by enabling this option `make GRAPHICS_MEMORY_DUMP=true`.
 
 ## License
 
