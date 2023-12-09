@@ -20,14 +20,14 @@
 
 namespace mlx
 {
-	class MLX_API SwapChain
+	class SwapChain
 	{
 		friend class GraphicPipeline;
 		friend class RenderPass;
 		friend class Renderer;
 
 		public:
-			struct MLX_API SwapChainSupportDetails
+			struct SwapChainSupportDetails
 			{
 				VkSurfaceCapabilitiesKHR capabilities;
 				std::vector<VkSurfaceFormatKHR> formats;

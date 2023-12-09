@@ -19,7 +19,7 @@
 
 namespace mlx
 {
-	class MLX_API Instance
+	class Instance
 	{
 		public:
 			void init();

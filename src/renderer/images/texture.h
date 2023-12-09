@@ -25,7 +25,7 @@
 
 namespace mlx
 {
-	class MLX_API Texture : public Image
+	class Texture : public Image
 	{
 		public:
 			Texture() = default;
@@ -62,9 +62,9 @@ namespace mlx
 			bool _has_been_updated = false;
 	};
 
-	MLX_API Texture stbTextureLoad(std::filesystem::path file, int* w, int* h);
+	Texture stbTextureLoad(std::filesystem::path file, int* w, int* h);
 
-	struct MLX_API TextureRenderData
+	struct TextureRenderData
 	{
 		Texture* texture;
 		std::size_t hash = 0;
@@ -79,7 +79,7 @@ namespace mlx
 namespace std
 {
 	template <>
-	struct MLX_API hash<mlx::TextureRenderData>
+	struct hash<mlx::TextureRenderData>
 	{
 		size_t operator()(const mlx::TextureRenderData& td) const noexcept
 		{

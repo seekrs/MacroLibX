@@ -23,7 +23,7 @@
 
 namespace mlx
 {
-	class MLX_API CmdManager
+	class CmdManager
 	{
 		public:
 			CmdManager() = default;

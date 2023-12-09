@@ -19,7 +19,7 @@
 
 namespace mlx
 {
-	class MLX_API Semaphore
+	class Semaphore
 	{
 		public:
 			void init();

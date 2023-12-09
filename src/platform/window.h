@@ -19,7 +19,7 @@
 
 namespace mlx
 {
-	class MLX_API MLX_Window
+	class MLX_Window
 	{
 		public:
 			MLX_Window(std::size_t w, std::size_t h, const std::string& title);

@@ -19,7 +19,7 @@
 
 namespace mlx
 {
-	class MLX_API PixelPutPipeline
+	class PixelPutPipeline
 	{
 		public:
 			PixelPutPipeline() = default;

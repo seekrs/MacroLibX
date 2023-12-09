@@ -19,7 +19,7 @@
 
 namespace mlx
 {
-	class MLX_API Buffer
+	class Buffer
 	{
 		public:
 			enum class kind { dynamic, uniform, constant };

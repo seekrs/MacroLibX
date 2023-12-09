@@ -19,7 +19,7 @@
 
 namespace mlx
 {
-	class MLX_API Device
+	class Device
 	{
 		public:
 			void init();

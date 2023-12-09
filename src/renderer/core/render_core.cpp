@@ -24,7 +24,11 @@
 #include <mutex>
 
 #ifdef DEBUG
-	#warning "MLX is being compiled in debug mode, this activates Vulkan's validation layers and debug messages which may impact rendering performances"
+	#ifndef MLX_COMPILER_MSVC
+		#warning "MLX is being compiled in debug mode, this activates Vulkan's validation layers and debug messages which may impact rendering performances"
+	#else
+		#pragma NOTE("MLX is being compiled in debug mode, this activates Vulkan's validation layers and debug messages which may impact rendering performances")
+	#endif
 #endif
 
 namespace mlx

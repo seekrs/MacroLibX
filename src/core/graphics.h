@@ -30,7 +30,7 @@
 
 namespace mlx
 {
-	class MLX_API GraphicsSupport : public non_copyable
+	class GraphicsSupport : public non_copyable
 	{
 		public:
 			GraphicsSupport(std::size_t w, std::size_t h, const std::string& title, int id);

@@ -41,19 +41,18 @@
 	#warning "This compiler is not fully supported"
 #endif
 
-#if defined(_WIN32) || defined(_WIN64)
-	#define MLX_EXPORT __declspec(dllexport)
-	#define MLX_IMPORT __declspec(dllexport)
+#if defined(_WIN32) || defined(__CYGWIN__)
+	#define MLX_PLAT_WINDOWS
+#elif defined(__linux__)
+	#define MLX_PLAT_LINUX
+#elif defined(__APPLE__) && defined(__MACH__)
+	#define MLX_PLAT_MACOS
+#elif defined(unix) || defined(__unix__) || defined(__unix)
+	#define MLX_PLAT_UNIX
 #else
-	#define MLX_EXPORT
-	#define MLX_IMPORT
+	#error "Unknown environment!"
 #endif
 
-#ifdef MLX_BUILD
-	#define MLX_API MLX_EXPORT
-#else
-	#define MLX_API MLX_IMPORT
-#endif
 
 // Checking common assumptions
 #include <climits>
