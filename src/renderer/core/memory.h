@@ -19,7 +19,7 @@
 
 namespace mlx
 {
-	class MLX_API GPUallocator
+	class GPUallocator
 	{
 		public:
 			GPUallocator() = default;

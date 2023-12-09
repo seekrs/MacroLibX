@@ -15,13 +15,9 @@
 #ifndef __MACRO_LIB_X_H__
 #define __MACRO_LIB_X_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #if defined(_WIN32) || defined(_WIN64)
 	#define MLX_EXPORT __declspec(dllexport)
-	#define MLX_IMPORT __declspec(dllexport)
+	#define MLX_IMPORT __declspec(dllimport)
 #else
 	#define MLX_EXPORT
 	#define MLX_IMPORT
@@ -31,6 +27,10 @@ extern "C" {
 	#define MLX_API MLX_EXPORT
 #else
 	#define MLX_API MLX_IMPORT
+#endif
+
+#ifdef __cplusplus
+extern "C" {
 #endif
 
 typedef enum

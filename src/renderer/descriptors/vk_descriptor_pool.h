@@ -19,7 +19,7 @@
 
 namespace mlx
 {
-	class MLX_API DescriptorPool
+	class DescriptorPool
 	{
 		public:
 			void init(std::size_t n, VkDescriptorPoolSize* size);

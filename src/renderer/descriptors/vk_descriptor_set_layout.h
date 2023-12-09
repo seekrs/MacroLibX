@@ -21,7 +21,7 @@
 
 namespace mlx
 {
-	class MLX_API DescriptorSetLayout
+	class DescriptorSetLayout
 	{
 		public:
 			void init(std::vector<std::pair<int, VkDescriptorType>> binds, VkShaderStageFlagBits stage);

@@ -20,7 +20,7 @@
 
 namespace mlx
 {
-	class MLX_API DescriptorSet
+	class DescriptorSet
 	{
 		public:
 			void init(class Renderer* renderer, class DescriptorPool* pool, class DescriptorSetLayout* layout);

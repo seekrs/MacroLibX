@@ -18,7 +18,7 @@
 
 namespace mlx
 {
-	class MLX_API RenderPass
+	class RenderPass
 	{
 		public:
 			void init(VkFormat attachement_format);

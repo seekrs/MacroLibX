@@ -19,7 +19,7 @@
 
 namespace mlx
 {
-	class MLX_API CmdBuffer
+	class CmdBuffer
 	{
 		public:
 			void init(class CmdManager* manager);

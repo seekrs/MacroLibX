@@ -26,7 +26,7 @@ enum class e_kind
 
 namespace mlx::core::error
 {
-	void MLX_API report(e_kind kind, std::string msg, ...);
+	void report(e_kind kind, std::string msg, ...);
 }
 
 #endif // __MLX_ERRORS__

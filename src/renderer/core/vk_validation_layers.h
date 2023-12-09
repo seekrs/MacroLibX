@@ -18,7 +18,7 @@
 
 namespace mlx
 {
-	class MLX_API ValidationLayers
+	class ValidationLayers
 	{
 		public:
 			void init();
