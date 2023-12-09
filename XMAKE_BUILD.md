@@ -1,5 +1,5 @@
 # 🏗️ xmake build
-To build on Windows (if you don't use [WSL](https://learn.microsoft.com/en-us/windows/wsl/install)) or on other OS, the MacroLibX uses [xmake](https://xmake.io), a build system which will download and compile all dependencies it won't find on your computer.
+To build on Windows (if you don't use [WSL](https://learn.microsoft.com/en-us/windows/wsl/install)), the MacroLibX uses [xmake](https://xmake.io), a build system which will download and compile all dependencies it won't find on your computer.
 
 ## 💾 Install xmake
 You can find how to install it on your system [here](https://xmake.io/#/guide/installation). Note that you can also download a [portable version](https://github.com/xmake-io/xmake/releases) of xmake if you wish not to install it.
@@ -11,13 +11,13 @@ Just as the Makfile build system, you can configure how xmake should build the M
 You can configure xmake to build the mlx in debug mode or in release mode (release mode is enabled by default). To do so you can use `xmake config --mode=debug` or `xmake config --mode=release`.
 
 ### 🛠️ Set the toolchain
-To change the compilation toolchain using `xmake config --toolchain=[gcc|clang|...]`
+To change the compilation toolchain you can use `xmake config --toolchain=[gcc|clang|...]`
 
-### 🖼️ Image optimisations
-If you run into glitches when writing or reading pixels from images you can turn off image optimisations using `xmake config --images_optimized=n`.
+### ⚠️⚠️⚠️ 🖼️ Image optimisations ⚠️⚠️⚠️
+If you run into glitches when writing or reading pixels from images you can turn off images optimisations by using `xmake config --images_optimized=n`.
 
-### 🖥️ Force the use of the integrated GPU (not recommended)
-You can force the mlx to use your integrated GPU using `xmake config --force_integrated_gpu=y`. Note that there are a lot of chances that your application crashes using that.
+### 🖥️ Force the integrated GPU (not recommended)
+You can force the mlx to use your integrated GPU using `xmake config --force_integrated_gpu=y`. Note that there are a lot of chances that your application crashes by using that.
 
 ### 💽 Dump the graphics memory
 The mlx can dump it's graphics memory use to json files every two seconds by enabling this option `xmake config --graphics_memory_dump=y`.
