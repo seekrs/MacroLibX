@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:31:51 by kbz_8             #+#    #+#             */
-/*   Updated: 2023/12/08 12:56:21 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/08 19:05:15 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #define __MLX_MEMORY__
 
 #include <utils/singleton.h>
+#include <core/profile.h>
 #include <list>
 
 namespace mlx

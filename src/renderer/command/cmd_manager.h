@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 17:48:52 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/02 17:50:48 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/08 19:07:00 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <array>
 
 #include <volk.h>
+#include <core/profile.h>
 #include <renderer/core/render_core.h>
 #include <renderer/command/vk_cmd_pool.h>
 #include <renderer/command/vk_cmd_buffer.h>

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 08:49:17 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/10 09:05:56 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/08 18:49:38 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,19 @@
 	#define MLX_COMPILER_UNKNOWN
 	#warning "This compiler is not fully supported"
 #endif
+
+#if defined(_WIN32) || defined(__CYGWIN__)
+	#define MLX_PLAT_WINDOWS
+#elif defined(__linux__)
+	#define MLX_PLAT_LINUX
+#elif defined(__APPLE__) && defined(__MACH__)
+	#define MLX_PLAT_MACOS
+#elif defined(unix) || defined(__unix__) || defined(__unix)
+	#define MLX_PLAT_UNIX
+#else
+	#error "Unknown environment!"
+#endif
+
 
 // Checking common assumptions
 #include <climits>

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 18:39:36 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/07 19:47:07 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/08 19:09:31 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include <volk.h>
 #include <array>
+#include <core/profile.h>
 #include <renderer/core/render_core.h>
 
 namespace mlx
