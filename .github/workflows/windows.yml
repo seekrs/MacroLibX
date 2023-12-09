@@ -68,8 +68,8 @@ jobs:
 
     # Build the mlx
     - name: Build MacroLibX
-      run: xmake --yes -v
+      run: xmake --yes
 
     # Build the test
     - name: Build Test
-      run: xmake build --yes -v Test
+      run: xmake build --yes Test
