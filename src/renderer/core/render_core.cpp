@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 23:33:34 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/10 23:04:04 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/10 23:14:18 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,7 @@
 
 #ifdef DEBUG
 	#ifndef MLX_COMPILER_MSVC
-		#ifdef MLX_COMPILER_CLANG
-			#pragma clang diagnostic push
-			#pragma clang diagnostic ignored "-W#warnings"
-		#endif
 		#warning "MLX is being compiled in debug mode, this activates Vulkan's validation layers and debug messages which may impact rendering performances"
-		#ifdef MLX_COMPILER_CLANG
-			#pragma clang diagnostic pop
-		#endif
 	#else
 		#pragma NOTE("MLX is being compiled in debug mode, this activates Vulkan's validation layers and debug messages which may impact rendering performances")
 	#endif

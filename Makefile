@@ -6,7 +6,7 @@
 #    By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/04 16:43:41 by maldavid          #+#    #+#              #
-#    Updated: 2023/12/10 23:08:16 by kbz_8            ###   ########.fr        #
+#    Updated: 2023/12/10 23:15:03 by kbz_8            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,8 @@ LDLIBS =
 ifeq ($(TOOLCHAIN), gcc)
 	CXX = g++
 	CXXFLAGS += -Wno-error=cpp
+else
+	CXXFLAGS += -Wno-error=#warning
 endif
 
 ifeq ($(OS), Darwin)
