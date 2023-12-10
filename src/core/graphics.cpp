@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 15:13:55 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/09 16:52:08 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/10 22:20:38 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ namespace mlx
 {
 	GraphicsSupport::GraphicsSupport(std::size_t w, std::size_t h, const std::string& title, int id) :
 		_window(std::make_shared<MLX_Window>(w, h, title)),
-		_renderer(std::make_unique<Renderer>()), _text_put_pipeline(std::make_unique<TextPutPipeline>()),
+		_text_put_pipeline(std::make_unique<TextPutPipeline>()),
+		_renderer(std::make_unique<Renderer>()), 
 		_id(id)
 	{
 		_renderer->setWindow(_window.get());

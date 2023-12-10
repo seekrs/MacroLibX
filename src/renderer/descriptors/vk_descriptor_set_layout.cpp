@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 18:37:28 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/18 17:23:16 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/10 22:25:59 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ namespace mlx
 	void DescriptorSetLayout::init(std::vector<std::pair<int, VkDescriptorType>> binds, VkShaderStageFlagBits stage)
 	{
 		std::vector<VkDescriptorSetLayoutBinding> bindings(binds.size());
-		for(int i = 0; i < binds.size(); i++)
+		for(std::size_t i = 0; i < binds.size(); i++)
 		{
 			bindings[i].binding = binds[i].first;
 			bindings[i].descriptorCount = 1;

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 18:03:35 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/16 14:01:47 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/10 22:46:08 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ namespace mlx
 
 	void Texture::setPixel(int x, int y, uint32_t color) noexcept
 	{
-		if(x < 0 || y < 0 || x > getWidth() || y > getHeight())
+		if(x < 0 || y < 0 || static_cast<uint32_t>(x) > getWidth() || static_cast<uint32_t>(y) > getHeight())
 			return;
 		if(_map == nullptr)
 			openCPUmap();
@@ -79,7 +79,7 @@ namespace mlx
 
 	int Texture::getPixel(int x, int y) noexcept
 	{
-		if(x < 0 || y < 0 || x > getWidth() || y > getHeight())
+		if(x < 0 || y < 0 || static_cast<uint32_t>(x) > getWidth() || static_cast<uint32_t>(y) > getHeight())
 			return 0;
 		if(_map == nullptr)
 			openCPUmap();

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:25:16 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/20 07:25:47 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/10 22:21:10 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ namespace mlx
 		_pass.init(_swapchain.getImagesFormat());
 		_cmd.init();
 
-		for(int i = 0; i < _swapchain.getImagesNumber(); i++)
+		for(std::size_t i = 0; i < _swapchain.getImagesNumber(); i++)
 			_framebuffers.emplace_back().init(_pass, _swapchain.getImage(i));
-		for(int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
+		for(std::size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
 			_semaphores[i].init();
 	
 		_uniform_buffer.reset(new UBO);
