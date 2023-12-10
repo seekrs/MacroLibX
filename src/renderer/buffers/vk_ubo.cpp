@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:45:52 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/16 13:57:42 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/10 22:22:28 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 namespace mlx
 {
-	void UBO::create(Renderer* renderer, uint32_t size, const char* name)
+	void UBO::create(Renderer* renderer, uint32_t size, [[maybe_unused]] const char* name)
 	{
 		_renderer = renderer;
 

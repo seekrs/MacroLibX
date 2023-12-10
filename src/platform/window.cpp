@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:36:44 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/09 16:52:29 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/10 22:49:11 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ namespace mlx
 
 	void MLX_Window::destroy() noexcept
 	{
-		std::cout << "prout" << std::endl;
 		if(_win != nullptr)
 		{
 			SDL_DestroyWindow(_win);

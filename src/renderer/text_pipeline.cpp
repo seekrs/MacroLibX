@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 16:41:13 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/07 22:29:45 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/10 22:34:35 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ namespace mlx
 
 		for(char c : text)
 		{
-			if(c < 32 || c > 127)
+			if(c < 32)
 				continue;
 
 			stbtt_aligned_quad q;
