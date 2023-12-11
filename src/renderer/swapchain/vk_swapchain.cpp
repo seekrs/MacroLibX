@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:22:28 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/18 17:15:10 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/10 22:32:54 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ namespace mlx
 		tmp.resize(imageCount);
 		vkGetSwapchainImagesKHR(device, _swapChain, &imageCount, tmp.data());
 
-		for(int i = 0; i < imageCount; i++)
+		for(std::size_t i = 0; i < imageCount; i++)
 		{
 			_images[i].create(tmp[i], surfaceFormat.format, _extent.width, _extent.height);
 			_images[i].transitionLayout(VK_IMAGE_LAYOUT_PRESENT_SRC_KHR);

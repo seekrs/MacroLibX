@@ -16,7 +16,7 @@
 #include <renderer/images/texture.h>
 #include <array>
 #include <glm/glm.hpp>
-#include <core/profile.h>
+#include <mlx_profile.h>
 
 namespace mlx
 {

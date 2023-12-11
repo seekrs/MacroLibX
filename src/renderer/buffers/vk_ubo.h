@@ -16,7 +16,7 @@
 #include "vk_buffer.h"
 #include <array>
 #include <cstddef>
-#include <core/profile.h>
+#include <mlx_profile.h>
 
 namespace mlx
 {

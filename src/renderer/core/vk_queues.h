@@ -16,7 +16,7 @@
 #include <volk.h>
 #include <optional>
 #include <cstdint>
-#include <core/profile.h>
+#include <mlx_profile.h>
 
 namespace mlx
 {

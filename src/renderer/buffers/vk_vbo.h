@@ -15,7 +15,7 @@
 
 #include "vk_buffer.h"
 #include <renderer/renderer.h>
-#include <core/profile.h>
+#include <mlx_profile.h>
 
 namespace mlx
 {

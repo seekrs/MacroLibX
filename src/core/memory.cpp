@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:32:01 by kbz_8             #+#    #+#             */
-/*   Updated: 2023/12/08 12:56:14 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/11 15:25:02 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,31 @@
 
 namespace mlx
 {
-	void* MemManager::alloc(std::size_t size)
+	void* MemManager::malloc(std::size_t size)
 	{
 		void* ptr = std::malloc(size);
 		if(ptr != nullptr)
 			_blocks.push_back(ptr);
 		return ptr;
+	}
+
+	void* MemManager::calloc(std::size_t n, std::size_t size)
+	{
+		void* ptr = std::calloc(n, size);
+		if(ptr != nullptr)
+			_blocks.push_back(ptr);
+		return ptr;
+	}
+
+	void* MemManager::realloc(void* ptr, std::size_t size)
+	{
+		void* ptr2 = std::realloc(ptr, size);
+		if(ptr2 != nullptr)
+			_blocks.push_back(ptr2);
+		auto it = std::find(_blocks.begin(), _blocks.end(), ptr);
+		if(it != _blocks.end())
+			_blocks.erase(it);
+		return ptr2;
 	}
 
 	void MemManager::free(void* ptr)

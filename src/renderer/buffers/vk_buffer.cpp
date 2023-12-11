@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 18:55:57 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/16 13:54:25 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/10 23:05:14 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ namespace mlx
 		_buffer = VK_NULL_HANDLE;
 	}
 
-	void Buffer::createBuffer(VkBufferUsageFlags usage, VmaAllocationCreateInfo info, VkDeviceSize size, const char* name)
+	void Buffer::createBuffer(VkBufferUsageFlags usage, VmaAllocationCreateInfo info, VkDeviceSize size, [[maybe_unused]] const char* name)
 	{
 		VkBufferCreateInfo bufferInfo{};
 		bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
@@ -74,7 +74,7 @@ namespace mlx
 				alloc_name.append("_index_buffer");
 			else if(usage & VK_BUFFER_USAGE_VERTEX_BUFFER_BIT)
 				alloc_name.append("_vertex_buffer");
-			else if((usage & VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT) != 1)
+			else if(!(usage & VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT))
 				alloc_name.append("_buffer");
 			_allocation = Render_Core::get().getAllocator().createBuffer(&bufferInfo, &info, _buffer, alloc_name.c_str());
 		#else

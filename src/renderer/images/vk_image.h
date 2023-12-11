@@ -18,7 +18,7 @@
 #include <vector>
 #include <renderer/command/vk_cmd_buffer.h>
 #include <renderer/command/vk_cmd_pool.h>
-#include <core/profile.h>
+#include <mlx_profile.h>
 
 namespace mlx
 {

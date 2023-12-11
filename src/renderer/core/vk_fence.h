@@ -14,7 +14,7 @@
 #define __MLX_VK_FENCE__
 
 #include <volk.h>
-#include <core/profile.h>
+#include <mlx_profile.h>
 #include <renderer/core/render_core.h>
 
 namespace mlx

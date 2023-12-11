@@ -13,7 +13,7 @@
 #ifndef __MLX_PIXEL_PUT__
 #define __MLX_PIXEL_PUT__
 
-#include <core/profile.h>
+#include <mlx_profile.h>
 #include <renderer/images/texture.h>
 #include <renderer/descriptors/vk_descriptor_set.h>
 
