@@ -16,7 +16,7 @@
 #include <array>
 
 #include <volk.h>
-#include <core/profile.h>
+#include <mlx_profile.h>
 #include <renderer/core/render_core.h>
 #include <renderer/command/vk_cmd_pool.h>
 #include <renderer/command/vk_cmd_buffer.h>

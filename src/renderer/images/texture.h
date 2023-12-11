@@ -21,7 +21,7 @@
 #include <renderer/descriptors/vk_descriptor_set.h>
 #include <renderer/buffers/vk_ibo.h>
 #include <renderer/buffers/vk_vbo.h>
-#include <core/profile.h>
+#include <mlx_profile.h>
 
 namespace mlx
 {

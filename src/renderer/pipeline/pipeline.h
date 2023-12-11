@@ -14,7 +14,7 @@
 #define __PIPELINE__
 
 #include <volk.h>
-#include <core/profile.h>
+#include <mlx_profile.h>
 #include <renderer/command/vk_cmd_buffer.h>
 
 namespace mlx

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <core/profile.h>
+#include <mlx_profile.h>
 #include <core/errors.h>
 #include <cstdio>
 
