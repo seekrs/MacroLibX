@@ -31,7 +31,7 @@
 #include <renderer/descriptors/vk_descriptor_set_layout.h>
 
 #include <core/errors.h>
-#include <core/profile.h>
+#include <mlx_profile.h>
 
 #include <glm/glm.hpp>
 

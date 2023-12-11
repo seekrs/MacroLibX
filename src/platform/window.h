@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:53:12 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/09 16:35:57 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/11 19:47:26 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 #include <SDL2/SDL.h>
 #include <string>
-#include <core/profile.h>
+#include <mlx_profile.h>
 
 namespace mlx
 {

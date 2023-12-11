@@ -15,7 +15,7 @@
 
 #include <vector>
 #include <volk.h>
-#include <core/profile.h>
+#include <mlx_profile.h>
 #include <renderer/images/vk_image.h>
 
 namespace mlx
