@@ -15,7 +15,7 @@
 
 #include <volk.h>
 #include "vk_queues.h"
-#include <core/profile.h>
+#include <mlx_profile.h>
 
 namespace mlx
 {

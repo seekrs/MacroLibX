@@ -17,7 +17,7 @@
 #include <cstddef>
 #include <vector>
 #include <map>
-#include <core/profile.h>
+#include <mlx_profile.h>
 
 namespace mlx
 {
