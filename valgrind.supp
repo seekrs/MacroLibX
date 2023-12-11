@@ -32,14 +32,6 @@
 }
 {
    name
-   Memcheck:BadSize
-   fun:posix_memalign
-   ...
-   obj:*nvidia.so*
-   ...
-}
-{
-   name
    Memcheck:Leak
    fun:*alloc
    obj:*
