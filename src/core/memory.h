@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:31:51 by kbz_8             #+#    #+#             */
-/*   Updated: 2023/12/08 19:05:15 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/11 15:13:46 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,17 @@ namespace mlx
 		friend class Singleton<MemManager>;
 
 		public:
-			void* alloc(std::size_t size);
-			void free(void* ptr);
+			static void* malloc(std::size_t size);
+			static void* calloc(std::size_t n, std::size_t size);
+			static void* realloc(void* ptr, std::size_t size);
+			static void free(void* ptr);
 
 		private:
 			MemManager() = default;
 			~MemManager();
 
 		private:
-			std::list<void*> _blocks;
+			inline static std::list<void*> _blocks;
 	};
 }
 
