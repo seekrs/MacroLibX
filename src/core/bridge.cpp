@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:35:20 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/07 23:05:05 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/11 15:56:18 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <renderer/core/render_core.h>
 #include <filesystem>
 #include <mlx.h>
+#include <core/memory.h>
 
 extern "C"
 {
@@ -25,8 +26,9 @@ extern "C"
 		if(init)
 		{
 			mlx::core::error::report(e_kind::error, "MLX cannot be initialized multiple times");
-			return NULL;
+			return NULL; // not nullptr for the C compatibility
 		}
+		mlx::MemManager::get(); // just to initialize the C garbage collector
 		mlx::core::Application* app = new mlx::core::Application;
 		mlx::Render_Core::get().init();
 		if(app == nullptr)
