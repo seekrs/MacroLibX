@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 08:49:17 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/11 20:25:51 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/11 20:35:57 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,16 @@
 	#define MLX_PLAT_UNIX
 #else
 	#error "Unknown environment!"
+#endif
+
+#ifdef MLX_COMPILER_MSVC
+	#ifdef MLX_BUILD
+		#define MLX_API __declspec(dllexport)
+	#else
+		#define MLX_API __declspec(dllimport)
+	#endif
+#else
+	#define MLX_API
 #endif
 
 // Checking common assumptions

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:56:35 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/11 19:45:15 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/11 20:35:41 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,6 @@
 #define __MACRO_LIB_X_H__
 
 #include "mlx_profile.h"
-
-#ifdef MLX_COMPILER_MSVC
-	#ifdef MLX_BUILD
-		#define MLX_API __declspec(dllexport)
-	#else
-		#define MLX_IMPORT __declspec(dllimport)
-	#endif
-#else
-	#define MLX_API
-#endif
 
 #ifdef __cplusplus
 extern "C" {
