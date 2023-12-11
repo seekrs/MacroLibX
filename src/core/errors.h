@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:42:32 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/08 18:53:11 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/11 19:46:57 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #define __MLX_ERRORS__
 
 #include <string>
-#include <core/profile.h>
+#include <mlx_profile.h>
 
 enum class e_kind
 {

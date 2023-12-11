@@ -14,7 +14,7 @@
 #define __MLX_VK_RENDER_PASS__
 
 #include <volk.h>
-#include <core/profile.h>
+#include <mlx_profile.h>
 
 namespace mlx
 {

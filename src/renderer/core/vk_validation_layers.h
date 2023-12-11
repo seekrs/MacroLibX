@@ -14,7 +14,7 @@
 #define __VK_VALIDATION_LAYERS__
 
 #include <volk.h>
-#include <core/profile.h>
+#include <mlx_profile.h>
 
 namespace mlx
 {

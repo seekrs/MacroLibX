@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 16:41:13 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/10 22:34:35 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/11 15:12:02 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@
 #include <core/memory.h>
 
 #define STB_TRUETYPE_IMPLEMENTATION
-#define STB_malloc(x, u) ((void)(u), MemManager::get().alloc(x))
-#define STB_free(x, u) ((void)(u), MemManager::get().free(x))
+#define STB_malloc(x, u) ((void)(u), MemManager::malloc(x))
+#define STB_free(x, u) ((void)(u), MemManager::free(x))
 #include <stb_truetype.h>
 
 constexpr const int RANGE = 1024;
