@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 22:10:52 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/09 17:44:13 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/11 19:46:13 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,14 @@
 #include <renderer/core/render_core.h>
 #include <array>
 #include <core/errors.h>
-#include <core/profile.h>
+#include <mlx_profile.h>
+#include <core/memory.h>
 
 namespace mlx::core
 {
 	Application::Application() : _in(std::make_unique<Input>())
 	{
+		SDL_SetMemoryFunctions(MemManager::malloc, MemManager::calloc, MemManager::realloc, MemManager::free);
 		if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER) != 0)
 			error::report(e_kind::fatal_error, "SDL error : unable to init all subsystems : %s", SDL_GetError());
 	}

@@ -6,11 +6,11 @@
 /*   By: kbz_8 <kbz_8.dev@akel-engine.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 22:02:37 by kbz_8             #+#    #+#             */
-/*   Updated: 2023/11/14 12:45:29 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/10 22:44:55 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <core/profile.h>
+#include <mlx_profile.h>
 #include <core/errors.h>
 #include <cstdio>
 
@@ -22,9 +22,18 @@
 
 #ifdef MLX_COMPILER_CLANG
 	#pragma clang diagnostic push
-	#pragma clang diagnostic ignored "-Wnullability-completeness"
+	#pragma clang diagnostic ignored "-Weverything"
 		#include <renderer/core/memory.h>
 	#pragma clang diagnostic pop
+#elif defined(MLX_COMPILER_GCC)
+	#pragma GCC diagnostic push
+	#pragma GCC diagnostic ignored "-Wimplicit-fallthrough"
+	#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+	#pragma GCC diagnostic ignored "-Wunused-parameter"
+	#pragma GCC diagnostic ignored "-Wunused-variable"
+	#pragma GCC diagnostic ignored "-Wparentheses"
+		#include <renderer/core/memory.h>
+	#pragma GCC diagnostic pop
 #else
 	#include <renderer/core/memory.h>
 #endif

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:14:45 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/08 19:12:06 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/10 22:19:41 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 #include <renderer/descriptors/vk_descriptor_set_layout.h>
 
 #include <core/errors.h>
-#include <core/profile.h>
+#include <mlx_profile.h>
 
 #include <glm/glm.hpp>
 
@@ -109,7 +109,7 @@ namespace mlx
 			inline uint32_t getActiveImageIndex() noexcept { return _current_frame_index; }
 			inline uint32_t getImageIndex() noexcept { return _image_index; }
 
-			constexpr inline void requireFrameBufferResize(int index) noexcept { _framebufferResized = true; }
+			constexpr inline void requireFrameBufferResize() noexcept { _framebufferResized = true; }
 
 			~Renderer() = default;
 

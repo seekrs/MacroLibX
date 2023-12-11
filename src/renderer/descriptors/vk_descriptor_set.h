@@ -15,7 +15,7 @@
 
 #include <volk.h>
 #include <array>
-#include <core/profile.h>
+#include <mlx_profile.h>
 #include <renderer/core/render_core.h>
 
 namespace mlx

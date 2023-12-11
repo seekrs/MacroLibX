@@ -24,7 +24,7 @@
 
 #include <utils/singleton.h>
 #include <core/errors.h>
-#include <core/profile.h>
+#include <mlx_profile.h>
 
 namespace mlx
 {

@@ -20,7 +20,7 @@
 #include <cstdint>
 #include <unordered_set>
 #include <renderer/text_library.h>
-#include <core/profile.h>
+#include <mlx_profile.h>
 
 namespace mlx
 {

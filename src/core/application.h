@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:49:46 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/08 18:52:47 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/11 19:46:49 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 
 #include <core/graphics.h>
 #include <platform/inputs.h>
-#include <core/profile.h>
+#include <mlx_profile.h>
 
 namespace mlx::core
 {
@@ -69,7 +69,6 @@ namespace mlx::core
 			std::function<int(void*)> _loop_hook;
 			std::unique_ptr<Input> _in;
 			void* _param = nullptr;
-			bool _is_loop_running = false;
 	};
 }
 

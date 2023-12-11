@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 15:14:50 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/16 13:44:58 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/10 22:33:59 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ namespace mlx
 
 	void PixelPutPipeline::setPixel(uint32_t x, uint32_t y, uint32_t color) noexcept
 	{
-		if(x < 0 || y < 0 || x > _width || y > _height)
+		if(x > _width || y > _height)
 			return;
 		_cpu_map[(y * _width) + x] = color;
 		_has_been_modified = true;

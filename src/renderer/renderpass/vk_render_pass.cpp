@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:21:36 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/20 07:24:40 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/10 22:32:27 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 namespace mlx
 {
-	static const VkClearValue clearColor = { 0.0f, 0.0f, 0.0f, 1.0f };
+	static const VkClearValue clearColor = {{{ 0.0f, 0.0f, 0.0f, 1.0f }}}; // wtf, this mess to satisfy a warning
 
 	void RenderPass::init(VkFormat attachement_format)
 	{

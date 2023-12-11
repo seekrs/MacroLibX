@@ -6,14 +6,13 @@
 #    By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/04 16:43:41 by maldavid          #+#    #+#              #
-#    Updated: 2023/12/07 15:25:52 by kbz_8            ###   ########.fr        #
+#    Updated: 2023/12/10 23:15:03 by kbz_8            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		= libmlx.so
 
 SRCS		=  $(wildcard $(addsuffix /*.cpp, ./src/core))
-SRCS		+= $(wildcard $(addsuffix /*.cpp, ./src/core/**))
 SRCS		+= $(wildcard $(addsuffix /*.cpp, ./src/platform))
 SRCS		+= $(wildcard $(addsuffix /*.cpp, ./src/renderer))
 SRCS		+= $(wildcard $(addsuffix /*.cpp, ./src/renderer/**))
@@ -32,14 +31,17 @@ MODE	= "release"
 
 CXX		= clang++
 
-ifeq ($(TOOLCHAIN), gcc)
-	CXX = g++
-endif
-
-CXXFLAGS	= -std=c++17 -O3 -fPIC
+CXXFLAGS	= -std=c++17 -O3 -fPIC -Wall -Wextra -Werror
 INCLUDES	= -I./includes -I./src -I./third_party
 
 LDLIBS =
+
+ifeq ($(TOOLCHAIN), gcc)
+	CXX = g++
+	CXXFLAGS += -Wno-error=cpp
+else
+	CXXFLAGS += -Wno-error=#warning
+endif
 
 ifeq ($(OS), Darwin)
 	LDLIBS += -lSDL2
