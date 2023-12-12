@@ -39,4 +39,4 @@ jobs:
 
     # Build the test
     - name: Build Test
-      run: cd test && clang main.c ../libmlx.so -lSDL2
+      run: cd test && bash ./run.sh
