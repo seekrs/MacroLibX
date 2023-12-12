@@ -1,1 +1,4 @@
-clang main.c ../libmlx.so -lSDL2 -g && ./a.out
+#!/bin/bash
+
+bash ./build.sh
+./a.out
