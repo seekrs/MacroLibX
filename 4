@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 11:59:57 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/12 23:03:33 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/12 22:47:33 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,6 @@ namespace mlx
 	{
 		_vbo[renderer.getActiveImageIndex()].bind(renderer);
 		_ibo.bind(renderer);
-	}
-
-	void TextData::updateVertexData(int frame, std::vector<Vertex> vbo_data)
-	{
-		_vbo[frame].setData(sizeof(Vertex) * vbo_data.size(), static_cast<const void*>(vbo_data.data()));
 	}
 
 	void TextData::destroy() noexcept
