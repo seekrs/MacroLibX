@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:04:21 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/18 17:21:42 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/12 15:46:06 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ namespace mlx
 
 		VkResult res;
 		if((res = vkCreateInstance(&createInfo, nullptr, &_instance)) != VK_SUCCESS)
-			core::error::report(e_kind::fatal_error, "Vulkan : failed to create Vulkan instance");
+			core::error::report(e_kind::fatal_error, "Vulkan : failed to create Vulkan instance, %s", RCore::verbaliseResultVk(res));
 		volkLoadInstance(_instance);
 		#ifdef DEBUG
 			core::error::report(e_kind::message, "Vulkan : created new instance");
