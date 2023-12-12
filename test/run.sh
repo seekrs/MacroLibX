@@ -1,5 +1,6 @@
 #!/bin/bash
 
+echo $(uname -s)
 if [ $(uname -s) = 'Darwin' ]; then
 	clang main.c ../libmlx.dylib -L /opt/homebrew/lib -lSDL2 -g && ./a.out;
 else
