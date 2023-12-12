@@ -6,7 +6,7 @@
 #    By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/04 16:43:41 by maldavid          #+#    #+#              #
-#    Updated: 2023/12/10 23:15:03 by kbz_8            ###   ########.fr        #
+#    Updated: 2023/12/12 13:38:08 by kbz_8            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,7 +44,9 @@ else
 endif
 
 ifeq ($(OS), Darwin)
-	LDLIBS += -lSDL2
+	LDLIBS += -L /opt/homebrew/lib -lSDL2
+	CXXFLAGS += -I /opt/homebrew/include
+	NAME = libmlx.dylib
 endif
 
 ifeq ($(DEBUG), true)
