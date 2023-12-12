@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:16:32 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/08 18:53:36 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/12 15:45:39 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ namespace mlx
 	namespace RCore
 	{
 		std::optional<uint32_t> findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties, bool error = true);
+		const char* verbaliseResultVk(VkResult result);
 	}
 
 	#ifdef DEBUG
