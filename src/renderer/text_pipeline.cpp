@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 16:41:13 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/13 00:25:48 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/14 00:06:29 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,12 +78,12 @@ namespace mlx
 	void TextPutPipeline::init(Renderer* renderer) noexcept
 	{
 		_renderer = renderer;
-		_font_set.emplace(*_renderer, "default", dogica_ttf, 6.0f);
+		_font_in_use = &const_cast<Font&>(*_font_set.emplace(*_renderer, "default", dogica_ttf, 6.0f).first);
 	}
 
 	void TextPutPipeline::loadFont(const std::filesystem::path& filepath, float scale)
 	{
-		_font_set.emplace(*_renderer, filepath, scale);
+		_font_in_use = &const_cast<Font&>(*_font_set.emplace(*_renderer, filepath, scale).first);
 	}
 
 	void TextPutPipeline::put(int x, int y, int color, std::string str)
