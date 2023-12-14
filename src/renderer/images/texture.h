@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 02:24:58 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/08 19:10:09 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/14 16:28:07 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,18 +73,6 @@ namespace mlx
 
 		TextureRenderData(Texture* _texture, int _x, int _y) : texture(_texture), x(_x), y(_y) {}
 		bool operator==(const TextureRenderData& rhs) const { return texture == rhs.texture && x == rhs.x && y == rhs.y; }
-	};
-}
-
-namespace std
-{
-	template <>
-	struct hash<mlx::TextureRenderData>
-	{
-		size_t operator()(const mlx::TextureRenderData& td) const noexcept
-		{
-			return std::hash<mlx::Texture*>()(td.texture) + std::hash<int>()(td.x) + std::hash<int>()(td.y);
-		}
 	};
 }
 

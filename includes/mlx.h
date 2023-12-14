@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:56:35 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/11 20:35:41 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/14 16:27:44 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -282,7 +282,7 @@ MLX_API int mlx_string_put(void* mlx, void* win, int x, int y, int color, char* 
  *
  * @param mlx		Internal MLX application
  * @param win		Internal window
- * @param filepath	Filepath to the font
+ * @param filepath	Filepath to the font or "default" to reset to the embedded font
  *
  * @return (void)	
  */
@@ -293,7 +293,7 @@ MLX_API void mlx_set_font(void* mlx, void* win, char* filepath);
  *
  * @param mlx		Internal MLX application
  * @param win		Internal window
- * @param filepath	Filepath to the font
+ * @param filepath	Filepath to the font or "default" to reset to the embedded font
  * @param scale		Scale to apply to the font
  *
  * @return (void)	

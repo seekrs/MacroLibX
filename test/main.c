@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:55:21 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/08 18:08:13 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/14 18:49:01 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,22 +32,21 @@ int	update(void *param)
 	mlx = (t_mlx *)param;
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->logo, 100, 100);
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 150, 60);
+	if (i == 0)
+		mlx_set_font_scale(mlx->mlx, mlx->win, "font.ttf", 16.f);
 	mlx_string_put(mlx->mlx, mlx->win, 20, 50, 0xFFFFFFFF, "that's a text");
 	j = 0;
 	k = 0;
-	while (j < 400)
+	while (j++ < 400)
 	{
 		mlx_pixel_put(mlx->mlx, mlx->win, j, j, 0xFFFF0000 + k);
 		mlx_pixel_put(mlx->mlx, mlx->win, 399 - j, j, 0xFF0000FF);
-		if (k < 255)
-			k++;
-		j++;
+		k += (k < 255);
 	}
 	if (++i == 5000)
-	{
 		mlx_clear_window(mlx->mlx, mlx->win);
-		mlx_set_font_scale(mlx->mlx, mlx->win, "font.ttf", 16.f);
-	}
+	if (i == 7000)
+		mlx_set_font_scale(mlx->mlx, mlx->win, "default", 16.f);
 	return (0);
 }
 
