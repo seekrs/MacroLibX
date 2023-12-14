@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 02:24:58 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/08 19:10:09 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/14 13:47:03 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 #include <renderer/buffers/vk_ibo.h>
 #include <renderer/buffers/vk_vbo.h>
 #include <mlx_profile.h>
+#include <string>
 
 namespace mlx
 {
@@ -83,7 +84,7 @@ namespace std
 	{
 		size_t operator()(const mlx::TextureRenderData& td) const noexcept
 		{
-			return std::hash<mlx::Texture*>()(td.texture) + std::hash<int>()(td.x) + std::hash<int>()(td.y);
+			return std::hash<mlx::Texture*>{}(td.texture) + std::hash<std::string>{}(std::to_string(td.x)) + std::hash<std::string>{}(std::to_string(td.y));
 		}
 	};
 }
