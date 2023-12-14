@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 02:24:58 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/14 16:28:07 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/14 14:37:08 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 #include <renderer/buffers/vk_ibo.h>
 #include <renderer/buffers/vk_vbo.h>
 #include <mlx_profile.h>
+#include <string>
 
 namespace mlx
 {
@@ -67,7 +68,6 @@ namespace mlx
 	struct TextureRenderData
 	{
 		Texture* texture;
-		std::size_t hash = 0;
 		int x;
 		int y;
 
