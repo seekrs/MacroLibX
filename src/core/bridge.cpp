@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:35:20 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/11 15:56:18 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/14 17:47:17 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,7 @@ extern "C"
 	void mlx_set_font(void* mlx, void* win, char* filepath)
 	{
 		std::filesystem::path file(filepath);
-		if(file.extension() != ".ttf" && file.extension() != ".tte")
+		if(std::strcmp(filepath, "default") != 0 && file.extension() != ".ttf" && file.extension() != ".tte")
 		{
 			mlx::core::error::report(e_kind::error, "TTF loader : not a truetype font file '%s'", filepath);
 			return;
@@ -189,7 +189,7 @@ extern "C"
 	void mlx_set_font_scale(void* mlx, void* win, char* filepath, float scale)
 	{
 		std::filesystem::path file(filepath);
-		if(file.extension() != ".ttf" && file.extension() != ".tte")
+		if(std::strcmp(filepath, "default") != 0 && file.extension() != ".ttf" && file.extension() != ".tte")
 		{
 			mlx::core::error::report(e_kind::error, "TTF loader : not a truetype font file '%s'", filepath);
 			return;

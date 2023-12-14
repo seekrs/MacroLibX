@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 22:06:09 by kbz_8             #+#    #+#             */
-/*   Updated: 2023/12/12 23:57:53 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/14 19:11:41 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ constexpr const int RANGE = 1024;
 
 namespace mlx
 {
-	Font::Font(Renderer& renderer, const std::filesystem::path& path, float scale) : non_copyable(), _name(path.string())
+	Font::Font(Renderer& renderer, const std::filesystem::path& path, float scale) : non_copyable(), _name(path.string()), _scale(scale)
 	{
 		std::vector<uint8_t> tmp_bitmap(RANGE * RANGE);
 		std::vector<uint8_t> vulkan_bitmap(RANGE * RANGE * 4);
@@ -47,20 +47,20 @@ namespace mlx
 			vulkan_bitmap[j + 3] = tmp_bitmap[i];
 		}
 		#ifdef DEBUG
-			_atlas.create(vulkan_bitmap.data(), RANGE, RANGE, VK_FORMAT_R8G8B8A8_UNORM, std::string(name + "_font_altas").c_str(), true);
+			_atlas.create(vulkan_bitmap.data(), RANGE, RANGE, VK_FORMAT_R8G8B8A8_UNORM, std::string(_name + "_font_altas").c_str(), true);
 		#else
 			_atlas.create(vulkan_bitmap.data(), RANGE, RANGE, VK_FORMAT_R8G8B8A8_UNORM, nullptr, true);
 		#endif
 		_atlas.setDescriptor(renderer.getFragDescriptorSet().duplicate());
 	}
 
-	Font::Font(class Renderer& renderer, const std::string& name, const std::vector<uint8_t>& ttf_data, float scale)
+	Font::Font(class Renderer& renderer, const std::string& name, const std::vector<uint8_t>& ttf_data, float scale) : non_copyable(), _name(name), _scale(scale)
 	{
 		std::vector<uint8_t> tmp_bitmap(RANGE * RANGE);
 		std::vector<uint8_t> vulkan_bitmap(RANGE * RANGE * 4);
 		stbtt_pack_context pc;
 		stbtt_PackBegin(&pc, tmp_bitmap.data(), RANGE, RANGE, RANGE, 1, nullptr);
-		stbtt_PackFontRange(&pc, ttf_data.data(), 0, 6.0, 32, 96, _cdata.data());
+		stbtt_PackFontRange(&pc, ttf_data.data(), 0, scale, 32, 96, _cdata.data());
 		stbtt_PackEnd(&pc);
 		for(int i = 0, j = 0; i < RANGE * RANGE; i++, j += 4)
 		{
@@ -70,7 +70,7 @@ namespace mlx
 			vulkan_bitmap[j + 3] = tmp_bitmap[i];
 		}
 		#ifdef DEBUG
-			_atlas.create(vulkan_bitmap.data(), RANGE, RANGE, VK_FORMAT_R8G8B8A8_UNORM, std::string(name + "_font_altas").c_str(), true);
+			_atlas.create(vulkan_bitmap.data(), RANGE, RANGE, VK_FORMAT_R8G8B8A8_UNORM, std::string(_name + "_font_altas").c_str(), true);
 		#else
 			_atlas.create(vulkan_bitmap.data(), RANGE, RANGE, VK_FORMAT_R8G8B8A8_UNORM, nullptr, true);
 		#endif

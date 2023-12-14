@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 16:41:13 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/14 00:06:29 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/14 17:49:37 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,10 @@ namespace mlx
 
 	void TextPutPipeline::loadFont(const std::filesystem::path& filepath, float scale)
 	{
-		_font_in_use = &const_cast<Font&>(*_font_set.emplace(*_renderer, filepath, scale).first);
+		if(filepath.string() == "default") // we're sure it is already loaded
+			_font_in_use = &const_cast<Font&>(*_font_set.emplace(*_renderer, "default", dogica_ttf, scale).first);
+		else
+			_font_in_use = &const_cast<Font&>(*_font_set.emplace(*_renderer, filepath, scale).first);
 	}
 
 	void TextPutPipeline::put(int x, int y, int color, std::string str)
@@ -91,16 +94,28 @@ namespace mlx
 		auto res = _drawlist.emplace(std::move(str), color, x, y);
 		if(res.second)
 			const_cast<TextDrawData&>(*res.first).init(_library, _font_in_use);
+		else
+		{
+			auto text_ptr = _library.getTextData(res.first->id);
+			if(*_font_in_use != text_ptr->getFontInUse())
+			{
+				_library.removeTextFromLibrary(res.first->id);
+				const_cast<TextDrawData&>(*res.first).init(_library, _font_in_use);
+			}
+		}
 	}
 
-	void TextPutPipeline::render()
+	void TextPutPipeline::render(std::array<VkDescriptorSet, 2>& sets)
 	{
-		_atlas.updateSet(0);
 		for(auto& draw : _drawlist)
 		{
 			std::shared_ptr<TextData> draw_data = _library.getTextData(draw.id);
+			const TextureAtlas& atlas = draw_data->getFontInUse().getAtlas();
 			draw_data->bind(*_renderer);
-			_atlas.render(*_renderer, draw.x, draw.y, draw_data->getIBOsize());
+			atlas.updateSet(0);
+			sets[1] = const_cast<TextureAtlas&>(atlas).getSet();
+			vkCmdBindDescriptorSets(_renderer->getActiveCmdBuffer().get(), VK_PIPELINE_BIND_POINT_GRAPHICS, _renderer->getPipeline().getPipelineLayout(), 0, sets.size(), sets.data(), 0, nullptr);
+			atlas.render(*_renderer, draw.x, draw.y, draw_data->getIBOsize());
 		}
 	}
 

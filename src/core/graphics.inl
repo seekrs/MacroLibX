@@ -47,14 +47,7 @@ namespace mlx
 	void GraphicsSupport::texturePut(Texture* texture, int x, int y)
 	{
 		_textures_to_render.emplace_back(texture, x, y);
-		std::size_t hash = std::hash<TextureRenderData>{}(_textures_to_render.back());
-		_textures_to_render.back().hash = hash;
-
-		auto it = std::find_if(_textures_to_render.begin(), _textures_to_render.end() - 1, [=](const TextureRenderData& rhs)
-		{
-			return rhs.hash == hash;
-		});
-
+		auto it = std::find(_textures_to_render.begin(), _textures_to_render.end() - 1, _textures_to_render.back());
 		if(it != _textures_to_render.end() - 1)
 			_textures_to_render.erase(it);
 	}
