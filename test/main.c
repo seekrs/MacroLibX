@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:55:21 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/08 18:08:13 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/14 13:49:22 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int	main(void)
 	mlx_on_event(mlx.mlx, mlx.win, MLX_WINDOW_EVENT, window_hook, &mlx);
 	mlx.logo = mlx_png_file_to_image(mlx.mlx, "42_logo.png", &w, &h);
 	mlx_pixel_put(mlx.mlx, mlx.win, 200, 10, 0xFFFF00FF);
-	mlx_put_image_to_window(mlx.mlx, mlx.win, mlx.logo, 200, 200);
+	mlx_put_image_to_window(mlx.mlx, mlx.win, mlx.logo, 10, 190);
 	mlx.img = create_image(&mlx);
 	mlx_string_put(mlx.mlx, mlx.win, 20, 20, 0xFFFF2000, \
 			"that text will disappear");
