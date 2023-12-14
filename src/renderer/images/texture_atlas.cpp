@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 16:40:09 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/14 05:36:46 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/14 16:39:54 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ namespace mlx
 		}
 	}
 
-	void TextureAtlas::render(Renderer& renderer, int x, int y, uint32_t ibo_size)
+	void TextureAtlas::render(Renderer& renderer, int x, int y, uint32_t ibo_size) const
 	{
 		auto cmd = renderer.getActiveCmdBuffer().get();
 

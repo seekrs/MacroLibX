@@ -54,7 +54,16 @@
    fun:*alloc
    obj:*
    ...
-   fun:_dl_*
+   fun:dl_*
+   ...
+}
+{
+   name
+   Memcheck:Addr8
+   fun:*
+   obj:*
+   ...
+   fun:dl_*
    ...
 }
 {
