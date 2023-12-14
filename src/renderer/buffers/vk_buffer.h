@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 23:18:52 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/11 19:47:39 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/12 21:12:44 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ namespace mlx
 	class Buffer
 	{
 		public:
-			enum class kind { dynamic, uniform, constant };
+			enum class kind { dynamic, dynamic_device_local, uniform, constant };
 
 			void create(kind type, VkDeviceSize size, VkBufferUsageFlags usage, const char* name, const void* data = nullptr);
 			void destroy() noexcept;
@@ -32,6 +32,7 @@ namespace mlx
 			inline void unmapMem() noexcept { Render_Core::get().getAllocator().unmapMemory(_allocation); _is_mapped = false; }
 
 			void flush(VkDeviceSize size = VK_WHOLE_SIZE, VkDeviceSize offset = 0);
+			bool copyFromBuffer(const Buffer& buffer) noexcept;
 
 			inline VkBuffer& operator()() noexcept { return _buffer; }
 			inline VkBuffer& get() noexcept { return _buffer; }
