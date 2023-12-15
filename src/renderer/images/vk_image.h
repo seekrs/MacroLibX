@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:54:21 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/08 19:10:38 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/15 21:07:34 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <volk.h>
 #include <cstddef>
 #include <vector>
+#include <vma.h>
 #include <renderer/command/vk_cmd_buffer.h>
 #include <renderer/command/vk_cmd_pool.h>
 #include <mlx_profile.h>
@@ -50,12 +51,13 @@ namespace mlx
 
 			inline VkImage get() noexcept { return _image; }
 			inline VkImage operator()() noexcept { return _image; }
-			inline VkImageView getImageView() noexcept { return _image_view; }
-			inline VkFormat getFormat() noexcept { return _format; }
-			inline VkImageTiling getTiling() noexcept { return _tiling; }
-			inline VkSampler getSampler() noexcept { return _sampler; }
+			inline VkImageView getImageView() const noexcept { return _image_view; }
+			inline VkFormat getFormat() const noexcept { return _format; }
+			inline VkImageTiling getTiling() const noexcept { return _tiling; }
+			inline VkSampler getSampler() const noexcept { return _sampler; }
 			inline uint32_t getWidth() const noexcept { return _width; }
 			inline uint32_t getHeight() const noexcept { return _height; }
+			inline bool isInit() const noexcept { return _image != VK_NULL_HANDLE; }
 
 			virtual ~Image() = default;
 

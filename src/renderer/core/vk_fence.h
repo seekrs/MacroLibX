@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 17:52:09 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/08 19:08:01 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/15 20:31:25 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 #include <volk.h>
 #include <mlx_profile.h>
-#include <renderer/core/render_core.h>
 
 namespace mlx
 {
@@ -29,6 +28,7 @@ namespace mlx
 			inline VkFence& get() noexcept { return _fence; }
 			void wait() noexcept;
 			void reset() noexcept;
+			bool isReady() const noexcept;
 			inline void waitAndReset() noexcept { wait(); reset(); }
 
 			void destroy() noexcept;

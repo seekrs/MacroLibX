@@ -47,9 +47,7 @@ namespace mlx
 	void GraphicsSupport::texturePut(Texture* texture, int x, int y)
 	{
 		_textures_to_render.emplace_back(texture, x, y);
-
 		auto it = std::find(_textures_to_render.begin(), _textures_to_render.end() - 1, _textures_to_render.back());
-
 		if(it != _textures_to_render.end() - 1)
 			_textures_to_render.erase(it);
 	}

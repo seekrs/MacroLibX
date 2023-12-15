@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 18:40:44 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/07 20:00:13 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/14 16:45:11 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ namespace mlx
 		#endif
 	}
 
-	void DescriptorSet::writeDescriptor(int binding, UBO* ubo) noexcept
+	void DescriptorSet::writeDescriptor(int binding, UBO* ubo) const noexcept
 	{
 		auto device = Render_Core::get().getDevice().get();
 
@@ -66,7 +66,7 @@ namespace mlx
 		}
 	}
 
-	void DescriptorSet::writeDescriptor(int binding, VkImageView view, VkSampler sampler) noexcept
+	void DescriptorSet::writeDescriptor(int binding, VkImageView view, VkSampler sampler) const noexcept
 	{
 		auto device = Render_Core::get().getDevice().get();
 
