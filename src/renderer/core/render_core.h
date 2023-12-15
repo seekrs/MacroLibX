@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:16:32 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/12 15:45:39 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/15 20:31:08 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <volk.h>
 #include <optional>
 
+#include <renderer/command/single_time_cmd_manager.h>
 #include "vk_queues.h"
 #include "vk_device.h"
 #include "vk_instance.h"
@@ -57,11 +58,13 @@ namespace mlx
 			inline Queues& getQueue() noexcept { return _queues; }
 			inline GPUallocator& getAllocator() noexcept { return _allocator; }
 			inline ValidationLayers& getLayers() noexcept { return _layers; }
+			inline CmdBuffer& getSingleTimeCmdBuffer() noexcept { return _cmd_manager.getCmdBuffer(); }
 
 			~Render_Core() = default;
 
 		private:
 			ValidationLayers _layers;
+			SingleTimeCmdManager _cmd_manager;
 			Queues _queues;
 			Device _device;
 			Instance _instance;

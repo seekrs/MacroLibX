@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 15:13:55 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/14 17:14:30 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/15 21:04:50 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ namespace mlx
 
 		for(auto& data : _textures_to_render)
 		{
+			if(!data.texture->isInit())
+				continue;
 			if(data.texture->getSet() == VK_NULL_HANDLE)
 				data.texture->setDescriptor(_renderer->getFragDescriptorSet().duplicate());
 			if(!data.texture->hasBeenUpdated())
