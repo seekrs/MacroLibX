@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 15:13:55 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/10 22:20:38 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/15 21:04:50 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ namespace mlx
 
 		for(auto& data : _textures_to_render)
 		{
+			if(!data.texture->isInit())
+				continue;
 			if(data.texture->getSet() == VK_NULL_HANDLE)
 				data.texture->setDescriptor(_renderer->getFragDescriptorSet().duplicate());
 			if(!data.texture->hasBeenUpdated())
@@ -51,11 +53,7 @@ namespace mlx
 		sets[1] = _pixel_put_pipeline.getDescriptorSet();
 		vkCmdBindDescriptorSets(cmd_buff, VK_PIPELINE_BIND_POINT_GRAPHICS, _renderer->getPipeline().getPipelineLayout(), 0, sets.size(), sets.data(), 0, nullptr);
 		_pixel_put_pipeline.render(*_renderer);
-
-		sets[1] = _text_put_pipeline->getDescriptorSet();
-		vkCmdBindDescriptorSets(cmd_buff, VK_PIPELINE_BIND_POINT_GRAPHICS, _renderer->getPipeline().getPipelineLayout(), 0, sets.size(), sets.data(), 0, nullptr);
-		_text_put_pipeline->render();
-
+		_text_put_pipeline->render(sets);
 		_renderer->endFrame();
 
 		for(auto& data : _textures_to_render)
