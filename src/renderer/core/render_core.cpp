@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 23:33:34 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/15 15:21:26 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/15 20:32:01 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ namespace mlx
 		volkLoadDevice(_device.get());
 		_queues.init();
 		_allocator.init();
+		_cmd_manager.init();
 		_is_init = true;
 	}
 
@@ -107,6 +108,7 @@ namespace mlx
 
 		vkDeviceWaitIdle(_device());
 
+		_cmd_manager.destroy();
 		_allocator.destroy();
 		_device.destroy();
 		_layers.destroy();

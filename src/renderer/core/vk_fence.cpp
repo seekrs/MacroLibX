@@ -6,11 +6,12 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 17:53:06 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/12 15:50:48 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/15 20:31:29 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <renderer/core/vk_fence.h>
+#include <renderer/core/render_core.h>
 
 namespace mlx
 {
@@ -36,6 +37,11 @@ namespace mlx
 	void Fence::reset() noexcept
 	{
 		vkResetFences(Render_Core::get().getDevice().get(), 1, &_fence);
+	}
+
+	bool Fence::isReady() const noexcept
+	{
+		return vkGetFenceStatus(Render_Core::get().getDevice().get(), _fence) == VK_SUCCESS;
 	}
 
 	void Fence::destroy() noexcept

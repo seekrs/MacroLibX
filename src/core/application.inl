@@ -74,8 +74,16 @@ namespace mlx::core
 
 	void Application::texturePut(void* win, void* img, int x, int y)
 	{
+		if(img == nullptr)
+		{
+			core::error::report(e_kind::error, "wrong texture (NULL)");
+			return;
+		}
 		Texture* texture = static_cast<Texture*>(img);
-		_graphics[*static_cast<int*>(win)]->texturePut(texture, x, y);
+		if(!texture->isInit())
+			core::error::report(e_kind::error, "trying to put a texture that has been destroyed");
+		else
+			_graphics[*static_cast<int*>(win)]->texturePut(texture, x, y);
 	}
 
 	int Application::getTexturePixel(void* img, int x, int y)

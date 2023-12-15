@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:25:42 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/08 19:07:11 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/15 20:19:42 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ namespace mlx
 			void submitIdle() noexcept;
 			inline void waitForExecution() noexcept { _fence.waitAndReset(); }
 			inline void reset() noexcept { vkResetCommandBuffer(_cmd_buffer, 0); }
+			inline bool isReadyToBeUsed() const noexcept { return _fence.isReady(); }
 			void endRecord();
 
 			inline bool isRecording() const noexcept { return _is_recording; }

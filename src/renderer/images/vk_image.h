@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:54:21 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/14 16:44:40 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/15 21:07:34 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <volk.h>
 #include <cstddef>
 #include <vector>
+#include <vma.h>
 #include <renderer/command/vk_cmd_buffer.h>
 #include <renderer/command/vk_cmd_pool.h>
 #include <mlx_profile.h>
@@ -56,6 +57,7 @@ namespace mlx
 			inline VkSampler getSampler() const noexcept { return _sampler; }
 			inline uint32_t getWidth() const noexcept { return _width; }
 			inline uint32_t getHeight() const noexcept { return _height; }
+			inline bool isInit() const noexcept { return _image != VK_NULL_HANDLE; }
 
 			virtual ~Image() = default;
 
