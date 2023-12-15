@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:04:21 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/12 15:46:06 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/15 16:20:26 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,8 @@ namespace mlx
 	{
 		VkApplicationInfo appInfo{};
 		appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
-		appInfo.pApplicationName = "MacroLibX";
-		appInfo.applicationVersion = VK_MAKE_VERSION(1, 0, 0);
 		appInfo.pEngineName = "MacroLibX";
-		appInfo.engineVersion = VK_MAKE_VERSION(1, 0, 0);
+		appInfo.engineVersion = VK_MAKE_VERSION(1, 2, 1);
 		appInfo.apiVersion = VK_API_VERSION_1_2;
 
 		VkInstanceCreateInfo createInfo{};
