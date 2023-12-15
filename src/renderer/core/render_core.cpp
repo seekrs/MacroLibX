@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 23:33:34 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/12 15:45:26 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/15 15:21:26 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,10 @@
 	#define VK_USE_PLATFORM_WIN32_KHR
 #elif defined(__APPLE__) || defined(__MACH__)
 	#define VK_USE_PLATFORM_MACOS_MVK
+	#define VK_USE_PLATFORM_METAL_EXT
 #else
 	#define VK_USE_PLATFORM_XLIB_KHR
+	#define VK_USE_PLATFORM_WAYLAND_KHR
 #endif
 
 #include "render_core.h"
