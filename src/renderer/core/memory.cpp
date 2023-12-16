@@ -6,7 +6,7 @@
 /*   By: kbz_8 <kbz_8.dev@akel-engine.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 22:02:37 by kbz_8             #+#    #+#             */
-/*   Updated: 2023/12/16 14:47:53 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/16 19:14:15 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ namespace mlx
 		#ifdef DEBUG
 			core::error::report(e_kind::message, "Graphics Allocator : created new buffer");
 		#endif
-		_active_allocations++;
+		_active_buffers_allocations++;
 		return allocation;
 	}
 
@@ -108,7 +108,7 @@ namespace mlx
 		#ifdef DEBUG
 			core::error::report(e_kind::message, "Graphics Allocator : destroyed buffer");
 		#endif
-		_active_allocations--;
+		_active_buffers_allocations--;
 	}
 
 	VmaAllocation GPUallocator::createImage(const VkImageCreateInfo* iminfo, const VmaAllocationCreateInfo* vinfo, VkImage& image, const char* name) noexcept
@@ -121,7 +121,7 @@ namespace mlx
 		#ifdef DEBUG
 			core::error::report(e_kind::message, "Graphics Allocator : created new image");
 		#endif
-		_active_allocations++;
+		_active_images_allocations++;
 		return allocation;
 	}
 
@@ -132,7 +132,7 @@ namespace mlx
 		#ifdef DEBUG
 			core::error::report(e_kind::message, "Graphics Allocator : destroyed image");
 		#endif
-		_active_allocations--;
+		_active_images_allocations--;
 	}
 
 	void GPUallocator::mapMemory(VmaAllocation allocation, void** data) noexcept
@@ -172,8 +172,10 @@ namespace mlx
 
 	void GPUallocator::destroy() noexcept
 	{
-		if(_active_allocations != 0)
-			core::error::report(e_kind::error, "Graphics allocator : some allocations were not freed before destroying the display (%d active allocations)", _active_allocations);
+		if(_active_images_allocations != 0)
+			core::error::report(e_kind::error, "Graphics allocator : some user-dependant allocations were not freed before destroying the display (%d active allocations)", _active_images_allocations);
+		else if(_active_buffers_allocations != 0)
+			core::error::report(e_kind::error, "Graphics allocator : some MLX-dependant allocations were not freed before destroying the display (%d active allocations), please report, this should not happen", _active_buffers_allocations);
 		vmaDestroyAllocator(_allocator);
 	}
 }
