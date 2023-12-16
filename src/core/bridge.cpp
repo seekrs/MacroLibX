@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:35:20 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/16 20:17:23 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/16 20:20:41 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 #include <core/memory.h>
 #include <mlx_profile.h>
 
-static void* __mlx_ptr MLX_VISIBILITY_HIDDEN = nullptr;
+static void* __mlx_ptr = nullptr;
 
 #define MLX_CHECK_APPLICATION_POINTER(ptr) \
 	if(ptr != __mlx_ptr || ptr == NULL) \
