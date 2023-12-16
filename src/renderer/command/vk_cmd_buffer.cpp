@@ -72,9 +72,6 @@ namespace mlx
 		submitInfo.commandBufferCount = 1;
 		submitInfo.pCommandBuffers = &_cmd_buffer;
 
-		VkFenceCreateInfo fenceCreateInfo = {};
-		fenceCreateInfo.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
-
 		vkQueueSubmit(Render_Core::get().getQueue().getGraphic(), 1, &submitInfo, _fence.get());
 		waitForExecution();
 	}
