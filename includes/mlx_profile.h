@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 08:49:17 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/11 20:35:57 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/16 20:11:18 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,17 +50,53 @@
 #elif defined(unix) || defined(__unix__) || defined(__unix)
 	#define MLX_PLAT_UNIX
 #else
-	#error "Unknown environment!"
+	#error "Unknown environment (not Windows, not Linux, not MacOS, not Unix)"
 #endif
 
-#ifdef MLX_COMPILER_MSVC
-	#ifdef MLX_BUILD
-		#define MLX_API __declspec(dllexport)
+#ifdef MLX_PLAT_WINDOWS
+	#ifdef MLX_COMPILER_MSVC
+		#ifdef MLX_BUILD
+			#define MLX_API __declspec(dllexport)
+		#else
+			#define MLX_API __declspec(dllimport)
+		#endif
+	#elif defined(MLX_COMPILER_GCC)
+		#ifdef MLX_BUILD
+			#define MLX_API __attribute__((dllexport))
+		#else
+			#define MLX_API __attribute__((dllimport))
+		#endif
 	#else
-		#define MLX_API __declspec(dllimport)
+		#define MLX_API
 	#endif
+#elif defined(MLX_COMPILER_GCC)
+	#define MLX_API __attribute__((visibility("default")))
 #else
 	#define MLX_API
+#endif
+
+#if defined(MLX_COMPILER_GCC) && !defined(MLX_PLAT_WINDOWS)
+	#define MLX_VISIBILITY_HIDDEN __attribute__((visibility("hidden")))
+#else
+	#define MLX_VISIBILITY_HIDDEN
+#endif
+
+#if defined(__GNUC__) || (defined(__MWERKS__) && (__MWERKS__ >= 0x3000)) || (defined(__ICC) && (__ICC >= 600)) || defined(__ghs__)
+	#define MLX_FUNC_SIG __PRETTY_FUNCTION__
+#elif defined(__DMC__) && (__DMC__ >= 0x810)
+	#define MLX_FUNC_SIG __PRETTY_FUNCTION__
+#elif (defined(__FUNCSIG__) || (_MSC_VER))
+	#define MLX_FUNC_SIG __FUNCSIG__
+#elif (defined(__INTEL_COMPILER) && (__INTEL_COMPILER >= 600)) || (defined(__IBMCPP__) && (__IBMCPP__ >= 500))
+	#define MLX_FUNC_SIG __FUNCTION__
+#elif defined(__BORLANDC__) && (__BORLANDC__ >= 0x550)
+	#define MLX_FUNC_SIG __FUNC__
+#elif defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901)
+	#define MLX_FUNC_SIG __func__
+#elif defined(__cplusplus) && (__cplusplus >= 201103)
+	#define MLX_FUNC_SIG __func__
+#else
+	#define MLX_FUNC_SIG "Unknown function"
 #endif
 
 // Checking common assumptions
