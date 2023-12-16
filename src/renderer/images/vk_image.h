@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:54:21 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/15 21:07:34 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/15 21:44:30 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ namespace mlx
 				_width = width;
 				_height = height;
 				_layout = layout;
-				_pool.init();
 			}
 			void create(uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, const char* name, bool decated_memory = false);
 			void createImageView(VkImageViewType type, VkImageAspectFlags aspectFlags) noexcept;
@@ -64,11 +63,8 @@ namespace mlx
 		private:
 			void destroySampler() noexcept;
 			void destroyImageView() noexcept;
-			inline void destroyCmdPool() noexcept { _transfer_cmd.destroy(); _pool.destroy(); }
 
 		private:
-			CmdBuffer _transfer_cmd;
-			CmdPool _pool;
 			VmaAllocation _allocation;
 			VkImage _image = VK_NULL_HANDLE;
 			VkImageView _image_view = VK_NULL_HANDLE;

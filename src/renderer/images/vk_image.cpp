@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:59:07 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/18 17:21:14 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/15 21:46:33 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,8 +167,6 @@ namespace mlx
 		}
 
 		_allocation = Render_Core::get().getAllocator().createImage(&imageInfo, &alloc_info, _image, name);
-
-		_pool.init();
 	}
 
 	void Image::createImageView(VkImageViewType type, VkImageAspectFlags aspectFlags) noexcept
@@ -209,11 +207,9 @@ namespace mlx
 
 	void Image::copyFromBuffer(Buffer& buffer)
 	{
-		if(!_transfer_cmd.isInit())
-			_transfer_cmd.init(&_pool);
-
-		_transfer_cmd.reset();
-		_transfer_cmd.beginRecord();
+		CmdBuffer& cmd = Render_Core::get().getSingleTimeCmdBuffer();
+		cmd.reset();
+		cmd.beginRecord();
 
 		VkImageMemoryBarrier copy_barrier{};
 		copy_barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
@@ -226,7 +222,7 @@ namespace mlx
 		copy_barrier.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
 		copy_barrier.subresourceRange.levelCount = 1;
 		copy_barrier.subresourceRange.layerCount = 1;
-		vkCmdPipelineBarrier(_transfer_cmd.get(), VK_PIPELINE_STAGE_HOST_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT, 0, 0, nullptr, 0, nullptr, 1, &copy_barrier);
+		vkCmdPipelineBarrier(cmd.get(), VK_PIPELINE_STAGE_HOST_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT, 0, 0, nullptr, 0, nullptr, 1, &copy_barrier);
 
 		VkBufferImageCopy region{};
 		region.bufferOffset = 0;
@@ -239,7 +235,7 @@ namespace mlx
 		region.imageOffset = { 0, 0, 0 };
 		region.imageExtent = { _width, _height, 1 };
 
-		vkCmdCopyBufferToImage(_transfer_cmd.get(), buffer.get(), _image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &region);
+		vkCmdCopyBufferToImage(cmd.get(), buffer.get(), _image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &region);
 
 		VkImageMemoryBarrier use_barrier{};
 		use_barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
@@ -253,19 +249,17 @@ namespace mlx
 		use_barrier.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
 		use_barrier.subresourceRange.levelCount = 1;
 		use_barrier.subresourceRange.layerCount = 1;
-		vkCmdPipelineBarrier(_transfer_cmd.get(), VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT, 0, 0, nullptr, 0, nullptr, 1, &use_barrier);
+		vkCmdPipelineBarrier(cmd.get(), VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT, 0, 0, nullptr, 0, nullptr, 1, &use_barrier);
 
-		_transfer_cmd.endRecord();
-		_transfer_cmd.submitIdle();
+		cmd.endRecord();
+		cmd.submitIdle();
 	}
 
 	void Image::copyToBuffer(Buffer& buffer)
 	{
-		if(!_transfer_cmd.isInit())
-			_transfer_cmd.init(&_pool);
-
-		_transfer_cmd.reset();
-		_transfer_cmd.beginRecord();
+		CmdBuffer& cmd = Render_Core::get().getSingleTimeCmdBuffer();
+		cmd.reset();
+		cmd.beginRecord();
 
 		VkImageMemoryBarrier copy_barrier{};
 		copy_barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
@@ -278,7 +272,7 @@ namespace mlx
 		copy_barrier.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
 		copy_barrier.subresourceRange.levelCount = 1;
 		copy_barrier.subresourceRange.layerCount = 1;
-		vkCmdPipelineBarrier(_transfer_cmd.get(), VK_PIPELINE_STAGE_HOST_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT, 0, 0, nullptr, 0, nullptr, 1, &copy_barrier);
+		vkCmdPipelineBarrier(cmd.get(), VK_PIPELINE_STAGE_HOST_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT, 0, 0, nullptr, 0, nullptr, 1, &copy_barrier);
 
 		VkBufferImageCopy region{};
 		region.bufferOffset = 0;
@@ -291,7 +285,7 @@ namespace mlx
 		region.imageOffset = { 0, 0, 0 };
 		region.imageExtent = { _width, _height, 1 };
 
-		vkCmdCopyImageToBuffer(_transfer_cmd.get(), _image, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, buffer.get(), 1, &region);
+		vkCmdCopyImageToBuffer(cmd.get(), _image, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, buffer.get(), 1, &region);
 
 		VkImageMemoryBarrier use_barrier{};
 		use_barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
@@ -305,10 +299,10 @@ namespace mlx
 		use_barrier.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
 		use_barrier.subresourceRange.levelCount = 1;
 		use_barrier.subresourceRange.layerCount = 1;
-		vkCmdPipelineBarrier(_transfer_cmd.get(), VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT, 0, 0, nullptr, 0, nullptr, 1, &use_barrier);
+		vkCmdPipelineBarrier(cmd.get(), VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT, 0, 0, nullptr, 0, nullptr, 1, &use_barrier);
 
-		_transfer_cmd.endRecord();
-		_transfer_cmd.submitIdle();
+		cmd.endRecord();
+		cmd.submitIdle();
 	}
 
 	void Image::transitionLayout(VkImageLayout new_layout)
@@ -316,10 +310,9 @@ namespace mlx
 		if(new_layout == _layout)
 			return;
 
-		if(!_transfer_cmd.isInit())
-			_transfer_cmd.init(&_pool);
-		_transfer_cmd.reset();
-		_transfer_cmd.beginRecord();
+		CmdBuffer& cmd = Render_Core::get().getSingleTimeCmdBuffer();
+		cmd.reset();
+		cmd.beginRecord();
 
 		VkImageMemoryBarrier barrier{};
 		barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
@@ -354,10 +347,10 @@ namespace mlx
 		else
 			destinationStage = VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;
 
-		vkCmdPipelineBarrier(_transfer_cmd.get(), sourceStage, destinationStage, 0, 0, nullptr, 0, nullptr, 1, &barrier);
+		vkCmdPipelineBarrier(cmd.get(), sourceStage, destinationStage, 0, 0, nullptr, 0, nullptr, 1, &barrier);
 
-		_transfer_cmd.endRecord();
-		_transfer_cmd.submitIdle();
+		cmd.endRecord();
+		cmd.submitIdle();
 		_layout = new_layout;
 	}
 
@@ -379,7 +372,6 @@ namespace mlx
 	{
 		destroySampler();
 		destroyImageView();
-		destroyCmdPool();
 
 		if(_image != VK_NULL_HANDLE)
 			Render_Core::get().getAllocator().destroyImage(_allocation, _image);

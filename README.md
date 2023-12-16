@@ -13,9 +13,9 @@
 ###### MacroLibX, a rewrite of 42 School's MiniLibX using SDL2 and Vulkan. 
 The goal of this version is to provide a light, fast, and modern graphical tool while keeping the same API.
 
-## 💫 Features
+## 🌟 Features
 
-### 🏁 Performances
+### 🚀 Performances
 Built on top of Vulkan, the MacroLibX takes advantage of its very low-level nature to achieve high performance with great control over available resources.
 
 ### 💻 Cross-Platform
@@ -26,6 +26,12 @@ One of the guidelines of this lib was to get as close as possible to the old min
 
 ### 📖 It's all FOSS
 Everything in this repo is entirely free and open source, all available under the MIT license (even the third-party libraries used).
+
+### 🔍 Valgrind suppressions file
+Experimental for now, a [suppressions file for valgrind](./valgrind.supp) is given to remove potential leaks comming from Xorg, Nvidia drivers, SDL2, or any other tool which the user has no control. It is far from perfect at the moment and may allow some leaks but it will block the majority.
+
+### ⛔ Error system
+Strong error handling informing the user of problems with their code and even capable of informing them of graphics memory leaks that tools like Valgrind cannot detect.
 
 ## 🖥️ Installation
 
@@ -101,5 +107,4 @@ You can force the mlx to use your integrated GPU by using `make FORCE_INTEGRATED
 The mlx can dump it's graphics memory use to json files every two seconds by enabling this option `make GRAPHICS_MEMORY_DUMP=true`.
 
 ## License
-
-This project and all its files, except the [`third_party`](./third_party) directory or unless otherwise mentionned, are licenced under the [MIT license](./LICENSE).
+This project and all its files, even the [`third_party`](./third_party) directory or unless otherwise mentionned, are licenced under the [MIT license](./LICENSE).

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:26:06 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/08 20:17:49 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/15 21:54:11 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,6 @@ namespace mlx
 
 	void CmdBuffer::submitIdle() noexcept
 	{
-		auto device = Render_Core::get().getDevice().get();
-
 		VkSubmitInfo submitInfo = {};
 		submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
 		submitInfo.commandBufferCount = 1;
@@ -77,12 +75,8 @@ namespace mlx
 		VkFenceCreateInfo fenceCreateInfo = {};
 		fenceCreateInfo.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
 
-		VkFence fence;
-		vkCreateFence(device, &fenceCreateInfo, nullptr, &fence);
-		vkResetFences(device, 1, &fence);
-		vkQueueSubmit(Render_Core::get().getQueue().getGraphic(), 1, &submitInfo, fence);
-		vkWaitForFences(device, 1, &fence, VK_TRUE, UINT64_MAX);
-		vkDestroyFence(device, fence, nullptr);
+		vkQueueSubmit(Render_Core::get().getQueue().getGraphic(), 1, &submitInfo, _fence.get());
+		waitForExecution();
 	}
 
 	void CmdBuffer::submit(Semaphore& semaphores) noexcept
