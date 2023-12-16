@@ -88,14 +88,32 @@ namespace mlx::core
 
 	int Application::getTexturePixel(void* img, int x, int y)
 	{
+		if(img == nullptr)
+		{
+			core::error::report(e_kind::error, "wrong texture (NULL)");
+			return 0;
+		}
 		Texture* texture = static_cast<Texture*>(img);
+		if(!texture->isInit())
+		{
+			core::error::report(e_kind::error, "trying to get a pixel from texture that has been destroyed");
+			return 0;
+		}
 		return texture->getPixel(x, y);
 	}
 
 	void Application::setTexturePixel(void* img, int x, int y, uint32_t color)
 	{
+		if(img == nullptr)
+		{
+			core::error::report(e_kind::error, "wrong texture (NULL)");
+			return;
+		}
 		Texture* texture = static_cast<Texture*>(img);
-		texture->setPixel(x, y, color);
+		if(!texture->isInit())
+			core::error::report(e_kind::error, "trying to set a pixel on texture that has been destroyed");
+		else
+			texture->setPixel(x, y, color);
 	}
 
 	void Application::loopHook(int (*f)(void*), void* param)

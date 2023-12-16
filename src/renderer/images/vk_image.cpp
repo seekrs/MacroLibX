@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:59:07 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/15 21:46:33 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/16 17:10:33 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,7 +208,6 @@ namespace mlx
 	void Image::copyFromBuffer(Buffer& buffer)
 	{
 		CmdBuffer& cmd = Render_Core::get().getSingleTimeCmdBuffer();
-		cmd.reset();
 		cmd.beginRecord();
 
 		VkImageMemoryBarrier copy_barrier{};
@@ -258,7 +257,6 @@ namespace mlx
 	void Image::copyToBuffer(Buffer& buffer)
 	{
 		CmdBuffer& cmd = Render_Core::get().getSingleTimeCmdBuffer();
-		cmd.reset();
 		cmd.beginRecord();
 
 		VkImageMemoryBarrier copy_barrier{};
@@ -311,7 +309,6 @@ namespace mlx
 			return;
 
 		CmdBuffer& cmd = Render_Core::get().getSingleTimeCmdBuffer();
-		cmd.reset();
 		cmd.beginRecord();
 
 		VkImageMemoryBarrier barrier{};
