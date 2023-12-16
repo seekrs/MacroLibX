@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 08:49:17 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/16 20:11:18 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/16 20:20:35 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,6 @@
 	#define MLX_API __attribute__((visibility("default")))
 #else
 	#define MLX_API
-#endif
-
-#if defined(MLX_COMPILER_GCC) && !defined(MLX_PLAT_WINDOWS)
-	#define MLX_VISIBILITY_HIDDEN __attribute__((visibility("hidden")))
-#else
-	#define MLX_VISIBILITY_HIDDEN
 #endif
 
 #if defined(__GNUC__) || (defined(__MWERKS__) && (__MWERKS__ >= 0x3000)) || (defined(__ICC) && (__ICC >= 600)) || defined(__ghs__)
