@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:26:06 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/15 21:54:11 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/16 18:51:03 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,14 @@ namespace mlx
 		#endif
 
 		_fence.init();
+		_state = state::idle;
 	}
 
 	void CmdBuffer::beginRecord(VkCommandBufferUsageFlags usage)
 	{
-		if(_is_recording)
+		if(!isInit())
+			core::error::report(e_kind::fatal_error, "Vulkan : begenning record on un uninit command buffer");
+		if(_state == state::recording)
 			return;
 
 		VkCommandBufferBeginInfo beginInfo{};
@@ -52,28 +55,41 @@ namespace mlx
 		if(vkBeginCommandBuffer(_cmd_buffer, &beginInfo) != VK_SUCCESS)
 			core::error::report(e_kind::fatal_error, "Vulkan : failed to begin recording command buffer");
 
-		_is_recording = true;
+		_state = state::recording;
 	}
 
 	void CmdBuffer::endRecord()
 	{
-		if(!_is_recording)
+		if(!isInit())
+			core::error::report(e_kind::fatal_error, "Vulkan : ending record on un uninit command buffer");
+		if(_state != state::recording)
 			return;
 		if(vkEndCommandBuffer(_cmd_buffer) != VK_SUCCESS)
 			core::error::report(e_kind::fatal_error, "Vulkan : failed to end recording command buffer");
 
-		_is_recording = false;
+		_state = state::idle;
 	}
 
 	void CmdBuffer::submitIdle() noexcept
 	{
+		auto device = Render_Core::get().getDevice().get();
+
 		VkSubmitInfo submitInfo = {};
 		submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
 		submitInfo.commandBufferCount = 1;
 		submitInfo.pCommandBuffers = &_cmd_buffer;
 
-		vkQueueSubmit(Render_Core::get().getQueue().getGraphic(), 1, &submitInfo, _fence.get());
-		waitForExecution();
+		VkFenceCreateInfo fenceCreateInfo = {};
+		fenceCreateInfo.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
+
+		VkFence fence;
+		vkCreateFence(device, &fenceCreateInfo, nullptr, &fence);
+		vkResetFences(device, 1, &fence);
+		vkQueueSubmit(Render_Core::get().getQueue().getGraphic(), 1, &submitInfo, fence);
+		vkWaitForFences(device, 1, &fence, VK_TRUE, UINT64_MAX);
+		vkDestroyFence(device, fence, nullptr);
+		_state = state::submitted;
+		_state = state::ready;
 	}
 
 	void CmdBuffer::submit(Semaphore& semaphores) noexcept
@@ -94,11 +110,13 @@ namespace mlx
 
 		if(vkQueueSubmit(Render_Core::get().getQueue().getGraphic(), 1, &submitInfo, _fence.get()) != VK_SUCCESS)
 			core::error::report(e_kind::fatal_error, "Vulkan error : failed to submit draw command buffer");
+		_state = state::submitted;
 	}
 
 	void CmdBuffer::destroy() noexcept
 	{
 		_fence.destroy();
 		_cmd_buffer = VK_NULL_HANDLE;
+		_state = state::uninit;
 	}
 }
