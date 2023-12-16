@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 19:57:49 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/15 20:21:54 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/16 18:46:26 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,24 @@ namespace mlx
 	{
 		_pool.init();
 		for(int i = 0; i < MIN_POOL_SIZE; i++)
-			_buffers.emplace_back().init(&_pool);
+		{
+			_buffers.emplace_back();
+			_buffers.back().init(&_pool);
+		}
+	}
+
+	CmdBuffer& SingleTimeCmdManager::getCmdBuffer() noexcept
+	{
+		for(CmdBuffer& buf : _buffers)
+		{
+			if(buf.isReadyToBeUsed())
+			{
+				buf.reset();
+				return buf;
+			}
+		}
+		_buffers.emplace_back().init(&_pool);
+		return _buffers.back();
 	}
 
 	void SingleTimeCmdManager::destroy() noexcept
@@ -32,16 +49,5 @@ namespace mlx
 			buf.destroy();
 		});
 		_pool.destroy();
-	}
-
-	CmdBuffer& SingleTimeCmdManager::getCmdBuffer() noexcept
-	{
-		for(CmdBuffer& buf : _buffers)
-		{
-			if(buf.isReadyToBeUsed())
-				return buf;
-		}
-		_buffers.emplace_back().init(&_pool);
-		return _buffers.back();
 	}
 }

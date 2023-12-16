@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 18:25:57 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/15 19:59:40 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/16 18:09:56 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ namespace mlx
 			~SingleTimeCmdManager() = default;
 
 			inline static constexpr const uint8_t MIN_POOL_SIZE = 8;
+
+		private:
 
 		private:
 			std::vector<CmdBuffer> _buffers;
