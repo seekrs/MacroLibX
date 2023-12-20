@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:22:28 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/10 22:32:54 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/15 21:49:19 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,9 +146,6 @@ namespace mlx
 		vkDestroySwapchainKHR(Render_Core::get().getDevice().get(), _swapChain, nullptr);
 		_swapChain = VK_NULL_HANDLE;
 		for(Image& img : _images)
-		{
 			img.destroyImageView();
-			img.destroyCmdPool();
-		}
 	}
 }

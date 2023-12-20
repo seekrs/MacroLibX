@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 17:53:06 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/15 20:31:29 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/16 18:47:36 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ namespace mlx
 
 		VkResult res;
 		if((res = vkCreateFence(Render_Core::get().getDevice().get(), &fenceInfo, nullptr, &_fence)) != VK_SUCCESS)
-			core::error::report(e_kind::fatal_error, "Vulkan : failed to create CPU synchronization object, %s", RCore::verbaliseResultVk(res));
+			core::error::report(e_kind::fatal_error, "Vulkan : failed to create a synchronization object (fence), %s", RCore::verbaliseResultVk(res));
 		#ifdef DEBUG
 			core::error::report(e_kind::message, "Vulkan : created new fence");
 		#endif

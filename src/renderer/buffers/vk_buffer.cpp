@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 18:55:57 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/12 22:11:47 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/16 17:10:17 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,22 +97,15 @@ namespace mlx
 		}
 
 		// TODO, use global cmd buffer pool to manage resources
-		CmdPool cmdpool;
-		cmdpool.init();
-		CmdBuffer cmdBuffer;
-		cmdBuffer.init(&cmdpool);
-
-		cmdBuffer.beginRecord(VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT);
+		CmdBuffer& cmd = Render_Core::get().getSingleTimeCmdBuffer();
+		cmd.beginRecord();
 
 		VkBufferCopy copyRegion{};
 		copyRegion.size = _size;
-		vkCmdCopyBuffer(cmdBuffer.get(), buffer._buffer, _buffer, 1, &copyRegion);
+		vkCmdCopyBuffer(cmd.get(), buffer._buffer, _buffer, 1, &copyRegion);
 
-		cmdBuffer.endRecord();
-		cmdBuffer.submitIdle();
-
-		cmdBuffer.destroy();
-		cmdpool.destroy();
+		cmd.endRecord();
+		cmd.submitIdle();
 
 		return true;
 	}
