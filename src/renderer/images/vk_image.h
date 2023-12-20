@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:54:21 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/15 21:44:30 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/17 17:13:23 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <cstddef>
 #include <vector>
 #include <vma.h>
+#include <renderer/core/cmd_resource.h>
 #include <renderer/command/vk_cmd_buffer.h>
 #include <renderer/command/vk_cmd_pool.h>
 #include <mlx_profile.h>
@@ -25,7 +26,7 @@ namespace mlx
 {
 	uint32_t formatSize(VkFormat format);
 
-	class Image
+	class Image : public CmdResource
 	{
 		friend class SwapChain;
 

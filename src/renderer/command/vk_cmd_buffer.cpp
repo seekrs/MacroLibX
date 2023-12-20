@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:26:06 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/16 18:51:03 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/17 20:01:46 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,18 @@
 #include <renderer/core/render_core.h>
 #include <renderer/command/cmd_manager.h>
 #include <renderer/core/vk_semaphore.h>
+#include <renderer/buffers/vk_buffer.h>
 
 namespace mlx
 {
-	void CmdBuffer::init(CmdManager* manager)
+	void CmdBuffer::init(kind type, CmdManager* manager)
 	{
-		init(&manager->getCmdPool());
+		init(type, &manager->getCmdPool());
 	}
 
-	void CmdBuffer::init(CmdPool* pool)
+	void CmdBuffer::init(kind type, CmdPool* pool)
 	{
+		_type = type;
 		_pool = pool;
 
 		VkCommandBufferAllocateInfo allocInfo{};
@@ -56,6 +58,18 @@ namespace mlx
 			core::error::report(e_kind::fatal_error, "Vulkan : failed to begin recording command buffer");
 
 		_state = state::recording;
+	}
+
+	void CmdBuffer::bindVertexBuffer(Buffer& buffer) const noexcept
+	{
+		if(!isRecording())
+		{
+			core::error::report(e_kind::warning, "Vulkan : trying to bind a vertex buffer to a non recording command buffer");
+			return;
+		}
+		VkDeviceSize offset[] = { buffer.getOffset() };
+		vkCmdBindVertexBuffers(_cmd_buffer, 0, 1, &buffer.get(), offset);
+		buffer.recordedInCmdBuffer();
 	}
 
 	void CmdBuffer::endRecord()
