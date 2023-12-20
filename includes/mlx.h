@@ -6,11 +6,11 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:56:35 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/14 16:27:44 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/20 00:57:15 by kiroussa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// MacroLibX official repo https://github.com/420verfl0w/MacroLibX
+// MacroLibX official repo https://github.com/seekrs/MacroLibX
 
 #ifndef __MACRO_LIB_X_H__
 #define __MACRO_LIB_X_H__
@@ -173,7 +173,7 @@ MLX_API void* mlx_new_image(void* mlx, int width, int height);
  * /!\ If you run into glitches when writing or reading pixels from images /!\
  * You need to add IMAGES_OPTIMIZED=false to your make mlx command
  * ```
- * 	~ git clone https://github.com/420verfl0w/MacroLibX.git
+ * 	~ git clone https://github.com/seekrs/MacroLibX.git
  * 	~ cd MacroLibX
  * 	~ make IMAGES_OPTIMIZED=false
  * ```
@@ -194,7 +194,7 @@ MLX_API int mlx_get_image_pixel(void* mlx, void* img, int x, int y);
  * /!\ If you run into glitches when writing or reading pixels from images /!\
  * You need to add IMAGES_OPTIMIZED=false to your make mlx command
  * ```
- * 	~ git clone https://github.com/420verfl0w/MacroLibX.git
+ * 	~ git clone https://github.com/seekrs/MacroLibX.git
  * 	~ cd MacroLibX
  * 	~ make IMAGES_OPTIMIZED=false
  * ```
