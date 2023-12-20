@@ -1,12 +1,12 @@
 <div align="center">
     <img src="./res/logo.png" alt="drawing" width="200"/>
     <div align="center">
-        <a href="https://github.com/420verfl0w/MacroLibX/actions/workflows/linux_clang.yml"><img src="https://github.com/420verfl0w/MacroLibX/actions/workflows/linux_clang.yml/badge.svg"></a>
-        <a href="https://github.com/420verfl0w/MacroLibX/actions/workflows/linux_gcc.yml"><img src="https://github.com/420verfl0w/MacroLibX/actions/workflows/linux_gcc.yml/badge.svg"></a>
-        <a href="https://github.com/420verfl0w/MacroLibX/actions/workflows/macos_x86.yml"><img src="https://github.com/420verfl0w/MacroLibX/actions/workflows/macos_x86.yml/badge.svg"></a>
+        <a href="https://github.com/seekrs/MacroLibX/actions/workflows/linux_clang.yml"><img src="https://github.com/seekrs/MacroLibX/actions/workflows/linux_clang.yml/badge.svg"></a>
+        <a href="https://github.com/seekrs/MacroLibX/actions/workflows/linux_gcc.yml"><img src="https://github.com/seekrs/MacroLibX/actions/workflows/linux_gcc.yml/badge.svg"></a>
+        <a href="https://github.com/seekrs/MacroLibX/actions/workflows/macos_x86.yml"><img src="https://github.com/seekrs/MacroLibX/actions/workflows/macos_x86.yml/badge.svg"></a>
     </div>
     <div align="center">
-        <a href="https://github.com/420verfl0w/MacroLibX/actions/workflows/windows.yml"><img src="https://github.com/420verfl0w/MacroLibX/actions/workflows/windows.yml/badge.svg"></a>
+        <a href="https://github.com/seekrs/MacroLibX/actions/workflows/windows.yml"><img src="https://github.com/seekrs/MacroLibX/actions/workflows/windows.yml/badge.svg"></a>
     </div>
 </div>
 
@@ -65,7 +65,7 @@ To build on Windows you may need to use the [xmake](https://xmake.io) build. [He
 ### Clone and Build
 Finally, you can clone the Git repository. When inside it, run the GNU `make` command to compile MacroLibX. 
 ```bash
-git clone https://github.com/420verfl0w/MacroLibX.git
+git clone https://github.com/seekrs/MacroLibX.git
 cd MacroLibX
 make
 ```
