@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:35:20 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/14 17:47:17 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/16 20:20:41 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,20 @@
 #include <filesystem>
 #include <mlx.h>
 #include <core/memory.h>
+#include <mlx_profile.h>
+
+static void* __mlx_ptr = nullptr;
+
+#define MLX_CHECK_APPLICATION_POINTER(ptr) \
+	if(ptr != __mlx_ptr || ptr == NULL) \
+		mlx::core::error::report(e_kind::fatal_error, "invalid mlx pointer passed to '%s'", MLX_FUNC_SIG); \
+	else {} // just to avoid issues with possible if-else statements outside this macro
 
 extern "C"
 {
 	void* mlx_init()
 	{
-		static bool init = false;
-		if(init)
+		if(__mlx_ptr != nullptr)
 		{
 			mlx::core::error::report(e_kind::error, "MLX cannot be initialized multiple times");
 			return NULL; // not nullptr for the C compatibility
@@ -33,29 +40,33 @@ extern "C"
 		mlx::Render_Core::get().init();
 		if(app == nullptr)
 			mlx::core::error::report(e_kind::fatal_error, "Tout a pété");
-		init = true;
-		return static_cast<void*>(app);
+		__mlx_ptr = static_cast<void*>(app);
+		return __mlx_ptr;
 	}
 
 	void* mlx_new_window(void* mlx, int w, int h, const char* title)
 	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
 		return static_cast<mlx::core::Application*>(mlx)->newGraphicsSuport(w, h, title);
 	}
 
 	int	mlx_loop_hook(void* mlx, int (*f)(void*), void* param)
 	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
 		static_cast<mlx::core::Application*>(mlx)->loopHook(f, param);
 		return 0;
 	}
 
 	int mlx_loop(void* mlx)
 	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
 		static_cast<mlx::core::Application*>(mlx)->run();
 		return 0;
 	}
 
 	int mlx_loop_end(void* mlx)
 	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
 		static_cast<mlx::core::Application*>(mlx)->loopEnd();
 		return 0;
 	}
@@ -72,34 +83,40 @@ extern "C"
 
 	int mlx_mouse_move(void* mlx, void* win, int x, int y)
 	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
 		static_cast<mlx::core::Application*>(mlx)->mouseMove(win, x, y);
 		return 0;
 	}
 
 	int mlx_mouse_get_pos(void* mlx, int* x, int* y)
 	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
 		static_cast<mlx::core::Application*>(mlx)->getMousePos(x, y);
 		return 0;
 	}
 
 	int mlx_on_event(void* mlx, void* win, mlx_event_type event, int (*funct_ptr)(int, void*), void* param)
 	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
 		static_cast<mlx::core::Application*>(mlx)->onEvent(win, static_cast<int>(event), funct_ptr, param);
 		return 0;
 	}
 
 	void* mlx_new_image(void* mlx, int width, int height)
 	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
 		return static_cast<mlx::core::Application*>(mlx)->newTexture(width, height);
 	}
 
 	int mlx_get_image_pixel(void* mlx, void* img, int x, int y)
 	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
 		return static_cast<mlx::core::Application*>(mlx)->getTexturePixel(img, x, y);
 	}
 
 	void mlx_set_image_pixel(void* mlx, void* img, int x, int y, int color)
 	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
 		unsigned char color_bits[4];
 		color_bits[0] = (color & 0x00FF0000) >> 16;
 		color_bits[1] = (color & 0x0000FF00) >> 8;
@@ -110,18 +127,21 @@ extern "C"
 
 	int mlx_put_image_to_window(void* mlx, void* win, void* img, int x, int y)
 	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
 		static_cast<mlx::core::Application*>(mlx)->texturePut(win, img, x, y);
 		return 0;
 	}
 
 	int mlx_destroy_image(void* mlx, void* img)
 	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
 		static_cast<mlx::core::Application*>(mlx)->destroyTexture(img);
 		return 0;
 	}
 
 	void* mlx_png_file_to_image(void* mlx, char* filename, int* width, int* height)
 	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
 		std::filesystem::path file(filename);
 		if(file.extension() != ".png")
 		{
@@ -133,6 +153,7 @@ extern "C"
 
 	void* mlx_jpg_file_to_image(void* mlx, char* filename, int* width, int* height)
 	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
 		std::filesystem::path file(filename);
 		if(file.extension() != ".jpg" && file.extension() != ".jpeg")
 		{
@@ -144,6 +165,7 @@ extern "C"
 
 	void* mlx_bmp_file_to_image(void* mlx, char* filename, int* width, int* height)
 	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
 		std::filesystem::path file(filename);
 		if(file.extension() != ".bmp" && file.extension() != ".dib")
 		{
@@ -155,6 +177,7 @@ extern "C"
 
 	int mlx_pixel_put(void* mlx, void* win, int x, int y, int color)
 	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
 		unsigned char color_bits[4];
 		color_bits[0] = (color & 0x00FF0000) >> 16;
 		color_bits[1] = (color & 0x0000FF00) >> 8;
@@ -166,6 +189,7 @@ extern "C"
 
 	int mlx_string_put(void* mlx, void* win, int x, int y, int color, char* str)
 	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
 		unsigned char color_bits[4];
 		color_bits[0] = (color & 0x00FF0000) >> 16;
 		color_bits[1] = (color & 0x0000FF00) >> 8;
@@ -177,6 +201,7 @@ extern "C"
 
 	void mlx_set_font(void* mlx, void* win, char* filepath)
 	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
 		std::filesystem::path file(filepath);
 		if(std::strcmp(filepath, "default") != 0 && file.extension() != ".ttf" && file.extension() != ".tte")
 		{
@@ -188,6 +213,7 @@ extern "C"
 
 	void mlx_set_font_scale(void* mlx, void* win, char* filepath, float scale)
 	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
 		std::filesystem::path file(filepath);
 		if(std::strcmp(filepath, "default") != 0 && file.extension() != ".ttf" && file.extension() != ".tte")
 		{
@@ -199,25 +225,30 @@ extern "C"
 
 	int mlx_clear_window(void* mlx, void* win)
 	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
 		static_cast<mlx::core::Application*>(mlx)->clearGraphicsSupport(win);
 		return 0;
 	}
 
 	int mlx_destroy_window(void* mlx, void* win)
 	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
 		static_cast<mlx::core::Application*>(mlx)->destroyGraphicsSupport(win);
 		return 0;
 	}
 
 	int mlx_destroy_display(void* mlx)
 	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
 		delete static_cast<mlx::core::Application*>(mlx);
 		mlx::Render_Core::get().destroy();
+		__mlx_ptr = nullptr;
 		return 0;
 	}
 
 	int mlx_get_screens_size(void* mlx, int* w, int* h)
 	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
 		static_cast<mlx::core::Application*>(mlx)->getScreenSize(w, h);
 		return 0;
 	}
