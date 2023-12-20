@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 18:55:57 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/16 17:10:17 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/17 17:35:03 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,15 @@ namespace mlx
 {
 	void Buffer::create(Buffer::kind type, VkDeviceSize size, VkBufferUsageFlags usage, const char* name, const void* data)
 	{
+		CmdResource::setDestroyer([this]()
+		{
+			if(_is_mapped)
+				unmapMem();
+			if(_buffer != VK_NULL_HANDLE)
+				Render_Core::get().getAllocator().destroyBuffer(_allocation, _buffer);
+			_buffer = VK_NULL_HANDLE;
+		});
+
 		_usage = usage;
 		if(type == Buffer::kind::constant || type == Buffer::kind::dynamic_device_local)
 		{
@@ -52,11 +61,7 @@ namespace mlx
 
 	void Buffer::destroy() noexcept
 	{
-		if(_is_mapped)
-			unmapMem();
-		if(_buffer != VK_NULL_HANDLE)
-			Render_Core::get().getAllocator().destroyBuffer(_allocation, _buffer);
-		_buffer = VK_NULL_HANDLE;
+		CmdResource::requireDestroy();
 	}
 
 	void Buffer::createBuffer(VkBufferUsageFlags usage, VmaAllocationCreateInfo info, VkDeviceSize size, [[maybe_unused]] const char* name)

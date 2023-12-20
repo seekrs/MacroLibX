@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:59:07 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/16 17:10:33 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/17 17:16:15 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,16 @@ namespace mlx
 
 	void Image::create(uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, const char* name, bool dedicated_memory)
 	{
+		CmdResource::setDestroyer([this]()
+		{
+			this->destroySampler();
+			this->destroyImageView();
+
+			if(_image != VK_NULL_HANDLE)
+				Render_Core::get().getAllocator().destroyImage(_allocation, _image);
+			_image = VK_NULL_HANDLE;
+		});
+
 		_width = width;
 		_height = height;
 		_format = format;
@@ -367,12 +377,7 @@ namespace mlx
 
 	void Image::destroy() noexcept
 	{
-		destroySampler();
-		destroyImageView();
-
-		if(_image != VK_NULL_HANDLE)
-			Render_Core::get().getAllocator().destroyImage(_allocation, _image);
-		_image = VK_NULL_HANDLE;
+		CmdResource::requireDestroy();
 	}
 
 	uint32_t formatSize(VkFormat format)

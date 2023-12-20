@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 02:24:58 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/14 14:37:08 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/17 17:23:56 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ namespace mlx
 			void setPixel(int x, int y, uint32_t color) noexcept;
 			int getPixel(int x, int y) noexcept;
 
-			inline void setDescriptor(DescriptorSet set) noexcept { _set = std::move(set); }
+			inline void setDescriptor(DescriptorSet&& set) noexcept { _set = set; }
 			inline VkDescriptorSet getSet() noexcept { return _set.isInit() ? _set.get() : VK_NULL_HANDLE; }
 			inline void updateSet(int binding) noexcept { _set.writeDescriptor(binding, getImageView(), getSampler()); _has_been_updated = true; }
 			inline bool hasBeenUpdated() const noexcept { return _has_been_updated; }
