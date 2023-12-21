@@ -15,12 +15,12 @@
 #define CHECK_WINDOW_PTR(win) \
 	if(win == nullptr) \
 	{ \
-		core::error::report(e_kind::error, "invalid window ptr (NULL) passed to '%s'", MLX_FUNC_SIG); \
+		core::error::report(e_kind::error, "invalid window ptr (NULL)"); \
 		return; \
 	} \
-	else if(*static_cast<int*>(win) < 0 || *static_cast<std::size_t*>(win) > _graphics.size())\
+	else if(*static_cast<int*>(win) < 0 || *static_cast<int*>(win) > static_cast<int>(_graphics.size()))\
 	{ \
-		core::error::report(e_kind::error, "invalid window ptr passed to '%s'", MLX_FUNC_SIG); \
+		core::error::report(e_kind::error, "invalid window ptr"); \
 		return; \
 	} else {}\
 
