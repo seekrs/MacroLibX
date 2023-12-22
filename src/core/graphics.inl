@@ -23,7 +23,7 @@ namespace mlx
 	{
 		if(!_renderer->beginFrame())
 			return;
-		_proj = glm::ortho<float>(0, _window->getWidth(), 0, _window->getHeight());
+		_proj = glm::ortho<float>(0, _width, 0, _height);
 		_renderer->getUniformBuffer()->setData(sizeof(_proj), &_proj);
 	}
 

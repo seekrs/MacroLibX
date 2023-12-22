@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 21:27:38 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/25 10:23:20 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/22 22:00:37 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,14 +222,14 @@ namespace mlx
 		VkViewport viewport{};
 		viewport.x = 0.0f;
 		viewport.y = 0.0f;
-		viewport.width = (float)renderer.getSwapChain().getExtent().width;
-		viewport.height = (float)renderer.getSwapChain().getExtent().height;
+		viewport.width = (float)renderer.getFrameBuffer(0).getWidth();
+		viewport.height = (float)renderer.getFrameBuffer(0).getHeight();
 		viewport.minDepth = 0.0f;
 		viewport.maxDepth = 1.0f;
 
 		VkRect2D scissor{};
 		scissor.offset = { 0, 0 };
-		scissor.extent = renderer.getSwapChain().getExtent();
+		scissor.extent = { renderer.getFrameBuffer(0).getWidth(), renderer.getFrameBuffer(0).getHeight()};
 
 		VkPipelineViewportStateCreateInfo viewportState{};
 		viewportState.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;

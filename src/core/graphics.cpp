@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 15:13:55 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/15 21:04:50 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/22 23:10:51 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,30 @@
 
 namespace mlx
 {
-	GraphicsSupport::GraphicsSupport(std::size_t w, std::size_t h, const std::string& title, int id) :
+	GraphicsSupport::GraphicsSupport(std::size_t w, std::size_t h, Texture* render_target, int id) :
+		_window(nullptr),
+		_text_put_pipeline(std::make_unique<TextPutPipeline>()),
+		_renderer(std::make_unique<Renderer>()),
+		_width(w),
+		_height(h),
+		_id(id)
+	{
+		_renderer->setWindow(nullptr);
+		_renderer->init(render_target);
+		_pixel_put_pipeline.init(w, h, *_renderer);
+		_text_put_pipeline->init(_renderer.get());
+	}
+
+	GraphicsSupport::GraphicsSupport(std::size_t w, std::size_t h, std::string title, int id) :
 		_window(std::make_shared<MLX_Window>(w, h, title)),
 		_text_put_pipeline(std::make_unique<TextPutPipeline>()),
 		_renderer(std::make_unique<Renderer>()), 
+		_width(w),
+		_height(h),
 		_id(id)
 	{
 		_renderer->setWindow(_window.get());
-		_renderer->init();
+		_renderer->init(nullptr);
 		_pixel_put_pipeline.init(w, h, *_renderer);
 		_text_put_pipeline->init(_renderer.get());
 	}
@@ -76,6 +92,7 @@ namespace mlx
 		_text_put_pipeline->destroy();
 		_pixel_put_pipeline.destroy();
 		_renderer->destroy();
-		_window->destroy();
+		if(_window)
+			_window->destroy();
 	}
 }

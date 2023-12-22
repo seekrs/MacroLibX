@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:54:21 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/15 21:44:30 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/22 23:02:54 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ namespace mlx
 			inline VkImageView getImageView() const noexcept { return _image_view; }
 			inline VkFormat getFormat() const noexcept { return _format; }
 			inline VkImageTiling getTiling() const noexcept { return _tiling; }
+			inline VkImageLayout getLayout() const noexcept { return _layout; }
 			inline VkSampler getSampler() const noexcept { return _sampler; }
 			inline uint32_t getWidth() const noexcept { return _width; }
 			inline uint32_t getHeight() const noexcept { return _height; }
