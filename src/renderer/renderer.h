@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:14:45 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/10 22:19:41 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/22 21:59:15 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ namespace mlx
 		public:
 			Renderer() = default;
 
-			void init();
+			void init(class Texture* render_target);
 
 			bool beginFrame();
 			void endFrame();
@@ -102,6 +102,7 @@ namespace mlx
 			inline GraphicPipeline& getPipeline() noexcept { return _pipeline; }
 			inline CmdBuffer& getCmdBuffer(int i) noexcept { return _cmd.getCmdBuffer(i); }
 			inline CmdBuffer& getActiveCmdBuffer() noexcept { return _cmd.getCmdBuffer(_current_frame_index); }
+			inline FrameBuffer& getFrameBuffer(int i) noexcept { return _framebuffers[i]; }
 			inline DescriptorSet& getVertDescriptorSet() noexcept { return _vert_set; }
 			inline DescriptorSet& getFragDescriptorSet() noexcept { return _frag_set; }
 			inline DescriptorSetLayout& getVertDescriptorSetLayout() noexcept { return _vert_layout; }
@@ -133,6 +134,7 @@ namespace mlx
 			std::unique_ptr<UBO> _uniform_buffer;
 
 			class MLX_Window* _window = nullptr;
+			class Texture* _render_target = nullptr;
 
 			uint32_t _current_frame_index = 0;
 			uint32_t _image_index = 0;

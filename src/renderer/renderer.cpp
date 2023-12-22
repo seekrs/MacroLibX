@@ -6,25 +6,36 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:25:16 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/10 22:21:10 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/22 23:16:10 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <mutex>
 #include <renderer/renderer.h>
+#include <renderer/images/texture.h>
 #include <renderer/core/render_core.h>
 
 namespace mlx
 {
-	void Renderer::init()
+	void Renderer::init(Texture* render_target)
 	{
-		_surface.create(*this);
-		_swapchain.init(this);
-		_pass.init(_swapchain.getImagesFormat());
+		if(render_target == nullptr)
+		{
+			_surface.create(*this);
+			_swapchain.init(this);
+			_pass.init(_swapchain.getImagesFormat(), VK_IMAGE_LAYOUT_PRESENT_SRC_KHR);
+			for(std::size_t i = 0; i < _swapchain.getImagesNumber(); i++)
+				_framebuffers.emplace_back().init(_pass, _swapchain.getImage(i));
+		}
+		else
+		{
+			_render_target = render_target;
+			_render_target->transitionLayout(VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
+			_pass.init(_render_target->getFormat(), _render_target->getLayout());
+			_framebuffers.emplace_back().init(_pass, *static_cast<Image*>(_render_target));
+		}
 		_cmd.init();
 
-		for(std::size_t i = 0; i < _swapchain.getImagesNumber(); i++)
-			_framebuffers.emplace_back().init(_pass, _swapchain.getImage(i));
 		for(std::size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
 			_semaphores[i].init();
 	
@@ -65,15 +76,20 @@ namespace mlx
 		_cmd.getCmdBuffer(_current_frame_index).waitForExecution();
 		_cmd.getCmdBuffer(_current_frame_index).reset();
 
-		VkResult result = vkAcquireNextImageKHR(device, _swapchain(), UINT64_MAX, _semaphores[_current_frame_index].getImageSemaphore(), VK_NULL_HANDLE, &_image_index);
-
-		if(result == VK_ERROR_OUT_OF_DATE_KHR)
+		if(_render_target == nullptr)
 		{
-			_swapchain.recreate();
-			return false;
+			VkResult result = vkAcquireNextImageKHR(device, _swapchain(), UINT64_MAX, _semaphores[_current_frame_index].getImageSemaphore(), VK_NULL_HANDLE, &_image_index);
+
+			if(result == VK_ERROR_OUT_OF_DATE_KHR)
+			{
+				_swapchain.recreate();
+				return false;
+			}
+			else if(result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR)
+				core::error::report(e_kind::fatal_error, "Vulkan error : failed to acquire swapchain image");
 		}
-		else if(result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR)
-			core::error::report(e_kind::fatal_error, "Vulkan error : failed to acquire swapchain image");
+		else
+			_image_index = 0;
 
 		_cmd.getCmdBuffer(_current_frame_index).beginRecord();
 		auto& fb = _framebuffers[_image_index];
@@ -102,28 +118,34 @@ namespace mlx
 	{
 		_pass.end(getActiveCmdBuffer());
 		_cmd.getCmdBuffer(_current_frame_index).endRecord();
-		_cmd.getCmdBuffer(_current_frame_index).submit(_semaphores[_current_frame_index]);
 
-		VkSwapchainKHR swapchain = _swapchain();
-		VkSemaphore signalSemaphores[] = { _semaphores[_current_frame_index].getRenderImageSemaphore() };
-
-		VkPresentInfoKHR presentInfo{};
-		presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
-		presentInfo.waitSemaphoreCount = 1;
-		presentInfo.pWaitSemaphores = signalSemaphores;
-		presentInfo.swapchainCount = 1;
-		presentInfo.pSwapchains = &swapchain;
-		presentInfo.pImageIndices = &_image_index;
-
-		VkResult result = vkQueuePresentKHR(Render_Core::get().getQueue().getPresent(), &presentInfo);
-
-		if(result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || _framebufferResized)
+		if(_render_target == nullptr)
 		{
-			_framebufferResized = false;
-			_swapchain.recreate();
+			_cmd.getCmdBuffer(_current_frame_index).submit(_semaphores[_current_frame_index]);
+
+			VkSwapchainKHR swapchain = _swapchain();
+			VkSemaphore signalSemaphores[] = { _semaphores[_current_frame_index].getRenderImageSemaphore() };
+
+			VkPresentInfoKHR presentInfo{};
+			presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+			presentInfo.waitSemaphoreCount = 1;
+			presentInfo.pWaitSemaphores = signalSemaphores;
+			presentInfo.swapchainCount = 1;
+			presentInfo.pSwapchains = &swapchain;
+			presentInfo.pImageIndices = &_image_index;
+
+			VkResult result = vkQueuePresentKHR(Render_Core::get().getQueue().getPresent(), &presentInfo);
+
+			if(result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || _framebufferResized)
+			{
+				_framebufferResized = false;
+				_swapchain.recreate();
+			}
+			else if(result != VK_SUCCESS)
+				core::error::report(e_kind::fatal_error, "Vulkan error : failed to present swap chain image");
 		}
-		else if(result != VK_SUCCESS)
-			core::error::report(e_kind::fatal_error, "Vulkan error : failed to present swap chain image");
+		else
+			_cmd.getCmdBuffer(_current_frame_index).submitIdle();
 
 		_current_frame_index = (_current_frame_index + 1) % MAX_FRAMES_IN_FLIGHT;
 	}
@@ -139,11 +161,13 @@ namespace mlx
 		_cmd.destroy();
 		_desc_pool.destroy();
 		_pass.destroy();
-		_swapchain.destroy();
+		if(_render_target == nullptr)
+			_swapchain.destroy();
 		for(auto& fb : _framebuffers)
 			fb.destroy();
 		for(int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
 			_semaphores[i].destroy();
-		_surface.destroy();
+		if(_render_target == nullptr)
+			_surface.destroy();
 	}
 }
