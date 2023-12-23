@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:25:16 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/22 23:16:10 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/23 01:28:03 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,6 @@ namespace mlx
 		auto device = Render_Core::get().getDevice().get();
 
 		_cmd.getCmdBuffer(_current_frame_index).waitForExecution();
-		_cmd.getCmdBuffer(_current_frame_index).reset();
-
 		if(_render_target == nullptr)
 		{
 			VkResult result = vkAcquireNextImageKHR(device, _swapchain(), UINT64_MAX, _semaphores[_current_frame_index].getImageSemaphore(), VK_NULL_HANDLE, &_image_index);
@@ -91,6 +89,7 @@ namespace mlx
 		else
 			_image_index = 0;
 
+		_cmd.getCmdBuffer(_current_frame_index).reset();
 		_cmd.getCmdBuffer(_current_frame_index).beginRecord();
 		auto& fb = _framebuffers[_image_index];
 		_pass.begin(getActiveCmdBuffer(), fb);
@@ -121,7 +120,7 @@ namespace mlx
 
 		if(_render_target == nullptr)
 		{
-			_cmd.getCmdBuffer(_current_frame_index).submit(_semaphores[_current_frame_index]);
+			_cmd.getCmdBuffer(_current_frame_index).submit(&_semaphores[_current_frame_index]);
 
 			VkSwapchainKHR swapchain = _swapchain();
 			VkSemaphore signalSemaphores[] = { _semaphores[_current_frame_index].getRenderImageSemaphore() };
@@ -145,7 +144,7 @@ namespace mlx
 				core::error::report(e_kind::fatal_error, "Vulkan error : failed to present swap chain image");
 		}
 		else
-			_cmd.getCmdBuffer(_current_frame_index).submitIdle();
+			_cmd.getCmdBuffer(_current_frame_index).submit(nullptr);
 
 		_current_frame_index = (_current_frame_index + 1) % MAX_FRAMES_IN_FLIGHT;
 	}
@@ -162,12 +161,13 @@ namespace mlx
 		_desc_pool.destroy();
 		_pass.destroy();
 		if(_render_target == nullptr)
+		{
 			_swapchain.destroy();
+			_surface.destroy();
+		}
 		for(auto& fb : _framebuffers)
 			fb.destroy();
 		for(int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
 			_semaphores[i].destroy();
-		if(_render_target == nullptr)
-			_surface.destroy();
 	}
 }

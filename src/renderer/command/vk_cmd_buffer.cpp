@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:26:06 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/16 18:51:03 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/23 01:32:02 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,27 +86,33 @@ namespace mlx
 		vkCreateFence(device, &fenceCreateInfo, nullptr, &fence);
 		vkResetFences(device, 1, &fence);
 		vkQueueSubmit(Render_Core::get().getQueue().getGraphic(), 1, &submitInfo, fence);
+		_state = state::submitted;
 		vkWaitForFences(device, 1, &fence, VK_TRUE, UINT64_MAX);
 		vkDestroyFence(device, fence, nullptr);
-		_state = state::submitted;
 		_state = state::ready;
 	}
 
-	void CmdBuffer::submit(Semaphore& semaphores) noexcept
+	void CmdBuffer::submit(Semaphore* semaphores) noexcept
 	{
-		VkSemaphore signalSemaphores[] = { semaphores.getRenderImageSemaphore() };
-		VkSemaphore waitSemaphores[] = { semaphores.getImageSemaphore() };
+		std::array<VkSemaphore, 1> signalSemaphores;
+		std::array<VkSemaphore, 1> waitSemaphores;
+
+		if(semaphores != nullptr)
+		{
+			signalSemaphores[0] = semaphores->getRenderImageSemaphore();
+			waitSemaphores[0] = semaphores->getImageSemaphore();
+		}
 		VkPipelineStageFlags waitStages[] = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
 
 		VkSubmitInfo submitInfo{};
 		submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-		submitInfo.waitSemaphoreCount = 1;
-		submitInfo.pWaitSemaphores = waitSemaphores;
+		submitInfo.waitSemaphoreCount = (semaphores == nullptr ? 0 : waitSemaphores.size());
+		submitInfo.pWaitSemaphores = waitSemaphores.data();
 		submitInfo.pWaitDstStageMask = waitStages;
 		submitInfo.commandBufferCount = 1;
 		submitInfo.pCommandBuffers = &_cmd_buffer;
-		submitInfo.signalSemaphoreCount = 1;
-		submitInfo.pSignalSemaphores = signalSemaphores;
+		submitInfo.signalSemaphoreCount = (semaphores == nullptr ? 0 : signalSemaphores.size());
+		submitInfo.pSignalSemaphores = signalSemaphores.data();
 
 		if(vkQueueSubmit(Render_Core::get().getQueue().getGraphic(), 1, &submitInfo, _fence.get()) != VK_SUCCESS)
 			core::error::report(e_kind::fatal_error, "Vulkan error : failed to submit draw command buffer");
