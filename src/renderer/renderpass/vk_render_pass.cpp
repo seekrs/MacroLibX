@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:21:36 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/22 23:05:38 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/24 15:31:02 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include <renderer/core/render_core.h>
 #include <renderer/renderer.h>
 #include <renderer/renderpass/vk_framebuffer.h>
-#include <vulkan/vulkan_core.h>
 
 namespace mlx
 {
@@ -36,17 +35,40 @@ namespace mlx
 		colorAttachmentRef.attachment = 0;
 		colorAttachmentRef.layout = (layout == VK_IMAGE_LAYOUT_PRESENT_SRC_KHR ? VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL : layout);
 
-		VkSubpassDescription subpass{};
-		subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
-		subpass.colorAttachmentCount = 1;
-		subpass.pColorAttachments = &colorAttachmentRef;
+		VkSubpassDescription subpass1{};
+		subpass1.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
+		subpass1.colorAttachmentCount = 1;
+		subpass1.pColorAttachments = &colorAttachmentRef;
+
+		VkSubpassDescription subpasses[] = { subpass1 };
+
+		std::vector<VkSubpassDependency> subpassesDeps;
+		subpassesDeps.emplace_back();
+		subpassesDeps.back().srcSubpass = VK_SUBPASS_EXTERNAL;
+		subpassesDeps.back().dstSubpass = 0;
+		subpassesDeps.back().srcStageMask = VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;
+		subpassesDeps.back().dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+		subpassesDeps.back().srcAccessMask = VK_ACCESS_MEMORY_READ_BIT;
+		subpassesDeps.back().dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+		subpassesDeps.back().dependencyFlags = VK_DEPENDENCY_BY_REGION_BIT;
+
+		subpassesDeps.emplace_back();
+		subpassesDeps.back().srcSubpass = 0;
+		subpassesDeps.back().dstSubpass = VK_SUBPASS_EXTERNAL;
+		subpassesDeps.back().srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+		subpassesDeps.back().dstStageMask = VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;
+		subpassesDeps.back().srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+		subpassesDeps.back().dstAccessMask = VK_ACCESS_MEMORY_READ_BIT;
+		subpassesDeps.back().dependencyFlags = VK_DEPENDENCY_BY_REGION_BIT;
 
 		VkRenderPassCreateInfo renderPassInfo{};
 		renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
 		renderPassInfo.attachmentCount = 1;
 		renderPassInfo.pAttachments = &colorAttachment;
-		renderPassInfo.subpassCount = 1;
-		renderPassInfo.pSubpasses = &subpass;
+		renderPassInfo.subpassCount = sizeof(subpasses) / sizeof(VkSubpassDescription);
+		renderPassInfo.pSubpasses = subpasses;
+		renderPassInfo.dependencyCount = static_cast<uint32_t>(subpassesDeps.size());
+		renderPassInfo.pDependencies = subpassesDeps.data();
 
 		if(vkCreateRenderPass(Render_Core::get().getDevice().get(), &renderPassInfo, nullptr, &_renderPass) != VK_SUCCESS)
 			core::error::report(e_kind::fatal_error, "Vulkan : failed to create render pass");
@@ -78,7 +100,6 @@ namespace mlx
 	{
 		if(!_is_running)
 			return;
-
 		vkCmdEndRenderPass(cmd.get());
 		_is_running = false;
 	}

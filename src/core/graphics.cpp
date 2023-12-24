@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 15:13:55 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/22 23:10:51 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/24 09:39:45 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,12 @@ namespace mlx
 		_text_put_pipeline->init(_renderer.get());
 	}
 
-	void GraphicsSupport::endRender() noexcept
+	void GraphicsSupport::render() noexcept
 	{
+		if(!_renderer->beginFrame())
+			return;
+		_proj = glm::ortho<float>(0, _width, 0, _height);
+		_renderer->getUniformBuffer()->setData(sizeof(_proj), &_proj);
 		auto cmd_buff = _renderer->getActiveCmdBuffer().get();
 
 		static std::array<VkDescriptorSet, 2> sets = {
@@ -57,6 +61,8 @@ namespace mlx
 				continue;
 			if(data.texture->getSet() == VK_NULL_HANDLE)
 				data.texture->setDescriptor(_renderer->getFragDescriptorSet().duplicate());
+			if(data.texture->getLayout() != VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL)
+				data.texture->transitionLayout(VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
 			if(!data.texture->hasBeenUpdated())
 				data.texture->updateSet(0);
 			sets[1] = data.texture->getSet();

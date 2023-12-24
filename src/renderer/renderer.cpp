@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:25:16 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/23 01:28:03 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/24 16:04:04 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ namespace mlx
 
 		for(std::size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
 			_semaphores[i].init();
-	
+
 		_uniform_buffer.reset(new UBO);
 		#ifdef DEBUG
 			_uniform_buffer->create(this, sizeof(glm::mat4), "__mlx_matrices_uniform_buffer_");
@@ -51,14 +51,14 @@ namespace mlx
 			{ VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 4096 }
 		};
 		_desc_pool.init(2, pool_sizes);
-		
+
 		_vert_layout.init({
 				{0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER}
 			}, VK_SHADER_STAGE_VERTEX_BIT);
 		_frag_layout.init({
 				{0, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER}
 			}, VK_SHADER_STAGE_FRAGMENT_BIT);
-		
+
 		_vert_set.init(this, &_desc_pool, &_vert_layout);
 		_frag_set.init(this, &_desc_pool, &_frag_layout);
 
@@ -73,9 +73,9 @@ namespace mlx
 	{
 		auto device = Render_Core::get().getDevice().get();
 
-		_cmd.getCmdBuffer(_current_frame_index).waitForExecution();
 		if(_render_target == nullptr)
 		{
+			_cmd.getCmdBuffer(_current_frame_index).waitForExecution();
 			VkResult result = vkAcquireNextImageKHR(device, _swapchain(), UINT64_MAX, _semaphores[_current_frame_index].getImageSemaphore(), VK_NULL_HANDLE, &_image_index);
 
 			if(result == VK_ERROR_OUT_OF_DATE_KHR)
@@ -87,7 +87,11 @@ namespace mlx
 				core::error::report(e_kind::fatal_error, "Vulkan error : failed to acquire swapchain image");
 		}
 		else
+		{
 			_image_index = 0;
+			if(_render_target->getLayout() != VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL)
+				_render_target->transitionLayout(VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
+		}
 
 		_cmd.getCmdBuffer(_current_frame_index).reset();
 		_cmd.getCmdBuffer(_current_frame_index).beginRecord();
@@ -107,7 +111,7 @@ namespace mlx
 
 		VkRect2D scissor{};
 		scissor.offset = { 0, 0 };
-		scissor.extent = _swapchain.getExtent();
+		scissor.extent = { fb.getWidth(), fb.getHeight()};
 		vkCmdSetScissor(_cmd.getCmdBuffer(_current_frame_index).get(), 0, 1, &scissor);
 
 		return true;
@@ -142,11 +146,13 @@ namespace mlx
 			}
 			else if(result != VK_SUCCESS)
 				core::error::report(e_kind::fatal_error, "Vulkan error : failed to present swap chain image");
+			_current_frame_index = (_current_frame_index + 1) % MAX_FRAMES_IN_FLIGHT;
 		}
 		else
-			_cmd.getCmdBuffer(_current_frame_index).submit(nullptr);
-
-		_current_frame_index = (_current_frame_index + 1) % MAX_FRAMES_IN_FLIGHT;
+		{
+			_cmd.getCmdBuffer(_current_frame_index).submitIdle();
+			_current_frame_index = 0;
+		}
 	}
 
 	void Renderer::destroy()

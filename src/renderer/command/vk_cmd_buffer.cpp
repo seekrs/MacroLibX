@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:26:06 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/23 01:32:02 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/24 12:58:36 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,8 @@ namespace mlx
 		VkFence fence;
 		vkCreateFence(device, &fenceCreateInfo, nullptr, &fence);
 		vkResetFences(device, 1, &fence);
-		vkQueueSubmit(Render_Core::get().getQueue().getGraphic(), 1, &submitInfo, fence);
+		if(vkQueueSubmit(Render_Core::get().getQueue().getGraphic(), 1, &submitInfo, fence) != VK_SUCCESS)
+			core::error::report(e_kind::fatal_error, "Vulkan error : failed to submit a single time command buffer");
 		_state = state::submitted;
 		vkWaitForFences(device, 1, &fence, VK_TRUE, UINT64_MAX);
 		vkDestroyFence(device, fence, nullptr);
@@ -101,6 +102,11 @@ namespace mlx
 		{
 			signalSemaphores[0] = semaphores->getRenderImageSemaphore();
 			waitSemaphores[0] = semaphores->getImageSemaphore();
+		}
+		else
+		{
+			signalSemaphores[0] = nullptr;
+			waitSemaphores[0] = nullptr;
 		}
 		VkPipelineStageFlags waitStages[] = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
 
