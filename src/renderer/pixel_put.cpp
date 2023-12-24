@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 15:14:50 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/14 18:26:03 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/23 19:34:30 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ namespace mlx
 	{
 		_texture.render(renderer, 0, 0);
 	}
-	
+
 	void PixelPutPipeline::destroy() noexcept
 	{
 		_buffer.destroy();

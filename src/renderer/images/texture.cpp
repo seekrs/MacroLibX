@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 18:03:35 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/23 01:52:49 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/23 18:49:53 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,16 +121,11 @@ namespace mlx
 			_has_been_modified = false;
 		}
 		auto cmd = renderer.getActiveCmdBuffer();
-		VkImageLayout layout_save = getLayout();
-		if(getLayout() != VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL)
-			transitionLayout(VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, &cmd);
 		_vbo.bind(renderer);
 		_ibo.bind(renderer);
 		glm::vec2 translate(x, y);
 		vkCmdPushConstants(cmd.get(), renderer.getPipeline().getPipelineLayout(), VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(translate), &translate);
 		vkCmdDrawIndexed(cmd.get(), static_cast<uint32_t>(_ibo.getSize() / sizeof(uint16_t)), 1, 0, 0, 0);
-		if(getLayout() != layout_save)
-			transitionLayout(layout_save, &cmd);
 	}
 
 	void Texture::destroy() noexcept

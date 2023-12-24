@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 14:49:49 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/22 23:10:14 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/24 08:56:14 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,7 @@ namespace mlx
 			inline int& getID() noexcept;
 			inline std::shared_ptr<MLX_Window> getWindow();
 
-			inline void beginRender() noexcept;
-			void endRender() noexcept;
+			void render() noexcept;
 
 			inline void clearRenderData() noexcept;
 			inline void pixelPut(int x, int y, uint32_t color) noexcept;
