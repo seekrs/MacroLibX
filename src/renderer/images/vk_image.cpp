@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:59:07 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/16 17:10:33 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/22 23:35:07 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,18 +210,8 @@ namespace mlx
 		CmdBuffer& cmd = Render_Core::get().getSingleTimeCmdBuffer();
 		cmd.beginRecord();
 
-		VkImageMemoryBarrier copy_barrier{};
-		copy_barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
-		copy_barrier.dstAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
-		copy_barrier.oldLayout = VK_IMAGE_LAYOUT_UNDEFINED;
-		copy_barrier.newLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
-		copy_barrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
-		copy_barrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
-		copy_barrier.image = _image;
-		copy_barrier.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-		copy_barrier.subresourceRange.levelCount = 1;
-		copy_barrier.subresourceRange.layerCount = 1;
-		vkCmdPipelineBarrier(cmd.get(), VK_PIPELINE_STAGE_HOST_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT, 0, 0, nullptr, 0, nullptr, 1, &copy_barrier);
+		VkImageLayout layout_save = _layout;
+		transitionLayout(VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, &cmd);
 
 		VkBufferImageCopy region{};
 		region.bufferOffset = 0;
@@ -236,19 +226,7 @@ namespace mlx
 
 		vkCmdCopyBufferToImage(cmd.get(), buffer.get(), _image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &region);
 
-		VkImageMemoryBarrier use_barrier{};
-		use_barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
-		use_barrier.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
-		use_barrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
-		use_barrier.oldLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
-		use_barrier.newLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-		use_barrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
-		use_barrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
-		use_barrier.image = _image;
-		use_barrier.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-		use_barrier.subresourceRange.levelCount = 1;
-		use_barrier.subresourceRange.layerCount = 1;
-		vkCmdPipelineBarrier(cmd.get(), VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT, 0, 0, nullptr, 0, nullptr, 1, &use_barrier);
+		transitionLayout(layout_save, &cmd);
 
 		cmd.endRecord();
 		cmd.submitIdle();
@@ -259,18 +237,8 @@ namespace mlx
 		CmdBuffer& cmd = Render_Core::get().getSingleTimeCmdBuffer();
 		cmd.beginRecord();
 
-		VkImageMemoryBarrier copy_barrier{};
-		copy_barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
-		copy_barrier.dstAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
-		copy_barrier.oldLayout = VK_IMAGE_LAYOUT_UNDEFINED;
-		copy_barrier.newLayout = VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL;
-		copy_barrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
-		copy_barrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
-		copy_barrier.image = _image;
-		copy_barrier.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-		copy_barrier.subresourceRange.levelCount = 1;
-		copy_barrier.subresourceRange.layerCount = 1;
-		vkCmdPipelineBarrier(cmd.get(), VK_PIPELINE_STAGE_HOST_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT, 0, 0, nullptr, 0, nullptr, 1, &copy_barrier);
+		VkImageLayout layout_save = _layout;
+		transitionLayout(VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, &cmd);
 
 		VkBufferImageCopy region{};
 		region.bufferOffset = 0;
@@ -285,31 +253,23 @@ namespace mlx
 
 		vkCmdCopyImageToBuffer(cmd.get(), _image, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, buffer.get(), 1, &region);
 
-		VkImageMemoryBarrier use_barrier{};
-		use_barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
-		use_barrier.srcAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
-		use_barrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
-		use_barrier.oldLayout = VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL;
-		use_barrier.newLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-		use_barrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
-		use_barrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
-		use_barrier.image = _image;
-		use_barrier.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-		use_barrier.subresourceRange.levelCount = 1;
-		use_barrier.subresourceRange.layerCount = 1;
-		vkCmdPipelineBarrier(cmd.get(), VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT, 0, 0, nullptr, 0, nullptr, 1, &use_barrier);
+		transitionLayout(layout_save, &cmd);
 
 		cmd.endRecord();
 		cmd.submitIdle();
 	}
 
-	void Image::transitionLayout(VkImageLayout new_layout)
+	void Image::transitionLayout(VkImageLayout new_layout, CmdBuffer* cmd)
 	{
 		if(new_layout == _layout)
 			return;
 
-		CmdBuffer& cmd = Render_Core::get().getSingleTimeCmdBuffer();
-		cmd.beginRecord();
+		bool singleTime = (cmd == nullptr);
+		if(singleTime)
+		{
+			cmd = &Render_Core::get().getSingleTimeCmdBuffer();
+			cmd->beginRecord();
+		}
 
 		VkImageMemoryBarrier barrier{};
 		barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
@@ -344,10 +304,13 @@ namespace mlx
 		else
 			destinationStage = VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;
 
-		vkCmdPipelineBarrier(cmd.get(), sourceStage, destinationStage, 0, 0, nullptr, 0, nullptr, 1, &barrier);
+		vkCmdPipelineBarrier(cmd->get(), sourceStage, destinationStage, 0, 0, nullptr, 0, nullptr, 1, &barrier);
 
-		cmd.endRecord();
-		cmd.submitIdle();
+		if(singleTime)
+		{
+			cmd->endRecord();
+			cmd->submitIdle();
+		}
 		_layout = new_layout;
 	}
 

@@ -19,14 +19,6 @@ namespace mlx
 	int& GraphicsSupport::getID() noexcept { return _id; }
 	std::shared_ptr<MLX_Window> GraphicsSupport::getWindow() { return _window; }
 
-	void GraphicsSupport::beginRender() noexcept
-	{
-		if(!_renderer->beginFrame())
-			return;
-		_proj = glm::ortho<float>(0, _window->getWidth(), 0, _window->getHeight());
-		_renderer->getUniformBuffer()->setData(sizeof(_proj), &_proj);
-	}
-
 	void GraphicsSupport::clearRenderData() noexcept
 	{
 		_textures_to_render.clear();

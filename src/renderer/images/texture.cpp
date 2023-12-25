@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 18:03:35 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/10 22:46:08 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/23 18:49:53 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,10 @@ namespace mlx
 {
 	void Texture::create(uint8_t* pixels, uint32_t width, uint32_t height, VkFormat format, const char* name, bool dedicated_memory)
 	{
-		Image::create(width, height, format, TILING, VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT | VK_IMAGE_USAGE_SAMPLED_BIT, name, dedicated_memory);
+		Image::create(width, height, format, TILING, VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT | VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_SAMPLED_BIT, name, dedicated_memory);
 		Image::createImageView(VK_IMAGE_VIEW_TYPE_2D, VK_IMAGE_ASPECT_COLOR_BIT);
 		Image::createSampler();
+		transitionLayout(VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
 
 		std::vector<Vertex> vertexData = {
 			{{0, 0},			{1.f, 1.f, 1.f, 1.f},	{0.0f, 0.0f}},
@@ -119,12 +120,12 @@ namespace mlx
 			Image::copyFromBuffer(*_buf_map);
 			_has_been_modified = false;
 		}
-		auto cmd = renderer.getActiveCmdBuffer().get();
+		auto cmd = renderer.getActiveCmdBuffer();
 		_vbo.bind(renderer);
 		_ibo.bind(renderer);
 		glm::vec2 translate(x, y);
-		vkCmdPushConstants(cmd, renderer.getPipeline().getPipelineLayout(), VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(translate), &translate);
-		vkCmdDrawIndexed(cmd, static_cast<uint32_t>(_ibo.getSize() / sizeof(uint16_t)), 1, 0, 0, 0);
+		vkCmdPushConstants(cmd.get(), renderer.getPipeline().getPipelineLayout(), VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(translate), &translate);
+		vkCmdDrawIndexed(cmd.get(), static_cast<uint32_t>(_ibo.getSize() / sizeof(uint16_t)), 1, 0, 0, 0);
 	}
 
 	void Texture::destroy() noexcept
@@ -147,11 +148,13 @@ namespace mlx
 			core::error::report(e_kind::fatal_error, "Image : file not found '%s'", filename.c_str());
 		if(stbi_is_hdr(filename.c_str()))
 			core::error::report(e_kind::fatal_error, "Texture : unsupported image format '%s'", filename.c_str());
-		data = stbi_load(filename.c_str(), w, h, &channels, 4);
+		int dummy_w;
+		int dummy_h;
+		data = stbi_load(filename.c_str(), (w == nullptr ? &dummy_w : w), (h == nullptr ? &dummy_h : h), &channels, 4);
 		#ifdef DEBUG
-			texture.create(data, *w, *h, VK_FORMAT_R8G8B8A8_UNORM, filename.c_str());
+			texture.create(data, (w == nullptr ? dummy_w : *w), (h == nullptr ? dummy_h : *h), VK_FORMAT_R8G8B8A8_UNORM, filename.c_str());
 		#else
-			texture.create(data, *w, *h, VK_FORMAT_R8G8B8A8_UNORM, nullptr);
+			texture.create(data, (w == nullptr ? dummy_w : *w), (h == nullptr ? dummy_h : *h), VK_FORMAT_R8G8B8A8_UNORM, nullptr);
 		#endif
 		stbi_image_free(data);
 		return texture;
