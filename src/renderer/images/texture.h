@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 02:24:58 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/14 14:37:08 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/23 18:49:12 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ namespace mlx
 
 			inline void setDescriptor(DescriptorSet set) noexcept { _set = std::move(set); }
 			inline VkDescriptorSet getSet() noexcept { return _set.isInit() ? _set.get() : VK_NULL_HANDLE; }
-			inline void updateSet(int binding) noexcept { _set.writeDescriptor(binding, getImageView(), getSampler()); _has_been_updated = true; }
+			inline void updateSet(int binding) noexcept { _set.writeDescriptor(binding, *this); _has_been_updated = true; }
 			inline bool hasBeenUpdated() const noexcept { return _has_been_updated; }
 			inline constexpr void resetUpdate() noexcept { _has_been_updated = false; }
 

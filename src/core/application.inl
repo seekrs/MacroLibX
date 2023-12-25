@@ -54,10 +54,19 @@ namespace mlx::core
 		*h = DM.h;
 	}
 
-	void* Application::newGraphicsSuport(std::size_t w, std::size_t h, std::string title)
+	void* Application::newGraphicsSuport(std::size_t w, std::size_t h, const char* title)
 	{
-		_graphics.emplace_back(std::make_unique<GraphicsSupport>(w, h, title, _graphics.size()));
-		_in->addWindow(_graphics.back()->getWindow());
+		auto it = std::find_if(_textures.begin(), _textures.end(), [=](const Texture& texture)
+		{
+			return &texture == reinterpret_cast<Texture*>(const_cast<char*>(title));
+		});
+		if(it != _textures.end())
+			_graphics.emplace_back(std::make_unique<GraphicsSupport>(w, h, reinterpret_cast<Texture*>(const_cast<char*>(title)), _graphics.size()));
+		else
+		{
+			_graphics.emplace_back(std::make_unique<GraphicsSupport>(w, h, title, _graphics.size()));
+			_in->addWindow(_graphics.back()->getWindow());
+		}
 		return static_cast<void*>(&_graphics.back()->getID());
 	}
 

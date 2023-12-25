@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 22:10:52 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/21 00:17:54 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/24 08:56:33 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,12 @@ namespace mlx::core
 		while(_in->is_running())
 		{
 			_in->update();
-			for(auto& gs : _graphics)
-				gs->beginRender();
 
 			if(_loop_hook)
 				_loop_hook(_param);
 
 			for(auto& gs : _graphics)
-				gs->endRender();
+				gs->render();
 		}
 	}
 
