@@ -72,5 +72,7 @@ target("Test")
 
 	add_files("test/main.c")
 
+	add_defines("SDL_MAIN_HANDLED")
+
 	add_packages("libsdl")
 target_end()
