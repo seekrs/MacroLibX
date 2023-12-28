@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 22:10:52 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/24 08:56:33 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/27 21:30:10 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ namespace mlx::core
 
 	void Application::destroyTexture(void* ptr)
 	{
-		vkDeviceWaitIdle(Render_Core::get().getDevice().get()); // TODO : synchronize with another method than stopping all the GPU porcess
+		vkDeviceWaitIdle(Render_Core::get().getDevice().get()); // TODO : synchronize with another method than stopping all the GPU process
 		Texture* texture = static_cast<Texture*>(ptr);
 		texture->destroy();
 	}

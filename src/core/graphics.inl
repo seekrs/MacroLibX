@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "renderer/images/texture.h"
 #include <core/graphics.h>
 #include <type_traits>
 
