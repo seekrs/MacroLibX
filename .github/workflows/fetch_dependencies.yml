@@ -1,13 +1,8 @@
 name: Fetch Dependencies
 
 on:
-  push:
-    paths-ignore:
-      - '.gitignore'
-      - 'LICENSE'
-      - 'README.md'
-  #  schedule:
-  #  - cron: '0 0 * * *' # Run daily
+  schedule:
+    - cron: '0 0 * * *' # Run daily
 
 jobs:
   update-dependencies:
