@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 18:03:35 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/23 18:49:53 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/31 00:49:16 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,18 +54,27 @@ namespace mlx
 			_ibo.create(sizeof(uint16_t) * indexData.size(), indexData.data(), nullptr);
 		#endif
 
+		Buffer staging_buffer;
+		std::size_t size = width * height * formatSize(format);
 		if(pixels != nullptr)
 		{
-			Buffer staging_buffer;
-			std::size_t size = width * height * formatSize(format);
 			#ifdef DEBUG
 				staging_buffer.create(Buffer::kind::dynamic, size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, name, pixels);
 			#else
 				staging_buffer.create(Buffer::kind::dynamic, size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, nullptr, pixels);
 			#endif
-			Image::copyFromBuffer(staging_buffer);
-			staging_buffer.destroy();
 		}
+		else
+		{
+			std::vector<uint32_t> default_pixels(width * height, 0x00000000);
+			#ifdef DEBUG
+				staging_buffer.create(Buffer::kind::dynamic, size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, name, default_pixels.data());
+			#else
+				staging_buffer.create(Buffer::kind::dynamic, size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, nullptr, default_pixels.data());
+			#endif
+		}
+		Image::copyFromBuffer(staging_buffer);
+		staging_buffer.destroy();
 	}
 
 	void Texture::setPixel(int x, int y, uint32_t color) noexcept

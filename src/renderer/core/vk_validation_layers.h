@@ -6,7 +6,7 @@
 /*   By: maldavid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 14:04:25 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/08 19:09:02 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/31 00:38:25 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,19 @@ namespace mlx
 	class ValidationLayers
 	{
 		public:
+			ValidationLayers() = default;
 			void init();
-			void destroy();
 			bool checkValidationLayerSupport();
 			void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo);
+			void destroy();
+			~ValidationLayers() = default;
 
 		private:
 			VkResult createDebugUtilsMessengerEXT(const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator);
 			static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, void* pUserData);
 			void destroyDebugUtilsMessengerEXT(const VkAllocationCallbacks* pAllocator);
 
+		private:
 			VkDebugUtilsMessengerEXT _debugMessenger;
 	};
 }

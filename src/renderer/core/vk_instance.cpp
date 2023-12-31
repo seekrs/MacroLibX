@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:04:21 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/15 16:20:26 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/31 00:40:10 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,15 @@ namespace mlx
 		appInfo.engineVersion = VK_MAKE_VERSION(1, 2, 1);
 		appInfo.apiVersion = VK_API_VERSION_1_2;
 
+		auto extensions = getRequiredExtensions();
+
 		VkInstanceCreateInfo createInfo{};
 		createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
 		createInfo.pApplicationInfo = &appInfo;
-
-		auto extensions = getRequiredExtensions();
 		createInfo.enabledExtensionCount = static_cast<uint32_t>(extensions.size());
 		createInfo.ppEnabledExtensionNames = extensions.data();
+		createInfo.enabledLayerCount = 0; // will be replaced if validation layers are enabled
+		createInfo.pNext = nullptr;
 
 		VkDebugUtilsMessengerCreateInfoEXT debugCreateInfo;
 		if constexpr(enableValidationLayers)
@@ -41,13 +43,8 @@ namespace mlx
 				createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
 				createInfo.ppEnabledLayerNames = validationLayers.data();
 				Render_Core::get().getLayers().populateDebugMessengerCreateInfo(debugCreateInfo);
-				createInfo.pNext = (VkDebugUtilsMessengerCreateInfoEXT*) &debugCreateInfo;
+				createInfo.pNext = static_cast<VkDebugUtilsMessengerCreateInfoEXT*>(&debugCreateInfo);
 			}
-		}
-		else
-		{
-			createInfo.enabledLayerCount = 0;
-			createInfo.pNext = nullptr;
 		}
 
 		VkResult res;
