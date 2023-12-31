@@ -50,7 +50,7 @@ target("mlx")
 	add_options("graphics_memory_dump")
 	add_includedirs("includes", "src", "third_party")
 
-	add_defines("MLX_BUILD")
+	add_defines("MLX_BUILD", "SDL_MAIN_HANDLED")
 
 	add_files("src/**.cpp")
 

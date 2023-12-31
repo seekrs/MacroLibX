@@ -6,11 +6,12 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:14:29 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/12 15:50:02 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/30 23:29:41 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render_core.h"
+#include <iterator>
 #include <vector>
 #include <set>
 #include <SDL2/SDL.h>
@@ -85,8 +86,10 @@ namespace mlx
 
 		std::vector<std::pair<int, VkPhysicalDevice>> devices_score;
 
-		for(const auto& device : devices)
-			devices_score.emplace_back(deviceScore(device, surface), device);
+		std::transform(devices.cbegin(), devices.cend(), std::back_inserter(devices_score), [&](VkPhysicalDevice device)
+		{
+			return std::make_pair(deviceScore(device, surface), device);
+		});
 
 		vkDestroySurfaceKHR(Render_Core::get().getInstance().get(), surface, nullptr);
 		SDL_DestroyWindow(window);
