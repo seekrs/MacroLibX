@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 16:40:09 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/14 16:39:54 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/31 00:52:01 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,18 @@ namespace mlx
 		Image::create(width, height, format, TILING, VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT | VK_IMAGE_USAGE_SAMPLED_BIT, name, dedicated_memory);
 		Image::createImageView(VK_IMAGE_VIEW_TYPE_2D, VK_IMAGE_ASPECT_COLOR_BIT);
 		Image::createSampler();
+		transitionLayout(VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
 
-		if(pixels != nullptr)
+		if(pixels == nullptr)
 		{
-			Buffer staging_buffer;
-			std::size_t size = width * height * formatSize(format);
-			staging_buffer.create(Buffer::kind::dynamic, size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, name, pixels);
-			Image::copyFromBuffer(staging_buffer);
-			staging_buffer.destroy();
+			core::error::report(e_kind::warning, "Renderer : creating an empty texture atlas. They cannot be updated after creation, this might be a mistake or a bug, please report");
+			return;
 		}
+		Buffer staging_buffer;
+		std::size_t size = width * height * formatSize(format);
+		staging_buffer.create(Buffer::kind::dynamic, size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, name, pixels);
+		Image::copyFromBuffer(staging_buffer);
+		staging_buffer.destroy();
 	}
 
 	void TextureAtlas::render(Renderer& renderer, int x, int y, uint32_t ibo_size) const

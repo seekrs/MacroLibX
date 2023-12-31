@@ -6,7 +6,7 @@
 /*   By: kbz_8 <kbz_8.dev@akel-engine.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 22:02:37 by kbz_8             #+#    #+#             */
-/*   Updated: 2023/12/16 19:14:15 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/27 21:31:04 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,7 @@
 #define VMA_STATIC_VULKAN_FUNCTIONS 0
 #define VMA_DYNAMIC_VULKAN_FUNCTIONS 0
 #define VMA_VULKAN_VERSION 1002000
-#ifdef DEBUG
-	#define VMA_ASSERT(expr) (static_cast<bool>(expr) ? void(0) : mlx::core::error::report(e_kind::fatal_error, "Graphics allocator : an assertion has been catched : '%s'", #expr))
-#else
-	#define VMA_ASSERT(expr) ((void)0)
-#endif
+#define VMA_ASSERT(expr) ((void)0)
 #define VMA_IMPLEMENTATION
 
 #ifdef MLX_COMPILER_CLANG
@@ -177,5 +173,7 @@ namespace mlx
 		else if(_active_buffers_allocations != 0)
 			core::error::report(e_kind::error, "Graphics allocator : some MLX-dependant allocations were not freed before destroying the display (%d active allocations), please report, this should not happen", _active_buffers_allocations);
 		vmaDestroyAllocator(_allocator);
+		_active_buffers_allocations = 0;
+		_active_images_allocations = 0;
 	}
 }
