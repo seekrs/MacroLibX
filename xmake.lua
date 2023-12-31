@@ -12,7 +12,8 @@
 
 -- Global settings
 
-add_requires("libsdl", "vulkan-headers")
+add_requires("vulkan-headers")
+add_requires("libsdl", {configs = { sdlmain = false }})
 
 add_rules("mode.debug", "mode.release")
 set_languages("cxx17", "c99")
@@ -50,7 +51,7 @@ target("mlx")
 	add_options("graphics_memory_dump")
 	add_includedirs("includes", "src", "third_party")
 
-	add_defines("MLX_BUILD")
+	add_defines("MLX_BUILD", "SDL_MAIN_HANDLED")
 
 	add_files("src/**.cpp")
 
@@ -71,6 +72,8 @@ target("Test")
 	add_deps("mlx")
 
 	add_files("test/main.c")
+
+	add_defines("SDL_MAIN_HANDLED")
 
 	add_packages("libsdl")
 target_end()

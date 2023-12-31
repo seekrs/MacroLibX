@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:25:42 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/16 18:44:48 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/23 01:24:34 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ namespace mlx
 			void destroy() noexcept;
 
 			void beginRecord(VkCommandBufferUsageFlags usage = 0);
-			void submit(class Semaphore& semaphores) noexcept;
+			void submit(class Semaphore* semaphores) noexcept;
 			void submitIdle() noexcept;
 			inline void waitForExecution() noexcept { _fence.waitAndReset(); _state = state::ready; }
 			inline void reset() noexcept { vkResetCommandBuffer(_cmd_buffer, 0); }

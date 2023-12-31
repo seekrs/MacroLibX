@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 14:49:49 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/11 19:47:03 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/24 08:56:14 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,13 @@ namespace mlx
 	class GraphicsSupport : public non_copyable
 	{
 		public:
-			GraphicsSupport(std::size_t w, std::size_t h, const std::string& title, int id);
+			GraphicsSupport(std::size_t w, std::size_t h, Texture* render_target, int id);
+			GraphicsSupport(std::size_t w, std::size_t h, std::string title, int id);
 
 			inline int& getID() noexcept;
 			inline std::shared_ptr<MLX_Window> getWindow();
 
-			inline void beginRender() noexcept;
-			void endRender() noexcept;
+			void render() noexcept;
 
 			inline void clearRenderData() noexcept;
 			inline void pixelPut(int x, int y, uint32_t color) noexcept;
@@ -56,6 +56,8 @@ namespace mlx
 			std::shared_ptr<MLX_Window> _window;
 			std::unique_ptr<TextPutPipeline> _text_put_pipeline; // unique_ptr because of the size of the class
 			std::unique_ptr<Renderer> _renderer;
+			std::size_t _width = 0;
+			std::size_t _height = 0;
 			int _id;
 	};
 }

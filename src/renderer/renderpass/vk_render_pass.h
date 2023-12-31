@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:22:00 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/08 19:11:14 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/24 13:01:56 by kbz_8            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ namespace mlx
 	class RenderPass
 	{
 		public:
-			void init(VkFormat attachement_format);
+			void init(VkFormat attachement_format, VkImageLayout layout);
 			void destroy() noexcept;
 
 			void begin(class CmdBuffer& cmd, class FrameBuffer& fb);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vk_validation_layers.cpp                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maldavid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 14:05:25 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/10 22:25:36 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/31 00:41:39 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <core/errors.h>
 #include <iostream>
 #include <cstring>
+#include <algorithm>
 
 namespace mlx
 {
@@ -24,10 +25,10 @@ namespace mlx
 		if constexpr(!enableValidationLayers)
 			return;
 
-		VkDebugUtilsMessengerCreateInfoEXT createInfo;
+		VkDebugUtilsMessengerCreateInfoEXT createInfo{};
 		populateDebugMessengerCreateInfo(createInfo);
 		if(createDebugUtilsMessengerEXT(&createInfo, nullptr) != VK_SUCCESS)
-			core::error::report(e_kind::error, "Vulkan : failed to set up debug messenger");
+			core::error::report(e_kind::warning, "Vulkan : failed to set up debug messenger");
 		#ifdef DEBUG
 		else
 			core::error::report(e_kind::message, "Vulkan : enabled validation layers");
@@ -42,36 +43,15 @@ namespace mlx
 		std::vector<VkLayerProperties> availableLayers(layerCount);
 		vkEnumerateInstanceLayerProperties(&layerCount, availableLayers.data());
 
-		for(const char* layerName : validationLayers)
+		return std::all_of(validationLayers.begin(), validationLayers.end(), [&](const char* layerName)
 		{
-			bool layerFound = false;
-
-			for(const auto& layerProperties : availableLayers)
+			if(!std::any_of(availableLayers.begin(), availableLayers.end(), [=](VkLayerProperties props) { return std::strcmp(layerName, props.layerName) == 0; }))
 			{
-				if(std::strcmp(layerName, layerProperties.layerName) == 0)
-				{
-					layerFound = true;
-					break;
-				}
-			}
-
-			if(!layerFound)
+				core::error::report(e_kind::error, "Vulkan : a validation layer was requested but was not found ('%s')", layerName);
 				return false;
-		}
-		return true;
-	}
-
-	void ValidationLayers::destroy()
-	{
-		if constexpr(!enableValidationLayers)
-			return;
-		destroyDebugUtilsMessengerEXT(nullptr);
-	}
-
-	VkResult ValidationLayers::createDebugUtilsMessengerEXT(const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator)
-	{
-		auto func = (PFN_vkCreateDebugUtilsMessengerEXT)vkGetInstanceProcAddr(Render_Core::get().getInstance().get(), "vkCreateDebugUtilsMessengerEXT");
-		return func != nullptr ? func(Render_Core::get().getInstance().get(), pCreateInfo, pAllocator, &_debugMessenger) : VK_ERROR_EXTENSION_NOT_PRESENT;
+			}
+			return true;
+		});
 	}
 
 	void ValidationLayers::populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo)
@@ -81,6 +61,19 @@ namespace mlx
 		createInfo.messageSeverity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
 		createInfo.messageType = VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
 		createInfo.pfnUserCallback = ValidationLayers::debugCallback;
+	}
+
+
+	void ValidationLayers::destroy()
+	{
+		if constexpr(enableValidationLayers)
+			destroyDebugUtilsMessengerEXT(nullptr);
+	}
+
+	VkResult ValidationLayers::createDebugUtilsMessengerEXT(const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator)
+	{
+		auto func = (PFN_vkCreateDebugUtilsMessengerEXT)vkGetInstanceProcAddr(Render_Core::get().getInstance().get(), "vkCreateDebugUtilsMessengerEXT");
+		return func != nullptr ? func(Render_Core::get().getInstance().get(), pCreateInfo, pAllocator, &_debugMessenger) : VK_ERROR_EXTENSION_NOT_PRESENT;
 	}
 
 	VKAPI_ATTR VkBool32 VKAPI_CALL ValidationLayers::debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, [[maybe_unused]] VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, [[maybe_unused]] void* pUserData)
