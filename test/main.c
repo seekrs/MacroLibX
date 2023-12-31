@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:55:21 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/28 16:55:21 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/31 01:13:40 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,13 +93,15 @@ int	window_hook(int event, void *param)
 	return (0);
 }
 
-int	main(void)
+int main(int argc, char* argv[])
 {
 	t_mlx	mlx;
 	void	*img;
 	int		w;
 	int		h;
 
+	(void)argc;
+	(void)argv;
 	mlx.mlx = mlx_init();
 	mlx.win = mlx_new_window(mlx.mlx, 400, 400, "My window");
 	mlx_on_event(mlx.mlx, mlx.win, MLX_KEYDOWN, key_hook, &mlx);
