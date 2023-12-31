@@ -12,7 +12,8 @@
 
 -- Global settings
 
-add_requires("libsdl", "vulkan-headers")
+add_requires("vulkan-headers")
+add_requires("libsdl", configs = { sdlmain = false })
 
 add_rules("mode.debug", "mode.release")
 set_languages("cxx17", "c99")
