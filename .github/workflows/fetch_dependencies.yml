@@ -23,8 +23,9 @@ jobs:
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v5
       with:
-        title: "update dependencies"
-        commit-message: "update dependencies"
+        token: ${{ secrets.PAT }}
+        title: update dependencies
+        commit-message: update dependencies
         committer: GitHub <noreply@github.com>
         author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
         base: indev
