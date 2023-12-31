@@ -14,5 +14,6 @@ rm -rf ../third_party/vulkan
 wget https://github.com/KhronosGroup/Vulkan-Headers/archive/main.zip -O vulkan-headers.zip
 unzip -o vulkan-headers.zip -d ../third_party/
 mv ../third_party/Vulkan-Headers-main/include/vulkan ../third_party/
+mv ../third_party/Vulkan-Headers-main/include/vk_video ../third_party/
 rm -rf ../third_party/Vulkan-Headers-main
 rm vulkan-headers.zip
