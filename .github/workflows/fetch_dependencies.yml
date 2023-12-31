@@ -18,7 +18,7 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Fetch Dependencies
-      run: bash ./scripts/fetch_dependencies.sh; date +%s > report.txt
+      run: cd scripts && bash ./fetch_dependencies.sh
 
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v5
