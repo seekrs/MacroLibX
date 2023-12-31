@@ -1,13 +1,16 @@
 name: Fetch Dependencies
 
 on:
-  schedule:
-    - cron: '0 0 * * *' # Run daily
+  push:
+    paths-ignore:
+      - '.gitignore'
+      - 'LICENSE'
+      - 'README.md'
+  #  schedule:
+  #  - cron: '0 0 * * *' # Run daily
 
 jobs:
   update-dependencies:
-    permissions:
-      contents: write
     runs-on: ubuntu-latest
 
     steps:
