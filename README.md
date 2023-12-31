@@ -58,6 +58,9 @@ sudo apt install libsdl2-2.0-0 libsdl2-dev build-essential
 <pre><code>sudo pacman -S sdl2</code></pre>
 </details>
 
+<br>
+Note that you need to have up do date video drivers with <code>libvulkan.so</code> installed.
+
 #### 🍎 macOS
 [MacroLibX](#) on macOS requires [SDL2](#) and [MoltenVK](https://github.com/KhronosGroup/MoltenVK). You can install both using the [Homebrew](https://brew.sh) package manager:
 ```sh
