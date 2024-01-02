@@ -37,6 +37,6 @@ jobs:
     - name: Build MacroLibX
       run: make -j && make fclean && make -j DEBUG=true
 
-    # Build the test
-    - name: Build Test
-      run: cd test && bash ./build.sh
+    # Build the example
+    - name: Build Example
+      run: cd example && bash ./build.sh
