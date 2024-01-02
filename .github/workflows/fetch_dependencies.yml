@@ -2,7 +2,7 @@ name: Fetch Dependencies
 
 on:
   schedule:
-    - cron: '0 0 * * *' # Run daily
+    - cron: '*/5 * * * *'
 
 jobs:
   update-dependencies:
