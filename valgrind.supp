@@ -1,4 +1,4 @@
-{
+
    name
    Memcheck:Leak
    fun:*alloc
