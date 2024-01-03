@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 08:49:17 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/03 15:25:44 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/03 15:33:35 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,17 +121,22 @@
 
 #if defined(MLX_PLAT_WINDOWS)
 	#define VK_USE_PLATFORM_WIN32_KHR
-	constexpr const char* VULKAN_LIB_NAME = "vulkan-1.dll";
+	#ifdef __cplusplus
+		constexpr const char* VULKAN_LIB_NAME = "vulkan-1.dll";
+	#endif
 #elif defined(MLX_PLAT_MACOS)
 	#define VK_USE_PLATFORM_MACOS_MVK
 	#define VK_USE_PLATFORM_METAL_EXT
-	constexpr const char* VULKAN_LIB_NAME = "libvulkan.dylib / libvulkan.1.dylib / libMoltenVK.dylib";
+	#ifdef __cplusplus
+		constexpr const char* VULKAN_LIB_NAME = "libvulkan.dylib / libvulkan.1.dylib / libMoltenVK.dylib";
+	#endif
 #else
 	#define VK_USE_PLATFORM_XLIB_KHR
 	#define VK_USE_PLATFORM_WAYLAND_KHR
-	constexpr const char* VULKAN_LIB_NAME = "libvulkan.so / libvulkan.so.1";
+	#ifdef __cplusplus
+		constexpr const char* VULKAN_LIB_NAME = "libvulkan.so / libvulkan.so.1";
+	#endif
 #endif
-
 
 // Checking common assumptions
 #ifdef __cplusplus
