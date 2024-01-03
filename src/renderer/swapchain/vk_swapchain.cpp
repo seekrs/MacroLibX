@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:22:28 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/15 21:49:19 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/03 13:18:25 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,9 @@ namespace mlx
 		else
 			createInfo.imageSharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
-		if(vkCreateSwapchainKHR(device, &createInfo, nullptr, &_swapChain) != VK_SUCCESS)
-			core::error::report(e_kind::fatal_error, "Vulkan : failed to create the swapchain");
+		VkResult res = vkCreateSwapchainKHR(device, &createInfo, nullptr, &_swapChain);
+		if(res != VK_SUCCESS)
+			core::error::report(e_kind::fatal_error, "Vulkan : failed to create the swapchain, %s", RCore::verbaliseResultVk(res));
 
 		std::vector<VkImage> tmp;
 		vkGetSwapchainImagesKHR(device, _swapChain, &imageCount, nullptr);

@@ -6,20 +6,20 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:54:21 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/22 23:31:02 by kbz_8            ###   ########.fr       */
+/*   Updated: 2024/01/03 15:28:07 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_VK_IMAGE__
 #define __MLX_VK_IMAGE__
 
+#include <mlx_profile.h>
 #include <volk.h>
 #include <cstddef>
 #include <vector>
 #include <vma.h>
 #include <renderer/command/vk_cmd_buffer.h>
 #include <renderer/command/vk_cmd_pool.h>
-#include <mlx_profile.h>
 
 namespace mlx
 {
