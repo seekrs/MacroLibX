@@ -6,13 +6,14 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:54:21 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/17 17:13:23 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/03 15:28:07 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_VK_IMAGE__
 #define __MLX_VK_IMAGE__
 
+#include <mlx_profile.h>
 #include <volk.h>
 #include <cstddef>
 #include <vector>
@@ -20,7 +21,6 @@
 #include <renderer/core/cmd_resource.h>
 #include <renderer/command/vk_cmd_buffer.h>
 #include <renderer/command/vk_cmd_pool.h>
-#include <mlx_profile.h>
 
 namespace mlx
 {
@@ -46,7 +46,7 @@ namespace mlx
 			void createSampler() noexcept;
 			void copyFromBuffer(class Buffer& buffer);
 			void copyToBuffer(class Buffer& buffer);
-			void transitionLayout(VkImageLayout new_layout);
+			void transitionLayout(VkImageLayout new_layout, CmdBuffer* cmd = nullptr);
 			virtual void destroy() noexcept;
 
 			inline VkImage get() noexcept { return _image; }
@@ -54,6 +54,7 @@ namespace mlx
 			inline VkImageView getImageView() const noexcept { return _image_view; }
 			inline VkFormat getFormat() const noexcept { return _format; }
 			inline VkImageTiling getTiling() const noexcept { return _tiling; }
+			inline VkImageLayout getLayout() const noexcept { return _layout; }
 			inline VkSampler getSampler() const noexcept { return _sampler; }
 			inline uint32_t getWidth() const noexcept { return _width; }
 			inline uint32_t getHeight() const noexcept { return _height; }

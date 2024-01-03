@@ -6,15 +6,17 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 18:40:44 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/14 16:45:11 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/03 13:14:24 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vk_descriptor_set.h"
+#include "renderer/core/render_core.h"
 #include "vk_descriptor_pool.h"
 #include "vk_descriptor_set_layout.h"
 #include <renderer/buffers/vk_ubo.h>
 #include <renderer/renderer.h>
+#include <renderer/images/vk_image.h>
 
 namespace mlx
 {
@@ -35,8 +37,9 @@ namespace mlx
 		allocInfo.descriptorSetCount = static_cast<uint32_t>(MAX_FRAMES_IN_FLIGHT);
 		allocInfo.pSetLayouts = layouts.data();
 
-		if(vkAllocateDescriptorSets(device, &allocInfo, _desc_set.data()) != VK_SUCCESS)
-			core::error::report(e_kind::fatal_error, "Vulkan : failed to allocate descriptor set");
+		VkResult res = vkAllocateDescriptorSets(device, &allocInfo, _desc_set.data());
+		if(res != VK_SUCCESS)
+			core::error::report(e_kind::fatal_error, "Vulkan : failed to allocate descriptor set, %s", RCore::verbaliseResultVk(res));
 		#ifdef DEBUG
 			core::error::report(e_kind::message, "Vulkan : created new descriptor set");
 		#endif
@@ -66,14 +69,14 @@ namespace mlx
 		}
 	}
 
-	void DescriptorSet::writeDescriptor(int binding, VkImageView view, VkSampler sampler) const noexcept
+	void DescriptorSet::writeDescriptor(int binding, const Image& image) const noexcept
 	{
 		auto device = Render_Core::get().getDevice().get();
 
 		VkDescriptorImageInfo imageInfo{};
-		imageInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-		imageInfo.imageView = view;
-		imageInfo.sampler = sampler;
+		imageInfo.imageLayout = image.getLayout();
+		imageInfo.imageView = image.getImageView();
+		imageInfo.sampler = image.getSampler();
 
 		VkWriteDescriptorSet descriptorWrite{};
 		descriptorWrite.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;

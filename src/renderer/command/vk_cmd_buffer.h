@@ -6,16 +6,16 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:25:42 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/17 20:01:55 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/03 15:27:20 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_VK_CMD_BUFFER__
 #define __MLX_VK_CMD_BUFFER__
 
+#include <mlx_profile.h>
 #include <volk.h>
 #include <renderer/core/vk_fence.h>
-#include <mlx_profile.h>
 
 namespace mlx
 {
@@ -46,7 +46,7 @@ namespace mlx
 			void destroy() noexcept;
 
 			void beginRecord(VkCommandBufferUsageFlags usage = 0);
-			void submit(class Semaphore& semaphores) noexcept;
+			void submit(class Semaphore* semaphores) noexcept;
 			void submitIdle() noexcept;
 			inline void waitForExecution() noexcept { _fence.waitAndReset(); _state = state::ready; }
 			inline void reset() noexcept { vkResetCommandBuffer(_cmd_buffer, 0); }

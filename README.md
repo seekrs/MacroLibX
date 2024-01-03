@@ -1,12 +1,12 @@
 <div align="center">
     <img src="./res/logo.png" alt="drawing" width="200"/>
     <div align="center">
-        <a href="https://github.com/420verfl0w/MacroLibX/actions/workflows/linux_clang.yml"><img src="https://github.com/420verfl0w/MacroLibX/actions/workflows/linux_clang.yml/badge.svg"></a>
-        <a href="https://github.com/420verfl0w/MacroLibX/actions/workflows/linux_gcc.yml"><img src="https://github.com/420verfl0w/MacroLibX/actions/workflows/linux_gcc.yml/badge.svg"></a>
-        <a href="https://github.com/420verfl0w/MacroLibX/actions/workflows/macos_x86.yml"><img src="https://github.com/420verfl0w/MacroLibX/actions/workflows/macos_x86.yml/badge.svg"></a>
+        <a href="https://github.com/seekrs/MacroLibX/actions/workflows/linux_clang.yml"><img src="https://github.com/seekrs/MacroLibX/actions/workflows/linux_clang.yml/badge.svg"></a>
+        <a href="https://github.com/seekrs/MacroLibX/actions/workflows/linux_gcc.yml"><img src="https://github.com/seekrs/MacroLibX/actions/workflows/linux_gcc.yml/badge.svg"></a>
+        <a href="https://github.com/seekrs/MacroLibX/actions/workflows/macos_x86.yml"><img src="https://github.com/seekrs/MacroLibX/actions/workflows/macos_x86.yml/badge.svg"></a>
     </div>
     <div align="center">
-        <a href="https://github.com/420verfl0w/MacroLibX/actions/workflows/windows.yml"><img src="https://github.com/420verfl0w/MacroLibX/actions/workflows/windows.yml/badge.svg"></a>
+        <a href="https://github.com/seekrs/MacroLibX/actions/workflows/windows.yml"><img src="https://github.com/seekrs/MacroLibX/actions/workflows/windows.yml/badge.svg"></a>
     </div>
 </div>
 
@@ -58,6 +58,9 @@ sudo apt install libsdl2-2.0-0 libsdl2-dev build-essential
 <pre><code>sudo pacman -S sdl2</code></pre>
 </details>
 
+<br>
+Note that you need to have up do date video drivers with <code>libvulkan.so</code> installed.
+
 #### 🍎 macOS
 [MacroLibX](#) on macOS requires [SDL2](#) and [MoltenVK](https://github.com/KhronosGroup/MoltenVK). You can install both using the [Homebrew](https://brew.sh) package manager:
 ```sh
@@ -71,7 +74,7 @@ To build on Windows you may need to use the [xmake](https://xmake.io) build. [He
 ### Clone and Build
 Finally, you can clone the Git repository. When inside it, run the GNU `make` command to compile MacroLibX. 
 ```bash
-git clone https://github.com/420verfl0w/MacroLibX.git
+git clone https://github.com/seekrs/MacroLibX.git
 cd MacroLibX
 make
 ```

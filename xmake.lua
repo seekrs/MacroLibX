@@ -6,13 +6,13 @@
 --   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2023/12/07 15:21:38 by kbz_8             #+#    #+#             --
---   Updated: 2023/12/07 15:21:38 by kbz_8            ###   ########.fr       --
+--   Updated: 2024/01/02 23:40:20 by kbz_8            ###   ########.fr       --
 --                                                                            --
 --------------------------------------------------------------------------------
 
 -- Global settings
 
-add_requires("libsdl", "vulkan-headers")
+add_requires("libsdl", {configs = { sdlmain = false }})
 
 add_rules("mode.debug", "mode.release")
 set_languages("cxx17", "c99")
@@ -50,11 +50,11 @@ target("mlx")
 	add_options("graphics_memory_dump")
 	add_includedirs("includes", "src", "third_party")
 
-	add_defines("MLX_BUILD")
+	add_defines("MLX_BUILD", "SDL_MAIN_HANDLED")
 
 	add_files("src/**.cpp")
 
-	add_packages("libsdl", "vulkan-headers")
+	add_packages("libsdl")
 
 	if is_mode("debug") then
 		add_defines("DEBUG")
@@ -64,13 +64,15 @@ target_end() -- optional but I think the code is cleaner with this -- optional b
 target("Test")
 	set_default(false)
 	set_kind("binary")
-	set_targetdir("test")
+	set_targetdir("example")
 
 	add_linkdirs("./")
 
 	add_deps("mlx")
 
-	add_files("test/main.c")
+	add_files("example/main.c")
+
+	add_defines("SDL_MAIN_HANDLED")
 
 	add_packages("libsdl")
 target_end()
