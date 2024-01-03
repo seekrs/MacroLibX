@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:59:07 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/22 23:35:07 by kbz_8            ###   ########.fr       */
+/*   Updated: 2024/01/03 13:16:21 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,8 +182,9 @@ namespace mlx
 		viewInfo.subresourceRange.baseArrayLayer = 0;
 		viewInfo.subresourceRange.layerCount = 1;
 
-		if(vkCreateImageView(Render_Core::get().getDevice().get(), &viewInfo, nullptr, &_image_view) != VK_SUCCESS)
-			core::error::report(e_kind::fatal_error, "Vulkan : failed to create an image view");
+		VkResult res = vkCreateImageView(Render_Core::get().getDevice().get(), &viewInfo, nullptr, &_image_view);
+		if(res != VK_SUCCESS)
+			core::error::report(e_kind::fatal_error, "Vulkan : failed to create an image view, %s", RCore::verbaliseResultVk(res));
 	}
 
 	void Image::createSampler() noexcept
@@ -201,8 +202,9 @@ namespace mlx
 		info.anisotropyEnable = VK_FALSE;
 		info.maxAnisotropy = 1.0f;
 
-		if(vkCreateSampler(Render_Core::get().getDevice().get(), &info, nullptr, &_sampler) != VK_SUCCESS)
-			core::error::report(e_kind::fatal_error, "Vulkan : failed to create an image");
+		VkResult res = vkCreateSampler(Render_Core::get().getDevice().get(), &info, nullptr, &_sampler);
+		if(res != VK_SUCCESS)
+			core::error::report(e_kind::fatal_error, "Vulkan : failed to create an image, %s", RCore::verbaliseResultVk(res));
 	}
 
 	void Image::copyFromBuffer(Buffer& buffer)

@@ -6,15 +6,15 @@
 /*   By: maldavid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 14:04:25 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/31 00:38:25 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/03 15:26:49 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __VK_VALIDATION_LAYERS__
 #define __VK_VALIDATION_LAYERS__
 
-#include <volk.h>
 #include <mlx_profile.h>
+#include <volk.h>
 
 namespace mlx
 {

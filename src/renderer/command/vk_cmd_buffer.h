@@ -6,16 +6,16 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:25:42 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/23 01:24:34 by kbz_8            ###   ########.fr       */
+/*   Updated: 2024/01/03 15:27:20 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_VK_CMD_BUFFER__
 #define __MLX_VK_CMD_BUFFER__
 
+#include <mlx_profile.h>
 #include <volk.h>
 #include <renderer/core/vk_fence.h>
-#include <mlx_profile.h>
 
 namespace mlx
 {

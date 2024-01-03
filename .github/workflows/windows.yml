@@ -58,6 +58,6 @@ jobs:
     - name: Build MacroLibX
       run: xmake --yes
 
-    # Build the test
-    - name: Build Test
+    # Build the example
+    - name: Build Example
       run: xmake build --yes Test

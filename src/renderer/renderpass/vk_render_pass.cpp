@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:21:36 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/24 15:31:02 by kbz_8            ###   ########.fr       */
+/*   Updated: 2024/01/03 13:17:56 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,9 @@ namespace mlx
 		renderPassInfo.dependencyCount = static_cast<uint32_t>(subpassesDeps.size());
 		renderPassInfo.pDependencies = subpassesDeps.data();
 
-		if(vkCreateRenderPass(Render_Core::get().getDevice().get(), &renderPassInfo, nullptr, &_renderPass) != VK_SUCCESS)
-			core::error::report(e_kind::fatal_error, "Vulkan : failed to create render pass");
+		VkResult res = vkCreateRenderPass(Render_Core::get().getDevice().get(), &renderPassInfo, nullptr, &_renderPass);
+		if(res != VK_SUCCESS)
+			core::error::report(e_kind::fatal_error, "Vulkan : failed to create render pass, %s", RCore::verbaliseResultVk(res));
 		#ifdef DEBUG
 			core::error::report(e_kind::message, "Vulkan : created new render pass");
 		#endif

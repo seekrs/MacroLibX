@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 21:27:38 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/22 22:00:37 by kbz_8            ###   ########.fr       */
+/*   Updated: 2024/01/03 13:16:57 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -305,8 +305,9 @@ namespace mlx
 		pipelineInfo.subpass = 0;
 		pipelineInfo.basePipelineHandle = VK_NULL_HANDLE;
 
-		if(vkCreateGraphicsPipelines(Render_Core::get().getDevice().get(), VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &_graphicsPipeline) != VK_SUCCESS)
-			core::error::report(e_kind::fatal_error, "Vulkan : failed to create a graphics pipeline");
+		VkResult res = vkCreateGraphicsPipelines(Render_Core::get().getDevice().get(), VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &_graphicsPipeline);
+		if(res != VK_SUCCESS)
+			core::error::report(e_kind::fatal_error, "Vulkan : failed to create a graphics pipeline, %s", RCore::verbaliseResultVk(res));
 #ifdef DEBUG
 		core::error::report(e_kind::message, "Vulkan : created new graphic pipeline");
 #endif
