@@ -6,17 +6,17 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 15:05:05 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/11 19:47:47 by kbz_8            ###   ########.fr       */
+/*   Updated: 2024/01/03 15:27:02 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __VK_IBO__
 #define __VK_IBO__
 
+#include <mlx_profile.h>
 #include <volk.h>
 #include "vk_buffer.h"
 #include <renderer/renderer.h>
-#include <mlx_profile.h>
 
 namespace mlx
 {
