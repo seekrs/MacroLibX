@@ -6,30 +6,34 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 23:33:34 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/15 20:32:01 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/03 13:47:13 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #define VOLK_IMPLEMENTATION
 
-#if defined(_WIN32) || defined(_WIN64)
+#if defined(MLX_PLAT_WINDOWS)
 	#define VK_USE_PLATFORM_WIN32_KHR
-#elif defined(__APPLE__) || defined(__MACH__)
+	constexpr const char* VULKAN_LIB_NAME = "vulkan-1.dll";
+#elif defined(MLX_PLAT_MACOS)
 	#define VK_USE_PLATFORM_MACOS_MVK
 	#define VK_USE_PLATFORM_METAL_EXT
+	constexpr const char* VULKAN_LIB_NAME = "libvulkan.dylib / libvulkan.1.dylib / libMoltenVK.dylib";
 #else
 	#define VK_USE_PLATFORM_XLIB_KHR
 	#define VK_USE_PLATFORM_WAYLAND_KHR
+	constexpr const char* VULKAN_LIB_NAME = "libvulkan.so / libvulkan.so.1";
 #endif
 
-#include "render_core.h"
+#include <mlx_profile.h>
+#include <renderer/core/render_core.h>
 #include <mutex>
 
 #ifdef DEBUG
-	#ifndef MLX_COMPILER_MSVC
-		#warning "MLX is being compiled in debug mode, this activates Vulkan's validation layers and debug messages which may impact rendering performances"
-	#else
+	#ifdef MLX_COMPILER_MSVC
 		#pragma NOTE("MLX is being compiled in debug mode, this activates Vulkan's validation layers and debug messages which may impact rendering performances")
+	#else
+		#warning "MLX is being compiled in debug mode, this activates Vulkan's validation layers and debug messages which may impact rendering performances"
 	#endif
 #endif
 
@@ -88,7 +92,8 @@ namespace mlx
 
 	void Render_Core::init()
 	{
-		volkInitialize();
+		if(volkInitialize() != VK_SUCCESS)
+			core::error::report(e_kind::fatal_error, "Vulkan loader : cannot load %s, are you sure Vulkan is installed on your system ?", VULKAN_LIB_NAME);
 
 		_instance.init();
 		volkLoadInstance(_instance.get());

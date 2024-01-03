@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:18:06 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/20 07:24:26 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/03 13:17:27 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,9 @@ namespace mlx
 		framebufferInfo.height = _height;
 		framebufferInfo.layers = 1;
 
-		if(vkCreateFramebuffer(Render_Core::get().getDevice().get(), &framebufferInfo, nullptr, &_framebuffer) != VK_SUCCESS)	
-			core::error::report(e_kind::fatal_error, "Vulkan : failed to create a framebuffer");
+		VkResult res = vkCreateFramebuffer(Render_Core::get().getDevice().get(), &framebufferInfo, nullptr, &_framebuffer);
+		if(res != VK_SUCCESS)	
+			core::error::report(e_kind::fatal_error, "Vulkan : failed to create a framebuffer, %s", RCore::verbaliseResultVk(res));
 		#ifdef DEBUG
 			core::error::report(e_kind::message, "Vulkan : created new framebuffer");
 		#endif
