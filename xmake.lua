@@ -64,7 +64,7 @@ target_end() -- optional but I think the code is cleaner with this -- optional b
 target("Test")
 	set_default(false)
 	set_kind("binary")
-	set_targetdir("test")
+	set_targetdir("example")
 
 	add_linkdirs("./")
 
