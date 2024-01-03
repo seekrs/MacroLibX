@@ -18,6 +18,7 @@
 #include <cstddef>
 #include <vector>
 #include <vma.h>
+#include <renderer/core/cmd_resource.h>
 #include <renderer/command/vk_cmd_buffer.h>
 #include <renderer/command/vk_cmd_pool.h>
 
@@ -25,7 +26,7 @@ namespace mlx
 {
 	uint32_t formatSize(VkFormat format);
 
-	class Image
+	class Image : public CmdResource
 	{
 		friend class SwapChain;
 

@@ -38,7 +38,7 @@ namespace mlx
 			void setPixel(int x, int y, uint32_t color) noexcept;
 			int getPixel(int x, int y) noexcept;
 
-			inline void setDescriptor(DescriptorSet set) noexcept { _set = std::move(set); }
+			inline void setDescriptor(DescriptorSet&& set) noexcept { _set = set; }
 			inline VkDescriptorSet getSet() noexcept { return _set.isInit() ? _set.get() : VK_NULL_HANDLE; }
 			inline void updateSet(int binding) noexcept { _set.writeDescriptor(binding, *this); _has_been_updated = true; }
 			inline bool hasBeenUpdated() const noexcept { return _has_been_updated; }
