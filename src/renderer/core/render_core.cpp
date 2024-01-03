@@ -6,24 +6,11 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 23:33:34 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/03 13:47:13 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/03 15:22:38 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #define VOLK_IMPLEMENTATION
-
-#if defined(MLX_PLAT_WINDOWS)
-	#define VK_USE_PLATFORM_WIN32_KHR
-	constexpr const char* VULKAN_LIB_NAME = "vulkan-1.dll";
-#elif defined(MLX_PLAT_MACOS)
-	#define VK_USE_PLATFORM_MACOS_MVK
-	#define VK_USE_PLATFORM_METAL_EXT
-	constexpr const char* VULKAN_LIB_NAME = "libvulkan.dylib / libvulkan.1.dylib / libMoltenVK.dylib";
-#else
-	#define VK_USE_PLATFORM_XLIB_KHR
-	#define VK_USE_PLATFORM_WAYLAND_KHR
-	constexpr const char* VULKAN_LIB_NAME = "libvulkan.so / libvulkan.so.1";
-#endif
 
 #include <mlx_profile.h>
 #include <renderer/core/render_core.h>
