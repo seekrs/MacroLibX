@@ -6,7 +6,7 @@
 #    By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/04 16:43:41 by maldavid          #+#    #+#              #
-#    Updated: 2023/12/12 13:38:08 by kbz_8            ###   ########.fr        #
+#    Updated: 2023/12/31 01:09:30 by maldavid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ MODE	= "release"
 
 CXX		= clang++
 
-CXXFLAGS	= -std=c++17 -O3 -fPIC -Wall -Wextra -Werror
+CXXFLAGS	= -std=c++17 -O3 -fPIC -Wall -Wextra -Werror -DSDL_MAIN_HANDLED
 INCLUDES	= -I./includes -I./src -I./third_party
 
 LDLIBS =

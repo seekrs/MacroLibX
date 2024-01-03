@@ -6,16 +6,16 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 18:39:36 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/14 17:12:49 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/03 15:27:50 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __VK_DESCRIPTOR_SET__
 #define __VK_DESCRIPTOR_SET__
 
+#include <mlx_profile.h>
 #include <volk.h>
 #include <array>
-#include <mlx_profile.h>
 #include <renderer/core/render_core.h>
 
 namespace mlx
@@ -26,7 +26,7 @@ namespace mlx
 			void init(class Renderer* renderer, class DescriptorPool* pool, class DescriptorSetLayout* layout);
 
 			void writeDescriptor(int binding, class UBO* ubo) const noexcept;
-			void writeDescriptor(int binding, VkImageView view, VkSampler sampler) const noexcept;
+			void writeDescriptor(int binding, const class Image& image) const noexcept;
 
 			inline bool isInit() const noexcept { return _pool != nullptr && _renderer != nullptr; }
 

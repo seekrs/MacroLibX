@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:23:27 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/08 19:11:30 by kbz_8            ###   ########.fr       */
+/*   Updated: 2024/01/03 15:28:39 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 #define __MLX_VK_SWAPCHAIN__
 
 #include <vector>
-#include <volk.h>
 #include <mlx_profile.h>
+#include <volk.h>
 #include <renderer/images/vk_image.h>
 
 namespace mlx

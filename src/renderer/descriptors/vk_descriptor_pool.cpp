@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 18:34:23 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/18 17:23:05 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/03 13:13:54 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,9 @@ namespace mlx
 		poolInfo.pPoolSizes = size;
 		poolInfo.maxSets = 8192;
 
-		if(vkCreateDescriptorPool(Render_Core::get().getDevice().get(), &poolInfo, nullptr, &_pool) != VK_SUCCESS)
-			core::error::report(e_kind::fatal_error, "Vulkan : failed to create descriptor pool");
+		VkResult res = vkCreateDescriptorPool(Render_Core::get().getDevice().get(), &poolInfo, nullptr, &_pool);
+		if(res != VK_SUCCESS)
+			core::error::report(e_kind::fatal_error, "Vulkan : failed to create descriptor pool, %s", RCore::verbaliseResultVk(res));
 	}
 
 	void DescriptorPool::destroy() noexcept    

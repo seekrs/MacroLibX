@@ -6,16 +6,16 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:03:04 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/08 19:08:14 by kbz_8            ###   ########.fr       */
+/*   Updated: 2024/01/03 15:26:26 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_VK_INSTANCE__
 #define __MLX_VK_INSTANCE__
 
+#include <mlx_profile.h>
 #include <volk.h>
 #include <vector>
-#include <mlx_profile.h>
 
 namespace mlx
 {

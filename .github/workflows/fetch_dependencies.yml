@@ -1,0 +1,29 @@
+name: Fetch Dependencies
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Runs daily
+
+jobs:
+  update-dependencies:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Run Fetch Dependencies Script
+      run: cd scripts && bash ./fetch_dependencies.sh
+
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v5
+      with:
+        title: update dependencies
+        commit-message: "[BOT] update dependencies"
+        committer: GitHub <noreply@github.com>
+        author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+        signoff: false
+        base: indev
+        branch: auto_deps_updates
+        labels: |
+          automated

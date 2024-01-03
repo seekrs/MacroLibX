@@ -6,13 +6,14 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:16:32 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/15 20:31:08 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/03 15:26:08 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_RENDER_CORE__
 #define __MLX_RENDER_CORE__
 
+#include <mlx_profile.h>
 #include <volk.h>
 #include <optional>
 
@@ -25,7 +26,6 @@
 
 #include <utils/singleton.h>
 #include <core/errors.h>
-#include <mlx_profile.h>
 
 namespace mlx
 {
