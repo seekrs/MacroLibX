@@ -19,6 +19,9 @@
 
 namespace mlx
 {
+	class Buffer;
+	class Image;
+
 	class CmdBuffer
 	{
 		public:
@@ -31,9 +34,15 @@ namespace mlx
 				submitted,  // buffer has been submitted
 			};
 
+			enum class kind
+			{
+				single_time = 0,
+				long_time
+			};
+
 		public:
-			void init(class CmdManager* manager);
-			void init(class CmdPool* pool);
+			void init(kind type, class CmdManager* manager);
+			void init(kind type, class CmdPool* pool);
 			void destroy() noexcept;
 
 			void beginRecord(VkCommandBufferUsageFlags usage = 0);
@@ -42,6 +51,12 @@ namespace mlx
 			inline void waitForExecution() noexcept { _fence.waitAndReset(); _state = state::ready; }
 			inline void reset() noexcept { vkResetCommandBuffer(_cmd_buffer, 0); }
 			void endRecord();
+
+			void bindVertexBuffer(Buffer& buffer) const noexcept;
+			void bindIndexBuffer(Buffer& buffer) const noexcept;
+			void copyBuffer(Buffer& dst, Buffer& src) const noexcept;
+			void copyBufferToImage(Buffer& buffer, Image& image) const noexcept;
+			void copyImagetoBuffer(Image& image, Buffer& buffer) const noexcept;
 
 			inline bool isInit() const noexcept { return _state != state::uninit; }
 			inline bool isReadyToBeUsed() const noexcept { return _state == state::ready; }
@@ -58,6 +73,7 @@ namespace mlx
 			VkCommandBuffer _cmd_buffer = VK_NULL_HANDLE;
 			class CmdPool* _pool = nullptr;
 			state _state = state::uninit;
+			kind _type;
 	};
 }
 

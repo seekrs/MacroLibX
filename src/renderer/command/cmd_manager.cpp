@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 17:50:52 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/02 17:51:46 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/17 20:10:45 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ namespace mlx
 	{
 		_cmd_pool.init();
 		for(int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
-			_cmd_buffers[i].init(this);
+			_cmd_buffers[i].init(CmdBuffer::kind::long_time, this);
 	}
 
 	void CmdManager::beginRecord(int active_image_index)

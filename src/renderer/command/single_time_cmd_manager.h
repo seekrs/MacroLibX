@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 18:25:57 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/16 18:09:56 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/17 17:36:18 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,11 @@
 #include <vector>
 
 #include <renderer/command/vk_cmd_pool.h>
-#include <renderer/command/vk_cmd_buffer.h>
 
 namespace mlx
 {
+	class CmdBuffer;
+
 	class SingleTimeCmdManager
 	{
 		public:

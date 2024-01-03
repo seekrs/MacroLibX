@@ -6,12 +6,13 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 19:57:49 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/16 18:46:26 by maldavid         ###   ########.fr       */
+/*   Updated: 2023/12/17 20:10:25 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <algorithm>
 #include <renderer/command/single_time_cmd_manager.h>
+#include <renderer/command/vk_cmd_buffer.h>
 #include <renderer/core/render_core.h>
 
 namespace mlx
@@ -24,7 +25,7 @@ namespace mlx
 		for(int i = 0; i < MIN_POOL_SIZE; i++)
 		{
 			_buffers.emplace_back();
-			_buffers.back().init(&_pool);
+			_buffers.back().init(CmdBuffer::kind::single_time, &_pool);
 		}
 	}
 
@@ -38,7 +39,7 @@ namespace mlx
 				return buf;
 			}
 		}
-		_buffers.emplace_back().init(&_pool);
+		_buffers.emplace_back().init(CmdBuffer::kind::single_time, &_pool);
 		return _buffers.back();
 	}
 

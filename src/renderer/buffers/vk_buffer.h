@@ -16,10 +16,11 @@
 #include <mlx_profile.h>
 #include <volk.h>
 #include <renderer/core/render_core.h>
+#include <renderer/core/cmd_resource.h>
 
 namespace mlx
 {
-	class Buffer
+	class Buffer : public CmdResource
 	{
 		public:
 			enum class kind { dynamic, dynamic_device_local, uniform, constant };
