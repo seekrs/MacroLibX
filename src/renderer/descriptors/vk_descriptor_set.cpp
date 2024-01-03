@@ -6,11 +6,12 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 18:40:44 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/24 09:37:55 by kbz_8            ###   ########.fr       */
+/*   Updated: 2024/01/03 13:14:24 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vk_descriptor_set.h"
+#include "renderer/core/render_core.h"
 #include "vk_descriptor_pool.h"
 #include "vk_descriptor_set_layout.h"
 #include <renderer/buffers/vk_ubo.h>
@@ -36,8 +37,9 @@ namespace mlx
 		allocInfo.descriptorSetCount = static_cast<uint32_t>(MAX_FRAMES_IN_FLIGHT);
 		allocInfo.pSetLayouts = layouts.data();
 
-		if(vkAllocateDescriptorSets(device, &allocInfo, _desc_set.data()) != VK_SUCCESS)
-			core::error::report(e_kind::fatal_error, "Vulkan : failed to allocate descriptor set");
+		VkResult res = vkAllocateDescriptorSets(device, &allocInfo, _desc_set.data());
+		if(res != VK_SUCCESS)
+			core::error::report(e_kind::fatal_error, "Vulkan : failed to allocate descriptor set, %s", RCore::verbaliseResultVk(res));
 		#ifdef DEBUG
 			core::error::report(e_kind::message, "Vulkan : created new descriptor set");
 		#endif

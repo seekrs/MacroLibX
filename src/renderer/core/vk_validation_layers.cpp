@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 14:05:25 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/31 00:41:39 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/03 13:11:27 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,9 @@ namespace mlx
 
 		VkDebugUtilsMessengerCreateInfoEXT createInfo{};
 		populateDebugMessengerCreateInfo(createInfo);
-		if(createDebugUtilsMessengerEXT(&createInfo, nullptr) != VK_SUCCESS)
-			core::error::report(e_kind::warning, "Vulkan : failed to set up debug messenger");
+		VkResult res = createDebugUtilsMessengerEXT(&createInfo, nullptr);
+		if(res != VK_SUCCESS)
+			core::error::report(e_kind::warning, "Vulkan : failed to set up debug messenger, %s", RCore::verbaliseResultVk(res));
 		#ifdef DEBUG
 		else
 			core::error::report(e_kind::message, "Vulkan : enabled validation layers");

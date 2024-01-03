@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:24:33 by maldavid          #+#    #+#             */
-/*   Updated: 2023/11/18 17:23:38 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/03 13:13:25 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,9 @@ namespace mlx
 		poolInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
 		poolInfo.queueFamilyIndex = Render_Core::get().getQueue().getFamilies().graphicsFamily.value();
 
-		if(vkCreateCommandPool(Render_Core::get().getDevice().get(), &poolInfo, nullptr, &_cmd_pool) != VK_SUCCESS)
-			core::error::report(e_kind::fatal_error, "Vulkan : failed to create command pool");
+		VkResult res = vkCreateCommandPool(Render_Core::get().getDevice().get(), &poolInfo, nullptr, &_cmd_pool);
+		if(res != VK_SUCCESS)
+			core::error::report(e_kind::fatal_error, "Vulkan : failed to create command pool, %s", RCore::verbaliseResultVk(res));
 	}
 
 	void CmdPool::destroy() noexcept
