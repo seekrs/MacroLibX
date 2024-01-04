@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:26:06 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/03 13:12:58 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/04 12:27:19 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,8 +121,8 @@ namespace mlx
 		}
 		else
 		{
-			signalSemaphores[0] = nullptr;
-			waitSemaphores[0] = nullptr;
+			signalSemaphores[0] = VK_NULL_HANDLE;
+			waitSemaphores[0] = VK_NULL_HANDLE;
 		}
 		VkPipelineStageFlags waitStages[] = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
 
