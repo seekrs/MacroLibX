@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:54:21 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/03 15:28:07 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/05 22:36:58 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,11 @@
 namespace mlx
 {
 	uint32_t formatSize(VkFormat format);
+	bool isStencilFormat(VkFormat format);
+	bool isDepthFormat(VkFormat format);
+	VkFormat bitsToFormat(uint32_t bits);
+	VkPipelineStageFlags layoutToAccessMask(VkImageLayout layout, bool isDestination);
+	VkPipelineStageFlags accessFlagsToPipelineStage(VkAccessFlags accessFlags, VkPipelineStageFlags stageFlags);
 
 	class Image : public CmdResource
 	{
