@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:26:06 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/04 12:27:19 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/05 23:06:04 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <renderer/command/cmd_manager.h>
 #include <renderer/core/vk_semaphore.h>
 #include <renderer/buffers/vk_buffer.h>
+#include <renderer/images/vk_image.h>
 
 namespace mlx
 {
@@ -71,6 +72,124 @@ namespace mlx
 		VkDeviceSize offset[] = { buffer.getOffset() };
 		vkCmdBindVertexBuffers(_cmd_buffer, 0, 1, &buffer.get(), offset);
 		buffer.recordedInCmdBuffer();
+	}
+
+	void CmdBuffer::bindIndexBuffer(Buffer& buffer) const noexcept
+	{
+		if(!isRecording())
+		{
+			core::error::report(e_kind::warning, "Vulkan : trying to bind a index buffer to a non recording command buffer");
+			return;
+		}
+		vkCmdBindIndexBuffer(_cmd_buffer, buffer.get(), buffer.getOffset(), VK_INDEX_TYPE_UINT16);
+		buffer.recordedInCmdBuffer();
+	}
+
+	void CmdBuffer::copyBuffer(Buffer& dst, Buffer& src) const noexcept
+	{
+		if(!isRecording())
+		{
+			core::error::report(e_kind::warning, "Vulkan : trying to do a buffer to buffer copy in a non recording command buffer");
+			return;
+		}
+		VkBufferCopy copyRegion{};
+		copyRegion.size = src.getSize();
+		vkCmdCopyBuffer(_cmd_buffer, src.get(), dst.get(), 1, &copyRegion);
+		dst.recordedInCmdBuffer();
+		src.recordedInCmdBuffer();
+	}
+
+	void CmdBuffer::copyBufferToImage(Buffer& buffer, Image& image) const noexcept
+	{
+		if(!isRecording())
+		{
+			core::error::report(e_kind::warning, "Vulkan : trying to do a buffer to image copy in a non recording command buffer");
+			return;
+		}
+		VkBufferImageCopy region{};
+		region.bufferOffset = 0;
+		region.bufferRowLength = 0;
+		region.bufferImageHeight = 0;
+		region.imageSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+		region.imageSubresource.mipLevel = 0;
+		region.imageSubresource.baseArrayLayer = 0;
+		region.imageSubresource.layerCount = 1;
+		region.imageOffset = { 0, 0, 0 };
+		region.imageExtent = { image.getWidth(), image.getHeight(), 1 };
+
+		vkCmdCopyBufferToImage(_cmd_buffer, buffer.get(), image.get(), VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &region);
+
+		image.recordedInCmdBuffer();
+		buffer.recordedInCmdBuffer();
+	}
+
+	void CmdBuffer::copyImagetoBuffer(Image& image, Buffer& buffer) const noexcept
+	{
+		if(!isRecording())
+		{
+			core::error::report(e_kind::warning, "Vulkan : trying to do an image to buffer copy in a non recording command buffer");
+			return;
+		}
+		VkBufferImageCopy region{};
+		region.bufferOffset = 0;
+		region.bufferRowLength = 0;
+		region.bufferImageHeight = 0;
+		region.imageSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+		region.imageSubresource.mipLevel = 0;
+		region.imageSubresource.baseArrayLayer = 0;
+		region.imageSubresource.layerCount = 1;
+		region.imageOffset = { 0, 0, 0 };
+		region.imageExtent = { image.getWidth(), image.getHeight(), 1 };
+
+		vkCmdCopyImageToBuffer(_cmd_buffer, image.get(), VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, buffer.get(), 1, &region);
+
+		image.recordedInCmdBuffer();
+		buffer.recordedInCmdBuffer();
+	}
+
+	void CmdBuffer::transitionImageLayout(Image& image, VkImageLayout new_layout) const noexcept
+	{
+		if(!isRecording())
+		{
+			core::error::report(e_kind::warning, "Vulkan : trying to do an image layout transition in a non recording command buffer");
+			return;
+		}
+
+		VkImageMemoryBarrier barrier{};
+		barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+		barrier.oldLayout = image.getLayout();
+		barrier.newLayout = new_layout;
+		barrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+		barrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+		barrier.image = image.get();
+		barrier.subresourceRange.aspectMask = isDepthFormat(image.getFormat()) ? VK_IMAGE_ASPECT_DEPTH_BIT : VK_IMAGE_ASPECT_COLOR_BIT;
+		barrier.subresourceRange.baseMipLevel = 0;
+		barrier.subresourceRange.levelCount = 1;
+		barrier.subresourceRange.baseArrayLayer = 0;
+		barrier.subresourceRange.layerCount = 1;
+		barrier.srcAccessMask = layoutToAccessMask(image.getLayout(), false);
+		barrier.dstAccessMask = layoutToAccessMask(new_layout, true);
+		if(isStencilFormat(image.getFormat()))
+			barrier.subresourceRange.aspectMask |= VK_IMAGE_ASPECT_STENCIL_BIT;
+
+		VkPipelineStageFlags sourceStage = 0;
+		if(barrier.oldLayout == VK_IMAGE_LAYOUT_PRESENT_SRC_KHR)
+			sourceStage = VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;
+		else if(barrier.srcAccessMask != 0)
+			sourceStage = accessFlagsToPipelineStage(barrier.srcAccessMask, VK_PIPELINE_STAGE_VERTEX_SHADER_BIT | VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT | VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT);
+		else
+			sourceStage = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
+
+		VkPipelineStageFlags destinationStage = 0;
+		if(barrier.newLayout == VK_IMAGE_LAYOUT_PRESENT_SRC_KHR)
+			destinationStage = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
+		else if(barrier.dstAccessMask != 0)
+			destinationStage = accessFlagsToPipelineStage(barrier.dstAccessMask, VK_PIPELINE_STAGE_VERTEX_SHADER_BIT | VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT | VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT);
+		else
+			destinationStage = VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;
+
+		vkCmdPipelineBarrier(_cmd_buffer, sourceStage, destinationStage, 0, 0, nullptr, 0, nullptr, 1, &barrier);
+		image.recordedInCmdBuffer();
 	}
 
 	void CmdBuffer::endRecord()

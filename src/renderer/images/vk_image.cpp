@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:59:07 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/03 13:16:21 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/05 23:08:47 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,18 +225,7 @@ namespace mlx
 		VkImageLayout layout_save = _layout;
 		transitionLayout(VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, &cmd);
 
-		VkBufferImageCopy region{};
-		region.bufferOffset = 0;
-		region.bufferRowLength = 0;
-		region.bufferImageHeight = 0;
-		region.imageSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-		region.imageSubresource.mipLevel = 0;
-		region.imageSubresource.baseArrayLayer = 0;
-		region.imageSubresource.layerCount = 1;
-		region.imageOffset = { 0, 0, 0 };
-		region.imageExtent = { _width, _height, 1 };
-
-		vkCmdCopyBufferToImage(cmd.get(), buffer.get(), _image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &region);
+		cmd.copyBufferToImage(buffer, *this);
 
 		transitionLayout(layout_save, &cmd);
 
@@ -252,18 +241,7 @@ namespace mlx
 		VkImageLayout layout_save = _layout;
 		transitionLayout(VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, &cmd);
 
-		VkBufferImageCopy region{};
-		region.bufferOffset = 0;
-		region.bufferRowLength = 0;
-		region.bufferImageHeight = 0;
-		region.imageSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-		region.imageSubresource.mipLevel = 0;
-		region.imageSubresource.baseArrayLayer = 0;
-		region.imageSubresource.layerCount = 1;
-		region.imageOffset = { 0, 0, 0 };
-		region.imageExtent = { _width, _height, 1 };
-
-		vkCmdCopyImageToBuffer(cmd.get(), _image, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, buffer.get(), 1, &region);
+		cmd.copyImagetoBuffer(*this, buffer);
 
 		transitionLayout(layout_save, &cmd);
 
@@ -283,40 +261,7 @@ namespace mlx
 			cmd->beginRecord();
 		}
 
-		VkImageMemoryBarrier barrier{};
-		barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
-		barrier.oldLayout = _layout;
-		barrier.newLayout = new_layout;
-		barrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
-		barrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
-		barrier.image = _image;
-		barrier.subresourceRange.aspectMask = isDepthFormat(_format) ? VK_IMAGE_ASPECT_DEPTH_BIT : VK_IMAGE_ASPECT_COLOR_BIT;
-		barrier.subresourceRange.baseMipLevel = 0;
-		barrier.subresourceRange.levelCount = 1;
-		barrier.subresourceRange.baseArrayLayer = 0;
-		barrier.subresourceRange.layerCount = 1;
-		barrier.srcAccessMask = layoutToAccessMask(_layout, false);
-		barrier.dstAccessMask = layoutToAccessMask(new_layout, true);
-		if(isStencilFormat(_format))
-			barrier.subresourceRange.aspectMask |= VK_IMAGE_ASPECT_STENCIL_BIT;
-
-		VkPipelineStageFlags sourceStage = 0;
-		if(barrier.oldLayout == VK_IMAGE_LAYOUT_PRESENT_SRC_KHR)
-			sourceStage = VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;
-		else if(barrier.srcAccessMask != 0)
-			sourceStage = accessFlagsToPipelineStage(barrier.srcAccessMask, VK_PIPELINE_STAGE_VERTEX_SHADER_BIT | VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT | VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT);
-		else
-			sourceStage = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
-
-		VkPipelineStageFlags destinationStage = 0;
-		if(barrier.newLayout == VK_IMAGE_LAYOUT_PRESENT_SRC_KHR)
-			destinationStage = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
-		else if(barrier.dstAccessMask != 0)
-			destinationStage = accessFlagsToPipelineStage(barrier.dstAccessMask, VK_PIPELINE_STAGE_VERTEX_SHADER_BIT | VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT | VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT);
-		else
-			destinationStage = VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;
-
-		vkCmdPipelineBarrier(cmd->get(), sourceStage, destinationStage, 0, 0, nullptr, 0, nullptr, 1, &barrier);
+		cmd->transitionImageLayout(*this, new_layout);
 
 		if(singleTime)
 		{

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 20:44:29 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/17 17:10:03 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/05 23:12:45 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,15 +47,29 @@ namespace mlx
 				else
 					_destroy_required = true;
 			}
+			inline uint64_t getUUID() const noexcept { return _uuid; }
 			virtual ~CmdResource() = default;
 
 		private:
 			void realDestroy();
 
 		private:
+			uint64_t _uuid = 0;
 			state _state = state::out_cmd_buffer;
 			func::function<void(void)> _destroyer;
 			bool _destroy_required = false;
+	};
+}
+
+namespace std
+{
+	template <>
+	struct hash<mlx::CmdResource>
+	{
+		std::size_t operator()(const mlx::CmdResource& res) const noexcept
+		{
+			return res.getUUID();
+		}
 	};
 }
 

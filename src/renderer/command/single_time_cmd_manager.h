@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 18:25:57 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/17 17:36:18 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/05 20:28:41 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ namespace mlx
 			inline CmdPool& getCmdPool() noexcept { return _pool; }
 			CmdBuffer& getCmdBuffer() noexcept;
 
-			~SingleTimeCmdManager() = default;
+			~SingleTimeCmdManager();
 
 			inline static constexpr const uint8_t MIN_POOL_SIZE = 8;
 
