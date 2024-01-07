@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 22:10:52 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/27 21:30:10 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/07 01:31:44 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,18 @@ namespace mlx::core
 		{
 			_in->update();
 
+			Render_Core::get().getSingleTimeCmdManager().updateSingleTimesCmdBuffersSubmitState();
+
 			if(_loop_hook)
 				_loop_hook(_param);
 
 			for(auto& gs : _graphics)
 				gs->render();
+		}
+		for(auto& gs : _graphics)
+		{
+			for(int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
+				gs->getRenderer().getCmdBuffer(i).waitForExecution();
 		}
 	}
 
@@ -64,9 +71,16 @@ namespace mlx::core
 
 	void Application::destroyTexture(void* ptr)
 	{
-		vkDeviceWaitIdle(Render_Core::get().getDevice().get()); // TODO : synchronize with another method than stopping all the GPU process
+		if(ptr == nullptr)
+		{
+			core::error::report(e_kind::error, "wrong texture (NULL)");
+			return;
+		}
 		Texture* texture = static_cast<Texture*>(ptr);
-		texture->destroy();
+		if(!texture->isInit())
+			core::error::report(e_kind::error, "trying to destroy a texture that has already been destroyed");
+		else
+			texture->destroy();
 	}
 
 	Application::~Application()

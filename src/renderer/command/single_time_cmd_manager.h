@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 18:25:57 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/05 20:28:41 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/07 01:30:19 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #define __MLX_SINGLE_TIME_CMD_MANAGER__
 
 #include <vector>
-
+#include <renderer/command/vk_cmd_buffer.h>
 #include <renderer/command/vk_cmd_pool.h>
 
 namespace mlx
@@ -23,20 +23,23 @@ namespace mlx
 
 	class SingleTimeCmdManager
 	{
+		friend class Render_Core;
+
 		public:
-			SingleTimeCmdManager();
+			SingleTimeCmdManager() = default;
 
 			void init() noexcept;
 			void destroy() noexcept;
 
+			void updateSingleTimesCmdBuffersSubmitState() noexcept;
+			void waitForAllExecutions() noexcept;
+
 			inline CmdPool& getCmdPool() noexcept { return _pool; }
 			CmdBuffer& getCmdBuffer() noexcept;
 
-			~SingleTimeCmdManager();
+			~SingleTimeCmdManager() = default;
 
-			inline static constexpr const uint8_t MIN_POOL_SIZE = 8;
-
-		private:
+			inline static constexpr const uint8_t BASE_POOL_SIZE = 16;
 
 		private:
 			std::vector<CmdBuffer> _buffers;

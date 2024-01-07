@@ -6,11 +6,12 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:26:06 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/05 23:06:04 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/07 01:07:07 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vk_cmd_buffer.h"
+#include <renderer/core/cmd_resource.h>
 #include <renderer/core/render_core.h>
 #include <renderer/command/cmd_manager.h>
 #include <renderer/core/vk_semaphore.h>
@@ -19,6 +20,21 @@
 
 namespace mlx
 {
+	bool vector_push_back_if_not_found(std::vector<CmdResource*>& vector, CmdResource* res)
+	{
+		auto it = std::find_if(vector.begin(), vector.end(), [=](const CmdResource* vres)
+		{
+			return vres->getUUID() == res->getUUID();
+		});
+
+		if(it == vector.end())
+		{
+			vector.push_back(res);
+			return true;
+		}
+		return false;
+	}
+
 	void CmdBuffer::init(kind type, CmdManager* manager)
 	{
 		init(type, &manager->getCmdPool());
@@ -62,7 +78,7 @@ namespace mlx
 		_state = state::recording;
 	}
 
-	void CmdBuffer::bindVertexBuffer(Buffer& buffer) const noexcept
+	void CmdBuffer::bindVertexBuffer(Buffer& buffer) noexcept
 	{
 		if(!isRecording())
 		{
@@ -71,10 +87,12 @@ namespace mlx
 		}
 		VkDeviceSize offset[] = { buffer.getOffset() };
 		vkCmdBindVertexBuffers(_cmd_buffer, 0, 1, &buffer.get(), offset);
+
 		buffer.recordedInCmdBuffer();
+		vector_push_back_if_not_found(_cmd_resources, &buffer);
 	}
 
-	void CmdBuffer::bindIndexBuffer(Buffer& buffer) const noexcept
+	void CmdBuffer::bindIndexBuffer(Buffer& buffer) noexcept
 	{
 		if(!isRecording())
 		{
@@ -82,30 +100,43 @@ namespace mlx
 			return;
 		}
 		vkCmdBindIndexBuffer(_cmd_buffer, buffer.get(), buffer.getOffset(), VK_INDEX_TYPE_UINT16);
+
 		buffer.recordedInCmdBuffer();
+		vector_push_back_if_not_found(_cmd_resources, &buffer);
 	}
 
-	void CmdBuffer::copyBuffer(Buffer& dst, Buffer& src) const noexcept
+	void CmdBuffer::copyBuffer(Buffer& dst, Buffer& src) noexcept
 	{
 		if(!isRecording())
 		{
 			core::error::report(e_kind::warning, "Vulkan : trying to do a buffer to buffer copy in a non recording command buffer");
 			return;
 		}
+
+		preTransferBarrier();
+
 		VkBufferCopy copyRegion{};
 		copyRegion.size = src.getSize();
 		vkCmdCopyBuffer(_cmd_buffer, src.get(), dst.get(), 1, &copyRegion);
+
+		postTransferBarrier();
+
 		dst.recordedInCmdBuffer();
 		src.recordedInCmdBuffer();
+		vector_push_back_if_not_found(_cmd_resources, &dst);
+		vector_push_back_if_not_found(_cmd_resources, &src);
 	}
 
-	void CmdBuffer::copyBufferToImage(Buffer& buffer, Image& image) const noexcept
+	void CmdBuffer::copyBufferToImage(Buffer& buffer, Image& image) noexcept
 	{
 		if(!isRecording())
 		{
 			core::error::report(e_kind::warning, "Vulkan : trying to do a buffer to image copy in a non recording command buffer");
 			return;
 		}
+		
+		preTransferBarrier();
+
 		VkBufferImageCopy region{};
 		region.bufferOffset = 0;
 		region.bufferRowLength = 0;
@@ -119,17 +150,24 @@ namespace mlx
 
 		vkCmdCopyBufferToImage(_cmd_buffer, buffer.get(), image.get(), VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &region);
 
+		postTransferBarrier();
+
 		image.recordedInCmdBuffer();
 		buffer.recordedInCmdBuffer();
+		vector_push_back_if_not_found(_cmd_resources, &image);
+		vector_push_back_if_not_found(_cmd_resources, &buffer);
 	}
 
-	void CmdBuffer::copyImagetoBuffer(Image& image, Buffer& buffer) const noexcept
+	void CmdBuffer::copyImagetoBuffer(Image& image, Buffer& buffer) noexcept
 	{
 		if(!isRecording())
 		{
 			core::error::report(e_kind::warning, "Vulkan : trying to do an image to buffer copy in a non recording command buffer");
 			return;
 		}
+
+		preTransferBarrier();
+
 		VkBufferImageCopy region{};
 		region.bufferOffset = 0;
 		region.bufferRowLength = 0;
@@ -143,11 +181,15 @@ namespace mlx
 
 		vkCmdCopyImageToBuffer(_cmd_buffer, image.get(), VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, buffer.get(), 1, &region);
 
+		postTransferBarrier();
+
 		image.recordedInCmdBuffer();
 		buffer.recordedInCmdBuffer();
+		vector_push_back_if_not_found(_cmd_resources, &buffer);
+		vector_push_back_if_not_found(_cmd_resources, &image);
 	}
 
-	void CmdBuffer::transitionImageLayout(Image& image, VkImageLayout new_layout) const noexcept
+	void CmdBuffer::transitionImageLayout(Image& image, VkImageLayout new_layout) noexcept
 	{
 		if(!isRecording())
 		{
@@ -176,7 +218,7 @@ namespace mlx
 		if(barrier.oldLayout == VK_IMAGE_LAYOUT_PRESENT_SRC_KHR)
 			sourceStage = VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;
 		else if(barrier.srcAccessMask != 0)
-			sourceStage = accessFlagsToPipelineStage(barrier.srcAccessMask, VK_PIPELINE_STAGE_VERTEX_SHADER_BIT | VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT | VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT);
+			sourceStage = RCore::accessFlagsToPipelineStage(barrier.srcAccessMask, VK_PIPELINE_STAGE_VERTEX_SHADER_BIT | VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT | VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT);
 		else
 			sourceStage = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
 
@@ -184,12 +226,14 @@ namespace mlx
 		if(barrier.newLayout == VK_IMAGE_LAYOUT_PRESENT_SRC_KHR)
 			destinationStage = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
 		else if(barrier.dstAccessMask != 0)
-			destinationStage = accessFlagsToPipelineStage(barrier.dstAccessMask, VK_PIPELINE_STAGE_VERTEX_SHADER_BIT | VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT | VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT);
+			destinationStage = RCore::accessFlagsToPipelineStage(barrier.dstAccessMask, VK_PIPELINE_STAGE_VERTEX_SHADER_BIT | VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT | VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT);
 		else
 			destinationStage = VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;
 
 		vkCmdPipelineBarrier(_cmd_buffer, sourceStage, destinationStage, 0, 0, nullptr, 0, nullptr, 1, &barrier);
+
 		image.recordedInCmdBuffer();
+		vector_push_back_if_not_found(_cmd_resources, &image);
 	}
 
 	void CmdBuffer::endRecord()
@@ -204,28 +248,28 @@ namespace mlx
 		_state = state::idle;
 	}
 
-	void CmdBuffer::submitIdle() noexcept
+	void CmdBuffer::submitIdle(bool shouldWaitForExecution) noexcept
 	{
-		auto device = Render_Core::get().getDevice().get();
+		if(_type != kind::single_time)
+		{
+			core::error::report(e_kind::error, "Vulkan : try to perform an idle submit on a command buffer that is not single-time, this is not allowed");
+			return;
+		}
 
-		VkSubmitInfo submitInfo = {};
+		_fence.reset();
+
+		VkSubmitInfo submitInfo{};
 		submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
 		submitInfo.commandBufferCount = 1;
 		submitInfo.pCommandBuffers = &_cmd_buffer;
 
-		VkFenceCreateInfo fenceCreateInfo = {};
-		fenceCreateInfo.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
-
-		VkFence fence;
-		vkCreateFence(device, &fenceCreateInfo, nullptr, &fence);
-		vkResetFences(device, 1, &fence);
-		VkResult res = vkQueueSubmit(Render_Core::get().getQueue().getGraphic(), 1, &submitInfo, fence);
+		VkResult res = vkQueueSubmit(Render_Core::get().getQueue().getGraphic(), 1, &submitInfo, _fence.get());
 		if(res != VK_SUCCESS)
 			core::error::report(e_kind::fatal_error, "Vulkan error : failed to submit a single time command buffer, %s", RCore::verbaliseResultVk(res));
 		_state = state::submitted;
-		vkWaitForFences(device, 1, &fence, VK_TRUE, UINT64_MAX);
-		vkDestroyFence(device, fence, nullptr);
-		_state = state::ready;
+
+		if(shouldWaitForExecution)
+			waitForExecution();
 	}
 
 	void CmdBuffer::submit(Semaphore* semaphores) noexcept
@@ -245,6 +289,8 @@ namespace mlx
 		}
 		VkPipelineStageFlags waitStages[] = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
 
+		_fence.reset();
+
 		VkSubmitInfo submitInfo{};
 		submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
 		submitInfo.waitSemaphoreCount = (semaphores == nullptr ? 0 : waitSemaphores.size());
@@ -261,10 +307,46 @@ namespace mlx
 		_state = state::submitted;
 	}
 
+	void CmdBuffer::updateSubmitState() noexcept
+	{
+		if(!_fence.isReady())
+			return;
+
+		for(CmdResource* res : _cmd_resources)
+			res->removedFromCmdBuffer();
+		_cmd_resources.clear();
+		_state = state::ready;
+	}
+
+	void CmdBuffer::preTransferBarrier() noexcept
+	{
+		VkMemoryBarrier memoryBarrier{};
+		memoryBarrier.sType = VK_STRUCTURE_TYPE_MEMORY_BARRIER;
+		memoryBarrier.pNext = nullptr;
+		memoryBarrier.srcAccessMask = 0U;
+		memoryBarrier.dstAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
+
+		vkCmdPipelineBarrier(_cmd_buffer, VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT, 0, 1, &memoryBarrier, 0, nullptr, 0, nullptr);
+	}
+
+	void CmdBuffer::postTransferBarrier() noexcept
+	{
+		VkMemoryBarrier memoryBarrier{};
+		memoryBarrier.sType = VK_STRUCTURE_TYPE_MEMORY_BARRIER;
+		memoryBarrier.pNext = nullptr;
+		memoryBarrier.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
+		memoryBarrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT | VK_ACCESS_UNIFORM_READ_BIT;
+
+		vkCmdPipelineBarrier(_cmd_buffer, VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT | VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT | VK_PIPELINE_STAGE_VERTEX_SHADER_BIT, 0, 1, &memoryBarrier, 0, nullptr, 0, nullptr);
+	}
+
 	void CmdBuffer::destroy() noexcept
 	{
 		_fence.destroy();
 		_cmd_buffer = VK_NULL_HANDLE;
 		_state = state::uninit;
+		#ifdef DEBUG
+			core::error::report(e_kind::message, "Vulkan : destroyed command buffer");
+		#endif
 	}
 }
