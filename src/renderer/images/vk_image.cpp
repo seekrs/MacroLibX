@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:59:07 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/03 13:16:21 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/07 01:17:54 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,55 +99,8 @@ namespace mlx
 		return accessMask;
 	}
 
-	VkPipelineStageFlags accessFlagsToPipelineStage(VkAccessFlags accessFlags, VkPipelineStageFlags stageFlags)
-	{
-		VkPipelineStageFlags stages = 0;
-
-		while(accessFlags != 0)
-		{
-			VkAccessFlagBits AccessFlag = static_cast<VkAccessFlagBits>(accessFlags & (~(accessFlags - 1)));
-			if(AccessFlag == 0 || (AccessFlag & (AccessFlag - 1)) != 0)
-				core::error::report(e_kind::fatal_error, "Vulkan : an error has been caught during access flag to pipeline stage operation");
-			accessFlags &= ~AccessFlag;
-
-			switch(AccessFlag)
-			{
-				case VK_ACCESS_INDIRECT_COMMAND_READ_BIT: stages |= VK_PIPELINE_STAGE_DRAW_INDIRECT_BIT; break;
-				case VK_ACCESS_INDEX_READ_BIT: stages |= VK_PIPELINE_STAGE_VERTEX_INPUT_BIT; break;
-				case VK_ACCESS_VERTEX_ATTRIBUTE_READ_BIT: stages |= VK_PIPELINE_STAGE_VERTEX_INPUT_BIT; break;
-				case VK_ACCESS_UNIFORM_READ_BIT: stages |= stageFlags | VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT; break;
-				case VK_ACCESS_INPUT_ATTACHMENT_READ_BIT: stages |= VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT; break;
-				case VK_ACCESS_SHADER_READ_BIT: stages |= stageFlags | VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT; break;
-				case VK_ACCESS_SHADER_WRITE_BIT: stages |= stageFlags | VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT; break;
-				case VK_ACCESS_COLOR_ATTACHMENT_READ_BIT: stages |= VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT; break;
-				case VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT: stages |= VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT; break;
-				case VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT: stages |= VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT | VK_PIPELINE_STAGE_LATE_FRAGMENT_TESTS_BIT; break;
-				case VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT: stages |= VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT | VK_PIPELINE_STAGE_LATE_FRAGMENT_TESTS_BIT; break;
-				case VK_ACCESS_TRANSFER_READ_BIT: stages |= VK_PIPELINE_STAGE_TRANSFER_BIT; break;
-				case VK_ACCESS_TRANSFER_WRITE_BIT: stages |= VK_PIPELINE_STAGE_TRANSFER_BIT; break;
-				case VK_ACCESS_HOST_READ_BIT: stages |= VK_PIPELINE_STAGE_HOST_BIT; break;
-				case VK_ACCESS_HOST_WRITE_BIT: stages |= VK_PIPELINE_STAGE_HOST_BIT; break;
-				case VK_ACCESS_MEMORY_READ_BIT: break;
-				case VK_ACCESS_MEMORY_WRITE_BIT: break;
-
-				default: core::error::report(e_kind::error, "Vulkan : unknown access flag"); break;
-			}
-		}
-		return stages;
-	}
-
 	void Image::create(uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, const char* name, bool dedicated_memory)
 	{
-		CmdResource::setDestroyer([this]()
-		{
-			this->destroySampler();
-			this->destroyImageView();
-
-			if(_image != VK_NULL_HANDLE)
-				Render_Core::get().getAllocator().destroyImage(_allocation, _image);
-			_image = VK_NULL_HANDLE;
-		});
-
 		_width = width;
 		_height = height;
 		_format = format;
@@ -177,6 +130,9 @@ namespace mlx
 		}
 
 		_allocation = Render_Core::get().getAllocator().createImage(&imageInfo, &alloc_info, _image, name);
+		#ifdef DEBUG
+			_name = name;
+		#endif
 	}
 
 	void Image::createImageView(VkImageViewType type, VkImageAspectFlags aspectFlags) noexcept
@@ -195,6 +151,10 @@ namespace mlx
 		VkResult res = vkCreateImageView(Render_Core::get().getDevice().get(), &viewInfo, nullptr, &_image_view);
 		if(res != VK_SUCCESS)
 			core::error::report(e_kind::fatal_error, "Vulkan : failed to create an image view, %s", RCore::verbaliseResultVk(res));
+		#ifdef DEBUG
+		else
+			Render_Core::get().getLayers().setDebugUtilsObjectNameEXT(VK_OBJECT_TYPE_IMAGE_VIEW, (uint64_t)_image_view, _name.c_str());
+		#endif
 	}
 
 	void Image::createSampler() noexcept
@@ -214,7 +174,11 @@ namespace mlx
 
 		VkResult res = vkCreateSampler(Render_Core::get().getDevice().get(), &info, nullptr, &_sampler);
 		if(res != VK_SUCCESS)
-			core::error::report(e_kind::fatal_error, "Vulkan : failed to create an image, %s", RCore::verbaliseResultVk(res));
+			core::error::report(e_kind::fatal_error, "Vulkan : failed to create an image sampler, %s", RCore::verbaliseResultVk(res));
+		#ifdef DEBUG
+		else
+			Render_Core::get().getLayers().setDebugUtilsObjectNameEXT(VK_OBJECT_TYPE_SAMPLER, (uint64_t)_sampler, _name.c_str());
+		#endif
 	}
 
 	void Image::copyFromBuffer(Buffer& buffer)
@@ -225,18 +189,7 @@ namespace mlx
 		VkImageLayout layout_save = _layout;
 		transitionLayout(VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, &cmd);
 
-		VkBufferImageCopy region{};
-		region.bufferOffset = 0;
-		region.bufferRowLength = 0;
-		region.bufferImageHeight = 0;
-		region.imageSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-		region.imageSubresource.mipLevel = 0;
-		region.imageSubresource.baseArrayLayer = 0;
-		region.imageSubresource.layerCount = 1;
-		region.imageOffset = { 0, 0, 0 };
-		region.imageExtent = { _width, _height, 1 };
-
-		vkCmdCopyBufferToImage(cmd.get(), buffer.get(), _image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &region);
+		cmd.copyBufferToImage(buffer, *this);
 
 		transitionLayout(layout_save, &cmd);
 
@@ -252,18 +205,7 @@ namespace mlx
 		VkImageLayout layout_save = _layout;
 		transitionLayout(VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, &cmd);
 
-		VkBufferImageCopy region{};
-		region.bufferOffset = 0;
-		region.bufferRowLength = 0;
-		region.bufferImageHeight = 0;
-		region.imageSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-		region.imageSubresource.mipLevel = 0;
-		region.imageSubresource.baseArrayLayer = 0;
-		region.imageSubresource.layerCount = 1;
-		region.imageOffset = { 0, 0, 0 };
-		region.imageExtent = { _width, _height, 1 };
-
-		vkCmdCopyImageToBuffer(cmd.get(), _image, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, buffer.get(), 1, &region);
+		cmd.copyImagetoBuffer(*this, buffer);
 
 		transitionLayout(layout_save, &cmd);
 
@@ -283,40 +225,7 @@ namespace mlx
 			cmd->beginRecord();
 		}
 
-		VkImageMemoryBarrier barrier{};
-		barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
-		barrier.oldLayout = _layout;
-		barrier.newLayout = new_layout;
-		barrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
-		barrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
-		barrier.image = _image;
-		barrier.subresourceRange.aspectMask = isDepthFormat(_format) ? VK_IMAGE_ASPECT_DEPTH_BIT : VK_IMAGE_ASPECT_COLOR_BIT;
-		barrier.subresourceRange.baseMipLevel = 0;
-		barrier.subresourceRange.levelCount = 1;
-		barrier.subresourceRange.baseArrayLayer = 0;
-		barrier.subresourceRange.layerCount = 1;
-		barrier.srcAccessMask = layoutToAccessMask(_layout, false);
-		barrier.dstAccessMask = layoutToAccessMask(new_layout, true);
-		if(isStencilFormat(_format))
-			barrier.subresourceRange.aspectMask |= VK_IMAGE_ASPECT_STENCIL_BIT;
-
-		VkPipelineStageFlags sourceStage = 0;
-		if(barrier.oldLayout == VK_IMAGE_LAYOUT_PRESENT_SRC_KHR)
-			sourceStage = VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;
-		else if(barrier.srcAccessMask != 0)
-			sourceStage = accessFlagsToPipelineStage(barrier.srcAccessMask, VK_PIPELINE_STAGE_VERTEX_SHADER_BIT | VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT | VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT);
-		else
-			sourceStage = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
-
-		VkPipelineStageFlags destinationStage = 0;
-		if(barrier.newLayout == VK_IMAGE_LAYOUT_PRESENT_SRC_KHR)
-			destinationStage = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
-		else if(barrier.dstAccessMask != 0)
-			destinationStage = accessFlagsToPipelineStage(barrier.dstAccessMask, VK_PIPELINE_STAGE_VERTEX_SHADER_BIT | VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT | VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT);
-		else
-			destinationStage = VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;
-
-		vkCmdPipelineBarrier(cmd->get(), sourceStage, destinationStage, 0, 0, nullptr, 0, nullptr, 1, &barrier);
+		cmd->transitionImageLayout(*this, new_layout);
 
 		if(singleTime)
 		{
@@ -342,6 +251,16 @@ namespace mlx
 
 	void Image::destroy() noexcept
 	{
+		// not creating destroyer in `create` as some image may be copied (and so `this` will be invalid)
+		CmdResource::setDestroyer([this]()
+		{
+			destroySampler();
+			destroyImageView();
+
+			if(_image != VK_NULL_HANDLE)
+				Render_Core::get().getAllocator().destroyImage(_allocation, _image);
+			_image = VK_NULL_HANDLE;
+		});
 		CmdResource::requireDestroy();
 	}
 

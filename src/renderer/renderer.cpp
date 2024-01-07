@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:25:16 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/24 16:04:04 by kbz_8            ###   ########.fr       */
+/*   Updated: 2024/01/07 01:00:18 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ namespace mlx
 		}
 		else
 		{
-			_cmd.getCmdBuffer(_current_frame_index).submitIdle();
+			_cmd.getCmdBuffer(_current_frame_index).submitIdle(true);
 			_current_frame_index = 0;
 		}
 	}

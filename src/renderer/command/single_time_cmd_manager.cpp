@@ -6,23 +6,20 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 19:57:49 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/17 20:10:25 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/07 01:30:49 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <algorithm>
 #include <renderer/command/single_time_cmd_manager.h>
-#include <renderer/command/vk_cmd_buffer.h>
 #include <renderer/core/render_core.h>
 
 namespace mlx
 {
-	SingleTimeCmdManager::SingleTimeCmdManager() : _buffers(MIN_POOL_SIZE) {}
-
 	void SingleTimeCmdManager::init() noexcept
 	{
 		_pool.init();
-		for(int i = 0; i < MIN_POOL_SIZE; i++)
+		for(int i = 0; i < BASE_POOL_SIZE; i++)
 		{
 			_buffers.emplace_back();
 			_buffers.back().init(CmdBuffer::kind::single_time, &_pool);
@@ -42,6 +39,19 @@ namespace mlx
 		_buffers.emplace_back().init(CmdBuffer::kind::single_time, &_pool);
 		return _buffers.back();
 	}
+
+	void SingleTimeCmdManager::updateSingleTimesCmdBuffersSubmitState() noexcept
+	{
+		for(CmdBuffer& cmd : _buffers)
+			cmd.updateSubmitState();
+	}
+
+	void SingleTimeCmdManager::waitForAllExecutions() noexcept
+	{
+		for(CmdBuffer& cmd : _buffers)
+			cmd.waitForExecution();
+	}
+
 
 	void SingleTimeCmdManager::destroy() noexcept
 	{

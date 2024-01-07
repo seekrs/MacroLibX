@@ -12,6 +12,7 @@
 *.ilk
 *.pdb
 *.exe
+.gdb_history
 .vs/
 .xmake/
 .cache/
