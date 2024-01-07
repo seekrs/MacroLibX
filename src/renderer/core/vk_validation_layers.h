@@ -6,7 +6,7 @@
 /*   By: maldavid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 14:04:25 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/03 15:26:49 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/07 00:21:42 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,15 @@ namespace mlx
 	{
 		public:
 			ValidationLayers() = default;
+			
 			void init();
+			void destroy();
+			
 			bool checkValidationLayerSupport();
 			void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo);
-			void destroy();
+			
+			VkResult setDebugUtilsObjectNameEXT(VkObjectType object_type, uint64_t object_handle, const char* object_name);
+
 			~ValidationLayers() = default;
 
 		private:
@@ -35,6 +40,7 @@ namespace mlx
 
 		private:
 			VkDebugUtilsMessengerEXT _debugMessenger;
+			PFN_vkSetDebugUtilsObjectNameEXT real_vkSetDebugUtilsObjectNameEXT = nullptr;
 	};
 }
 

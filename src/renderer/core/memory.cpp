@@ -6,7 +6,7 @@
 /*   By: kbz_8 <kbz_8.dev@akel-engine.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 22:02:37 by kbz_8             #+#    #+#             */
-/*   Updated: 2024/01/03 13:09:40 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/07 00:09:18 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,10 @@ namespace mlx
 		if(res != VK_SUCCESS)
 			core::error::report(e_kind::fatal_error, "Graphics allocator : failed to allocate a buffer, %s", RCore::verbaliseResultVk(res));
 		if(name != nullptr)
+		{
+			Render_Core::get().getLayers().setDebugUtilsObjectNameEXT(VK_OBJECT_TYPE_BUFFER, (uint64_t)buffer, name);
 			vmaSetAllocationName(_allocator, allocation, name);
+		}
 		#ifdef DEBUG
 			core::error::report(e_kind::message, "Graphics Allocator : created new buffer");
 		#endif
@@ -116,7 +119,10 @@ namespace mlx
 		if(res != VK_SUCCESS)
 			core::error::report(e_kind::fatal_error, "Graphics allocator : failed to allocate an image, %s", RCore::verbaliseResultVk(res));
 		if(name != nullptr)
+		{
+			Render_Core::get().getLayers().setDebugUtilsObjectNameEXT(VK_OBJECT_TYPE_IMAGE, (uint64_t)image, name);
 			vmaSetAllocationName(_allocator, allocation, name);
+		}
 		#ifdef DEBUG
 			core::error::report(e_kind::message, "Graphics Allocator : created new image");
 		#endif

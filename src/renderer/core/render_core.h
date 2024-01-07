@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:16:32 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/03 15:26:08 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/07 01:31:37 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ namespace mlx
 	{
 		std::optional<uint32_t> findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties, bool error = true);
 		const char* verbaliseResultVk(VkResult result);
+		VkPipelineStageFlags accessFlagsToPipelineStage(VkAccessFlags accessFlags, VkPipelineStageFlags stageFlags);
 	}
 
 	#ifdef DEBUG
@@ -59,6 +60,7 @@ namespace mlx
 			inline GPUallocator& getAllocator() noexcept { return _allocator; }
 			inline ValidationLayers& getLayers() noexcept { return _layers; }
 			inline CmdBuffer& getSingleTimeCmdBuffer() noexcept { return _cmd_manager.getCmdBuffer(); }
+			inline SingleTimeCmdManager& getSingleTimeCmdManager() noexcept { return _cmd_manager; }
 
 			~Render_Core() = default;
 
