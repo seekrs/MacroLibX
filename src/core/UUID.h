@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 11:13:23 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/06 11:29:34 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/07 01:39:35 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #define __MLX_UUID__
 
 #include <cstdint>
+#include <cstddef>
 
 namespace mlx
 {
