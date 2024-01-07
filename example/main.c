@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:55:21 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/04 12:44:58 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/07 01:24:29 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,8 +114,8 @@ int main(int argc, char* argv[])
 			"that text will disappear");
 	mlx_loop_hook(mlx.mlx, update, &mlx);
 	mlx_loop(mlx.mlx);
-	mlx_destroy_image(mlx.mlx, mlx.img);
 	mlx_destroy_image(mlx.mlx, mlx.logo);
+	mlx_destroy_image(mlx.mlx, mlx.img);
 	mlx_destroy_window(mlx.mlx, mlx.win);
 	mlx_destroy_display(mlx.mlx);
 	return (0);

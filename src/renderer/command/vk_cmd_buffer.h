@@ -6,18 +6,17 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:25:42 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/05 23:10:01 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/07 01:25:50 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_VK_CMD_BUFFER__
 #define __MLX_VK_CMD_BUFFER__
 
-#include <renderer/core/cmd_resource.h>
 #include <mlx_profile.h>
 #include <volk.h>
 #include <renderer/core/vk_fence.h>
-#include <unordered_set>
+#include <vector>
 
 namespace mlx
 {
@@ -49,17 +48,18 @@ namespace mlx
 
 			void beginRecord(VkCommandBufferUsageFlags usage = 0);
 			void submit(class Semaphore* semaphores) noexcept;
-			void submitIdle() noexcept;
-			inline void waitForExecution() noexcept { _fence.waitAndReset(); _state = state::ready; }
+			void submitIdle(bool shouldWaitForExecution = true) noexcept; // TODO : handle `shouldWaitForExecution` as false by default (needs to modify CmdResources lifetimes to do so)
+			void updateSubmitState() noexcept;
+			inline void waitForExecution() noexcept { _fence.wait(); updateSubmitState(); _state = state::ready; }
 			inline void reset() noexcept { vkResetCommandBuffer(_cmd_buffer, 0); }
 			void endRecord();
 
-			void bindVertexBuffer(Buffer& buffer) const noexcept;
-			void bindIndexBuffer(Buffer& buffer) const noexcept;
-			void copyBuffer(Buffer& dst, Buffer& src) const noexcept;
-			void copyBufferToImage(Buffer& buffer, Image& image) const noexcept;
-			void copyImagetoBuffer(Image& image, Buffer& buffer) const noexcept;
-			void transitionImageLayout(Image& image, VkImageLayout new_layout) const noexcept;
+			void bindVertexBuffer(Buffer& buffer) noexcept;
+			void bindIndexBuffer(Buffer& buffer) noexcept;
+			void copyBuffer(Buffer& dst, Buffer& src) noexcept;
+			void copyBufferToImage(Buffer& buffer, Image& image) noexcept;
+			void copyImagetoBuffer(Image& image, Buffer& buffer) noexcept;
+			void transitionImageLayout(Image& image, VkImageLayout new_layout) noexcept;
 
 			inline bool isInit() const noexcept { return _state != state::uninit; }
 			inline bool isReadyToBeUsed() const noexcept { return _state == state::ready; }
@@ -72,7 +72,11 @@ namespace mlx
 			inline Fence& getFence() noexcept { return _fence; }
 
 		private:
-			std::unordered_set<CmdResource> _resources;
+			void preTransferBarrier() noexcept;
+			void postTransferBarrier() noexcept;
+
+		private:
+			std::vector<class CmdResource*> _cmd_resources;
 			Fence _fence;
 			VkCommandBuffer _cmd_buffer = VK_NULL_HANDLE;
 			class CmdPool* _pool = nullptr;

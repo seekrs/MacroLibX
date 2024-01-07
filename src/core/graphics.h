@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 14:49:49 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/24 08:56:14 by kbz_8            ###   ########.fr       */
+/*   Updated: 2024/01/07 01:27:09 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ namespace mlx
 			inline void stringPut(int x, int y, int color, std::string str);
 			inline void texturePut(Texture* texture, int x, int y);
 			inline void loadFont(const std::filesystem::path& filepath, float scale);
+
+			inline Renderer& getRenderer() { return *_renderer; }
 
 			~GraphicsSupport();
 

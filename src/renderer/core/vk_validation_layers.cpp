@@ -6,12 +6,12 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 14:05:25 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/03 13:11:27 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/07 00:33:40 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vk_validation_layers.h"
 #include "render_core.h"
+#include "vulkan/vulkan_core.h"
 
 #include <core/errors.h>
 #include <iostream>
@@ -25,6 +25,16 @@ namespace mlx
 		if constexpr(!enableValidationLayers)
 			return;
 
+		uint32_t extensionCount;
+		vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
+		std::vector<VkExtensionProperties> extensions(extensionCount);
+		vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, extensions.data());
+		if(!std::any_of(extensions.begin(), extensions.end(), [=](VkExtensionProperties ext) { return std::strcmp(ext.extensionName, VK_EXT_DEBUG_UTILS_EXTENSION_NAME) == 0; }))
+		{
+			core::error::report(e_kind::warning , "Vulkan : %s not present, debug utils are disabled", VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
+			return;
+		}
+
 		VkDebugUtilsMessengerCreateInfoEXT createInfo{};
 		populateDebugMessengerCreateInfo(createInfo);
 		VkResult res = createDebugUtilsMessengerEXT(&createInfo, nullptr);
@@ -33,6 +43,14 @@ namespace mlx
 		#ifdef DEBUG
 		else
 			core::error::report(e_kind::message, "Vulkan : enabled validation layers");
+		#endif
+
+		real_vkSetDebugUtilsObjectNameEXT = (PFN_vkSetDebugUtilsObjectNameEXT)vkGetInstanceProcAddr(Render_Core::get().getInstance().get(), "vkSetDebugUtilsObjectNameEXT");
+		if(!real_vkSetDebugUtilsObjectNameEXT)
+			core::error::report(e_kind::warning, "Vulkan : failed to set up debug object names, %s", RCore::verbaliseResultVk(VK_ERROR_EXTENSION_NOT_PRESENT));
+		#ifdef DEBUG
+		else
+			core::error::report(e_kind::message, "Vulkan : enabled debug object names");
 		#endif
 	}
 
@@ -55,6 +73,19 @@ namespace mlx
 		});
 	}
 
+	VkResult ValidationLayers::setDebugUtilsObjectNameEXT(VkObjectType object_type, uint64_t object_handle, const char* object_name)
+	{
+		if(!real_vkSetDebugUtilsObjectNameEXT)
+			return VK_ERROR_EXTENSION_NOT_PRESENT;
+
+		VkDebugUtilsObjectNameInfoEXT name_info{};
+		name_info.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_OBJECT_NAME_INFO_EXT;
+		name_info.objectType = object_type;
+		name_info.objectHandle = object_handle;
+		name_info.pObjectName = object_name;
+		return real_vkSetDebugUtilsObjectNameEXT(Render_Core::get().getDevice().get(), &name_info);
+	}
+
 	void ValidationLayers::populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo)
 	{
 		createInfo = {};
@@ -63,7 +94,6 @@ namespace mlx
 		createInfo.messageType = VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
 		createInfo.pfnUserCallback = ValidationLayers::debugCallback;
 	}
-
 
 	void ValidationLayers::destroy()
 	{
@@ -80,16 +110,9 @@ namespace mlx
 	VKAPI_ATTR VkBool32 VKAPI_CALL ValidationLayers::debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, [[maybe_unused]] VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, [[maybe_unused]] void* pUserData)
 	{
 		if(messageSeverity == VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT)
-		{
-			std::cout << '\n';
-			core::error::report(e_kind::error, std::string("Vulkan layer error: ") + pCallbackData->pMessage);
-		}
+			core::error::report(e_kind::error, pCallbackData->pMessage);
 		else if(messageSeverity == VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT)
-		{
-			std::cout << '\n';
-			core::error::report(e_kind::warning, std::string("Vulkan layer warning: ") + pCallbackData->pMessage);
-		}
-
+			core::error::report(e_kind::warning, pCallbackData->pMessage);
 		return VK_FALSE;
 	}
 
