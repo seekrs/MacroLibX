@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 16:41:13 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/14 17:49:37 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/08 21:42:15 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ namespace mlx
 
 		for(char c : text)
 		{
-			if(c < 32)
+			if(c < 32 && c != '\n')
 				continue;
 
 			stbtt_aligned_quad q;
@@ -110,12 +110,22 @@ namespace mlx
 		for(auto& draw : _drawlist)
 		{
 			std::shared_ptr<TextData> draw_data = _library.getTextData(draw.id);
-			const TextureAtlas& atlas = draw_data->getFontInUse().getAtlas();
+			TextureAtlas& atlas = const_cast<TextureAtlas&>(draw_data->getFontInUse().getAtlas());
 			draw_data->bind(*_renderer);
-			atlas.updateSet(0);
+			if(atlas.getSet() == VK_NULL_HANDLE)
+				atlas.setDescriptor(_renderer->getFragDescriptorSet().duplicate());
+			if(!atlas.hasBeenUpdated())
+				atlas.updateSet(0);
 			sets[1] = const_cast<TextureAtlas&>(atlas).getSet();
 			vkCmdBindDescriptorSets(_renderer->getActiveCmdBuffer().get(), VK_PIPELINE_BIND_POINT_GRAPHICS, _renderer->getPipeline().getPipelineLayout(), 0, sets.size(), sets.data(), 0, nullptr);
 			atlas.render(*_renderer, draw.x, draw.y, draw_data->getIBOsize());
+		}
+
+		for(auto& draw : _drawlist)
+		{
+			std::shared_ptr<TextData> draw_data = _library.getTextData(draw.id);
+			TextureAtlas& atlas = const_cast<TextureAtlas&>(draw_data->getFontInUse().getAtlas());
+			atlas.resetUpdate();
 		}
 	}
 

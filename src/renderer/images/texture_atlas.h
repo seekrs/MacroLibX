@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 16:36:33 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/23 18:49:25 by kbz_8            ###   ########.fr       */
+/*   Updated: 2024/01/08 21:42:31 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,15 @@ namespace mlx
 
 			inline void setDescriptor(DescriptorSet&& set) noexcept { _set = set; }
 			inline VkDescriptorSet getSet() noexcept { return _set.isInit() ? _set.get() : VK_NULL_HANDLE; }
-			inline void updateSet(int binding) const noexcept { _set.writeDescriptor(binding, *this); }
+			inline void updateSet(int binding) noexcept { _set.writeDescriptor(binding, *this); _has_been_updated = true; }
+			inline bool hasBeenUpdated() const noexcept { return _has_been_updated; }
+			inline constexpr void resetUpdate() noexcept { _has_been_updated = false; }
 
 			~TextureAtlas() = default;
 
 		private:
 			DescriptorSet _set;
+			bool _has_been_updated = false;
 	};
 }
 
