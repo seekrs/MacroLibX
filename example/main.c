@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:55:21 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/07 01:24:29 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/08 22:17:57 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ int	update(void *param)
 	mlx = (t_mlx *)param;
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->logo, 100, 100);
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 150, 60);
-	if (i == 0)
-		mlx_set_font_scale(mlx->mlx, mlx->win, "font.ttf", 16.f);
+	//if (i == 0)
+	//	mlx_set_font_scale(mlx->mlx, mlx->win, "font.ttf", 16.f);
 	mlx_string_put(mlx->mlx, mlx->win, 20, 50, 0xFFFFFFFF, "that's a text");
 	j = 0;
 	k = 0;

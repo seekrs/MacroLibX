@@ -64,6 +64,11 @@ namespace mlx::core
 			_graphics.emplace_back(std::make_unique<GraphicsSupport>(w, h, reinterpret_cast<Texture*>(const_cast<char*>(title)), _graphics.size()));
 		else
 		{
+			if(title == NULL)
+			{
+				core::error::report(e_kind::fatal_error, "invalid window title (NULL)");
+				return nullptr;
+			}
 			_graphics.emplace_back(std::make_unique<GraphicsSupport>(w, h, title, _graphics.size()));
 			_in->addWindow(_graphics.back()->getWindow());
 		}
@@ -91,6 +96,16 @@ namespace mlx::core
 	void Application::stringPut(void* win, int x, int y, int color, char* str)
 	{
 		CHECK_WINDOW_PTR(win);
+		if(str == nullptr)
+		{
+			core::error::report(e_kind::error, "wrong text (NULL)");
+			return;
+		}
+		if(std::strlen(str) == 0)
+		{
+			core::error::report(e_kind::error, "trying to put an empty text");
+			return;
+		}
 		_graphics[*static_cast<int*>(win)]->stringPut(x, y, color, str);
 	}
 
