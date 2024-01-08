@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:55:21 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/08 22:30:39 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/09 00:25:08 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	window_hook(int event, void *param)
 	return (0);
 }
 
-int main(int argc, char* argv[])
+int	main(int argc, char **argv)
 {
 	t_mlx	mlx;
 	void	*img;
