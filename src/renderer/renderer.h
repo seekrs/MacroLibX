@@ -13,7 +13,6 @@
 #ifndef __RENDERER__
 #define __RENDERER__
 
-#include <array>
 #include <vector>
 #include <memory>
 
