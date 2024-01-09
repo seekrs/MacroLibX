@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <mutex>
 #include <renderer/renderer.h>
 #include <renderer/images/texture.h>
 #include <renderer/core/render_core.h>
