@@ -13,7 +13,6 @@
 #include <core/memory.h>
 #include <core/errors.h>
 #include <algorithm>
-#include <stdlib.h>
 
 namespace mlx
 {

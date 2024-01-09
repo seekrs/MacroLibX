@@ -6,11 +6,10 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:27:35 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/11 19:47:20 by kbz_8            ###   ########.fr       */
+/*   Updated: 2023/12/11 19:47:20 by vavaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <array>
 #include <memory>
 #include <vector>
 #include <cstdint>
