@@ -352,8 +352,8 @@ MLX_API int mlx_destroy_display(void* mlx);
  * @brief			Get screen size
  *
  * @param mlx		Internal MLX application
- * @param x			Get X size
- * @param y			Get Y size
+ * @param w			Get width size
+ * @param h			Get height size
  *
  * @return (int)	Always return 0, made this to copy the behaviour of the original MLX
  */
