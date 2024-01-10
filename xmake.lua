@@ -39,6 +39,11 @@ option("graphics_memory_dump")
 	add_defines("GRAPHICS_MEMORY_DUMP")
 option_end()
 
+option("profiler")
+	set_default(false)
+	add_defines("PROFILER")
+option_end()
+
 -- Targets
 
 target("mlx")
