@@ -6,11 +6,12 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 16:41:13 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/08 21:42:15 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/10 18:26:24 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <renderer/text_pipeline.h>
+#include <core/profiler.h>
 #include <fstream>
 
 #include <utils/dogica_ttf.h>
@@ -38,6 +39,7 @@ namespace mlx
 
 	void TextDrawData::init(TextLibrary& library, Font* const font) noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		std::vector<Vertex> vertexData;
 		std::vector<uint16_t> indexData;
 
@@ -77,12 +79,14 @@ namespace mlx
 
 	void TextPutPipeline::init(Renderer* renderer) noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		_renderer = renderer;
 		_font_in_use = &const_cast<Font&>(*_font_set.emplace(*_renderer, "default", dogica_ttf, 6.0f).first);
 	}
 
 	void TextPutPipeline::loadFont(const std::filesystem::path& filepath, float scale)
 	{
+		MLX_PROFILE_FUNCTION();
 		if(filepath.string() == "default") // we're sure it is already loaded
 			_font_in_use = &const_cast<Font&>(*_font_set.emplace(*_renderer, "default", dogica_ttf, scale).first);
 		else
@@ -91,6 +95,7 @@ namespace mlx
 
 	void TextPutPipeline::put(int x, int y, int color, std::string str)
 	{
+		MLX_PROFILE_FUNCTION();
 		auto res = _drawlist.emplace(std::move(str), color, x, y);
 		if(res.second)
 			const_cast<TextDrawData&>(*res.first).init(_library, _font_in_use);
@@ -107,6 +112,7 @@ namespace mlx
 
 	void TextPutPipeline::render(std::array<VkDescriptorSet, 2>& sets)
 	{
+		MLX_PROFILE_FUNCTION();
 		for(auto& draw : _drawlist)
 		{
 			std::shared_ptr<TextData> draw_data = _library.getTextData(draw.id);
@@ -131,6 +137,7 @@ namespace mlx
 
 	void TextPutPipeline::destroy() noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		_library.clearLibrary();
 		_drawlist.clear();
 		_font_set.clear();
