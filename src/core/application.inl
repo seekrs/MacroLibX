@@ -97,7 +97,7 @@ namespace mlx::core
 		_graphics[*static_cast<int*>(win)]->pixelPut(x, y, color);
 	}
 
-	void Application::stringPut(void* win, int x, int y, int color, char* str)
+	void Application::stringPut(void* win, int x, int y, uint32_t color, char* str)
 	{
 		MLX_PROFILE_FUNCTION();
 		CHECK_WINDOW_PTR(win);

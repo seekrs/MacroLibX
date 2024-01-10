@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:55:21 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/09 00:25:08 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/10 20:21:45 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int	update(void *param)
 	mlx = (t_mlx *)param;
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->logo, 100, 100);
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 150, 60);
+	mlx_string_put(mlx->mlx, mlx->win, 90, 120, 0xFFFF2066, "this text should be hidden");
 	if (i == 0)
 		mlx_set_font_scale(mlx->mlx, mlx->win, "font.ttf", 16.f);
 	mlx_string_put(mlx->mlx, mlx->win, 20, 50, 0xFFFFFFFF, "that's a text");
@@ -110,7 +111,7 @@ int	main(int argc, char **argv)
 	mlx_pixel_put(mlx.mlx, mlx.win, 200, 10, 0xFFFF00FF);
 	mlx_put_image_to_window(mlx.mlx, mlx.win, mlx.logo, 10, 190);
 	mlx.img = create_image(&mlx);
-	mlx_string_put(mlx.mlx, mlx.win, 20, 20, 0xFFFF2000, \
+	mlx_string_put(mlx.mlx, mlx.win, 20, 20, 0xFF0020FF, \
 			"that text will disappear");
 	mlx_loop_hook(mlx.mlx, update, &mlx);
 	mlx_loop(mlx.mlx);

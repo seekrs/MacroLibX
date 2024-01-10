@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 16:24:11 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/14 17:39:51 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/10 19:58:22 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ namespace mlx
 		TextID id;
 		int x;
 		int y;
-		int color;
+		uint32_t color;
 		std::string text;
 
-		TextDrawData(std::string text, int _color, int _x, int _y);
+		TextDrawData(std::string text, uint32_t _color, int _x, int _y);
 		void init(TextLibrary& library, Font* const font) noexcept;
 		bool operator==(const TextDrawData& rhs) const { return text == rhs.text && x == rhs.x && y == rhs.y && color == rhs.color; }
 		TextDrawData() = default;
@@ -62,7 +62,7 @@ namespace mlx
 			TextPutPipeline() = default;
 
 			void init(Renderer* renderer) noexcept;
-			void put(int x, int y, int color, std::string str);
+			void put(int x, int y, uint32_t color, std::string str);
 			inline void clear() { _drawlist.clear(); _library.clearLibrary(); }
 			void loadFont(const std::filesystem::path& filepath, float scale);
 			void render(std::array<VkDescriptorSet, 2>& sets);
