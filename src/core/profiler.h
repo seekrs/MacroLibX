@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:35:45 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/10 18:16:47 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/10 18:36:46 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ namespace mlx
 
 	class Profiler : public Singleton<Profiler>
 	{
-		friend class Singleton;
+		friend class Singleton<Profiler>;
 
 		public:
 			Profiler(const Profiler&) = delete;
