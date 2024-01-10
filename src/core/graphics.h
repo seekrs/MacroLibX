@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 14:49:49 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/07 01:27:09 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/10 14:18:48 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 #include <utils/non_copyable.h>
 #include <renderer/images/texture.h>
 #include <mlx_profile.h>
+#include <core/profiler.h>
 
 namespace mlx
 {

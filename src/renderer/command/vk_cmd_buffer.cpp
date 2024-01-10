@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:26:06 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/07 01:07:07 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/10 18:30:04 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <renderer/core/vk_semaphore.h>
 #include <renderer/buffers/vk_buffer.h>
 #include <renderer/images/vk_image.h>
+#include <core/profiler.h>
 
 namespace mlx
 {
@@ -42,6 +43,7 @@ namespace mlx
 
 	void CmdBuffer::init(kind type, CmdPool* pool)
 	{
+		MLX_PROFILE_FUNCTION();
 		_type = type;
 		_pool = pool;
 
@@ -64,6 +66,7 @@ namespace mlx
 
 	void CmdBuffer::beginRecord(VkCommandBufferUsageFlags usage)
 	{
+		MLX_PROFILE_FUNCTION();
 		if(!isInit())
 			core::error::report(e_kind::fatal_error, "Vulkan : begenning record on un uninit command buffer");
 		if(_state == state::recording)
@@ -80,6 +83,7 @@ namespace mlx
 
 	void CmdBuffer::bindVertexBuffer(Buffer& buffer) noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		if(!isRecording())
 		{
 			core::error::report(e_kind::warning, "Vulkan : trying to bind a vertex buffer to a non recording command buffer");
@@ -94,6 +98,7 @@ namespace mlx
 
 	void CmdBuffer::bindIndexBuffer(Buffer& buffer) noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		if(!isRecording())
 		{
 			core::error::report(e_kind::warning, "Vulkan : trying to bind a index buffer to a non recording command buffer");
@@ -107,6 +112,7 @@ namespace mlx
 
 	void CmdBuffer::copyBuffer(Buffer& dst, Buffer& src) noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		if(!isRecording())
 		{
 			core::error::report(e_kind::warning, "Vulkan : trying to do a buffer to buffer copy in a non recording command buffer");
@@ -129,6 +135,7 @@ namespace mlx
 
 	void CmdBuffer::copyBufferToImage(Buffer& buffer, Image& image) noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		if(!isRecording())
 		{
 			core::error::report(e_kind::warning, "Vulkan : trying to do a buffer to image copy in a non recording command buffer");
@@ -160,6 +167,7 @@ namespace mlx
 
 	void CmdBuffer::copyImagetoBuffer(Image& image, Buffer& buffer) noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		if(!isRecording())
 		{
 			core::error::report(e_kind::warning, "Vulkan : trying to do an image to buffer copy in a non recording command buffer");
@@ -191,6 +199,7 @@ namespace mlx
 
 	void CmdBuffer::transitionImageLayout(Image& image, VkImageLayout new_layout) noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		if(!isRecording())
 		{
 			core::error::report(e_kind::warning, "Vulkan : trying to do an image layout transition in a non recording command buffer");
@@ -238,6 +247,7 @@ namespace mlx
 
 	void CmdBuffer::endRecord()
 	{
+		MLX_PROFILE_FUNCTION();
 		if(!isInit())
 			core::error::report(e_kind::fatal_error, "Vulkan : ending record on un uninit command buffer");
 		if(_state != state::recording)
@@ -250,6 +260,7 @@ namespace mlx
 
 	void CmdBuffer::submitIdle(bool shouldWaitForExecution) noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		if(_type != kind::single_time)
 		{
 			core::error::report(e_kind::error, "Vulkan : try to perform an idle submit on a command buffer that is not single-time, this is not allowed");
@@ -274,6 +285,7 @@ namespace mlx
 
 	void CmdBuffer::submit(Semaphore* semaphores) noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		std::array<VkSemaphore, 1> signalSemaphores;
 		std::array<VkSemaphore, 1> waitSemaphores;
 
@@ -309,6 +321,7 @@ namespace mlx
 
 	void CmdBuffer::updateSubmitState() noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		if(!_fence.isReady())
 			return;
 
@@ -320,6 +333,7 @@ namespace mlx
 
 	void CmdBuffer::preTransferBarrier() noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		VkMemoryBarrier memoryBarrier{};
 		memoryBarrier.sType = VK_STRUCTURE_TYPE_MEMORY_BARRIER;
 		memoryBarrier.pNext = nullptr;
@@ -331,6 +345,7 @@ namespace mlx
 
 	void CmdBuffer::postTransferBarrier() noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		VkMemoryBarrier memoryBarrier{};
 		memoryBarrier.sType = VK_STRUCTURE_TYPE_MEMORY_BARRIER;
 		memoryBarrier.pNext = nullptr;
@@ -342,6 +357,7 @@ namespace mlx
 
 	void CmdBuffer::destroy() noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		_fence.destroy();
 		_cmd_buffer = VK_NULL_HANDLE;
 		_state = state::uninit;
