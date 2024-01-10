@@ -56,6 +56,7 @@ namespace mlx::core
 
 	void* Application::newGraphicsSuport(std::size_t w, std::size_t h, const char* title)
 	{
+		MLX_PROFILE_FUNCTION();
 		auto it = std::find_if(_textures.begin(), _textures.end(), [=](const Texture& texture)
 		{
 			return &texture == reinterpret_cast<Texture*>(const_cast<char*>(title));
@@ -77,24 +78,28 @@ namespace mlx::core
 
 	void Application::clearGraphicsSupport(void* win)
 	{
+		MLX_PROFILE_FUNCTION();
 		CHECK_WINDOW_PTR(win);
 		_graphics[*static_cast<int*>(win)]->clearRenderData();
 	}
 	
 	void Application::destroyGraphicsSupport(void* win)
 	{
+		MLX_PROFILE_FUNCTION();
 		CHECK_WINDOW_PTR(win);
 		_graphics[*static_cast<int*>(win)].reset();
 	}
 
 	void Application::pixelPut(void* win, int x, int y, uint32_t color) const noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		CHECK_WINDOW_PTR(win);
 		_graphics[*static_cast<int*>(win)]->pixelPut(x, y, color);
 	}
 
 	void Application::stringPut(void* win, int x, int y, int color, char* str)
 	{
+		MLX_PROFILE_FUNCTION();
 		CHECK_WINDOW_PTR(win);
 		if(str == nullptr)
 		{
@@ -111,12 +116,14 @@ namespace mlx::core
 
 	void Application::loadFont(void* win, const std::filesystem::path& filepath, float scale)
 	{
+		MLX_PROFILE_FUNCTION();
 		CHECK_WINDOW_PTR(win);
 		_graphics[*static_cast<int*>(win)]->loadFont(filepath, scale);
 	}
 
 	void Application::texturePut(void* win, void* img, int x, int y)
 	{
+		MLX_PROFILE_FUNCTION();
 		CHECK_WINDOW_PTR(win);
 		if(img == nullptr)
 		{
@@ -132,6 +139,7 @@ namespace mlx::core
 
 	int Application::getTexturePixel(void* img, int x, int y)
 	{
+		MLX_PROFILE_FUNCTION();
 		if(img == nullptr)
 		{
 			core::error::report(e_kind::error, "wrong texture (NULL)");
@@ -148,6 +156,7 @@ namespace mlx::core
 
 	void Application::setTexturePixel(void* img, int x, int y, uint32_t color)
 	{
+		MLX_PROFILE_FUNCTION();
 		if(img == nullptr)
 		{
 			core::error::report(e_kind::error, "wrong texture (NULL)");

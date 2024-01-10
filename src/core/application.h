@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:49:46 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/22 21:04:48 by kbz_8            ###   ########.fr       */
+/*   Updated: 2024/01/10 14:17:24 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 #include <core/graphics.h>
 #include <platform/inputs.h>
 #include <mlx_profile.h>
+#include <core/profiler.h>
 
 namespace mlx::core
 {

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 18:40:44 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/03 13:14:24 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/10 18:28:34 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,13 @@
 #include <renderer/buffers/vk_ubo.h>
 #include <renderer/renderer.h>
 #include <renderer/images/vk_image.h>
+#include <core/profiler.h>
 
 namespace mlx
 {
 	void DescriptorSet::init(Renderer* renderer, DescriptorPool* pool, DescriptorSetLayout* layout)
 	{
+		MLX_PROFILE_FUNCTION();
 		_renderer = renderer;
 		_layout = layout;
 		_pool = pool;
@@ -47,6 +49,7 @@ namespace mlx
 
 	void DescriptorSet::writeDescriptor(int binding, UBO* ubo) const noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		auto device = Render_Core::get().getDevice().get();
 
 		for(int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
@@ -71,6 +74,7 @@ namespace mlx
 
 	void DescriptorSet::writeDescriptor(int binding, const Image& image) const noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		auto device = Render_Core::get().getDevice().get();
 
 		VkDescriptorImageInfo imageInfo{};
@@ -92,6 +96,7 @@ namespace mlx
 
 	DescriptorSet DescriptorSet::duplicate()
 	{
+		MLX_PROFILE_FUNCTION();
 		DescriptorSet set;
 		set.init(_renderer, _pool, _layout);
 		return set;
