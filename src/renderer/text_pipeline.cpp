@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 16:41:13 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/10 18:26:24 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/10 20:20:30 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ constexpr const int RANGE = 1024;
 
 namespace mlx
 {
-	TextDrawData::TextDrawData(std::string _text, int _color, int _x, int _y) :
+	TextDrawData::TextDrawData(std::string _text, uint32_t _color, int _x, int _y) :
 		x(_x), y(_y), color(_color),
 		text(std::move(_text))
 	{}
@@ -56,10 +56,17 @@ namespace mlx
 
 			std::size_t index = vertexData.size();
 
-			vertexData.emplace_back(glm::vec2{q.x0, q.y0}, glm::vec4{color & 0x00FF0000, color & 0x0000FF00, color & 0x000000FF, 0xFFFFFFFF}, glm::vec2{q.s0, q.t0});
-			vertexData.emplace_back(glm::vec2{q.x1, q.y0}, glm::vec4{color & 0x00FF0000, color & 0x0000FF00, color & 0x000000FF, 0xFFFFFFFF}, glm::vec2{q.s1, q.t0});
-			vertexData.emplace_back(glm::vec2{q.x1, q.y1}, glm::vec4{color & 0x00FF0000, color & 0x0000FF00, color & 0x000000FF, 0xFFFFFFFF}, glm::vec2{q.s1, q.t1});
-			vertexData.emplace_back(glm::vec2{q.x0, q.y1}, glm::vec4{color & 0x00FF0000, color & 0x0000FF00, color & 0x000000FF, 0xFFFFFFFF}, glm::vec2{q.s0, q.t1});
+			glm::vec4 vertex_color = {
+				static_cast<float>((color & 0x000000FF)) / 255.f,
+				static_cast<float>((color & 0x0000FF00) >> 8) / 255.f,
+				static_cast<float>((color & 0x00FF0000) >> 16) / 255.f,
+				static_cast<float>((color & 0xFF000000) >> 24) / 255.f
+			};
+
+			vertexData.emplace_back(glm::vec2{q.x0, q.y0}, vertex_color, glm::vec2{q.s0, q.t0});
+			vertexData.emplace_back(glm::vec2{q.x1, q.y0}, vertex_color, glm::vec2{q.s1, q.t0});
+			vertexData.emplace_back(glm::vec2{q.x1, q.y1}, vertex_color, glm::vec2{q.s1, q.t1});
+			vertexData.emplace_back(glm::vec2{q.x0, q.y1}, vertex_color, glm::vec2{q.s0, q.t1});
 
 			indexData.emplace_back(index + 0);
 			indexData.emplace_back(index + 1);
@@ -93,7 +100,7 @@ namespace mlx
 			_font_in_use = &const_cast<Font&>(*_font_set.emplace(*_renderer, filepath, scale).first);
 	}
 
-	void TextPutPipeline::put(int x, int y, int color, std::string str)
+	void TextPutPipeline::put(int x, int y, uint32_t color, std::string str)
 	{
 		MLX_PROFILE_FUNCTION();
 		auto res = _drawlist.emplace(std::move(str), color, x, y);

@@ -32,7 +32,7 @@ namespace mlx
 		_pixel_put_pipeline.setPixel(x, y, color);
 	}
 
-	void GraphicsSupport::stringPut(int x, int y, int color, std::string str)
+	void GraphicsSupport::stringPut(int x, int y, uint32_t color, std::string str)
 	{
 		MLX_PROFILE_FUNCTION();
 		_text_put_pipeline->put(x, y, color, str);
