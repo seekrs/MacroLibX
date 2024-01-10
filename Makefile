@@ -6,7 +6,7 @@
 #    By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/04 16:43:41 by maldavid          #+#    #+#              #
-#    Updated: 2023/12/31 01:09:30 by maldavid         ###   ########.fr        #
+#    Updated: 2024/01/10 14:20:30 by maldavid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ TOOLCHAIN	?= clang
 IMAGES_OPTIMIZED	?= true
 FORCE_INTEGRATED_GPU ?= false
 GRAPHICS_MEMORY_DUMP ?= false
+PROFILER ?= false
 
 MODE	= "release"
 
@@ -64,6 +65,10 @@ endif
 
 ifeq ($(GRAPHICS_MEMORY_DUMP), true)
 	CXXFLAGS += -D GRAPHICS_MEMORY_DUMP
+endif
+
+ifeq ($(PROFILER), true)
+	CXXFLAGS += -D PROFILER
 endif
 
 RM = rm -rf

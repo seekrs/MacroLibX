@@ -6,18 +6,20 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:30:19 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/11 19:01:14 by kbz_8            ###   ########.fr       */
+/*   Updated: 2024/01/10 18:31:13 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "inputs.h"
 #include <mlx.h>
 #include <cstring>
+#include <core/profiler.h>
 
 namespace mlx
 {
 	void Input::update()
 	{
+		MLX_PROFILE_FUNCTION();
 		_xRel = 0;
 		_yRel = 0;
 

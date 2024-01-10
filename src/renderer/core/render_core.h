@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:16:32 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/07 01:31:37 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/10 18:36:58 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ namespace mlx
 
 	class Render_Core : public Singleton<Render_Core>
 	{
-		public:
-			Render_Core() = default;
+		friend class Singleton<Render_Core>;
 
+		public:
 			void init();
 			void destroy();
 
@@ -62,6 +62,8 @@ namespace mlx
 			inline CmdBuffer& getSingleTimeCmdBuffer() noexcept { return _cmd_manager.getCmdBuffer(); }
 			inline SingleTimeCmdManager& getSingleTimeCmdManager() noexcept { return _cmd_manager; }
 
+		private:
+			Render_Core() = default;
 			~Render_Core() = default;
 
 		private:

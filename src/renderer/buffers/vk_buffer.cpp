@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 18:55:57 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/07 01:18:35 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/10 18:30:31 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <renderer/command/vk_cmd_pool.h>
 #include <renderer/command/vk_cmd_buffer.h>
 #include <renderer/core/render_core.h>
+#include <core/profiler.h>
 #include <vma.h>
 #include <cstring>
 #include <iostream>
@@ -22,6 +23,7 @@ namespace mlx
 {
 	void Buffer::create(Buffer::kind type, VkDeviceSize size, VkBufferUsageFlags usage, const char* name, const void* data)
 	{
+		MLX_PROFILE_FUNCTION();
 		_usage = usage;
 		if(type == Buffer::kind::constant || type == Buffer::kind::dynamic_device_local)
 		{
@@ -52,6 +54,7 @@ namespace mlx
 
 	void Buffer::destroy() noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		// not creating destroyer in `create` as some image may be copied (and so `this` will be invalid)
 		CmdResource::setDestroyer([this]()
 		{
@@ -66,6 +69,7 @@ namespace mlx
 
 	void Buffer::createBuffer(VkBufferUsageFlags usage, VmaAllocationCreateInfo info, VkDeviceSize size, [[maybe_unused]] const char* name)
 	{
+		MLX_PROFILE_FUNCTION();
 		VkBufferCreateInfo bufferInfo{};
 		bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
 		bufferInfo.size = size;
@@ -90,6 +94,7 @@ namespace mlx
 
 	bool Buffer::copyFromBuffer(const Buffer& buffer) noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		if(!(_usage & VK_BUFFER_USAGE_TRANSFER_DST_BIT))
 		{
 			core::error::report(e_kind::error, "Vulkan : buffer cannot be the destination of a copy because it does not have the correct usage flag");
@@ -114,6 +119,7 @@ namespace mlx
 
 	void Buffer::pushToGPU() noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		VmaAllocationCreateInfo alloc_info{};
 		alloc_info.usage = VMA_MEMORY_USAGE_AUTO_PREFER_DEVICE;
 
