@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:21:36 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/03 13:17:56 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/10 21:53:03 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <renderer/core/render_core.h>
 #include <renderer/renderer.h>
 #include <renderer/renderpass/vk_framebuffer.h>
+#include <core/profiler.h>
 
 namespace mlx
 {
@@ -80,6 +81,7 @@ namespace mlx
 
 	void RenderPass::begin(class CmdBuffer& cmd, class FrameBuffer& fb)
 	{
+		MLX_PROFILE_FUNCTION();
 		if(_is_running)
 			return;
 
@@ -99,6 +101,7 @@ namespace mlx
 
 	void RenderPass::end(class CmdBuffer& cmd)
 	{
+		MLX_PROFILE_FUNCTION();
 		if(!_is_running)
 			return;
 		vkCmdEndRenderPass(cmd.get());
@@ -109,5 +112,8 @@ namespace mlx
 	{
 		vkDestroyRenderPass(Render_Core::get().getDevice().get(), _renderPass, nullptr);
 		_renderPass = VK_NULL_HANDLE;
+		#ifdef DEBUG
+			core::error::report(e_kind::message, "Vulkan : destroyed a renderpass");
+		#endif
 	}
 }

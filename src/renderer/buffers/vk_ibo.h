@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 15:05:05 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/03 15:27:02 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/10 23:05:15 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ namespace mlx
 	{
 		public:
 			inline void create(uint32_t size, const uint16_t* data, const char* name) { Buffer::create(Buffer::kind::constant, size, VK_BUFFER_USAGE_INDEX_BUFFER_BIT, name, data); }
-			inline void bind(Renderer& renderer) noexcept { vkCmdBindIndexBuffer(renderer.getActiveCmdBuffer().get(), _buffer, _offset, VK_INDEX_TYPE_UINT16); }
+			inline void bind(Renderer& renderer) noexcept { renderer.getActiveCmdBuffer().bindIndexBuffer(*this); }
 	};
 }
 

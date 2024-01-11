@@ -6,18 +6,20 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:45:52 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/10 22:22:28 by kbz_8            ###   ########.fr       */
+/*   Updated: 2024/01/10 18:30:57 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vk_ubo.h"
 #include <cstring>
 #include <renderer/renderer.h>
+#include <core/profiler.h>
 
 namespace mlx
 {
 	void UBO::create(Renderer* renderer, uint32_t size, [[maybe_unused]] const char* name)
 	{
+		MLX_PROFILE_FUNCTION();
 		_renderer = renderer;
 
 		for(int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
@@ -37,11 +39,13 @@ namespace mlx
 
 	void UBO::setData(uint32_t size, const void* data)
 	{
+		MLX_PROFILE_FUNCTION();
 		std::memcpy(_maps[_renderer->getActiveImageIndex()], data, static_cast<size_t>(size));
 	}
 
 	void UBO::setDynamicData(uint32_t size, const void* data)
 	{
+		MLX_PROFILE_FUNCTION();
 		std::memcpy(_maps[_renderer->getActiveImageIndex()], data, static_cast<size_t>(size));
 		_buffers[_renderer->getActiveImageIndex()].flush();
 	}

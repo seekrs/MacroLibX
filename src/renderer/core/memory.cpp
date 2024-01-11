@@ -6,12 +6,13 @@
 /*   By: kbz_8 <kbz_8.dev@akel-engine.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 22:02:37 by kbz_8             #+#    #+#             */
-/*   Updated: 2024/01/03 13:09:40 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/10 21:54:35 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <mlx_profile.h>
 #include <core/errors.h>
+#include <core/profiler.h>
 #include <cstdio>
 
 #define VMA_STATIC_VULKAN_FUNCTIONS 0
@@ -86,12 +87,16 @@ namespace mlx
 
 	VmaAllocation GPUallocator::createBuffer(const VkBufferCreateInfo* binfo, const VmaAllocationCreateInfo* vinfo, VkBuffer& buffer, const char* name) noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		VmaAllocation allocation;
 		VkResult res = vmaCreateBuffer(_allocator, binfo, vinfo, &buffer, &allocation, nullptr);
 		if(res != VK_SUCCESS)
 			core::error::report(e_kind::fatal_error, "Graphics allocator : failed to allocate a buffer, %s", RCore::verbaliseResultVk(res));
 		if(name != nullptr)
+		{
+			Render_Core::get().getLayers().setDebugUtilsObjectNameEXT(VK_OBJECT_TYPE_BUFFER, (uint64_t)buffer, name);
 			vmaSetAllocationName(_allocator, allocation, name);
+		}
 		#ifdef DEBUG
 			core::error::report(e_kind::message, "Graphics Allocator : created new buffer");
 		#endif
@@ -101,6 +106,7 @@ namespace mlx
 
 	void GPUallocator::destroyBuffer(VmaAllocation allocation, VkBuffer buffer) noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		vkDeviceWaitIdle(Render_Core::get().getDevice().get());
 		vmaDestroyBuffer(_allocator, buffer, allocation);
 		#ifdef DEBUG
@@ -111,12 +117,16 @@ namespace mlx
 
 	VmaAllocation GPUallocator::createImage(const VkImageCreateInfo* iminfo, const VmaAllocationCreateInfo* vinfo, VkImage& image, const char* name) noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		VmaAllocation allocation;
 		VkResult res = vmaCreateImage(_allocator, iminfo, vinfo, &image, &allocation, nullptr);
 		if(res != VK_SUCCESS)
 			core::error::report(e_kind::fatal_error, "Graphics allocator : failed to allocate an image, %s", RCore::verbaliseResultVk(res));
 		if(name != nullptr)
+		{
+			Render_Core::get().getLayers().setDebugUtilsObjectNameEXT(VK_OBJECT_TYPE_IMAGE, (uint64_t)image, name);
 			vmaSetAllocationName(_allocator, allocation, name);
+		}
 		#ifdef DEBUG
 			core::error::report(e_kind::message, "Graphics Allocator : created new image");
 		#endif
@@ -126,6 +136,7 @@ namespace mlx
 
 	void GPUallocator::destroyImage(VmaAllocation allocation, VkImage image) noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		vkDeviceWaitIdle(Render_Core::get().getDevice().get());
 		vmaDestroyImage(_allocator, image, allocation);
 		#ifdef DEBUG
@@ -136,6 +147,7 @@ namespace mlx
 
 	void GPUallocator::mapMemory(VmaAllocation allocation, void** data) noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		VkResult res = vmaMapMemory(_allocator, allocation, data);
 		if(res != VK_SUCCESS)
 			core::error::report(e_kind::fatal_error, "Graphics allocator : unable to map GPU memory to CPU memory, %s", RCore::verbaliseResultVk(res));
@@ -143,6 +155,7 @@ namespace mlx
 
 	void GPUallocator::unmapMemory(VmaAllocation allocation) noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		vmaUnmapMemory(_allocator, allocation);
 	}
 
@@ -167,6 +180,7 @@ namespace mlx
 	
 	void GPUallocator::flush(VmaAllocation allocation, VkDeviceSize size, VkDeviceSize offset) noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		vmaFlushAllocation(_allocator, allocation, offset, size);
 	}
 
@@ -179,5 +193,8 @@ namespace mlx
 		vmaDestroyAllocator(_allocator);
 		_active_buffers_allocations = 0;
 		_active_images_allocations = 0;
+		#ifdef DEBUG
+			core::error::report(e_kind::message, "Vulkan : destroyed a graphics allocator");
+		#endif
 	}
 }

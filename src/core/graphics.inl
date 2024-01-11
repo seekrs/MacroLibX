@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include <core/graphics.h>
-#include <type_traits>
+#include <iostream>
 
 namespace mlx
 {
@@ -20,31 +20,48 @@ namespace mlx
 
 	void GraphicsSupport::clearRenderData() noexcept
 	{
-		_textures_to_render.clear();
+		MLX_PROFILE_FUNCTION();
+		_drawlist.clear();
 		_pixel_put_pipeline.clear();
-		_text_put_pipeline->clear();
+		_text_manager.clear();
+		_texture_manager.clear();
 	}
 
 	void GraphicsSupport::pixelPut(int x, int y, uint32_t color) noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		_pixel_put_pipeline.setPixel(x, y, color);
 	}
 
-	void GraphicsSupport::stringPut(int x, int y, int color, std::string str)
+	void GraphicsSupport::stringPut(int x, int y, uint32_t color, std::string str)
 	{
-		_text_put_pipeline->put(x, y, color, str);
+		MLX_PROFILE_FUNCTION();
+		std::pair<DrawableResource*, bool> res = _text_manager.registerText(x, y, color, str);
+		if(!res.second) // if this is not a completly new text draw
+		{
+			auto it = std::find(_drawlist.begin(), _drawlist.end(), res.first);
+			if(it != _drawlist.end())
+				_drawlist.erase(it);
+		}
+		_drawlist.push_back(res.first);
 	}
 
 	void GraphicsSupport::texturePut(Texture* texture, int x, int y)
 	{
-		_textures_to_render.emplace_back(texture, x, y);
-		auto it = std::find(_textures_to_render.begin(), _textures_to_render.end() - 1, _textures_to_render.back());
-		if(it != _textures_to_render.end() - 1)
-			_textures_to_render.erase(it);
+		MLX_PROFILE_FUNCTION();
+		auto res = _texture_manager.registerTexture(texture, x, y);
+		if(!res.second) // if this is not a completly new texture draw
+		{
+			auto it = std::find(_drawlist.begin(), _drawlist.end(), res.first);
+			if(it != _drawlist.end())
+				_drawlist.erase(it);
+		}
+		_drawlist.push_back(res.first);
 	}
 
 	void GraphicsSupport::loadFont(const std::filesystem::path& filepath, float scale)
 	{
-		_text_put_pipeline->loadFont(filepath, scale);
+		MLX_PROFILE_FUNCTION();
+		_text_manager.loadFont(*_renderer, filepath, scale);
 	}
 }

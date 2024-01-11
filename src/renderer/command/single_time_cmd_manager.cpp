@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 19:57:49 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/16 18:46:26 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/11 03:13:21 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,13 @@
 
 namespace mlx
 {
-	SingleTimeCmdManager::SingleTimeCmdManager() : _buffers(MIN_POOL_SIZE) {}
-
 	void SingleTimeCmdManager::init() noexcept
 	{
 		_pool.init();
-		for(int i = 0; i < MIN_POOL_SIZE; i++)
+		for(int i = 0; i < BASE_POOL_SIZE; i++)
 		{
 			_buffers.emplace_back();
-			_buffers.back().init(&_pool);
+			_buffers.back().init(CmdBuffer::kind::single_time, &_pool);
 		}
 	}
 
@@ -38,8 +36,20 @@ namespace mlx
 				return buf;
 			}
 		}
-		_buffers.emplace_back().init(&_pool);
+		_buffers.emplace_back().init(CmdBuffer::kind::single_time, &_pool);
 		return _buffers.back();
+	}
+
+	void SingleTimeCmdManager::updateSingleTimesCmdBuffersSubmitState() noexcept
+	{
+		for(CmdBuffer& cmd : _buffers)
+			cmd.updateSubmitState();
+	}
+
+	void SingleTimeCmdManager::waitForAllExecutions() noexcept
+	{
+		for(CmdBuffer& cmd : _buffers)
+			cmd.waitForExecution();
 	}
 
 	void SingleTimeCmdManager::destroy() noexcept

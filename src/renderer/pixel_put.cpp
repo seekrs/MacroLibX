@@ -6,17 +6,19 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 15:14:50 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/23 19:34:30 by kbz_8            ###   ########.fr       */
+/*   Updated: 2024/01/11 00:06:01 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <renderer/pixel_put.h>
 #include <cstring>
+#include <core/profiler.h>
 
 namespace mlx
 {
 	void PixelPutPipeline::init(uint32_t width, uint32_t height, Renderer& renderer) noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		_texture.create(nullptr, width, height, VK_FORMAT_R8G8B8A8_UNORM, "__mlx_pixel_put_pipeline_texture", true);
 		_texture.setDescriptor(renderer.getFragDescriptorSet().duplicate());
 
@@ -29,6 +31,7 @@ namespace mlx
 
 	void PixelPutPipeline::setPixel(int x, int y, uint32_t color) noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		if(x < 0 || y < 0 || x > static_cast<int>(_width) || y > static_cast<int>(_height))
 			return;
 		_cpu_map[(y * _width) + x] = color;
@@ -37,12 +40,14 @@ namespace mlx
 
 	void PixelPutPipeline::clear()
 	{
+		MLX_PROFILE_FUNCTION();
 		_cpu_map.assign(_width * _height, 0);
 		_has_been_modified = true;
 	}
 
-	void PixelPutPipeline::present() noexcept
+	void PixelPutPipeline::render(std::array<VkDescriptorSet, 2>& sets, Renderer& renderer) noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		if(_has_been_modified)
 		{
 			std::memcpy(_buffer_map, _cpu_map.data(), sizeof(uint32_t) * _cpu_map.size());
@@ -50,15 +55,12 @@ namespace mlx
 			_has_been_modified = false;
 		}
 		_texture.updateSet(0);
-	}
-
-	void PixelPutPipeline::render(Renderer& renderer) noexcept
-	{
-		_texture.render(renderer, 0, 0);
+		_texture.render(sets, renderer, 0, 0);
 	}
 
 	void PixelPutPipeline::destroy() noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		_buffer.destroy();
 		_texture.destroy();
 	}

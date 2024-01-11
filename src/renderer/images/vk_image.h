@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:54:21 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/03 15:28:07 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/07 01:20:31 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,23 @@
 #include <cstddef>
 #include <vector>
 #include <vma.h>
+#include <renderer/core/cmd_resource.h>
 #include <renderer/command/vk_cmd_buffer.h>
 #include <renderer/command/vk_cmd_pool.h>
+
+#ifdef DEBUG
+	#include <string>
+#endif
 
 namespace mlx
 {
 	uint32_t formatSize(VkFormat format);
+	bool isStencilFormat(VkFormat format);
+	bool isDepthFormat(VkFormat format);
+	VkFormat bitsToFormat(uint32_t bits);
+	VkPipelineStageFlags layoutToAccessMask(VkImageLayout layout, bool isDestination);
 
-	class Image
+	class Image : public CmdResource
 	{
 		friend class SwapChain;
 
@@ -70,6 +79,9 @@ namespace mlx
 			VkImage _image = VK_NULL_HANDLE;
 			VkImageView _image_view = VK_NULL_HANDLE;
 			VkSampler _sampler = VK_NULL_HANDLE;
+			#ifdef DEBUG
+				std::string _name;
+			#endif
 			VkFormat _format;
 			VkImageTiling _tiling;
 			VkImageLayout _layout = VK_IMAGE_LAYOUT_UNDEFINED;

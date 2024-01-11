@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:14:29 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/30 23:29:41 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/10 21:54:17 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,6 @@ namespace mlx
 			return std::make_pair(deviceScore(device, surface), device);
 		});
 
-		vkDestroySurfaceKHR(Render_Core::get().getInstance().get(), surface, nullptr);
-		SDL_DestroyWindow(window);
-
 		using device_pair = std::pair<int, VkPhysicalDevice>;
 		std::sort(devices_score.begin(), devices_score.end(), [](const device_pair& a, const device_pair& b)
 		{
@@ -110,6 +107,9 @@ namespace mlx
 			vkGetPhysicalDeviceProperties(_physicalDevice, &props);
 			core::error::report(e_kind::message, "Vulkan : picked a physical device, %s", props.deviceName);
 		#endif
+		Render_Core::get().getQueue().findQueueFamilies(_physicalDevice, surface); // update queue indicies to current physical device
+		vkDestroySurfaceKHR(Render_Core::get().getInstance().get(), surface, nullptr);
+		SDL_DestroyWindow(window);
 	}
 
 	int Device::deviceScore(VkPhysicalDevice device, VkSurfaceKHR surface)
@@ -159,5 +159,8 @@ namespace mlx
 	{
 		vkDestroyDevice(_device, nullptr);
 		_device = VK_NULL_HANDLE;
+		#ifdef DEBUG
+			core::error::report(e_kind::message, "Vulkan : destroyed a logical device");
+		#endif
 	}
 }

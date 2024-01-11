@@ -6,19 +6,20 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:25:16 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/24 16:04:04 by kbz_8            ###   ########.fr       */
+/*   Updated: 2024/01/10 14:18:35 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <mutex>
 #include <renderer/renderer.h>
 #include <renderer/images/texture.h>
 #include <renderer/core/render_core.h>
+#include <core/profiler.h>
 
 namespace mlx
 {
 	void Renderer::init(Texture* render_target)
 	{
+		MLX_PROFILE_FUNCTION();
 		if(render_target == nullptr)
 		{
 			_surface.create(*this);
@@ -71,6 +72,7 @@ namespace mlx
 
 	bool Renderer::beginFrame()
 	{
+		MLX_PROFILE_FUNCTION();
 		auto device = Render_Core::get().getDevice().get();
 
 		if(_render_target == nullptr)
@@ -119,6 +121,7 @@ namespace mlx
 
 	void Renderer::endFrame()
 	{
+		MLX_PROFILE_FUNCTION();
 		_pass.end(getActiveCmdBuffer());
 		_cmd.getCmdBuffer(_current_frame_index).endRecord();
 
@@ -150,13 +153,14 @@ namespace mlx
 		}
 		else
 		{
-			_cmd.getCmdBuffer(_current_frame_index).submitIdle();
+			_cmd.getCmdBuffer(_current_frame_index).submitIdle(true);
 			_current_frame_index = 0;
 		}
 	}
 
 	void Renderer::destroy()
 	{
+		MLX_PROFILE_FUNCTION();
 		vkDeviceWaitIdle(Render_Core::get().getDevice().get());
 
 		_pipeline.destroy();
