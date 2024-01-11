@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 14:05:25 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/07 00:33:40 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/10 21:55:54 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,12 @@ namespace mlx
 	void ValidationLayers::destroy()
 	{
 		if constexpr(enableValidationLayers)
+		{
 			destroyDebugUtilsMessengerEXT(nullptr);
+			#ifdef DEBUG
+				core::error::report(e_kind::message, "Vulkan : destroyed validation layers");
+			#endif
+		}
 	}
 
 	VkResult ValidationLayers::createDebugUtilsMessengerEXT(const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator)

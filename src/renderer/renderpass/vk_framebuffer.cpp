@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:18:06 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/03 13:17:27 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/10 21:52:51 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,8 @@ namespace mlx
 	{
 		vkDestroyFramebuffer(Render_Core::get().getDevice().get(), _framebuffer, nullptr);
 		_framebuffer = VK_NULL_HANDLE;
+		#ifdef DEBUG
+			core::error::report(e_kind::message, "Vulkan : destroyed a framebuffer");
+		#endif
 	}
 }

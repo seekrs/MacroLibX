@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 14:49:49 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/10 19:59:58 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/11 04:39:23 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,9 @@
 #include <platform/window.h>
 #include <renderer/renderer.h>
 #include <renderer/pixel_put.h>
-#include <renderer/text_pipeline.h>
+#include <renderer/core/drawable_resource.h>
+#include <renderer/images/texture_manager.h>
+#include <renderer/texts/text_manager.h>
 #include <utils/non_copyable.h>
 #include <renderer/images/texture.h>
 #include <mlx_profile.h>
@@ -48,20 +50,31 @@ namespace mlx
 			inline void texturePut(Texture* texture, int x, int y);
 			inline void loadFont(const std::filesystem::path& filepath, float scale);
 
+			inline bool hasWindow() const noexcept  { return _has_window; }
+
 			inline Renderer& getRenderer() { return *_renderer; }
 
 			~GraphicsSupport();
 
 		private:
-			std::vector<TextureRenderData> _textures_to_render;
+			std::vector<DrawableResource*> _drawlist;
+			
 			PixelPutPipeline _pixel_put_pipeline;
+
+			TextManager _text_manager;
+			TextureManager _texture_manager;
+			
 			glm::mat4 _proj = glm::mat4(1.0);
+			
 			std::shared_ptr<MLX_Window> _window;
-			std::unique_ptr<TextPutPipeline> _text_put_pipeline; // unique_ptr because of the size of the class
 			std::unique_ptr<Renderer> _renderer;
+
 			std::size_t _width = 0;
 			std::size_t _height = 0;
+			
 			int _id;
+
+			bool _has_window;
 	};
 }
 

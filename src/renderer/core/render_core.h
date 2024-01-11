@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:16:32 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/10 18:36:58 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/11 05:14:03 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ namespace mlx
 			void init();
 			void destroy();
 
+			inline bool isInit() const noexcept { return _is_init; }
 			inline Instance& getInstance() noexcept { return _instance; }
 			inline Device& getDevice() noexcept { return _device; }
 			inline Queues& getQueue() noexcept { return _queues; }

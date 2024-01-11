@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 02:24:58 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/23 18:49:12 by kbz_8            ###   ########.fr       */
+/*   Updated: 2024/01/11 01:18:25 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,13 @@
 
 namespace mlx
 {
-	class Texture : public Image
+	class Texture : public Image 
 	{
 		public:
 			Texture() = default;
-			
+
 			void create(uint8_t* pixels, uint32_t width, uint32_t height, VkFormat format, const char* name, bool dedicated_memory = false);
-			void render(class Renderer& renderer, int x, int y);
+			void render(std::array<VkDescriptorSet, 2>& sets, class Renderer& renderer, int x, int y);
 			void destroy() noexcept override;
 
 			void setPixel(int x, int y, uint32_t color) noexcept;
@@ -40,9 +40,9 @@ namespace mlx
 
 			inline void setDescriptor(DescriptorSet&& set) noexcept { _set = set; }
 			inline VkDescriptorSet getSet() noexcept { return _set.isInit() ? _set.get() : VK_NULL_HANDLE; }
-			inline void updateSet(int binding) noexcept { _set.writeDescriptor(binding, *this); _has_been_updated = true; }
-			inline bool hasBeenUpdated() const noexcept { return _has_been_updated; }
-			inline constexpr void resetUpdate() noexcept { _has_been_updated = false; }
+			inline void updateSet(int binding) noexcept { _set.writeDescriptor(binding, *this); _has_set_been_updated = true; }
+			inline bool hasBeenUpdated() const noexcept { return _has_set_been_updated; }
+			inline constexpr void resetUpdate() noexcept { _has_set_been_updated = false; }
 
 			~Texture() = default;
 
@@ -60,20 +60,10 @@ namespace mlx
 			std::optional<Buffer> _buf_map = std::nullopt;
 			void* _map = nullptr;
 			bool _has_been_modified = false;
-			bool _has_been_updated = false;
+			bool _has_set_been_updated = false;
 	};
 
 	Texture stbTextureLoad(std::filesystem::path file, int* w, int* h);
-
-	struct TextureRenderData
-	{
-		Texture* texture;
-		int x;
-		int y;
-
-		TextureRenderData(Texture* _texture, int _x, int _y) : texture(_texture), x(_x), y(_y) {}
-		bool operator==(const TextureRenderData& rhs) const { return texture == rhs.texture && x == rhs.x && y == rhs.y; }
-	};
 }
 
 #endif

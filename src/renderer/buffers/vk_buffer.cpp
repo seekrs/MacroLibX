@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 18:55:57 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/10 18:30:31 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/11 05:21:20 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 #include <core/profiler.h>
 #include <vma.h>
 #include <cstring>
-#include <iostream>
 
 namespace mlx
 {
@@ -56,15 +55,15 @@ namespace mlx
 	{
 		MLX_PROFILE_FUNCTION();
 		// not creating destroyer in `create` as some image may be copied (and so `this` will be invalid)
-		CmdResource::setDestroyer([this]()
-		{
+		//CmdResource::setDestroyer([this]()
+		//{
 			if(_is_mapped)
 				unmapMem();
 			if(_buffer != VK_NULL_HANDLE)
 				Render_Core::get().getAllocator().destroyBuffer(_allocation, _buffer);
 			_buffer = VK_NULL_HANDLE;
-		});
-		CmdResource::requireDestroy();
+		//});
+		//CmdResource::requireDestroy();
 	}
 
 	void Buffer::createBuffer(VkBufferUsageFlags usage, VmaAllocationCreateInfo info, VkDeviceSize size, [[maybe_unused]] const char* name)
