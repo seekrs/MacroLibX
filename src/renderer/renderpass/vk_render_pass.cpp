@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:21:36 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/10 18:27:43 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/10 21:53:03 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,5 +112,8 @@ namespace mlx
 	{
 		vkDestroyRenderPass(Render_Core::get().getDevice().get(), _renderPass, nullptr);
 		_renderPass = VK_NULL_HANDLE;
+		#ifdef DEBUG
+			core::error::report(e_kind::message, "Vulkan : destroyed a renderpass");
+		#endif
 	}
 }

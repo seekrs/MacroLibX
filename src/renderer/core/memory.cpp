@@ -6,7 +6,7 @@
 /*   By: kbz_8 <kbz_8.dev@akel-engine.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 22:02:37 by kbz_8             #+#    #+#             */
-/*   Updated: 2024/01/10 18:29:07 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/10 21:54:35 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,5 +193,8 @@ namespace mlx
 		vmaDestroyAllocator(_allocator);
 		_active_buffers_allocations = 0;
 		_active_images_allocations = 0;
+		#ifdef DEBUG
+			core::error::report(e_kind::message, "Vulkan : destroyed a graphics allocator");
+		#endif
 	}
 }

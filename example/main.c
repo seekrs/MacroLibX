@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:55:21 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/10 20:21:45 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/10 20:36:57 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ int	update(void *param)
 	t_mlx		*mlx;
 
 	mlx = (t_mlx *)param;
+	mlx_string_put(mlx->mlx, mlx->win, 160, 120, 0xFFFF2066, "this text should be hidden");
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->logo, 100, 100);
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 150, 60);
-	mlx_string_put(mlx->mlx, mlx->win, 90, 120, 0xFFFF2066, "this text should be hidden");
 	if (i == 0)
 		mlx_set_font_scale(mlx->mlx, mlx->win, "font.ttf", 16.f);
 	mlx_string_put(mlx->mlx, mlx->win, 20, 50, 0xFFFFFFFF, "that's a text");
