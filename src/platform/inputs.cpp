@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:30:19 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/10 18:31:13 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/11 19:08:23 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ namespace mlx
 			}
 
 			uint32_t id = _event.window.windowID;
-			if(!_events_hooks.count(id))
+			if(_events_hooks.find(id) == _events_hooks.end())
 				continue;
 			auto& hooks = _events_hooks[id];
 

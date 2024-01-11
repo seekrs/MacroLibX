@@ -1,7 +1,31 @@
 {
    name
    Memcheck:Leak
-   fun:*alloc
+   fun:*
+   ...
+   obj:*libmlx*
+   ...
+}
+{
+   name
+   Memcheck:Cond
+   fun:*
+   ...
+   obj:*libmlx*
+   ...
+}
+{
+   name
+   Memcheck:Value8
+   fun:*
+   ...
+   obj:*libmlx*
+   ...
+}
+{
+   name
+   Memcheck:Addr4
+   fun:*
    ...
    obj:*libmlx*
    ...
@@ -9,7 +33,7 @@
 {
    name
    Memcheck:Leak
-   fun:*alloc
+   fun:*
    ...
    obj:*SDL*
    ...
@@ -17,7 +41,7 @@
 {
    name
    Memcheck:Leak
-   fun:*alloc
+   fun:*
    ...
    obj:*X11*
    ...
@@ -25,7 +49,7 @@
 {
    name
    Memcheck:Leak
-   fun:*alloc
+   fun:*
    ...
    obj:*nvidia.so*
    ...
@@ -33,7 +57,7 @@
 {
    name
    Memcheck:Leak
-   fun:*alloc
+   fun:*
    obj:*
    ...
    fun:X11*
@@ -51,7 +75,16 @@
 {
    name
    Memcheck:Leak
-   fun:*alloc
+   fun:*
+   obj:*
+   ...
+   fun:_dl_*
+   ...
+}
+{
+   name
+   Memcheck:Leak
+   fun:*
    obj:*
    ...
    fun:dl_*
@@ -94,4 +127,3 @@
    obj:*
    obj:*
 }
-

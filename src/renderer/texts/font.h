@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 21:17:04 by kbz_8             #+#    #+#             */
-/*   Updated: 2023/12/14 17:51:40 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/11 20:08:55 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ namespace mlx
 			inline float getScale() const noexcept { return _scale; }
 			inline const std::array<stbtt_packedchar, 96>& getCharData() const { return _cdata; }
 			inline const TextureAtlas& getAtlas() const noexcept { return _atlas; }
-			inline bool operator==(const Font& rhs) const { return rhs._name == _name; }
-			inline bool operator!=(const Font& rhs) const { return rhs._name != _name; }
+			inline bool operator==(const Font& rhs) const { return rhs._name == _name && rhs._scale == _scale; }
+			inline bool operator!=(const Font& rhs) const { return rhs._name != _name && rhs._scale != _scale; }
 			~Font();
 
 		private:
