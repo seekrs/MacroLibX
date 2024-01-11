@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 23:18:52 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/03 15:26:56 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/11 05:16:58 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,11 @@
 #include <mlx_profile.h>
 #include <volk.h>
 #include <renderer/core/render_core.h>
+#include <renderer/core/cmd_resource.h>
 
 namespace mlx
 {
-	class Buffer
+	class Buffer : public CmdResource
 	{
 		public:
 			enum class kind { dynamic, dynamic_device_local, uniform, constant };

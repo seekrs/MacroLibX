@@ -39,6 +39,11 @@ option("graphics_memory_dump")
 	add_defines("GRAPHICS_MEMORY_DUMP")
 option_end()
 
+option("profiler")
+	set_default(false)
+	add_defines("PROFILER")
+option_end()
+
 -- Targets
 
 target("mlx")
@@ -64,7 +69,7 @@ target_end() -- optional but I think the code is cleaner with this -- optional b
 target("Test")
 	set_default(false)
 	set_kind("binary")
-	set_targetdir("test")
+	set_targetdir("example")
 
 	add_linkdirs("./")
 

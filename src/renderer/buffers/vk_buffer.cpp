@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 18:55:57 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/16 17:10:17 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/11 05:21:20 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,15 @@
 #include <renderer/command/vk_cmd_pool.h>
 #include <renderer/command/vk_cmd_buffer.h>
 #include <renderer/core/render_core.h>
+#include <core/profiler.h>
 #include <vma.h>
 #include <cstring>
-#include <iostream>
 
 namespace mlx
 {
 	void Buffer::create(Buffer::kind type, VkDeviceSize size, VkBufferUsageFlags usage, const char* name, const void* data)
 	{
+		MLX_PROFILE_FUNCTION();
 		_usage = usage;
 		if(type == Buffer::kind::constant || type == Buffer::kind::dynamic_device_local)
 		{
@@ -52,15 +53,22 @@ namespace mlx
 
 	void Buffer::destroy() noexcept
 	{
-		if(_is_mapped)
-			unmapMem();
-		if(_buffer != VK_NULL_HANDLE)
-			Render_Core::get().getAllocator().destroyBuffer(_allocation, _buffer);
-		_buffer = VK_NULL_HANDLE;
+		MLX_PROFILE_FUNCTION();
+		// not creating destroyer in `create` as some image may be copied (and so `this` will be invalid)
+		//CmdResource::setDestroyer([this]()
+		//{
+			if(_is_mapped)
+				unmapMem();
+			if(_buffer != VK_NULL_HANDLE)
+				Render_Core::get().getAllocator().destroyBuffer(_allocation, _buffer);
+			_buffer = VK_NULL_HANDLE;
+		//});
+		//CmdResource::requireDestroy();
 	}
 
 	void Buffer::createBuffer(VkBufferUsageFlags usage, VmaAllocationCreateInfo info, VkDeviceSize size, [[maybe_unused]] const char* name)
 	{
+		MLX_PROFILE_FUNCTION();
 		VkBufferCreateInfo bufferInfo{};
 		bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
 		bufferInfo.size = size;
@@ -85,6 +93,7 @@ namespace mlx
 
 	bool Buffer::copyFromBuffer(const Buffer& buffer) noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		if(!(_usage & VK_BUFFER_USAGE_TRANSFER_DST_BIT))
 		{
 			core::error::report(e_kind::error, "Vulkan : buffer cannot be the destination of a copy because it does not have the correct usage flag");
@@ -96,13 +105,10 @@ namespace mlx
 			return false;
 		}
 
-		// TODO, use global cmd buffer pool to manage resources
 		CmdBuffer& cmd = Render_Core::get().getSingleTimeCmdBuffer();
 		cmd.beginRecord();
 
-		VkBufferCopy copyRegion{};
-		copyRegion.size = _size;
-		vkCmdCopyBuffer(cmd.get(), buffer._buffer, _buffer, 1, &copyRegion);
+		cmd.copyBuffer(*this, const_cast<Buffer&>(buffer));
 
 		cmd.endRecord();
 		cmd.submitIdle();
@@ -112,6 +118,7 @@ namespace mlx
 
 	void Buffer::pushToGPU() noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		VmaAllocationCreateInfo alloc_info{};
 		alloc_info.usage = VMA_MEMORY_USAGE_AUTO_PREFER_DEVICE;
 
@@ -124,7 +131,7 @@ namespace mlx
 			newBuffer.createBuffer(newBuffer._usage, alloc_info, _size, nullptr);
 		#endif
 
-		if(newBuffer.copyFromBuffer(*this)) // if the copy succeded we swap the buffers, else the new one is deleted
+		if(newBuffer.copyFromBuffer(*this)) // if the copy succeded we swap the buffers, otherwise the new one is deleted
 			this->swap(newBuffer);
 		newBuffer.destroy();
 	}
@@ -150,6 +157,12 @@ namespace mlx
 		VkBufferUsageFlags temp_u = _usage;
 		_usage = buffer._usage;
 		buffer._usage = temp_u;
+
+		#ifdef DEBUG
+			std::string temp_n = _name;
+			_name = buffer._name;
+			buffer._name = temp_n;
+		#endif
 	}
 
 	void Buffer::flush(VkDeviceSize size, VkDeviceSize offset)

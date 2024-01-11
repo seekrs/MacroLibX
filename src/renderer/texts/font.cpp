@@ -6,12 +6,13 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 22:06:09 by kbz_8             #+#    #+#             */
-/*   Updated: 2023/12/14 19:11:41 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/11 01:23:20 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <renderer/font.h>
+#include <renderer/texts/font.h>
 #include <renderer/renderer.h>
+#include <core/profiler.h>
 #include <fstream>
 
 constexpr const int RANGE = 1024;
@@ -20,6 +21,7 @@ namespace mlx
 {
 	Font::Font(Renderer& renderer, const std::filesystem::path& path, float scale) : non_copyable(), _name(path.string()), _scale(scale)
 	{
+		MLX_PROFILE_FUNCTION();
 		std::vector<uint8_t> tmp_bitmap(RANGE * RANGE);
 		std::vector<uint8_t> vulkan_bitmap(RANGE * RANGE * 4);
 
@@ -56,6 +58,7 @@ namespace mlx
 
 	Font::Font(class Renderer& renderer, const std::string& name, const std::vector<uint8_t>& ttf_data, float scale) : non_copyable(), _name(name), _scale(scale)
 	{
+		MLX_PROFILE_FUNCTION();
 		std::vector<uint8_t> tmp_bitmap(RANGE * RANGE);
 		std::vector<uint8_t> vulkan_bitmap(RANGE * RANGE * 4);
 		stbtt_pack_context pc;
@@ -79,6 +82,7 @@ namespace mlx
 
 	Font::~Font()
 	{
+		MLX_PROFILE_FUNCTION();
 		_atlas.destroy();
 	}
 }

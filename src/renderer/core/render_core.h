@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:16:32 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/03 15:26:08 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/11 05:14:03 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ namespace mlx
 	{
 		std::optional<uint32_t> findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties, bool error = true);
 		const char* verbaliseResultVk(VkResult result);
+		VkPipelineStageFlags accessFlagsToPipelineStage(VkAccessFlags accessFlags, VkPipelineStageFlags stageFlags);
 	}
 
 	#ifdef DEBUG
@@ -47,19 +48,23 @@ namespace mlx
 
 	class Render_Core : public Singleton<Render_Core>
 	{
-		public:
-			Render_Core() = default;
+		friend class Singleton<Render_Core>;
 
+		public:
 			void init();
 			void destroy();
 
+			inline bool isInit() const noexcept { return _is_init; }
 			inline Instance& getInstance() noexcept { return _instance; }
 			inline Device& getDevice() noexcept { return _device; }
 			inline Queues& getQueue() noexcept { return _queues; }
 			inline GPUallocator& getAllocator() noexcept { return _allocator; }
 			inline ValidationLayers& getLayers() noexcept { return _layers; }
 			inline CmdBuffer& getSingleTimeCmdBuffer() noexcept { return _cmd_manager.getCmdBuffer(); }
+			inline SingleTimeCmdManager& getSingleTimeCmdManager() noexcept { return _cmd_manager; }
 
+		private:
+			Render_Core() = default;
 			~Render_Core() = default;
 
 		private:

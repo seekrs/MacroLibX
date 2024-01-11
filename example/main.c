@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:55:21 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/03 12:29:31 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/10 20:36:57 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int	update(void *param)
 	t_mlx		*mlx;
 
 	mlx = (t_mlx *)param;
+	mlx_string_put(mlx->mlx, mlx->win, 160, 120, 0xFFFF2066, "this text should be hidden");
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->logo, 100, 100);
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 150, 60);
 	if (i == 0)
@@ -93,7 +94,7 @@ int	window_hook(int event, void *param)
 	return (0);
 }
 
-int main(int argc, char* argv[])
+int	main(int argc, char **argv)
 {
 	t_mlx	mlx;
 	void	*img;
@@ -110,12 +111,12 @@ int main(int argc, char* argv[])
 	mlx_pixel_put(mlx.mlx, mlx.win, 200, 10, 0xFFFF00FF);
 	mlx_put_image_to_window(mlx.mlx, mlx.win, mlx.logo, 10, 190);
 	mlx.img = create_image(&mlx);
-	mlx_string_put(mlx.mlx, mlx.win, 20, 20, 0xFFFF2000, \
+	mlx_string_put(mlx.mlx, mlx.win, 20, 20, 0xFF0020FF, \
 			"that text will disappear");
 	mlx_loop_hook(mlx.mlx, update, &mlx);
 	mlx_loop(mlx.mlx);
-	mlx_destroy_image(mlx.mlx, mlx.img);
 	mlx_destroy_image(mlx.mlx, mlx.logo);
+	mlx_destroy_image(mlx.mlx, mlx.img);
 	mlx_destroy_window(mlx.mlx, mlx.win);
 	mlx_destroy_display(mlx.mlx);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 17:53:06 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/16 18:47:36 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/06 16:57:26 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,8 @@ namespace mlx
 		if(_fence != VK_NULL_HANDLE)
 			vkDestroyFence(Render_Core::get().getDevice().get(), _fence, nullptr);
 		_fence = VK_NULL_HANDLE;
+		#ifdef DEBUG
+			core::error::report(e_kind::message, "Vulkan : destroyed fence");
+		#endif
 	}
 }

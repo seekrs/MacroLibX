@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 18:58:49 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/30 23:14:54 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/10 21:55:21 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,8 @@ namespace mlx
 	{
 		vkDestroySurfaceKHR(Render_Core::get().getInstance().get(), _surface, nullptr);
 		_surface = VK_NULL_HANDLE;
+		#ifdef DEBUG
+			core::error::report(e_kind::message, "Vulkan : destroyed a surface");
+		#endif
 	}
 }

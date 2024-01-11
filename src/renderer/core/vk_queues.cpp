@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:02:42 by maldavid          #+#    #+#             */
-/*   Updated: 2022/12/18 22:52:04 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/10 21:54:54 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ namespace mlx
 				_families->presentFamily = i;
 
 			if(_families->isComplete())
-				break;
+				return *_families;
 			i++;
 		}
 
@@ -64,5 +64,8 @@ namespace mlx
 		}
 		vkGetDeviceQueue(Render_Core::get().getDevice().get(), _families->graphicsFamily.value(), 0, &_graphicsQueue);
 		vkGetDeviceQueue(Render_Core::get().getDevice().get(), _families->presentFamily.value(), 0, &_presentQueue);
+		#ifdef DEBUG
+			core::error::report(e_kind::message, "Vulkan : got graphics and present queues");
+		#endif
 	}
 }
