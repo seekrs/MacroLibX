@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 14:49:49 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/11 04:39:23 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/11 15:47:05 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,10 @@ namespace mlx
 			~GraphicsSupport();
 
 		private:
-			std::vector<DrawableResource*> _drawlist;
-			
 			PixelPutPipeline _pixel_put_pipeline;
 
+			std::vector<DrawableResource*> _drawlist;
+			
 			TextManager _text_manager;
 			TextureManager _texture_manager;
 			
