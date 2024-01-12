@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 19:57:49 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/07 01:30:49 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/11 03:13:21 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ namespace mlx
 		for(CmdBuffer& cmd : _buffers)
 			cmd.waitForExecution();
 	}
-
 
 	void SingleTimeCmdManager::destroy() noexcept
 	{

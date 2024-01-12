@@ -35,6 +35,11 @@ namespace mlx::core
 	void Application::mouseMove(void* win, int x, int y) noexcept
 	{
 		CHECK_WINDOW_PTR(win);
+		if(!_graphics[*static_cast<int*>(win)]->hasWindow())
+		{
+			error::report(e_kind::warning, "trying to move the mouse relative to a window that is targeting an image and not a real window, this is not allowed (move ignored)");
+			return;
+		}
 		SDL_WarpMouseInWindow(_graphics[*static_cast<int*>(win)]->getWindow()->getNativeWindow(), x, y);
 		SDL_PumpEvents();
 		SDL_FlushEvent(SDL_MOUSEMOTION);
@@ -43,6 +48,11 @@ namespace mlx::core
 	void Application::onEvent(void* win, int event, int (*funct_ptr)(int, void*), void* param) noexcept
 	{
 		CHECK_WINDOW_PTR(win);
+		if(!_graphics[*static_cast<int*>(win)]->hasWindow())
+		{
+			error::report(e_kind::warning, "trying to add event hook for a window that is targeting an image and not a real window, this is not allowed (hook ignored)");
+			return;
+		}
 		_in->onEvent(_graphics[*static_cast<int*>(win)]->getWindow()->getID(), event, funct_ptr, param);
 	}
 
@@ -82,7 +92,7 @@ namespace mlx::core
 		CHECK_WINDOW_PTR(win);
 		_graphics[*static_cast<int*>(win)]->clearRenderData();
 	}
-	
+
 	void Application::destroyGraphicsSupport(void* win)
 	{
 		MLX_PROFILE_FUNCTION();
@@ -108,7 +118,7 @@ namespace mlx::core
 		}
 		if(std::strlen(str) == 0)
 		{
-			core::error::report(e_kind::error, "trying to put an empty text");
+			core::error::report(e_kind::warning, "trying to put an empty text");
 			return;
 		}
 		_graphics[*static_cast<int*>(win)]->stringPut(x, y, color, str);

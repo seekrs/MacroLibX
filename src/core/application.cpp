@@ -6,11 +6,12 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 22:10:52 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/10 16:44:14 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/11 05:08:42 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "application.h"
+#include <renderer/texts/text_library.h>
 #include <SDL2/SDL.h>
 #include <renderer/images/texture.h>
 #include <renderer/core/render_core.h>
@@ -44,6 +45,14 @@ namespace mlx::core
 			for(auto& gs : _graphics)
 				gs->render();
 		}
+
+		Render_Core::get().getSingleTimeCmdManager().updateSingleTimesCmdBuffersSubmitState();
+
+		for(auto& gs : _graphics)
+		{
+			for(int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
+				gs->getRenderer().getCmdBuffer(i).waitForExecution();
+		}
 	}
 
 	void* Application::newTexture(int w, int h)
@@ -74,6 +83,7 @@ namespace mlx::core
 
 	Application::~Application()
 	{
+		TextLibrary::get().clearLibrary();
 		if(__drop_sdl_responsability)
 			return;
 		SDL_QuitSubSystem(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS);

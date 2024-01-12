@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 21:27:38 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/03 13:16:57 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/10 21:53:38 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -320,5 +320,9 @@ namespace mlx
 	{
 		vkDestroyPipeline(Render_Core::get().getDevice().get(), _graphicsPipeline, nullptr);
 		vkDestroyPipelineLayout(Render_Core::get().getDevice().get(), _pipelineLayout, nullptr);
+		_graphicsPipeline = VK_NULL_HANDLE;
+		#ifdef DEBUG
+			core::error::report(e_kind::message, "Vulkan : destroyed a graphics pipeline");
+		#endif
 	}
 }

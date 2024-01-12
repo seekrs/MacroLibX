@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 15:14:50 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/10 18:26:59 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/11 00:06:01 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ namespace mlx
 		_has_been_modified = true;
 	}
 
-	void PixelPutPipeline::present() noexcept
+	void PixelPutPipeline::render(std::array<VkDescriptorSet, 2>& sets, Renderer& renderer) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
 		if(_has_been_modified)
@@ -55,12 +55,7 @@ namespace mlx
 			_has_been_modified = false;
 		}
 		_texture.updateSet(0);
-	}
-
-	void PixelPutPipeline::render(Renderer& renderer) noexcept
-	{
-		MLX_PROFILE_FUNCTION();
-		_texture.render(renderer, 0, 0);
+		_texture.render(sets, renderer, 0, 0);
 	}
 
 	void PixelPutPipeline::destroy() noexcept
