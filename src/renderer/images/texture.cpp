@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 18:03:35 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/10 18:28:11 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/11 01:20:29 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ namespace mlx
 		#endif
 	}
 
-	void Texture::render(Renderer& renderer, int x, int y)
+	void Texture::render(std::array<VkDescriptorSet, 2>& sets, Renderer& renderer, int x, int y)
 	{
 		MLX_PROFILE_FUNCTION();
 		if(_has_been_modified)
@@ -135,11 +135,19 @@ namespace mlx
 			Image::copyFromBuffer(*_buf_map);
 			_has_been_modified = false;
 		}
+		if(!_set.isInit())
+			_set = renderer.getFragDescriptorSet().duplicate();
+		if(getLayout() != VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL)
+			transitionLayout(VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
+		if(!_has_set_been_updated)
+			updateSet(0);
 		auto cmd = renderer.getActiveCmdBuffer();
 		_vbo.bind(renderer);
 		_ibo.bind(renderer);
 		glm::vec2 translate(x, y);
 		vkCmdPushConstants(cmd.get(), renderer.getPipeline().getPipelineLayout(), VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(translate), &translate);
+		sets[1] = _set.get();
+		vkCmdBindDescriptorSets(renderer.getActiveCmdBuffer().get(), VK_PIPELINE_BIND_POINT_GRAPHICS, renderer.getPipeline().getPipelineLayout(), 0, sets.size(), sets.data(), 0, nullptr);
 		vkCmdDrawIndexed(cmd.get(), static_cast<uint32_t>(_ibo.getSize() / sizeof(uint16_t)), 1, 0, 0, 0);
 	}
 

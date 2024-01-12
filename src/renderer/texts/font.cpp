@@ -6,11 +6,11 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 22:06:09 by kbz_8             #+#    #+#             */
-/*   Updated: 2024/01/10 18:27:14 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/11 01:23:20 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <renderer/font.h>
+#include <renderer/texts/font.h>
 #include <renderer/renderer.h>
 #include <core/profiler.h>
 #include <fstream>

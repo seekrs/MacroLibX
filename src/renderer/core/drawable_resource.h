@@ -1,30 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vk_ibo.h                                           :+:      :+:    :+:   */
+/*   drawable_resource.h                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/25 15:05:05 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/10 23:05:15 by maldavid         ###   ########.fr       */
+/*   Created: 2024/01/10 21:00:37 by maldavid          #+#    #+#             */
+/*   Updated: 2024/01/11 01:21:15 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef __VK_IBO__
-#define __VK_IBO__
+#ifndef __MLX_DRAWABLE_RESOURCE__
+#define __MLX_DRAWABLE_RESOURCE__
 
 #include <mlx_profile.h>
 #include <volk.h>
-#include "vk_buffer.h"
-#include <renderer/renderer.h>
+#include <array>
 
 namespace mlx
 {
-	class C_IBO : public Buffer
+	class DrawableResource
 	{
 		public:
-			inline void create(uint32_t size, const uint16_t* data, const char* name) { Buffer::create(Buffer::kind::constant, size, VK_BUFFER_USAGE_INDEX_BUFFER_BIT, name, data); }
-			inline void bind(Renderer& renderer) noexcept { renderer.getActiveCmdBuffer().bindIndexBuffer(*this); }
+			DrawableResource() = default;
+			virtual void render(std::array<VkDescriptorSet, 2>& sets, class Renderer& renderer) = 0;
+			virtual void resetUpdate() {}
+			virtual ~DrawableResource() = default;
 	};
 }
 

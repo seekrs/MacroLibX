@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:27:38 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/12 22:46:21 by kbz_8            ###   ########.fr       */
+/*   Updated: 2024/01/10 23:04:40 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ namespace mlx
 		public:
 			inline void create(uint32_t size, const void* data, const char* name) { Buffer::create(Buffer::kind::dynamic, size, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, name, data); }
 			void setData(uint32_t size, const void* data);
-			inline void bind(Renderer& renderer) noexcept { vkCmdBindVertexBuffers(renderer.getActiveCmdBuffer().get(), 0, 1, &_buffer, &_offset); }
+			inline void bind(Renderer& renderer) noexcept { renderer.getActiveCmdBuffer().bindVertexBuffer(*this); }
 	};
 
 	class D_VBO : public Buffer
@@ -32,14 +32,14 @@ namespace mlx
 		public:
 			inline void create(uint32_t size, const void* data, const char* name) { Buffer::create(Buffer::kind::dynamic_device_local, size, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, name, data); }
 			void setData(uint32_t size, const void* data);
-			inline void bind(Renderer& renderer) noexcept { vkCmdBindVertexBuffers(renderer.getActiveCmdBuffer().get(), 0, 1, &_buffer, &_offset); }
+			inline void bind(Renderer& renderer) noexcept { renderer.getActiveCmdBuffer().bindVertexBuffer(*this); }
 	};
 
 	class C_VBO : public Buffer
 	{
 		public:
 			inline void create(uint32_t size, const void* data, const char* name) { Buffer::create(Buffer::kind::constant, size, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, name, data); }
-			inline void bind(Renderer& renderer) noexcept { vkCmdBindVertexBuffers(renderer.getActiveCmdBuffer().get(), 0, 1, &_buffer, &_offset); }
+			inline void bind(Renderer& renderer) noexcept { renderer.getActiveCmdBuffer().bindVertexBuffer(*this); }
 	};
 }
 
