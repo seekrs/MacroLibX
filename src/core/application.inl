@@ -42,7 +42,6 @@ namespace mlx::core
 		}
 		SDL_WarpMouseInWindow(_graphics[*static_cast<int*>(win)]->getWindow()->getNativeWindow(), x, y);
 		SDL_PumpEvents();
-		SDL_FlushEvent(SDL_MOUSEMOTION);
 	}
 
 	void Application::onEvent(void* win, int event, int (*funct_ptr)(int, void*), void* param) noexcept
