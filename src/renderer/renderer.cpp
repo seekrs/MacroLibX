@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:25:16 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/10 14:18:35 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/16 07:14:19 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,11 @@ namespace mlx
 			if(result == VK_ERROR_OUT_OF_DATE_KHR)
 			{
 				_swapchain.recreate();
+				_pass.destroy();
+				_pass.init(_swapchain.getImagesFormat(), VK_IMAGE_LAYOUT_PRESENT_SRC_KHR);
+				_framebuffers.clear();
+				for(std::size_t i = 0; i < _swapchain.getImagesNumber(); i++)
+					_framebuffers.emplace_back().init(_pass, _swapchain.getImage(i));
 				return false;
 			}
 			else if(result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR)
@@ -146,6 +151,11 @@ namespace mlx
 			{
 				_framebufferResized = false;
 				_swapchain.recreate();
+				_pass.destroy();
+				_pass.init(_swapchain.getImagesFormat(), VK_IMAGE_LAYOUT_PRESENT_SRC_KHR);
+				_framebuffers.clear();
+				for(std::size_t i = 0; i < _swapchain.getImagesNumber(); i++)
+					_framebuffers.emplace_back().init(_pass, _swapchain.getImage(i));
 			}
 			else if(result != VK_SUCCESS)
 				core::error::report(e_kind::fatal_error, "Vulkan error : failed to present swap chain image");
