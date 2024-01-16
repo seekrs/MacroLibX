@@ -99,31 +99,3 @@
    fun:dl_*
    ...
 }
-{
-   name
-   Memcheck:Leak
-   fun:calloc
-   obj:*
-}
-{
-   name
-   Memcheck:Leak
-   fun:realloc
-   obj:*
-}
-{
-   name
-   Memcheck:Leak
-   fun:malloc
-   obj:*
-   obj:*
-   obj:*
-   obj:*
-   obj:*
-   obj:*
-   obj:*
-   obj:*
-   obj:*
-   obj:*
-   obj:*
-}
