@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 16:41:13 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/11 04:54:16 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/17 03:47:46 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,34 @@
 #include <renderer/texts/text_library.h>
 #include <renderer/texts/text.h>
 #include <renderer/texts/text_manager.h>
-#include <array>
 #include <core/profiler.h>
-#include <fstream>
 
 #include <utils/dogica_ttf.h>
-#include <cstdio>
 
 namespace mlx
 {
 	void TextManager::init(Renderer& renderer) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
-		_font_in_use = &const_cast<Font&>(*_font_set.emplace(renderer, "default", dogica_ttf, 6.0f).first);
+		loadFont(renderer, "default", 6.f);
 	}
 
 	void TextManager::loadFont(Renderer& renderer, const std::filesystem::path& filepath, float scale)
 	{
 		MLX_PROFILE_FUNCTION();
-		if(filepath.string() == "default") // we're sure it is already loaded
-			_font_in_use = &const_cast<Font&>(*_font_set.emplace(renderer, "default", dogica_ttf, scale).first);
+		for(Font& font : _font_set)
+		{
+			if(filepath == font.getName() && scale == font.getScale())
+			{
+				_font_in_use = &font;
+				return;
+			}
+		}
+
+		if(filepath.string() == "default")
+			_font_in_use = &_font_set.emplace_back(renderer, "default", dogica_ttf, scale);
 		else
-			_font_in_use = &const_cast<Font&>(*_font_set.emplace(renderer, filepath, scale).first);
+			_font_in_use = &_font_set.emplace_back(renderer, filepath, scale);
 	}
 
 	std::pair<DrawableResource*, bool> TextManager::registerText(int x, int y, uint32_t color, std::string str)

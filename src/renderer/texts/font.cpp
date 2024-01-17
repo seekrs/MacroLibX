@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 22:06:09 by kbz_8             #+#    #+#             */
-/*   Updated: 2024/01/11 01:23:20 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/16 09:11:26 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ constexpr const int RANGE = 1024;
 
 namespace mlx
 {
-	Font::Font(Renderer& renderer, const std::filesystem::path& path, float scale) : non_copyable(), _name(path.string()), _scale(scale)
+	Font::Font(Renderer& renderer, const std::filesystem::path& path, float scale) : _name(path.string()), _scale(scale)
 	{
 		MLX_PROFILE_FUNCTION();
 		std::vector<uint8_t> tmp_bitmap(RANGE * RANGE);
@@ -56,7 +56,7 @@ namespace mlx
 		_atlas.setDescriptor(renderer.getFragDescriptorSet().duplicate());
 	}
 
-	Font::Font(class Renderer& renderer, const std::string& name, const std::vector<uint8_t>& ttf_data, float scale) : non_copyable(), _name(name), _scale(scale)
+	Font::Font(class Renderer& renderer, const std::string& name, const std::vector<uint8_t>& ttf_data, float scale) : _name(name), _scale(scale)
 	{
 		MLX_PROFILE_FUNCTION();
 		std::vector<uint8_t> tmp_bitmap(RANGE * RANGE);

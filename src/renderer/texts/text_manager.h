@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 16:24:11 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/11 18:48:01 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/16 09:04:05 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include <stb_truetype.h>
 #include <cstdint>
 #include <unordered_set>
+#include <vector>
 #include <mlx_profile.h>
 #include <renderer/texts/text_descriptor.h>
 #include <renderer/texts/text_library.h>
@@ -40,7 +41,7 @@ namespace mlx
 
 		private:
 			std::unordered_set<TextDrawDescriptor> _text_descriptors;
-			std::unordered_set<Font> _font_set;
+			std::vector<Font> _font_set;
 			Font* _font_in_use = nullptr;
 	};
 }

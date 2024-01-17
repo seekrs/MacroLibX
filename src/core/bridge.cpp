@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:35:20 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/10 19:54:51 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/16 08:20:17 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,7 +220,7 @@ extern "C"
 		if (filepath == nullptr)
 		{
 			mlx::core::error::report(e_kind::error, "Font loader : filepath is NULL");
-			return ;
+			return;
 		}
 		std::filesystem::path file(filepath);
 		if(std::strcmp(filepath, "default") != 0 && file.extension() != ".ttf" && file.extension() != ".tte")
@@ -237,7 +237,7 @@ extern "C"
 		if (filepath == nullptr)
 		{
 			mlx::core::error::report(e_kind::error, "Font loader : filepath is NULL");
-			return ;
+			return;
 		}
 		std::filesystem::path file(filepath);
 		if(std::strcmp(filepath, "default") != 0 && file.extension() != ".ttf" && file.extension() != ".tte")
