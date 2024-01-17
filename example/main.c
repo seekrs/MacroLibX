@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:55:21 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/16 06:41:48 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/16 08:03:37 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,7 @@ int main(void)
 	mlx_loop(mlx.mlx);
 	
 	mlx_get_screens_size(mlx.mlx, &w, &h);
-	printf("screen size : %dx%d", w, h);
+	printf("screen size : %dx%d\n", w, h);
 	
 	mlx_destroy_image(mlx.mlx, mlx.logo_png);
 	mlx_destroy_image(mlx.mlx, mlx.logo_jpg);

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:25:16 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/16 07:14:19 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/16 08:02:57 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,12 +82,7 @@ namespace mlx
 
 			if(result == VK_ERROR_OUT_OF_DATE_KHR)
 			{
-				_swapchain.recreate();
-				_pass.destroy();
-				_pass.init(_swapchain.getImagesFormat(), VK_IMAGE_LAYOUT_PRESENT_SRC_KHR);
-				_framebuffers.clear();
-				for(std::size_t i = 0; i < _swapchain.getImagesNumber(); i++)
-					_framebuffers.emplace_back().init(_pass, _swapchain.getImage(i));
+				recreateRenderData();
 				return false;
 			}
 			else if(result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR)
@@ -150,12 +145,7 @@ namespace mlx
 			if(result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || _framebufferResized)
 			{
 				_framebufferResized = false;
-				_swapchain.recreate();
-				_pass.destroy();
-				_pass.init(_swapchain.getImagesFormat(), VK_IMAGE_LAYOUT_PRESENT_SRC_KHR);
-				_framebuffers.clear();
-				for(std::size_t i = 0; i < _swapchain.getImagesNumber(); i++)
-					_framebuffers.emplace_back().init(_pass, _swapchain.getImage(i));
+				recreateRenderData();
 			}
 			else if(result != VK_SUCCESS)
 				core::error::report(e_kind::fatal_error, "Vulkan error : failed to present swap chain image");
@@ -166,6 +156,18 @@ namespace mlx
 			_cmd.getCmdBuffer(_current_frame_index).submitIdle(true);
 			_current_frame_index = 0;
 		}
+	}
+
+	void Renderer::recreateRenderData()
+	{
+		_swapchain.recreate();
+		_pass.destroy();
+		_pass.init(_swapchain.getImagesFormat(), VK_IMAGE_LAYOUT_PRESENT_SRC_KHR);
+		for(auto& fb : _framebuffers)
+			fb.destroy();
+		_framebuffers.clear();
+		for(std::size_t i = 0; i < _swapchain.getImagesNumber(); i++)
+			_framebuffers.emplace_back().init(_pass, _swapchain.getImage(i));
 	}
 
 	void Renderer::destroy()

@@ -6,13 +6,12 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:30:19 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/11 19:08:23 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/16 07:59:15 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "inputs.h"
 #include <mlx.h>
-#include <cstring>
 #include <core/profiler.h>
 
 namespace mlx
