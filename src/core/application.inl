@@ -64,6 +64,11 @@ namespace mlx::core
 		*h = DM.h;
 	}
 
+	void Application::setFPSCap(uint32_t fps) noexcept
+	{
+		_fps.setMaxFPS(fps);
+	}
+
 	void* Application::newGraphicsSuport(std::size_t w, std::size_t h, const char* title)
 	{
 		MLX_PROFILE_FUNCTION();
