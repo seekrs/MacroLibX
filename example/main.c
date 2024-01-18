@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:55:21 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/18 09:58:15 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/18 15:23:35 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,8 @@ int main(void)
 
 	mlx.mlx = mlx_init();
 	mlx.win = mlx_new_window(mlx.mlx, 400, 400, "My window");
+
+	mlx_set_fps_goal(mlx.mlx, 60);
 
 	mlx_on_event(mlx.mlx, mlx.win, MLX_KEYDOWN, key_hook, &mlx);
 	mlx_on_event(mlx.mlx, mlx.win, MLX_WINDOW_EVENT, window_hook, &mlx);

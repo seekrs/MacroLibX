@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:35:20 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/18 09:55:53 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/18 15:02:06 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -275,6 +275,23 @@ extern "C"
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		static_cast<mlx::core::Application*>(mlx)->getScreenSize(win, w, h);
+		return 0;
+	}
+
+	int mlx_set_fps_goal(void* mlx, int fps)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		if(fps < 0)
+		{
+			mlx::core::error::report(e_kind::error, "You cannot set a negative FPS cap (nice try)");
+			fps = -fps;
+		}
+		if(fps == 0)
+		{
+			mlx::core::error::report(e_kind::error, "You cannot set a FPS cap to 0 (nice try)");
+			return 0;
+		}
+		static_cast<mlx::core::Application*>(mlx)->setFPSCap(static_cast<uint32_t>(fps));
 		return 0;
 	}
 }
