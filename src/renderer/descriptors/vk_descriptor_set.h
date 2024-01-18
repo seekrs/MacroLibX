@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 18:39:36 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/03 15:27:50 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/18 10:13:25 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ namespace mlx
 
 			VkDescriptorSet& operator()() noexcept;
 			VkDescriptorSet& get() noexcept;
+
+			void destroy() noexcept;
 
 		private:
 			std::array<VkDescriptorSet, MAX_FRAMES_IN_FLIGHT> _desc_set;

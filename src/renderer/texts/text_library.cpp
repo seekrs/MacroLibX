@@ -6,11 +6,10 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 11:59:57 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/11 05:19:24 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/18 08:02:31 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>
 #include <renderer/texts/text_library.h>
 #include <renderer/texts/text.h>
 #include <core/errors.h>

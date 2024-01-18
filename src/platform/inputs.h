@@ -6,15 +6,14 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:27:35 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/11 19:47:20 by vavaas            ###   ########.fr       */
+/*   Updated: 2024/01/16 07:59:08 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <array>
 #include <memory>
-#include <vector>
 #include <cstdint>
-#include <functional>
+#include <function.h>
 #include <SDL2/SDL.h>
 #include <unordered_map>
 
@@ -26,7 +25,7 @@ namespace mlx
 {
 	struct Hook
 	{
-		std::function<int(int, void*)> hook;
+		func::function<int(int, void*)> hook;
 		void* param = nullptr;
 	};
 

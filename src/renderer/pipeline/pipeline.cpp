@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 21:27:38 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/10 21:53:38 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/16 07:45:15 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ namespace mlx
 				gl_Position = uProj.mat * vec4(pos.x, pos.y, 0.0, 1.0);
 			}
 	*/
-	const std::vector<uint32_t> vertex_shader = {
+	const std::vector<uint32_t> vertex_shader = {	// precompiled vertex shader
 		0x07230203,0x00010000,0x0008000b,0x0000003b,0x00000000,0x00020011,0x00000001,0x0006000b,
 		0x00000001,0x4c534c47,0x6474732e,0x3035342e,0x00000000,0x0003000e,0x00000000,0x00000001,
 		0x000a000f,0x00000000,0x00000004,0x6e69616d,0x00000000,0x0000000b,0x0000000f,0x00000015,
@@ -124,7 +124,7 @@ namespace mlx
 				fColor = process_color;
 			}
 	*/ 
-	const std::vector<uint32_t> fragment_shader = {
+	const std::vector<uint32_t> fragment_shader = {	// pre compiled fragment shader
 		0x07230203,0x00010000,0x0008000b,0x0000002c,0x00000000,0x00020011,0x00000001,0x0006000b,
 		0x00000001,0x4c534c47,0x6474732e,0x3035342e,0x00000000,0x0003000e,0x00000000,0x00000001,
 		0x0007000f,0x00000004,0x00000004,0x6e69616d,0x00000000,0x0000000d,0x0000002a,0x00030010,

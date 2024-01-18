@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 11:52:30 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/11 05:08:04 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/16 08:54:15 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 #include <renderer/buffers/vk_vbo.h>
 #include <renderer/buffers/vk_ibo.h>
-#include <string>
 #include <unordered_map>
 #include <memory>
 #include <vector>

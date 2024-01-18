@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 18:40:44 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/10 18:28:34 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/18 10:22:10 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,8 +106,24 @@ namespace mlx
 	{
 		return _desc_set[_renderer->getActiveImageIndex()];
 	}
+
 	VkDescriptorSet& DescriptorSet::get() noexcept
 	{
 		return _desc_set[_renderer->getActiveImageIndex()];
+	}
+
+	void DescriptorSet::destroy() noexcept
+	{
+		MLX_PROFILE_FUNCTION();
+		if(_pool->isInit())
+			vkFreeDescriptorSets(Render_Core::get().getDevice().get(), _pool->get(), _desc_set.size(), _desc_set.data());
+		for(auto& set : _desc_set)
+		{
+			if(set != VK_NULL_HANDLE)
+				set = VK_NULL_HANDLE;
+		}
+		#ifdef DEBUG
+			core::error::report(e_kind::message, "Vulkan : destroyed descriptor set");
+		#endif
 	}
 }

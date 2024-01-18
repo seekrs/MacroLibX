@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:14:45 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/22 21:59:15 by kbz_8            ###   ########.fr       */
+/*   Updated: 2024/01/16 08:01:25 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,9 @@ namespace mlx
 			constexpr inline void requireFrameBufferResize() noexcept { _framebufferResized = true; }
 
 			~Renderer() = default;
+
+		private:
+			void recreateRenderData();
 
 		private:
 			GraphicPipeline _pipeline;

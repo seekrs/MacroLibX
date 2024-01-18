@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 18:34:23 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/03 13:13:54 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/18 10:19:55 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ namespace mlx
 		poolInfo.poolSizeCount = n;
 		poolInfo.pPoolSizes = size;
 		poolInfo.maxSets = 8192;
+		poolInfo.flags = VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT;
 
 		VkResult res = vkCreateDescriptorPool(Render_Core::get().getDevice().get(), &poolInfo, nullptr, &_pool);
 		if(res != VK_SUCCESS)

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 16:40:09 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/31 00:52:01 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/18 10:18:08 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,5 +51,6 @@ namespace mlx
 	void TextureAtlas::destroy() noexcept
 	{
 		Image::destroy();
+		_set.destroy();
 	}
 }
