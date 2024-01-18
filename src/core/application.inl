@@ -42,7 +42,6 @@ namespace mlx::core
 		}
 		SDL_WarpMouseInWindow(_graphics[*static_cast<int*>(win)]->getWindow()->getNativeWindow(), x, y);
 		SDL_PumpEvents();
-		SDL_FlushEvent(SDL_MOUSEMOTION);
 	}
 
 	void Application::onEvent(void* win, int event, int (*funct_ptr)(int, void*), void* param) noexcept
@@ -56,10 +55,11 @@ namespace mlx::core
 		_in->onEvent(_graphics[*static_cast<int*>(win)]->getWindow()->getID(), event, funct_ptr, param);
 	}
 
-	void Application::getScreenSize(int* w, int* h) noexcept
+	void Application::getScreenSize(void* win, int* w, int* h) noexcept
 	{
+		CHECK_WINDOW_PTR(win);
 		SDL_DisplayMode DM;
-		SDL_GetDesktopDisplayMode(0, &DM);
+		SDL_GetDesktopDisplayMode(SDL_GetWindowDisplayIndex(_graphics[*static_cast<int*>(win)]->getWindow()->getNativeWindow()), &DM);
 		*w = DM.w;
 		*h = DM.h;
 	}

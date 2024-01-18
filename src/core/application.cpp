@@ -6,12 +6,13 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 22:10:52 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/11 05:08:42 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/18 09:44:26 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "application.h"
 #include <renderer/texts/text_library.h>
+#include <renderer/texts/font_library.h>
 #include <SDL2/SDL.h>
 #include <renderer/images/texture.h>
 #include <renderer/core/render_core.h>
@@ -84,6 +85,7 @@ namespace mlx::core
 	Application::~Application()
 	{
 		TextLibrary::get().clearLibrary();
+		FontLibrary::get().clearLibrary();
 		if(__drop_sdl_responsability)
 			return;
 		SDL_QuitSubSystem(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS);

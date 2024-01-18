@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 00:13:34 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/11 04:28:58 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/18 09:40:06 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include <utils/combine_hash.h>
 #include <renderer/core/drawable_resource.h>
 #include <renderer/texts/text_library.h>
+#include <renderer/texts/font_library.h>
 #include <array>
 
 namespace mlx
@@ -36,7 +37,7 @@ namespace mlx
 		public:
 			TextDrawDescriptor(std::string text, uint32_t _color, int _x, int _y);
 
-			void init(Font* const font) noexcept;
+			void init(FontID font) noexcept;
 			bool operator==(const TextDrawDescriptor& rhs) const { return _text == rhs._text && x == rhs.x && y == rhs.y && color == rhs.color; }
 			void render(std::array<VkDescriptorSet, 2>& sets, Renderer& renderer) override;
 			void resetUpdate() override;

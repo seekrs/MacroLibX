@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:49:46 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/10 19:57:12 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/18 09:56:04 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ namespace mlx::core
 
 			inline void onEvent(void* win, int event, int (*funct_ptr)(int, void*), void* param) noexcept;
 
-			inline void getScreenSize(int* w, int* h) noexcept;
+			inline void getScreenSize(void* win, int* w, int* h) noexcept;
 
 			inline void* newGraphicsSuport(std::size_t w, std::size_t h, const char* title);
 			inline void clearGraphicsSupport(void* win);

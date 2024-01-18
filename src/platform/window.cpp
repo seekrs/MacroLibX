@@ -6,14 +6,13 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:36:44 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/27 16:57:28 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/16 07:59:21 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <platform/window.h>
 #include <core/errors.h>
 #include <utils/icon_mlx.h>
-#include <iostream>
 
 namespace mlx
 {

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:59:07 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/07 01:17:54 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/18 09:47:26 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,16 +252,16 @@ namespace mlx
 	void Image::destroy() noexcept
 	{
 		// not creating destroyer in `create` as some image may be copied (and so `this` will be invalid)
-		CmdResource::setDestroyer([this]()
-		{
+		//CmdResource::setDestroyer([this]()
+		//{
 			destroySampler();
 			destroyImageView();
 
 			if(_image != VK_NULL_HANDLE)
 				Render_Core::get().getAllocator().destroyImage(_allocation, _image);
 			_image = VK_NULL_HANDLE;
-		});
-		CmdResource::requireDestroy();
+		//});
+		//CmdResource::requireDestroy();
 	}
 
 	uint32_t formatSize(VkFormat format)

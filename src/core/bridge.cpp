@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:35:20 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/10 19:54:51 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/18 09:55:53 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,11 @@ extern "C"
 	void* mlx_new_window(void* mlx, int w, int h, const char* title)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
+		if(w <= 0 || h <= 0)
+		{
+			mlx::core::error::report(e_kind::fatal_error, "invalid window size (%d x %d)", w, h);
+			return NULL; // not nullptr for the C compatibility
+		}
 		return static_cast<mlx::core::Application*>(mlx)->newGraphicsSuport(w, h, title);
 	}
 
@@ -73,12 +78,14 @@ extern "C"
 
 	int mlx_mouse_show()
 	{
-		return SDL_ShowCursor(SDL_ENABLE);
+		SDL_ShowCursor(SDL_ENABLE);
+		return 0;
 	}
 
 	int mlx_mouse_hide()
 	{
-		return SDL_ShowCursor(SDL_DISABLE);
+		SDL_ShowCursor(SDL_DISABLE);
+		return 0;
 	}
 
 	int mlx_mouse_move(void* mlx, void* win, int x, int y)
@@ -105,6 +112,8 @@ extern "C"
 	void* mlx_new_image(void* mlx, int width, int height)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
+		if (width <= 0 || height <= 0)
+			mlx::core::error::report(e_kind::fatal_error, "invalid image size (%d x %d)", width, height);
 		return static_cast<mlx::core::Application*>(mlx)->newTexture(width, height);
 	}
 
@@ -142,6 +151,8 @@ extern "C"
 	void* mlx_png_file_to_image(void* mlx, char* filename, int* width, int* height)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
+		if (filename == nullptr)
+			mlx::core::error::report(e_kind::fatal_error, "PNG loader : filename is NULL");
 		std::filesystem::path file(filename);
 		if(file.extension() != ".png")
 		{
@@ -154,6 +165,8 @@ extern "C"
 	void* mlx_jpg_file_to_image(void* mlx, char* filename, int* width, int* height)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
+		if (filename == nullptr)
+			mlx::core::error::report(e_kind::fatal_error, "JPG loader : filename is NULL");
 		std::filesystem::path file(filename);
 		if(file.extension() != ".jpg" && file.extension() != ".jpeg")
 		{
@@ -166,6 +179,8 @@ extern "C"
 	void* mlx_bmp_file_to_image(void* mlx, char* filename, int* width, int* height)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
+		if (filename == nullptr)
+			mlx::core::error::report(e_kind::fatal_error, "BMP loader : filename is NULL");
 		std::filesystem::path file(filename);
 		if(file.extension() != ".bmp" && file.extension() != ".dib")
 		{
@@ -202,6 +217,11 @@ extern "C"
 	void mlx_set_font(void* mlx, void* win, char* filepath)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
+		if (filepath == nullptr)
+		{
+			mlx::core::error::report(e_kind::error, "Font loader : filepath is NULL");
+			return;
+		}
 		std::filesystem::path file(filepath);
 		if(std::strcmp(filepath, "default") != 0 && file.extension() != ".ttf" && file.extension() != ".tte")
 		{
@@ -214,6 +234,11 @@ extern "C"
 	void mlx_set_font_scale(void* mlx, void* win, char* filepath, float scale)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
+		if (filepath == nullptr)
+		{
+			mlx::core::error::report(e_kind::error, "Font loader : filepath is NULL");
+			return;
+		}
 		std::filesystem::path file(filepath);
 		if(std::strcmp(filepath, "default") != 0 && file.extension() != ".ttf" && file.extension() != ".tte")
 		{
@@ -246,10 +271,10 @@ extern "C"
 		return 0;
 	}
 
-	int mlx_get_screens_size(void* mlx, int* w, int* h)
+	int mlx_get_screens_size(void* mlx, void* win, int* w, int* h)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
-		static_cast<mlx::core::Application*>(mlx)->getScreenSize(w, h);
+		static_cast<mlx::core::Application*>(mlx)->getScreenSize(win, w, h);
 		return 0;
 	}
 }
