@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:49:46 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/18 09:56:04 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/18 14:59:47 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 #include <platform/inputs.h>
 #include <mlx_profile.h>
 #include <core/profiler.h>
+#include <core/fps.h>
 
 namespace mlx::core
 {
@@ -40,6 +41,8 @@ namespace mlx::core
 			inline void onEvent(void* win, int event, int (*funct_ptr)(int, void*), void* param) noexcept;
 
 			inline void getScreenSize(void* win, int* w, int* h) noexcept;
+
+			inline void setFPSCap(uint32_t fps) noexcept;
 
 			inline void* newGraphicsSuport(std::size_t w, std::size_t h, const char* title);
 			inline void clearGraphicsSupport(void* win);
@@ -65,6 +68,7 @@ namespace mlx::core
 			~Application();
 
 		private:
+			FpsManager _fps;
 			std::list<Texture> _textures;
 			std::vector<std::unique_ptr<GraphicsSupport>> _graphics;
 			std::function<int(void*)> _loop_hook;

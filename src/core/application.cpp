@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 22:10:52 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/18 09:44:26 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/18 15:19:58 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,9 @@
 namespace mlx::core
 {
 	static bool __drop_sdl_responsability = false;
-	Application::Application() : _in(std::make_unique<Input>())
+	Application::Application() : _fps(), _in(std::make_unique<Input>()) 
 	{
+		_fps.init();
 		__drop_sdl_responsability = SDL_WasInit(SDL_INIT_VIDEO);
 		if(__drop_sdl_responsability) // is case the mlx is running in a sandbox like MacroUnitTester where SDL is already init
 			return;
@@ -38,6 +39,8 @@ namespace mlx::core
 	{
 		while(_in->is_running())
 		{
+			if(!_fps.update())
+				continue;
 			_in->update();
 
 			if(_loop_hook)

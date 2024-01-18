@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:56:35 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/18 09:55:36 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/18 14:36:12 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -359,6 +359,17 @@ MLX_API int mlx_destroy_display(void* mlx);
  * @return (int)	Always return 0, made this to copy the behaviour of the original MLX
  */
 MLX_API int mlx_get_screens_size(void* mlx, void* win, int* w, int* h);
+
+
+/**
+ * @brief			Caps the FPS
+ *
+ * @param mlx		Internal MLX application
+ * @param fps		The FPS cap
+ *
+ * @return (int)	Always return 0
+ */
+MLX_API int mlx_set_fps_goal(void* mlx, int fps);
 
 #ifdef __cplusplus
 }
