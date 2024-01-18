@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 16:41:13 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/17 03:47:46 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/18 09:45:24 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,19 +29,13 @@ namespace mlx
 	void TextManager::loadFont(Renderer& renderer, const std::filesystem::path& filepath, float scale)
 	{
 		MLX_PROFILE_FUNCTION();
-		for(Font& font : _font_set)
-		{
-			if(filepath == font.getName() && scale == font.getScale())
-			{
-				_font_in_use = &font;
-				return;
-			}
-		}
-
+		std::shared_ptr<Font> font;
 		if(filepath.string() == "default")
-			_font_in_use = &_font_set.emplace_back(renderer, "default", dogica_ttf, scale);
+			font = std::make_shared<Font>(renderer, "default", dogica_ttf, scale);
 		else
-			_font_in_use = &_font_set.emplace_back(renderer, filepath, scale);
+			font = std::make_shared<Font>(renderer, filepath, scale);
+
+		_font_in_use = FontLibrary::get().addFontToLibrary(font);
 	}
 
 	std::pair<DrawableResource*, bool> TextManager::registerText(int x, int y, uint32_t color, std::string str)
@@ -55,8 +49,9 @@ namespace mlx
 		}
 
 		auto text_ptr = TextLibrary::get().getTextData(res.first->id);
-		if(*_font_in_use != text_ptr->getFontInUse())
+		if(_font_in_use != text_ptr->getFontInUse())
 		{
+			// TODO : update text vertex buffers rather than destroying it and recreating it
 			TextLibrary::get().removeTextFromLibrary(res.first->id);
 			const_cast<TextDrawDescriptor&>(*res.first).init(_font_in_use);
 		}
@@ -67,6 +62,5 @@ namespace mlx
 	{
 		MLX_PROFILE_FUNCTION();
 		_text_descriptors.clear();
-		_font_set.clear();
 	}
 }

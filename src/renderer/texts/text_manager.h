@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 16:24:11 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/16 09:04:05 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/18 13:52:01 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 #include <mlx_profile.h>
 #include <renderer/texts/text_descriptor.h>
 #include <renderer/texts/text_library.h>
+#include <renderer/texts/font_library.h>
+#include <memory>
 
 namespace mlx
 {
@@ -33,7 +35,7 @@ namespace mlx
 
 			void init(Renderer& renderer) noexcept;
 			std::pair<DrawableResource*, bool> registerText(int x, int y, uint32_t color, std::string str);
-			inline void clear() { _text_descriptors.clear(); /*TextLibrary::get().clearLibrary();*/ }
+			inline void clear() { _text_descriptors.clear(); TextLibrary::get().clearLibrary(); }
 			void loadFont(Renderer& renderer, const std::filesystem::path& filepath, float scale);
 			void destroy() noexcept;
 
@@ -41,8 +43,7 @@ namespace mlx
 
 		private:
 			std::unordered_set<TextDrawDescriptor> _text_descriptors;
-			std::vector<Font> _font_set;
-			Font* _font_in_use = nullptr;
+			FontID _font_in_use = nullfont;
 	};
 }
 

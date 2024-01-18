@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 18:03:35 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/11 01:20:29 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/18 10:18:22 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,7 @@ namespace mlx
 	{
 		MLX_PROFILE_FUNCTION();
 		Image::destroy();
+		_set.destroy();
 		if(_buf_map.has_value())
 			_buf_map->destroy();
 		_vbo.destroy();

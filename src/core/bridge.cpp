@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:35:20 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/16 08:20:17 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/18 09:55:53 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -271,10 +271,10 @@ extern "C"
 		return 0;
 	}
 
-	int mlx_get_screens_size(void* mlx, int* w, int* h)
+	int mlx_get_screens_size(void* mlx, void* win, int* w, int* h)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
-		static_cast<mlx::core::Application*>(mlx)->getScreenSize(w, h);
+		static_cast<mlx::core::Application*>(mlx)->getScreenSize(win, w, h);
 		return 0;
 	}
 }
