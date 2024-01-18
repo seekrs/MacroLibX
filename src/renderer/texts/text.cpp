@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 00:11:56 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/11 03:31:57 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/18 13:56:50 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,21 @@
 
 namespace mlx
 {
-	void Text::init(std::string text, Font const* font, std::vector<Vertex> vbo_data, std::vector<uint16_t> ibo_data)
+	void Text::init(std::string text, FontID font, std::vector<Vertex> vbo_data, std::vector<uint16_t> ibo_data)
 	{
 		MLX_PROFILE_FUNCTION();
 		_text = std::move(text);
 		_font = font;
 		#ifdef DEBUG
+			std::string debug_name = _text;
+			for(char& c : debug_name)
+			{
+				if(c == ' ' || c == '"' || c == '\'')
+					c = '_';
+			}
 			for(int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
-				_vbo[i].create(sizeof(Vertex) * vbo_data.size(), static_cast<const void*>(vbo_data.data()), _text.c_str());
-			_ibo.create(sizeof(uint16_t) * ibo_data.size(), ibo_data.data(), _text.c_str());
+				_vbo[i].create(sizeof(Vertex) * vbo_data.size(), static_cast<const void*>(vbo_data.data()), debug_name.c_str());
+			_ibo.create(sizeof(uint16_t) * ibo_data.size(), ibo_data.data(), debug_name.c_str());
 		#else
 			for(int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
 				_vbo[i].create(sizeof(Vertex) * vbo_data.size(), static_cast<const void*>(vbo_data.data()), nullptr);

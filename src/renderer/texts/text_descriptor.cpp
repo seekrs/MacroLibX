@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 00:23:11 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/11 03:40:54 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/18 09:44:54 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ namespace mlx
 	TextDrawDescriptor::TextDrawDescriptor(std::string text, uint32_t _color, int _x, int _y) : color(_color), x(_x), y(_y), _text(std::move(text))
 	{}
 
-	void TextDrawDescriptor::init(Font* const font) noexcept
+	void TextDrawDescriptor::init(FontID font) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
 		std::vector<Vertex> vertexData;
@@ -42,34 +42,38 @@ namespace mlx
 		float stb_x = 0.0f;
 		float stb_y = 0.0f;
 
-		for(char c : _text)
 		{
-			if(c < 32)
-				continue;
+			std::shared_ptr<Font> font_data = FontLibrary::get().getFontData(font);
 
-			stbtt_aligned_quad q;
-			stbtt_GetPackedQuad(font->getCharData().data(), RANGE, RANGE, c - 32, &stb_x, &stb_y, &q, 1);
+			for(char c : _text)
+			{
+				if(c < 32)
+					continue;
 
-			std::size_t index = vertexData.size();
+				stbtt_aligned_quad q;
+				stbtt_GetPackedQuad(font_data->getCharData().data(), RANGE, RANGE, c - 32, &stb_x, &stb_y, &q, 1);
 
-			glm::vec4 vertex_color = {
-				static_cast<float>((color & 0x000000FF)) / 255.f,
-				static_cast<float>((color & 0x0000FF00) >> 8) / 255.f,
-				static_cast<float>((color & 0x00FF0000) >> 16) / 255.f,
-				static_cast<float>((color & 0xFF000000) >> 24) / 255.f
-			};
+				std::size_t index = vertexData.size();
 
-			vertexData.emplace_back(glm::vec2{q.x0, q.y0}, vertex_color, glm::vec2{q.s0, q.t0});
-			vertexData.emplace_back(glm::vec2{q.x1, q.y0}, vertex_color, glm::vec2{q.s1, q.t0});
-			vertexData.emplace_back(glm::vec2{q.x1, q.y1}, vertex_color, glm::vec2{q.s1, q.t1});
-			vertexData.emplace_back(glm::vec2{q.x0, q.y1}, vertex_color, glm::vec2{q.s0, q.t1});
+				glm::vec4 vertex_color = {
+					static_cast<float>((color & 0x000000FF)) / 255.f,
+					static_cast<float>((color & 0x0000FF00) >> 8) / 255.f,
+					static_cast<float>((color & 0x00FF0000) >> 16) / 255.f,
+					static_cast<float>((color & 0xFF000000) >> 24) / 255.f
+				};
 
-			indexData.emplace_back(index + 0);
-			indexData.emplace_back(index + 1);
-			indexData.emplace_back(index + 2);
-			indexData.emplace_back(index + 2);
-			indexData.emplace_back(index + 3);
-			indexData.emplace_back(index + 0);
+				vertexData.emplace_back(glm::vec2{q.x0, q.y0}, vertex_color, glm::vec2{q.s0, q.t0});
+				vertexData.emplace_back(glm::vec2{q.x1, q.y0}, vertex_color, glm::vec2{q.s1, q.t0});
+				vertexData.emplace_back(glm::vec2{q.x1, q.y1}, vertex_color, glm::vec2{q.s1, q.t1});
+				vertexData.emplace_back(glm::vec2{q.x0, q.y1}, vertex_color, glm::vec2{q.s0, q.t1});
+
+				indexData.emplace_back(index + 0);
+				indexData.emplace_back(index + 1);
+				indexData.emplace_back(index + 2);
+				indexData.emplace_back(index + 2);
+				indexData.emplace_back(index + 3);
+				indexData.emplace_back(index + 0);
+			}
 		}
 		std::shared_ptr<Text> text_data = std::make_shared<Text>();
 		text_data->init(_text, font, std::move(vertexData), std::move(indexData));
@@ -84,13 +88,14 @@ namespace mlx
 	{
 		MLX_PROFILE_FUNCTION();
 		std::shared_ptr<Text> draw_data = TextLibrary::get().getTextData(id);
-		TextureAtlas& atlas = const_cast<TextureAtlas&>(draw_data->getFontInUse().getAtlas());
+		std::shared_ptr<Font> font_data = FontLibrary::get().getFontData(draw_data->getFontInUse());
+		TextureAtlas& atlas = const_cast<TextureAtlas&>(font_data->getAtlas());
 		draw_data->bind(renderer);
-		if(atlas.getSet() == VK_NULL_HANDLE)
+		if(!atlas.getSet().isInit())
 			atlas.setDescriptor(renderer.getFragDescriptorSet().duplicate());
 		if(!atlas.hasBeenUpdated())
 			atlas.updateSet(0);
-		sets[1] = const_cast<TextureAtlas&>(atlas).getSet();
+		sets[1] = const_cast<TextureAtlas&>(atlas).getVkSet();
 		vkCmdBindDescriptorSets(renderer.getActiveCmdBuffer().get(), VK_PIPELINE_BIND_POINT_GRAPHICS, renderer.getPipeline().getPipelineLayout(), 0, sets.size(), sets.data(), 0, nullptr);
 		atlas.render(renderer, x, y, draw_data->getIBOsize());
 	}
@@ -98,7 +103,8 @@ namespace mlx
 	void TextDrawDescriptor::resetUpdate()
 	{
 		std::shared_ptr<Text> draw_data = TextLibrary::get().getTextData(id);
-		TextureAtlas& atlas = const_cast<TextureAtlas&>(draw_data->getFontInUse().getAtlas());
+		std::shared_ptr<Font> font_data = FontLibrary::get().getFontData(draw_data->getFontInUse());
+		TextureAtlas& atlas = const_cast<TextureAtlas&>(font_data->getAtlas());
 		atlas.resetUpdate();
 	}
 }

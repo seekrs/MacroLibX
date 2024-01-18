@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 18:32:43 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/03 15:27:45 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/18 10:22:20 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ namespace mlx
 
 			inline VkDescriptorPool& operator()() noexcept { return _pool; }
 			inline VkDescriptorPool& get() noexcept { return _pool; }
+
+			inline bool isInit() const noexcept { return _pool != VK_NULL_HANDLE; }
 
 		private:
 			VkDescriptorPool _pool = VK_NULL_HANDLE;

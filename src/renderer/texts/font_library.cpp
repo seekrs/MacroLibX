@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   text_library.cpp                                   :+:      :+:    :+:   */
+/*   font_library.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/10 11:59:57 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/18 08:02:31 by maldavid         ###   ########.fr       */
+/*   Created: 2024/01/18 09:28:14 by maldavid          #+#    #+#             */
+/*   Updated: 2024/01/18 13:07:48 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <renderer/texts/text_library.h>
-#include <renderer/texts/text.h>
+#include <renderer/texts/font_library.h>
+#include <renderer/texts/font.h>
 #include <core/errors.h>
 #include <renderer/renderer.h>
 #include <algorithm>
@@ -19,48 +19,51 @@
 
 namespace mlx
 {
-	std::shared_ptr<Text> TextLibrary::getTextData(TextID id)
+	std::shared_ptr<Font> FontLibrary::getFontData(FontID id)
 	{
 		MLX_PROFILE_FUNCTION();
 		if(!_cache.count(id) || std::find(_invalid_ids.begin(), _invalid_ids.end(), id) != _invalid_ids.end())
-			core::error::report(e_kind::fatal_error, "Text Library : wrong text ID '%d'", id);
+			core::error::report(e_kind::fatal_error, "Font Library : wrong font ID '%d'", id);
 		return _cache[id];
 	}
 
-	TextID TextLibrary::addTextToLibrary(std::shared_ptr<Text> text)
+	FontID FontLibrary::addFontToLibrary(std::shared_ptr<Font> font)
 	{
 		MLX_PROFILE_FUNCTION();
-		auto it = std::find_if(_cache.begin(), _cache.end(), [&](const std::pair<TextID, std::shared_ptr<Text>>& v)
+		auto it = std::find_if(_cache.begin(), _cache.end(), [&](const std::pair<FontID, std::shared_ptr<Font>>& v)
 		{
-			return v.second->getText() == text->getText() && std::find(_invalid_ids.begin(), _invalid_ids.end(), v.first) == _invalid_ids.end();
+			return	v.second->getScale() == font->getScale() &&
+					v.second->getName() == font->getName() &&
+					std::find(_invalid_ids.begin(), _invalid_ids.end(), v.first) == _invalid_ids.end();
 		});
 		if(it != _cache.end())
 			return it->first;
-		_cache[_current_id] = text;
+		font->buildFont();
+		_cache[_current_id] = font;
 		_current_id++;
 		return _current_id - 1;
 	}
 
-	void TextLibrary::removeTextFromLibrary(TextID id)
+	void FontLibrary::removeFontFromLibrary(FontID id)
 	{
 		MLX_PROFILE_FUNCTION();
 		if(!_cache.count(id) || std::find(_invalid_ids.begin(), _invalid_ids.end(), id) != _invalid_ids.end())
 		{
-			core::error::report(e_kind::warning, "Text Library : trying to remove a text with an unkown or invalid ID '%d'", id);
+			core::error::report(e_kind::warning, "Font Library : trying to remove a font with an unkown or invalid ID '%d'", id);
 			return;
 		}
 		_cache[id]->destroy();
 		_invalid_ids.push_back(id);
 	}
 
-	void TextLibrary::clearLibrary()
+	void FontLibrary::clearLibrary()
 	{
 		MLX_PROFILE_FUNCTION();
-		for(auto& [id, text] : _cache)
+		for(auto& [id, font] : _cache)
 		{
-			text->destroy();
+			font->destroy();
 			_invalid_ids.push_back(id);
 		}
-		// do not `_cache.clear();` as it releases the texts and may not destroy Vertex and Index buffers that are in use by command buffers
+		// do not `_cache.clear();` as it releases the fonts and may not destroy the texture atlas that is in use by command buffers
 	}
 }

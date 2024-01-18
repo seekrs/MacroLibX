@@ -6,7 +6,7 @@
 /*   By: kbz_8 <kbz_8.dev@akel-engine.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 22:02:37 by kbz_8             #+#    #+#             */
-/*   Updated: 2024/01/10 21:54:35 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/18 10:11:02 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ namespace mlx
 			vmaSetAllocationName(_allocator, allocation, name);
 		}
 		#ifdef DEBUG
-			core::error::report(e_kind::message, "Graphics Allocator : created new buffer");
+			core::error::report(e_kind::message, "Graphics Allocator : created new buffer '%s'", name);
 		#endif
 		_active_buffers_allocations++;
 		return allocation;
@@ -128,7 +128,7 @@ namespace mlx
 			vmaSetAllocationName(_allocator, allocation, name);
 		}
 		#ifdef DEBUG
-			core::error::report(e_kind::message, "Graphics Allocator : created new image");
+			core::error::report(e_kind::message, "Graphics Allocator : created new image '%s'", name);
 		#endif
 		_active_images_allocations++;
 		return allocation;
