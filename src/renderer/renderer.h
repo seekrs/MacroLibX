@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:14:45 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/16 08:01:25 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/20 08:18:53 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,8 +124,6 @@ namespace mlx
 			SwapChain _swapchain;
 			std::array<Semaphore, MAX_FRAMES_IN_FLIGHT> _semaphores;
 			std::vector<FrameBuffer> _framebuffers;
-
-			DescriptorPool _desc_pool;
 
 			DescriptorSetLayout _vert_layout;
 			DescriptorSetLayout _frag_layout;
