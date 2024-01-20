@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 22:10:52 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/18 15:19:58 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/20 08:21:37 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 #include <SDL2/SDL.h>
 #include <renderer/images/texture.h>
 #include <renderer/core/render_core.h>
-#include <array>
 #include <core/errors.h>
 #include <mlx_profile.h>
 #include <core/memory.h>
@@ -31,6 +30,10 @@ namespace mlx::core
 		if(__drop_sdl_responsability) // is case the mlx is running in a sandbox like MacroUnitTester where SDL is already init
 			return;
 		SDL_SetMemoryFunctions(MemManager::malloc, MemManager::calloc, MemManager::realloc, MemManager::free);
+
+		/* Remove this comment if you want to prioritise Wayland over X11/XWayland, at your own risks */
+		//SDL_SetHint(SDL_HINT_VIDEODRIVER, "wayland,x11");
+
 		if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER) != 0)
 			error::report(e_kind::fatal_error, "SDL error : unable to init all subsystems : %s", SDL_GetError());
 	}
@@ -80,9 +83,17 @@ namespace mlx::core
 	void Application::destroyTexture(void* ptr)
 	{
 		MLX_PROFILE_FUNCTION();
-		vkDeviceWaitIdle(Render_Core::get().getDevice().get()); // TODO : synchronize with another method than stopping all the GPU process
+		vkDeviceWaitIdle(Render_Core::get().getDevice().get()); // TODO : synchronize with another method than waiting for GPU to be idle
+		if(ptr == nullptr)
+		{
+			core::error::report(e_kind::error, "wrong texture (NULL)");
+			return;
+		}
 		Texture* texture = static_cast<Texture*>(ptr);
-		texture->destroy();
+		if(!texture->isInit())
+			core::error::report(e_kind::error, "trying to destroy a texture");
+		else
+			texture->destroy();
 	}
 
 	Application::~Application()

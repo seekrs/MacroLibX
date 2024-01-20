@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 18:40:44 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/18 10:22:10 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/20 08:18:07 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ namespace mlx
 	{
 		MLX_PROFILE_FUNCTION();
 		DescriptorSet set;
-		set.init(_renderer, _pool, _layout);
+		set.init(_renderer, &Render_Core::get().getDescriptorPool(), _layout);
 		return set;
 	}
 
@@ -115,8 +115,8 @@ namespace mlx
 	void DescriptorSet::destroy() noexcept
 	{
 		MLX_PROFILE_FUNCTION();
-		if(_pool->isInit())
-			vkFreeDescriptorSets(Render_Core::get().getDevice().get(), _pool->get(), _desc_set.size(), _desc_set.data());
+		if(_pool != nullptr && Render_Core::get().isInit()) // checks if the render core is still init (it should always be init but just in case)
+			_pool->freeDescriptor(*this);
 		for(auto& set : _desc_set)
 		{
 			if(set != VK_NULL_HANDLE)

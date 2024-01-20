@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:35:20 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/18 15:02:06 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/19 05:35:38 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,7 +228,10 @@ extern "C"
 			mlx::core::error::report(e_kind::error, "TTF loader : not a truetype font file '%s'", filepath);
 			return;
 		}
-		static_cast<mlx::core::Application*>(mlx)->loadFont(win, file, 16.f);
+		if(std::strcmp(filepath, "default") == 0)
+			static_cast<mlx::core::Application*>(mlx)->loadFont(win, file, 6.f);
+		else
+			static_cast<mlx::core::Application*>(mlx)->loadFont(win, file, 16.f);
 	}
 
 	void mlx_set_font_scale(void* mlx, void* win, char* filepath, float scale)

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 18:39:36 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/18 10:13:25 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/20 07:17:39 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ namespace mlx
 	class DescriptorSet
 	{
 		public:
+			DescriptorSet() = default;
+
 			void init(class Renderer* renderer, class DescriptorPool* pool, class DescriptorSetLayout* layout);
 
 			void writeDescriptor(int binding, class UBO* ubo) const noexcept;
@@ -35,7 +37,11 @@ namespace mlx
 			VkDescriptorSet& operator()() noexcept;
 			VkDescriptorSet& get() noexcept;
 
+			inline const std::array<VkDescriptorSet, MAX_FRAMES_IN_FLIGHT>& getAllFramesDescriptorSets() const { return _desc_set; }
+
 			void destroy() noexcept;
+
+			~DescriptorSet() = default;
 
 		private:
 			std::array<VkDescriptorSet, MAX_FRAMES_IN_FLIGHT> _desc_set;

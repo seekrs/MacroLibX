@@ -12,6 +12,7 @@
 *.ilk
 *.pdb
 *.exe
+*vgcore
 .gdb_history
 .vs/
 .xmake/
