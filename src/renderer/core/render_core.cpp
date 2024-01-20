@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 23:33:34 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/07 01:29:31 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/20 08:20:07 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 #include <mlx_profile.h>
 #include <renderer/core/render_core.h>
 #include <renderer/command/vk_cmd_buffer.h>
-#include <mutex>
 
 #ifdef DEBUG
 	#ifdef MLX_COMPILER_MSVC
@@ -138,6 +137,7 @@ namespace mlx
 
 		vkDeviceWaitIdle(_device());
 
+		_pool_manager.destroyAllPools();
 		_cmd_manager.destroy();
 		_allocator.destroy();
 		_device.destroy();

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:55:21 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/18 15:23:35 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/19 05:34:23 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,13 @@ int update(void* param)
 	static int i = 0;
 	mlx_t* mlx = (mlx_t*)param;
 
-	mlx_set_font_scale(mlx->mlx, mlx->win, "default", 6.f);
+	if(i == 200)
+		mlx_clear_window(mlx->mlx, mlx->win);
+	
+	if(i >= 250)
+		mlx_set_font_scale(mlx->mlx, mlx->win, "default", 16.f);
+	else
+		mlx_set_font_scale(mlx->mlx, mlx->win, "default", 6.f);
 	mlx_string_put(mlx->mlx, mlx->win, 160, 120, 0xFFFF2066, "this text should be hidden");
 
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->logo_png, 100, 100);
@@ -36,6 +42,7 @@ int update(void* param)
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->logo_bmp, 220, 40);
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 150, 60);
 
+	mlx_set_font(mlx->mlx, mlx->win, "default");
 	mlx_string_put(mlx->mlx, mlx->win, 20, 50, 0xFFFFFFFF, "that's a text");
 
 	int color = 0;
@@ -46,11 +53,7 @@ int update(void* param)
 		color += (color < 255);
 	}
 
-	if(++i == 5000)
-		mlx_clear_window(mlx->mlx, mlx->win);
-	if(i == 7000)
-		mlx_set_font_scale(mlx->mlx, mlx->win, "default", 16.f);
-
+	i++;
 	return 0;
 }
 

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:25:16 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/16 08:02:57 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/20 08:19:46 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,6 @@ namespace mlx
 			_uniform_buffer->create(this, sizeof(glm::mat4), nullptr);
 		#endif
 
-		VkDescriptorPoolSize pool_sizes[] = {
-			{ VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 4096 },
-			{ VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 4096 }
-		};
-		_desc_pool.init(2, pool_sizes);
-
 		_vert_layout.init({
 				{0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER}
 			}, VK_SHADER_STAGE_VERTEX_BIT);
@@ -60,8 +54,8 @@ namespace mlx
 				{0, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER}
 			}, VK_SHADER_STAGE_FRAGMENT_BIT);
 
-		_vert_set.init(this, &_desc_pool, &_vert_layout);
-		_frag_set.init(this, &_desc_pool, &_frag_layout);
+		_vert_set.init(this, &Render_Core::get().getDescriptorPool(), &_vert_layout);
+		_frag_set.init(this, &Render_Core::get().getDescriptorPool(), &_frag_layout);
 
 		_vert_set.writeDescriptor(0, _uniform_buffer.get());
 
@@ -179,8 +173,9 @@ namespace mlx
 		_uniform_buffer->destroy();
 		_vert_layout.destroy();
 		_frag_layout.destroy();
+		_frag_set.destroy();
+		_vert_set.destroy();
 		_cmd.destroy();
-		_desc_pool.destroy();
 		_pass.destroy();
 		if(_render_target == nullptr)
 		{
