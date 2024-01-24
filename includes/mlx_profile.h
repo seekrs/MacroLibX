@@ -172,27 +172,6 @@
 	static_assert(sizeof(uint16_t) == 2, "uint16_t is not of the correct size");
 	static_assert(sizeof(uint32_t) == 4, "uint32_t is not of the correct size");
 	static_assert(sizeof(uint64_t) == 8, "uint64_t is not of the correct size");
-#elif defined(MLX_COMPILER_GCC)
-	#define STATIC_ASSERT(cnd, descr) \
-	({ \
-		extern int __attribute__((error("static assert failed: (" #cnd ") (" #descr ")"))) compile_time_check(void); \
-		((cnd) ? 0 : compile_time_check()), 0; \
-	})
-
-	#include <limits.h>
-	#include <stdint.h>
-
-	STATIC_ASSERT(CHAR_BIT == 8, "CHAR_BIT is expected to be 8");
-
-	STATIC_ASSERT(sizeof(int8_t)  == 1, "int8_t is not of the correct size" );
-	STATIC_ASSERT(sizeof(int16_t) == 2, "int16_t is not of the correct size");
-	STATIC_ASSERT(sizeof(int32_t) == 4, "int32_t is not of the correct size");
-	STATIC_ASSERT(sizeof(int64_t) == 8, "int64_t is not of the correct size");
-
-	STATIC_ASSERT(sizeof(uint8_t)  == 1, "uint8_t is not of the correct size" );
-	STATIC_ASSERT(sizeof(uint16_t) == 2, "uint16_t is not of the correct size");
-	STATIC_ASSERT(sizeof(uint32_t) == 4, "uint32_t is not of the correct size");
-	STATIC_ASSERT(sizeof(uint64_t) == 8, "uint64_t is not of the correct size");
 #else
 	#define STATIC_ASSERT(COND, MSG) typedef char static_assertion___##MSG[(COND)?1:-1]
 
