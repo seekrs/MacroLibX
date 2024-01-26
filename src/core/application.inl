@@ -22,7 +22,22 @@
 	{ \
 		core::error::report(e_kind::error, "invalid window ptr"); \
 		return; \
-	} else {}\
+	} else {}
+
+#define CHECK_IMAGE_PTR(img, retval) \
+	if(img == nullptr) \
+	{ \
+		core::error::report(e_kind::error, "invalid image ptr (NULL)"); \
+		retval; \
+	} \
+	else if(std::find_if(_textures.begin(), _textures.end(), [=](const Texture& texture) \
+			{ \
+				return &texture == img; \
+			}) == _textures.end()) \
+	{ \
+		core::error::report(e_kind::error, "invalid image ptr"); \
+		retval; \
+	} else {}
 
 namespace mlx::core
 {
@@ -140,11 +155,7 @@ namespace mlx::core
 	{
 		MLX_PROFILE_FUNCTION();
 		CHECK_WINDOW_PTR(win);
-		if(img == nullptr)
-		{
-			core::error::report(e_kind::error, "wrong texture (NULL)");
-			return;
-		}
+		CHECK_IMAGE_PTR(img, return);
 		Texture* texture = static_cast<Texture*>(img);
 		if(!texture->isInit())
 			core::error::report(e_kind::error, "trying to put a texture that has been destroyed");
@@ -155,11 +166,7 @@ namespace mlx::core
 	int Application::getTexturePixel(void* img, int x, int y)
 	{
 		MLX_PROFILE_FUNCTION();
-		if(img == nullptr)
-		{
-			core::error::report(e_kind::error, "wrong texture (NULL)");
-			return 0;
-		}
+		CHECK_IMAGE_PTR(img, return 0);
 		Texture* texture = static_cast<Texture*>(img);
 		if(!texture->isInit())
 		{
@@ -172,11 +179,7 @@ namespace mlx::core
 	void Application::setTexturePixel(void* img, int x, int y, uint32_t color)
 	{
 		MLX_PROFILE_FUNCTION();
-		if(img == nullptr)
-		{
-			core::error::report(e_kind::error, "wrong texture (NULL)");
-			return;
-		}
+		CHECK_IMAGE_PTR(img, return);
 		Texture* texture = static_cast<Texture*>(img);
 		if(!texture->isInit())
 			core::error::report(e_kind::error, "trying to set a pixel on texture that has been destroyed");
