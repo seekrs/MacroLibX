@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:49:46 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/18 14:59:47 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/01/26 11:26:54 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,7 @@
 
 #include <list>
 #include <memory>
-#include <string>
 #include <vector>
-#include <utility>
 #include <functional>
 
 #include <core/errors.h>
