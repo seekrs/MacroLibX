@@ -16,7 +16,7 @@ jobs:
       run: cd scripts && bash ./fetch_dependencies.sh
 
     - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v5
+      uses: peter-evans/create-pull-request@v6
       with:
         title: update dependencies
         commit-message: "[BOT] update dependencies"
