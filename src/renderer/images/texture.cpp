@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 18:03:35 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/18 10:18:22 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/02/24 03:51:59 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,11 @@ namespace mlx
 		if(_map == nullptr)
 			openCPUmap();
 		uint32_t color = _cpu_map[(y * getWidth()) + x];
-		return (color);
+		uint8_t* bytes = reinterpret_cast<uint8_t*>(&color);
+		uint8_t tmp = bytes[0];
+		bytes[0] = bytes[2];
+		bytes[2] = tmp;
+		return *reinterpret_cast<int*>(bytes);
 	}
 
 	void Texture::openCPUmap()
