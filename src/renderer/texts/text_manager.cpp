@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 16:41:13 by maldavid          #+#    #+#             */
-/*   Updated: 2024/02/24 21:39:12 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/02/25 08:17:09 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ namespace mlx
 		if(_font_in_use != text_ptr->getFontInUse())
 		{
 			// TODO : update text vertex buffers rather than destroying it and recreating it
-			std::cout << "test" << std::endl;
 			TextLibrary::get().removeTextFromLibrary(res.first->id);
 			const_cast<TextDrawDescriptor&>(*res.first).init(_font_in_use);
 		}

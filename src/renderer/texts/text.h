@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 00:09:04 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/18 09:37:42 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/02/25 09:00:26 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,14 @@ namespace mlx
 			inline const std::string& getText() const { return _text; }
 			void destroy() noexcept;
 
-			~Text() = default;
+			~Text();
 
 		private:
 			std::array<D_VBO, MAX_FRAMES_IN_FLIGHT> _vbo;
 			C_IBO _ibo;
 			std::string _text;
 			FontID _font = nullfont;
+			bool _is_init = false;
 	};	
 }
 
