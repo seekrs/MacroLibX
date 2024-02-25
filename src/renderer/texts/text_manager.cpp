@@ -6,10 +6,11 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 16:41:13 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/18 09:45:24 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/02/25 08:17:09 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <iostream>
 #include <renderer/texts/text_descriptor.h>
 #include <renderer/texts/text_library.h>
 #include <renderer/texts/text.h>
@@ -38,7 +39,7 @@ namespace mlx
 		_font_in_use = FontLibrary::get().addFontToLibrary(font);
 	}
 
-	std::pair<DrawableResource*, bool> TextManager::registerText(int x, int y, uint32_t color, std::string str)
+	std::pair<DrawableResource*, bool> TextManager::registerText(int x, int y, std::uint32_t color, std::string str)
 	{
 		MLX_PROFILE_FUNCTION();
 		auto res = _text_descriptors.emplace(std::move(str), color, x, y);

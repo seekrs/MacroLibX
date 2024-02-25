@@ -25,7 +25,7 @@ namespace mlx
 		if constexpr(!enableValidationLayers)
 			return;
 
-		uint32_t extensionCount;
+		std::uint32_t extensionCount;
 		vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
 		std::vector<VkExtensionProperties> extensions(extensionCount);
 		vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, extensions.data());
@@ -56,7 +56,7 @@ namespace mlx
 
 	bool ValidationLayers::checkValidationLayerSupport()
 	{
-		uint32_t layerCount;
+		std::uint32_t layerCount;
 		vkEnumerateInstanceLayerProperties(&layerCount, nullptr);
 
 		std::vector<VkLayerProperties> availableLayers(layerCount);
@@ -73,7 +73,7 @@ namespace mlx
 		});
 	}
 
-	VkResult ValidationLayers::setDebugUtilsObjectNameEXT(VkObjectType object_type, uint64_t object_handle, const char* object_name)
+	VkResult ValidationLayers::setDebugUtilsObjectNameEXT(VkObjectType object_type, std::uint64_t object_handle, const char* object_name)
 	{
 		if(!real_vkSetDebugUtilsObjectNameEXT)
 			return VK_ERROR_EXTENSION_NOT_PRESENT;

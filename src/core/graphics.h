@@ -45,8 +45,8 @@ namespace mlx
 			void render() noexcept;
 
 			inline void clearRenderData() noexcept;
-			inline void pixelPut(int x, int y, uint32_t color) noexcept;
-			inline void stringPut(int x, int y, uint32_t color, std::string str);
+			inline void pixelPut(int x, int y, std::uint32_t color) noexcept;
+			inline void stringPut(int x, int y, std::uint32_t color, std::string str);
 			inline void texturePut(Texture* texture, int x, int y);
 			inline void loadFont(const std::filesystem::path& filepath, float scale);
 

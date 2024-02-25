@@ -69,7 +69,7 @@ namespace mlx
 
 		#ifdef GRAPHICS_MEMORY_DUMP
 			// dump memory to file every two seconds
-			static uint64_t timer = SDL_GetTicks64();
+			static std::uint64_t timer = SDL_GetTicks64();
 			if(SDL_GetTicks64() - timer > 2000)
 			{
 				Render_Core::get().getAllocator().dumpMemoryToJson();

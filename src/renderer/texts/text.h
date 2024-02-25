@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 00:09:04 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/18 09:37:42 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/02/25 09:00:26 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,21 +27,22 @@ namespace mlx
 		public:
 			Text() = default;
 
-			void init(std::string text, FontID font, std::vector<Vertex> vbo_data, std::vector<uint16_t> ibo_data);
+			void init(std::string text, FontID font, std::vector<Vertex> vbo_data, std::vector<std::uint16_t> ibo_data);
 			void bind(class Renderer& renderer) noexcept;
 			inline FontID getFontInUse() const noexcept { return _font; }
 			void updateVertexData(int frame, std::vector<Vertex> vbo_data);
-			inline uint32_t getIBOsize() noexcept { return _ibo.getSize(); }
+			inline std::uint32_t getIBOsize() noexcept { return _ibo.getSize(); }
 			inline const std::string& getText() const { return _text; }
 			void destroy() noexcept;
 
-			~Text() = default;
+			~Text();
 
 		private:
 			std::array<D_VBO, MAX_FRAMES_IN_FLIGHT> _vbo;
 			C_IBO _ibo;
 			std::string _text;
 			FontID _font = nullfont;
+			bool _is_init = false;
 	};	
 }
 

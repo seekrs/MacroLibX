@@ -106,8 +106,8 @@ namespace mlx
 			inline DescriptorSet& getFragDescriptorSet() noexcept { return _frag_set; }
 			inline DescriptorSetLayout& getVertDescriptorSetLayout() noexcept { return _vert_layout; }
 			inline DescriptorSetLayout& getFragDescriptorSetLayout() noexcept { return _frag_layout; }
-			inline uint32_t getActiveImageIndex() noexcept { return _current_frame_index; }
-			inline uint32_t getImageIndex() noexcept { return _image_index; }
+			inline std::uint32_t getActiveImageIndex() noexcept { return _current_frame_index; }
+			inline std::uint32_t getImageIndex() noexcept { return _image_index; }
 
 			constexpr inline void requireFrameBufferResize() noexcept { _framebufferResized = true; }
 
@@ -136,8 +136,8 @@ namespace mlx
 			class MLX_Window* _window = nullptr;
 			class Texture* _render_target = nullptr;
 
-			uint32_t _current_frame_index = 0;
-			uint32_t _image_index = 0;
+			std::uint32_t _current_frame_index = 0;
+			std::uint32_t _image_index = 0;
 			bool _framebufferResized = false;
 	};
 }

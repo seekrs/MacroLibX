@@ -25,8 +25,8 @@ namespace mlx
 		public:
 			TextureAtlas() = default;
 
-			void create(uint8_t* pixels, uint32_t width, uint32_t height, VkFormat format, const char* name, bool dedicated_memory = false);
-			void render(class Renderer& renderer, int x, int y, uint32_t ibo_size) const;
+			void create(std::uint8_t* pixels, std::uint32_t width, std::uint32_t height, VkFormat format, const char* name, bool dedicated_memory = false);
+			void render(class Renderer& renderer, int x, int y, std::uint32_t ibo_size) const;
 			void destroy() noexcept override;
 
 			inline void setDescriptor(DescriptorSet&& set) noexcept { _set = set; }

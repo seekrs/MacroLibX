@@ -39,7 +39,7 @@ namespace mlx
 
 			~SingleTimeCmdManager() = default;
 
-			inline static constexpr const uint8_t BASE_POOL_SIZE = 16;
+			inline static constexpr const std::uint8_t BASE_POOL_SIZE = 16;
 
 		private:
 			std::vector<CmdBuffer> _buffers;

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 00:23:11 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/18 09:44:54 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/02/25 07:58:21 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,14 @@ constexpr const int RANGE = 1024;
 
 namespace mlx
 {
-	TextDrawDescriptor::TextDrawDescriptor(std::string text, uint32_t _color, int _x, int _y) : color(_color), x(_x), y(_y), _text(std::move(text))
+	TextDrawDescriptor::TextDrawDescriptor(std::string text, std::uint32_t _color, int _x, int _y) : color(_color), x(_x), y(_y), _text(std::move(text))
 	{}
 
 	void TextDrawDescriptor::init(FontID font) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
 		std::vector<Vertex> vertexData;
-		std::vector<uint16_t> indexData;
+		std::vector<std::uint16_t> indexData;
 
 		float stb_x = 0.0f;
 		float stb_y = 0.0f;

@@ -27,7 +27,7 @@ namespace mlx
 			inline SDL_Window* getNativeWindow() const noexcept { return _win; }
 			inline int getWidth() const noexcept { return _width; }
 			inline int getHeight() const noexcept { return _height; }
-			inline uint32_t getID() const noexcept { return _id; }
+			inline std::uint32_t getID() const noexcept { return _id; }
 
 			void destroy() noexcept;
 
@@ -38,7 +38,7 @@ namespace mlx
 			SDL_Window* _win = nullptr;
 			int _width = 0;
 			int _height = 0;
-			uint32_t _id = -1;
+			std::uint32_t _id = -1;
 	};
 }
 

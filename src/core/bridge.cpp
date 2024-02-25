@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:35:20 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/19 05:35:38 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/02/23 22:37:24 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,13 @@ extern "C"
 	int mlx_get_image_pixel(void* mlx, void* img, int x, int y)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
-		return static_cast<mlx::core::Application*>(mlx)->getTexturePixel(img, x, y);
+		int color = static_cast<mlx::core::Application*>(mlx)->getTexturePixel(img, x, y);
+		unsigned char color_bits[4];
+		color_bits[0] = (color & 0x000000FF);
+		color_bits[1] = (color & 0x0000FF00) >> 8;
+		color_bits[2] = (color & 0x00FF0000) >> 16;
+		color_bits[3] = (color & 0xFF000000) >> 24;
+		return *reinterpret_cast<int*>(color_bits);
 	}
 
 	void mlx_set_image_pixel(void* mlx, void* img, int x, int y, int color)
@@ -294,7 +300,7 @@ extern "C"
 			mlx::core::error::report(e_kind::error, "You cannot set a FPS cap to 0 (nice try)");
 			return 0;
 		}
-		static_cast<mlx::core::Application*>(mlx)->setFPSCap(static_cast<uint32_t>(fps));
+		static_cast<mlx::core::Application*>(mlx)->setFPSCap(static_cast<std::uint32_t>(fps));
 		return 0;
 	}
 }

@@ -33,7 +33,7 @@ namespace mlx
 {
 	namespace RCore
 	{
-		std::optional<uint32_t> findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties, bool error = true);
+		std::optional<std::uint32_t> findMemoryType(std::uint32_t typeFilter, VkMemoryPropertyFlags properties, bool error = true);
 		const char* verbaliseResultVk(VkResult result);
 		VkPipelineStageFlags accessFlagsToPipelineStage(VkAccessFlags accessFlags, VkPipelineStageFlags stageFlags);
 	}

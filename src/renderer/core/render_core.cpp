@@ -28,12 +28,12 @@ namespace mlx
 {
 	namespace RCore
 	{
-		std::optional<uint32_t> findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties, bool error)
+		std::optional<std::uint32_t> findMemoryType(std::uint32_t typeFilter, VkMemoryPropertyFlags properties, bool error)
 		{
 			VkPhysicalDeviceMemoryProperties memProperties;
 			vkGetPhysicalDeviceMemoryProperties(Render_Core::get().getDevice().getPhysicalDevice(), &memProperties);
 
-			for(uint32_t i = 0; i < memProperties.memoryTypeCount; i++)
+			for(std::uint32_t i = 0; i < memProperties.memoryTypeCount; i++)
 			{
 				if((typeFilter & (1 << i)) && (memProperties.memoryTypes[i].propertyFlags & properties) == properties)
 					return i;

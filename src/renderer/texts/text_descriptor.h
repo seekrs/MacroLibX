@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 00:13:34 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/18 09:40:06 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/02/25 07:58:13 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ namespace mlx
 
 		public:
 			TextID id;
-			uint32_t color;
+			std::uint32_t color;
 			int x;
 			int y;
 
 		public:
-			TextDrawDescriptor(std::string text, uint32_t _color, int _x, int _y);
+			TextDrawDescriptor(std::string text, std::uint32_t _color, int _x, int _y);
 
 			void init(FontID font) noexcept;
 			bool operator==(const TextDrawDescriptor& rhs) const { return _text == rhs._text && x == rhs.x && y == rhs.y && color == rhs.color; }

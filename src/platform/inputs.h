@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:27:35 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/16 07:59:08 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/02/25 07:51:55 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ namespace mlx
 			inline int getXRel() const noexcept { return _xRel; }
 			inline int getYRel() const noexcept { return _yRel; }
 
-			inline bool is_running() const noexcept { return !_end; }
+			inline bool isRunning() const noexcept { return !_end; }
 			inline constexpr void finish() noexcept { _end = true; }
 
 			inline void addWindow(std::shared_ptr<MLX_Window> window)
@@ -53,7 +53,7 @@ namespace mlx
 				_events_hooks[window->getID()] = {};
 			}
 
-			inline void onEvent(uint32_t id, int event, int (*funct_ptr)(int, void*), void* param) noexcept
+			inline void onEvent(std::uint32_t id, int event, int (*funct_ptr)(int, void*), void* param) noexcept
 			{
 				_events_hooks[id][event].hook = funct_ptr;
 				_events_hooks[id][event].param = param;
@@ -62,8 +62,8 @@ namespace mlx
 			~Input() = default;
 
 		private:
-			std::unordered_map<uint32_t, std::shared_ptr<MLX_Window>> _windows;
-			std::unordered_map<uint32_t, std::array<Hook, 6>> _events_hooks;
+			std::unordered_map<std::uint32_t, std::shared_ptr<MLX_Window>> _windows;
+			std::unordered_map<std::uint32_t, std::array<Hook, 6>> _events_hooks;
 			SDL_Event _event;
 
 			int _x = 0;
