@@ -23,10 +23,10 @@ namespace mlx
 	class UBO
 	{
 		public:
-			void create(class Renderer* renderer, uint32_t size, const char* name);
+			void create(class Renderer* renderer, std::uint32_t size, const char* name);
 
-			void setData(uint32_t size, const void* data);
-			void setDynamicData(uint32_t size, const void* data);
+			void setData(std::uint32_t size, const void* data);
+			void setDynamicData(std::uint32_t size, const void* data);
 
 			void destroy() noexcept;
 

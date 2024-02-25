@@ -24,17 +24,17 @@ namespace mlx
 
 			void init();
 			bool update();
-			inline void setMaxFPS(uint32_t fps) noexcept { _max_fps = fps; _ns = 1000000000.0 / fps; }
+			inline void setMaxFPS(std::uint32_t fps) noexcept { _max_fps = fps; _ns = 1000000000.0 / fps; }
 
 			~FpsManager() = default;
 
 		private:
 			double _ns = 1000000000.0 / 1'337'000.0;
-			uint64_t _timer = 0;
-			uint64_t _fps_before = 0;
-			uint64_t _fps_now = 0;
-			uint32_t _max_fps = 1'337'000;
-			uint32_t _fps_elapsed_time = 0;
+			std::uint64_t _timer = 0;
+			std::uint64_t _fps_before = 0;
+			std::uint64_t _fps_now = 0;
+			std::uint32_t _max_fps = 1'337'000;
+			std::uint32_t _fps_elapsed_time = 0;
 	};
 }
 

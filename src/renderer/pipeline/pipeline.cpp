@@ -49,7 +49,7 @@ namespace mlx
 				gl_Position = uProj.mat * vec4(pos.x, pos.y, 0.0, 1.0);
 			}
 	*/
-	const std::vector<uint32_t> vertex_shader = {	// precompiled vertex shader
+	const std::vector<std::uint32_t> vertex_shader = {	// precompiled vertex shader
 		0x07230203,0x00010000,0x0008000b,0x0000003b,0x00000000,0x00020011,0x00000001,0x0006000b,
 		0x00000001,0x4c534c47,0x6474732e,0x3035342e,0x00000000,0x0003000e,0x00000000,0x00000001,
 		0x000a000f,0x00000000,0x00000004,0x6e69616d,0x00000000,0x0000000b,0x0000000f,0x00000015,
@@ -124,7 +124,7 @@ namespace mlx
 				fColor = process_color;
 			}
 	*/ 
-	const std::vector<uint32_t> fragment_shader = {	// pre compiled fragment shader
+	const std::vector<std::uint32_t> fragment_shader = {	// pre compiled fragment shader
 		0x07230203,0x00010000,0x0008000b,0x0000002c,0x00000000,0x00020011,0x00000001,0x0006000b,
 		0x00000001,0x4c534c47,0x6474732e,0x3035342e,0x00000000,0x0003000e,0x00000000,0x00000001,
 		0x0007000f,0x00000004,0x00000004,0x6e69616d,0x00000000,0x0000000d,0x0000002a,0x00030010,
@@ -164,7 +164,7 @@ namespace mlx
     {
 		VkShaderModuleCreateInfo createInfo{};
 		createInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
-		createInfo.codeSize = vertex_shader.size() * sizeof(uint32_t);
+		createInfo.codeSize = vertex_shader.size() * sizeof(std::uint32_t);
 		createInfo.pCode = vertex_shader.data();
 		VkShaderModule vshader;
 		if(vkCreateShaderModule(Render_Core::get().getDevice().get(), &createInfo, nullptr, &vshader) != VK_SUCCESS)
@@ -176,7 +176,7 @@ namespace mlx
 		push_constant.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
 
 		createInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
-		createInfo.codeSize = fragment_shader.size() * sizeof(uint32_t);
+		createInfo.codeSize = fragment_shader.size() * sizeof(std::uint32_t);
 		createInfo.pCode = fragment_shader.data();
 		VkShaderModule fshader;
 		if(vkCreateShaderModule(Render_Core::get().getDevice().get(), &createInfo, nullptr, &fshader) != VK_SUCCESS)
@@ -203,7 +203,7 @@ namespace mlx
 		vertexInputStateCreateInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
 		vertexInputStateCreateInfo.vertexBindingDescriptionCount = 1;
 		vertexInputStateCreateInfo.pVertexBindingDescriptions = &bindingDescription;
-		vertexInputStateCreateInfo.vertexAttributeDescriptionCount = static_cast<uint32_t>(attributeDescriptions.size());
+		vertexInputStateCreateInfo.vertexAttributeDescriptionCount = static_cast<std::uint32_t>(attributeDescriptions.size());
 		vertexInputStateCreateInfo.pVertexAttributeDescriptions = attributeDescriptions.data();
 
 		VkPipelineInputAssemblyStateCreateInfo inputAssembly{};
@@ -213,7 +213,7 @@ namespace mlx
 
 		VkDynamicState states[] = { VK_DYNAMIC_STATE_VIEWPORT, VK_DYNAMIC_STATE_SCISSOR };
 
-		constexpr size_t statesCount = sizeof(states) / sizeof(VkDynamicState);
+		constexpr std::size_t statesCount = sizeof(states) / sizeof(VkDynamicState);
 		VkPipelineDynamicStateCreateInfo dynamicStates{};
 		dynamicStates.sType = VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
 		dynamicStates.dynamicStateCount = statesCount;

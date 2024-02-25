@@ -21,12 +21,12 @@ namespace mlx
 	{
 		public:
 			UUID();
-			UUID(uint64_t uuid);
+			UUID(std::uint64_t uuid);
 
-			inline operator uint64_t() const { return _uuid; }
+			inline operator std::uint64_t() const { return _uuid; }
 
 		private:
-			uint64_t _uuid;
+			std::uint64_t _uuid;
 	};
 }
 

@@ -17,15 +17,15 @@
 namespace mlx
 {
 	#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-		constexpr const uint32_t rmask = 0xff000000;
-		constexpr const uint32_t gmask = 0x00ff0000;
-		constexpr const uint32_t bmask = 0x0000ff00;
-		constexpr const uint32_t amask = 0x000000ff;
+		constexpr const std::uint32_t rmask = 0xff000000;
+		constexpr const std::uint32_t gmask = 0x00ff0000;
+		constexpr const std::uint32_t bmask = 0x0000ff00;
+		constexpr const std::uint32_t amask = 0x000000ff;
 	#else
-		constexpr const uint32_t rmask = 0x000000ff;
-		constexpr const uint32_t gmask = 0x0000ff00;
-		constexpr const uint32_t bmask = 0x00ff0000;
-		constexpr const uint32_t amask = 0xff000000;
+		constexpr const std::uint32_t rmask = 0x000000ff;
+		constexpr const std::uint32_t gmask = 0x0000ff00;
+		constexpr const std::uint32_t bmask = 0x00ff0000;
+		constexpr const std::uint32_t amask = 0xff000000;
 	#endif
 
 	MLX_Window::MLX_Window(std::size_t w, std::size_t h, const std::string& title) : _width(w), _height(h)

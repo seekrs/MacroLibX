@@ -47,7 +47,7 @@ namespace mlx
 
 			inline VkSwapchainKHR get() noexcept { return _swapChain; }
 			inline VkSwapchainKHR operator()() noexcept { return _swapChain; }
-			inline size_t getImagesNumber() const noexcept { return _images.size(); }
+			inline std::size_t getImagesNumber() const noexcept { return _images.size(); }
 			inline Image& getImage(std::size_t i) noexcept { return _images[i]; }
 			inline SwapChainSupportDetails getSupport() noexcept { return _swapChainSupport; }
 			inline VkExtent2D getExtent() noexcept { return _extent; }

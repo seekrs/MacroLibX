@@ -18,8 +18,8 @@ namespace mlx
 {
 	static std::random_device random_device;
 	static std::mt19937_64 engine(random_device());
-	static std::uniform_int_distribution<uint64_t> uniform_distribution;
+	static std::uniform_int_distribution<std::uint64_t> uniform_distribution;
 
 	UUID::UUID() : _uuid(uniform_distribution(engine)) {}
-	UUID::UUID(uint64_t uuid) : _uuid(uuid) {}
+	UUID::UUID(std::uint64_t uuid) : _uuid(uuid) {}
 }

@@ -31,11 +31,11 @@ namespace mlx
 		public:
 			Texture() = default;
 
-			void create(uint8_t* pixels, uint32_t width, uint32_t height, VkFormat format, const char* name, bool dedicated_memory = false);
+			void create(std::uint8_t* pixels, std::uint32_t width, std::uint32_t height, VkFormat format, const char* name, bool dedicated_memory = false);
 			void render(std::array<VkDescriptorSet, 2>& sets, class Renderer& renderer, int x, int y);
 			void destroy() noexcept override;
 
-			void setPixel(int x, int y, uint32_t color) noexcept;
+			void setPixel(int x, int y, std::uint32_t color) noexcept;
 			int getPixel(int x, int y) noexcept;
 
 			inline void setDescriptor(DescriptorSet&& set) noexcept { _set = set; }
@@ -56,7 +56,7 @@ namespace mlx
 				std::string _name;
 			#endif
 			DescriptorSet _set;
-			std::vector<uint32_t> _cpu_map;
+			std::vector<std::uint32_t> _cpu_map;
 			std::optional<Buffer> _buf_map = std::nullopt;
 			void* _map = nullptr;
 			bool _has_been_modified = false;

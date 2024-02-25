@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 22:10:52 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/26 11:56:34 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/02/25 07:52:04 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ namespace mlx::core
 
 	void Application::run() noexcept
 	{
-		while(_in->is_running())
+		while(_in->isRunning())
 		{
 			if(!_fps.update())
 				continue;

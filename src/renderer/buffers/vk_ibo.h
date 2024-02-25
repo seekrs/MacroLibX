@@ -23,7 +23,7 @@ namespace mlx
 	class C_IBO : public Buffer
 	{
 		public:
-			inline void create(uint32_t size, const uint16_t* data, const char* name) { Buffer::create(Buffer::kind::constant, size, VK_BUFFER_USAGE_INDEX_BUFFER_BIT, name, data); }
+			inline void create(std::uint32_t size, const std::uint16_t* data, const char* name) { Buffer::create(Buffer::kind::constant, size, VK_BUFFER_USAGE_INDEX_BUFFER_BIT, name, data); }
 			inline void bind(Renderer& renderer) noexcept { renderer.getActiveCmdBuffer().bindIndexBuffer(*this); }
 	};
 }

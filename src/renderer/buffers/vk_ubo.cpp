@@ -17,7 +17,7 @@
 
 namespace mlx
 {
-	void UBO::create(Renderer* renderer, uint32_t size, [[maybe_unused]] const char* name)
+	void UBO::create(Renderer* renderer, std::uint32_t size, [[maybe_unused]] const char* name)
 	{
 		MLX_PROFILE_FUNCTION();
 		_renderer = renderer;
@@ -37,16 +37,16 @@ namespace mlx
 		}
 	}
 
-	void UBO::setData(uint32_t size, const void* data)
+	void UBO::setData(std::uint32_t size, const void* data)
 	{
 		MLX_PROFILE_FUNCTION();
-		std::memcpy(_maps[_renderer->getActiveImageIndex()], data, static_cast<size_t>(size));
+		std::memcpy(_maps[_renderer->getActiveImageIndex()], data, static_cast<std::size_t>(size));
 	}
 
-	void UBO::setDynamicData(uint32_t size, const void* data)
+	void UBO::setDynamicData(std::uint32_t size, const void* data)
 	{
 		MLX_PROFILE_FUNCTION();
-		std::memcpy(_maps[_renderer->getActiveImageIndex()], data, static_cast<size_t>(size));
+		std::memcpy(_maps[_renderer->getActiveImageIndex()], data, static_cast<std::size_t>(size));
 		_buffers[_renderer->getActiveImageIndex()].flush();
 	}
 

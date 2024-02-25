@@ -29,12 +29,12 @@ namespace mlx
 		VkPresentModeKHR presentMode = chooseSwapPresentMode(_swapChainSupport.presentModes);
 		_extent = chooseSwapExtent(_swapChainSupport.capabilities);
 
-		uint32_t imageCount = _swapChainSupport.capabilities.minImageCount + 1;
+		std::uint32_t imageCount = _swapChainSupport.capabilities.minImageCount + 1;
 		if(_swapChainSupport.capabilities.maxImageCount > 0 && imageCount > _swapChainSupport.capabilities.maxImageCount)
 			imageCount = _swapChainSupport.capabilities.maxImageCount;
 
 		Queues::QueueFamilyIndices indices = Render_Core::get().getQueue().findQueueFamilies(Render_Core::get().getDevice().getPhysicalDevice(), renderer->getSurface().get());
-		uint32_t queueFamilyIndices[] = { indices.graphicsFamily.value(), indices.presentFamily.value() };
+		std::uint32_t queueFamilyIndices[] = { indices.graphicsFamily.value(), indices.presentFamily.value() };
 
 		VkSwapchainCreateInfoKHR createInfo{};
 		createInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
@@ -90,7 +90,7 @@ namespace mlx
 		if(vkGetPhysicalDeviceSurfaceCapabilitiesKHR(device, surface, &details.capabilities) != VK_SUCCESS)
 			core::error::report(e_kind::fatal_error, "Vulkan : unable to retrieve surface capabilities");
 
-		uint32_t formatCount = 0;
+		std::uint32_t formatCount = 0;
 		vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &formatCount, nullptr);
 
 		if(formatCount != 0)
@@ -99,7 +99,7 @@ namespace mlx
 			vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &formatCount, details.formats.data());
 		}
 
-		uint32_t presentModeCount;
+		std::uint32_t presentModeCount;
 		vkGetPhysicalDeviceSurfacePresentModesKHR(device, surface, &presentModeCount, nullptr);
 
 		if(presentModeCount != 0)
@@ -119,13 +119,13 @@ namespace mlx
 
 	VkExtent2D SwapChain::chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities)
 	{
-		if(capabilities.currentExtent.width != std::numeric_limits<uint32_t>::max())
+		if(capabilities.currentExtent.width != std::numeric_limits<std::uint32_t>::max())
 			return capabilities.currentExtent;
 
 		int width, height;
 		SDL_Vulkan_GetDrawableSize(_renderer->getWindow()->getNativeWindow(), &width, &height);
 
-		VkExtent2D actualExtent = { static_cast<uint32_t>(width), static_cast<uint32_t>(height) };
+		VkExtent2D actualExtent = { static_cast<std::uint32_t>(width), static_cast<std::uint32_t>(height) };
 
 		actualExtent.width = std::clamp(actualExtent.width, capabilities.minImageExtent.width, capabilities.maxImageExtent.width);
 		actualExtent.height = std::clamp(actualExtent.height, capabilities.minImageExtent.height, capabilities.maxImageExtent.height);
