@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:04:21 by maldavid          #+#    #+#             */
-/*   Updated: 2024/02/24 04:31:00 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/02/24 21:10:32 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ namespace mlx
 		VkApplicationInfo appInfo{};
 		appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
 		appInfo.pEngineName = "MacroLibX";
-		appInfo.engineVersion = VK_MAKE_VERSION(1, 2, 1);
+		appInfo.engineVersion = VK_MAKE_VERSION(1, 3, 1);
 		appInfo.apiVersion = VK_API_VERSION_1_2;
 
 		auto extensions = getRequiredExtensions();
@@ -30,7 +30,7 @@ namespace mlx
 		VkInstanceCreateInfo createInfo{};
 		createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
 		createInfo.pApplicationInfo = &appInfo;
-		createInfo.enabledExtensionCount = static_cast<uint32_t>(extensions.size());
+		createInfo.enabledExtensionCount = static_cast<std::uint32_t>(extensions.size());
 		createInfo.ppEnabledExtensionNames = extensions.data();
 		createInfo.enabledLayerCount = 0; // will be replaced if validation layers are enabled
 		createInfo.pNext = nullptr;
@@ -40,7 +40,7 @@ namespace mlx
 		{
 			if(Render_Core::get().getLayers().checkValidationLayerSupport())
 			{
-				createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
+				createInfo.enabledLayerCount = static_cast<std::uint32_t>(validationLayers.size());
 				createInfo.ppEnabledLayerNames = validationLayers.data();
 				Render_Core::get().getLayers().populateDebugMessengerCreateInfo(debugCreateInfo);
 				createInfo.pNext = static_cast<VkDebugUtilsMessengerCreateInfoEXT*>(&debugCreateInfo);

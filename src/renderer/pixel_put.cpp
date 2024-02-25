@@ -16,20 +16,20 @@
 
 namespace mlx
 {
-	void PixelPutPipeline::init(uint32_t width, uint32_t height, Renderer& renderer) noexcept
+	void PixelPutPipeline::init(std::uint32_t width, std::uint32_t height, Renderer& renderer) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
 		_texture.create(nullptr, width, height, VK_FORMAT_R8G8B8A8_UNORM, "__mlx_pixel_put_pipeline_texture", true);
 		_texture.setDescriptor(renderer.getFragDescriptorSet().duplicate());
 
-		_buffer.create(Buffer::kind::dynamic, sizeof(uint32_t) * (width * height), VK_BUFFER_USAGE_TRANSFER_SRC_BIT, "__mlx_pixel_put_pipeline_texture");
+		_buffer.create(Buffer::kind::dynamic, sizeof(std::uint32_t) * (width * height), VK_BUFFER_USAGE_TRANSFER_SRC_BIT, "__mlx_pixel_put_pipeline_texture");
 		_buffer.mapMem(&_buffer_map);
-		_cpu_map = std::vector<uint32_t>(height * width + 1, 0);
+		_cpu_map = std::vector<std::uint32_t>(height * width + 1, 0);
 		_width = width;
 		_height = height;
 	}
 
-	void PixelPutPipeline::setPixel(int x, int y, uint32_t color) noexcept
+	void PixelPutPipeline::setPixel(int x, int y, std::uint32_t color) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
 		if(x < 0 || y < 0 || x > static_cast<int>(_width) || y > static_cast<int>(_height))
@@ -50,7 +50,7 @@ namespace mlx
 		MLX_PROFILE_FUNCTION();
 		if(_has_been_modified)
 		{
-			std::memcpy(_buffer_map, _cpu_map.data(), sizeof(uint32_t) * _cpu_map.size());
+			std::memcpy(_buffer_map, _cpu_map.data(), sizeof(std::uint32_t) * _cpu_map.size());
 			_texture.copyFromBuffer(_buffer);
 			_has_been_modified = false;
 		}

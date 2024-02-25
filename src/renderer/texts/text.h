@@ -27,11 +27,11 @@ namespace mlx
 		public:
 			Text() = default;
 
-			void init(std::string text, FontID font, std::vector<Vertex> vbo_data, std::vector<uint16_t> ibo_data);
+			void init(std::string text, FontID font, std::vector<Vertex> vbo_data, std::vector<std::uint16_t> ibo_data);
 			void bind(class Renderer& renderer) noexcept;
 			inline FontID getFontInUse() const noexcept { return _font; }
 			void updateVertexData(int frame, std::vector<Vertex> vbo_data);
-			inline uint32_t getIBOsize() noexcept { return _ibo.getSize(); }
+			inline std::uint32_t getIBOsize() noexcept { return _ibo.getSize(); }
 			inline const std::string& getText() const { return _text; }
 			void destroy() noexcept;
 

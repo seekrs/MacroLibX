@@ -94,7 +94,7 @@ namespace mlx
 			core::error::report(e_kind::fatal_error, "Graphics allocator : failed to allocate a buffer, %s", RCore::verbaliseResultVk(res));
 		if(name != nullptr)
 		{
-			Render_Core::get().getLayers().setDebugUtilsObjectNameEXT(VK_OBJECT_TYPE_BUFFER, (uint64_t)buffer, name);
+			Render_Core::get().getLayers().setDebugUtilsObjectNameEXT(VK_OBJECT_TYPE_BUFFER, (std::uint64_t)buffer, name);
 			vmaSetAllocationName(_allocator, allocation, name);
 		}
 		#ifdef DEBUG
@@ -124,7 +124,7 @@ namespace mlx
 			core::error::report(e_kind::fatal_error, "Graphics allocator : failed to allocate an image, %s", RCore::verbaliseResultVk(res));
 		if(name != nullptr)
 		{
-			Render_Core::get().getLayers().setDebugUtilsObjectNameEXT(VK_OBJECT_TYPE_IMAGE, (uint64_t)image, name);
+			Render_Core::get().getLayers().setDebugUtilsObjectNameEXT(VK_OBJECT_TYPE_IMAGE, (std::uint64_t)image, name);
 			vmaSetAllocationName(_allocator, allocation, name);
 		}
 		#ifdef DEBUG
@@ -161,7 +161,7 @@ namespace mlx
 
 	void GPUallocator::dumpMemoryToJson()
 	{
-		static uint32_t id = 0;
+		static std::uint32_t id = 0;
 		std::string name("memory_dump");
 		name.append(std::to_string(id) + ".json");
 		std::ofstream file(name);

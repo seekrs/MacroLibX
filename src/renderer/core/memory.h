@@ -44,8 +44,8 @@ namespace mlx
 
 		private:
 			VmaAllocator _allocator;
-			uint32_t _active_buffers_allocations = 0;
-			uint32_t _active_images_allocations = 0;
+			std::uint32_t _active_buffers_allocations = 0;
+			std::uint32_t _active_images_allocations = 0;
 	};
 }
 

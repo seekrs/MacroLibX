@@ -40,20 +40,20 @@ namespace mlx::core
 
 			inline void getScreenSize(void* win, int* w, int* h) noexcept;
 
-			inline void setFPSCap(uint32_t fps) noexcept;
+			inline void setFPSCap(std::uint32_t fps) noexcept;
 
 			inline void* newGraphicsSuport(std::size_t w, std::size_t h, const char* title);
 			inline void clearGraphicsSupport(void* win);
 			inline void destroyGraphicsSupport(void* win);
 
-			inline void pixelPut(void* win, int x, int y, uint32_t color) const noexcept;
-			inline void stringPut(void* win, int x, int y, uint32_t color, char* str);
+			inline void pixelPut(void* win, int x, int y, std::uint32_t color) const noexcept;
+			inline void stringPut(void* win, int x, int y, std::uint32_t color, char* str);
 
 			void* newTexture(int w, int h);
 			void* newStbTexture(char* file, int* w, int* h); // stb textures are format managed by stb image (png, jpg, bpm, ...)
 			inline void texturePut(void* win, void* img, int x, int y);
 			inline int getTexturePixel(void* img, int x, int y);
-			inline void setTexturePixel(void* img, int x, int y, uint32_t color);
+			inline void setTexturePixel(void* img, int x, int y, std::uint32_t color);
 			void destroyTexture(void* ptr);
 
 			inline void loopHook(int (*f)(void*), void* param);

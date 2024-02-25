@@ -16,7 +16,7 @@
 
 namespace mlx
 {
-	void Text::init(std::string text, FontID font, std::vector<Vertex> vbo_data, std::vector<uint16_t> ibo_data)
+	void Text::init(std::string text, FontID font, std::vector<Vertex> vbo_data, std::vector<std::uint16_t> ibo_data)
 	{
 		MLX_PROFILE_FUNCTION();
 		_text = std::move(text);
@@ -30,11 +30,11 @@ namespace mlx
 			}
 			for(int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
 				_vbo[i].create(sizeof(Vertex) * vbo_data.size(), static_cast<const void*>(vbo_data.data()), debug_name.c_str());
-			_ibo.create(sizeof(uint16_t) * ibo_data.size(), ibo_data.data(), debug_name.c_str());
+			_ibo.create(sizeof(std::uint16_t) * ibo_data.size(), ibo_data.data(), debug_name.c_str());
 		#else
 			for(int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
 				_vbo[i].create(sizeof(Vertex) * vbo_data.size(), static_cast<const void*>(vbo_data.data()), nullptr);
-			_ibo.create(sizeof(uint16_t) * ibo_data.size(), ibo_data.data(), nullptr);
+			_ibo.create(sizeof(std::uint16_t) * ibo_data.size(), ibo_data.data(), nullptr);
 		#endif
 	}
 

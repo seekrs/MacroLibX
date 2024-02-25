@@ -300,7 +300,7 @@ extern "C"
 			mlx::core::error::report(e_kind::error, "You cannot set a FPS cap to 0 (nice try)");
 			return 0;
 		}
-		static_cast<mlx::core::Application*>(mlx)->setFPSCap(static_cast<uint32_t>(fps));
+		static_cast<mlx::core::Application*>(mlx)->setFPSCap(static_cast<std::uint32_t>(fps));
 		return 0;
 	}
 }

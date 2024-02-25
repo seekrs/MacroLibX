@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 16:24:11 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/18 13:52:01 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/02/25 07:58:36 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ namespace mlx
 			TextManager() = default;
 
 			void init(Renderer& renderer) noexcept;
-			std::pair<DrawableResource*, bool> registerText(int x, int y, uint32_t color, std::string str);
-			inline void clear() { _text_descriptors.clear(); TextLibrary::get().clearLibrary(); }
+			std::pair<DrawableResource*, bool> registerText(int x, int y, std::uint32_t color, std::string str);
+			inline void clear() { _text_descriptors.clear(); }
 			void loadFont(Renderer& renderer, const std::filesystem::path& filepath, float scale);
 			void destroy() noexcept;
 

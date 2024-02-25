@@ -33,7 +33,7 @@ namespace mlx
 				_yRel = _event.motion.yrel;
 			}
 
-			uint32_t id = _event.window.windowID;
+			std::uint32_t id = _event.window.windowID;
 			if(_events_hooks.find(id) == _events_hooks.end())
 				continue;
 			auto& hooks = _events_hooks[id];

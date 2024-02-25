@@ -27,13 +27,13 @@ namespace mlx
 		_texture_manager.clear();
 	}
 
-	void GraphicsSupport::pixelPut(int x, int y, uint32_t color) noexcept
+	void GraphicsSupport::pixelPut(int x, int y, std::uint32_t color) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
 		_pixel_put_pipeline.setPixel(x, y, color);
 	}
 
-	void GraphicsSupport::stringPut(int x, int y, uint32_t color, std::string str)
+	void GraphicsSupport::stringPut(int x, int y, std::uint32_t color, std::string str)
 	{
 		MLX_PROFILE_FUNCTION();
 		std::pair<DrawableResource*, bool> res = _text_manager.registerText(x, y, color, str);

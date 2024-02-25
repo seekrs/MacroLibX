@@ -18,7 +18,7 @@ namespace mlx
 {
 	Queues::QueueFamilyIndices Queues::findQueueFamilies(VkPhysicalDevice device, VkSurfaceKHR surface)
     {
-		uint32_t queueFamilyCount = 0;
+		std::uint32_t queueFamilyCount = 0;
 		vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, nullptr);
 
 		std::vector<VkQueueFamilyProperties> queueFamilies(queueFamilyCount);

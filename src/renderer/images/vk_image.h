@@ -26,10 +26,10 @@
 
 namespace mlx
 {
-	uint32_t formatSize(VkFormat format);
+	std::uint32_t formatSize(VkFormat format);
 	bool isStencilFormat(VkFormat format);
 	bool isDepthFormat(VkFormat format);
-	VkFormat bitsToFormat(uint32_t bits);
+	VkFormat bitsToFormat(std::uint32_t bits);
 	VkPipelineStageFlags layoutToAccessMask(VkImageLayout layout, bool isDestination);
 
 	class Image : public CmdResource
@@ -39,7 +39,7 @@ namespace mlx
 		public:
 			Image() = default;
 
-			inline void create(VkImage image, VkFormat format, uint32_t width, uint32_t height, VkImageLayout layout = VK_IMAGE_LAYOUT_UNDEFINED) noexcept
+			inline void create(VkImage image, VkFormat format, std::uint32_t width, std::uint32_t height, VkImageLayout layout = VK_IMAGE_LAYOUT_UNDEFINED) noexcept
 			{
 				_image = image;
 				_format = format;
@@ -47,7 +47,7 @@ namespace mlx
 				_height = height;
 				_layout = layout;
 			}
-			void create(uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, const char* name, bool decated_memory = false);
+			void create(std::uint32_t width, std::uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, const char* name, bool decated_memory = false);
 			void createImageView(VkImageViewType type, VkImageAspectFlags aspectFlags) noexcept;
 			void createSampler() noexcept;
 			void copyFromBuffer(class Buffer& buffer);
@@ -62,8 +62,8 @@ namespace mlx
 			inline VkImageTiling getTiling() const noexcept { return _tiling; }
 			inline VkImageLayout getLayout() const noexcept { return _layout; }
 			inline VkSampler getSampler() const noexcept { return _sampler; }
-			inline uint32_t getWidth() const noexcept { return _width; }
-			inline uint32_t getHeight() const noexcept { return _height; }
+			inline std::uint32_t getWidth() const noexcept { return _width; }
+			inline std::uint32_t getHeight() const noexcept { return _height; }
 			inline bool isInit() const noexcept { return _image != VK_NULL_HANDLE; }
 
 			virtual ~Image() = default;
@@ -83,8 +83,8 @@ namespace mlx
 			VkFormat _format;
 			VkImageTiling _tiling;
 			VkImageLayout _layout = VK_IMAGE_LAYOUT_UNDEFINED;
-			uint32_t _width = 0;
-			uint32_t _height = 0;
+			std::uint32_t _width = 0;
+			std::uint32_t _height = 0;
 	};
 }
 

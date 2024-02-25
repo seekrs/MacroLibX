@@ -27,7 +27,7 @@ namespace mlx
 		public:
 			Font() = delete;
 			Font(class Renderer& renderer, const std::filesystem::path& path, float scale);
-			Font(class Renderer& renderer, const std::string& name, const std::vector<uint8_t>& ttf_data, float scale);
+			Font(class Renderer& renderer, const std::string& name, const std::vector<std::uint8_t>& ttf_data, float scale);
 
 			inline const std::string& getName() const { return _name; }
 			inline float getScale() const noexcept { return _scale; }
@@ -45,7 +45,7 @@ namespace mlx
 		private:
 			std::array<stbtt_packedchar, 96> _cdata;
 			TextureAtlas _atlas;
-			std::variant<std::filesystem::path, std::vector<uint8_t>> _build_data;
+			std::variant<std::filesystem::path, std::vector<std::uint8_t>> _build_data;
 			std::string _name;
 			class Renderer& _renderer;
 			float _scale = 0;

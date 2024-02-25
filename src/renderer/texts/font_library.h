@@ -24,7 +24,7 @@
 
 namespace mlx
 {
-	using FontID = uint32_t;
+	using FontID = std::uint32_t;
 	constexpr FontID nullfont = 0;
 
 	class FontLibrary : public Singleton<FontLibrary>

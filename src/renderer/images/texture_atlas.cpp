@@ -20,7 +20,7 @@
 
 namespace mlx
 {
-	void TextureAtlas::create(uint8_t* pixels, uint32_t width, uint32_t height, VkFormat format, const char* name, bool dedicated_memory)
+	void TextureAtlas::create(std::uint8_t* pixels, std::uint32_t width, std::uint32_t height, VkFormat format, const char* name, bool dedicated_memory)
 	{
 		Image::create(width, height, format, TILING, VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT | VK_IMAGE_USAGE_SAMPLED_BIT, name, dedicated_memory);
 		Image::createImageView(VK_IMAGE_VIEW_TYPE_2D, VK_IMAGE_ASPECT_COLOR_BIT);
@@ -39,13 +39,13 @@ namespace mlx
 		staging_buffer.destroy();
 	}
 
-	void TextureAtlas::render(Renderer& renderer, int x, int y, uint32_t ibo_size) const
+	void TextureAtlas::render(Renderer& renderer, int x, int y, std::uint32_t ibo_size) const
 	{
 		auto cmd = renderer.getActiveCmdBuffer().get();
 
 		glm::vec2 translate(x, y);
 		vkCmdPushConstants(cmd, renderer.getPipeline().getPipelineLayout(), VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(translate), &translate);
-		vkCmdDrawIndexed(cmd, ibo_size / sizeof(uint16_t), 1, 0, 0, 0);
+		vkCmdDrawIndexed(cmd, ibo_size / sizeof(std::uint16_t), 1, 0, 0, 0);
 	}
 
 	void TextureAtlas::destroy() noexcept
