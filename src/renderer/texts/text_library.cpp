@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 11:59:57 by maldavid          #+#    #+#             */
-/*   Updated: 2024/02/24 21:38:11 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/02/25 09:29:31 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 #include <renderer/renderer.h>
 #include <algorithm>
 #include <core/profiler.h>
-#include <iostream>
 
 namespace mlx
 {
@@ -50,7 +49,6 @@ namespace mlx
 			core::error::report(e_kind::warning, "Text Library : trying to remove a text with an unkown or invalid ID '%d'", id);
 			return;
 		}
-		std::cout << _cache[id]->getText() << std::endl;
 		_cache[id]->destroy();
 		_invalid_ids.push_back(id);
 	}
