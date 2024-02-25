@@ -24,7 +24,7 @@ namespace mlx
 		_build_data = path;
 	}
 
-	Font::Font(class Renderer& renderer, const std::string& name, const std::vector<uint8_t>& ttf_data, float scale) : _name(name), _renderer(renderer), _scale(scale)
+	Font::Font(class Renderer& renderer, const std::string& name, const std::vector<std::uint8_t>& ttf_data, float scale) : _name(name), _renderer(renderer), _scale(scale)
 	{
 		_build_data = ttf_data;
 	}
@@ -32,7 +32,7 @@ namespace mlx
 	void Font::buildFont()
 	{
 		MLX_PROFILE_FUNCTION();
-		std::vector<uint8_t> file_bytes;
+		std::vector<std::uint8_t> file_bytes;
 		if(std::holds_alternative<std::filesystem::path>(_build_data))
 		{
 			std::ifstream file(std::get<std::filesystem::path>(_build_data), std::ios::binary);
@@ -48,14 +48,14 @@ namespace mlx
 			file.close();
 		}
 
-		std::vector<uint8_t> tmp_bitmap(RANGE * RANGE);
-		std::vector<uint8_t> vulkan_bitmap(RANGE * RANGE * 4);
+		std::vector<std::uint8_t> tmp_bitmap(RANGE * RANGE);
+		std::vector<std::uint8_t> vulkan_bitmap(RANGE * RANGE * 4);
 		stbtt_pack_context pc;
 		stbtt_PackBegin(&pc, tmp_bitmap.data(), RANGE, RANGE, RANGE, 1, nullptr);
 		if(std::holds_alternative<std::filesystem::path>(_build_data))
 			stbtt_PackFontRange(&pc, file_bytes.data(), 0, _scale, 32, 96, _cdata.data());
 		else
-			stbtt_PackFontRange(&pc, std::get<std::vector<uint8_t>>(_build_data).data(), 0, _scale, 32, 96, _cdata.data());
+			stbtt_PackFontRange(&pc, std::get<std::vector<std::uint8_t>>(_build_data).data(), 0, _scale, 32, 96, _cdata.data());
 		stbtt_PackEnd(&pc);
 		for(int i = 0, j = 0; i < RANGE * RANGE; i++, j += 4)
 		{

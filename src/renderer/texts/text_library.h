@@ -26,7 +26,7 @@
 
 namespace mlx
 {
-	using TextID = uint32_t;
+	using TextID = std::uint32_t;
 	constexpr TextID nulltext = 0;
 
 	class TextLibrary : public Singleton<TextLibrary>

@@ -24,9 +24,9 @@ namespace mlx
 		public:
 			PixelPutPipeline() = default;
 
-			void init(uint32_t width, uint32_t height, class Renderer& renderer) noexcept;
+			void init(std::uint32_t width, std::uint32_t height, class Renderer& renderer) noexcept;
 
-			void setPixel(int x, int y, uint32_t color) noexcept;
+			void setPixel(int x, int y, std::uint32_t color) noexcept;
 			void render(std::array<VkDescriptorSet, 2>& sets, class Renderer& renderer) noexcept;
 
 			void clear();
@@ -38,10 +38,10 @@ namespace mlx
 			Texture _texture;
 			Buffer _buffer;
 			// using vector as CPU map and not directly writting to mapped buffer to improve performances
-			std::vector<uint32_t> _cpu_map;
+			std::vector<std::uint32_t> _cpu_map;
 			void* _buffer_map = nullptr;
-			uint32_t _width = 0;
-			uint32_t _height = 0;
+			std::uint32_t _width = 0;
+			std::uint32_t _height = 0;
 			bool _has_been_modified = true;
 	};
 }

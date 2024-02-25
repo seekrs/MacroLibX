@@ -68,7 +68,7 @@ namespace mlx
 		renderPassInfo.pAttachments = &colorAttachment;
 		renderPassInfo.subpassCount = sizeof(subpasses) / sizeof(VkSubpassDescription);
 		renderPassInfo.pSubpasses = subpasses;
-		renderPassInfo.dependencyCount = static_cast<uint32_t>(subpassesDeps.size());
+		renderPassInfo.dependencyCount = static_cast<std::uint32_t>(subpassesDeps.size());
 		renderPassInfo.pDependencies = subpassesDeps.data();
 
 		VkResult res = vkCreateRenderPass(Render_Core::get().getDevice().get(), &renderPassInfo, nullptr, &_renderPass);

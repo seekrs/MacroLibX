@@ -15,7 +15,7 @@
 
 namespace mlx
 {
-	void VBO::setData(uint32_t size, const void* data)
+	void VBO::setData(std::uint32_t size, const void* data)
 	{
 		if(size > getSize())
 		{
@@ -28,11 +28,11 @@ namespace mlx
 
 		void* temp = nullptr;
 		mapMem(&temp);
-			std::memcpy(temp, data, static_cast<size_t>(size));
+			std::memcpy(temp, data, static_cast<std::size_t>(size));
 		unmapMem();
 	}
 
-	void D_VBO::setData(uint32_t size, const void* data)
+	void D_VBO::setData(std::uint32_t size, const void* data)
 	{
 		if(size > getSize())
 		{

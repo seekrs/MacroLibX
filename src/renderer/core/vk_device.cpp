@@ -31,10 +31,10 @@ namespace mlx
 		Queues::QueueFamilyIndices indices = Render_Core::get().getQueue().getFamilies();
 
 		std::vector<VkDeviceQueueCreateInfo> queueCreateInfos;
-		std::set<uint32_t> uniqueQueueFamilies = { indices.graphicsFamily.value(), indices.presentFamily.value() };
+		std::set<std::uint32_t> uniqueQueueFamilies = { indices.graphicsFamily.value(), indices.presentFamily.value() };
 
 		float queuePriority = 1.0f;
-		for(uint32_t queueFamily : uniqueQueueFamilies)
+		for(std::uint32_t queueFamily : uniqueQueueFamilies)
 		{
 			VkDeviceQueueCreateInfo queueCreateInfo{};
 			queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
@@ -49,12 +49,12 @@ namespace mlx
 		VkDeviceCreateInfo createInfo{};
 		createInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
 
-		createInfo.queueCreateInfoCount = static_cast<uint32_t>(queueCreateInfos.size());
+		createInfo.queueCreateInfoCount = static_cast<std::uint32_t>(queueCreateInfos.size());
 		createInfo.pQueueCreateInfos = queueCreateInfos.data();
 
 		createInfo.pEnabledFeatures = &deviceFeatures;
 
-		createInfo.enabledExtensionCount = static_cast<uint32_t>(deviceExtensions.size());
+		createInfo.enabledExtensionCount = static_cast<std::uint32_t>(deviceExtensions.size());
 		createInfo.ppEnabledExtensionNames = deviceExtensions.data();
 		createInfo.enabledLayerCount = 0;
 
@@ -68,7 +68,7 @@ namespace mlx
 
 	void Device::pickPhysicalDevice()
 	{
-		uint32_t deviceCount = 0;
+		std::uint32_t deviceCount = 0;
 		vkEnumeratePhysicalDevices(Render_Core::get().getInstance().get(), &deviceCount, nullptr);
 
 		if(deviceCount == 0)
@@ -113,7 +113,7 @@ namespace mlx
 		Queues::QueueFamilyIndices indices = Render_Core::get().getQueue().findQueueFamilies(device, surface);
 		bool extensionsSupported = checkDeviceExtensionSupport(device);
 
-		uint32_t formatCount = 0;
+		std::uint32_t formatCount = 0;
 		if(extensionsSupported)
 			vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &formatCount, nullptr);
 
@@ -144,7 +144,7 @@ namespace mlx
 
 	bool Device::checkDeviceExtensionSupport(VkPhysicalDevice device)
 	{
-		uint32_t extensionCount;
+		std::uint32_t extensionCount;
 		vkEnumerateDeviceExtensionProperties(device, nullptr, &extensionCount, nullptr);
 
 		std::vector<VkExtensionProperties> availableExtensions(extensionCount);

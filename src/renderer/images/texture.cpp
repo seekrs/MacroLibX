@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 18:03:35 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/18 10:18:22 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/02/24 03:51:59 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 
 namespace mlx
 {
-	void Texture::create(uint8_t* pixels, uint32_t width, uint32_t height, VkFormat format, const char* name, bool dedicated_memory)
+	void Texture::create(std::uint8_t* pixels, std::uint32_t width, std::uint32_t height, VkFormat format, const char* name, bool dedicated_memory)
 	{
 		MLX_PROFILE_FUNCTION();
 		Image::create(width, height, format, TILING, VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT | VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_SAMPLED_BIT, name, dedicated_memory);
@@ -45,15 +45,15 @@ namespace mlx
 			{{0, height},		{1.f, 1.f, 1.f, 1.f},	{0.0f, 1.0f}}
 		};
 
-		std::vector<uint16_t> indexData = { 0, 1, 2, 2, 3, 0 };
+		std::vector<std::uint16_t> indexData = { 0, 1, 2, 2, 3, 0 };
 
 		#ifdef DEBUG
 			_vbo.create(sizeof(Vertex) * vertexData.size(), vertexData.data(), name);
-			_ibo.create(sizeof(uint16_t) * indexData.size(), indexData.data(), name);
+			_ibo.create(sizeof(std::uint16_t) * indexData.size(), indexData.data(), name);
 			_name = name;
 		#else
 			_vbo.create(sizeof(Vertex) * vertexData.size(), vertexData.data(), nullptr);
-			_ibo.create(sizeof(uint16_t) * indexData.size(), indexData.data(), nullptr);
+			_ibo.create(sizeof(std::uint16_t) * indexData.size(), indexData.data(), nullptr);
 		#endif
 
 		Buffer staging_buffer;
@@ -68,7 +68,7 @@ namespace mlx
 		}
 		else
 		{
-			std::vector<uint32_t> default_pixels(width * height, 0x00000000);
+			std::vector<std::uint32_t> default_pixels(width * height, 0x00000000);
 			#ifdef DEBUG
 				staging_buffer.create(Buffer::kind::dynamic, size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, name, default_pixels.data());
 			#else
@@ -79,10 +79,10 @@ namespace mlx
 		staging_buffer.destroy();
 	}
 
-	void Texture::setPixel(int x, int y, uint32_t color) noexcept
+	void Texture::setPixel(int x, int y, std::uint32_t color) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
-		if(x < 0 || y < 0 || static_cast<uint32_t>(x) > getWidth() || static_cast<uint32_t>(y) > getHeight())
+		if(x < 0 || y < 0 || static_cast<std::uint32_t>(x) > getWidth() || static_cast<std::uint32_t>(y) > getHeight())
 			return;
 		if(_map == nullptr)
 			openCPUmap();
@@ -93,12 +93,16 @@ namespace mlx
 	int Texture::getPixel(int x, int y) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
-		if(x < 0 || y < 0 || static_cast<uint32_t>(x) > getWidth() || static_cast<uint32_t>(y) > getHeight())
+		if(x < 0 || y < 0 || static_cast<std::uint32_t>(x) > getWidth() || static_cast<std::uint32_t>(y) > getHeight())
 			return 0;
 		if(_map == nullptr)
 			openCPUmap();
-		uint32_t color = _cpu_map[(y * getWidth()) + x];
-		return (color);
+		std::uint32_t color = _cpu_map[(y * getWidth()) + x];
+		std::uint8_t* bytes = reinterpret_cast<std::uint8_t*>(&color);
+		std::uint8_t tmp = bytes[0];
+		bytes[0] = bytes[2];
+		bytes[2] = tmp;
+		return *reinterpret_cast<int*>(bytes);
 	}
 
 	void Texture::openCPUmap()
@@ -119,7 +123,7 @@ namespace mlx
 		#endif
 		Image::copyToBuffer(*_buf_map);
 		_buf_map->mapMem(&_map);
-		_cpu_map = std::vector<uint32_t>(getWidth() * getHeight(), 0);
+		_cpu_map = std::vector<std::uint32_t>(getWidth() * getHeight(), 0);
 		std::memcpy(_cpu_map.data(), _map, size);
 		#ifdef DEBUG
 			core::error::report(e_kind::message, "Texture : mapped CPU memory using staging buffer");
@@ -148,7 +152,7 @@ namespace mlx
 		vkCmdPushConstants(cmd.get(), renderer.getPipeline().getPipelineLayout(), VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(translate), &translate);
 		sets[1] = _set.get();
 		vkCmdBindDescriptorSets(renderer.getActiveCmdBuffer().get(), VK_PIPELINE_BIND_POINT_GRAPHICS, renderer.getPipeline().getPipelineLayout(), 0, sets.size(), sets.data(), 0, nullptr);
-		vkCmdDrawIndexed(cmd.get(), static_cast<uint32_t>(_ibo.getSize() / sizeof(uint16_t)), 1, 0, 0, 0);
+		vkCmdDrawIndexed(cmd.get(), static_cast<std::uint32_t>(_ibo.getSize() / sizeof(std::uint16_t)), 1, 0, 0, 0);
 	}
 
 	void Texture::destroy() noexcept
@@ -167,7 +171,7 @@ namespace mlx
 		MLX_PROFILE_FUNCTION();
 		Texture texture;
 		int channels;
-		uint8_t* data = nullptr;
+		std::uint8_t* data = nullptr;
 		std::string filename = file.string();
 
 		if(!std::filesystem::exists(std::move(file)))

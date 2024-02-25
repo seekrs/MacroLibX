@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:30:19 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/16 07:59:15 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/02/23 22:27:30 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ namespace mlx
 				_yRel = _event.motion.yrel;
 			}
 
-			uint32_t id = _event.window.windowID;
+			std::uint32_t id = _event.window.windowID;
 			if(_events_hooks.find(id) == _events_hooks.end())
 				continue;
 			auto& hooks = _events_hooks[id];
@@ -123,19 +123,19 @@ namespace mlx
 						case SDL_WINDOWEVENT_FOCUS_GAINED:
 						{
 							if(win_hook.hook)
-								win_hook.hook(4, win_hook.param);
+								win_hook.hook(5, win_hook.param);
 							break;
 						}
 						case SDL_WINDOWEVENT_LEAVE:
 						{
 							if(win_hook.hook)
-								win_hook.hook(5, win_hook.param);
+								win_hook.hook(6, win_hook.param);
 							break;
 						}
 						case SDL_WINDOWEVENT_FOCUS_LOST:
 						{
 							if(win_hook.hook)
-								win_hook.hook(4, win_hook.param);
+								win_hook.hook(7, win_hook.param);
 							break;
 						}
 

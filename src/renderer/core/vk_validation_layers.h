@@ -29,7 +29,7 @@ namespace mlx
 			bool checkValidationLayerSupport();
 			void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo);
 			
-			VkResult setDebugUtilsObjectNameEXT(VkObjectType object_type, uint64_t object_handle, const char* object_name);
+			VkResult setDebugUtilsObjectNameEXT(VkObjectType object_type, std::uint64_t object_handle, const char* object_name);
 
 			~ValidationLayers() = default;
 

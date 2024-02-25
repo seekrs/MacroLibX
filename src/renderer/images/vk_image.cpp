@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:59:07 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/18 09:47:26 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/02/25 08:03:47 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ namespace mlx
 		}
 	}
 
-	VkFormat bitsToFormat(uint32_t bits)
+	VkFormat bitsToFormat(std::uint32_t bits)
 	{
 		switch(bits)
 		{
@@ -99,7 +99,7 @@ namespace mlx
 		return accessMask;
 	}
 
-	void Image::create(uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, const char* name, bool dedicated_memory)
+	void Image::create(std::uint32_t width, std::uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, const char* name, bool dedicated_memory)
 	{
 		_width = width;
 		_height = height;
@@ -153,7 +153,7 @@ namespace mlx
 			core::error::report(e_kind::fatal_error, "Vulkan : failed to create an image view, %s", RCore::verbaliseResultVk(res));
 		#ifdef DEBUG
 		else
-			Render_Core::get().getLayers().setDebugUtilsObjectNameEXT(VK_OBJECT_TYPE_IMAGE_VIEW, (uint64_t)_image_view, _name.c_str());
+			Render_Core::get().getLayers().setDebugUtilsObjectNameEXT(VK_OBJECT_TYPE_IMAGE_VIEW, (std::uint64_t)_image_view, _name.c_str());
 		#endif
 	}
 
@@ -177,7 +177,7 @@ namespace mlx
 			core::error::report(e_kind::fatal_error, "Vulkan : failed to create an image sampler, %s", RCore::verbaliseResultVk(res));
 		#ifdef DEBUG
 		else
-			Render_Core::get().getLayers().setDebugUtilsObjectNameEXT(VK_OBJECT_TYPE_SAMPLER, (uint64_t)_sampler, _name.c_str());
+			Render_Core::get().getLayers().setDebugUtilsObjectNameEXT(VK_OBJECT_TYPE_SAMPLER, (std::uint64_t)_sampler, _name.c_str());
 		#endif
 	}
 
@@ -264,7 +264,7 @@ namespace mlx
 		//CmdResource::requireDestroy();
 	}
 
-	uint32_t formatSize(VkFormat format)
+	std::uint32_t formatSize(VkFormat format)
 	{
 		switch(format)
 		{

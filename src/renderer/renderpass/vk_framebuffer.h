@@ -26,13 +26,13 @@ namespace mlx
 
 			inline VkFramebuffer& operator()() noexcept { return _framebuffer; }
 			inline VkFramebuffer& get() noexcept { return _framebuffer; }
-			inline uint32_t getWidth() const noexcept { return _width; }
-			inline uint32_t getHeight() const noexcept { return _height; }
+			inline std::uint32_t getWidth() const noexcept { return _width; }
+			inline std::uint32_t getHeight() const noexcept { return _height; }
 
 		private:
 			VkFramebuffer _framebuffer = VK_NULL_HANDLE;
-			uint32_t _width = 0;
-			uint32_t _height = 0;
+			std::uint32_t _width = 0;
+			std::uint32_t _height = 0;
 	};
 }
 
