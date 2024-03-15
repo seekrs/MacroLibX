@@ -10654,6 +10654,20 @@ namespace std
   };
 
   template <>
+  struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceRawAccessChainsFeaturesNV>
+  {
+    std::size_t
+      operator()( VULKAN_HPP_NAMESPACE::PhysicalDeviceRawAccessChainsFeaturesNV const & physicalDeviceRawAccessChainsFeaturesNV ) const VULKAN_HPP_NOEXCEPT
+    {
+      std::size_t seed = 0;
+      VULKAN_HPP_HASH_COMBINE( seed, physicalDeviceRawAccessChainsFeaturesNV.sType );
+      VULKAN_HPP_HASH_COMBINE( seed, physicalDeviceRawAccessChainsFeaturesNV.pNext );
+      VULKAN_HPP_HASH_COMBINE( seed, physicalDeviceRawAccessChainsFeaturesNV.shaderRawAccessChains );
+      return seed;
+    }
+  };
+
+  template <>
   struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceRayQueryFeaturesKHR>
   {
     std::size_t operator()( VULKAN_HPP_NAMESPACE::PhysicalDeviceRayQueryFeaturesKHR const & physicalDeviceRayQueryFeaturesKHR ) const VULKAN_HPP_NOEXCEPT
@@ -10794,6 +10808,20 @@ namespace std
       VULKAN_HPP_HASH_COMBINE( seed, physicalDeviceRayTracingPropertiesNV.maxInstanceCount );
       VULKAN_HPP_HASH_COMBINE( seed, physicalDeviceRayTracingPropertiesNV.maxTriangleCount );
       VULKAN_HPP_HASH_COMBINE( seed, physicalDeviceRayTracingPropertiesNV.maxDescriptorSetAccelerationStructures );
+      return seed;
+    }
+  };
+
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceRayTracingValidationFeaturesNV>
+  {
+    std::size_t operator()( VULKAN_HPP_NAMESPACE::PhysicalDeviceRayTracingValidationFeaturesNV const & physicalDeviceRayTracingValidationFeaturesNV ) const
+      VULKAN_HPP_NOEXCEPT
+    {
+      std::size_t seed = 0;
+      VULKAN_HPP_HASH_COMBINE( seed, physicalDeviceRayTracingValidationFeaturesNV.sType );
+      VULKAN_HPP_HASH_COMBINE( seed, physicalDeviceRayTracingValidationFeaturesNV.pNext );
+      VULKAN_HPP_HASH_COMBINE( seed, physicalDeviceRayTracingValidationFeaturesNV.rayTracingValidation );
       return seed;
     }
   };
