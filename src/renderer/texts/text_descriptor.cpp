@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 00:23:11 by maldavid          #+#    #+#             */
-/*   Updated: 2024/02/25 07:58:21 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 16:13:48 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ namespace mlx
 			}
 		}
 		std::shared_ptr<Text> text_data = std::make_shared<Text>();
-		text_data->init(_text, font, std::move(vertexData), std::move(indexData));
+		text_data->init(_text, font, color, std::move(vertexData), std::move(indexData));
 		id = TextLibrary::get().addTextToLibrary(text_data);
 
 		#ifdef DEBUG
