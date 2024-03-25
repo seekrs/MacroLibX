@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 00:11:56 by maldavid          #+#    #+#             */
-/*   Updated: 2024/02/25 09:01:46 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 16:13:08 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,13 @@
 
 namespace mlx
 {
-	void Text::init(std::string text, FontID font, std::vector<Vertex> vbo_data, std::vector<std::uint16_t> ibo_data)
+	void Text::init(std::string text, FontID font, std::uint32_t color, std::vector<Vertex> vbo_data, std::vector<std::uint16_t> ibo_data)
 	{
 		MLX_PROFILE_FUNCTION();
 		if(_is_init)
 			return;
 		_text = std::move(text);
+		_color = color;
 		_font = font;
 		#ifdef DEBUG
 			std::string debug_name = _text;

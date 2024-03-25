@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 11:52:30 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/16 08:54:15 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 16:04:47 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 #include <renderer/buffers/vk_ibo.h>
 #include <unordered_map>
 #include <memory>
-#include <vector>
 #include <cstdint>
 #include <mlx_profile.h>
 #include <renderer/texts/font.h>
@@ -46,7 +45,6 @@ namespace mlx
 
 		private:
 			std::unordered_map<TextID, std::shared_ptr<class Text>> _cache;
-			std::vector<TextID> _invalid_ids;
 			TextID _current_id = 1;
 	};
 }

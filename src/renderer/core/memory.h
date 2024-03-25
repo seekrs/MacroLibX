@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 02:13:03 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/03 15:25:56 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 16:01:06 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ namespace mlx
 
 		private:
 			VmaAllocator _allocator;
-			std::uint32_t _active_buffers_allocations = 0;
-			std::uint32_t _active_images_allocations = 0;
+			std::int32_t _active_buffers_allocations = 0;
+			std::int32_t _active_images_allocations = 0;
 	};
 }
 
