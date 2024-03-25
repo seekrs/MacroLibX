@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:20:13 by maldavid          #+#    #+#             */
-/*   Updated: 2022/10/08 19:21:22 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/24 14:42:48 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,17 @@
 
 namespace mlx
 {
-	class non_copyable
+	class NonCopyable
 	{
 		protected:
-			non_copyable() = default;
-			virtual ~non_copyable() = default;
+			NonCopyable() = default;
+			virtual ~NonCopyable() = default;
 
 		public:
-			non_copyable(const non_copyable&) = delete;
-			non_copyable(non_copyable&&) noexcept = default;
-			non_copyable &operator=(const non_copyable&) = delete;
-			non_copyable &operator=(non_copyable&&) noexcept = default;
+			NonCopyable(const NonCopyable&) = delete;
+			NonCopyable(NonCopyable&&) noexcept = default;
+			NonCopyable &operator=(const NonCopyable&) = delete;
+			NonCopyable &operator=(NonCopyable&&) noexcept = default;
 	};
 
 }

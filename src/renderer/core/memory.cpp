@@ -6,14 +6,13 @@
 /*   By: kbz_8 <kbz_8.dev@akel-engine.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 22:02:37 by kbz_8             #+#    #+#             */
-/*   Updated: 2024/01/18 10:11:02 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/14 16:34:53 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <mlx_profile.h>
 #include <core/errors.h>
 #include <core/profiler.h>
-#include <cstdio>
 
 #define VMA_STATIC_VULKAN_FUNCTIONS 0
 #define VMA_DYNAMIC_VULKAN_FUNCTIONS 0
@@ -177,7 +176,7 @@ namespace mlx
 		file.close();
 		id++;
 	}
-	
+
 	void GPUallocator::flush(VmaAllocation allocation, VkDeviceSize size, VkDeviceSize offset) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
@@ -187,9 +186,11 @@ namespace mlx
 	void GPUallocator::destroy() noexcept
 	{
 		if(_active_images_allocations != 0)
-			core::error::report(e_kind::error, "Graphics allocator : some user-dependant allocations were not freed before destroying the display (%d active allocations)", _active_images_allocations);
+			core::error::report(e_kind::error, "Graphics allocator : some user-dependant allocations were not freed before destroying the display (%d active allocations). You may have not destroyed all the MLX resources you've created", _active_images_allocations);
 		else if(_active_buffers_allocations != 0)
-			core::error::report(e_kind::error, "Graphics allocator : some MLX-dependant allocations were not freed before destroying the display (%d active allocations), please report, this should not happen", _active_buffers_allocations);
+			core::error::report(e_kind::error, "Graphics allocator : some MLX-dependant allocations were not freed before destroying the display (%d active allocations). This is an error in the MLX, please report this should not happen", _active_buffers_allocations);
+		if(_active_images_allocations < 0 || _active_buffers_allocations < 0)
+			core::error::report(e_kind::warning, "Graphics allocator : the impossible happened, the MLX has freed more allocations than it has made (wtf)");
 		vmaDestroyAllocator(_allocator);
 		_active_buffers_allocations = 0;
 		_active_images_allocations = 0;

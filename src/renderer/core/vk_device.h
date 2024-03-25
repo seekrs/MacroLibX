@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:13:42 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/03 15:26:14 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/14 16:59:54 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 #include <mlx_profile.h>
 #include <volk.h>
-#include "vk_queues.h"
 
 namespace mlx
 {
@@ -28,7 +27,7 @@ namespace mlx
 			inline VkDevice& operator()() noexcept { return _device; }
 			inline VkDevice& get() noexcept { return _device; }
 
-			inline VkPhysicalDevice& getPhysicalDevice() noexcept { return _physicalDevice; }
+			inline VkPhysicalDevice& getPhysicalDevice() noexcept { return _physical_device; }
 
 		private:
 			void pickPhysicalDevice();
@@ -36,7 +35,7 @@ namespace mlx
 			int deviceScore(VkPhysicalDevice device, VkSurfaceKHR surface);
 
 		private:
-			VkPhysicalDevice _physicalDevice = VK_NULL_HANDLE;
+			VkPhysicalDevice _physical_device = VK_NULL_HANDLE;
 			VkDevice _device = VK_NULL_HANDLE;
 	};
 }

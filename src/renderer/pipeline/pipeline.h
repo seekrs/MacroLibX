@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 21:23:52 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/03 15:28:13 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/14 17:04:28 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,14 @@ namespace mlx
 			void init(class Renderer& renderer);
 			void destroy() noexcept;
 
-			inline void bindPipeline(CmdBuffer& commandBuffer) noexcept { vkCmdBindPipeline(commandBuffer.get(), VK_PIPELINE_BIND_POINT_GRAPHICS, _graphicsPipeline); }
+			inline void bindPipeline(CmdBuffer& command_buffer) noexcept { vkCmdBindPipeline(command_buffer.get(), VK_PIPELINE_BIND_POINT_GRAPHICS, _graphics_pipeline); }
 
-			inline const VkPipeline& getPipeline() const noexcept { return _graphicsPipeline; }
-			inline const VkPipelineLayout& getPipelineLayout() const noexcept { return _pipelineLayout; }
+			inline const VkPipeline& getPipeline() const noexcept { return _graphics_pipeline; }
+			inline const VkPipelineLayout& getPipelineLayout() const noexcept { return _pipeline_layout; }
 
 		private:
-			VkPipeline _graphicsPipeline = VK_NULL_HANDLE;
-			VkPipelineCache _cache = VK_NULL_HANDLE;
-			VkPipelineLayout _pipelineLayout = VK_NULL_HANDLE;
+			VkPipeline _graphics_pipeline = VK_NULL_HANDLE;
+			VkPipelineLayout _pipeline_layout = VK_NULL_HANDLE;
 	};
 }
 

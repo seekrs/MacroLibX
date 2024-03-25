@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:21:36 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/16 08:22:39 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/14 17:06:01 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ namespace mlx
 		renderPassInfo.dependencyCount = static_cast<std::uint32_t>(subpassesDeps.size());
 		renderPassInfo.pDependencies = subpassesDeps.data();
 
-		VkResult res = vkCreateRenderPass(Render_Core::get().getDevice().get(), &renderPassInfo, nullptr, &_renderPass);
+		VkResult res = vkCreateRenderPass(Render_Core::get().getDevice().get(), &renderPassInfo, nullptr, &_render_pass);
 		if(res != VK_SUCCESS)
 			core::error::report(e_kind::fatal_error, "Vulkan : failed to create render pass, %s", RCore::verbaliseResultVk(res));
 		#ifdef DEBUG
@@ -87,7 +87,7 @@ namespace mlx
 
 		VkRenderPassBeginInfo renderPassInfo{};
 		renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
-		renderPassInfo.renderPass = _renderPass;
+		renderPassInfo.renderPass = _render_pass;
 		renderPassInfo.framebuffer = fb.get();
 		renderPassInfo.renderArea.offset = { 0, 0 };
 		renderPassInfo.renderArea.extent = { fb.getWidth(), fb.getHeight() };
@@ -110,8 +110,8 @@ namespace mlx
 
 	void RenderPass::destroy() noexcept
 	{
-		vkDestroyRenderPass(Render_Core::get().getDevice().get(), _renderPass, nullptr);
-		_renderPass = VK_NULL_HANDLE;
+		vkDestroyRenderPass(Render_Core::get().getDevice().get(), _render_pass, nullptr);
+		_render_pass = VK_NULL_HANDLE;
 		#ifdef DEBUG
 			core::error::report(e_kind::message, "Vulkan : destroyed a renderpass");
 		#endif
