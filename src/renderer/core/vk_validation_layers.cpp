@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 14:05:25 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/10 21:55:54 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/14 17:03:24 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include "vulkan/vulkan_core.h"
 
 #include <core/errors.h>
-#include <iostream>
 #include <cstring>
 #include <algorithm>
 
@@ -45,8 +44,8 @@ namespace mlx
 			core::error::report(e_kind::message, "Vulkan : enabled validation layers");
 		#endif
 
-		real_vkSetDebugUtilsObjectNameEXT = (PFN_vkSetDebugUtilsObjectNameEXT)vkGetInstanceProcAddr(Render_Core::get().getInstance().get(), "vkSetDebugUtilsObjectNameEXT");
-		if(!real_vkSetDebugUtilsObjectNameEXT)
+		_vkSetDebugUtilsObjectNameEXT = (PFN_vkSetDebugUtilsObjectNameEXT)vkGetInstanceProcAddr(Render_Core::get().getInstance().get(), "vkSetDebugUtilsObjectNameEXT");
+		if(!_vkSetDebugUtilsObjectNameEXT)
 			core::error::report(e_kind::warning, "Vulkan : failed to set up debug object names, %s", RCore::verbaliseResultVk(VK_ERROR_EXTENSION_NOT_PRESENT));
 		#ifdef DEBUG
 		else
@@ -75,7 +74,7 @@ namespace mlx
 
 	VkResult ValidationLayers::setDebugUtilsObjectNameEXT(VkObjectType object_type, std::uint64_t object_handle, const char* object_name)
 	{
-		if(!real_vkSetDebugUtilsObjectNameEXT)
+		if(!_vkSetDebugUtilsObjectNameEXT)
 			return VK_ERROR_EXTENSION_NOT_PRESENT;
 
 		VkDebugUtilsObjectNameInfoEXT name_info{};
@@ -83,7 +82,7 @@ namespace mlx
 		name_info.objectType = object_type;
 		name_info.objectHandle = object_handle;
 		name_info.pObjectName = object_name;
-		return real_vkSetDebugUtilsObjectNameEXT(Render_Core::get().getDevice().get(), &name_info);
+		return _vkSetDebugUtilsObjectNameEXT(Render_Core::get().getDevice().get(), &name_info);
 	}
 
 	void ValidationLayers::populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo)
@@ -109,7 +108,7 @@ namespace mlx
 	VkResult ValidationLayers::createDebugUtilsMessengerEXT(const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator)
 	{
 		auto func = (PFN_vkCreateDebugUtilsMessengerEXT)vkGetInstanceProcAddr(Render_Core::get().getInstance().get(), "vkCreateDebugUtilsMessengerEXT");
-		return func != nullptr ? func(Render_Core::get().getInstance().get(), pCreateInfo, pAllocator, &_debugMessenger) : VK_ERROR_EXTENSION_NOT_PRESENT;
+		return func != nullptr ? func(Render_Core::get().getInstance().get(), pCreateInfo, pAllocator, &_debug_messenger) : VK_ERROR_EXTENSION_NOT_PRESENT;
 	}
 
 	VKAPI_ATTR VkBool32 VKAPI_CALL ValidationLayers::debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, [[maybe_unused]] VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, [[maybe_unused]] void* pUserData)
@@ -125,7 +124,7 @@ namespace mlx
 	{
 		auto func = (PFN_vkDestroyDebugUtilsMessengerEXT)vkGetInstanceProcAddr(Render_Core::get().getInstance().get(), "vkDestroyDebugUtilsMessengerEXT");
 		if(func != nullptr)
-			func(Render_Core::get().getInstance().get(), _debugMessenger, pAllocator);
+			func(Render_Core::get().getInstance().get(), _debug_messenger, pAllocator);
 	}
 
 }

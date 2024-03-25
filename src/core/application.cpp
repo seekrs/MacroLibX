@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 22:10:52 by maldavid          #+#    #+#             */
-/*   Updated: 2024/02/25 07:52:04 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/24 14:39:23 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,10 +89,9 @@ namespace mlx::core
 			core::error::report(e_kind::error, "invalid image ptr (NULL)");
 			return;
 		}
-		else if(std::find_if(_textures.begin(), _textures.end(), [=](const Texture& texture)
-			{
-				return &texture == ptr;
-			}) == _textures.end())
+
+		auto it = std::find_if(_textures.begin(), _textures.end(), [=](const Texture& texture) { return &texture == ptr; });
+		if(it == _textures.end())
 		{
 			core::error::report(e_kind::error, "invalid image ptr");
 			return;
@@ -102,6 +101,9 @@ namespace mlx::core
 			core::error::report(e_kind::error, "trying to destroy a texture that has already been destroyed");
 		else
 			texture->destroy();
+		for(auto& gs : _graphics)
+			gs->tryEraseTextureFromManager(texture);
+		_textures.erase(it);
 	}
 
 	Application::~Application()

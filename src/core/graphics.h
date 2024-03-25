@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 14:49:49 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/11 15:47:05 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/24 14:43:09 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #define __MLX_GRAPHICS__
 
 #include <memory>
-#include <unordered_set>
 #include <filesystem>
 
 #include <glm/glm.hpp>
@@ -33,7 +32,7 @@
 
 namespace mlx
 {
-	class GraphicsSupport : public non_copyable
+	class GraphicsSupport : public NonCopyable
 	{
 		public:
 			GraphicsSupport(std::size_t w, std::size_t h, Texture* render_target, int id);
@@ -49,6 +48,7 @@ namespace mlx
 			inline void stringPut(int x, int y, std::uint32_t color, std::string str);
 			inline void texturePut(Texture* texture, int x, int y);
 			inline void loadFont(const std::filesystem::path& filepath, float scale);
+			inline void tryEraseTextureFromManager(Texture* texture) noexcept;
 
 			inline bool hasWindow() const noexcept  { return _has_window; }
 

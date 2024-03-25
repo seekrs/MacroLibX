@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 02:24:58 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/11 01:18:25 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/14 19:06:07 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,15 @@
 #define __MLX_TEXTURE__
 
 #include <filesystem>
-#include <memory>
 #include <array>
-#include <functional>
 #include <renderer/images/vk_image.h>
 #include <renderer/descriptors/vk_descriptor_set.h>
 #include <renderer/buffers/vk_ibo.h>
 #include <renderer/buffers/vk_vbo.h>
 #include <mlx_profile.h>
-#include <string>
+#ifdef DEBUG
+	#include <string>
+#endif
 
 namespace mlx
 {

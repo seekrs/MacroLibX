@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:25:16 by maldavid          #+#    #+#             */
-/*   Updated: 2024/02/25 08:02:05 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/14 16:34:43 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ namespace mlx
 
 		_pipeline.init(*this);
 
-		_framebufferResized = false;
+		_framebuffer_resized = false;
 	}
 
 	bool Renderer::beginFrame()
@@ -136,9 +136,9 @@ namespace mlx
 
 			VkResult result = vkQueuePresentKHR(Render_Core::get().getQueue().getPresent(), &presentInfo);
 
-			if(result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || _framebufferResized)
+			if(result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || _framebuffer_resized)
 			{
-				_framebufferResized = false;
+				_framebuffer_resized = false;
 				recreateRenderData();
 			}
 			else if(result != VK_SUCCESS)

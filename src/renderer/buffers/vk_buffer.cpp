@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 18:55:57 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/11 05:21:20 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/14 17:28:35 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,16 +54,11 @@ namespace mlx
 	void Buffer::destroy() noexcept
 	{
 		MLX_PROFILE_FUNCTION();
-		// not creating destroyer in `create` as some image may be copied (and so `this` will be invalid)
-		//CmdResource::setDestroyer([this]()
-		//{
-			if(_is_mapped)
-				unmapMem();
-			if(_buffer != VK_NULL_HANDLE)
-				Render_Core::get().getAllocator().destroyBuffer(_allocation, _buffer);
-			_buffer = VK_NULL_HANDLE;
-		//});
-		//CmdResource::requireDestroy();
+		if(_is_mapped)
+			unmapMem();
+		if(_buffer != VK_NULL_HANDLE)
+			Render_Core::get().getAllocator().destroyBuffer(_allocation, _buffer);
+		_buffer = VK_NULL_HANDLE;
 	}
 
 	void Buffer::createBuffer(VkBufferUsageFlags usage, VmaAllocationCreateInfo info, VkDeviceSize size, [[maybe_unused]] const char* name)

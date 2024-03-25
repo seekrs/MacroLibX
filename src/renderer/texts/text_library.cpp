@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 11:59:57 by maldavid          #+#    #+#             */
-/*   Updated: 2024/02/25 09:29:31 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/14 17:31:55 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,6 @@ namespace mlx
 			text->destroy();
 			_invalid_ids.push_back(id);
 		}
-		// do not `_cache.clear();` as it releases the texts and may not destroy Vertex and Index buffers that are in use by command buffers
+		_cache.clear();
 	}
 }

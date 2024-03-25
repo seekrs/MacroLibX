@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include <core/graphics.h>
-#include <iostream>
 
 namespace mlx
 {
@@ -63,5 +62,18 @@ namespace mlx
 	{
 		MLX_PROFILE_FUNCTION();
 		_text_manager.loadFont(*_renderer, filepath, scale);
+	}
+
+	void GraphicsSupport::tryEraseTextureFromManager(Texture* texture) noexcept
+	{
+		MLX_PROFILE_FUNCTION();
+		for(auto it = _drawlist.begin(); it != _drawlist.end();)
+		{
+			if(_texture_manager.isTextureKnown(texture))
+				it = _drawlist.erase(it);
+			else
+				++it;
+		}
+		_texture_manager.eraseTextures(texture);
 	}
 }
