@@ -6,14 +6,13 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:04:21 by maldavid          #+#    #+#             */
-/*   Updated: 2024/02/24 21:10:32 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 17:50:59 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vk_instance.h"
 #include "render_core.h"
 #include <platform/window.h>
-#include <SDL2/SDL_vulkan.h>
 
 namespace mlx
 {

@@ -6,18 +6,14 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 14:49:49 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/24 14:43:09 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 17:45:49 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_GRAPHICS__
 #define __MLX_GRAPHICS__
 
-#include <memory>
-#include <filesystem>
-
-#include <glm/glm.hpp>
-#include <glm/gtc/type_ptr.hpp>
+#include <pre_compiled.h>
 
 #include <platform/window.h>
 #include <renderer/renderer.h>
@@ -27,7 +23,6 @@
 #include <renderer/texts/text_manager.h>
 #include <utils/non_copyable.h>
 #include <renderer/images/texture.h>
-#include <mlx_profile.h>
 #include <core/profiler.h>
 
 namespace mlx

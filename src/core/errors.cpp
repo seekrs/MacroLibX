@@ -6,14 +6,11 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:48:06 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/05 20:41:17 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 17:45:12 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>
-#include <cstdlib>
-#include <cstdarg>
-#include <utility>
+#include <pre_compiled.h>
 
 #include "errors.h"
 

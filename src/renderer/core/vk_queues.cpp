@@ -6,13 +6,11 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:02:42 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/14 17:01:10 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 17:51:35 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render_core.h"
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_vulkan.h>
 
 namespace mlx
 {

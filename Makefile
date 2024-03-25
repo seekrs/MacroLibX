@@ -6,42 +6,42 @@
 #    By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/04 16:43:41 by maldavid          #+#    #+#              #
-#    Updated: 2024/01/10 14:20:30 by maldavid         ###   ########.fr        #
+#    Updated: 2024/03/25 18:57:44 by maldavid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME		= libmlx.so
+NAME = libmlx.so
 
-SRCS		=  $(wildcard $(addsuffix /*.cpp, ./src/core))
-SRCS		+= $(wildcard $(addsuffix /*.cpp, ./src/platform))
-SRCS		+= $(wildcard $(addsuffix /*.cpp, ./src/renderer))
-SRCS		+= $(wildcard $(addsuffix /*.cpp, ./src/renderer/**))
+SRCS =  $(wildcard $(addsuffix /*.cpp, ./src/core))
+SRCS += $(wildcard $(addsuffix /*.cpp, ./src/platform))
+SRCS += $(wildcard $(addsuffix /*.cpp, ./src/renderer))
+SRCS += $(wildcard $(addsuffix /*.cpp, ./src/renderer/**))
 
-OBJ_DIR		= objs/makefile
-OBJS		= $(addprefix $(OBJ_DIR)/, $(SRCS:.cpp=.o))
+OBJ_DIR = objs/makefile
+OBJS = $(addprefix $(OBJ_DIR)/, $(SRCS:.cpp=.o))
+
+PCH = ./src/pre_compiled.h
+GCH = ./src/pre_compiled.h.gch
 
 OS = $(shell uname -s)
-DEBUG		?= false
-TOOLCHAIN	?= clang
-IMAGES_OPTIMIZED	?= true
+DEBUG ?= false
+TOOLCHAIN ?= clang
+IMAGES_OPTIMIZED ?= true
 FORCE_INTEGRATED_GPU ?= false
 GRAPHICS_MEMORY_DUMP ?= false
 PROFILER ?= false
 
-MODE	= "release"
+MODE = "release"
 
-CXX		= clang++
+CXX = clang++
 
-CXXFLAGS	= -std=c++17 -O3 -fPIC -Wall -Wextra -Werror -DSDL_MAIN_HANDLED
-INCLUDES	= -I./includes -I./src -I./third_party
+CXXFLAGS = -std=c++17 -O3 -fPIC -Wall -Wextra -Wno-deprecated -DSDL_MAIN_HANDLED
+INCLUDES = -I./includes -I./src -I./third_party
 
 LDLIBS =
 
 ifeq ($(TOOLCHAIN), gcc)
 	CXX = g++
-	CXXFLAGS += -Wno-error=cpp
-else
-	CXXFLAGS += -Wno-error=#warning
 endif
 
 ifeq ($(OS), Darwin)
@@ -73,13 +73,17 @@ endif
 
 RM = rm -rf
 
-$(OBJ_DIR)/%.o: %.cpp
+$(OBJ_DIR)/%.o: %.cpp $(GCH)
 	@printf "\033[1;32m[compiling... "$(MODE)" "$(CXX)"]\033[1;00m "$<"\n"
 	@$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
 
-all:		$(NAME)
+all: $(NAME)
 
-$(NAME):	$(OBJ_DIR) $(OBJS)
+$(GCH):
+	@printf "\033[1;32m[compiling "$(MODE)" "$(CXX)"]\033[1;00m PreCompiled header\n"
+	@$(CXX) $(CXXFLAGS) $(INCLUDES) -c $(PCH) -o $(GCH)
+
+$(NAME): $(GCH) $(OBJ_DIR) $(OBJS)
 	@printf "\033[1;32m[linking ... "$(MODE)"]\033[1;00m "$@"\n"
 	@$(CXX) -shared -o $(NAME) $(OBJS) $(LDLIBS)
 	@printf "\033[1;32m[build finished]\033[1;00m\n"
@@ -92,10 +96,11 @@ clean:
 	@$(RM) $(OBJ_DIR)
 	@printf "\033[1;32m[object files removed]\033[1;00m\n"
 
-fclean:		clean
+fclean: clean
 	@$(RM) $(NAME)
-	@printf "\033[1;32m["$(NAME)" removed]\033[1;00m\n"
+	@$(RM) $(GCH)
+	@printf "\033[1;32m["$(NAME)" and gch removed]\033[1;00m\n"
 
-re:			fclean all
+re: fclean all
 
-.PHONY:		all clean fclean re
+.PHONY: all clean fclean re pch

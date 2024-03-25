@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 14:05:25 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/14 17:03:24 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 17:52:08 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 #include "vulkan/vulkan_core.h"
 
 #include <core/errors.h>
-#include <cstring>
-#include <algorithm>
 
 namespace mlx
 {

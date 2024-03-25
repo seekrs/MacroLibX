@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 18:55:57 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/14 17:28:35 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 17:47:35 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 #include <renderer/command/vk_cmd_buffer.h>
 #include <renderer/core/render_core.h>
 #include <core/profiler.h>
-#include <vma.h>
-#include <cstring>
 
 namespace mlx
 {

@@ -6,14 +6,13 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 22:10:52 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/24 14:39:23 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 17:44:37 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "application.h"
 #include <renderer/texts/text_library.h>
 #include <renderer/texts/font_library.h>
-#include <SDL2/SDL.h>
 #include <renderer/images/texture.h>
 #include <renderer/core/render_core.h>
 #include <core/errors.h>

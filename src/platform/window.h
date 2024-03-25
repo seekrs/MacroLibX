@@ -6,16 +6,14 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:53:12 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/21 00:24:26 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 17:47:10 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_WINDOW__
 #define __MLX_WINDOW__
 
-#include <SDL2/SDL.h>
-#include <string>
-#include <mlx_profile.h>
+#include <pre_compiled.h>
 
 namespace mlx
 {

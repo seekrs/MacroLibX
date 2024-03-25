@@ -6,17 +6,17 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 00:56:15 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 13:53:59 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 17:54:02 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_TEXTURE_MANAGER__
 #define __MLX_TEXTURE_MANAGER__
 
-#include <unordered_set>
+#include <pre_compiled.h>
+
 #include <renderer/images/texture_descriptor.h>
 #include <core/profiler.h>
-#include <utility>
 
 namespace mlx
 {

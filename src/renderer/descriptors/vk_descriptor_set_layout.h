@@ -6,16 +6,14 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 18:36:22 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/20 06:25:54 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 17:53:05 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __VK_DESCRIPTOR_SET_LAYOUT__
 #define __VK_DESCRIPTOR_SET_LAYOUT__
 
-#include <mlx_profile.h>
-#include <volk.h>
-#include <vector>
+#include <pre_compiled.h>
 
 namespace mlx
 {

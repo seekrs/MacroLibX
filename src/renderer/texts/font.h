@@ -6,18 +6,17 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 21:17:04 by kbz_8             #+#    #+#             */
-/*   Updated: 2024/01/18 13:15:55 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 17:55:52 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_FONT__
 #define __MLX_FONT__
 
-#include <array>
-#include <stb_truetype.h>
+#include <pre_compiled.h>
+
 #include <renderer/images/texture_atlas.h>
 #include <utils/combine_hash.h>
-#include <variant>
 
 namespace mlx
 {

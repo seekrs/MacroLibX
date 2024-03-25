@@ -6,18 +6,16 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:35:20 by maldavid          #+#    #+#             */
-/*   Updated: 2024/02/23 22:37:24 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 17:44:56 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <SDL2/SDL.h>
+#include <pre_compiled.h>
 #include "errors.h"
 #include "application.h"
 #include <renderer/core/render_core.h>
-#include <filesystem>
 #include <mlx.h>
 #include <core/memory.h>
-#include <mlx_profile.h>
 
 static void* __mlx_ptr = nullptr;
 

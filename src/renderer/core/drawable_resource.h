@@ -6,16 +6,14 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 21:00:37 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/11 01:21:15 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 17:49:33 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_DRAWABLE_RESOURCE__
 #define __MLX_DRAWABLE_RESOURCE__
 
-#include <mlx_profile.h>
-#include <volk.h>
-#include <array>
+#include <pre_compiled.h>
 
 namespace mlx
 {

@@ -6,12 +6,13 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:45:52 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/10 18:30:57 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 17:48:07 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <pre_compiled.h>
+
 #include "vk_ubo.h"
-#include <cstring>
 #include <renderer/renderer.h>
 #include <core/profiler.h>
 

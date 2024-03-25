@@ -6,17 +6,15 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:01:49 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/14 17:00:48 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 17:51:31 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_VK_QUEUES__
 #define __MLX_VK_QUEUES__
 
-#include <mlx_profile.h>
-#include <volk.h>
-#include <optional>
-#include <cstdint>
+#include <pre_compiled.h>
+
 #include <core/errors.h>
 
 namespace mlx
