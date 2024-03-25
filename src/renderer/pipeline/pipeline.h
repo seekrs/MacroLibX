@@ -6,14 +6,12 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 21:23:52 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 17:54:23 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:09:01 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __PIPELINE__
 #define __PIPELINE__
-
-#include <pre_compiled.h>
 
 #include <renderer/command/vk_cmd_buffer.h>
 

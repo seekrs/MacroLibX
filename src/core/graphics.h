@@ -6,14 +6,12 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 14:49:49 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 17:45:49 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:13:11 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_GRAPHICS__
 #define __MLX_GRAPHICS__
-
-#include <pre_compiled.h>
 
 #include <platform/window.h>
 #include <renderer/renderer.h>

@@ -6,14 +6,14 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 11:23:16 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 17:58:24 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:05:28 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __ICON_MLX__
 #define __ICON_MLX__
 
-#include <pre_compiled.h>
+#include <cstdint>
 
 constexpr const int logo_mlx_height = 125;
 constexpr const int logo_mlx_width = 125;

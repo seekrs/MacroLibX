@@ -6,10 +6,11 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 14:05:25 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 17:52:08 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:00:06 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <pre_compiled.h>
 #include "render_core.h"
 #include "vulkan/vulkan_core.h"
 

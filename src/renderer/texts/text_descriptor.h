@@ -6,14 +6,12 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 00:13:34 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 17:56:49 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:08:11 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_TEXT_DESCRIPTOR__
 #define __MLX_TEXT_DESCRIPTOR__
-
-#include <pre_compiled.h>
 
 #include <utils/combine_hash.h>
 #include <renderer/core/drawable_resource.h>

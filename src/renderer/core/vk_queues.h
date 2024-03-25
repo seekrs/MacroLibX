@@ -6,14 +6,12 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:01:49 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 17:51:31 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:11:46 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_VK_QUEUES__
 #define __MLX_VK_QUEUES__
-
-#include <pre_compiled.h>
 
 #include <core/errors.h>
 

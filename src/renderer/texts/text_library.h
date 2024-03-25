@@ -6,14 +6,12 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 11:52:30 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 17:57:00 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:08:03 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_TEXT_LIBRARY__
 #define __MLX_TEXT_LIBRARY__
-
-#include <pre_compiled.h>
 
 #include <renderer/buffers/vk_vbo.h>
 #include <renderer/buffers/vk_ibo.h>

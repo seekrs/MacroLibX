@@ -6,14 +6,12 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 18:59:38 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 17:51:47 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:11:43 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_VK_SEMAPHORE__
 #define __MLX_VK_SEMAPHORE__
-
-#include <pre_compiled.h>
 
 namespace mlx
 {

@@ -6,9 +6,11 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 00:11:56 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 16:13:08 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:04:01 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include <pre_compiled.h>
 
 #include <core/profiler.h>
 #include <renderer/texts/text.h>

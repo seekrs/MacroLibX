@@ -6,14 +6,12 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 00:09:04 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 17:56:34 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:08:15 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_TEXT__
 #define __MLX_TEXT__
-
-#include <pre_compiled.h>
 
 #include <renderer/texts/font.h>
 #include <renderer/texts/font_library.h>

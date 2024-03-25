@@ -6,14 +6,12 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 20:44:29 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 17:49:25 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:12:08 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_COMMAND_RESOURCE__
 #define __MLX_COMMAND_RESOURCE__
-
-#include <pre_compiled.h>
 
 #include <core/UUID.h>
 

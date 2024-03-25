@@ -6,14 +6,12 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 21:17:04 by kbz_8             #+#    #+#             */
-/*   Updated: 2024/03/25 17:55:52 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:08:21 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_FONT__
 #define __MLX_FONT__
-
-#include <pre_compiled.h>
 
 #include <renderer/images/texture_atlas.h>
 #include <utils/combine_hash.h>

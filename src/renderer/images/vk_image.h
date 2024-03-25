@@ -6,14 +6,12 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:54:21 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 17:54:12 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:09:40 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_VK_IMAGE__
 #define __MLX_VK_IMAGE__
-
-#include <pre_compiled.h>
 
 #include <renderer/core/cmd_resource.h>
 #include <renderer/command/vk_cmd_buffer.h>

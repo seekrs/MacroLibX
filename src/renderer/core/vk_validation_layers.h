@@ -6,14 +6,12 @@
 /*   By: maldavid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 14:04:25 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 17:52:19 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:00:00 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __VK_VALIDATION_LAYERS__
 #define __VK_VALIDATION_LAYERS__
-
-#include <pre_compiled.h>
 
 namespace mlx
 {

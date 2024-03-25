@@ -6,14 +6,12 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 16:24:11 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 17:57:35 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:08:00 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_TEXT_MANAGER__
 #define __MLX_TEXT_MANAGER__
-
-#include <pre_compiled.h>
 
 #include <renderer/renderer.h>
 #include <renderer/images/texture_atlas.h>

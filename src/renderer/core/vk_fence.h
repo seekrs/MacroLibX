@@ -6,14 +6,12 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 17:52:09 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 17:50:52 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:11:53 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_VK_FENCE__
 #define __MLX_VK_FENCE__
-
-#include <pre_compiled.h>
 
 namespace mlx
 {

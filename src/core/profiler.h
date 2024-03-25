@@ -6,14 +6,12 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:35:45 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 17:46:21 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:12:57 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_PROFILER__
 #define __MLX_PROFILER__
-
-#include <pre_compiled.h>
 
 #include <utils/singleton.h>
 

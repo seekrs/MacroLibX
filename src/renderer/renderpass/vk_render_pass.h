@@ -6,14 +6,12 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:22:00 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 17:55:01 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:08:30 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_VK_RENDER_PASS__
 #define __MLX_VK_RENDER_PASS__
-
-#include <pre_compiled.h>
 
 namespace mlx
 {

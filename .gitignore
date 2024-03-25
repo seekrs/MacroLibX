@@ -11,6 +11,7 @@
 *.tmp
 *.ilk
 *.pdb
+*.gch
 *.exe
 *vgcore
 *.gdb_history

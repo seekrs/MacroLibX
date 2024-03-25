@@ -6,9 +6,11 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 17:53:06 by maldavid          #+#    #+#             */
-/*   Updated: 2024/02/25 08:02:45 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:02:14 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include <pre_compiled.h>
 
 #include <renderer/core/vk_fence.h>
 #include <renderer/core/render_core.h>

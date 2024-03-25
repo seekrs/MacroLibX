@@ -6,9 +6,11 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:28:08 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 17:48:20 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:01:25 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include <pre_compiled.h>
 
 #include "vk_vbo.h"
 

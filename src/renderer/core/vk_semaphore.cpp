@@ -6,9 +6,11 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:01:08 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/14 17:02:36 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:02:25 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include <pre_compiled.h>
 
 #include "vk_semaphore.h"
 #include "render_core.h"

@@ -6,14 +6,12 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:14:45 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 17:58:04 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:07:52 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __RENDERER__
 #define __RENDERER__
-
-#include <pre_compiled.h>
 
 #include <renderer/buffers/vk_ubo.h>
 #include <renderer/core/vk_surface.h>

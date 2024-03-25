@@ -6,14 +6,12 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:23:27 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 17:55:25 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:08:26 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_VK_SWAPCHAIN__
 #define __MLX_VK_SWAPCHAIN__
-
-#include <pre_compiled.h>
 
 #include <renderer/images/vk_image.h>
 
