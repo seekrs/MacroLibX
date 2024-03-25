@@ -6,16 +6,14 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 18:57:55 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/03 15:26:43 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 17:52:02 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_VK_SURFACE__
 #define __MLX_VK_SURFACE__
 
-#include <mlx_profile.h>
-#include <volk.h>
-#include <vector>
+#include <pre_compiled.h>
 
 namespace mlx
 {

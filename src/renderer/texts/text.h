@@ -6,15 +6,15 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 00:09:04 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 16:16:48 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 17:56:34 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_TEXT__
 #define __MLX_TEXT__
 
-#include <string>
-#include <vector>
+#include <pre_compiled.h>
+
 #include <renderer/texts/font.h>
 #include <renderer/texts/font_library.h>
 #include <renderer/buffers/vk_ibo.h>

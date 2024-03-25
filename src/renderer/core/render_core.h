@@ -6,16 +6,14 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:16:32 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/20 08:17:58 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 17:49:59 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_RENDER_CORE__
 #define __MLX_RENDER_CORE__
 
-#include <mlx_profile.h>
-#include <volk.h>
-#include <optional>
+#include <pre_compiled.h>
 
 #include <renderer/command/single_time_cmd_manager.h>
 #include <renderer/descriptors/descriptor_pool_manager.h>

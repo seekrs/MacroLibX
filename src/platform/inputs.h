@@ -6,18 +6,14 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:27:35 by maldavid          #+#    #+#             */
-/*   Updated: 2024/02/25 07:51:55 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 17:47:03 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <array>
-#include <memory>
-#include <cstdint>
-#include <function.h>
-#include <SDL2/SDL.h>
-#include <unordered_map>
+#ifndef __MLX_INPUTS__
+#define __MLX_INPUTS__
 
-#include <mlx_profile.h>
+#include <pre_compiled.h>
 
 #include "window.h"
 
@@ -74,3 +70,5 @@ namespace mlx
 			bool _end = false;
 	};
 }
+
+#endif

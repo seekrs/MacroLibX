@@ -6,14 +6,13 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 22:06:09 by kbz_8             #+#    #+#             */
-/*   Updated: 2024/01/18 13:16:18 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 17:55:59 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <renderer/texts/font.h>
 #include <renderer/renderer.h>
 #include <core/profiler.h>
-#include <fstream>
 
 constexpr const int RANGE = 1024;
 

@@ -6,15 +6,14 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:13:42 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/14 16:59:54 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 17:50:32 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_VK_DEVICE__
 #define __MLX_VK_DEVICE__
 
-#include <mlx_profile.h>
-#include <volk.h>
+#include <pre_compiled.h>
 
 namespace mlx
 {

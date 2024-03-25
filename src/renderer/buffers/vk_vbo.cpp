@@ -6,12 +6,11 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:28:08 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/12 22:17:14 by kbz_8            ###   ########.fr       */
+/*   Updated: 2024/03/25 17:48:20 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vk_vbo.h"
-#include <cstring>
 
 namespace mlx
 {

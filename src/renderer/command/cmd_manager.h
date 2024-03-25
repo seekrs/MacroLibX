@@ -6,17 +6,15 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 17:48:52 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/03 15:27:35 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 17:48:39 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_COMMAND_MANAGER__
 #define __MLX_COMMAND_MANAGER__
 
-#include <array>
+#include <pre_compiled.h>
 
-#include <mlx_profile.h>
-#include <volk.h>
 #include <renderer/core/render_core.h>
 #include <renderer/command/vk_cmd_pool.h>
 #include <renderer/command/vk_cmd_buffer.h>

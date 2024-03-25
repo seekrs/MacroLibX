@@ -6,15 +6,14 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 16:16:06 by maldavid          #+#    #+#             */
-/*   Updated: 2023/12/14 16:47:39 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 17:58:16 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_HASH__
 #define __MLX_HASH__
 
-#include <cstddef>
-#include <functional>
+#include <pre_compiled.h>
 
 namespace mlx
 {

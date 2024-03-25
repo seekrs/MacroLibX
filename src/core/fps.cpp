@@ -6,14 +6,11 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 14:56:17 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 16:44:15 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 17:45:33 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <core/fps.h>
-#include <chrono>
-#include <SDL2/SDL.h>
-#include <thread>
 
 namespace mlx
 {

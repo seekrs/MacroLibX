@@ -6,21 +6,19 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 00:13:34 by maldavid          #+#    #+#             */
-/*   Updated: 2024/02/25 07:58:13 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 17:56:49 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_TEXT_DESCRIPTOR__
 #define __MLX_TEXT_DESCRIPTOR__
 
-#include <string>
-#include <mlx_profile.h>
-#include <volk.h>
+#include <pre_compiled.h>
+
 #include <utils/combine_hash.h>
 #include <renderer/core/drawable_resource.h>
 #include <renderer/texts/text_library.h>
 #include <renderer/texts/font_library.h>
-#include <array>
 
 namespace mlx
 {

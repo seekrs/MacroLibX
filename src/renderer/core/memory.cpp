@@ -6,14 +6,13 @@
 /*   By: kbz_8 <kbz_8.dev@akel-engine.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 22:02:37 by kbz_8             #+#    #+#             */
-/*   Updated: 2024/03/14 16:34:53 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 18:10:10 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <mlx_profile.h>
-#include <core/errors.h>
-#include <core/profiler.h>
 
+#define VK_NO_PROTOTYPES
 #define VMA_STATIC_VULKAN_FUNCTIONS 0
 #define VMA_DYNAMIC_VULKAN_FUNCTIONS 0
 #define VMA_VULKAN_VERSION 1002000
@@ -23,7 +22,7 @@
 #ifdef MLX_COMPILER_CLANG
 	#pragma clang diagnostic push
 	#pragma clang diagnostic ignored "-Weverything"
-		#include <renderer/core/memory.h>
+		#include <vma.h>
 	#pragma clang diagnostic pop
 #elif defined(MLX_COMPILER_GCC)
 	#pragma GCC diagnostic push
@@ -32,14 +31,15 @@
 	#pragma GCC diagnostic ignored "-Wunused-parameter"
 	#pragma GCC diagnostic ignored "-Wunused-variable"
 	#pragma GCC diagnostic ignored "-Wparentheses"
-		#include <renderer/core/memory.h>
+		#include <vma.h>
 	#pragma GCC diagnostic pop
 #else
-	#include <renderer/core/memory.h>
+	#include <vma.h>
 #endif
 
+#include <core/errors.h>
+#include <core/profiler.h>
 #include <renderer/core/render_core.h>
-#include <fstream>
 
 namespace mlx
 {

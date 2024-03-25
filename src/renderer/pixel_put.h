@@ -6,14 +6,15 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 13:18:50 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/11 00:06:05 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 17:57:52 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_PIXEL_PUT__
 #define __MLX_PIXEL_PUT__
 
-#include <mlx_profile.h>
+#include <pre_compiled.h>
+
 #include <renderer/images/texture.h>
 #include <renderer/descriptors/vk_descriptor_set.h>
 
