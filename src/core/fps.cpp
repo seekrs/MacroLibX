@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 14:56:17 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/18 15:20:03 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 16:44:15 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ namespace mlx
 			_fps_before += _ns;
 			return true;
 		}
-		std::this_thread::sleep_for(std::chrono::duration<double, std::nano>(_ns));
+		std::this_thread::sleep_for(std::chrono::duration<double, std::nano>(_ns - 1));
 		return false;
 	}
 }
