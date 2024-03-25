@@ -6,9 +6,11 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 06:51:47 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/20 08:18:27 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:02:29 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include <pre_compiled.h>
 
 #include <renderer/core/render_core.h>
 #include <renderer/descriptors/descriptor_pool_manager.h>

@@ -6,14 +6,12 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:03:04 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 17:51:09 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:11:50 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_VK_INSTANCE__
 #define __MLX_VK_INSTANCE__
-
-#include <pre_compiled.h>
 
 namespace mlx
 {

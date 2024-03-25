@@ -6,13 +6,15 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 23:33:34 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 18:04:28 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:02:06 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #define VK_NO_PROTOTYPES
 #define VOLK_IMPLEMENTATION
 #include <volk.h>
+
+#include <pre_compiled.h>
 
 #include <renderer/core/render_core.h>
 #include <renderer/command/vk_cmd_buffer.h>

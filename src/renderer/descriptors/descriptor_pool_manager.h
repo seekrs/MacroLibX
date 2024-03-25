@@ -6,14 +6,12 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 06:26:26 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 17:52:32 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:10:12 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_DESCRIPTOR_POOL_MANAGER__
 #define __MLX_DESCRIPTOR_POOL_MANAGER__
-
-#include <pre_compiled.h>
 
 #include <renderer/descriptors/vk_descriptor_pool.h>
 

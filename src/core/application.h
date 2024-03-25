@@ -6,17 +6,14 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:49:46 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 17:45:03 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:13:27 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_APPLICATION__
 #define __MLX_APPLICATION__
 
-#include <pre_compiled.h>
-
 #include <core/errors.h>
-
 #include <core/graphics.h>
 #include <platform/inputs.h>
 #include <core/profiler.h>

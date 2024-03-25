@@ -6,14 +6,12 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 18:39:36 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 17:52:57 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:10:06 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __VK_DESCRIPTOR_SET__
 #define __VK_DESCRIPTOR_SET__
-
-#include <pre_compiled.h>
 
 #include <renderer/core/render_core.h>
 

@@ -6,18 +6,20 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 18:03:35 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 17:53:37 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:03:04 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
+
+#include <pre_compiled.h>
 
 #include <core/errors.h>
 #include <renderer/images/texture.h>
 #include <renderer/buffers/vk_buffer.h>
 #include <renderer/renderer.h>
 #include <core/profiler.h>
-
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb_image.h>
 
 #ifdef IMAGE_OPTIMIZED
 	#define TILING VK_IMAGE_TILING_OPTIMAL

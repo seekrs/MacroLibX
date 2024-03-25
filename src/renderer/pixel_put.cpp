@@ -6,9 +6,11 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 15:14:50 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 17:57:56 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:03:45 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include <pre_compiled.h>
 
 #include <renderer/pixel_put.h>
 #include <core/profiler.h>

@@ -6,9 +6,11 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:14:29 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 17:50:26 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:02:11 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include <pre_compiled.h>
 
 #include "render_core.h"
 

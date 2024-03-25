@@ -6,14 +6,12 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:27:35 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 17:47:03 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:12:44 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_INPUTS__
 #define __MLX_INPUTS__
-
-#include <pre_compiled.h>
 
 #include "window.h"
 

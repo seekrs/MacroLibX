@@ -6,14 +6,12 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 02:13:03 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 17:49:47 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:12:02 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_VK_MEMORY__
 #define __MLX_VK_MEMORY__
-
-#include <pre_compiled.h>
 
 namespace mlx
 {

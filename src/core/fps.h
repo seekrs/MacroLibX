@@ -6,14 +6,12 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 14:53:30 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 17:45:27 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:13:16 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_FPS__
 #define __MLX_FPS__
-
-#include <pre_compiled.h>
 
 namespace mlx
 {

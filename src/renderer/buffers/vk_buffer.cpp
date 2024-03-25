@@ -6,9 +6,11 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 18:55:57 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 17:47:35 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:01:18 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include <pre_compiled.h>
 
 #include "vk_buffer.h"
 #include <renderer/command/vk_cmd_pool.h>

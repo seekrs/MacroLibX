@@ -6,9 +6,11 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 16:40:09 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/18 10:18:08 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:03:13 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include <pre_compiled.h>
 
 #include <renderer/images/texture_atlas.h>
 

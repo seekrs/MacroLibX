@@ -6,14 +6,12 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 23:18:52 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 17:47:28 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:12:39 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_VK_BUFFER__
 #define __MLX_VK_BUFFER__
-
-#include <pre_compiled.h>
 
 #include <renderer/core/render_core.h>
 #include <renderer/core/cmd_resource.h>

@@ -6,14 +6,14 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 16:20:25 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 17:43:52 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:05:36 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_DOGICA_TTF__
 #define __MLX_DOGICA_TTF__
 
-#include <pre_compiled.h>
+#include <vector>
 
 constexpr const unsigned int dogica_ttf_len = 33860;
 

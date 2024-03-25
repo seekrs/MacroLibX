@@ -6,14 +6,12 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 15:05:05 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 17:47:55 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:12:35 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __VK_IBO__
 #define __VK_IBO__
-
-#include <pre_compiled.h>
 
 #include "vk_buffer.h"
 #include <renderer/renderer.h>
