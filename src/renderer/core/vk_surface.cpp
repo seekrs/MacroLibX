@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 18:58:49 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 19:00:11 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 22:25:55 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ namespace mlx
 {
 	void Surface::create(Renderer& renderer)
 	{
-		if(SDL_Vulkan_CreateSurface(renderer.getWindow()->getNativeWindow(), Render_Core::get().getInstance().get(), &_surface) != SDL_TRUE)
-			core::error::report(e_kind::fatal_error, "Vulkan : failed to create a surface : %s", SDL_GetError());
+		if(glfwCreateWindowSurface(Render_Core::get().getInstance().get(), renderer.getWindow()->getNativeWindow(), NULL, &_surface) != VK_SUCCESS)
+			core::error::report(e_kind::fatal_error, "Vulkan : failed to create a surface");
 		#ifdef DEBUG
 			core::error::report(e_kind::message, "Vulkan : created new surface");
 		#endif

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 22:10:52 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 19:00:40 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 22:16:24 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,14 @@
 
 namespace mlx::core
 {
-	static bool __drop_sdl_responsability = false;
 	Application::Application() : _fps(), _in(std::make_unique<Input>()) 
 	{
 		_fps.init();
-		__drop_sdl_responsability = SDL_WasInit(SDL_INIT_VIDEO);
-		if(__drop_sdl_responsability) // is case the mlx is running in a sandbox like MacroUnitTester where SDL is already init
-			return;
-		SDL_SetMemoryFunctions(MemManager::malloc, MemManager::calloc, MemManager::realloc, MemManager::free);
-
-		/* Remove this comment if you want to prioritise Wayland over X11/XWayland, at your own risks */
-		//SDL_SetHint(SDL_HINT_VIDEODRIVER, "wayland,x11");
-
-		if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER) != 0)
-			error::report(e_kind::fatal_error, "SDL error : unable to init all subsystems : %s", SDL_GetError());
+		glfwSetErrorCallback([]([[maybe_unused]] int code, const char* desc)
+		{
+			error::report(e_kind::fatal_error, "GLFW error : %s", desc);
+		});
+		glfwInit();
 	}
 
 	void Application::run() noexcept
@@ -111,9 +105,6 @@ namespace mlx::core
 	{
 		TextLibrary::get().clearLibrary();
 		FontLibrary::get().clearLibrary();
-		if(__drop_sdl_responsability)
-			return;
-		SDL_QuitSubSystem(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS);
-		SDL_Quit();
+		glfwTerminate();
 	}
 }

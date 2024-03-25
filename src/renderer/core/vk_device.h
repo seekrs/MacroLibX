@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:13:42 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 19:11:56 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 22:31:46 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ namespace mlx
 		private:
 			void pickPhysicalDevice();
 			bool checkDeviceExtensionSupport(VkPhysicalDevice device);
-			int deviceScore(VkPhysicalDevice device, VkSurfaceKHR surface);
+			int deviceScore(VkPhysicalDevice device);
 
 		private:
 			VkPhysicalDevice _physical_device = VK_NULL_HANDLE;

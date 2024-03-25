@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:02:42 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 19:02:20 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 22:29:19 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 namespace mlx
 {
-	Queues::QueueFamilyIndices Queues::findQueueFamilies(VkPhysicalDevice device, VkSurfaceKHR surface)
+	Queues::QueueFamilyIndices Queues::findQueueFamilies(VkPhysicalDevice device)
     {
 		std::uint32_t queueFamilyCount = 0;
 		vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, nullptr);
@@ -31,10 +31,7 @@ namespace mlx
 			if(queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT)
 				_families->graphics_family = i;
 
-			VkBool32 presentSupport = false;
-			vkGetPhysicalDeviceSurfaceSupportKHR(device, i, surface, &presentSupport);
-
-			if(presentSupport)
+			if(glfwGetPhysicalDevicePresentationSupport(Render_Core::get().getInstance().get(), device, i))
 				_families->present_family = i;
 
 			if(_families->isComplete())
@@ -48,20 +45,7 @@ namespace mlx
 	void Queues::init()
 	{
 		if(!_families.has_value())
-		{
-			SDL_Window* window = SDL_CreateWindow("", 0, 0, 1, 1, SDL_WINDOW_VULKAN | SDL_WINDOW_HIDDEN);
-			if(!window)
-				core::error::report(e_kind::fatal_error, "Vulkan : failed to create a window to init queues");
-
-			VkSurfaceKHR surface = VK_NULL_HANDLE;
-			if(SDL_Vulkan_CreateSurface(window, Render_Core::get().getInstance().get(), &surface) != SDL_TRUE)
-				core::error::report(e_kind::fatal_error, "Vulkan : failed to create a surface to init queues");
-
-			findQueueFamilies(Render_Core::get().getDevice().getPhysicalDevice(), surface);
-
-			vkDestroySurfaceKHR(Render_Core::get().getInstance().get(), surface, nullptr);
-			SDL_DestroyWindow(window);
-		}
+			findQueueFamilies(Render_Core::get().getDevice().getPhysicalDevice());
 		vkGetDeviceQueue(Render_Core::get().getDevice().get(), _families->graphics_family.value(), 0, &_graphics_queue);
 		vkGetDeviceQueue(Render_Core::get().getDevice().get(), _families->present_family.value(), 0, &_present_queue);
 		#ifdef DEBUG

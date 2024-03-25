@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:37:23 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 19:24:26 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 22:03:44 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 #include <mlx_profile.h>
 #include <cstdio>
 #include <iostream>
-#include <SDL2/SDL.h>
 #include <volk.h>
+#include <GLFW/glfw3.h>
 #include <functional>
 #include <memory>
 #include <list>
@@ -41,7 +41,6 @@
 #include <cstring>
 #include <optional>
 #include <set>
-#include <SDL2/SDL_vulkan.h>
 #include <cstddef>
 #include <cstdlib>
 #include <random>
