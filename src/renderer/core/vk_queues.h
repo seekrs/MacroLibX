@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:01:49 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 19:11:46 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 22:29:26 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ namespace mlx
 				inline bool isComplete() { return graphics_family.has_value() && present_family.has_value(); }
 			};
 
-			QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device, VkSurfaceKHR surface);
+			QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
 
 			void init();
 

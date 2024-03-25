@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:22:28 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 19:03:41 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 23:09:33 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ namespace mlx
 		if(_swapchain_support.capabilities.maxImageCount > 0 && imageCount > _swapchain_support.capabilities.maxImageCount)
 			imageCount = _swapchain_support.capabilities.maxImageCount;
 
-		Queues::QueueFamilyIndices indices = Render_Core::get().getQueue().findQueueFamilies(Render_Core::get().getDevice().getPhysicalDevice(), renderer->getSurface().get());
+		Queues::QueueFamilyIndices indices = Render_Core::get().getQueue().findQueueFamilies(Render_Core::get().getDevice().getPhysicalDevice());
 		std::uint32_t queueFamilyIndices[] = { indices.graphics_family.value(), indices.present_family.value() };
 
 		VkSwapchainCreateInfoKHR createInfo{};
@@ -123,7 +123,7 @@ namespace mlx
 			return capabilities.currentExtent;
 
 		int width, height;
-		SDL_Vulkan_GetDrawableSize(_renderer->getWindow()->getNativeWindow(), &width, &height);
+		glfwGetFramebufferSize(_renderer->getWindow()->getNativeWindow(), &width, &height);
 
 		VkExtent2D actualExtent = { static_cast<std::uint32_t>(width), static_cast<std::uint32_t>(height) };
 

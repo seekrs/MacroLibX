@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 15:13:55 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 19:00:58 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 23:02:43 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,12 @@ namespace mlx
 
 		#ifdef GRAPHICS_MEMORY_DUMP
 			// dump memory to file every two seconds
-			static std::uint64_t timer = SDL_GetTicks64();
-			if(SDL_GetTicks64() - timer > 2000)
+			using namespace std::chrono_literals;
+			static std::int64_t timer = static_cast<std::uint64_t>(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count());
+			if(std::chrono::duration<std::uint64_t>{static_cast<std::uint64_t>(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count()) - timer} >= 1s)
 			{
 				Render_Core::get().getAllocator().dumpMemoryToJson();
-				timer += 2000;
+				timer = static_cast<std::uint64_t>(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count());
 			}
 		#endif
 	}

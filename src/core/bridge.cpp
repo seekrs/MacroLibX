@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:35:20 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 19:00:45 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 23:05:46 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,13 +78,11 @@ extern "C"
 
 	int mlx_mouse_show()
 	{
-		SDL_ShowCursor(SDL_ENABLE);
 		return 0;
 	}
 
 	int mlx_mouse_hide()
 	{
-		SDL_ShowCursor(SDL_DISABLE);
 		return 0;
 	}
 

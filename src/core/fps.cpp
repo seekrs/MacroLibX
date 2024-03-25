@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 14:56:17 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 19:00:54 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 22:59:13 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ namespace mlx
 {
 	void FpsManager::init()
 	{
-		_timer = SDL_GetTicks64();
-		_fps_before = static_cast<std::uint64_t>(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count());
-		_fps_now = static_cast<std::uint64_t>(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count());
+		_timer = static_cast<std::uint64_t>(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count());
+		_fps_before = _timer;
+		_fps_now = _timer;
 	}
 
 	bool FpsManager::update()
@@ -28,8 +28,8 @@ namespace mlx
 		using namespace std::chrono_literals;
 		_fps_now = static_cast<std::uint64_t>(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count());
 
-		if(SDL_GetTicks64() - _timer > 1000)
-			_timer += 1000;
+		if(std::chrono::duration<std::uint64_t>{_fps_now - _timer} >= 1s)
+			_timer += _fps_now;
 
 		_fps_elapsed_time = _fps_now - _fps_before;
 		if(_fps_elapsed_time >= _ns)

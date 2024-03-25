@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 14:53:30 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 19:13:16 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 22:58:32 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ namespace mlx
 
 		private:
 			double _ns = 1000000000.0 / 1'337'000.0;
-			std::uint64_t _timer = 0;
-			std::uint64_t _fps_before = 0;
-			std::uint64_t _fps_now = 0;
+			std::int64_t _fps_before = 0;
+			std::int64_t _fps_now = 0;
+			std::int64_t _timer = 0;
 			std::uint32_t _max_fps = 1'337'000;
 			std::uint32_t _fps_elapsed_time = 0;
 	};

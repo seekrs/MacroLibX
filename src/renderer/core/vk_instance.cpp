@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:04:21 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 19:02:18 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 23:10:37 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,34 +59,19 @@ namespace mlx
 
 	std::vector<const char*> Instance::getRequiredExtensions()
 	{
-		std::vector<const char*> extensions;
+		std::uint32_t glfw_extension_count = 0;
+		const char** glfw_extensions = glfwGetRequiredInstanceExtensions(&glfw_extension_count);
+
+		std::vector<const char*> extensions(glfw_extensions, glfw_extensions + glfw_extension_count);
+
 		extensions.push_back(VK_KHR_SURFACE_EXTENSION_NAME);
-		
-		#ifdef VK_USE_PLATFORM_XCB_KHR
-			extensions.push_back(VK_KHR_XCB_SURFACE_EXTENSION_NAME);
-		#endif
-
-		#ifdef VK_USE_PLATFORM_XLIB_KHR
-			extensions.push_back(VK_KHR_XLIB_SURFACE_EXTENSION_NAME);
-		#endif
-
-		#ifdef VK_USE_PLATFORM_WAYLAND_KHR
-			extensions.push_back(VK_KHR_WAYLAND_SURFACE_EXTENSION_NAME);
-		#endif
-
-		#ifdef VK_USE_PLATFORM_WIN32_KHR
-			extensions.push_back(VK_KHR_WIN32_SURFACE_EXTENSION_NAME);
-		#endif
-
-		#ifdef VK_USE_PLATFORM_METAL_EXT
-			extensions.push_back(VK_EXT_METAL_SURFACE_EXTENSION_NAME);
-		#endif
 
 		if constexpr(enableValidationLayers)
 		{
 			extensions.push_back(VK_EXT_DEBUG_REPORT_EXTENSION_NAME);
 			extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
 		}
+
 		return extensions;
 	}
 

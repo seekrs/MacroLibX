@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:14:29 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 19:02:11 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 22:31:54 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,19 +71,11 @@ namespace mlx
 		std::vector<VkPhysicalDevice> devices(deviceCount);
 		vkEnumeratePhysicalDevices(Render_Core::get().getInstance().get(), &deviceCount, devices.data());
 
-		SDL_Window* window = SDL_CreateWindow("", 0, 0, 1, 1, SDL_WINDOW_VULKAN | SDL_WINDOW_HIDDEN);
-		if(!window)
-			core::error::report(e_kind::fatal_error, "Vulkan : failed to create a window to pick physical device");
-
-		VkSurfaceKHR surface = VK_NULL_HANDLE;
-		if(SDL_Vulkan_CreateSurface(window, Render_Core::get().getInstance().get(), &surface) != SDL_TRUE)
-			core::error::report(e_kind::fatal_error, "Vulkan : failed to create a surface to pick physical device");
-
 		std::multimap<int, VkPhysicalDevice> devices_score;
 
 		for(const auto& device : devices)
 		{
-			int score = deviceScore(device, surface);
+			int score = deviceScore(device);
 			devices_score.insert(std::make_pair(score, device));
 		}
 
@@ -97,23 +89,17 @@ namespace mlx
 			vkGetPhysicalDeviceProperties(_physical_device, &props);
 			core::error::report(e_kind::message, "Vulkan : picked a physical device, %s", props.deviceName);
 		#endif
-		Render_Core::get().getQueue().findQueueFamilies(_physical_device, surface); // update queue indicies to current physical device
-		vkDestroySurfaceKHR(Render_Core::get().getInstance().get(), surface, nullptr);
-		SDL_DestroyWindow(window);
+		Render_Core::get().getQueue().findQueueFamilies(_physical_device); // update queue indicies to current physical device
 	}
 
-	int Device::deviceScore(VkPhysicalDevice device, VkSurfaceKHR surface)
+	int Device::deviceScore(VkPhysicalDevice device)
 	{
-		Queues::QueueFamilyIndices indices = Render_Core::get().getQueue().findQueueFamilies(device, surface);
+		Queues::QueueFamilyIndices indices = Render_Core::get().getQueue().findQueueFamilies(device);
 		bool extensionsSupported = checkDeviceExtensionSupport(device);
-
-		std::uint32_t formatCount = 0;
-		if(extensionsSupported)
-			vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &formatCount, nullptr);
 
 		VkPhysicalDeviceProperties props;
 		vkGetPhysicalDeviceProperties(device, &props);
-		if(!indices.isComplete() || !extensionsSupported || formatCount == 0)
+		if(!indices.isComplete() || !extensionsSupported)
 			return -1;
 
 		VkPhysicalDeviceFeatures features;

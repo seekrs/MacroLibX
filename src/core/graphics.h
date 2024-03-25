@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 14:49:49 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 19:13:11 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 23:00:43 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,18 +53,18 @@ namespace mlx
 			PixelPutPipeline _pixel_put_pipeline;
 
 			std::vector<DrawableResource*> _drawlist;
-			
+
 			TextManager _text_manager;
 			TextureManager _texture_manager;
-			
+
 			glm::mat4 _proj = glm::mat4(1.0);
-			
+
 			std::shared_ptr<MLX_Window> _window;
 			std::unique_ptr<Renderer> _renderer;
 
 			std::size_t _width = 0;
 			std::size_t _height = 0;
-			
+
 			int _id;
 
 			bool _has_window;
