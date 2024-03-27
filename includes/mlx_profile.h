@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 08:49:17 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/03 15:33:35 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/27 18:25:59 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,16 @@
 	#define VK_USE_PLATFORM_WAYLAND_KHR
 	#ifdef __cplusplus
 		constexpr const char* VULKAN_LIB_NAME = "libvulkan.so / libvulkan.so.1";
+	#endif
+#endif
+
+#if !defined(MLX_FORCEINLINE)
+	#if defined(MLX_COMPILER_CLANG) || defined(MLX_COMPILER_GCC)
+		#define MLX_FORCEINLINE __attribute__((always_inline)) inline
+	#elif defined(MLX_COMPILER_MSVC)
+		#define MLX_FORCEINLINE __forceinline
+	#else
+		#define MLX_FORCEINLINE inline
 	#endif
 #endif
 
