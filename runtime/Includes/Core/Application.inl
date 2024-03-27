@@ -1,0 +1,196 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   application.inl                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/04 21:49:46 by maldavid          #+#    #+#             */
+/*   Updated: 2023/04/02 14:56:27 by maldavid         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include <Core/Application.h>
+
+#define CHECK_WINDOW_PTR(win) \
+	if(win == nullptr) \
+	{ \
+		Error("invalid window ptr (NULL)"); \
+		return; \
+	} \
+	else if(*static_cast<int*>(win) < 0 || *static_cast<int*>(win) > static_cast<int>(_graphics.size()))\
+	{ \
+		Error("invalid window ptr"); \
+		return; \
+	} else {}
+
+#define CHECK_IMAGE_PTR(img, retval) \
+	if(img == nullptr) \
+	{ \
+		Error("invalid image ptr (NULL)"); \
+		retval; \
+	} \
+	else if(std::find_if(_textures.begin(), _textures.end(), [=](const Texture& texture) \
+			{ \
+				return &texture == img; \
+			}) == _textures.end()) \
+	{ \
+		Error(e_kind::error, "invalid image ptr"); \
+		retval; \
+	} else {}
+
+namespace mlx
+{
+	void Application::GetMousePos(int* x, int* y) noexcept
+	{
+		*x = p_in->GetX();
+		*y = p_in->GetY();
+	}
+
+	void Application::MouseMove(void* win, int x, int y) noexcept
+	{
+		CHECK_WINDOW_PTR(win);
+		if(!m_graphics[*static_cast<int*>(win)]->HasWindow())
+		{
+			Warning("trying to move the mouse relative to a window that is targeting an image and not a real window, this is not allowed (move ignored)");
+			return;
+		}
+	}
+
+	void Application::OnEvent(void* win, int event, int (*funct_ptr)(int, void*), void* param) noexcept
+	{
+		CHECK_WINDOW_PTR(win);
+		if(!m_graphics[*static_cast<int*>(win)]->HasWindow())
+		{
+			Warning("trying to add event hook for a window that is targeting an image and not a real window, this is not allowed (hook ignored)");
+			return;
+		}
+		p_in->OnEvent(m_graphics[*static_cast<int*>(win)]->GetWindow()->GetID(), event, funct_ptr, param);
+	}
+
+	void Application::GetScreenSize(void* win, int* w, int* h) noexcept
+	{
+		CHECK_WINDOW_PTR(win);
+		*w = 0;
+		*h = 0;
+	}
+
+	void Application::SetFPSCap(std::uint32_t fps) noexcept
+	{
+		m_fps.SetMaxFPS(fps);
+	}
+
+	void* Application::NewGraphicsSuport(std::size_t w, std::size_t h, const char* title)
+	{
+		MLX_PROFILE_FUNCTION();
+		auto it = std::find_if(m_textures.begin(), m_textures.end(), [=](const Texture& texture)
+		{
+			return &texture == reinterpret_cast<Texture*>(const_cast<char*>(title));
+		});
+		if(it != _textures.end())
+			m_graphics.emplace_back(std::make_unique<GraphicsSupport>(w, h, reinterpret_cast<Texture*>(const_cast<char*>(title)), m_graphics.size()));
+		else
+		{
+			if(title == NULL)
+			{
+				FatalError("invalid window title (NULL)");
+				return nullptr;
+			}
+			m_graphics.emplace_back(std::make_unique<GraphicsSupport>(w, h, title, m_graphics.size()));
+			p_in->RegisterWindow(m_graphics.back()->GetWindow());
+		}
+		return static_cast<void*>(&m_graphics.back()->GetID());
+	}
+
+	void Application::ClearGraphicsSupport(void* win)
+	{
+		MLX_PROFILE_FUNCTION();
+		CHECK_WINDOW_PTR(win);
+		m_graphics[*static_cast<int*>(win)]->ClearRenderData();
+	}
+
+	void Application::DestroyGraphicsSupport(void* win)
+	{
+		MLX_PROFILE_FUNCTION();
+		CHECK_WINDOW_PTR(win);
+		m_graphics[*static_cast<int*>(win)].reset();
+	}
+
+	void Application::PixelPut(void* win, int x, int y, std::uint32_t color) const noexcept
+	{
+		MLX_PROFILE_FUNCTION();
+		CHECK_WINDOW_PTR(win);
+		m_graphics[*static_cast<int*>(win)]->PixelPut(x, y, color);
+	}
+
+	void Application::StringPut(void* win, int x, int y, std::uint32_t color, char* str)
+	{
+		MLX_PROFILE_FUNCTION();
+		CHECK_WINDOW_PTR(win);
+		if(str == nullptr)
+		{
+			Error("wrong text (NULL)");
+			return;
+		}
+		if(std::strlen(str) == 0)
+		{
+			Warning("trying to put an empty text");
+			return;
+		}
+		m_graphics[*static_cast<int*>(win)]->StringPut(x, y, color, str);
+	}
+
+	void Application::LoadFont(void* win, const std::filesystem::path& filepath, float scale)
+	{
+		MLX_PROFILE_FUNCTION();
+		CHECK_WINDOW_PTR(win);
+		m_graphics[*static_cast<int*>(win)]->LoadFont(filepath, scale);
+	}
+
+	void Application::TexturePut(void* win, void* img, int x, int y)
+	{
+		MLX_PROFILE_FUNCTION();
+		CHECK_WINDOW_PTR(win);
+		CHECK_IMAGE_PTR(img, return);
+		NonOwningPtr<Texture> texture = static_cast<Texture*>(img);
+		if(!texture->IsInit())
+			Error("trying to put a texture that has been destroyed");
+		else
+			m_graphics[*static_cast<int*>(win)]->TexturePut(texture, x, y);
+	}
+
+	int Application::GetTexturePixel(void* img, int x, int y)
+	{
+		MLX_PROFILE_FUNCTION();
+		CHECK_IMAGE_PTR(img, return 0);
+		NonOwningPtr<Texture> texture = static_cast<Texture*>(img);
+		if(!texture->IsInit())
+		{
+			Error("trying to get a pixel from texture that has been destroyed");
+			return 0;
+		}
+		return texture->GetPixel(x, y);
+	}
+
+	void Application::setTexturePixel(void* img, int x, int y, std::uint32_t color)
+	{
+		MLX_PROFILE_FUNCTION();
+		CHECK_IMAGE_PTR(img, return);
+		NonOwningPtr<Texture> texture = static_cast<Texture*>(img);
+		if(!texture->IsInit())
+			Error("trying to set a pixel on texture that has been destroyed");
+		else
+			texture->SetPixel(x, y, color);
+	}
+
+	void Application::LoopHook(int (*f)(void*), void* param)
+	{
+		f_loop_hook = f;
+		p_param = param;
+	}
+	
+	void Application::LoopEnd() noexcept
+	{
+		p_in->Finish();
+	}
+}
