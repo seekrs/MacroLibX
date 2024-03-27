@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:36:44 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 22:17:34 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/26 23:03:59 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 namespace mlx
 {
-	MLX_Window::MLX_Window(std::size_t w, std::size_t h, const std::string& title) : _width(w), _height(h)
+	Window::Window(std::size_t w, std::size_t h, const std::string& title) : _width(w), _height(h)
 	{
 		static std::uint64_t ids = 0;
 
@@ -29,7 +29,7 @@ namespace mlx
 		_id = ids++;
 	}
 
-	void MLX_Window::destroy() noexcept
+	void Window::destroy() noexcept
 	{
 		if(_win != nullptr)
 		{

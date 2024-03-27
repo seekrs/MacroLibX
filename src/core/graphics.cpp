@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 15:13:55 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 23:02:43 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/27 00:32:34 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ namespace mlx
 	}
 
 	GraphicsSupport::GraphicsSupport(std::size_t w, std::size_t h, std::string title, int id) :
-		_window(std::make_shared<MLX_Window>(w, h, title)),
+		_window(std::make_shared<Window>(w, h, title)),
 		_renderer(std::make_unique<Renderer>()), 
 		_width(w),
 		_height(h),

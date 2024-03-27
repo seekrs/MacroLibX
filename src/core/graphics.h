@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 14:49:49 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 23:00:43 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/27 00:32:28 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ namespace mlx
 			GraphicsSupport(std::size_t w, std::size_t h, std::string title, int id);
 
 			inline int& getID() noexcept;
-			inline std::shared_ptr<MLX_Window> getWindow();
+			inline std::shared_ptr<Window> getWindow();
 
 			void render() noexcept;
 
@@ -59,7 +59,7 @@ namespace mlx
 
 			glm::mat4 _proj = glm::mat4(1.0);
 
-			std::shared_ptr<MLX_Window> _window;
+			std::shared_ptr<Window> _window;
 			std::unique_ptr<Renderer> _renderer;
 
 			std::size_t _width = 0;

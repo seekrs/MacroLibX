@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:53:12 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 22:11:21 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/26 23:03:50 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 
 namespace mlx
 {
-	class MLX_Window
+	class Window
 	{
 		public:
-			MLX_Window(std::size_t w, std::size_t h, const std::string& title);
+			Window(std::size_t w, std::size_t h, const std::string& title);
 
 			inline GLFWwindow* getNativeWindow() const noexcept { return _win; }
 			inline int getWidth() const noexcept { return _width; }
@@ -27,7 +27,7 @@ namespace mlx
 
 			void destroy() noexcept;
 
-			~MLX_Window() = default;
+			~Window() = default;
 
 		private:
 			GLFWimage _icon;
