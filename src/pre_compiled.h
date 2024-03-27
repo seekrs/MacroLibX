@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:37:23 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 22:03:44 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/27 00:39:13 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,11 @@
 
 #define VK_NO_PROTOTYPES
 
+#define Window X11Window // fuck X11
+
 #include <mlx_profile.h>
 #include <cstdio>
+#include <cstdarg>
 #include <iostream>
 #include <volk.h>
 #include <GLFW/glfw3.h>
@@ -68,5 +71,7 @@
 #else
 	#include <vma.h>
 #endif
+
+#undef Window
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:14:45 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 19:07:52 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/27 00:31:28 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,8 @@ namespace mlx
 
 			void destroy();
 
-			inline class MLX_Window* getWindow() { return _window; }
-			inline void setWindow(class MLX_Window* window) { _window = window; }
+			inline class Window* getWindow() { return _window; }
+			inline void setWindow(class Window* window) { _window = window; }
 
 			inline Surface& getSurface() noexcept { return _surface; }
 			inline CmdPool& getCmdPool() noexcept { return _cmd.getCmdPool(); }
@@ -130,7 +130,7 @@ namespace mlx
 
 			std::unique_ptr<UBO> _uniform_buffer;
 
-			class MLX_Window* _window = nullptr;
+			class Window* _window = nullptr;
 			class Texture* _render_target = nullptr;
 
 			std::uint32_t _current_frame_index = 0;

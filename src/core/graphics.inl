@@ -15,7 +15,7 @@
 namespace mlx
 {
 	int& GraphicsSupport::getID() noexcept { return _id; }
-	std::shared_ptr<MLX_Window> GraphicsSupport::getWindow() { return _window; }
+	std::shared_ptr<Window> GraphicsSupport::getWindow() { return _window; }
 
 	void GraphicsSupport::clearRenderData() noexcept
 	{
