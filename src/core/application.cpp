@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 22:10:52 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/24 14:39:23 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/21 18:13:29 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,18 @@ namespace mlx::core
 				_loop_hook(_param);
 
 			for(auto& gs : _graphics)
-				gs->render();
+			{
+				if(gs)
+					gs->render();
+			}
 		}
 
 		Render_Core::get().getSingleTimeCmdManager().updateSingleTimesCmdBuffersSubmitState();
 
 		for(auto& gs : _graphics)
 		{
+			if(!gs)
+				continue;
 			for(int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
 				gs->getRenderer().getCmdBuffer(i).waitForExecution();
 		}
