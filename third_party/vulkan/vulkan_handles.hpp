@@ -2477,6 +2477,14 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::SurfaceKHR;
   };
 
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkSurfaceKHR, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::SurfaceKHR;
+  };
+#endif
+
   template <>
   struct CppType<VkSurfaceKHR, VK_NULL_HANDLE>
   {
@@ -2573,6 +2581,14 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::DebugReportCallbackEXT;
   };
 
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkDebugReportCallbackEXT, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::DebugReportCallbackEXT;
+  };
+#endif
+
   template <>
   struct CppType<VkDebugReportCallbackEXT, VK_NULL_HANDLE>
   {
@@ -2662,6 +2678,14 @@ namespace VULKAN_HPP_NAMESPACE
   {
     using Type = VULKAN_HPP_NAMESPACE::DebugUtilsMessengerEXT;
   };
+
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkDebugUtilsMessengerEXT, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::DebugUtilsMessengerEXT;
+  };
+#endif
 
   template <>
   struct CppType<VkDebugUtilsMessengerEXT, VK_NULL_HANDLE>
@@ -2756,6 +2780,14 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::DisplayKHR;
   };
 
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkDisplayKHR, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::DisplayKHR;
+  };
+#endif
+
   template <>
   struct CppType<VkDisplayKHR, VK_NULL_HANDLE>
   {
@@ -2848,6 +2880,14 @@ namespace VULKAN_HPP_NAMESPACE
   {
     using Type = VULKAN_HPP_NAMESPACE::SwapchainKHR;
   };
+
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkSwapchainKHR, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::SwapchainKHR;
+  };
+#endif
 
   template <>
   struct CppType<VkSwapchainKHR, VK_NULL_HANDLE>
@@ -2942,6 +2982,14 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::Semaphore;
   };
 
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkSemaphore, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::Semaphore;
+  };
+#endif
+
   template <>
   struct CppType<VkSemaphore, VK_NULL_HANDLE>
   {
@@ -3035,6 +3083,14 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::Fence;
   };
 
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkFence, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::Fence;
+  };
+#endif
+
   template <>
   struct CppType<VkFence, VK_NULL_HANDLE>
   {
@@ -3124,6 +3180,14 @@ namespace VULKAN_HPP_NAMESPACE
   {
     using Type = VULKAN_HPP_NAMESPACE::PerformanceConfigurationINTEL;
   };
+
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkPerformanceConfigurationINTEL, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::PerformanceConfigurationINTEL;
+  };
+#endif
 
   template <>
   struct CppType<VkPerformanceConfigurationINTEL, VK_NULL_HANDLE>
@@ -3218,6 +3282,14 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::QueryPool;
   };
 
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkQueryPool, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::QueryPool;
+  };
+#endif
+
   template <>
   struct CppType<VkQueryPool, VK_NULL_HANDLE>
   {
@@ -3310,6 +3382,14 @@ namespace VULKAN_HPP_NAMESPACE
   {
     using Type = VULKAN_HPP_NAMESPACE::Buffer;
   };
+
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkBuffer, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::Buffer;
+  };
+#endif
 
   template <>
   struct CppType<VkBuffer, VK_NULL_HANDLE>
@@ -3404,6 +3484,14 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::PipelineLayout;
   };
 
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkPipelineLayout, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::PipelineLayout;
+  };
+#endif
+
   template <>
   struct CppType<VkPipelineLayout, VK_NULL_HANDLE>
   {
@@ -3496,6 +3584,14 @@ namespace VULKAN_HPP_NAMESPACE
   {
     using Type = VULKAN_HPP_NAMESPACE::DescriptorSet;
   };
+
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkDescriptorSet, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::DescriptorSet;
+  };
+#endif
 
   template <>
   struct CppType<VkDescriptorSet, VK_NULL_HANDLE>
@@ -3590,6 +3686,14 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::ImageView;
   };
 
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkImageView, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::ImageView;
+  };
+#endif
+
   template <>
   struct CppType<VkImageView, VK_NULL_HANDLE>
   {
@@ -3683,6 +3787,14 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::Pipeline;
   };
 
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkPipeline, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::Pipeline;
+  };
+#endif
+
   template <>
   struct CppType<VkPipeline, VK_NULL_HANDLE>
   {
@@ -3769,6 +3881,14 @@ namespace VULKAN_HPP_NAMESPACE
   {
     using Type = VULKAN_HPP_NAMESPACE::ShaderEXT;
   };
+
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkShaderEXT, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::ShaderEXT;
+  };
+#endif
 
   template <>
   struct CppType<VkShaderEXT, VK_NULL_HANDLE>
@@ -3862,6 +3982,14 @@ namespace VULKAN_HPP_NAMESPACE
   {
     using Type = VULKAN_HPP_NAMESPACE::Image;
   };
+
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkImage, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::Image;
+  };
+#endif
 
   template <>
   struct CppType<VkImage, VK_NULL_HANDLE>
@@ -3959,6 +4087,14 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::AccelerationStructureNV;
   };
 
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkAccelerationStructureNV, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::AccelerationStructureNV;
+  };
+#endif
+
   template <>
   struct CppType<VkAccelerationStructureNV, VK_NULL_HANDLE>
   {
@@ -4048,6 +4184,14 @@ namespace VULKAN_HPP_NAMESPACE
   {
     using Type = VULKAN_HPP_NAMESPACE::OpticalFlowSessionNV;
   };
+
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkOpticalFlowSessionNV, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::OpticalFlowSessionNV;
+  };
+#endif
 
   template <>
   struct CppType<VkOpticalFlowSessionNV, VK_NULL_HANDLE>
@@ -4145,6 +4289,14 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::DescriptorUpdateTemplate;
   };
 
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkDescriptorUpdateTemplate, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::DescriptorUpdateTemplate;
+  };
+#endif
+
   template <>
   struct CppType<VkDescriptorUpdateTemplate, VK_NULL_HANDLE>
   {
@@ -4239,6 +4391,14 @@ namespace VULKAN_HPP_NAMESPACE
   {
     using Type = VULKAN_HPP_NAMESPACE::Event;
   };
+
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkEvent, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::Event;
+  };
+#endif
 
   template <>
   struct CppType<VkEvent, VK_NULL_HANDLE>
@@ -4336,6 +4496,14 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::AccelerationStructureKHR;
   };
 
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkAccelerationStructureKHR, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::AccelerationStructureKHR;
+  };
+#endif
+
   template <>
   struct CppType<VkAccelerationStructureKHR, VK_NULL_HANDLE>
   {
@@ -4422,6 +4590,14 @@ namespace VULKAN_HPP_NAMESPACE
   {
     using Type = VULKAN_HPP_NAMESPACE::MicromapEXT;
   };
+
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkMicromapEXT, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::MicromapEXT;
+  };
+#endif
 
   template <>
   struct CppType<VkMicromapEXT, VK_NULL_HANDLE>
@@ -6817,6 +6993,14 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::CommandBuffer;
   };
 
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkCommandBuffer, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::CommandBuffer;
+  };
+#endif
+
   template <>
   struct CppType<VkCommandBuffer, VK_NULL_HANDLE>
   {
@@ -6910,6 +7094,14 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::DeviceMemory;
   };
 
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkDeviceMemory, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::DeviceMemory;
+  };
+#endif
+
   template <>
   struct CppType<VkDeviceMemory, VK_NULL_HANDLE>
   {
@@ -6996,6 +7188,14 @@ namespace VULKAN_HPP_NAMESPACE
   {
     using Type = VULKAN_HPP_NAMESPACE::VideoSessionKHR;
   };
+
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkVideoSessionKHR, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::VideoSessionKHR;
+  };
+#endif
 
   template <>
   struct CppType<VkVideoSessionKHR, VK_NULL_HANDLE>
@@ -7086,6 +7286,14 @@ namespace VULKAN_HPP_NAMESPACE
   {
     using Type = VULKAN_HPP_NAMESPACE::DeferredOperationKHR;
   };
+
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkDeferredOperationKHR, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::DeferredOperationKHR;
+  };
+#endif
 
   template <>
   struct CppType<VkDeferredOperationKHR, VK_NULL_HANDLE>
@@ -7184,6 +7392,14 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::BufferCollectionFUCHSIA;
   };
 
+#  if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkBufferCollectionFUCHSIA, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::BufferCollectionFUCHSIA;
+  };
+#  endif
+
   template <>
   struct CppType<VkBufferCollectionFUCHSIA, VK_NULL_HANDLE>
   {
@@ -7278,6 +7494,14 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::BufferView;
   };
 
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkBufferView, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::BufferView;
+  };
+#endif
+
   template <>
   struct CppType<VkBufferView, VK_NULL_HANDLE>
   {
@@ -7370,6 +7594,14 @@ namespace VULKAN_HPP_NAMESPACE
   {
     using Type = VULKAN_HPP_NAMESPACE::CommandPool;
   };
+
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkCommandPool, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::CommandPool;
+  };
+#endif
 
   template <>
   struct CppType<VkCommandPool, VK_NULL_HANDLE>
@@ -7464,6 +7696,14 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::PipelineCache;
   };
 
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkPipelineCache, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::PipelineCache;
+  };
+#endif
+
   template <>
   struct CppType<VkPipelineCache, VK_NULL_HANDLE>
   {
@@ -7556,6 +7796,14 @@ namespace VULKAN_HPP_NAMESPACE
   {
     using Type = VULKAN_HPP_NAMESPACE::CuFunctionNVX;
   };
+
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkCuFunctionNVX, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::CuFunctionNVX;
+  };
+#endif
 
   template <>
   struct CppType<VkCuFunctionNVX, VK_NULL_HANDLE>
@@ -7650,6 +7898,14 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::CuModuleNVX;
   };
 
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkCuModuleNVX, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::CuModuleNVX;
+  };
+#endif
+
   template <>
   struct CppType<VkCuModuleNVX, VK_NULL_HANDLE>
   {
@@ -7743,6 +7999,14 @@ namespace VULKAN_HPP_NAMESPACE
   {
     using Type = VULKAN_HPP_NAMESPACE::CudaFunctionNV;
   };
+
+#  if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkCudaFunctionNV, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::CudaFunctionNV;
+  };
+#  endif
 
   template <>
   struct CppType<VkCudaFunctionNV, VK_NULL_HANDLE>
@@ -7839,6 +8103,14 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::CudaModuleNV;
   };
 
+#  if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkCudaModuleNV, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::CudaModuleNV;
+  };
+#  endif
+
   template <>
   struct CppType<VkCudaModuleNV, VK_NULL_HANDLE>
   {
@@ -7932,6 +8204,14 @@ namespace VULKAN_HPP_NAMESPACE
   {
     using Type = VULKAN_HPP_NAMESPACE::DescriptorPool;
   };
+
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkDescriptorPool, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::DescriptorPool;
+  };
+#endif
 
   template <>
   struct CppType<VkDescriptorPool, VK_NULL_HANDLE>
@@ -8029,6 +8309,14 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::DescriptorSetLayout;
   };
 
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkDescriptorSetLayout, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::DescriptorSetLayout;
+  };
+#endif
+
   template <>
   struct CppType<VkDescriptorSetLayout, VK_NULL_HANDLE>
   {
@@ -8122,6 +8410,14 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::Framebuffer;
   };
 
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkFramebuffer, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::Framebuffer;
+  };
+#endif
+
   template <>
   struct CppType<VkFramebuffer, VK_NULL_HANDLE>
   {
@@ -8212,6 +8508,14 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::IndirectCommandsLayoutNV;
   };
 
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkIndirectCommandsLayoutNV, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::IndirectCommandsLayoutNV;
+  };
+#endif
+
   template <>
   struct CppType<VkIndirectCommandsLayoutNV, VK_NULL_HANDLE>
   {
@@ -8298,6 +8602,14 @@ namespace VULKAN_HPP_NAMESPACE
   {
     using Type = VULKAN_HPP_NAMESPACE::PrivateDataSlot;
   };
+
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkPrivateDataSlot, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::PrivateDataSlot;
+  };
+#endif
 
   template <>
   struct CppType<VkPrivateDataSlot, VK_NULL_HANDLE>
@@ -8394,6 +8706,14 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::RenderPass;
   };
 
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkRenderPass, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::RenderPass;
+  };
+#endif
+
   template <>
   struct CppType<VkRenderPass, VK_NULL_HANDLE>
   {
@@ -8486,6 +8806,14 @@ namespace VULKAN_HPP_NAMESPACE
   {
     using Type = VULKAN_HPP_NAMESPACE::Sampler;
   };
+
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkSampler, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::Sampler;
+  };
+#endif
 
   template <>
   struct CppType<VkSampler, VK_NULL_HANDLE>
@@ -8583,6 +8911,14 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::SamplerYcbcrConversion;
   };
 
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkSamplerYcbcrConversion, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::SamplerYcbcrConversion;
+  };
+#endif
+
   template <>
   struct CppType<VkSamplerYcbcrConversion, VK_NULL_HANDLE>
   {
@@ -8677,6 +9013,14 @@ namespace VULKAN_HPP_NAMESPACE
   {
     using Type = VULKAN_HPP_NAMESPACE::ShaderModule;
   };
+
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkShaderModule, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::ShaderModule;
+  };
+#endif
 
   template <>
   struct CppType<VkShaderModule, VK_NULL_HANDLE>
@@ -8773,6 +9117,14 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::ValidationCacheEXT;
   };
 
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkValidationCacheEXT, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::ValidationCacheEXT;
+  };
+#endif
+
   template <>
   struct CppType<VkValidationCacheEXT, VK_NULL_HANDLE>
   {
@@ -8862,6 +9214,14 @@ namespace VULKAN_HPP_NAMESPACE
   {
     using Type = VULKAN_HPP_NAMESPACE::VideoSessionParametersKHR;
   };
+
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkVideoSessionParametersKHR, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::VideoSessionParametersKHR;
+  };
+#endif
 
   template <>
   struct CppType<VkVideoSessionParametersKHR, VK_NULL_HANDLE>
@@ -9113,6 +9473,14 @@ namespace VULKAN_HPP_NAMESPACE
   {
     using Type = VULKAN_HPP_NAMESPACE::Queue;
   };
+
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkQueue, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::Queue;
+  };
+#endif
 
   template <>
   struct CppType<VkQueue, VK_NULL_HANDLE>
@@ -14258,6 +14626,14 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::Device;
   };
 
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkDevice, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::Device;
+  };
+#endif
+
   template <>
   struct CppType<VkDevice, VK_NULL_HANDLE>
   {
@@ -14350,6 +14726,14 @@ namespace VULKAN_HPP_NAMESPACE
   {
     using Type = VULKAN_HPP_NAMESPACE::DisplayModeKHR;
   };
+
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkDisplayModeKHR, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::DisplayModeKHR;
+  };
+#endif
 
   template <>
   struct CppType<VkDisplayModeKHR, VK_NULL_HANDLE>
@@ -15779,6 +16163,14 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::PhysicalDevice;
   };
 
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkPhysicalDevice, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::PhysicalDevice;
+  };
+#endif
+
   template <>
   struct CppType<VkPhysicalDevice, VK_NULL_HANDLE>
   {
@@ -16450,6 +16842,14 @@ namespace VULKAN_HPP_NAMESPACE
   {
     using Type = VULKAN_HPP_NAMESPACE::Instance;
   };
+
+#if ( VK_USE_64_BIT_PTR_DEFINES == 1 )
+  template <>
+  struct CppType<VkInstance, VK_NULL_HANDLE>
+  {
+    using Type = VULKAN_HPP_NAMESPACE::Instance;
+  };
+#endif
 
   template <>
   struct CppType<VkInstance, VK_NULL_HANDLE>
