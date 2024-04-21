@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 16:36:33 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/18 02:47:30 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/14 19:57:55 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #define __MLX_TEXTURE_ATLAS__
 
 #include <renderer/images/texture.h>
-#include <array>
 #include <glm/glm.hpp>
 #include <mlx_profile.h>
 

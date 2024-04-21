@@ -6,7 +6,7 @@
 /*   By: maldavid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 14:04:25 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/07 00:21:42 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/14 17:02:55 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ namespace mlx
 			void destroyDebugUtilsMessengerEXT(const VkAllocationCallbacks* pAllocator);
 
 		private:
-			VkDebugUtilsMessengerEXT _debugMessenger;
-			PFN_vkSetDebugUtilsObjectNameEXT real_vkSetDebugUtilsObjectNameEXT = nullptr;
+			VkDebugUtilsMessengerEXT _debug_messenger;
+			PFN_vkSetDebugUtilsObjectNameEXT _vkSetDebugUtilsObjectNameEXT = nullptr;
 	};
 }
 

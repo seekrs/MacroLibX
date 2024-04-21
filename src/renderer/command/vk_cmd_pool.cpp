@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:24:33 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/03 13:13:25 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/14 17:23:20 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ namespace mlx
 		VkCommandPoolCreateInfo poolInfo{};
 		poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
 		poolInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
-		poolInfo.queueFamilyIndex = Render_Core::get().getQueue().getFamilies().graphicsFamily.value();
+		poolInfo.queueFamilyIndex = Render_Core::get().getQueue().getFamilies().graphics_family.value();
 
 		VkResult res = vkCreateCommandPool(Render_Core::get().getDevice().get(), &poolInfo, nullptr, &_cmd_pool);
 		if(res != VK_SUCCESS)

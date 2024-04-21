@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:14:29 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/20 05:34:15 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/14 17:23:45 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@
 #include <set>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_vulkan.h>
-#include <iostream>
-#include <algorithm>
 
 namespace mlx
 {
@@ -31,7 +29,7 @@ namespace mlx
 		Queues::QueueFamilyIndices indices = Render_Core::get().getQueue().getFamilies();
 
 		std::vector<VkDeviceQueueCreateInfo> queueCreateInfos;
-		std::set<std::uint32_t> uniqueQueueFamilies = { indices.graphicsFamily.value(), indices.presentFamily.value() };
+		std::set<std::uint32_t> uniqueQueueFamilies = { indices.graphics_family.value(), indices.present_family.value() };
 
 		float queuePriority = 1.0f;
 		for(std::uint32_t queueFamily : uniqueQueueFamilies)
@@ -59,7 +57,7 @@ namespace mlx
 		createInfo.enabledLayerCount = 0;
 
 		VkResult res;
-		if((res = vkCreateDevice(_physicalDevice, &createInfo, nullptr, &_device)) != VK_SUCCESS)
+		if((res = vkCreateDevice(_physical_device, &createInfo, nullptr, &_device)) != VK_SUCCESS)
 			core::error::report(e_kind::fatal_error, "Vulkan : failed to create logcal device, %s", RCore::verbaliseResultVk(res));
 		#ifdef DEBUG
 			core::error::report(e_kind::message, "Vulkan : created new logical device");
@@ -94,16 +92,16 @@ namespace mlx
 		}
 
 		if(devices_score.rbegin()->first > 0)
-			_physicalDevice = devices_score.rbegin()->second;
+			_physical_device = devices_score.rbegin()->second;
 		else
 			core::error::report(e_kind::fatal_error, "Vulkan : failed to find a suitable GPU");
 
 		#ifdef DEBUG
 			VkPhysicalDeviceProperties props;
-			vkGetPhysicalDeviceProperties(_physicalDevice, &props);
+			vkGetPhysicalDeviceProperties(_physical_device, &props);
 			core::error::report(e_kind::message, "Vulkan : picked a physical device, %s", props.deviceName);
 		#endif
-		Render_Core::get().getQueue().findQueueFamilies(_physicalDevice, surface); // update queue indicies to current physical device
+		Render_Core::get().getQueue().findQueueFamilies(_physical_device, surface); // update queue indicies to current physical device
 		vkDestroySurfaceKHR(Render_Core::get().getInstance().get(), surface, nullptr);
 		SDL_DestroyWindow(window);
 	}

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 18:59:38 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/03 15:26:39 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/14 17:01:57 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 #include <mlx_profile.h>
 #include <volk.h>
-#include <vector>
 
 namespace mlx
 {
@@ -25,12 +24,12 @@ namespace mlx
 			void init();
 			void destroy() noexcept;
 
-			inline VkSemaphore& getImageSemaphore() noexcept { return _imageAvailableSemaphores; }
-			inline VkSemaphore& getRenderImageSemaphore() noexcept { return _renderFinishedSemaphores; }
+			inline VkSemaphore& getImageSemaphore() noexcept { return _image_available_semaphore; }
+			inline VkSemaphore& getRenderImageSemaphore() noexcept { return _render_finished_semaphore; }
 
 		private:
-			VkSemaphore _imageAvailableSemaphores = VK_NULL_HANDLE;
-			VkSemaphore _renderFinishedSemaphores = VK_NULL_HANDLE;
+			VkSemaphore _image_available_semaphore = VK_NULL_HANDLE;
+			VkSemaphore _render_finished_semaphore = VK_NULL_HANDLE;
 	};
 }
 

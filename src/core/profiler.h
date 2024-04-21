@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:35:45 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/10 18:36:46 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/24 14:41:27 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@
 #include <string>
 #include <thread>
 #include <mutex>
-#include <sstream>
 #include <fstream>
-#include <iomanip>
 #include <unordered_map>
+#include <sstream>
+#include <iomanip>
 
 namespace mlx
 {
@@ -115,17 +115,17 @@ namespace mlx
 		{
 			ChangeResult<N> result = {};
 
-			std::size_t srcIndex = 0;
-			std::size_t dstIndex = 0;
-			while(srcIndex < N)
+			std::size_t src_index = 0;
+			std::size_t dst_index = 0;
+			while(src_index < N)
 			{
-				std::size_t matchIndex = 0;
-				while(matchIndex < K - 1 && srcIndex + matchIndex < N - 1 && expr[srcIndex + matchIndex] == remove[matchIndex])
-					matchIndex++;
-				if(matchIndex == K - 1)
-					srcIndex += matchIndex;
-				result.data[dstIndex++] = expr[srcIndex] == '"' ? '\'' : expr[srcIndex];
-				srcIndex++;
+				std::size_t match_index = 0;
+				while(match_index < K - 1 && src_index + match_index < N - 1 && expr[src_index + match_index] == remove[match_index])
+					match_index++;
+				if(match_index == K - 1)
+					src_index += match_index;
+				result.data[dst_index++] = expr[src_index] == '"' ? '\'' : expr[src_index];
+				src_index++;
 			}
 			return result;
 		}

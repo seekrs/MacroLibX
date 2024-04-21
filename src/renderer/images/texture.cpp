@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 18:03:35 by maldavid          #+#    #+#             */
-/*   Updated: 2024/02/24 03:51:59 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/14 19:07:01 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
-
-#include <iostream>
 
 #ifdef IMAGE_OPTIMIZED
 	#define TILING VK_IMAGE_TILING_OPTIMAL

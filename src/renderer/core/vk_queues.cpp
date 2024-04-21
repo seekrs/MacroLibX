@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:02:42 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/10 21:54:54 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/14 17:01:10 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,13 @@ namespace mlx
 		for(const auto& queueFamily : queueFamilies)
 		{
 			if(queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT)
-				_families->graphicsFamily = i;
+				_families->graphics_family = i;
 
 			VkBool32 presentSupport = false;
 			vkGetPhysicalDeviceSurfaceSupportKHR(device, i, surface, &presentSupport);
 
 			if(presentSupport)
-				_families->presentFamily = i;
+				_families->present_family = i;
 
 			if(_families->isComplete())
 				return *_families;
@@ -62,8 +62,8 @@ namespace mlx
 			vkDestroySurfaceKHR(Render_Core::get().getInstance().get(), surface, nullptr);
 			SDL_DestroyWindow(window);
 		}
-		vkGetDeviceQueue(Render_Core::get().getDevice().get(), _families->graphicsFamily.value(), 0, &_graphicsQueue);
-		vkGetDeviceQueue(Render_Core::get().getDevice().get(), _families->presentFamily.value(), 0, &_presentQueue);
+		vkGetDeviceQueue(Render_Core::get().getDevice().get(), _families->graphics_family.value(), 0, &_graphics_queue);
+		vkGetDeviceQueue(Render_Core::get().getDevice().get(), _families->present_family.value(), 0, &_present_queue);
 		#ifdef DEBUG
 			core::error::report(e_kind::message, "Vulkan : got graphics and present queues");
 		#endif

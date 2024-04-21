@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:18:46 by maldavid          #+#    #+#             */
-/*   Updated: 2022/10/08 19:22:07 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/24 14:42:56 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 namespace mlx
 {
 	template <typename T>
-	class Singleton : public non_copyable
+	class Singleton : public NonCopyable
 	{
 		public:
 			inline static T& get()

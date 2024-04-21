@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:14:45 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/20 08:18:53 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/14 16:34:20 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ namespace mlx
 			inline std::uint32_t getActiveImageIndex() noexcept { return _current_frame_index; }
 			inline std::uint32_t getImageIndex() noexcept { return _image_index; }
 
-			constexpr inline void requireFrameBufferResize() noexcept { _framebufferResized = true; }
+			constexpr inline void requireFrameBufferResize() noexcept { _framebuffer_resized = true; }
 
 			~Renderer() = default;
 
@@ -138,7 +138,7 @@ namespace mlx
 
 			std::uint32_t _current_frame_index = 0;
 			std::uint32_t _image_index = 0;
-			bool _framebufferResized = false;
+			bool _framebuffer_resized = false;
 	};
 }
 
