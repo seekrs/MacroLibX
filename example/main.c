@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:55:21 by maldavid          #+#    #+#             */
-/*   Updated: 2024/02/24 01:07:56 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/25 16:16:07 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ typedef struct
 	void* img;
 } mlx_t;
 
+//void* img = NULL;
+
 int update(void* param)
 {
 	static int i = 0;
@@ -30,7 +32,13 @@ int update(void* param)
 
 	if(i == 200)
 		mlx_clear_window(mlx->mlx, mlx->win);
-	
+/*
+	if(img)
+		mlx_destroy_image(mlx->mlx,img);
+	img = mlx_new_image(mlx->mlx, 800, 800);
+	mlx_set_image_pixel(mlx->mlx, img, 4, 4, 0xFF00FF00);
+	mlx_put_image_to_window(mlx->mlx, mlx->win, img, 0, 0);
+*/
 	if(i >= 250)
 		mlx_set_font_scale(mlx->mlx, mlx->win, "default", 16.f);
 	else
@@ -149,7 +157,11 @@ int main(void)
 	mlx_put_image_to_window(mlx.mlx, mlx.win, mlx.logo_png, 10, 190);
 
 	mlx.img = create_image(&mlx);
-	
+
+
+	mlx_string_put(mlx.mlx, mlx.win, 0, 10, 0xFFFFFF00, "fps:");
+	mlx_string_put(mlx.mlx, mlx.win, 0, 20, 0xFFFFFFFF, "fps:");
+
 	mlx_set_font_scale(mlx.mlx, mlx.win, "font.ttf", 16.f);
 	mlx_string_put(mlx.mlx, mlx.win, 20, 20, 0xFF0020FF, "that text will disappear");
 

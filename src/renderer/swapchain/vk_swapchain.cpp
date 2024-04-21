@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:22:28 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/03 13:18:25 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/14 17:08:19 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,18 @@ namespace mlx
 		VkDevice device = Render_Core::get().getDevice().get();
 
 		_renderer = renderer;
-		_swapChainSupport = querySwapChainSupport(Render_Core::get().getDevice().getPhysicalDevice());
+		_swapchain_support = querySwapChainSupport(Render_Core::get().getDevice().getPhysicalDevice());
 
-		VkSurfaceFormatKHR surfaceFormat = renderer->getSurface().chooseSwapSurfaceFormat(_swapChainSupport.formats);
-		VkPresentModeKHR presentMode = chooseSwapPresentMode(_swapChainSupport.presentModes);
-		_extent = chooseSwapExtent(_swapChainSupport.capabilities);
+		VkSurfaceFormatKHR surfaceFormat = renderer->getSurface().chooseSwapSurfaceFormat(_swapchain_support.formats);
+		VkPresentModeKHR presentMode = chooseSwapPresentMode(_swapchain_support.present_modes);
+		_extent = chooseSwapExtent(_swapchain_support.capabilities);
 
-		std::uint32_t imageCount = _swapChainSupport.capabilities.minImageCount + 1;
-		if(_swapChainSupport.capabilities.maxImageCount > 0 && imageCount > _swapChainSupport.capabilities.maxImageCount)
-			imageCount = _swapChainSupport.capabilities.maxImageCount;
+		std::uint32_t imageCount = _swapchain_support.capabilities.minImageCount + 1;
+		if(_swapchain_support.capabilities.maxImageCount > 0 && imageCount > _swapchain_support.capabilities.maxImageCount)
+			imageCount = _swapchain_support.capabilities.maxImageCount;
 
 		Queues::QueueFamilyIndices indices = Render_Core::get().getQueue().findQueueFamilies(Render_Core::get().getDevice().getPhysicalDevice(), renderer->getSurface().get());
-		std::uint32_t queueFamilyIndices[] = { indices.graphicsFamily.value(), indices.presentFamily.value() };
+		std::uint32_t queueFamilyIndices[] = { indices.graphics_family.value(), indices.present_family.value() };
 
 		VkSwapchainCreateInfoKHR createInfo{};
 		createInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
@@ -45,12 +45,12 @@ namespace mlx
 		createInfo.imageExtent = _extent;
 		createInfo.imageArrayLayers = 1;
 		createInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
-		createInfo.preTransform = _swapChainSupport.capabilities.currentTransform;
+		createInfo.preTransform = _swapchain_support.capabilities.currentTransform;
 		createInfo.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
 		createInfo.presentMode = presentMode;
 		createInfo.clipped = VK_TRUE;
 		createInfo.oldSwapchain = VK_NULL_HANDLE;
-		if(indices.graphicsFamily != indices.presentFamily)
+		if(indices.graphics_family != indices.present_family)
 		{
 			createInfo.imageSharingMode = VK_SHARING_MODE_CONCURRENT;
 			createInfo.queueFamilyIndexCount = 2;
@@ -59,15 +59,15 @@ namespace mlx
 		else
 			createInfo.imageSharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
-		VkResult res = vkCreateSwapchainKHR(device, &createInfo, nullptr, &_swapChain);
+		VkResult res = vkCreateSwapchainKHR(device, &createInfo, nullptr, &_swapchain);
 		if(res != VK_SUCCESS)
 			core::error::report(e_kind::fatal_error, "Vulkan : failed to create the swapchain, %s", RCore::verbaliseResultVk(res));
 
 		std::vector<VkImage> tmp;
-		vkGetSwapchainImagesKHR(device, _swapChain, &imageCount, nullptr);
+		vkGetSwapchainImagesKHR(device, _swapchain, &imageCount, nullptr);
 		_images.resize(imageCount);
 		tmp.resize(imageCount);
-		vkGetSwapchainImagesKHR(device, _swapChain, &imageCount, tmp.data());
+		vkGetSwapchainImagesKHR(device, _swapchain, &imageCount, tmp.data());
 
 		for(std::size_t i = 0; i < imageCount; i++)
 		{
@@ -76,7 +76,7 @@ namespace mlx
 			_images[i].createImageView(VK_IMAGE_VIEW_TYPE_2D, VK_IMAGE_ASPECT_COLOR_BIT);
 		}
 
-		_swapChainImageFormat = surfaceFormat.format;
+		_swapchain_image_format = surfaceFormat.format;
 		#ifdef DEBUG
 			core::error::report(e_kind::message, "Vulkan : created new swapchain");
 		#endif
@@ -104,8 +104,8 @@ namespace mlx
 
 		if(presentModeCount != 0)
 		{
-			details.presentModes.resize(presentModeCount);
-			vkGetPhysicalDeviceSurfacePresentModesKHR(device, surface, &presentModeCount, details.presentModes.data());
+			details.present_modes.resize(presentModeCount);
+			vkGetPhysicalDeviceSurfacePresentModesKHR(device, surface, &presentModeCount, details.present_modes.data());
 		}
 
 		return details;
@@ -141,11 +141,11 @@ namespace mlx
 
 	void SwapChain::destroy() noexcept
 	{
-		if(_swapChain == VK_NULL_HANDLE)
+		if(_swapchain == VK_NULL_HANDLE)
 			return;
 		vkDeviceWaitIdle(Render_Core::get().getDevice().get());
-		vkDestroySwapchainKHR(Render_Core::get().getDevice().get(), _swapChain, nullptr);
-		_swapChain = VK_NULL_HANDLE;
+		vkDestroySwapchainKHR(Render_Core::get().getDevice().get(), _swapchain, nullptr);
+		_swapchain = VK_NULL_HANDLE;
 		for(Image& img : _images)
 			img.destroyImageView();
 	}

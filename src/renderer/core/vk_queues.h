@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:01:49 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/08 23:46:23 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/14 17:00:48 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,18 @@ namespace mlx
 		public:
 			struct QueueFamilyIndices
 			{
-				std::optional<std::uint32_t> graphicsFamily;
-				std::optional<std::uint32_t> presentFamily;
+				std::optional<std::uint32_t> graphics_family;
+				std::optional<std::uint32_t> present_family;
 
-				inline bool isComplete() { return graphicsFamily.has_value() && presentFamily.has_value(); }
+				inline bool isComplete() { return graphics_family.has_value() && present_family.has_value(); }
 			};
 
 			QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device, VkSurfaceKHR surface);
 
 			void init();
 
-			inline VkQueue& getGraphic() noexcept { return _graphicsQueue; }
-			inline VkQueue& getPresent() noexcept { return _presentQueue; }
+			inline VkQueue& getGraphic() noexcept { return _graphics_queue; }
+			inline VkQueue& getPresent() noexcept { return _present_queue; }
 			inline QueueFamilyIndices getFamilies() noexcept
 			{
 				if(_families.has_value())
@@ -47,8 +47,8 @@ namespace mlx
 			}
 
 		private:
-			VkQueue _graphicsQueue;
-			VkQueue _presentQueue;
+			VkQueue _graphics_queue;
+			VkQueue _present_queue;
 			std::optional<QueueFamilyIndices> _families;
 	};
 }

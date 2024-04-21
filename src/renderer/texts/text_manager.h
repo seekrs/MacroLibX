@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 16:24:11 by maldavid          #+#    #+#             */
-/*   Updated: 2024/02/25 07:58:36 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/14 17:08:43 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,10 @@
 #include <stb_truetype.h>
 #include <cstdint>
 #include <unordered_set>
-#include <vector>
 #include <mlx_profile.h>
 #include <renderer/texts/text_descriptor.h>
 #include <renderer/texts/text_library.h>
 #include <renderer/texts/font_library.h>
-#include <memory>
 
 namespace mlx
 {

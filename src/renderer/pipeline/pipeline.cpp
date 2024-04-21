@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 21:27:38 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/16 07:45:15 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/14 17:05:21 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -286,7 +286,7 @@ namespace mlx
 		pipelineLayoutInfo.pushConstantRangeCount = 1;
 		pipelineLayoutInfo.pPushConstantRanges = &push_constant;
 
-		if(vkCreatePipelineLayout(Render_Core::get().getDevice().get(), &pipelineLayoutInfo, nullptr, &_pipelineLayout) != VK_SUCCESS)
+		if(vkCreatePipelineLayout(Render_Core::get().getDevice().get(), &pipelineLayoutInfo, nullptr, &_pipeline_layout) != VK_SUCCESS)
 			core::error::report(e_kind::fatal_error, "Vulkan : failed to create a graphics pipeline layout");
 
 		VkGraphicsPipelineCreateInfo pipelineInfo{};
@@ -300,12 +300,12 @@ namespace mlx
 		pipelineInfo.pMultisampleState = &multisampling;
 		pipelineInfo.pColorBlendState = &colorBlending;
 		pipelineInfo.pDynamicState = &dynamicStates;
-		pipelineInfo.layout = _pipelineLayout;
+		pipelineInfo.layout = _pipeline_layout;
 		pipelineInfo.renderPass = renderer.getRenderPass().get();
 		pipelineInfo.subpass = 0;
 		pipelineInfo.basePipelineHandle = VK_NULL_HANDLE;
 
-		VkResult res = vkCreateGraphicsPipelines(Render_Core::get().getDevice().get(), VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &_graphicsPipeline);
+		VkResult res = vkCreateGraphicsPipelines(Render_Core::get().getDevice().get(), VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &_graphics_pipeline);
 		if(res != VK_SUCCESS)
 			core::error::report(e_kind::fatal_error, "Vulkan : failed to create a graphics pipeline, %s", RCore::verbaliseResultVk(res));
 #ifdef DEBUG
@@ -318,9 +318,9 @@ namespace mlx
 
 	void GraphicPipeline::destroy() noexcept
 	{
-		vkDestroyPipeline(Render_Core::get().getDevice().get(), _graphicsPipeline, nullptr);
-		vkDestroyPipelineLayout(Render_Core::get().getDevice().get(), _pipelineLayout, nullptr);
-		_graphicsPipeline = VK_NULL_HANDLE;
+		vkDestroyPipeline(Render_Core::get().getDevice().get(), _graphics_pipeline, nullptr);
+		vkDestroyPipelineLayout(Render_Core::get().getDevice().get(), _pipeline_layout, nullptr);
+		_graphics_pipeline = VK_NULL_HANDLE;
 		#ifdef DEBUG
 			core::error::report(e_kind::message, "Vulkan : destroyed a graphics pipeline");
 		#endif

@@ -36,11 +36,11 @@
 #  if defined( __unix__ ) || defined( __APPLE__ ) || defined( __QNX__ ) || defined( __Fuchsia__ )
 #    include <dlfcn.h>
 #  elif defined( _WIN32 ) && !defined( VULKAN_HPP_NO_WIN32_PROTOTYPES )
-typedef struct HINSTANCE__ * HINSTANCE;
+using HINSTANCE = struct HINSTANCE__ *;
 #    if defined( _WIN64 )
-typedef int64_t( __stdcall * FARPROC )();
+using FARPROC   = int64_t( __stdcall * )();
 #    else
-typedef int( __stdcall * FARPROC )();
+using FARPROC = int( __stdcall * )();
 #    endif
 extern "C" __declspec( dllimport ) HINSTANCE __stdcall LoadLibraryA( char const * lpLibFileName );
 extern "C" __declspec( dllimport ) int __stdcall FreeLibrary( HINSTANCE hLibModule );
@@ -56,7 +56,7 @@ extern "C" __declspec( dllimport ) FARPROC __stdcall GetProcAddress( HINSTANCE h
 #  include <span>
 #endif
 
-static_assert( VK_HEADER_VERSION == 278, "Wrong VK_HEADER_VERSION!" );
+static_assert( VK_HEADER_VERSION == 283, "Wrong VK_HEADER_VERSION!" );
 
 // <tuple> includes <sys/sysmacros.h> through some other header
 // this results in major(x) being resolved to gnu_dev_major(x)
@@ -6144,6 +6144,10 @@ namespace VULKAN_HPP_NAMESPACE
   using RemoteAddressNV = void *;
   using SampleMask      = uint32_t;
 
+  template <typename Type, Type value = 0>
+  struct CppType
+  {
+  };
 }  // namespace VULKAN_HPP_NAMESPACE
 
 #include <vulkan/vulkan_enums.hpp>
@@ -6598,11 +6602,6 @@ namespace VULKAN_HPP_NAMESPACE
 #endif
 
   template <typename T>
-  void ignore( T const & ) VULKAN_HPP_NOEXCEPT
-  {
-  }
-
-  template <typename T>
   struct ResultValue
   {
 #ifdef VULKAN_HPP_HAS_NOEXCEPT
@@ -6698,9 +6697,9 @@ namespace VULKAN_HPP_NAMESPACE
   struct ResultValueType
   {
 #ifdef VULKAN_HPP_NO_EXCEPTIONS
-    typedef ResultValue<T> type;
+    using type = ResultValue<T>;
 #else
-    typedef T    type;
+    using type = T;
 #endif
   };
 
@@ -6708,71 +6707,82 @@ namespace VULKAN_HPP_NAMESPACE
   struct ResultValueType<void>
   {
 #ifdef VULKAN_HPP_NO_EXCEPTIONS
-    typedef Result type;
+    using type = Result;
 #else
-    typedef void type;
+    using type = void;
 #endif
   };
 
-  VULKAN_HPP_INLINE typename ResultValueType<void>::type createResultValueType( Result result )
+  namespace detail
   {
-#ifdef VULKAN_HPP_NO_EXCEPTIONS
-    return result;
-#else
-    ignore( result );
-#endif
-  }
-
-  template <typename T>
-  VULKAN_HPP_INLINE typename ResultValueType<T>::type createResultValueType( Result result, T & data )
-  {
-#ifdef VULKAN_HPP_NO_EXCEPTIONS
-    return ResultValue<T>( result, data );
-#else
-    ignore( result );
-    return data;
-#endif
-  }
-
-  template <typename T>
-  VULKAN_HPP_INLINE typename ResultValueType<T>::type createResultValueType( Result result, T && data )
-  {
-#ifdef VULKAN_HPP_NO_EXCEPTIONS
-    return ResultValue<T>( result, std::move( data ) );
-#else
-    ignore( result );
-    return std::move( data );
-#endif
-  }
-
-  VULKAN_HPP_INLINE void resultCheck( Result result, char const * message )
-  {
-#ifdef VULKAN_HPP_NO_EXCEPTIONS
-    ignore( result );  // just in case VULKAN_HPP_ASSERT_ON_RESULT is empty
-    ignore( message );
-    VULKAN_HPP_ASSERT_ON_RESULT( result == Result::eSuccess );
-#else
-    if ( result != Result::eSuccess )
+    template <typename T>
+    void ignore( T const & ) VULKAN_HPP_NOEXCEPT
     {
-      detail::throwResultException( result, message );
     }
-#endif
-  }
 
-  VULKAN_HPP_INLINE void resultCheck( Result result, char const * message, std::initializer_list<Result> successCodes )
-  {
-#ifdef VULKAN_HPP_NO_EXCEPTIONS
-    ignore( result );  // just in case VULKAN_HPP_ASSERT_ON_RESULT is empty
-    ignore( message );
-    ignore( successCodes );  // just in case VULKAN_HPP_ASSERT_ON_RESULT is empty
-    VULKAN_HPP_ASSERT_ON_RESULT( std::find( successCodes.begin(), successCodes.end(), result ) != successCodes.end() );
-#else
-    if ( std::find( successCodes.begin(), successCodes.end(), result ) == successCodes.end() )
+    VULKAN_HPP_INLINE typename VULKAN_HPP_NAMESPACE::ResultValueType<void>::type createResultValueType( VULKAN_HPP_NAMESPACE::Result result )
     {
-      detail::throwResultException( result, message );
-    }
+#ifdef VULKAN_HPP_NO_EXCEPTIONS
+      return result;
+#else
+      VULKAN_HPP_NAMESPACE::detail::ignore( result );
 #endif
-  }
+    }
+
+    template <typename T>
+    VULKAN_HPP_INLINE typename VULKAN_HPP_NAMESPACE::ResultValueType<T>::type createResultValueType( VULKAN_HPP_NAMESPACE::Result result, T & data )
+    {
+#ifdef VULKAN_HPP_NO_EXCEPTIONS
+      return ResultValue<T>( result, data );
+#else
+      VULKAN_HPP_NAMESPACE::detail::ignore( result );
+      return data;
+#endif
+    }
+
+    template <typename T>
+    VULKAN_HPP_INLINE typename VULKAN_HPP_NAMESPACE::ResultValueType<T>::type createResultValueType( VULKAN_HPP_NAMESPACE::Result result, T && data )
+    {
+#ifdef VULKAN_HPP_NO_EXCEPTIONS
+      return ResultValue<T>( result, std::move( data ) );
+#else
+      VULKAN_HPP_NAMESPACE::detail::ignore( result );
+      return std::move( data );
+#endif
+    }
+  }  // namespace detail
+
+  namespace detail
+  {
+    VULKAN_HPP_INLINE void resultCheck( Result result, char const * message )
+    {
+#ifdef VULKAN_HPP_NO_EXCEPTIONS
+      VULKAN_HPP_NAMESPACE::detail::ignore( result );  // just in case VULKAN_HPP_ASSERT_ON_RESULT is empty
+      VULKAN_HPP_NAMESPACE::detail::ignore( message );
+      VULKAN_HPP_ASSERT_ON_RESULT( result == Result::eSuccess );
+#else
+      if ( result != Result::eSuccess )
+      {
+        VULKAN_HPP_NAMESPACE::detail::throwResultException( result, message );
+      }
+#endif
+    }
+
+    VULKAN_HPP_INLINE void resultCheck( Result result, char const * message, std::initializer_list<Result> successCodes )
+    {
+#ifdef VULKAN_HPP_NO_EXCEPTIONS
+      VULKAN_HPP_NAMESPACE::detail::ignore( result );  // just in case VULKAN_HPP_ASSERT_ON_RESULT is empty
+      VULKAN_HPP_NAMESPACE::detail::ignore( message );
+      VULKAN_HPP_NAMESPACE::detail::ignore( successCodes );  // just in case VULKAN_HPP_ASSERT_ON_RESULT is empty
+      VULKAN_HPP_ASSERT_ON_RESULT( std::find( successCodes.begin(), successCodes.end(), result ) != successCodes.end() );
+#else
+      if ( std::find( successCodes.begin(), successCodes.end(), result ) == successCodes.end() )
+      {
+        VULKAN_HPP_NAMESPACE::detail::throwResultException( result, message );
+      }
+#endif
+    }
+  }  // namespace detail
 
   //===========================
   //=== CONSTEXPR CONSTANTs ===
@@ -8662,9 +8672,17 @@ namespace VULKAN_HPP_NAMESPACE
   VULKAN_HPP_CONSTEXPR_INLINE auto NVDescriptorPoolOverallocationExtensionName = VK_NV_DESCRIPTOR_POOL_OVERALLOCATION_EXTENSION_NAME;
   VULKAN_HPP_CONSTEXPR_INLINE auto NVDescriptorPoolOverallocationSpecVersion   = VK_NV_DESCRIPTOR_POOL_OVERALLOCATION_SPEC_VERSION;
 
+  //=== VK_NV_raw_access_chains ===
+  VULKAN_HPP_CONSTEXPR_INLINE auto NVRawAccessChainsExtensionName = VK_NV_RAW_ACCESS_CHAINS_EXTENSION_NAME;
+  VULKAN_HPP_CONSTEXPR_INLINE auto NVRawAccessChainsSpecVersion   = VK_NV_RAW_ACCESS_CHAINS_SPEC_VERSION;
+
   //=== VK_NV_shader_atomic_float16_vector ===
   VULKAN_HPP_CONSTEXPR_INLINE auto NVShaderAtomicFloat16VectorExtensionName = VK_NV_SHADER_ATOMIC_FLOAT16_VECTOR_EXTENSION_NAME;
   VULKAN_HPP_CONSTEXPR_INLINE auto NVShaderAtomicFloat16VectorSpecVersion   = VK_NV_SHADER_ATOMIC_FLOAT16_VECTOR_SPEC_VERSION;
+
+  //=== VK_NV_ray_tracing_validation ===
+  VULKAN_HPP_CONSTEXPR_INLINE auto NVRayTracingValidationExtensionName = VK_NV_RAY_TRACING_VALIDATION_EXTENSION_NAME;
+  VULKAN_HPP_CONSTEXPR_INLINE auto NVRayTracingValidationSpecVersion   = VK_NV_RAY_TRACING_VALIDATION_SPEC_VERSION;
 
 }  // namespace VULKAN_HPP_NAMESPACE
 
@@ -15150,6 +15168,15 @@ namespace VULKAN_HPP_NAMESPACE
     };
   };
 
+  template <>
+  struct StructExtends<ComputePipelineIndirectBufferInfoNV, ComputePipelineCreateInfo>
+  {
+    enum
+    {
+      value = true
+    };
+  };
+
   //=== VK_NV_linear_color_attachment ===
   template <>
   struct StructExtends<PhysicalDeviceLinearColorAttachmentFeaturesNV, PhysicalDeviceFeatures2>
@@ -16588,6 +16615,25 @@ namespace VULKAN_HPP_NAMESPACE
     };
   };
 
+  //=== VK_NV_raw_access_chains ===
+  template <>
+  struct StructExtends<PhysicalDeviceRawAccessChainsFeaturesNV, PhysicalDeviceFeatures2>
+  {
+    enum
+    {
+      value = true
+    };
+  };
+
+  template <>
+  struct StructExtends<PhysicalDeviceRawAccessChainsFeaturesNV, DeviceCreateInfo>
+  {
+    enum
+    {
+      value = true
+    };
+  };
+
   //=== VK_NV_shader_atomic_float16_vector ===
   template <>
   struct StructExtends<PhysicalDeviceShaderAtomicFloat16VectorFeaturesNV, PhysicalDeviceFeatures2>
@@ -16600,6 +16646,25 @@ namespace VULKAN_HPP_NAMESPACE
 
   template <>
   struct StructExtends<PhysicalDeviceShaderAtomicFloat16VectorFeaturesNV, DeviceCreateInfo>
+  {
+    enum
+    {
+      value = true
+    };
+  };
+
+  //=== VK_NV_ray_tracing_validation ===
+  template <>
+  struct StructExtends<PhysicalDeviceRayTracingValidationFeaturesNV, PhysicalDeviceFeatures2>
+  {
+    enum
+    {
+      value = true
+    };
+  };
+
+  template <>
+  struct StructExtends<PhysicalDeviceRayTracingValidationFeaturesNV, DeviceCreateInfo>
   {
     enum
     {
