@@ -1,87 +1,83 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vk_image.h                                         :+:      :+:    :+:   */
+/*   Image.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:54:21 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 19:09:40 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/28 22:08:35 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_VK_IMAGE__
 #define __MLX_VK_IMAGE__
 
-#include <renderer/core/cmd_resource.h>
-#include <renderer/command/vk_cmd_buffer.h>
-#include <renderer/command/vk_cmd_pool.h>
-
-#ifdef DEBUG
-	#include <string>
-#endif
+#include <Renderer/Core/CommandResource.h>
+#include <Renderer/Command/CommandBuffer.h>
+#include <Renderer/Command/CommandPool.h>
 
 namespace mlx
 {
-	std::uint32_t formatSize(VkFormat format);
-	bool isStencilFormat(VkFormat format);
-	bool isDepthFormat(VkFormat format);
-	VkFormat bitsToFormat(std::uint32_t bits);
-	VkPipelineStageFlags layoutToAccessMask(VkImageLayout layout, bool isDestination);
+	std::uint32_t FormatSize(VkFormat format);
+	bool IsStencilFormat(VkFormat format);
+	bool IsDepthFormat(VkFormat format);
+	VkFormat BitsToFormat(std::uint32_t bits);
+	VkPipelineStageFlags LayoutToAccessMask(VkImageLayout layout, bool is_destination);
 
-	class Image : public CmdResource
+	class Image : public CommandResource
 	{
-		friend class SwapChain;
+		friend class Swapchain;
 
 		public:
 			Image() = default;
 
-			inline void create(VkImage image, VkFormat format, std::uint32_t width, std::uint32_t height, VkImageLayout layout = VK_IMAGE_LAYOUT_UNDEFINED) noexcept
+			inline void Create(VkImage image, VkFormat format, std::uint32_t width, std::uint32_t height, VkImageLayout layout = VK_IMAGE_LAYOUT_UNDEFINED) noexcept
 			{
-				_image = image;
-				_format = format;
-				_width = width;
-				_height = height;
-				_layout = layout;
+				m_image = image;
+				m_format = format;
+				m_width = width;
+				m_height = height;
+				m_layout = layout;
 			}
-			void create(std::uint32_t width, std::uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, const char* name, bool decated_memory = false);
-			void createImageView(VkImageViewType type, VkImageAspectFlags aspectFlags) noexcept;
-			void createSampler() noexcept;
-			void copyFromBuffer(class Buffer& buffer);
-			void copyToBuffer(class Buffer& buffer);
-			void transitionLayout(VkImageLayout new_layout, CmdBuffer* cmd = nullptr);
-			virtual void destroy() noexcept;
+			void Create(std::uint32_t width, std::uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, const char* name, bool decated_memory = false);
+			void CreateImageView(VkImageViewType type, VkImageAspectFlags aspect_flags) noexcept;
+			void CreateSampler() noexcept;
+			void CopyFromBuffer(class Buffer& buffer);
+			void CopyToBuffer(class Buffer& buffer);
+			void TransitionLayout(VkImageLayout new_layout, CmdBuffer* cmd = nullptr);
+			virtual void Destroy() noexcept;
 
-			inline VkImage get() noexcept { return _image; }
-			inline VkImage operator()() noexcept { return _image; }
-			inline VkImageView getImageView() const noexcept { return _image_view; }
-			inline VkFormat getFormat() const noexcept { return _format; }
-			inline VkImageTiling getTiling() const noexcept { return _tiling; }
-			inline VkImageLayout getLayout() const noexcept { return _layout; }
-			inline VkSampler getSampler() const noexcept { return _sampler; }
-			inline std::uint32_t getWidth() const noexcept { return _width; }
-			inline std::uint32_t getHeight() const noexcept { return _height; }
-			inline bool isInit() const noexcept { return _image != VK_NULL_HANDLE; }
+			inline VkImage Get() noexcept { return m_image; }
+			inline VkImage operator()() noexcept { return m_image; }
+			inline VkImageView GetImageView() const noexcept { return m_image_view; }
+			inline VkFormat GetFormat() const noexcept { return m_format; }
+			inline VkImageTiling GetTiling() const noexcept { return m_tiling; }
+			inline VkImageLayout GetLayout() const noexcept { return m_layout; }
+			inline VkSampler GetSampler() const noexcept { return m_sampler; }
+			inline std::uint32_t GetWidth() const noexcept { return m_width; }
+			inline std::uint32_t GetHeight() const noexcept { return m_height; }
+			inline bool IsInit() const noexcept { return m_image != VK_NULL_HANDLE; }
 
 			virtual ~Image() = default;
 
 		private:
-			void destroySampler() noexcept;
-			void destroyImageView() noexcept;
+			void DestroySampler() noexcept;
+			void DestroyImageView() noexcept;
 
 		private:
-			VmaAllocation _allocation;
-			VkImage _image = VK_NULL_HANDLE;
-			VkImageView _image_view = VK_NULL_HANDLE;
-			VkSampler _sampler = VK_NULL_HANDLE;
+			VmaAllocation m_allocation;
+			VkImage m_image = VK_NULL_HANDLE;
+			VkImageView m_image_view = VK_NULL_HANDLE;
+			VkSampler m_sampler = VK_NULL_HANDLE;
 			#ifdef DEBUG
-				std::string _name;
+				std::string m_name;
 			#endif
-			VkFormat _format;
-			VkImageTiling _tiling;
-			VkImageLayout _layout = VK_IMAGE_LAYOUT_UNDEFINED;
-			std::uint32_t _width = 0;
-			std::uint32_t _height = 0;
+			VkFormat m_format;
+			VkImageTiling m_tiling;
+			VkImageLayout m_layout = VK_IMAGE_LAYOUT_UNDEFINED;
+			std::uint32_t m_width = 0;
+			std::uint32_t m_height = 0;
 	};
 }
 

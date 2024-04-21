@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:01:49 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/27 22:50:52 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/28 22:05:15 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ namespace mlx
 				std::optional<std::uint32_t> graphics_family;
 				std::optional<std::uint32_t> present_family;
 
-				inline bool isComplete() { return graphics_family.has_value() && present_family.has_value(); }
+				inline bool IsComplete() { return graphics_family.has_value() && present_family.has_value(); }
 			};
 
 		public:

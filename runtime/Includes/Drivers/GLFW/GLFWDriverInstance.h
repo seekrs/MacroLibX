@@ -1,29 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IndexBuffer.h                                      :+:      :+:    :+:   */
+/*   GLFWDriverInstance.h                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/25 15:05:05 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/28 22:11:05 by maldavid         ###   ########.fr       */
+/*   Created: 2024/04/02 17:01:51 by maldavid          #+#    #+#             */
+/*   Updated: 2024/04/02 17:04:12 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef __VK_IBO__
-#define __VK_IBO__
+#ifndef __MLX_GLFW_DRIVER_INSTANCE__
+#define __MLX_GLFW_DRIVER_INSTANCE__
 
-#include <Renderer/Buffer/Buffer.h>
-#include <Renderer/Renderer.h>
+#include <Drivers/DriverInstance.h>
 
 namespace mlx
 {
-	class ConstantIndexBuffer : public Buffer
+	class GLFWDriverInstance : public DriverInstance
 	{
 		public:
-			inline void Create(std::uint32_t size, const std::uint16_t* data, const char* name) { Buffer::Create(BufferType::Constant, size, VK_BUFFER_USAGE_INDEX_BUFFER_BIT, name, data); }
-			inline void Bind(Renderer& renderer) noexcept { renderer.GetActiveCmdBuffer().BindIndexBuffer(*this); }
+			GLFWDriverInstance() = default;
+
+			inline bool InitDriver() override;
+			inline void ShutdownDriver() override;
+
+			~GLFWDriverInstance() override = default;
 	};
 }
+
+#include <Drivers/GLFW/GLFWDriverInstance.inl>
 
 #endif

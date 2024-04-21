@@ -1,29 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IndexBuffer.h                                      :+:      :+:    :+:   */
+/*   DriverLoader.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/25 15:05:05 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/28 22:11:05 by maldavid         ###   ########.fr       */
+/*   Created: 2024/04/02 16:56:10 by maldavid          #+#    #+#             */
+/*   Updated: 2024/04/03 15:02:44 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef __VK_IBO__
-#define __VK_IBO__
+#ifndef __MLX_CORE_DRIVER_LOADER__
+#define __MLX_CORE_DRIVER_LOADER__
 
-#include <Renderer/Buffer/Buffer.h>
-#include <Renderer/Renderer.h>
+#include <Drivers/DriverInstance.h>
 
 namespace mlx
 {
-	class ConstantIndexBuffer : public Buffer
+	class DriverLoader
 	{
 		public:
-			inline void Create(std::uint32_t size, const std::uint16_t* data, const char* name) { Buffer::Create(BufferType::Constant, size, VK_BUFFER_USAGE_INDEX_BUFFER_BIT, name, data); }
-			inline void Bind(Renderer& renderer) noexcept { renderer.GetActiveCmdBuffer().BindIndexBuffer(*this); }
+			DriverLoader() = default;
+
+			template <typename T>
+			inline bool LoadDriver();
+
+			inline void ShutdownAllDrivers();
+
+			~DriverLoader() = default;
+
+		private:
+			std::vector<std::unique_ptr<DriverInstance> > m_instances;
 	};
 }
+
+#include <Core/DriverLoader.inl>
 
 #endif

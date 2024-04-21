@@ -1,52 +1,54 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   font.h                                             :+:      :+:    :+:   */
+/*   Font.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 21:17:04 by kbz_8             #+#    #+#             */
-/*   Updated: 2024/03/25 19:08:21 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/28 22:19:39 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_FONT__
 #define __MLX_FONT__
 
-#include <renderer/images/texture_atlas.h>
-#include <utils/combine_hash.h>
+#include <Renderer/Images/TextureAtlas.h>
+#include <Utils/CombineHash.h>
 
 namespace mlx
 {
 	class Font
 	{
 		friend class FontLibrary;
+
 		public:
 			Font() = delete;
 			Font(class Renderer& renderer, const std::filesystem::path& path, float scale);
 			Font(class Renderer& renderer, const std::string& name, const std::vector<std::uint8_t>& ttf_data, float scale);
 
-			inline const std::string& getName() const { return _name; }
-			inline float getScale() const noexcept { return _scale; }
-			inline const std::array<stbtt_packedchar, 96>& getCharData() const { return _cdata; }
-			inline const TextureAtlas& getAtlas() const noexcept { return _atlas; }
-			inline bool operator==(const Font& rhs) const { return rhs._name == _name && rhs._scale == _scale; }
-			inline bool operator!=(const Font& rhs) const { return rhs._name != _name || rhs._scale != _scale; }
-			void destroy();
+			inline const std::string& GetName() const { return m_name; }
+			inline float GetScale() const noexcept { return m_scale; }
+			inline const std::array<stbtt_packedchar, 96>& GetCharData() const { return m_cdata; }
+			inline const TextureAtlas& GetAtlas() const noexcept { return m_atlas; }
+			inline bool operator==(const Font& rhs) const { return rhs._name == m_name && rhs._scale == m_scale; }
+			inline bool operator!=(const Font& rhs) const { return rhs._name != m_name || rhs._scale != m_scale; }
+
+			void Destroy();
 
 			~Font();
 
 		private:
-			void buildFont();
+			void BuildFont();
 
 		private:
-			std::array<stbtt_packedchar, 96> _cdata;
-			TextureAtlas _atlas;
-			std::variant<std::filesystem::path, std::vector<std::uint8_t>> _build_data;
-			std::string _name;
-			class Renderer& _renderer;
-			float _scale = 0;
-			bool _is_init = false;
+			std::array<stbtt_packedchar, 96> m_cdata;
+			TextureAtlas m_atlas;
+			std::variant<std::filesystem::path, std::vector<std::uint8_t>> m_build_data;
+			std::string m_name;
+			class Renderer& m_renderer;
+			float m_scale = 0;
+			bool m_is_init = false;
 	};
 }
 
