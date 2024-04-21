@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   text_manager.h                                     :+:      :+:    :+:   */
+/*   TextManager.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 16:24:11 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 19:08:00 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/28 22:27:32 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_TEXT_MANAGER__
 #define __MLX_TEXT_MANAGER__
 
-#include <renderer/renderer.h>
-#include <renderer/images/texture_atlas.h>
-#include <renderer/texts/text_descriptor.h>
-#include <renderer/texts/text_library.h>
-#include <renderer/texts/font_library.h>
+#include <Renderer/Renderer.h>
+#include <Renderer/Images/TextureAtlas.h>
+#include <Renderer/Texts/TextDescriptor.h>
+#include <Renderer/Texts/TextLibrary.h>
+#include <Renderer/Texts/FontLibrary.h>
 
 namespace mlx
 {
@@ -26,17 +26,17 @@ namespace mlx
 		public:
 			TextManager() = default;
 
-			void init(Renderer& renderer) noexcept;
-			std::pair<DrawableResource*, bool> registerText(int x, int y, std::uint32_t color, std::string str);
-			inline void clear() { _text_descriptors.clear(); }
-			void loadFont(Renderer& renderer, const std::filesystem::path& filepath, float scale);
-			void destroy() noexcept;
+			void Init(Renderer& renderer) noexcept;
+			std::pair<NonOwningPtr<DrawableResource>, bool> RegisterText(int x, int y, std::uint32_t color, std::string str);
+			inline void Clear() { m_text_descriptors.clear(); }
+			void LoadFont(Renderer& renderer, const std::filesystem::path& filepath, float scale);
+			void Destroy() noexcept;
 
 			~TextManager() = default;
 
 		private:
-			std::unordered_set<TextDrawDescriptor> _text_descriptors;
-			FontID _font_in_use = nullfont;
+			std::unordered_set<TextDrawDescriptor> m_text_descriptors;
+			FontID m_font_in_use = nullfont;
 	};
 }
 

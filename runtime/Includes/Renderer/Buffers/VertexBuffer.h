@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:27:38 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/27 22:18:23 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/28 22:23:32 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 
 namespace mlx
 {
-	class VertexBuffer : public Buffer
+	class RAMVertexBuffer : public Buffer
 	{
 		public:
 			inline void Create(std::uint32_t size, const void* data, const char* name) { Buffer::Create(BufferType::HighDynamic, size, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, name, data); }

@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   text_library.h                                     :+:      :+:    :+:   */
+/*   TextLibrary.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 11:52:30 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 19:08:03 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/28 22:26:10 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_TEXT_LIBRARY__
 #define __MLX_TEXT_LIBRARY__
 
-#include <renderer/buffers/vk_vbo.h>
-#include <renderer/buffers/vk_ibo.h>
-#include <renderer/texts/font.h>
-#include <renderer/core/render_core.h>
-#include <utils/singleton.h>
+#include <Renderer/Buffers/VertexBuffer.h>
+#include <Renderer/Buffers/IndexBuffer.h>
+#include <Renderer/Texts/Font.h>
+#include <Renderer/Core/RenderCore.h>
+#include <Utils/Singleton.h>
 
 namespace mlx
 {
@@ -29,19 +29,19 @@ namespace mlx
 		friend class Singleton<TextLibrary>;
 
 		public:
-			std::shared_ptr<class Text> getTextData(TextID id);
-			TextID addTextToLibrary(std::shared_ptr<Text> text);
-			void removeTextFromLibrary(TextID id);
+			std::shared_ptr<class Text> GetTextData(TextID id);
+			TextID AddTextToLibrary(std::shared_ptr<Text> text);
+			void RemoveTextFromLibrary(TextID id);
 
-			void clearLibrary();
+			void ClearLibrary();
 
 		private:
 			TextLibrary() = default;
 			~TextLibrary() = default;
 
 		private:
-			std::unordered_map<TextID, std::shared_ptr<class Text>> _cache;
-			TextID _current_id = 1;
+			std::unordered_map<TextID, std::shared_ptr<class Text>> m_cache;
+			TextID m_current_id = 1;
 	};
 }
 

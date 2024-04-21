@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 22:10:52 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/27 17:43:18 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/02 17:06:34 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,7 @@
 #include <renderer/texts/font_library.h>
 #include <renderer/images/texture.h>
 #include <renderer/core/render_core.h>
-#include <core/errors.h>
-#include <mlx_profile.h>
-#include <core/memory.h>
+#include <Core/memory.h>
 #include <Core/EventBus.h>
 
 namespace mlx::core
@@ -32,11 +30,6 @@ namespace mlx::core
 		}, "__internal_application" });
 
 		_fps.init();
-		glfwSetErrorCallback([]([[maybe_unused]] int code, const char* desc)
-		{
-			error::report(e_kind::fatal_error, "GLFW error : %s", desc);
-		});
-		glfwInit();
 	}
 
 	void Application::run() noexcept
@@ -111,6 +104,5 @@ namespace mlx::core
 	{
 		TextLibrary::get().clearLibrary();
 		FontLibrary::get().clearLibrary();
-		glfwTerminate();
 	}
 }

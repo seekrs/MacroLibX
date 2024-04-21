@@ -1,35 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   renderer.h                                         :+:      :+:    :+:   */
+/*   Renderer.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:14:45 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/27 00:31:28 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/28 22:36:05 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __RENDERER__
 #define __RENDERER__
 
-#include <renderer/buffers/vk_ubo.h>
-#include <renderer/core/vk_surface.h>
-#include <renderer/core/render_core.h>
-#include <renderer/core/vk_semaphore.h>
-#include <renderer/pipeline/pipeline.h>
-#include <renderer/command/cmd_manager.h>
-#include <renderer/swapchain/vk_swapchain.h>
-#include <renderer/renderpass/vk_render_pass.h>
-#include <renderer/renderpass/vk_framebuffer.h>
-#include <renderer/descriptors/vk_descriptor_set.h>
-#include <renderer/descriptors/vk_descriptor_pool.h>
-#include <renderer/descriptors/vk_descriptor_set_layout.h>
-
-#include <core/errors.h>
-#include <mlx_profile.h>
-
-#include <glm/glm.hpp>
+#include <Renderer/Buffers/UniformBuffer.h>
+#include <Renderer/Core/Surface.h>
+#include <Renderer/Core/RenderCore.h>
+#include <Renderer/Core/Semaphore.h>
+#include <Renderer/Pipeline/Pipeline.h>
+#include <Renderer/Command/CommandManager.h>
+#include <Renderer/Swapchain/Swapchain.h>
+#include <Renderer/Renderpass/RenderPass.h>
+#include <Renderer/Renderpass/FrameBuffer.h>
+#include <Renderer/Descriptors/DescriptorSet.h>
+#include <Renderer/Descriptors/DescriptorPool.h>
+#include <Renderer/Descriptors/DescriptorSetLayout.h>
 
 namespace mlx
 {
@@ -41,36 +36,36 @@ namespace mlx
 
 		Vertex(glm::vec2 _pos, glm::vec4 _color, glm::vec2 _uv) : pos(std::move(_pos)), color(std::move(_color)), uv(std::move(_uv)) {}
 
-		static VkVertexInputBindingDescription getBindingDescription()
+		static VkVertexInputBindingDescription GetBindingDescription()
 		{
-			VkVertexInputBindingDescription bindingDescription{};
-			bindingDescription.binding = 0;
-			bindingDescription.stride = sizeof(Vertex);
-			bindingDescription.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
+			VkVertexInputBindingDescription binding_description{};
+			binding_description.binding = 0;
+			binding_description.stride = sizeof(Vertex);
+			binding_description.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
 
-			return bindingDescription;
+			return binding_description;
 		}
 
-		static std::array<VkVertexInputAttributeDescription, 3> getAttributeDescriptions()
+		static std::array<VkVertexInputAttributeDescription, 3> GetAttributeDescriptions()
 		{
-			std::array<VkVertexInputAttributeDescription, 3> attributeDescriptions;
+			std::array<VkVertexInputAttributeDescription, 3> attribute_descriptions;
 
-			attributeDescriptions[0].binding = 0;
-			attributeDescriptions[0].location = 0;
-			attributeDescriptions[0].format = VK_FORMAT_R32G32_SFLOAT;
-			attributeDescriptions[0].offset = offsetof(Vertex, pos);
+			attribute_descriptions[0].binding = 0;
+			attribute_descriptions[0].location = 0;
+			attribute_descriptions[0].format = VK_FORMAT_R32G32_SFLOAT;
+			attribute_descriptions[0].offset = offsetof(Vertex, pos);
 
-			attributeDescriptions[1].binding = 0;
-			attributeDescriptions[1].location = 1;
-			attributeDescriptions[1].format = VK_FORMAT_R32G32B32A32_SFLOAT;
-			attributeDescriptions[1].offset = offsetof(Vertex, color);
+			attribute_descriptions[1].binding = 0;
+			attribute_descriptions[1].location = 1;
+			attribute_descriptions[1].format = VK_FORMAT_R32G32B32A32_SFLOAT;
+			attribute_descriptions[1].offset = offsetof(Vertex, color);
 
-			attributeDescriptions[2].binding = 0;
-			attributeDescriptions[2].location = 2;
-			attributeDescriptions[2].format = VK_FORMAT_R32G32_SFLOAT;
-			attributeDescriptions[2].offset = offsetof(Vertex, uv);
+			attribute_descriptions[2].binding = 0;
+			attribute_descriptions[2].location = 2;
+			attribute_descriptions[2].format = VK_FORMAT_R32G32_SFLOAT;
+			attribute_descriptions[2].offset = offsetof(Vertex, uv);
 
-			return attributeDescriptions;
+			return attribute_descriptions;
 		}
 	};
 
@@ -79,63 +74,63 @@ namespace mlx
 		public:
 			Renderer() = default;
 
-			void init(class Texture* render_target);
+			void Init(NonOwningPtr<class Texture> render_target);
 
-			bool beginFrame();
-			void endFrame();
+			bool BeginFrame();
+			void EndFrame();
 
-			void destroy();
+			void Destroy();
 
-			inline class Window* getWindow() { return _window; }
-			inline void setWindow(class Window* window) { _window = window; }
+			inline NonOwningPtr<class Window> GetWindow() { return m_window; }
+			inline void SetWindow(NonOwningPtr<class Window> window) { m_window = window; }
 
-			inline Surface& getSurface() noexcept { return _surface; }
-			inline CmdPool& getCmdPool() noexcept { return _cmd.getCmdPool(); }
-			inline UBO* getUniformBuffer() noexcept { return _uniform_buffer.get(); }
-			inline SwapChain& getSwapChain() noexcept { return _swapchain; }
-			inline Semaphore& getSemaphore(int i) noexcept { return _semaphores[i]; }
-			inline RenderPass& getRenderPass() noexcept { return _pass; }
-			inline GraphicPipeline& getPipeline() noexcept { return _pipeline; }
-			inline CmdBuffer& getCmdBuffer(int i) noexcept { return _cmd.getCmdBuffer(i); }
-			inline CmdBuffer& getActiveCmdBuffer() noexcept { return _cmd.getCmdBuffer(_current_frame_index); }
-			inline FrameBuffer& getFrameBuffer(int i) noexcept { return _framebuffers[i]; }
-			inline DescriptorSet& getVertDescriptorSet() noexcept { return _vert_set; }
-			inline DescriptorSet& getFragDescriptorSet() noexcept { return _frag_set; }
-			inline DescriptorSetLayout& getVertDescriptorSetLayout() noexcept { return _vert_layout; }
-			inline DescriptorSetLayout& getFragDescriptorSetLayout() noexcept { return _frag_layout; }
-			inline std::uint32_t getActiveImageIndex() noexcept { return _current_frame_index; }
-			inline std::uint32_t getImageIndex() noexcept { return _image_index; }
+			inline Surface& GetSurface() noexcept { return m_surface; }
+			inline CmdPool& GetCmdPool() noexcept { return m_cmd.GetCmdPool(); }
+			inline NonOwningPtr<UniformBuffer> GetUniformBuffer() noexcept { return m_uniform_buffer.get(); }
+			inline SwapChain& GetSwapChain() noexcept { return m_swapchain; }
+			inline Semaphore& GetSemaphore(int i) noexcept { return m_semaphores[i]; }
+			inline RenderPass& GetRenderPass() noexcept { return m_pass; }
+			inline GraphicPipeline& GetPipeline() noexcept { return m_pipeline; }
+			inline CmdBuffer& GetCmdBuffer(int i) noexcept { return m_cmd.GetCmdBuffer(i); }
+			inline CmdBuffer& GetActiveCmdBuffer() noexcept { return m_cmd.GetCmdBuffer(m_current_frame_index); }
+			inline FrameBuffer& GetFrameBuffer(int i) noexcept { return m_framebuffers[i]; }
+			inline DescriptorSet& GetVertDescriptorSet() noexcept { return m_vert_set; }
+			inline DescriptorSet& GetFragDescriptorSet() noexcept { return m_frag_set; }
+			inline DescriptorSetLayout& GetVertDescriptorSetLayout() noexcept { return m_vert_layout; }
+			inline DescriptorSetLayout& GetFragDescriptorSetLayout() noexcept { return m_frag_layout; }
+			inline std::uint32_t GetActiveImageIndex() noexcept { return m_current_frame_index; }
+			inline std::uint32_t GetImageIndex() noexcept { return m_image_index; }
 
-			constexpr inline void requireFrameBufferResize() noexcept { _framebuffer_resized = true; }
+			constexpr inline void RequireFrameBufferResize() noexcept { m_framebuffer_resized = true; }
 
 			~Renderer() = default;
 
 		private:
-			void recreateRenderData();
+			void RecreateRenderData();
 
 		private:
-			GraphicPipeline _pipeline;
-			CmdManager _cmd;
-			RenderPass _pass;
-			Surface _surface;
-			SwapChain _swapchain;
-			std::array<Semaphore, MAX_FRAMES_IN_FLIGHT> _semaphores;
-			std::vector<FrameBuffer> _framebuffers;
+			GraphicPipeline m_pipeline;
+			CmdManager m_cmd;
+			RenderPass m_pass;
+			Surface m_surface;
+			SwapChain m_swapchain;
+			std::array<Semaphore, MAX_FRAMES_IN_FLIGHT> m_semaphores;
+			std::vector<FrameBuffer> m_framebuffers;
 
-			DescriptorSetLayout _vert_layout;
-			DescriptorSetLayout _frag_layout;
+			DescriptorSetLayout m_vert_layout;
+			DescriptorSetLayout m_frag_layout;
 
-			DescriptorSet _vert_set;
-			DescriptorSet _frag_set;
+			DescriptorSet m_vert_set;
+			DescriptorSet m_frag_set;
 
-			std::unique_ptr<UBO> _uniform_buffer;
+			std::unique_ptr<UniformBuffer> m_uniform_buffer;
 
-			class Window* _window = nullptr;
-			class Texture* _render_target = nullptr;
+			NonOwningPtr<class Window> m_window;
+			NonOwningPtr<class Texture> m_render_target;
 
-			std::uint32_t _current_frame_index = 0;
-			std::uint32_t _image_index = 0;
-			bool _framebuffer_resized = false;
+			std::uint32_t m_current_frame_index = 0;
+			std::uint32_t m_image_index = 0;
+			bool m_framebuffer_resized = false;
 	};
 }
 

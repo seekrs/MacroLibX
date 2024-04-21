@@ -1,20 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   texture_manager.h                                  :+:      :+:    :+:   */
+/*   TextureManager.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 00:56:15 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 19:09:45 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/03 16:24:51 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_TEXTURE_MANAGER__
 #define __MLX_TEXTURE_MANAGER__
 
-#include <renderer/images/texture_descriptor.h>
-#include <core/profiler.h>
+#include <Renderer/Images/TextureDescriptor.h>
 
 namespace mlx
 {
@@ -23,19 +22,19 @@ namespace mlx
 		public:
 			TextureManager() = default;
 
-			inline void clear() { _texture_descriptors.clear(); }
+			inline void Clear() { m_texture_descriptors.clear(); }
 
-			inline std::pair<DrawableResource*, bool> registerTexture(Texture* texture, int x, int y)
+			inline std::pair<NonOwningPtr<DrawableResource>, bool> RegisterTexture(NonOwningPtr<Texture> texture, int x, int y)
 			{
 				MLX_PROFILE_FUNCTION();
-				auto res = _texture_descriptors.emplace(texture, x, y);
+				auto res = m_texture_descriptors.emplace(texture, x, y);
 				return std::make_pair(static_cast<DrawableResource*>(&const_cast<TextureRenderDescriptor&>(*res.first)), res.second);
 			}
 
-			inline bool isTextureKnown(Texture* texture) noexcept
+			inline bool IsTextureKnown(NonOwningPtr<Texture> texture) noexcept
 			{
 				MLX_PROFILE_FUNCTION();
-				for(const auto& desc : _texture_descriptors)
+				for(const auto& desc : m_texture_descriptors)
 				{
 					if(desc.texture == texture)
 						return true;
@@ -43,13 +42,13 @@ namespace mlx
 				return false;
 			}
 
-			inline void eraseTextures(Texture* texture)
+			inline void EraseTextures(NonOwningPtr<Texture> texture)
 			{
 				MLX_PROFILE_FUNCTION();
-				for(auto it = _texture_descriptors.begin(); it != _texture_descriptors.end();)
+				for(auto it = m_texture_descriptors.begin(); it != m_texture_descriptors.end();)
 				{
 					if(it->texture == texture)
-						it = _texture_descriptors.erase(it);
+						it = m_texture_descriptors.erase(it);
 					else
 						++it;
 				}
@@ -58,7 +57,7 @@ namespace mlx
 			~TextureManager() = default;
 
 		private:
-			std::unordered_set<TextureRenderDescriptor> _texture_descriptors;
+			std::unordered_set<TextureRenderDescriptor> m_texture_descriptors;
 	};
 }
 

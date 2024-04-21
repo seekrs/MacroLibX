@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vk_framebuffer.h                                   :+:      :+:    :+:   */
+/*   FrameBuffer.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:19:44 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 19:08:37 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/28 22:16:02 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,18 @@ namespace mlx
 	class FrameBuffer
 	{
 		public:
-			void init(class RenderPass& renderpass, class Image& image);
-			void destroy() noexcept;
+			void Init(class RenderPass& renderpass, class Image& image);
+			void Destroy() noexcept;
 
-			inline VkFramebuffer& operator()() noexcept { return _framebuffer; }
-			inline VkFramebuffer& get() noexcept { return _framebuffer; }
-			inline std::uint32_t getWidth() const noexcept { return _width; }
-			inline std::uint32_t getHeight() const noexcept { return _height; }
+			inline VkFramebuffer& operator()() noexcept { return m_framebuffer; }
+			inline VkFramebuffer& Get() noexcept { return m_framebuffer; }
+			inline std::uint32_t GetWidth() const noexcept { return m_width; }
+			inline std::uint32_t GetHeight() const noexcept { return m_height; }
 
 		private:
-			VkFramebuffer _framebuffer = VK_NULL_HANDLE;
-			std::uint32_t _width = 0;
-			std::uint32_t _height = 0;
+			VkFramebuffer m_framebuffer = VK_NULL_HANDLE;
+			std::uint32_t m_width = 0;
+			std::uint32_t m_height = 0;
 	};
 }
 

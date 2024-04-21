@@ -1,28 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IndexBuffer.h                                      :+:      :+:    :+:   */
+/*   DriverInstance.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/25 15:05:05 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/28 22:11:05 by maldavid         ###   ########.fr       */
+/*   Created: 2024/04/02 16:57:20 by maldavid          #+#    #+#             */
+/*   Updated: 2024/04/02 17:01:03 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef __VK_IBO__
-#define __VK_IBO__
-
-#include <Renderer/Buffer/Buffer.h>
-#include <Renderer/Renderer.h>
+#ifndef __MLX_DRIVER_INSTANCE__
+#define __MLX_DRIVER_INSTANCE__
 
 namespace mlx
 {
-	class ConstantIndexBuffer : public Buffer
+	class DriverInstance
 	{
 		public:
-			inline void Create(std::uint32_t size, const std::uint16_t* data, const char* name) { Buffer::Create(BufferType::Constant, size, VK_BUFFER_USAGE_INDEX_BUFFER_BIT, name, data); }
-			inline void Bind(Renderer& renderer) noexcept { renderer.GetActiveCmdBuffer().BindIndexBuffer(*this); }
+			DriverInstance() = default;
+
+			virtual bool InitDriver() { m_is_up = true; return true; }
+			virtual void ShutdownDriver() { m_is_up = false; }
+
+			inline bool IsRunning() const noexcept { return m_is_up; }
+
+			virtual ~DriverInstance() = default;
+
+		private:
+			bool m_is_up = false;
 	};
 }
 

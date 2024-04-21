@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   texture_atlas.h                                    :+:      :+:    :+:   */
+/*   TextureAtlas.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 16:36:33 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 19:09:50 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/03/28 22:12:13 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_TEXTURE_ATLAS__
 #define __MLX_TEXTURE_ATLAS__
 
-#include <renderer/images/texture.h>
+#include <Renderer/Images/Texture.h>
 
 namespace mlx
 {
@@ -22,22 +22,22 @@ namespace mlx
 		public:
 			TextureAtlas() = default;
 
-			void create(std::uint8_t* pixels, std::uint32_t width, std::uint32_t height, VkFormat format, const char* name, bool dedicated_memory = false);
-			void render(class Renderer& renderer, int x, int y, std::uint32_t ibo_size) const;
-			void destroy() noexcept override;
+			void Create(std::uint8_t* pixels, std::uint32_t width, std::uint32_t height, VkFormat format, const char* name, bool dedicated_memory = false);
+			void Render(class Renderer& renderer, int x, int y, std::uint32_t ibo_size) const;
+			void Destroy() noexcept override;
 
-			inline void setDescriptor(DescriptorSet&& set) noexcept { _set = set; }
-			inline VkDescriptorSet getVkSet() noexcept { return _set.isInit() ? _set.get() : VK_NULL_HANDLE; }
-			inline DescriptorSet getSet() noexcept { return _set; }
-			inline void updateSet(int binding) noexcept { _set.writeDescriptor(binding, *this); _has_been_updated = true; }
-			inline bool hasBeenUpdated() const noexcept { return _has_been_updated; }
-			inline constexpr void resetUpdate() noexcept { _has_been_updated = false; }
+			inline void SetDescriptor(DescriptorSet&& set) noexcept { m_set = set; }
+			inline VkDescriptorSet GetVkSet() noexcept { return m_set.isInit() ? m_set.get() : VK_NULL_HANDLE; }
+			inline DescriptorSet GetSet() noexcept { return m_set; }
+			inline void UpdateSet(int binding) noexcept { m_set.writeDescriptor(binding, *this); m_has_been_updated = true; }
+			inline bool HasBeenUpdated() const noexcept { return m_has_been_updated; }
+			inline constexpr void ResetUpdate() noexcept { m_has_been_updated = false; }
 
 			~TextureAtlas() = default;
 
 		private:
-			DescriptorSet _set;
-			bool _has_been_updated = false;
+			DescriptorSet m_set;
+			bool m_has_been_updated = false;
 	};
 }
 
