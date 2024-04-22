@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 15:13:55 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/11 04:38:53 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/22 17:34:27 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ namespace mlx
 		_proj = glm::ortho<float>(0, _width, 0, _height);
 		_renderer->getUniformBuffer()->setData(sizeof(_proj), &_proj);
 
-		static std::array<VkDescriptorSet, 2> sets = {
+		std::array<VkDescriptorSet, 2> sets = {
 			_renderer->getVertDescriptorSet().get(), 
 			VK_NULL_HANDLE
 		};

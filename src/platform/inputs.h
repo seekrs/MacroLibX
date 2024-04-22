@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:27:35 by maldavid          #+#    #+#             */
-/*   Updated: 2024/02/25 07:51:55 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/22 17:35:23 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ namespace mlx
 			inline int getYRel() const noexcept { return _yRel; }
 
 			inline bool isRunning() const noexcept { return !_end; }
+			inline constexpr void run() noexcept { _end = false; }
 			inline constexpr void finish() noexcept { _end = true; }
 
 			inline void addWindow(std::shared_ptr<MLX_Window> window)
