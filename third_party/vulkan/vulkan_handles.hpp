@@ -2486,12 +2486,6 @@ namespace VULKAN_HPP_NAMESPACE
 #endif
 
   template <>
-  struct CppType<VkSurfaceKHR, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::SurfaceKHR;
-  };
-
-  template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::SurfaceKHR>
   {
     static VULKAN_HPP_CONST_OR_CONSTEXPR bool value = true;
@@ -2590,12 +2584,6 @@ namespace VULKAN_HPP_NAMESPACE
 #endif
 
   template <>
-  struct CppType<VkDebugReportCallbackEXT, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::DebugReportCallbackEXT;
-  };
-
-  template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::DebugReportCallbackEXT>
   {
     static VULKAN_HPP_CONST_OR_CONSTEXPR bool value = true;
@@ -2686,12 +2674,6 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::DebugUtilsMessengerEXT;
   };
 #endif
-
-  template <>
-  struct CppType<VkDebugUtilsMessengerEXT, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::DebugUtilsMessengerEXT;
-  };
 
   template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::DebugUtilsMessengerEXT>
@@ -2789,12 +2771,6 @@ namespace VULKAN_HPP_NAMESPACE
 #endif
 
   template <>
-  struct CppType<VkDisplayKHR, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::DisplayKHR;
-  };
-
-  template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::DisplayKHR>
   {
     static VULKAN_HPP_CONST_OR_CONSTEXPR bool value = true;
@@ -2888,12 +2864,6 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::SwapchainKHR;
   };
 #endif
-
-  template <>
-  struct CppType<VkSwapchainKHR, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::SwapchainKHR;
-  };
 
   template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::SwapchainKHR>
@@ -2991,12 +2961,6 @@ namespace VULKAN_HPP_NAMESPACE
 #endif
 
   template <>
-  struct CppType<VkSemaphore, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::Semaphore;
-  };
-
-  template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::Semaphore>
   {
     static VULKAN_HPP_CONST_OR_CONSTEXPR bool value = true;
@@ -3092,12 +3056,6 @@ namespace VULKAN_HPP_NAMESPACE
 #endif
 
   template <>
-  struct CppType<VkFence, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::Fence;
-  };
-
-  template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::Fence>
   {
     static VULKAN_HPP_CONST_OR_CONSTEXPR bool value = true;
@@ -3188,12 +3146,6 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::PerformanceConfigurationINTEL;
   };
 #endif
-
-  template <>
-  struct CppType<VkPerformanceConfigurationINTEL, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::PerformanceConfigurationINTEL;
-  };
 
   template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::PerformanceConfigurationINTEL>
@@ -3291,12 +3243,6 @@ namespace VULKAN_HPP_NAMESPACE
 #endif
 
   template <>
-  struct CppType<VkQueryPool, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::QueryPool;
-  };
-
-  template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::QueryPool>
   {
     static VULKAN_HPP_CONST_OR_CONSTEXPR bool value = true;
@@ -3390,12 +3336,6 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::Buffer;
   };
 #endif
-
-  template <>
-  struct CppType<VkBuffer, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::Buffer;
-  };
 
   template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::Buffer>
@@ -3493,12 +3433,6 @@ namespace VULKAN_HPP_NAMESPACE
 #endif
 
   template <>
-  struct CppType<VkPipelineLayout, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::PipelineLayout;
-  };
-
-  template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::PipelineLayout>
   {
     static VULKAN_HPP_CONST_OR_CONSTEXPR bool value = true;
@@ -3592,12 +3526,6 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::DescriptorSet;
   };
 #endif
-
-  template <>
-  struct CppType<VkDescriptorSet, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::DescriptorSet;
-  };
 
   template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::DescriptorSet>
@@ -3695,12 +3623,6 @@ namespace VULKAN_HPP_NAMESPACE
 #endif
 
   template <>
-  struct CppType<VkImageView, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::ImageView;
-  };
-
-  template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::ImageView>
   {
     static VULKAN_HPP_CONST_OR_CONSTEXPR bool value = true;
@@ -3796,12 +3718,6 @@ namespace VULKAN_HPP_NAMESPACE
 #endif
 
   template <>
-  struct CppType<VkPipeline, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::Pipeline;
-  };
-
-  template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::Pipeline>
   {
     static VULKAN_HPP_CONST_OR_CONSTEXPR bool value = true;
@@ -3889,12 +3805,6 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::ShaderEXT;
   };
 #endif
-
-  template <>
-  struct CppType<VkShaderEXT, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::ShaderEXT;
-  };
 
   template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::ShaderEXT>
@@ -3990,12 +3900,6 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::Image;
   };
 #endif
-
-  template <>
-  struct CppType<VkImage, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::Image;
-  };
 
   template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::Image>
@@ -4096,12 +4000,6 @@ namespace VULKAN_HPP_NAMESPACE
 #endif
 
   template <>
-  struct CppType<VkAccelerationStructureNV, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::AccelerationStructureNV;
-  };
-
-  template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::AccelerationStructureNV>
   {
     static VULKAN_HPP_CONST_OR_CONSTEXPR bool value = true;
@@ -4192,12 +4090,6 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::OpticalFlowSessionNV;
   };
 #endif
-
-  template <>
-  struct CppType<VkOpticalFlowSessionNV, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::OpticalFlowSessionNV;
-  };
 
   template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::OpticalFlowSessionNV>
@@ -4298,12 +4190,6 @@ namespace VULKAN_HPP_NAMESPACE
 #endif
 
   template <>
-  struct CppType<VkDescriptorUpdateTemplate, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::DescriptorUpdateTemplate;
-  };
-
-  template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::DescriptorUpdateTemplate>
   {
     static VULKAN_HPP_CONST_OR_CONSTEXPR bool value = true;
@@ -4399,12 +4285,6 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::Event;
   };
 #endif
-
-  template <>
-  struct CppType<VkEvent, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::Event;
-  };
 
   template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::Event>
@@ -4505,12 +4385,6 @@ namespace VULKAN_HPP_NAMESPACE
 #endif
 
   template <>
-  struct CppType<VkAccelerationStructureKHR, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::AccelerationStructureKHR;
-  };
-
-  template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::AccelerationStructureKHR>
   {
     static VULKAN_HPP_CONST_OR_CONSTEXPR bool value = true;
@@ -4598,12 +4472,6 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::MicromapEXT;
   };
 #endif
-
-  template <>
-  struct CppType<VkMicromapEXT, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::MicromapEXT;
-  };
 
   template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::MicromapEXT>
@@ -7002,12 +6870,6 @@ namespace VULKAN_HPP_NAMESPACE
 #endif
 
   template <>
-  struct CppType<VkCommandBuffer, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::CommandBuffer;
-  };
-
-  template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::CommandBuffer>
   {
     static VULKAN_HPP_CONST_OR_CONSTEXPR bool value = true;
@@ -7103,12 +6965,6 @@ namespace VULKAN_HPP_NAMESPACE
 #endif
 
   template <>
-  struct CppType<VkDeviceMemory, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::DeviceMemory;
-  };
-
-  template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::DeviceMemory>
   {
     static VULKAN_HPP_CONST_OR_CONSTEXPR bool value = true;
@@ -7196,12 +7052,6 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::VideoSessionKHR;
   };
 #endif
-
-  template <>
-  struct CppType<VkVideoSessionKHR, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::VideoSessionKHR;
-  };
 
   template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::VideoSessionKHR>
@@ -7294,12 +7144,6 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::DeferredOperationKHR;
   };
 #endif
-
-  template <>
-  struct CppType<VkDeferredOperationKHR, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::DeferredOperationKHR;
-  };
 
   template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::DeferredOperationKHR>
@@ -7401,12 +7245,6 @@ namespace VULKAN_HPP_NAMESPACE
 #  endif
 
   template <>
-  struct CppType<VkBufferCollectionFUCHSIA, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::BufferCollectionFUCHSIA;
-  };
-
-  template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::BufferCollectionFUCHSIA>
   {
     static VULKAN_HPP_CONST_OR_CONSTEXPR bool value = true;
@@ -7501,12 +7339,6 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::BufferView;
   };
 #endif
-
-  template <>
-  struct CppType<VkBufferView, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::BufferView;
-  };
 
   template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::BufferView>
@@ -7604,12 +7436,6 @@ namespace VULKAN_HPP_NAMESPACE
 #endif
 
   template <>
-  struct CppType<VkCommandPool, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::CommandPool;
-  };
-
-  template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::CommandPool>
   {
     static VULKAN_HPP_CONST_OR_CONSTEXPR bool value = true;
@@ -7703,12 +7529,6 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::PipelineCache;
   };
 #endif
-
-  template <>
-  struct CppType<VkPipelineCache, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::PipelineCache;
-  };
 
   template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::PipelineCache>
@@ -7806,12 +7626,6 @@ namespace VULKAN_HPP_NAMESPACE
 #endif
 
   template <>
-  struct CppType<VkCuFunctionNVX, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::CuFunctionNVX;
-  };
-
-  template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::CuFunctionNVX>
   {
     static VULKAN_HPP_CONST_OR_CONSTEXPR bool value = true;
@@ -7905,12 +7719,6 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::CuModuleNVX;
   };
 #endif
-
-  template <>
-  struct CppType<VkCuModuleNVX, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::CuModuleNVX;
-  };
 
   template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::CuModuleNVX>
@@ -8007,12 +7815,6 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::CudaFunctionNV;
   };
 #  endif
-
-  template <>
-  struct CppType<VkCudaFunctionNV, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::CudaFunctionNV;
-  };
 
   template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::CudaFunctionNV>
@@ -8112,12 +7914,6 @@ namespace VULKAN_HPP_NAMESPACE
 #  endif
 
   template <>
-  struct CppType<VkCudaModuleNV, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::CudaModuleNV;
-  };
-
-  template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::CudaModuleNV>
   {
     static VULKAN_HPP_CONST_OR_CONSTEXPR bool value = true;
@@ -8212,12 +8008,6 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::DescriptorPool;
   };
 #endif
-
-  template <>
-  struct CppType<VkDescriptorPool, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::DescriptorPool;
-  };
 
   template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::DescriptorPool>
@@ -8318,12 +8108,6 @@ namespace VULKAN_HPP_NAMESPACE
 #endif
 
   template <>
-  struct CppType<VkDescriptorSetLayout, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::DescriptorSetLayout;
-  };
-
-  template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::DescriptorSetLayout>
   {
     static VULKAN_HPP_CONST_OR_CONSTEXPR bool value = true;
@@ -8419,12 +8203,6 @@ namespace VULKAN_HPP_NAMESPACE
 #endif
 
   template <>
-  struct CppType<VkFramebuffer, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::Framebuffer;
-  };
-
-  template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::Framebuffer>
   {
     static VULKAN_HPP_CONST_OR_CONSTEXPR bool value = true;
@@ -8517,12 +8295,6 @@ namespace VULKAN_HPP_NAMESPACE
 #endif
 
   template <>
-  struct CppType<VkIndirectCommandsLayoutNV, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::IndirectCommandsLayoutNV;
-  };
-
-  template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::IndirectCommandsLayoutNV>
   {
     static VULKAN_HPP_CONST_OR_CONSTEXPR bool value = true;
@@ -8610,12 +8382,6 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::PrivateDataSlot;
   };
 #endif
-
-  template <>
-  struct CppType<VkPrivateDataSlot, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::PrivateDataSlot;
-  };
 
   template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::PrivateDataSlot>
@@ -8715,12 +8481,6 @@ namespace VULKAN_HPP_NAMESPACE
 #endif
 
   template <>
-  struct CppType<VkRenderPass, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::RenderPass;
-  };
-
-  template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::RenderPass>
   {
     static VULKAN_HPP_CONST_OR_CONSTEXPR bool value = true;
@@ -8814,12 +8574,6 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::Sampler;
   };
 #endif
-
-  template <>
-  struct CppType<VkSampler, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::Sampler;
-  };
 
   template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::Sampler>
@@ -8920,12 +8674,6 @@ namespace VULKAN_HPP_NAMESPACE
 #endif
 
   template <>
-  struct CppType<VkSamplerYcbcrConversion, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::SamplerYcbcrConversion;
-  };
-
-  template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::SamplerYcbcrConversion>
   {
     static VULKAN_HPP_CONST_OR_CONSTEXPR bool value = true;
@@ -9021,12 +8769,6 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::ShaderModule;
   };
 #endif
-
-  template <>
-  struct CppType<VkShaderModule, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::ShaderModule;
-  };
 
   template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::ShaderModule>
@@ -9126,12 +8868,6 @@ namespace VULKAN_HPP_NAMESPACE
 #endif
 
   template <>
-  struct CppType<VkValidationCacheEXT, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::ValidationCacheEXT;
-  };
-
-  template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::ValidationCacheEXT>
   {
     static VULKAN_HPP_CONST_OR_CONSTEXPR bool value = true;
@@ -9222,12 +8958,6 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::VideoSessionParametersKHR;
   };
 #endif
-
-  template <>
-  struct CppType<VkVideoSessionParametersKHR, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::VideoSessionParametersKHR;
-  };
 
   template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::VideoSessionParametersKHR>
@@ -9481,12 +9211,6 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::Queue;
   };
 #endif
-
-  template <>
-  struct CppType<VkQueue, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::Queue;
-  };
 
   template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::Queue>
@@ -14635,12 +14359,6 @@ namespace VULKAN_HPP_NAMESPACE
 #endif
 
   template <>
-  struct CppType<VkDevice, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::Device;
-  };
-
-  template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::Device>
   {
     static VULKAN_HPP_CONST_OR_CONSTEXPR bool value = true;
@@ -14734,12 +14452,6 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::DisplayModeKHR;
   };
 #endif
-
-  template <>
-  struct CppType<VkDisplayModeKHR, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::DisplayModeKHR;
-  };
 
   template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::DisplayModeKHR>
@@ -16172,12 +15884,6 @@ namespace VULKAN_HPP_NAMESPACE
 #endif
 
   template <>
-  struct CppType<VkPhysicalDevice, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::PhysicalDevice;
-  };
-
-  template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::PhysicalDevice>
   {
     static VULKAN_HPP_CONST_OR_CONSTEXPR bool value = true;
@@ -16850,12 +16556,6 @@ namespace VULKAN_HPP_NAMESPACE
     using Type = VULKAN_HPP_NAMESPACE::Instance;
   };
 #endif
-
-  template <>
-  struct CppType<VkInstance, VK_NULL_HANDLE>
-  {
-    using Type = VULKAN_HPP_NAMESPACE::Instance;
-  };
 
   template <>
   struct isVulkanHandleType<VULKAN_HPP_NAMESPACE::Instance>
