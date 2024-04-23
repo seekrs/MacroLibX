@@ -6,7 +6,7 @@
 #    By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/04 16:43:41 by maldavid          #+#    #+#              #
-#    Updated: 2024/04/23 20:20:33 by kiroussa         ###   ########.fr        #
+#    Updated: 2024/04/23 20:32:32 by kiroussa         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -101,9 +101,6 @@ $(NAME):	$(OBJS)
 	@printf "$(_BOLD)$(NAME)$(_RESET) compiled $(_GREEN)$(_BOLD)successfully$(_RESET)\n"
 
 _printbuildinfos:
-	@printf "$(_RED)$(_BOLD)Warning: $(_RESET)MLX is being compiled in $(MODE) mode.\n"
-	@printf "This activates $(_BOLD)Vulkan's validation layers$(_RESET) and $(_BOLD)MLX debug messages$(_RESET), which may impact rendering performances.\n\n"
-
 	@printf "Building $(_BOLD)$(NAME)$(_RESET) in $(_BOLD)$(MODE)$(_RESET) mode\n"
 	@printf "\tOperating System: $(_BOLD)$(OS)$(_RESET)\n"
 	@printf "\tCompiler: $(_BOLD)$(CXX)$(_RESET)\n"

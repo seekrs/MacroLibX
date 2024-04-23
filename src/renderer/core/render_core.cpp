@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 23:33:34 by maldavid          #+#    #+#             */
-/*   Updated: 2024/04/23 20:09:14 by kiroussa         ###   ########.fr       */
+/*   Updated: 2024/04/23 20:32:54 by kiroussa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,14 @@
 #include <mlx_profile.h>
 #include <renderer/core/render_core.h>
 #include <renderer/command/vk_cmd_buffer.h>
+
+#ifdef DEBUG
+	#ifdef MLX_COMPILER_MSVC
+		#pragma NOTE("MLX is being compiled in debug mode, this activates Vulkan's validation layers and debug messages which may impact rendering performances")
+	#else
+		#warning "MLX is being compiled in debug mode, this activates Vulkan's validation layers and debug messages which may impact rendering performances"
+	#endif
+#endif
 
 namespace mlx
 {
