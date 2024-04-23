@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 18:39:36 by maldavid          #+#    #+#             */
-/*   Updated: 2024/04/23 19:49:02 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/23 22:14:48 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,14 @@ namespace mlx
 
 			inline bool IsInit() const noexcept { return m_pool != nullptr && m_renderer != nullptr; }
 
+			void Bind() noexcept;
+
 			DescriptorSet Duplicate();
 
 			VkDescriptorSet& operator()() noexcept;
 			VkDescriptorSet& Get() noexcept;
+
+			inline const DescriptorSetLayout& GetLayout() const noexcept { return m_layout; }
 
 			inline const std::array<VkDescriptorSet, MAX_FRAMES_IN_FLIGHT>& GetAllFramesDescriptorSets() const { return m_desc_set; }
 
@@ -42,7 +46,7 @@ namespace mlx
 			~DescriptorSet() = default;
 
 		private:
-			DescriptorSetLayout p_layout;
+			DescriptorSetLayout m_layout;
 			std::array<VkDescriptorSet, MAX_FRAMES_IN_FLIGHT> m_desc_set;
 			NonOwningPtr<class DescriptorPool> p_pool;
 			NonOwningPtr<class Renderer> p_renderer;

@@ -1,21 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipeline.cpp                                       :+:      :+:    :+:   */
+/*   Pipeline.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 21:27:38 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 19:03:31 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/23 22:24:13 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <pre_compiled.h>
+#include <PreCompiled.h>
 
-#include "pipeline.h"
-#include <renderer/renderer.h>
-#include <renderer/core/render_core.h>
-#include <renderer/descriptors/vk_descriptor_set_layout.h>
+#include <Renderer/Pipelines/Pipeline.h>
+#include <Renderer/Renderer.h>
+#include <Renderer/Core/RenderCore.h>
+#include <Renderer/Descriptors/DescriptorSetLayout.h>
 
 namespace mlx
 {
@@ -26,19 +26,23 @@ namespace mlx
 			layout(location = 1) in vec4 aColor;
 			layout(location = 2) in vec2 aUV;
 
-			layout(set = 0, binding = 0) uniform uProjection {
+			layout(set = 0, binding = 0) uniform uProjection
+			{
 				mat4 mat;
 			} uProj;
 
-			layout(push_constant) uniform uModelPushConstant {
+			layout(push_constant) uniform uModelPushConstant
+			{
 				vec2 vec;
 			} uTranslate;
 
-			out gl_PerVertex {
+			out gl_PerVertex
+			{
 				vec4 gl_Position;
 			};
 
-			layout(location = 0) out struct {
+			layout(location = 0) out struct
+			{
 				vec4 Color;
 				vec2 UV;
 			} Out;
@@ -113,7 +117,8 @@ namespace mlx
 
 			layout(set = 1, binding = 0) uniform sampler2D sTexture;
 
-			layout(location = 0) in struct {
+			layout(location = 0) in struct
+			{
 				vec4 Color;
 				vec2 UV;
 			} In;
@@ -162,83 +167,83 @@ namespace mlx
 		0x000100fd,0x00010038
 	};
 
-	void GraphicPipeline::init(Renderer& renderer)
+	void GraphicPipeline::Init(Renderer& renderer)
     {
-		VkShaderModuleCreateInfo createInfo{};
-		createInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
-		createInfo.codeSize = vertex_shader.size() * sizeof(std::uint32_t);
-		createInfo.pCode = vertex_shader.data();
+		VkShaderModuleCreateInfo create_info{};
+		create_info.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
+		create_info.codeSize = vertex_shader.size() * sizeof(std::uint32_t);
+		create_info.pCode = vertex_shader.data();
 		VkShaderModule vshader;
-		if(vkCreateShaderModule(Render_Core::get().getDevice().get(), &createInfo, nullptr, &vshader) != VK_SUCCESS)
-			core::error::report(e_kind::fatal_error, "Vulkan : failed to create a vertex shader module");
+		if(vkCreateShaderModule(RenderCore::Get().GetDevice().Get(), &create_info, nullptr, &vshader) != VK_SUCCESS)
+			FatalError("Vulkan : failed to create a vertex shader module");
 
 		VkPushConstantRange push_constant;
 		push_constant.offset = 0;
 		push_constant.size = sizeof(glm::vec2);
 		push_constant.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
 
-		createInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
-		createInfo.codeSize = fragment_shader.size() * sizeof(std::uint32_t);
-		createInfo.pCode = fragment_shader.data();
+		create_info.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
+		create_info.codeSize = fragment_shader.size() * sizeof(std::uint32_t);
+		create_info.pCode = fragment_shader.data();
 		VkShaderModule fshader;
-		if(vkCreateShaderModule(Render_Core::get().getDevice().get(), &createInfo, nullptr, &fshader) != VK_SUCCESS)
-			core::error::report(e_kind::fatal_error, "Vulkan : failed to create a fragment shader module");
+		if(vkCreateShaderModule(RenderCore::Get().GetDevice().Get(), &create_info, nullptr, &fshader) != VK_SUCCESS)
+			FatalError("Vulkan : failed to create a fragment shader module");
 
-		VkPipelineShaderStageCreateInfo vertShaderStageInfo{};
-		vertShaderStageInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
-		vertShaderStageInfo.stage = VK_SHADER_STAGE_VERTEX_BIT;
-		vertShaderStageInfo.module = vshader;
-		vertShaderStageInfo.pName = "main";
+		VkPipelineShaderStageCreateInfo vert_shader_stage_info{};
+		vert_shader_stage_info.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+		vert_shader_stage_info.stage = VK_SHADER_STAGE_VERTEX_BIT;
+		vert_shader_stage_info.module = vshader;
+		vert_shader_stage_info.pName = "main";
 
-		VkPipelineShaderStageCreateInfo fragShaderStageInfo{};
-		fragShaderStageInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
-		fragShaderStageInfo.stage = VK_SHADER_STAGE_FRAGMENT_BIT;
-		fragShaderStageInfo.module = fshader;
-		fragShaderStageInfo.pName = "main";
+		VkPipelineShaderStageCreateInfo frag_shader_stage_info{};
+		frag_shader_stage_info.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+		frag_shader_stage_info.stage = VK_SHADER_STAGE_FRAGMENT_BIT;
+		frag_shader_stage_info.module = fshader;
+		frag_shader_stage_info.pName = "main";
 
-		std::array<VkPipelineShaderStageCreateInfo, 2> stages = {vertShaderStageInfo, fragShaderStageInfo};
+		std::array<VkPipelineShaderStageCreateInfo, 2> stages = { vert_shader_stage_info, frag_shader_stage_info };
 
-		auto bindingDescription = Vertex::getBindingDescription();
-		auto attributeDescriptions = Vertex::getAttributeDescriptions();
+		auto binding_description = Vertex::GetBindingDescription();
+		auto attribute_descriptions = Vertex::GetAttributeDescriptions();
 
-		VkPipelineVertexInputStateCreateInfo vertexInputStateCreateInfo{};
-		vertexInputStateCreateInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
-		vertexInputStateCreateInfo.vertexBindingDescriptionCount = 1;
-		vertexInputStateCreateInfo.pVertexBindingDescriptions = &bindingDescription;
-		vertexInputStateCreateInfo.vertexAttributeDescriptionCount = static_cast<std::uint32_t>(attributeDescriptions.size());
-		vertexInputStateCreateInfo.pVertexAttributeDescriptions = attributeDescriptions.data();
+		VkPipelineVertexInputStateCreateInfo vertex_input_state_create_info{};
+		vertex_input_state_create_info.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
+		vertex_input_state_create_info.vertexBindingDescriptionCount = 1;
+		vertex_input_state_create_info.pVertexBindingDescriptions = &binding_description;
+		vertex_input_state_create_info.vertexAttributeDescriptionCount = static_cast<std::uint32_t>(attribute_descriptions.size());
+		vertex_input_state_create_info.pVertexAttributeDescriptions = attribute_descriptions.data();
 
-		VkPipelineInputAssemblyStateCreateInfo inputAssembly{};
-		inputAssembly.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
-		inputAssembly.topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
-		inputAssembly.primitiveRestartEnable = VK_FALSE;
+		VkPipelineInputAssemblyStateCreateInfo input_assembly{};
+		input_assembly.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
+		input_assembly.topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
+		input_assembly.primitiveRestartEnable = VK_FALSE;
 
 		VkDynamicState states[] = { VK_DYNAMIC_STATE_VIEWPORT, VK_DYNAMIC_STATE_SCISSOR };
 
-		constexpr std::size_t statesCount = sizeof(states) / sizeof(VkDynamicState);
-		VkPipelineDynamicStateCreateInfo dynamicStates{};
-		dynamicStates.sType = VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
-		dynamicStates.dynamicStateCount = statesCount;
-		dynamicStates.pDynamicStates = states;
+		constexpr std::size_t states_count = sizeof(states) / sizeof(VkDynamicState);
+		VkPipelineDynamicStateCreateInfo dynamic_states{};
+		dynamic_states.sType = VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
+		dynamic_states.dynamicStateCount = states_count;
+		dynamic_states.pDynamicStates = states;
 
 		VkViewport viewport{};
 		viewport.x = 0.0f;
 		viewport.y = 0.0f;
-		viewport.width = (float)renderer.getFrameBuffer(0).getWidth();
-		viewport.height = (float)renderer.getFrameBuffer(0).getHeight();
+		viewport.width = (float)renderer.GetFrameBuffer(0).GetWidth();
+		viewport.height = (float)renderer.GetFrameBuffer(0).GetHeight();
 		viewport.minDepth = 0.0f;
 		viewport.maxDepth = 1.0f;
 
 		VkRect2D scissor{};
 		scissor.offset = { 0, 0 };
-		scissor.extent = { renderer.getFrameBuffer(0).getWidth(), renderer.getFrameBuffer(0).getHeight()};
+		scissor.extent = { renderer.GetFrameBuffer(0).GetWidth(), renderer.GetFrameBuffer(0).GetHeight()};
 
-		VkPipelineViewportStateCreateInfo viewportState{};
-		viewportState.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
-		viewportState.viewportCount = 1;
-		viewportState.pViewports = &viewport;
-		viewportState.scissorCount = 1;
-		viewportState.pScissors = &scissor;
+		VkPipelineViewportStateCreateInfo viewport_state{};
+		viewport_state.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
+		viewport_state.viewportCount = 1;
+		viewport_state.pViewports = &viewport;
+		viewport_state.scissorCount = 1;
+		viewport_state.pScissors = &scissor;
 
 		VkPipelineRasterizationStateCreateInfo rasterizer{};
 		rasterizer.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
@@ -255,76 +260,72 @@ namespace mlx
 		multisampling.sampleShadingEnable = VK_FALSE;
 		multisampling.rasterizationSamples = VK_SAMPLE_COUNT_1_BIT;
 
-		VkPipelineColorBlendAttachmentState colorBlendAttachment{};
-		colorBlendAttachment.colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
-		colorBlendAttachment.blendEnable = VK_TRUE;
-		colorBlendAttachment.srcColorBlendFactor = VK_BLEND_FACTOR_SRC_ALPHA;
-		colorBlendAttachment.dstColorBlendFactor = VK_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA;
-		colorBlendAttachment.colorBlendOp = VK_BLEND_OP_ADD;
-		colorBlendAttachment.srcAlphaBlendFactor = VK_BLEND_FACTOR_SRC_ALPHA;
-		colorBlendAttachment.dstAlphaBlendFactor = VK_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA;
-		colorBlendAttachment.alphaBlendOp = VK_BLEND_OP_ADD;
+		VkPipelineColorBlendAttachmentState color_blend_attachment{};
+		color_blend_attachment.colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
+		color_blend_attachment.blendEnable = VK_TRUE;
+		color_blend_attachment.srcColorBlendFactor = VK_BLEND_FACTOR_SRC_ALPHA;
+		color_blend_attachment.dstColorBlendFactor = VK_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA;
+		color_blend_attachment.colorBlendOp = VK_BLEND_OP_ADD;
+		color_blend_attachment.srcAlphaBlendFactor = VK_BLEND_FACTOR_SRC_ALPHA;
+		color_blend_attachment.dstAlphaBlendFactor = VK_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA;
+		color_blend_attachment.alphaBlendOp = VK_BLEND_OP_ADD;
 
-		VkPipelineColorBlendStateCreateInfo colorBlending{};
-		colorBlending.sType = VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO;
-		colorBlending.logicOpEnable = VK_FALSE;
-		colorBlending.logicOp = VK_LOGIC_OP_COPY;
-		colorBlending.attachmentCount = 1;
-		colorBlending.pAttachments = &colorBlendAttachment;
-		colorBlending.blendConstants[0] = 1.0f;
-		colorBlending.blendConstants[1] = 1.0f;
-		colorBlending.blendConstants[2] = 1.0f;
-		colorBlending.blendConstants[3] = 1.0f;
+		VkPipelineColorBlendStateCreateInfo color_blending{};
+		color_blending.sType = VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO;
+		color_blending.logicOpEnable = VK_FALSE;
+		color_blending.logicOp = VK_LOGIC_OP_COPY;
+		color_blending.attachmentCount = 1;
+		color_blending.pAttachments = &color_blend_attachment;
+		color_blending.blendConstants[0] = 1.0f;
+		color_blending.blendConstants[1] = 1.0f;
+		color_blending.blendConstants[2] = 1.0f;
+		color_blending.blendConstants[3] = 1.0f;
 
 		VkDescriptorSetLayout layouts[] = {
-			renderer.getVertDescriptorSetLayout().get(),
-			renderer.getFragDescriptorSetLayout().get()
+			renderer.GetVertDescriptorSet().GetLayout(),
+			renderer.GetFragDescriptorSet().GetLayout()
 		};
 
-		VkPipelineLayoutCreateInfo pipelineLayoutInfo{};
-		pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
-		pipelineLayoutInfo.setLayoutCount = 2;
-		pipelineLayoutInfo.pSetLayouts = layouts;
-		pipelineLayoutInfo.pushConstantRangeCount = 1;
-		pipelineLayoutInfo.pPushConstantRanges = &push_constant;
+		VkPipelineLayoutCreateInfo pipeline_layout_info{};
+		pipeline_layout_info.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
+		pipeline_layout_info.setLayoutCount = 2;
+		pipeline_layout_info.pSetLayouts = layouts;
+		pipeline_layout_info.pushConstantRangeCount = 1;
+		pipeline_layout_info.pPushConstantRanges = &push_constant;
 
-		if(vkCreatePipelineLayout(Render_Core::get().getDevice().get(), &pipelineLayoutInfo, nullptr, &_pipeline_layout) != VK_SUCCESS)
-			core::error::report(e_kind::fatal_error, "Vulkan : failed to create a graphics pipeline layout");
+		if(vkCreatePipelineLayout(RenderCore::Get().GetDevice().Get(), &pipeline_layout_info, nullptr, &m_pipeline_layout) != VK_SUCCESS)
+			FatalError("Vulkan : failed to create a graphics pipeline layout");
 
-		VkGraphicsPipelineCreateInfo pipelineInfo{};
-		pipelineInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
-		pipelineInfo.stageCount = stages.size();
-		pipelineInfo.pStages = stages.data();
-		pipelineInfo.pVertexInputState = &vertexInputStateCreateInfo;
-		pipelineInfo.pInputAssemblyState = &inputAssembly;
-		pipelineInfo.pViewportState = &viewportState;
-		pipelineInfo.pRasterizationState = &rasterizer;
-		pipelineInfo.pMultisampleState = &multisampling;
-		pipelineInfo.pColorBlendState = &colorBlending;
-		pipelineInfo.pDynamicState = &dynamicStates;
-		pipelineInfo.layout = _pipeline_layout;
-		pipelineInfo.renderPass = renderer.getRenderPass().get();
-		pipelineInfo.subpass = 0;
-		pipelineInfo.basePipelineHandle = VK_NULL_HANDLE;
+		VkGraphicsPipelineCreateInfo pipeline_info{};
+		pipeline_info.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
+		pipeline_info.stageCount = stages.size();
+		pipeline_info.pStages = stages.data();
+		pipeline_info.pVertexInputState = &vertex_input_state_create_info;
+		pipeline_info.pInputAssemblyState = &input_assembly;
+		pipeline_info.pViewportState = &viewport_state;
+		pipeline_info.pRasterizationState = &rasterizer;
+		pipeline_info.pMultisampleState = &multisampling;
+		pipeline_info.pColorBlendState = &color_blending;
+		pipeline_info.pDynamicState = &dynamic_states;
+		pipeline_info.layout = m_pipeline_layout;
+		pipeline_info.renderPass = renderer.GetRenderPass().Get();
+		pipeline_info.subpass = 0;
+		pipeline_info.basePipelineHandle = VK_NULL_HANDLE;
 
-		VkResult res = vkCreateGraphicsPipelines(Render_Core::get().getDevice().get(), VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &_graphics_pipeline);
+		VkResult res = vkCreateGraphicsPipelines(RenderCore::Get().GetDevice().Get(), VK_NULL_HANDLE, 1, &pipeline_info, nullptr, &m_graphics_pipeline);
 		if(res != VK_SUCCESS)
-			core::error::report(e_kind::fatal_error, "Vulkan : failed to create a graphics pipeline, %s", RCore::verbaliseResultVk(res));
-#ifdef DEBUG
-		core::error::report(e_kind::message, "Vulkan : created new graphic pipeline");
-#endif
+			FatalError("Vulkan : failed to create a graphics pipeline, %", VerbaliseVkResult(res));
+		DebugLog("Vulkan : created new graphic pipeline");
 
-		vkDestroyShaderModule(Render_Core::get().getDevice().get(), fshader, nullptr);
-		vkDestroyShaderModule(Render_Core::get().getDevice().get(), vshader, nullptr);
+		vkDestroyShaderModule(RenderCore::Get().GetDevice().Get(), fshader, nullptr);
+		vkDestroyShaderModule(RenderCore::Get().GetDevice().Get(), vshader, nullptr);
 	}
 
-	void GraphicPipeline::destroy() noexcept
+	void GraphicPipeline::Destroy() noexcept
 	{
-		vkDestroyPipeline(Render_Core::get().getDevice().get(), _graphics_pipeline, nullptr);
-		vkDestroyPipelineLayout(Render_Core::get().getDevice().get(), _pipeline_layout, nullptr);
-		_graphics_pipeline = VK_NULL_HANDLE;
-		#ifdef DEBUG
-			core::error::report(e_kind::message, "Vulkan : destroyed a graphics pipeline");
-		#endif
+		vkDestroyPipeline(RenderCore::Get().GetDevice().Get(), m_graphics_pipeline, nullptr);
+		vkDestroyPipelineLayout(RenderCore::Get().GetDevice().Get(), m_pipeline_layout, nullptr);
+		m_graphics_pipeline = VK_NULL_HANDLE;
+		DebugLog("Vulkan : destroyed a graphics pipeline");
 	}
 }

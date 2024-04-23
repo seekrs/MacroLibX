@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vk_render_pass.cpp                                 :+:      :+:    :+:   */
+/*   Renderpass.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:21:36 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 19:03:37 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/23 22:31:09 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,21 +20,21 @@
 
 namespace mlx
 {
-	static const VkClearValue clearColor = {{{ 0.f, 0.f, 0.f, 1.0f }}}; // wtf, this mess to satisfy a warning
+	static const VkClearValue clear_color = {{{ 0.f, 0.f, 0.f, 1.0f }}}; // wtf, this mess to satisfy a warning
 
-	void RenderPass::init(VkFormat attachement_format, VkImageLayout layout)
+	void RenderPass::Init(VkFormat attachement_format, VkImageLayout layout)
 	{
-		VkAttachmentDescription colorAttachment{};
-		colorAttachment.format = attachement_format;
-		colorAttachment.samples = VK_SAMPLE_COUNT_1_BIT;
-		colorAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
-		colorAttachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
-		colorAttachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-		colorAttachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-		colorAttachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
-		colorAttachment.finalLayout = layout;
+		VkAttachmentDescription color_attachment{};
+		color_attachment.format = attachement_format;
+		color_attachment.samples = VK_SAMPLE_COUNT_1_BIT;
+		color_attachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
+		color_attachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
+		color_attachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+		color_attachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+		color_attachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+		color_attachment.finalLayout = layout;
 
-		VkAttachmentReference colorAttachmentRef{};
+		VkAttachmentReference color_attachment_ref{};
 		colorAttachmentRef.attachment = 0;
 		colorAttachmentRef.layout = (layout == VK_IMAGE_LAYOUT_PRESENT_SRC_KHR ? VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL : layout);
 
@@ -45,77 +45,73 @@ namespace mlx
 
 		VkSubpassDescription subpasses[] = { subpass1 };
 
-		std::vector<VkSubpassDependency> subpassesDeps;
-		subpassesDeps.emplace_back();
-		subpassesDeps.back().srcSubpass = VK_SUBPASS_EXTERNAL;
-		subpassesDeps.back().dstSubpass = 0;
-		subpassesDeps.back().srcStageMask = VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;
-		subpassesDeps.back().dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
-		subpassesDeps.back().srcAccessMask = VK_ACCESS_MEMORY_READ_BIT;
-		subpassesDeps.back().dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
-		subpassesDeps.back().dependencyFlags = VK_DEPENDENCY_BY_REGION_BIT;
+		std::vector<VkSubpassDependency> subpasses_deps;
+		subpasses_deps.emplace_back();
+		subpasses_deps.back().srcSubpass = VK_SUBPASS_EXTERNAL;
+		subpasses_deps.back().dstSubpass = 0;
+		subpasses_deps.back().srcStageMask = VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;
+		subpasses_deps.back().dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+		subpasses_deps.back().srcAccessMask = VK_ACCESS_MEMORY_READ_BIT;
+		subpasses_deps.back().dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+		subpasses_deps.back().dependencyFlags = VK_DEPENDENCY_BY_REGION_BIT;
 
-		subpassesDeps.emplace_back();
-		subpassesDeps.back().srcSubpass = 0;
-		subpassesDeps.back().dstSubpass = VK_SUBPASS_EXTERNAL;
-		subpassesDeps.back().srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
-		subpassesDeps.back().dstStageMask = VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;
-		subpassesDeps.back().srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
-		subpassesDeps.back().dstAccessMask = VK_ACCESS_MEMORY_READ_BIT;
-		subpassesDeps.back().dependencyFlags = VK_DEPENDENCY_BY_REGION_BIT;
+		subpasses_deps.emplace_back();
+		subpasses_deps.back().srcSubpass = 0;
+		subpasses_deps.back().dstSubpass = VK_SUBPASS_EXTERNAL;
+		subpasses_deps.back().srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+		subpasses_deps.back().dstStageMask = VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;
+		subpasses_deps.back().srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+		subpasses_deps.back().dstAccessMask = VK_ACCESS_MEMORY_READ_BIT;
+		subpasses_deps.back().dependencyFlags = VK_DEPENDENCY_BY_REGION_BIT;
 
-		VkRenderPassCreateInfo renderPassInfo{};
-		renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
-		renderPassInfo.attachmentCount = 1;
-		renderPassInfo.pAttachments = &colorAttachment;
-		renderPassInfo.subpassCount = sizeof(subpasses) / sizeof(VkSubpassDescription);
-		renderPassInfo.pSubpasses = subpasses;
-		renderPassInfo.dependencyCount = static_cast<std::uint32_t>(subpassesDeps.size());
-		renderPassInfo.pDependencies = subpassesDeps.data();
+		VkRenderPassCreateInfo render_pass_info{};
+		render_pass_info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
+		render_pass_info.attachmentCount = 1;
+		render_pass_info.pAttachments = &color_attachment;
+		render_pass_info.subpassCount = sizeof(subpasses) / sizeof(VkSubpassDescription);
+		render_pass_info.pSubpasses = subpasses;
+		render_pass_info.dependencyCount = static_cast<std::uint32_t>(subpasses_deps.size());
+		render_pass_info.pDependencies = subpasses_deps.data();
 
-		VkResult res = vkCreateRenderPass(Render_Core::get().getDevice().get(), &renderPassInfo, nullptr, &_render_pass);
+		VkResult res = vkCreateRenderPass(RenderCore::Get().GetDevice().Get(), &render_pass_info, nullptr, &m_render_pass);
 		if(res != VK_SUCCESS)
-			core::error::report(e_kind::fatal_error, "Vulkan : failed to create render pass, %s", RCore::verbaliseResultVk(res));
-		#ifdef DEBUG
-			core::error::report(e_kind::message, "Vulkan : created new render pass");
-		#endif
+			FatalError("Vulkan : failed to create render pass, %", VerbaliseVkResult(res));
+		DebugLog("Vulkan : created new render pass");
 	}
 
-	void RenderPass::begin(class CmdBuffer& cmd, class FrameBuffer& fb)
+	void RenderPass::Begin(class CommandBuffer& cmd, class FrameBuffer& fb)
 	{
 		MLX_PROFILE_FUNCTION();
-		if(_is_running)
+		if(m_is_running)
 			return;
 
-		VkRenderPassBeginInfo renderPassInfo{};
-		renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
-		renderPassInfo.renderPass = _render_pass;
-		renderPassInfo.framebuffer = fb.get();
-		renderPassInfo.renderArea.offset = { 0, 0 };
-		renderPassInfo.renderArea.extent = { fb.getWidth(), fb.getHeight() };
-		renderPassInfo.clearValueCount = 1;
-		renderPassInfo.pClearValues = &clearColor;
+		VkRenderPassBeginInfo render_pass_info{};
+		render_pass_info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+		render_pass_info.renderPass = m_render_pass;
+		render_pass_info.framebuffer = fb.Get();
+		render_pass_info.renderArea.offset = { 0, 0 };
+		render_pass_info.renderArea.extent = { fb.GetWidth(), fb.GetHeight() };
+		render_pass_info.clearValueCount = 1;
+		render_pass_info.pClearValues = &clear_color;
 
-		vkCmdBeginRenderPass(cmd.get(), &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
+		vkCmdBeginRenderPass(cmd.Get(), &render_pass_info, VK_SUBPASS_CONTENTS_INLINE);
 
-		_is_running = true;
+		m_is_running = true;
 	}
 
-	void RenderPass::end(class CmdBuffer& cmd)
+	void RenderPass::End(class CommandBuffer& cmd)
 	{
 		MLX_PROFILE_FUNCTION();
-		if(!_is_running)
+		if(!m_is_running)
 			return;
-		vkCmdEndRenderPass(cmd.get());
-		_is_running = false;
+		vkCmdEndRenderPass(cmdd.Get());
+		m_is_running = false;
 	}
 
-	void RenderPass::destroy() noexcept
+	void RenderPass::Destroy() noexcept
 	{
-		vkDestroyRenderPass(Render_Core::get().getDevice().get(), _render_pass, nullptr);
-		_render_pass = VK_NULL_HANDLE;
-		#ifdef DEBUG
-			core::error::report(e_kind::message, "Vulkan : destroyed a renderpass");
-		#endif
+		vkDestroyRenderPass(RenderCore::Get().GetDevice().Get(), m_render_pass, nullptr);
+		m_render_pass = VK_NULL_HANDLE;
+		DebugLog("Vulkan : destroyed a renderpass");
 	}
 }

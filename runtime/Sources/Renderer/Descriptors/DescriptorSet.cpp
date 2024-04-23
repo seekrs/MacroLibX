@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 18:40:44 by maldavid          #+#    #+#             */
-/*   Updated: 2024/04/23 19:50:06 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/23 21:17:39 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ namespace mlx
 	void DescriptorSet::Init(NonOwningPtr<Renderer> renderer, NonOwningPtr<DescriptorPool> pool, DescriptorSetLayout layout)
 	{
 		MLX_PROFILE_FUNCTION();
-		m_renderer = renderer;
+		p_renderer = renderer;
 		m_layout = layout;
-		m_pool = pool;
+		p_pool = pool;
 
 		for(int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
 			m_desc_set[i] = pool->AllocateDescriptorSet(layout);
@@ -79,29 +79,34 @@ namespace mlx
 		vkUpdateDescriptorSets(device, 1, &descriptor_write, 0, nullptr);
 	}
 
+	void DescriptorSet::Bind() noexcept
+	{
+		vkCmdBindDescriptorSets(p_renderer->GetActiveCmdBuffer().Get(), VK_PIPELINE_BIND_POINT_GRAPHICS, p_renderer->GetPipeline().GetPipelineLayout(), 0, 1, m_desc_set[p_renderer->GetActiveImageIndex()], 0, nullptr);
+	}
+
 	DescriptorSet DescriptorSet::Duplicate()
 	{
 		MLX_PROFILE_FUNCTION();
 		DescriptorSet set;
-		set.Init(m_renderer, &RenderCore::Get().GetDescriptorPool(), m_layout);
+		set.Init(p_renderer, &RenderCore::Get().GetDescriptorPool(), m_layout);
 		return set;
 	}
 
 	VkDescriptorSet& DescriptorSet::operator()() noexcept
 	{
-		return m_desc_set[m_renderer->GetActiveImageIndex()];
+		return m_desc_set[p_renderer->GetActiveImageIndex()];
 	}
 
 	VkDescriptorSet& DescriptorSet::Get() noexcept
 	{
-		return m_desc_set[m_renderer->GetActiveImageIndex()];
+		return m_desc_set[p_renderer->GetActiveImageIndex()];
 	}
 
 	void DescriptorSet::Destroy() noexcept
 	{
 		MLX_PROFILE_FUNCTION();
-		if(m_pool != nullptr && RenderCore::Get().IsInit()) // checks if the render core is still init (it should always be init but just in case)
-			m_pool->FreeDescriptor(*this);
+		if(p_pool != nullptr && RenderCore::Get().IsInit()) // checks if the render core is still init (it should always be init but just in case)
+			p_pool->FreeDescriptor(*this);
 		for(auto& set : m_desc_set)
 		{
 			if(set != VK_NULL_HANDLE)

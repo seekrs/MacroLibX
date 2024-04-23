@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 18:36:22 by maldavid          #+#    #+#             */
-/*   Updated: 2024/04/23 19:50:50 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/23 22:15:01 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ namespace mlx
 			void Init(std::vector<std::pair<int, VkDescriptorType>> binds, VkShaderStageFlagBits stage);
 			void Destroy() noexcept;
 
-			inline VkDescriptorSetLayout& operator()() noexcept { return m_layout; }
-			inline VkDescriptorSetLayout& Get() noexcept { return m_layout; }
+			inline VkDescriptorSetLayout operator()() const noexcept { return m_layout; }
+			inline VkDescriptorSetLayout Get() const noexcept { return m_layout; }
 			inline const std::vector<std::pair<int, VkDescriptorType>>& GetBindings() const noexcept { return m_bindings; }
 
 			~DescriptorSetLayout() = default;

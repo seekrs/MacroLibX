@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 01:00:13 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/28 22:13:23 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/23 22:08:02 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ namespace mlx
 
 		TextureRenderDescriptor(NonOwningPtr<Texture> _texture, int _x, int _y) : texture(_texture), x(_x), y(_y) {}
 		inline bool operator==(const TextureRenderDescriptor& rhs) const { return texture == rhs.texture && x == rhs.x && y == rhs.y; }
-		inline void Render(std::array<VkDescriptorSet, 2>& sets, class Renderer& renderer) override
+		inline void Render(class Renderer& renderer) override
 		{
 			if(!texture->IsInit())
 				return;
-			texture->Render(sets, renderer, x, y);
+			texture->Render(renderer, x, y);
 		}
 		inline void ResetUpdate() override 
 		{
