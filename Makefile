@@ -6,7 +6,7 @@
 #    By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/04 16:43:41 by maldavid          #+#    #+#              #
-#    Updated: 2024/04/23 20:32:32 by kiroussa         ###   ########.fr        #
+#    Updated: 2024/04/23 20:37:01 by kiroussa         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -72,15 +72,16 @@ CXXFLAGS 				+= $(addprefix -D, $(_ENABLEDFLAGS))
 
 RM = rm -rf
 
-_RESET 					= $(shell tput sgr0)
-_BOLD 					= $(shell tput bold)
-_ITALIC 				= $(shell tput sitm)
-_UNDER 					= $(shell tput smul)
-_GREEN 					= $(shell tput setaf 2)
-_YELLOW 				= $(shell tput setaf 3)
-_RED 					= $(shell tput setaf 1)
-_GRAY 					= $(shell tput setaf 8)
-_PURPLE 				= $(shell tput setaf 5)
+TPUT 					= tput -T xterm-256color
+_RESET 					= $(shell $(TPUT) sgr0)
+_BOLD 					= $(shell $(TPUT) bold)
+_ITALIC 				= $(shell $(TPUT) sitm)
+_UNDER 					= $(shell $(TPUT) smul)
+_GREEN 					= $(shell $(TPUT) setaf 2)
+_YELLOW 				= $(shell $(TPUT) setaf 3)
+_RED 					= $(shell $(TPUT) setaf 1)
+_GRAY 					= $(shell $(TPUT) setaf 8)
+_PURPLE 				= $(shell $(TPUT) setaf 5)
 
 ifeq ($(DEBUG), true)
 MODE 					= $(_RESET)$(_PURPLE)$(_BOLD)Debug$(_RESET)
