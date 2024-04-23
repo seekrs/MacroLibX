@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   application.inl                                    :+:      :+:    :+:   */
+/*   Application.inl                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:49:46 by maldavid          #+#    #+#             */
-/*   Updated: 2023/04/02 14:56:27 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/23 14:45:07 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,9 @@
 		Error("invalid image ptr (NULL)"); \
 		retval; \
 	} \
-	else if(std::find_if(_textures.begin(), _textures.end(), [=](const Texture& texture) \
-			{ \
-				return &texture == img; \
-			}) == _textures.end()) \
+	else if(m_image_registry.Find(img)) \
 	{ \
-		Error(e_kind::error, "invalid image ptr"); \
+		Error("invalid image ptr"); \
 		retval; \
 	} else {}
 
@@ -65,7 +62,7 @@ namespace mlx
 			Warning("trying to add event hook for a window that is targeting an image and not a real window, this is not allowed (hook ignored)");
 			return;
 		}
-		p_in->OnEvent(m_graphics[*static_cast<int*>(win)]->GetWindow()->GetID(), event, funct_ptr, param);
+		m_in.OnEvent(m_graphics[*static_cast<int*>(win)]->GetWindow()->GetID(), event, funct_ptr, param);
 	}
 
 	void Application::GetScreenSize(void* win, int* w, int* h) noexcept
@@ -97,7 +94,7 @@ namespace mlx
 				return nullptr;
 			}
 			m_graphics.emplace_back(std::make_unique<GraphicsSupport>(w, h, title, m_graphics.size()));
-			p_in->RegisterWindow(m_graphics.back()->GetWindow());
+			m_in.RegisterWindow(m_graphics.back()->GetWindow());
 		}
 		return static_cast<void*>(&m_graphics.back()->GetID());
 	}

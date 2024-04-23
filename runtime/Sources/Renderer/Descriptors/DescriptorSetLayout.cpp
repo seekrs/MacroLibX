@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vk_descriptor_set_layout.cpp                       :+:      :+:    :+:   */
+/*   DescriptorSetLayout.cpp                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 18:37:28 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 19:02:47 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/23 19:52:41 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <pre_compiled.h>
+#include <PreCompiled.h>
 
-#include "vk_descriptor_set_layout.h"
-#include <renderer/core/render_core.h>
+#include <Renderer/Descriptors/DescriptorSetLayout.h>
+#include <Renderer/Core/Rendercore.h>
 
 namespace mlx
 {
-	void DescriptorSetLayout::init(std::vector<std::pair<int, VkDescriptorType>> binds, VkShaderStageFlagBits stage)
+	void DescriptorSetLayout::Init(std::vector<std::pair<int, VkDescriptorType>> binds, VkShaderStageFlagBits stage)
 	{
 		std::vector<VkDescriptorSetLayoutBinding> bindings(binds.size());
 		for(std::size_t i = 0; i < binds.size(); i++)
@@ -29,21 +29,21 @@ namespace mlx
 			bindings[i].stageFlags = stage;
 		}
 
-		_bindings = std::move(binds);
+		m_bindings = std::move(binds);
 
-		VkDescriptorSetLayoutCreateInfo layoutInfo{};
-		layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-		layoutInfo.bindingCount = _bindings.size();
-		layoutInfo.pBindings = bindings.data();
+		VkDescriptorSetLayoutCreateInfo layout_info{};
+		layout_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
+		layout_info.bindingCount = m_bindings.size();
+		layout_info.pBindings = m_bindings.data();
 
-		VkResult res = vkCreateDescriptorSetLayout(Render_Core::get().getDevice().get(), &layoutInfo, nullptr, &_layout);
+		VkResult res = vkCreateDescriptorSetLayout(RenderCore::Get().GetDevice().Get(), &layout_info, nullptr, &m_layout);
 		if(res != VK_SUCCESS)
-			core::error::report(e_kind::fatal_error, "Vulkan : failed to create descriptor set layout, %s", RCore::verbaliseResultVk(res));
+			FatalError("Vulkan : failed to create descriptor set layout, %", VerbaliseVkResult(res));
 	}
 
-	void DescriptorSetLayout::destroy() noexcept
+	void DescriptorSetLayout::Destroy() noexcept
 	{
-		vkDestroyDescriptorSetLayout(Render_Core::get().getDevice().get(), _layout, nullptr);
-		_layout = VK_NULL_HANDLE;
+		vkDestroyDescriptorSetLayout(RenderCore::Get().GetDevice().Get(), m_layout, nullptr);
+		m_layout = VK_NULL_HANDLE;
 	}
 }

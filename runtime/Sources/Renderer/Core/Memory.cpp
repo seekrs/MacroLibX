@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   memory.cpp                                         :+:      :+:    :+:   */
+/*   Memory.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kbz_8 <kbz_8.dev@akel-engine.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 22:02:37 by kbz_8             #+#    #+#             */
-/*   Updated: 2024/03/25 19:27:44 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/23 18:49:10 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 #define VK_NO_PROTOTYPES
 #define VMA_STATIC_VULKAN_FUNCTIONS 0
 #define VMA_DYNAMIC_VULKAN_FUNCTIONS 0
-#define VMA_VULKAN_VERSION 1002000
 #define VMA_ASSERT(expr) ((void)0)
 #define VMA_IMPLEMENTATION
 
@@ -39,11 +38,8 @@
 	#include <vma.h>
 #endif
 
-#include <pre_compiled.h>
-
-#include <core/errors.h>
-#include <core/profiler.h>
-#include <renderer/core/render_core.h>
+#include <PreCompiled.h>
+#include <Renderer/Core/RenderCore.h>
 
 namespace mlx
 {
@@ -67,99 +63,99 @@ namespace mlx
 		vma_vulkan_func.vkMapMemory                             = vkMapMemory;
 		vma_vulkan_func.vkUnmapMemory                           = vkUnmapMemory;
 		vma_vulkan_func.vkCmdCopyBuffer                         = vkCmdCopyBuffer;
-		vma_vulkan_func.vkGetBufferMemoryRequirements2KHR       = vkGetBufferMemoryRequirements2;
-		vma_vulkan_func.vkGetImageMemoryRequirements2KHR        = vkGetImageMemoryRequirements2;
-		vma_vulkan_func.vkBindBufferMemory2KHR                  = vkBindBufferMemory2;
-		vma_vulkan_func.vkBindImageMemory2KHR                   = vkBindImageMemory2;
-		vma_vulkan_func.vkGetPhysicalDeviceMemoryProperties2KHR = vkGetPhysicalDeviceMemoryProperties2;
+#if VMA_DEDICATED_ALLOCATION || VMA_VULKAN_VERSION >= 1001000
+		vma_vulkan_func.vkGetBufferMemoryRequirements2KHR = vkGetBufferMemoryRequirements2,
+		vma_vulkan_func.vkGetImageMemoryRequirements2KHR  = vkGetImageMemoryRequirements2,
+#endif
+#if VMA_BIND_MEMORY2 || VMA_VULKAN_VERSION >= 1001000
+		vma_vulkan_func.vkBindBufferMemory2KHR = vkBindBufferMemory2,
+		vma_vulkan_func.vkBindImageMemory2KHR  = vkBindImageMemory2,
+#endif
+#if VMA_MEMORY_BUDGET || VMA_VULKAN_VERSION >= 1001000
+		vma_vulkan_func.vkGetPhysicalDeviceMemoryProperties2KHR = vkGetPhysicalDeviceMemoryProperties2,
+#endif
+#if VMA_VULKAN_VERSION >= 1003000
+		vma_vulkan_func.vkGetDeviceBufferMemoryRequirements = vkGetDeviceBufferMemoryRequirements,
+		vma_vulkan_func.vkGetDeviceImageMemoryRequirements = vkGetDeviceImageMemoryRequirements,
+#endif
 
-		VmaAllocatorCreateInfo allocatorCreateInfo{};
-		allocatorCreateInfo.vulkanApiVersion = VK_API_VERSION_1_2;
-		allocatorCreateInfo.physicalDevice = Render_Core::get().getDevice().getPhysicalDevice();
-		allocatorCreateInfo.device = Render_Core::get().getDevice().get();
-		allocatorCreateInfo.instance = Render_Core::get().getInstance().get();
-		allocatorCreateInfo.pVulkanFunctions = &vma_vulkan_func;
+		VmaAllocatorCreateInfo allocator_create_info{};
+		allocator_create_info.vulkanApiVersion = RenderCore::Get().GetInstance().GetInstanceVersion();
+		allocator_create_info.physicalDevice = RenderCore::Get().GetDevice().GetPhysicalDevice();
+		allocator_create_info.device = RenderCore::Get().GetDevice().Get();
+		allocator_create_info.instance = RenderCore::Get().GetInstance().Get();
+		allocator_create_info.pVulkanFunctions = &vma_vulkan_func;
 
-		VkResult res = vmaCreateAllocator(&allocatorCreateInfo, &_allocator);
+		VkResult res = vmaCreateAllocator(&allocator_create_info, &m_allocator);
 		if(res != VK_SUCCESS)
-			core::error::report(e_kind::fatal_error, "Graphics allocator : failed to create graphics memory allocator, %s", RCore::verbaliseResultVk(res));
-		#ifdef DEBUG
-			core::error::report(e_kind::message, "Graphics allocator : created new allocator");
-		#endif
+			FatalError("Graphics allocator : failed to create graphics memory allocator, %", VerbaliseVkResult(res));
+		DebugLog("Graphics allocator : created new allocator");
 	}
 
-	VmaAllocation GPUallocator::createBuffer(const VkBufferCreateInfo* binfo, const VmaAllocationCreateInfo* vinfo, VkBuffer& buffer, const char* name) noexcept
+	VmaAllocation GPUallocator::CreateBuffer(const VkBufferCreateInfo* binfo, const VmaAllocationCreateInfo* vinfo, VkBuffer& buffer, const char* name) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
 		VmaAllocation allocation;
-		VkResult res = vmaCreateBuffer(_allocator, binfo, vinfo, &buffer, &allocation, nullptr);
+		VkResult res = vmaCreateBuffer(m_allocator, binfo, vinfo, &buffer, &allocation, nullptr);
 		if(res != VK_SUCCESS)
-			core::error::report(e_kind::fatal_error, "Graphics allocator : failed to allocate a buffer, %s", RCore::verbaliseResultVk(res));
+			FatalError("Graphics allocator : failed to allocate a buffer, %s", RCore::verbaliseResultVk(res));
 		if(name != nullptr)
 		{
-			Render_Core::get().getLayers().setDebugUtilsObjectNameEXT(VK_OBJECT_TYPE_BUFFER, (std::uint64_t)buffer, name);
-			vmaSetAllocationName(_allocator, allocation, name);
+			RenderCore::Get().GetLayers().SetDebugUtilsObjectNameEXT(VK_OBJECT_TYPE_BUFFER, (std::uint64_t)buffer, name);
+			vmaSetAllocationName(m_allocator, allocation, name);
 		}
-		#ifdef DEBUG
-			core::error::report(e_kind::message, "Graphics Allocator : created new buffer '%s'", name);
-		#endif
-		_active_buffers_allocations++;
+		DebugLog("Graphics Allocator : created new buffer '%s'", name);
+		m_active_buffers_allocations++;
 		return allocation;
 	}
 
-	void GPUallocator::destroyBuffer(VmaAllocation allocation, VkBuffer buffer) noexcept
+	void GPUallocator::DestroyBuffer(VmaAllocation allocation, VkBuffer buffer) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
-		vkDeviceWaitIdle(Render_Core::get().getDevice().get());
-		vmaDestroyBuffer(_allocator, buffer, allocation);
-		#ifdef DEBUG
-			core::error::report(e_kind::message, "Graphics Allocator : destroyed buffer");
-		#endif
-		_active_buffers_allocations--;
+		vkDeviceWaitIdle(RenderCore::Get().GetDevice().Get());
+		vmaDestroyBuffer(m_allocator, buffer, allocation);
+		DebugLog("Graphics Allocator : destroyed buffer");
+		m_active_buffers_allocations--;
 	}
 
-	VmaAllocation GPUallocator::createImage(const VkImageCreateInfo* iminfo, const VmaAllocationCreateInfo* vinfo, VkImage& image, const char* name) noexcept
+	VmaAllocation GPUallocator::CreateImage(const VkImageCreateInfo* iminfo, const VmaAllocationCreateInfo* vinfo, VkImage& image, const char* name) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
 		VmaAllocation allocation;
-		VkResult res = vmaCreateImage(_allocator, iminfo, vinfo, &image, &allocation, nullptr);
+		VkResult res = vmaCreateImage(m_allocator, iminfo, vinfo, &image, &allocation, nullptr);
 		if(res != VK_SUCCESS)
-			core::error::report(e_kind::fatal_error, "Graphics allocator : failed to allocate an image, %s", RCore::verbaliseResultVk(res));
+			FatalError("Graphics allocator : failed to allocate an image, %", VerbaliseVkResult(res));
 		if(name != nullptr)
 		{
-			Render_Core::get().getLayers().setDebugUtilsObjectNameEXT(VK_OBJECT_TYPE_IMAGE, (std::uint64_t)image, name);
-			vmaSetAllocationName(_allocator, allocation, name);
+			RenderCore::Get().GetLayers().SetDebugUtilsObjectNameEXT(VK_OBJECT_TYPE_IMAGE, (std::uint64_t)image, name);
+			vmaSetAllocationName(m_allocator, allocation, name);
 		}
-		#ifdef DEBUG
-			core::error::report(e_kind::message, "Graphics Allocator : created new image '%s'", name);
-		#endif
-		_active_images_allocations++;
+		DebugLog("Graphics Allocator : created new image '%s'", name);
+		m_active_images_allocations++;
 		return allocation;
 	}
 
-	void GPUallocator::destroyImage(VmaAllocation allocation, VkImage image) noexcept
+	void GPUallocator::DestroyImage(VmaAllocation allocation, VkImage image) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
-		vkDeviceWaitIdle(Render_Core::get().getDevice().get());
-		vmaDestroyImage(_allocator, image, allocation);
-		#ifdef DEBUG
-			core::error::report(e_kind::message, "Graphics Allocator : destroyed image");
-		#endif
-		_active_images_allocations--;
+		vkDeviceWaitIdle(RenderCore::Get().GetDevice().Get());
+		vmaDestroyImage(m_allocator, image, allocation);
+		DebugLog("Graphics Allocator : destroyed image");
+		m_active_images_allocations--;
 	}
 
-	void GPUallocator::mapMemory(VmaAllocation allocation, void** data) noexcept
+	void GPUallocator::MapMemory(VmaAllocation allocation, void** data) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
-		VkResult res = vmaMapMemory(_allocator, allocation, data);
+		VkResult res = vmaMapMemory(m_allocator, allocation, data);
 		if(res != VK_SUCCESS)
-			core::error::report(e_kind::fatal_error, "Graphics allocator : unable to map GPU memory to CPU memory, %s", RCore::verbaliseResultVk(res));
+			FatalError("Graphics allocator : unable to map GPU memory to CPU memory, %", VerbaliseVkResult(res));
 	}
 
 	void GPUallocator::unmapMemory(VmaAllocation allocation) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
-		vmaUnmapMemory(_allocator, allocation);
+		vmaUnmapMemory(m_allocator, allocation);
 	}
 
 	void GPUallocator::dumpMemoryToJson()
@@ -170,36 +166,34 @@ namespace mlx
 		std::ofstream file(name);
 		if(!file.is_open())
 		{
-			core::error::report(e_kind::error, "Graphics allocator : unable to dump memory to a json file");
+			Error("Graphics allocator : unable to dump memory to a json file");
 			return;
 		}
 		char* str = nullptr;
-		vmaBuildStatsString(_allocator, &str, true);
+		vmaBuildStatsString(m_allocator, &str, true);
 			file << str;
-		vmaFreeStatsString(_allocator, str);
+		vmaFreeStatsString(m_allocator, str);
 		file.close();
 		id++;
 	}
 
-	void GPUallocator::flush(VmaAllocation allocation, VkDeviceSize size, VkDeviceSize offset) noexcept
+	void GPUallocator::Flush(VmaAllocation allocation, VkDeviceSize size, VkDeviceSize offset) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
-		vmaFlushAllocation(_allocator, allocation, offset, size);
+		vmaFlushAllocation(m_allocator, allocation, offset, size);
 	}
 
-	void GPUallocator::destroy() noexcept
+	void GPUallocator::Destroy() noexcept
 	{
-		if(_active_images_allocations != 0)
-			core::error::report(e_kind::error, "Graphics allocator : some user-dependant allocations were not freed before destroying the display (%d active allocations). You may have not destroyed all the MLX resources you've created", _active_images_allocations);
-		else if(_active_buffers_allocations != 0)
-			core::error::report(e_kind::error, "Graphics allocator : some MLX-dependant allocations were not freed before destroying the display (%d active allocations). This is an error in the MLX, please report this should not happen", _active_buffers_allocations);
-		if(_active_images_allocations < 0 || _active_buffers_allocations < 0)
-			core::error::report(e_kind::warning, "Graphics allocator : the impossible happened, the MLX has freed more allocations than it has made (wtf)");
-		vmaDestroyAllocator(_allocator);
-		_active_buffers_allocations = 0;
-		_active_images_allocations = 0;
-		#ifdef DEBUG
-			core::error::report(e_kind::message, "Vulkan : destroyed a graphics allocator");
-		#endif
+		if(m_active_images_allocations != 0)
+			Error("Graphics allocator : some user-dependant allocations were not freed before destroying the display (% active allocations). You may have not destroyed all the MLX resources you've created", m_active_images_allocations);
+		else if(m_active_buffers_allocations != 0)
+			Error("Graphics allocator : some MLX-dependant allocations were not freed before destroying the display (% active allocations). This is an error in the MLX, please report this should not happen", m_active_buffers_allocations);
+		if(m_active_images_allocations < 0 || m_active_buffers_allocations < 0)
+			Warning("Graphics allocator : the impossible happened, the MLX has freed more allocations than it has made (wtf)");
+		vmaDestroyAllocator(m_allocator);
+		m_active_buffers_allocations = 0;
+		m_active_images_allocations = 0;
+		DebugLog("Vulkan : destroyed a graphics allocator");
 	}
 }

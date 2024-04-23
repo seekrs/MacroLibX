@@ -1,52 +1,50 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   profiler.cpp                                       :+:      :+:    :+:   */
+/*   Profiler.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:56:21 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 19:01:06 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/23 14:08:51 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <pre_compiled.h>
+#include <PreCompiled.h>
 
-#include <core/profiler.h>
-#include <core/errors.h>
-#include <iostream>
+#include <Core/Profiler.h>
 
 namespace mlx
 {
-	void Profiler::beginRuntimeSession()
+	void Profiler::BeginRuntimeSession()
 	{
-		std::lock_guard lock(_mutex);
-		if(_runtime_session_began)
+		std::lock_guard lock(m_mutex);
+		if(m_runtime_session_began)
 			return;
-		_output_stream.open("./runtime_profile.mlx.json", std::ofstream::out | std::ofstream::trunc);
+		m_output_stream.open("./runtime_profile.mlx.json", std::ofstream::out | std::ofstream::trunc);
 
-		if(_output_stream.is_open())
-			writeHeader();
+		if(m_output_stream.is_open())
+			WriteHeader();
 		else
-			core::error::report(e_kind::error, "Profiler : cannot open runtime profile file");
-		_runtime_session_began = true;
+			Error("Profiler : cannot open runtime profile file");
+		m_runtime_session_began = true;
 	}
 
-	void Profiler::appendProfileData(ProfileResult&& result)
+	void Profiler::AppendProfileData(ProfileResult&& result)
 	{
 		std::lock_guard lock(_mutex);
-		auto it = _profile_data.find(result.name);
-		if(it != _profile_data.end())
+		auto it = m_profile_data.find(result.name);
+		if(it != m_profile_data.end())
 		{
 			result.elapsed_time = (result.elapsed_time + it->second.second.elapsed_time) / it->second.first;
-			_profile_data[result.name].first++;
-			_profile_data[result.name].second = result;
+			m_profile_data[result.name].first++;
+			m_profile_data[result.name].second = result;
 		}
 		else
-			_profile_data[result.name] = std::make_pair(1, result);
+			m_profile_data[result.name] = std::make_pair(1, result);
 	}
 
-	void Profiler::writeProfile(const ProfileResult& result)
+	void Profiler::WriteProfile(const ProfileResult& result)
 	{
 		std::stringstream json;
 		json << std::setprecision(9) << std::fixed;
@@ -56,26 +54,26 @@ namespace mlx
 		json << "\t\"thread id\" : " << result.thread_id << "," << '\n';
 		json << "\t\"average duration\" : \"" << result.elapsed_time.count() << "ms\"\n";
 		json << "}";
-		_output_stream << json.str();
+		m_output_stream << json.str();
 	}
 
-	void Profiler::endRuntimeSession()
+	void Profiler::EndRuntimeSession()
 	{
-		std::lock_guard lock(_mutex);
-		if(!_runtime_session_began)
+		std::lock_guard lock(m_mutex);
+		if(!m_runtime_session_began)
 			return;
-		for(auto& [_, pair] : _profile_data)
-			writeProfile(pair.second);
-		writeFooter();
-		_output_stream.close();
-		_profile_data.clear();
-		_runtime_session_began = false;
+		for(auto& [_, pair] : m_profile_data)
+			WriteProfile(pair.second);
+		WriteFooter();
+		m_output_stream.close();
+		m_profile_data.clear();
+		m_runtime_session_began = false;
 	}
 
 	Profiler::~Profiler()
 	{
-		if(!_runtime_session_began)
+		if(!m_runtime_session_began)
 			return;
-		endRuntimeSession();
+		EndRuntimeSession();
 	}
 }

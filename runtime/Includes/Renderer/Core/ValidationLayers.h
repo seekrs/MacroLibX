@@ -6,7 +6,7 @@
 /*   By: maldavid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 14:04:25 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/27 22:59:00 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/23 19:16:25 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ namespace mlx
 			
 			void Init();
 			void Destroy();
-			
+
 			bool CheckValidationLayerSupport();
 			void PopulateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& create_info);
-			
+
 			VkResult SetDebugUtilsObjectNameEXT(VkObjectType object_type, std::uint64_t object_handle, const char* object_name);
 
 			~ValidationLayers() = default;

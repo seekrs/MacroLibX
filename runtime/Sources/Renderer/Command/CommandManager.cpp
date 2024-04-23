@@ -1,42 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cmd_manager.cpp                                    :+:      :+:    :+:   */
+/*   CommandManager.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 17:50:52 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 19:01:30 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/23 14:55:04 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <pre_compiled.h>
+#include <PreCompiled.h>
 
-#include <renderer/command/cmd_manager.h>
+#include <Renderer/Command/CommandManager.h>
 
 namespace mlx
 {
-	void CmdManager::init() noexcept
+	void CommandManager::Init() noexcept
 	{
-		_cmd_pool.init();
+		m_cmd_pool.Init();
 		for(int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
-			_cmd_buffers[i].init(CmdBuffer::kind::long_time, this);
+			m_cmd_buffers[i].Init(CommandBufferType::LongTime, this);
 	}
 
-	void CmdManager::beginRecord(int active_image_index)
+	void CommandManager::BeginRecord(int active_image_index)
 	{
-		_cmd_buffers[active_image_index].beginRecord();
+		m_cmd_buffers[active_image_index].BeginRecord();
 	}
 
-	void CmdManager::endRecord(int active_image_index)
+	void CommandManager::EndRecord(int active_image_index)
 	{
-		_cmd_buffers[active_image_index].endRecord();
+		m_cmd_buffers[active_image_index].EndRecord();
 	}
 
-	void CmdManager::destroy() noexcept
+	void CommandManager::Destroy() noexcept
 	{
 		for(int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
-			_cmd_buffers[i].destroy();
-		_cmd_pool.destroy();
+			m_cmd_buffers[i].Destroy();
+		m_cmd_pool.Destroy();
 	}
 }

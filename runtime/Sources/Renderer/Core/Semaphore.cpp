@@ -1,45 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vk_semaphore.cpp                                   :+:      :+:    :+:   */
+/*   Semaphore.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:01:08 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 19:02:25 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/23 18:55:42 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <pre_compiled.h>
-
-#include "vk_semaphore.h"
-#include "render_core.h"
-#include <renderer/renderer.h>
+#include <PreCompiled.h>
+#include <Renderer/Core/RenderCore.h>
+#include <Renderer/Core/Semaphore.h>
 
 namespace mlx
 {
-	void Semaphore::init()
+	void Semaphore::Init()
 	{
-		VkSemaphoreCreateInfo semaphoreInfo{};
-		semaphoreInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+		VkSemaphoreCreateInfo semaphore_info{};
+		semaphore_info.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
 
 		VkResult res;
-		if(	(res = vkCreateSemaphore(Render_Core::get().getDevice().get(), &semaphoreInfo, nullptr, &_image_available_semaphore)) != VK_SUCCESS ||
-			(res = vkCreateSemaphore(Render_Core::get().getDevice().get(), &semaphoreInfo, nullptr, &_render_finished_semaphore)) != VK_SUCCESS)
-			core::error::report(e_kind::fatal_error, "Vulkan : failed to create a synchronization object (semaphore), %s", RCore::verbaliseResultVk(res));
-		#ifdef DEBUG
-			core::error::report(e_kind::message, "Vulkan : created new semaphores");
-		#endif
+		if((res = vkCreateSemaphore(RenderCore::Get().GetDevice().Get(), &semaphore_info, nullptr, &m_semaphore)) != VK_SUCCESS)
+			FatalError("Vulkan : failed to create a synchronization object (semaphore), %", VerbaliseVkResult(res));
+		DebugLog("Vulkan : created new semaphores");
 	}
 
-	void Semaphore::destroy() noexcept
+	void Semaphore::Destroy() noexcept
 	{
-		vkDestroySemaphore(Render_Core::get().getDevice().get(), _render_finished_semaphore, nullptr);
-		_render_finished_semaphore = VK_NULL_HANDLE;
-		vkDestroySemaphore(Render_Core::get().getDevice().get(), _image_available_semaphore, nullptr);
-		_image_available_semaphore = VK_NULL_HANDLE;
-		#ifdef DEBUG
-			core::error::report(e_kind::message, "Vulkan : destroyed semaphores");
-		#endif
+		vkDestroySemaphore(RenderCore::Get().GetDevice().Get(), m_semaphore, nullptr);
+		m_semaphore = VK_NULL_HANDLE;
+		DebugLog("Vulkan : destroyed semaphore");
 	}
 }

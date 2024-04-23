@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 11:26:37 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 19:00:36 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/23 14:09:35 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,6 @@ namespace mlx
 	static std::mt19937_64 engine(random_device());
 	static std::uniform_int_distribution<std::uint64_t> uniform_distribution;
 
-	UUID::UUID() : _uuid(uniform_distribution(engine)) {}
-	UUID::UUID(std::uint64_t uuid) : _uuid(uuid) {}
+	UUID::UUID() : m_uuid(uniform_distribution(engine)) {}
+	UUID::UUID(std::uint64_t uuid) : m_uuid(uuid) {}
 }

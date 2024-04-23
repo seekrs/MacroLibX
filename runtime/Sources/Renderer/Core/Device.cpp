@@ -1,105 +1,100 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vk_device.cpp                                      :+:      :+:    :+:   */
+/*   Device.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:14:29 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 22:31:54 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/23 18:10:08 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <pre_compiled.h>
+#include <PreCmpiled.h>
 
-#include "render_core.h"
+#include <Renderer/Core/RenderCore.h>
 
 namespace mlx
 {
-	const std::vector<const char*> deviceExtensions = {VK_KHR_SWAPCHAIN_EXTENSION_NAME};
+	const std::vector<const char*> device_extensions = { VK_KHR_SWAPCHAIN_EXTENSION_NAME };
 
-	void Device::init()
+	void Device::Init()
 	{
-		pickPhysicalDevice();
+		PickPhysicalDevice();
 
-		Queues::QueueFamilyIndices indices = Render_Core::get().getQueue().getFamilies();
+		Queues::QueueFamilyIndices indices = RenderCore::Get().GetQueue().GetFamilies();
 
-		std::vector<VkDeviceQueueCreateInfo> queueCreateInfos;
-		std::set<std::uint32_t> uniqueQueueFamilies = { indices.graphics_family.value(), indices.present_family.value() };
+		std::vector<VkDeviceQueueCreateInfo> queue_create_infos;
+		std::set<std::uint32_t> unique_queue_families = { indices.graphics_family.value(), indices.present_family.value() };
 
-		float queuePriority = 1.0f;
-		for(std::uint32_t queueFamily : uniqueQueueFamilies)
+		float queue_priority = 1.0f;
+		for(std::uint32_t queue_family : unique_queue_families)
 		{
-			VkDeviceQueueCreateInfo queueCreateInfo{};
-			queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
-			queueCreateInfo.queueFamilyIndex = queueFamily;
-			queueCreateInfo.queueCount = 1;
-			queueCreateInfo.pQueuePriorities = &queuePriority;
-			queueCreateInfos.push_back(queueCreateInfo);
+			VkDeviceQueueCreateInfo queue_create_info{};
+			queue_create_info.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+			queue_create_info.queueFamilyIndex = queue_family;
+			queue_create_info.queueCount = 1;
+			queue_create_info.pQueuePriorities = &queue_priority;
+			queue_create_infos.push_back(queue_create_info);
 		}
 
-		VkPhysicalDeviceFeatures deviceFeatures{};
+		VkPhysicalDeviceFeatures device_features{};
 
-		VkDeviceCreateInfo createInfo{};
-		createInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
-
-		createInfo.queueCreateInfoCount = static_cast<std::uint32_t>(queueCreateInfos.size());
-		createInfo.pQueueCreateInfos = queueCreateInfos.data();
-
-		createInfo.pEnabledFeatures = &deviceFeatures;
-
-		createInfo.enabledExtensionCount = static_cast<std::uint32_t>(deviceExtensions.size());
-		createInfo.ppEnabledExtensionNames = deviceExtensions.data();
-		createInfo.enabledLayerCount = 0;
+		VkDeviceCreateInfo create_info{};
+		create_info.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
+		create_info.queueCreateInfoCount = static_cast<std::uint32_t>(queue_create_infos.size());
+		create_info.pQueueCreateInfos = queue_create_infos.data();
+		create_info.pEnabledFeatures = &device_features;
+		create_info.enabledExtensionCount = static_cast<std::uint32_t>(device_extensions.size());
+		create_info.ppEnabledExtensionNames = device_extensions.data();
+		create_info.enabledLayerCount = 0;
 
 		VkResult res;
-		if((res = vkCreateDevice(_physical_device, &createInfo, nullptr, &_device)) != VK_SUCCESS)
-			core::error::report(e_kind::fatal_error, "Vulkan : failed to create logcal device, %s", RCore::verbaliseResultVk(res));
-		#ifdef DEBUG
-			core::error::report(e_kind::message, "Vulkan : created new logical device");
-		#endif
+		if((res = vkCreateDevice(m_physical_device, &create_info, nullptr, &m_device)) != VK_SUCCESS)
+			FatalError("Vulkan : failed to create logcal device, %", VerbaliseVkResult(res));
+		DebugLog("Vulkan : created new logical device");
 	}
 
-	void Device::pickPhysicalDevice()
+	void Device::PickPhysicalDevice()
 	{
-		std::uint32_t deviceCount = 0;
-		vkEnumeratePhysicalDevices(Render_Core::get().getInstance().get(), &deviceCount, nullptr);
+		std::uint32_t device_count = 0;
+		vkEnumeratePhysicalDevices(RenderCore::Get().GetInstance().Get(), &device_count, nullptr);
 
-		if(deviceCount == 0)
-			core::error::report(e_kind::fatal_error, "Vulkan : failed to find GPUs with Vulkan support");
+		if(device_count == 0)
+			FatalError("Vulkan : failed to find GPUs with Vulkan support");
 
-		std::vector<VkPhysicalDevice> devices(deviceCount);
-		vkEnumeratePhysicalDevices(Render_Core::get().getInstance().get(), &deviceCount, devices.data());
+		std::vector<VkPhysicalDevice> devices(device_count);
+		vkEnumeratePhysicalDevices(RenderCore::Get().GetInstance().Get(), &device_count, devices.data());
 
 		std::multimap<int, VkPhysicalDevice> devices_score;
 
 		for(const auto& device : devices)
 		{
-			int score = deviceScore(device);
+			int score = DeviceScore(device);
 			devices_score.insert(std::make_pair(score, device));
 		}
 
 		if(devices_score.rbegin()->first > 0)
-			_physical_device = devices_score.rbegin()->second;
+			m_physical_device = devices_score.rbegin()->second;
 		else
-			core::error::report(e_kind::fatal_error, "Vulkan : failed to find a suitable GPU");
+			FatalError("Vulkan : failed to find a suitable GPU");
 
 		#ifdef DEBUG
 			VkPhysicalDeviceProperties props;
-			vkGetPhysicalDeviceProperties(_physical_device, &props);
-			core::error::report(e_kind::message, "Vulkan : picked a physical device, %s", props.deviceName);
+			vkGetPhysicalDeviceProperties(m_physical_device, &props);
+			DebugLog("Vulkan : picked a physical device, %s", props.deviceName);
 		#endif
-		Render_Core::get().getQueue().findQueueFamilies(_physical_device); // update queue indicies to current physical device
+		RenderCore::Get().GetQueue().FindQueueFamilies(m_physical_device); // update queue indicies to current physical device
 	}
 
-	int Device::deviceScore(VkPhysicalDevice device)
+	int Device::DeviceScore(VkPhysicalDevice device)
 	{
-		Queues::QueueFamilyIndices indices = Render_Core::get().getQueue().findQueueFamilies(device);
-		bool extensionsSupported = checkDeviceExtensionSupport(device);
+		Queues::QueueFamilyIndices indices = RenderCore::Get().GetQueue().FindQueueFamilies(device);
+		bool extensions_supported = CheckDeviceExtensionSupport(device);
 
 		VkPhysicalDeviceProperties props;
 		vkGetPhysicalDeviceProperties(device, &props);
-		if(!indices.isComplete() || !extensionsSupported)
+		if(!indices.IsComplete() || !extensions_supported)
 			return -1;
 
 		VkPhysicalDeviceFeatures features;
@@ -122,28 +117,26 @@ namespace mlx
 		return score;
 	}
 
-	bool Device::checkDeviceExtensionSupport(VkPhysicalDevice device)
+	bool Device::CheckDeviceExtensionSupport(VkPhysicalDevice device)
 	{
-		std::uint32_t extensionCount;
-		vkEnumerateDeviceExtensionProperties(device, nullptr, &extensionCount, nullptr);
+		std::uint32_t extension_count;
+		vkEnumerateDeviceExtensionProperties(device, nullptr, &extension_count, nullptr);
 
-		std::vector<VkExtensionProperties> availableExtensions(extensionCount);
-		vkEnumerateDeviceExtensionProperties(device, nullptr, &extensionCount, availableExtensions.data());
+		std::vector<VkExtensionProperties> available_extensions(extensionCount);
+		vkEnumerateDeviceExtensionProperties(device, nullptr, &extension_count, available_extensions.data());
 
-		std::set<std::string> requiredExtensions(deviceExtensions.begin(), deviceExtensions.end());
+		std::set<std::string> required_extensions(device_extensions.begin(), device_extensions.end());
 
-		for(const auto& extension : availableExtensions)
-			requiredExtensions.erase(extension.extensionName);
+		for(const auto& extension : available_extensions)
+			required_extensions.erase(extension.extensionName);
 
-		return requiredExtensions.empty();
+		return required_extensions.empty();
 	}
 
-	void Device::destroy() noexcept
+	void Device::Destroy() noexcept
 	{
-		vkDestroyDevice(_device, nullptr);
-		_device = VK_NULL_HANDLE;
-		#ifdef DEBUG
-			core::error::report(e_kind::message, "Vulkan : destroyed a logical device");
-		#endif
+		vkDestroyDevice(m_device, nullptr);
+		m_device = VK_NULL_HANDLE;
+		DebugLog("Vulkan : destroyed a logical device");
 	}
 }

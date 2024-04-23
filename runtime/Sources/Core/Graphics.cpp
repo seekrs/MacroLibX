@@ -1,73 +1,68 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   graphics.cpp                                       :+:      :+:    :+:   */
+/*   Graphics.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 15:13:55 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/27 00:32:34 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/23 14:03:51 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <pre_compiled.h>
+#include <PreCompiled.h>
 
-#include <core/graphics.h>
+#include <Core/Graphics.h>
 
 namespace mlx
 {
-	GraphicsSupport::GraphicsSupport(std::size_t w, std::size_t h, Texture* render_target, int id) :
-		_window(nullptr),
-		_renderer(std::make_unique<Renderer>()),
-		_width(w),
-		_height(h),
-		_id(id),
-		_has_window(false)
+	GraphicsSupport::GraphicsSupport(std::size_t w, std::size_t h, NonOwningPtr<Texture> render_target, int id) :
+		p_window(nullptr),
+		m_width(w),
+		m_height(h),
+		m_id(id),
+		m_has_window(false)
 	{
 		MLX_PROFILE_FUNCTION();
-		_renderer->setWindow(nullptr);
-		_renderer->init(render_target);
-		_pixel_put_pipeline.init(w, h, *_renderer);
-		_text_manager.init(*_renderer);
+		m_renderer.SetWindow(nullptr);
+		m_renderer.Init(render_target);
+		m_pixel_put_pipeline.Init(w, h, m_renderer);
+		m_text_manager.Init(m_renderer);
 	}
 
 	GraphicsSupport::GraphicsSupport(std::size_t w, std::size_t h, std::string title, int id) :
-		_window(std::make_shared<Window>(w, h, title)),
-		_renderer(std::make_unique<Renderer>()), 
-		_width(w),
-		_height(h),
-		_id(id),
-		_has_window(true)
+		p_window(std::make_shared<Window>(w, h, title)),
+		m_width(w),
+		m_height(h),
+		m_id(id),
+		m_has_window(true)
 	{
 		MLX_PROFILE_FUNCTION();
-		_renderer->setWindow(_window.get());
-		_renderer->init(nullptr);
-		_pixel_put_pipeline.init(w, h, *_renderer);
-		_text_manager.init(*_renderer);
+		m_renderer.SetWindow(p_window.get());
+		m_renderer.Init(nullptr);
+		m_pixel_put_pipeline.Init(w, h, m_renderer);
+		m_text_manager.Init(m_renderer);
 	}
 
-	void GraphicsSupport::render() noexcept
+	void GraphicsSupport::Render() noexcept
 	{
 		MLX_PROFILE_FUNCTION();
-		if(!_renderer->beginFrame())
+		if(!m_renderer.BeginFrame())
 			return;
-		_proj = glm::ortho<float>(0, _width, 0, _height);
-		_renderer->getUniformBuffer()->setData(sizeof(_proj), &_proj);
+		m_proj = glm::ortho<float>(0, m_width, 0, m_height);
+		m_renderer.GetUniformBuffer()->SetData(sizeof(m_proj), &m_proj);
 
-		static std::array<VkDescriptorSet, 2> sets = {
-			_renderer->getVertDescriptorSet().get(), 
-			VK_NULL_HANDLE
-		};
+		m_renderer.getVertDescriptorSet().Bind();
 
-		for(auto& data : _drawlist)
-			data->render(sets, *_renderer);
+		for(auto& data : m_drawlist)
+			data->Render(m_renderer);
 
-		_pixel_put_pipeline.render(sets, *_renderer);
+		m_pixel_put_pipeline.Render(m_renderer);
 
-		_renderer->endFrame();
+		m_renderer.EndFrame();
 
 		for(auto& data : _drawlist)
-			data->resetUpdate();
+			data->ResetUpdate();
 
 		#ifdef GRAPHICS_MEMORY_DUMP
 			// dump memory to file every two seconds
@@ -75,7 +70,7 @@ namespace mlx
 			static std::int64_t timer = static_cast<std::uint64_t>(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count());
 			if(std::chrono::duration<std::uint64_t>{static_cast<std::uint64_t>(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count()) - timer} >= 1s)
 			{
-				Render_Core::get().getAllocator().dumpMemoryToJson();
+				RenderCore::Get().GetAllocator().DumpMemoryToJson();
 				timer = static_cast<std::uint64_t>(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count());
 			}
 		#endif
@@ -84,11 +79,11 @@ namespace mlx
 	GraphicsSupport::~GraphicsSupport()
 	{
 		MLX_PROFILE_FUNCTION();
-		vkDeviceWaitIdle(Render_Core::get().getDevice().get());
-		_text_manager.destroy();
-		_pixel_put_pipeline.destroy();
-		_renderer->destroy();
-		if(_window)
-			_window->destroy();
+		vkDeviceWaitIdle(RenderCore::Get().GetDevice().Get());
+		m_text_manager.Destroy();
+		m_pixel_put_pipeline.Destroy();
+		m_renderer->Destroy();
+		if(p_window)
+			p_window->Destroy();
 	}
 }

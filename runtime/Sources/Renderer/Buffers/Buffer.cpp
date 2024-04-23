@@ -1,67 +1,66 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vk_buffer.cpp                                      :+:      :+:    :+:   */
+/*   Buffer.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 18:55:57 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 19:01:18 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/23 14:20:13 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <pre_compiled.h>
+#include <PreCompiled.h>
 
-#include "vk_buffer.h"
-#include <renderer/command/vk_cmd_pool.h>
-#include <renderer/command/vk_cmd_buffer.h>
-#include <renderer/core/render_core.h>
-#include <core/profiler.h>
+#include <Renderer/Buffers/Buffer.h>
+#include <Renderer/Command/CommandPool.h>
+#include <Renderer/Command/CommandBuffer.h>
+#include <Renderer/Core/RenderCore.h>
 
 namespace mlx
 {
-	void Buffer::create(Buffer::kind type, VkDeviceSize size, VkBufferUsageFlags usage, const char* name, const void* data)
+	void Buffer::Create(BufferType type, VkDeviceSize size, VkBufferUsageFlags usage, const char* name, const void* data)
 	{
 		MLX_PROFILE_FUNCTION();
-		_usage = usage;
-		if(type == Buffer::kind::constant || type == Buffer::kind::dynamic_device_local)
+		m_usage = usage;
+		if(type == BufferType::Constant || type == BufferType::LowDynamic)
 		{
-			if(data == nullptr && type == Buffer::kind::constant)
+			if(data == nullptr && type == BufferType::Constant)
 			{
-				core::error::report(e_kind::warning, "Vulkan : trying to create constant buffer without data (constant buffers cannot be modified after creation)");
+				Warning("Vulkan : trying to create constant buffer without data (constant buffers cannot be modified after creation)");
 				return;
 			}
-			_usage |= VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
+			m_usage |= VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
 		}
 
 		VmaAllocationCreateInfo alloc_info{};
 		alloc_info.flags = VMA_ALLOCATION_CREATE_HOST_ACCESS_SEQUENTIAL_WRITE_BIT;
 		alloc_info.usage = VMA_MEMORY_USAGE_AUTO;
 
-		createBuffer(_usage, alloc_info, size, name);
+		CreateBuffer(m_usage, alloc_info, size, name);
 
 		if(data != nullptr)
 		{
 			void* mapped = nullptr;
-			mapMem(&mapped);
+			MapMem(&mapped);
 				std::memcpy(mapped, data, size);
-			unmapMem();
-			if(type == Buffer::kind::constant || type == Buffer::kind::dynamic_device_local)
-				pushToGPU();
+			UnmapMem();
+			if(type == BufferType::constant || type == BufferType::LowDynamic)
+				PushToGPU();
 		}
 	}
 
-	void Buffer::destroy() noexcept
+	void Buffer::Destroy() noexcept
 	{
 		MLX_PROFILE_FUNCTION();
-		if(_is_mapped)
-			unmapMem();
-		if(_buffer != VK_NULL_HANDLE)
-			Render_Core::get().getAllocator().destroyBuffer(_allocation, _buffer);
-		_buffer = VK_NULL_HANDLE;
+		if(m_is_mapped)
+			UnmapMem();
+		if(m_buffer != VK_NULL_HANDLE)
+			RenderCore::Get().GetAllocator().DestroyBuffer(m_allocation, m_buffer);
+		m_buffer = VK_NULL_HANDLE;
 	}
 
-	void Buffer::createBuffer(VkBufferUsageFlags usage, VmaAllocationCreateInfo info, VkDeviceSize size, [[maybe_unused]] const char* name)
+	void Buffer::CreateBuffer(VkBufferUsageFlags usage, VmaAllocationCreateInfo info, VkDeviceSize size, [[maybe_unused]] const char* name)
 	{
 		MLX_PROFILE_FUNCTION();
 		VkBufferCreateInfo bufferInfo{};
@@ -71,97 +70,81 @@ namespace mlx
 		bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
 		#ifdef DEBUG
-			_name = name;
-			std::string alloc_name = _name;
+			m_name = name;
+			std::string alloc_name = m_name;
 			if(usage & VK_BUFFER_USAGE_INDEX_BUFFER_BIT)
 				alloc_name.append("_index_buffer");
 			else if(usage & VK_BUFFER_USAGE_VERTEX_BUFFER_BIT)
 				alloc_name.append("_vertex_buffer");
 			else if(!(usage & VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT))
 				alloc_name.append("_buffer");
-			_allocation = Render_Core::get().getAllocator().createBuffer(&bufferInfo, &info, _buffer, alloc_name.c_str());
+			m_allocation = RenderCore::Get().GetAllocator().CreateBuffer(&bufferInfo, &info, m_buffer, alloc_name.c_str());
 		#else
-			_allocation = Render_Core::get().getAllocator().createBuffer(&bufferInfo, &info, _buffer, nullptr);
+			m_allocation = RenderCore::Get().GetAllocator().CreateBuffer(&bufferInfo, &info, m_buffer, nullptr);
 		#endif
-		_size = size;
+		m_size = size;
 	}
 
-	bool Buffer::copyFromBuffer(const Buffer& buffer) noexcept
+	bool Buffer::CopyFromBuffer(const Buffer& buffer) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
-		if(!(_usage & VK_BUFFER_USAGE_TRANSFER_DST_BIT))
+		if(!(m_usage & VK_BUFFER_USAGE_TRANSFER_DST_BIT))
 		{
-			core::error::report(e_kind::error, "Vulkan : buffer cannot be the destination of a copy because it does not have the correct usage flag");
+			Error("Vulkan : buffer cannot be the destination of a copy because it does not have the correct usage flag");
 			return false;
 		}
-		if(!(buffer._usage & VK_BUFFER_USAGE_TRANSFER_SRC_BIT))
+		if(!(buffer.m_usage & VK_BUFFER_USAGE_TRANSFER_SRC_BIT))
 		{
-			core::error::report(e_kind::error, "Vulkan : buffer cannot be the source of a copy because it does not have the correct usage flag");
+			Error("Vulkan : buffer cannot be the source of a copy because it does not have the correct usage flag");
 			return false;
 		}
 
-		CmdBuffer& cmd = Render_Core::get().getSingleTimeCmdBuffer();
-		cmd.beginRecord();
+		CmdBuffer& cmd = RenderCore::Get().GetSingleTimeCmdBuffer();
+		cmd.BeginRecord();
 
-		cmd.copyBuffer(*this, const_cast<Buffer&>(buffer));
+		cmd.CopyBuffer(*this, const_cast<Buffer&>(buffer));
 
-		cmd.endRecord();
-		cmd.submitIdle();
+		cmd.EndRecord();
+		cmd.SubmitIdle();
 
 		return true;
 	}
 
-	void Buffer::pushToGPU() noexcept
+	void Buffer::PushToGPU() noexcept
 	{
 		MLX_PROFILE_FUNCTION();
 		VmaAllocationCreateInfo alloc_info{};
 		alloc_info.usage = VMA_MEMORY_USAGE_AUTO_PREFER_DEVICE;
 
-		Buffer newBuffer;
-		newBuffer._usage = (_usage & 0xFFFFFFFC) | VK_BUFFER_USAGE_TRANSFER_DST_BIT;
+		Buffer new_buffer;
+		new_buffer.m_usage = (m_usage & 0xFFFFFFFC) | VK_BUFFER_USAGE_TRANSFER_DST_BIT;
 		#ifdef DEBUG
-			std::string new_name = _name + "_GPU";
-			newBuffer.createBuffer(newBuffer._usage, alloc_info, _size, new_name.c_str());
+			std::string new_name = m_name + "_GPU";
+			new_buffer.CreateBuffer(new_buffer.m_usage, alloc_info, m_size, new_name.c_str());
 		#else
-			newBuffer.createBuffer(newBuffer._usage, alloc_info, _size, nullptr);
+			new_buffer.CreateBuffer(new_buffer.m_usage, alloc_info, m_size, nullptr);
 		#endif
 
-		if(newBuffer.copyFromBuffer(*this)) // if the copy succeded we swap the buffers, otherwise the new one is deleted
-			this->swap(newBuffer);
-		newBuffer.destroy();
+		if(new_buffer.CopyFromBuffer(*this)) // if the copy succeded we swap the buffers, otherwise the new one is deleted
+			this->Swap(new_buffer);
+		new_buffer.Destroy(); // destroying the old buffer as they have been swapped
 	}
 
-	void Buffer::swap(Buffer& buffer) noexcept
+	void Buffer::Swap(Buffer& buffer) noexcept
 	{
-		VkBuffer temp_b = _buffer;
-		_buffer = buffer._buffer;
-		buffer._buffer = temp_b;
-
-		VmaAllocation temp_a = buffer._allocation;
-		buffer._allocation = _allocation;
-		_allocation = temp_a;
-
-		VkDeviceSize temp_size = buffer._size;
-		buffer._size = _size;
-		_size = temp_size;
-
-		VkDeviceSize temp_offset = buffer._offset;
-		buffer._offset = _offset;
-		_offset = temp_offset;
-
-		VkBufferUsageFlags temp_u = _usage;
-		_usage = buffer._usage;
-		buffer._usage = temp_u;
-
+		std::swap(m_buffer, buffer.m_buffer);
+		std::swap(m_allocation, buffer.m_allocation);
+		std::swap(m_size, buffer.m_size);
+		std::swap(m_offset, buffer.m_offset);
 		#ifdef DEBUG
-			std::string temp_n = _name;
-			_name = buffer._name;
-			buffer._name = temp_n;
+			std::swap(m_name, buffer.m_name);
 		#endif
+		std::swap(m_usage, buffer.m_usage);
+		std::swap(m_is_mapped, buffer.m_is_mapped);
 	}
 
-	void Buffer::flush(VkDeviceSize size, VkDeviceSize offset)
+	void Buffer::Flush(VkDeviceSize size, VkDeviceSize offset)
 	{
-		Render_Core::get().getAllocator().flush(_allocation, size, offset);
+		RenderCore::Get().GetAllocator().Flush(m_allocation, size, offset);
 	}
 }
