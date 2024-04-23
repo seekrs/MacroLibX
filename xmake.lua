@@ -53,9 +53,9 @@ target("mlx")
 	add_options("images_optimized")
 	add_options("force_integrated_gpu")
 	add_options("graphics_memory_dump")
-	add_includedirs("includes", "src", "third_party")
+	add_includedirs("runtime/Includes", "runtime/Sources", "third_party")
 
-	set_pcxxheader("src/pre_compiled.h")
+	set_pcxxheader("runtime/Sources/PreCompiled.h")
 
 	add_defines("MLX_BUILD", "SDL_MAIN_HANDLED")
 

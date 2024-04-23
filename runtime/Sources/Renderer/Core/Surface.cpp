@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vk_surface.cpp                                     :+:      :+:    :+:   */
+/*   Surface.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 18:58:49 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 22:25:55 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/23 18:56:56 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,31 +17,27 @@
 
 namespace mlx
 {
-	void Surface::create(Renderer& renderer)
+	void Surface::Create(Renderer& renderer)
 	{
-		if(glfwCreateWindowSurface(Render_Core::get().getInstance().get(), renderer.getWindow()->getNativeWindow(), NULL, &_surface) != VK_SUCCESS)
-			core::error::report(e_kind::fatal_error, "Vulkan : failed to create a surface");
-		#ifdef DEBUG
-			core::error::report(e_kind::message, "Vulkan : created new surface");
-		#endif
+		if(glfwCreateWindowSurface(RenderCore::Get().GetInstance().Get(), renderer.GetWindow()->GetNativeWindow(), NULL, &m_surface) != VK_SUCCESS)
+			FatalError("Vulkan : failed to create a surface");
+		DebugLog("Vulkan : created new surface");
 	}
 
-	VkSurfaceFormatKHR Surface::chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats)
+	VkSurfaceFormatKHR Surface::ChooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& available_formats)
 	{
-		auto it = std::find_if(availableFormats.begin(), availableFormats.end(), [](VkSurfaceFormatKHR format)
+		auto it = std::find_if(available_formats.begin(), available_formats.end(), [](VkSurfaceFormatKHR format)
 		{
 			return format.format == VK_FORMAT_R8G8B8A8_SRGB && format.colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR;
 		});
 
-		return (it == availableFormats.end() ? availableFormats[0] : *it);
+		return (it == available_formats.end() ? available_formats[0] : *it);
 	}
 
-	void Surface::destroy() noexcept
+	void Surface::Destroy() noexcept
 	{
-		vkDestroySurfaceKHR(Render_Core::get().getInstance().get(), _surface, nullptr);
-		_surface = VK_NULL_HANDLE;
-		#ifdef DEBUG
-			core::error::report(e_kind::message, "Vulkan : destroyed a surface");
-		#endif
+		vkDestroySurfaceKHR(RenderCore::Get().GetInstance().Get(), m_surface, nullptr);
+		m_surface = VK_NULL_HANDLE;
+		DebugLog("Vulkan : destroyed a surface");
 	}
 }

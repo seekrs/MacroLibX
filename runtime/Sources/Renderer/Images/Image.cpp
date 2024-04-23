@@ -1,26 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vk_image.cpp                                       :+:      :+:    :+:   */
+/*   Image.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:59:07 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 19:03:27 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/23 20:02:25 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <pre_compiled.h>
+#include <PreCompiled.h>
 
-#include "vk_image.h"
-#include <renderer/core/render_core.h>
-#include <renderer/buffers/vk_buffer.h>
-#include <renderer/command/vk_cmd_pool.h>
-#include <renderer/core/vk_fence.h>
+#include <Renderer/Images/Image.h>
+#include <Renderer/Core/RenderCore.h>
 
 namespace mlx
 {
-	bool isStencilFormat(VkFormat format)
+	bool IsStencilFormat(VkFormat format)
 	{
 		switch(format)
 		{
@@ -32,7 +29,7 @@ namespace mlx
 		}
 	}
 
-	bool isDepthFormat(VkFormat format)
+	bool IsDepthFormat(VkFormat format)
 	{
 		switch(format)
 		{
@@ -47,7 +44,7 @@ namespace mlx
 		}
 	}
 
-	VkFormat bitsToFormat(std::uint32_t bits)
+	VkFormat BitsToFormat(std::uint32_t bits)
 	{
 		switch(bits)
 		{
@@ -61,67 +58,67 @@ namespace mlx
 			case 128: return VK_FORMAT_R32G32B32A32_SFLOAT;
 
 			default:
-				core::error::report(e_kind::fatal_error, "Vulkan : unsupported image bit-depth");
+				FatalError("Vulkan : unsupported image bit-depth");
 				return VK_FORMAT_R8G8B8A8_UNORM;
 		}
 	}
 
-	VkPipelineStageFlags layoutToAccessMask(VkImageLayout layout, bool isDestination)
+	VkPipelineStageFlags LayoutToAccessMask(VkImageLayout layout, bool is_destination)
 	{
-		VkPipelineStageFlags accessMask = 0;
+		VkPipelineStageFlags access_mask = 0;
 
 		switch(layout)
 		{
 			case VK_IMAGE_LAYOUT_UNDEFINED:
-				if(isDestination)
-					core::error::report(e_kind::error, "Vulkan : the new layout used in a transition must not be VK_IMAGE_LAYOUT_UNDEFINED");
+				if(is_destination)
+					Error("Vulkan : the new layout used in a transition must not be VK_IMAGE_LAYOUT_UNDEFINED");
 			break;
-			case VK_IMAGE_LAYOUT_GENERAL: accessMask = VK_ACCESS_SHADER_READ_BIT | VK_ACCESS_SHADER_WRITE_BIT; break;
-			case VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL: accessMask = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT; break;
-			case VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL: accessMask = VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT; break;
+			case VK_IMAGE_LAYOUT_GENERAL: access_mask = VK_ACCESS_SHADER_READ_BIT | VK_ACCESS_SHADER_WRITE_BIT; break;
+			case VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL: access_mask = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT; break;
+			case VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL: access_mask = VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT; break;
 			case VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL:
-				accessMask = VK_ACCESS_SHADER_READ_BIT; // VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT;
+				access_mask = VK_ACCESS_SHADER_READ_BIT; // VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT;
 			break;
-			case VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL: accessMask = VK_ACCESS_SHADER_READ_BIT | VK_ACCESS_INPUT_ATTACHMENT_READ_BIT; break;
-			case VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL: accessMask = VK_ACCESS_TRANSFER_READ_BIT; break;
-			case VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL: accessMask = VK_ACCESS_TRANSFER_WRITE_BIT; break;
+			case VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL: access_mask = VK_ACCESS_SHADER_READ_BIT | VK_ACCESS_INPUT_ATTACHMENT_READ_BIT; break;
+			case VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL: access_mask = VK_ACCESS_TRANSFER_READ_BIT; break;
+			case VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL: access_mask = VK_ACCESS_TRANSFER_WRITE_BIT; break;
 			case VK_IMAGE_LAYOUT_PREINITIALIZED:
-				if(!isDestination)
-					accessMask = VK_ACCESS_HOST_WRITE_BIT;
+				if(!is_destination)
+					access_mask = VK_ACCESS_HOST_WRITE_BIT;
 				else
-					core::error::report(e_kind::error, "Vulkan : the new layout used in a transition must not be VK_IMAGE_LAYOUT_PREINITIALIZED");
+					Error("Vulkan : the new layout used in a transition must not be VK_IMAGE_LAYOUT_PREINITIALIZED");
 			break;
-			case VK_IMAGE_LAYOUT_DEPTH_READ_ONLY_STENCIL_ATTACHMENT_OPTIMAL: accessMask = VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT; break;
-			case VK_IMAGE_LAYOUT_DEPTH_ATTACHMENT_STENCIL_READ_ONLY_OPTIMAL: accessMask = VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT; break;
-			case VK_IMAGE_LAYOUT_PRESENT_SRC_KHR: accessMask = VK_ACCESS_MEMORY_READ_BIT; break;
+			case VK_IMAGE_LAYOUT_DEPTH_READ_ONLY_STENCIL_ATTACHMENT_OPTIMAL: access_mask = VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT; break;
+			case VK_IMAGE_LAYOUT_DEPTH_ATTACHMENT_STENCIL_READ_ONLY_OPTIMAL: access_mask = VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT; break;
+			case VK_IMAGE_LAYOUT_PRESENT_SRC_KHR: access_mask = VK_ACCESS_MEMORY_READ_BIT; break;
 
-			default: core::error::report(e_kind::error, "Vulkan : unexpected image layout"); break;
+			default: Error("Vulkan : unexpected image layout"); break;
 		}
 
-		return accessMask;
+		return access_mask;
 	}
 
-	void Image::create(std::uint32_t width, std::uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, const char* name, bool dedicated_memory)
+	void Image::Create(std::uint32_t width, std::uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, const char* name, bool dedicated_memory)
 	{
-		_width = width;
-		_height = height;
-		_format = format;
-		_tiling = tiling;
+		m_width = width;
+		m_height = height;
+		m_format = format;
+		m_tiling = tiling;
 
-		VkImageCreateInfo imageInfo{};
-		imageInfo.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
-		imageInfo.imageType = VK_IMAGE_TYPE_2D;
-		imageInfo.extent.width = width;
-		imageInfo.extent.height = height;
-		imageInfo.extent.depth = 1;
-		imageInfo.mipLevels = 1;
-		imageInfo.arrayLayers = 1;
-		imageInfo.format = format;
-		imageInfo.tiling = tiling;
-		imageInfo.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
-		imageInfo.usage = usage;
-		imageInfo.samples = VK_SAMPLE_COUNT_1_BIT;
-		imageInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+		VkImageCreateInfo image_info{};
+		image_info.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
+		image_info.imageType = VK_IMAGE_TYPE_2D;
+		image_info.extent.width = width;
+		image_info.extent.height = height;
+		image_info.extent.depth = 1;
+		image_info.mipLevels = 1;
+		image_info.arrayLayers = 1;
+		image_info.format = format;
+		image_info.tiling = tiling;
+		image_info.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+		image_info.usage = usage;
+		image_info.samples = VK_SAMPLE_COUNT_1_BIT;
+		image_info.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
 		VmaAllocationCreateInfo alloc_info{};
 		alloc_info.usage = VMA_MEMORY_USAGE_AUTO_PREFER_DEVICE;
@@ -131,35 +128,35 @@ namespace mlx
 			alloc_info.priority = 1.0f;
 		}
 
-		_allocation = Render_Core::get().getAllocator().createImage(&imageInfo, &alloc_info, _image, name);
+		m_allocation = RenderCore::Get().GetAllocator().CreateImage(&image_info, &alloc_info, m_image, name);
 		#ifdef DEBUG
-			_name = name;
+			m_name = name;
 		#endif
 	}
 
-	void Image::createImageView(VkImageViewType type, VkImageAspectFlags aspectFlags) noexcept
+	void Image::CreateImageView(VkImageViewType type, VkImageAspectFlags aspect_flags) noexcept
 	{
-		VkImageViewCreateInfo viewInfo{};
-		viewInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
-		viewInfo.image = _image;
-		viewInfo.viewType = type;
-		viewInfo.format = _format;
-		viewInfo.subresourceRange.aspectMask = aspectFlags;
-		viewInfo.subresourceRange.baseMipLevel = 0;
-		viewInfo.subresourceRange.levelCount = 1;
-		viewInfo.subresourceRange.baseArrayLayer = 0;
-		viewInfo.subresourceRange.layerCount = 1;
+		VkImageViewCreateInfo view_info{};
+		view_info.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+		view_info.image = m_image;
+		view_info.viewType = type;
+		view_info.format = m_format;
+		view_info.subresourceRange.aspectMask = aspect_flags;
+		view_info.subresourceRange.baseMipLevel = 0;
+		view_info.subresourceRange.levelCount = 1;
+		view_info.subresourceRange.baseArrayLayer = 0;
+		view_info.subresourceRange.layerCount = 1;
 
-		VkResult res = vkCreateImageView(Render_Core::get().getDevice().get(), &viewInfo, nullptr, &_image_view);
+		VkResult res = vkCreateImageView(RenderCore::Get().GetDevice().Get(), &view_info, nullptr, &m_image_view);
 		if(res != VK_SUCCESS)
-			core::error::report(e_kind::fatal_error, "Vulkan : failed to create an image view, %s", RCore::verbaliseResultVk(res));
+			FatalError("Vulkan : failed to create an image view, %s", VerbaliseVkResult(res));
 		#ifdef DEBUG
 		else
-			Render_Core::get().getLayers().setDebugUtilsObjectNameEXT(VK_OBJECT_TYPE_IMAGE_VIEW, (std::uint64_t)_image_view, _name.c_str());
+			RenderCore::Get().GetLayers().SetDebugUtilsObjectNameEXT(VK_OBJECT_TYPE_IMAGE_VIEW, (std::uint64_t)m_image_view, m_name.c_str());
 		#endif
 	}
 
-	void Image::createSampler() noexcept
+	void Image::CreateSampler() noexcept
 	{
 		VkSamplerCreateInfo info{};
 		info.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
@@ -174,94 +171,94 @@ namespace mlx
 		info.anisotropyEnable = VK_FALSE;
 		info.maxAnisotropy = 1.0f;
 
-		VkResult res = vkCreateSampler(Render_Core::get().getDevice().get(), &info, nullptr, &_sampler);
+		VkResult res = vkCreateSampler(RenderCore::Get().GetDevice().Get(), &info, nullptr, &m_sampler);
 		if(res != VK_SUCCESS)
-			core::error::report(e_kind::fatal_error, "Vulkan : failed to create an image sampler, %s", RCore::verbaliseResultVk(res));
+			FatalError("Vulkan : failed to create an image sampler, %", VerbaliseVkResult(res));
 		#ifdef DEBUG
 		else
-			Render_Core::get().getLayers().setDebugUtilsObjectNameEXT(VK_OBJECT_TYPE_SAMPLER, (std::uint64_t)_sampler, _name.c_str());
+			RenderCore::Get().GetLayers().SetDebugUtilsObjectNameEXT(VK_OBJECT_TYPE_SAMPLER, (std::uint64_t)m_sampler, m_name.c_str());
 		#endif
 	}
 
-	void Image::copyFromBuffer(Buffer& buffer)
+	void Image::CopyFromBuffer(Buffer& buffer)
 	{
-		CmdBuffer& cmd = Render_Core::get().getSingleTimeCmdBuffer();
-		cmd.beginRecord();
+		CommandBuffer& cmd = RenderCore::Get().GetSingleTimeCmdBuffer();
+		cmd.BeginRecord();
 
-		VkImageLayout layout_save = _layout;
-		transitionLayout(VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, &cmd);
+		VkImageLayout layout_save = m_layout;
+		TransitionLayout(VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, &cmd);
 
-		cmd.copyBufferToImage(buffer, *this);
+		cmd.CopyBufferToImage(buffer, *this);
 
-		transitionLayout(layout_save, &cmd);
+		TransitionLayout(layout_save, &cmd);
 
-		cmd.endRecord();
-		cmd.submitIdle();
+		cmd.EndRecord();
+		cmd.SubmitIdle();
 	}
 
-	void Image::copyToBuffer(Buffer& buffer)
+	void Image::CopyToBuffer(Buffer& buffer)
 	{
-		CmdBuffer& cmd = Render_Core::get().getSingleTimeCmdBuffer();
-		cmd.beginRecord();
+		CommandBuffer& cmd = RenderCore::Get().GetSingleTimeCmdBuffer();
+		cmd.BeginRecord();
 
-		VkImageLayout layout_save = _layout;
-		transitionLayout(VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, &cmd);
+		VkImageLayout layout_save = m_layout;
+		TransitionLayout(VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, &cmd);
 
-		cmd.copyImagetoBuffer(*this, buffer);
+		cmd.CopyImagetoBuffer(*this, buffer);
 
-		transitionLayout(layout_save, &cmd);
+		TransitionLayout(layout_save, &cmd);
 
-		cmd.endRecord();
-		cmd.submitIdle();
+		cmd.EndRecord();
+		cmd.SubmitIdle();
 	}
 
-	void Image::transitionLayout(VkImageLayout new_layout, CmdBuffer* cmd)
+	void Image::TransitionLayout(VkImageLayout new_layout, NonOwningPtr<CommandBuffer> cmd)
 	{
-		if(new_layout == _layout)
+		if(new_layout == m_layout)
 			return;
 
-		bool singleTime = (cmd == nullptr);
-		if(singleTime)
+		bool single_time = (cmd == nullptr);
+		if(single_time)
 		{
-			cmd = &Render_Core::get().getSingleTimeCmdBuffer();
-			cmd->beginRecord();
+			cmd = &RenderCore::Get().GetSingleTimeCmdBuffer();
+			cmd->BeginRecord();
 		}
 
-		cmd->transitionImageLayout(*this, new_layout);
+		cmd->TransitionImageLayout(*this, new_layout);
 
-		if(singleTime)
+		if(single_time)
 		{
-			cmd->endRecord();
-			cmd->submitIdle();
+			cmd->EndRecord();
+			cmd->SubmitIdle();
 		}
-		_layout = new_layout;
+		m_layout = new_layout;
 	}
 
-	void Image::destroySampler() noexcept
+	void Image::DestroySampler() noexcept
 	{
-		if(_sampler != VK_NULL_HANDLE)
-			vkDestroySampler(Render_Core::get().getDevice().get(), _sampler, nullptr);
-		_sampler = VK_NULL_HANDLE;
+		if(m_sampler != VK_NULL_HANDLE)
+			vkDestroySampler(RenderCore::Get().GetDevice().Get(), m_sampler, nullptr);
+		m_sampler = VK_NULL_HANDLE;
 	}
 
-	void Image::destroyImageView() noexcept
+	void Image::DestroyImageView() noexcept
 	{
-		if(_image_view != VK_NULL_HANDLE)
-			vkDestroyImageView(Render_Core::get().getDevice().get(), _image_view, nullptr);
-		_image_view = VK_NULL_HANDLE;
+		if(m_image_view != VK_NULL_HANDLE)
+			vkDestroyImageView(RenderCore::Get().GetDevice().Get(), m_image_view, nullptr);
+		m_image_view = VK_NULL_HANDLE;
 	}
 
-	void Image::destroy() noexcept
+	void Image::Destroy() noexcept
 	{
-		destroySampler();
-		destroyImageView();
+		DestroySampler();
+		DestroyImageView();
 
-		if(_image != VK_NULL_HANDLE)
-			Render_Core::get().getAllocator().destroyImage(_allocation, _image);
-		_image = VK_NULL_HANDLE;
+		if(m_image != VK_NULL_HANDLE)
+			RenderCore::Get().GetAllocator().DestroyImage(m_allocation, m_image);
+		m_image = VK_NULL_HANDLE;
 	}
 
-	std::uint32_t formatSize(VkFormat format)
+	std::uint32_t FormatSize(VkFormat format)
 	{
 		switch(format)
 		{

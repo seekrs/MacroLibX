@@ -1,29 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bridge.cpp                                         :+:      :+:    :+:   */
+/*   Bridge.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:35:20 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 23:05:46 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/23 14:44:27 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <pre_compiled.h>
+#include <PreCompiled.h>
 
-#include <pre_compiled.h>
-#include "errors.h"
-#include "application.h"
-#include <renderer/core/render_core.h>
+#include <Core/Application.h>
+#include <Renderer/Core/RenderCore.h>
 #include <mlx.h>
-#include <core/memory.h>
+#include <Core/Memory.h>
 
 static void* __mlx_ptr = nullptr;
 
 #define MLX_CHECK_APPLICATION_POINTER(ptr) \
 	if(ptr != __mlx_ptr || ptr == NULL) \
-		mlx::core::error::report(e_kind::fatal_error, "invalid mlx pointer passed to '%s'", MLX_FUNC_SIG); \
+		mlx::FatalError("invalid mlx pointer passed to '%'", MLX_FUNC_SIG); \
 	else {} // just to avoid issues with possible if-else statements outside this macro
 
 extern "C"
@@ -32,14 +30,14 @@ extern "C"
 	{
 		if(__mlx_ptr != nullptr)
 		{
-			mlx::core::error::report(e_kind::error, "MLX cannot be initialized multiple times");
-			return NULL; // not nullptr for the C compatibility
+			Error("MLX cannot be initialized multiple times");
+			return nullptr;
 		}
-		mlx::MemManager::get(); // just to initialize the C garbage collector
-		mlx::core::Application* app = new mlx::core::Application;
-		mlx::Render_Core::get().init();
+		mlx::MemManager::Get(); // just to initialize the C garbage collector
+		mlx::Application* app = new mlx::Application;
 		if(app == nullptr)
-			mlx::core::error::report(e_kind::fatal_error, "Tout a pété");
+			mlx::FatalError("Tout a pété");
+		mlx::RenderCore::Get().Init();
 		__mlx_ptr = static_cast<void*>(app);
 		return __mlx_ptr;
 	}
@@ -49,30 +47,30 @@ extern "C"
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		if(w <= 0 || h <= 0)
 		{
-			mlx::core::error::report(e_kind::fatal_error, "invalid window size (%d x %d)", w, h);
+			mlx::FatalError("invalid window size (%d x %d)", w, h);
 			return NULL; // not nullptr for the C compatibility
 		}
-		return static_cast<mlx::core::Application*>(mlx)->newGraphicsSuport(w, h, title);
+		return static_cast<mlx::Application*>(mlx)->NewGraphicsSuport(w, h, title);
 	}
 
 	int	mlx_loop_hook(void* mlx, int (*f)(void*), void* param)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
-		static_cast<mlx::core::Application*>(mlx)->loopHook(f, param);
+		static_cast<mlx::Application*>(mlx)->LoopHook(f, param);
 		return 0;
 	}
 
 	int mlx_loop(void* mlx)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
-		static_cast<mlx::core::Application*>(mlx)->run();
+		static_cast<mlx::Application*>(mlx)->Run();
 		return 0;
 	}
 
 	int mlx_loop_end(void* mlx)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
-		static_cast<mlx::core::Application*>(mlx)->loopEnd();
+		static_cast<mlx::Application*>(mlx)->LoopEnd();
 		return 0;
 	}
 
@@ -89,21 +87,21 @@ extern "C"
 	int mlx_mouse_move(void* mlx, void* win, int x, int y)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
-		static_cast<mlx::core::Application*>(mlx)->mouseMove(win, x, y);
+		static_cast<mlx::Application*>(mlx)->MouseMove(win, x, y);
 		return 0;
 	}
 
 	int mlx_mouse_get_pos(void* mlx, int* x, int* y)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
-		static_cast<mlx::core::Application*>(mlx)->getMousePos(x, y);
+		static_cast<mlx::Application*>(mlx)->GetMousePos(x, y);
 		return 0;
 	}
 
 	int mlx_on_event(void* mlx, void* win, mlx_event_type event, int (*funct_ptr)(int, void*), void* param)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
-		static_cast<mlx::core::Application*>(mlx)->onEvent(win, static_cast<int>(event), funct_ptr, param);
+		static_cast<mlx::Application*>(mlx)->OnEvent(win, static_cast<int>(event), funct_ptr, param);
 		return 0;
 	}
 
@@ -111,14 +109,17 @@ extern "C"
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		if (width <= 0 || height <= 0)
-			mlx::core::error::report(e_kind::fatal_error, "invalid image size (%d x %d)", width, height);
-		return static_cast<mlx::core::Application*>(mlx)->newTexture(width, height);
+		{
+			mlx::Error("invalid image size (% x %)", width, height);
+			return nullptr;
+		}
+		return static_cast<mlx::Application*>(mlx)->NewTexture(width, height);
 	}
 
 	int mlx_get_image_pixel(void* mlx, void* img, int x, int y)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
-		int color = static_cast<mlx::core::Application*>(mlx)->getTexturePixel(img, x, y);
+		int color = static_cast<mlx::Application*>(mlx)->GetTexturePixel(img, x, y);
 		unsigned char color_bits[4];
 		color_bits[0] = (color & 0x000000FF);
 		color_bits[1] = (color & 0x0000FF00) >> 8;
@@ -135,20 +136,20 @@ extern "C"
 		color_bits[1] = (color & 0x0000FF00) >> 8;
 		color_bits[2] = (color & 0x000000FF);
 		color_bits[3] = (color & 0xFF000000) >> 24;
-		static_cast<mlx::core::Application*>(mlx)->setTexturePixel(img, x, y, *reinterpret_cast<unsigned int*>(color_bits));
+		static_cast<mlx::Application*>(mlx)->SetTexturePixel(img, x, y, *reinterpret_cast<unsigned int*>(color_bits));
 	}
 
 	int mlx_put_image_to_window(void* mlx, void* win, void* img, int x, int y)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
-		static_cast<mlx::core::Application*>(mlx)->texturePut(win, img, x, y);
+		static_cast<mlx::Application*>(mlx)->TexturePut(win, img, x, y);
 		return 0;
 	}
 
 	int mlx_destroy_image(void* mlx, void* img)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
-		static_cast<mlx::core::Application*>(mlx)->destroyTexture(img);
+		static_cast<mlx::Application*>(mlx)->DestroyTexture(img);
 		return 0;
 	}
 
@@ -156,42 +157,51 @@ extern "C"
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		if (filename == nullptr)
-			mlx::core::error::report(e_kind::fatal_error, "PNG loader : filename is NULL");
+		{
+			mlx::Error("PNG loader : filename is NULL");
+			return nullptr;
+		}
 		std::filesystem::path file(filename);
 		if(file.extension() != ".png")
 		{
-			mlx::core::error::report(e_kind::error, "PNG loader : not a png file '%s'", filename);
+			mlx::Error("PNG loader : not a png file '%'", filename);
 			return nullptr;
 		}
-		return static_cast<mlx::core::Application*>(mlx)->newStbTexture(filename, width, height);
+		return static_cast<mlx::Application*>(mlx)->NewStbTexture(filename, width, height);
 	}
 
 	void* mlx_jpg_file_to_image(void* mlx, char* filename, int* width, int* height)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		if (filename == nullptr)
-			mlx::core::error::report(e_kind::fatal_error, "JPG loader : filename is NULL");
+		{
+			mlx::Error("JPG loader : filename is NULL");
+			return nullptr;
+		}
 		std::filesystem::path file(filename);
 		if(file.extension() != ".jpg" && file.extension() != ".jpeg")
 		{
-			mlx::core::error::report(e_kind::error, "JPG loader : not a jpg file '%s'", filename);
+			mlx::Error("JPG loader : not a jpg file '%'", filename);
 			return nullptr;
 		}
-		return static_cast<mlx::core::Application*>(mlx)->newStbTexture(filename, width, height);
+		return static_cast<mlx::Application*>(mlx)->NewStbTexture(filename, width, height);
 	}
 
 	void* mlx_bmp_file_to_image(void* mlx, char* filename, int* width, int* height)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		if (filename == nullptr)
-			mlx::core::error::report(e_kind::fatal_error, "BMP loader : filename is NULL");
+		{
+			mlx::Error("BMP loader : filename is NULL");
+			return nullptr;
+		}
 		std::filesystem::path file(filename);
 		if(file.extension() != ".bmp" && file.extension() != ".dib")
 		{
-			mlx::core::error::report(e_kind::error, "BMP loader : not a bmp file '%s'", filename);
+			mlx::Error("BMP loader : not a bmp file '%'", filename);
 			return nullptr;
 		}
-		return static_cast<mlx::core::Application*>(mlx)->newStbTexture(filename, width, height);
+		return static_cast<mlx::Application*>(mlx)->NewStbTexture(filename, width, height);
 	}
 
 	int mlx_pixel_put(void* mlx, void* win, int x, int y, int color)
@@ -202,7 +212,7 @@ extern "C"
 		color_bits[1] = (color & 0x0000FF00) >> 8;
 		color_bits[2] = (color & 0x000000FF);
 		color_bits[3] = (color & 0xFF000000) >> 24;
-		static_cast<mlx::core::Application*>(mlx)->pixelPut(win, x, y, *reinterpret_cast<unsigned int*>(color_bits));
+		static_cast<mlx::Application*>(mlx)->PixelPut(win, x, y, *reinterpret_cast<unsigned int*>(color_bits));
 		return 0;
 	}
 
@@ -214,7 +224,7 @@ extern "C"
 		color_bits[1] = (color & 0x0000FF00) >> 8;
 		color_bits[2] = (color & 0x000000FF);
 		color_bits[3] = (color & 0xFF000000) >> 24;
-		static_cast<mlx::core::Application*>(mlx)->stringPut(win, x, y, *reinterpret_cast<unsigned int*>(color_bits), str);
+		static_cast<mlx::Application*>(mlx)->StringPut(win, x, y, *reinterpret_cast<unsigned int*>(color_bits), str);
 		return 0;
 	}
 
@@ -223,19 +233,19 @@ extern "C"
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		if (filepath == nullptr)
 		{
-			mlx::core::error::report(e_kind::error, "Font loader : filepath is NULL");
+			mlx::Error("Font loader : filepath is NULL");
 			return;
 		}
 		std::filesystem::path file(filepath);
 		if(std::strcmp(filepath, "default") != 0 && file.extension() != ".ttf" && file.extension() != ".tte")
 		{
-			mlx::core::error::report(e_kind::error, "TTF loader : not a truetype font file '%s'", filepath);
+			mlx::Error("TTF loader : not a truetype font file '%'", filepath);
 			return;
 		}
 		if(std::strcmp(filepath, "default") == 0)
-			static_cast<mlx::core::Application*>(mlx)->loadFont(win, file, 6.f);
+			static_cast<mlx::Application*>(mlx)->LoadFont(win, file, 6.f);
 		else
-			static_cast<mlx::core::Application*>(mlx)->loadFont(win, file, 16.f);
+			static_cast<mlx::Application*>(mlx)->LoadFont(win, file, 16.f);
 	}
 
 	void mlx_set_font_scale(void* mlx, void* win, char* filepath, float scale)
@@ -243,37 +253,37 @@ extern "C"
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		if (filepath == nullptr)
 		{
-			mlx::core::error::report(e_kind::error, "Font loader : filepath is NULL");
+			mlx::Error("Font loader : filepath is NULL");
 			return;
 		}
 		std::filesystem::path file(filepath);
 		if(std::strcmp(filepath, "default") != 0 && file.extension() != ".ttf" && file.extension() != ".tte")
 		{
-			mlx::core::error::report(e_kind::error, "TTF loader : not a truetype font file '%s'", filepath);
+			mlx::Error("TTF loader : not a truetype font file '%'", filepath);
 			return;
 		}
-		static_cast<mlx::core::Application*>(mlx)->loadFont(win, file, scale);
+		static_cast<mlx::Application*>(mlx)->LoadFont(win, file, scale);
 	}
 
 	int mlx_clear_window(void* mlx, void* win)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
-		static_cast<mlx::core::Application*>(mlx)->clearGraphicsSupport(win);
+		static_cast<mlx::Application*>(mlx)->ClearGraphicsSupport(win);
 		return 0;
 	}
 
 	int mlx_destroy_window(void* mlx, void* win)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
-		static_cast<mlx::core::Application*>(mlx)->destroyGraphicsSupport(win);
+		static_cast<mlx::Application*>(mlx)->DestroyGraphicsSupport(win);
 		return 0;
 	}
 
 	int mlx_destroy_display(void* mlx)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
-		delete static_cast<mlx::core::Application*>(mlx);
-		mlx::Render_Core::get().destroy();
+		delete static_cast<mlx::Application*>(mlx);
+		mlx::RenderCore::Get().Destroy();
 		__mlx_ptr = nullptr;
 		return 0;
 	}
@@ -281,7 +291,7 @@ extern "C"
 	int mlx_get_screens_size(void* mlx, void* win, int* w, int* h)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
-		static_cast<mlx::core::Application*>(mlx)->getScreenSize(win, w, h);
+		static_cast<mlx::Application*>(mlx)->GetScreenSize(win, w, h);
 		return 0;
 	}
 
@@ -290,15 +300,15 @@ extern "C"
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		if(fps < 0)
 		{
-			mlx::core::error::report(e_kind::error, "You cannot set a negative FPS cap (nice try)");
-			fps = -fps;
+			mlx::Error("You cannot set a negative FPS cap (nice try)");
+			return 0;
 		}
 		if(fps == 0)
 		{
-			mlx::core::error::report(e_kind::error, "You cannot set a FPS cap to 0 (nice try)");
+			mlx::Error("You cannot set a FPS cap to 0 (nice try)");
 			return 0;
 		}
-		static_cast<mlx::core::Application*>(mlx)->setFPSCap(static_cast<std::uint32_t>(fps));
+		static_cast<mlx::Application*>(mlx)->SetFPSCap(static_cast<std::uint32_t>(fps));
 		return 0;
 	}
 }

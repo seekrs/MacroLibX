@@ -1,41 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   descriptor_pool_manager.cpp                        :+:      :+:    :+:   */
+/*   DescriptorPoolManager.cpp                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 06:51:47 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 19:02:29 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/23 19:41:38 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <pre_compiled.h>
+#include <PreCompiled.h>
 
-#include <renderer/core/render_core.h>
-#include <renderer/descriptors/descriptor_pool_manager.h>
+#include <Renderer/Core/RenderCore.h>
+#include <Renderer/Descriptors/DescriptorPoolManager.h>
 
 namespace mlx
 {
-	DescriptorPool& DescriptorPoolManager::getAvailablePool()
+	DescriptorPool& DescriptorPoolManager::GetAvailablePool()
 	{
-		for(auto& pool : _pools)
+		for(auto& pool : m_pools)
 		{
-			if(pool.getNumberOfSetsAllocated() < MAX_SETS_PER_POOL)
+			if(pool.GetNumberOfSetsAllocated() < MAX_SETS_PER_POOL)
 				return pool;
 		}
-		VkDescriptorPoolSize pool_sizes[] = {
+		std::vector<VkDescriptorPoolSize> pool_sizes = {
 			{ VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, (MAX_FRAMES_IN_FLIGHT * NUMBER_OF_UNIFORM_BUFFERS) },
 			{ VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, MAX_SETS_PER_POOL - (MAX_FRAMES_IN_FLIGHT * NUMBER_OF_UNIFORM_BUFFERS) }
 		};
-		_pools.emplace_front().init((sizeof(pool_sizes) / sizeof(VkDescriptorPoolSize)), pool_sizes);
-		return _pools.front();
+		m_pools.emplace_front().Init(std::move(pool_sizes));
+		return m_pools.front();
 	}
 
-	void DescriptorPoolManager::destroyAllPools()
+	void DescriptorPoolManager::DestroyAllPools()
 	{
-		for(auto& pool : _pools)
-			pool.destroy();
-		_pools.clear();
+		for(auto& pool : m_pools)
+			pool.Destroy();
+		m_pools.clear();
 	}
 }

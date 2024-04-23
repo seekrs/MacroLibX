@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 08:49:17 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/27 18:25:59 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/23 18:28:12 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,10 +148,20 @@
 	#endif
 #endif
 
+#include <stdint.h>
+
+#define MLX_MAKE_VERSION(major, minor, patch) ((((uint32_t)(major)) << 22U) | (((uint32_t)(minor)) << 12U) | ((uint32_t)(patch)))
+
+#define MLX_VERSION_MAJOR(version) (((uint32_t)(version) >> 22U) & 0x7FU)
+#define MLX_VERSION_MINOR(version) (((uint32_t)(version) >> 12U) & 0x3FFU)
+#define MLX_VERSION_PATCH(version) ((uint32_t)(version) & 0xFFFU)
+
+#define MLX_VERSION MLX_MAKE_VERSION(2, 0, 0)
+#define MLX_TARGET_VULKAN_API_VERSION MLX_MAKE_VERSION(1, 2, 0)
+
 // Checking common assumptions
 #ifdef __cplusplus
 	#include <climits>
-	#include <cstdint>
 
 	static_assert(CHAR_BIT == 8, "CHAR_BIT is expected to be 8");
 
@@ -169,7 +179,6 @@
 		#include <assert.h>
 	#endif
 	#include <limits.h>
-	#include <stdint.h>
 
 	static_assert(CHAR_BIT == 8, "CHAR_BIT is expected to be 8");
 
@@ -186,7 +195,6 @@
 	#define STATIC_ASSERT(COND, MSG) typedef char static_assertion___##MSG[(COND)?1:-1]
 
 	#include <limits.h>
-	#include <stdint.h>
 
 	STATIC_ASSERT(CHAR_BIT == 8, CHAR_BIT_is_expected_to_be_8);
 

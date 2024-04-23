@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:45:29 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/27 22:15:23 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/23 14:23:56 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ namespace mlx
 		private:
 			std::array<Buffer, MAX_FRAMES_IN_FLIGHT> m_buffers;
 			std::array<void*, MAX_FRAMES_IN_FLIGHT> m_maps;
-			NonOwningPtr<class Renderer> m_renderer;
+			NonOwningPtr<class Renderer> p_renderer;
 	};
 }
 

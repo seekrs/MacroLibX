@@ -1,64 +1,64 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   single_time_cmd_manager.cpp                        :+:      :+:    :+:   */
+/*   SingleTimeCommandManager.cpp                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 19:57:49 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 19:01:33 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/23 15:05:19 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <pre_compiled.h>
+#include <PreCompiled.h>
 
-#include <renderer/command/single_time_cmd_manager.h>
-#include <renderer/core/render_core.h>
+#include <Renderer/Command/SingleTimeCommandManager.h>
+#include <Renderer/Core/RenderCore.h>
 
 namespace mlx
 {
-	void SingleTimeCmdManager::init() noexcept
+	void SingleTimeCmdManager::Init() noexcept
 	{
-		_pool.init();
+		m_pool.init();
 		for(int i = 0; i < BASE_POOL_SIZE; i++)
 		{
-			_buffers.emplace_back();
-			_buffers.back().init(CmdBuffer::kind::single_time, &_pool);
+			m_buffers.emplace_back();
+			m_buffers.back().Init(CommandBufferType::SingleTime, &m_pool);
 		}
 	}
 
-	CmdBuffer& SingleTimeCmdManager::getCmdBuffer() noexcept
+	CommandBuffer& SingleTimeCmdManager::GetCmdBuffer() noexcept
 	{
-		for(CmdBuffer& buf : _buffers)
+		for(CmdBuffer& buf : m_buffers)
 		{
-			if(buf.isReadyToBeUsed())
+			if(buf.IsReadyToBeUsed())
 			{
 				buf.reset();
 				return buf;
 			}
 		}
-		_buffers.emplace_back().init(CmdBuffer::kind::single_time, &_pool);
-		return _buffers.back();
+		m_buffers.emplace_back().Init(CommandBufferType::SingleTime, &m_pool);
+		return m_buffers.back();
 	}
 
-	void SingleTimeCmdManager::updateSingleTimesCmdBuffersSubmitState() noexcept
+	void SingleTimeCmdManager::UpdateSingleTimesCmdBuffersSubmitState() noexcept
 	{
-		for(CmdBuffer& cmd : _buffers)
-			cmd.updateSubmitState();
+		for(CmdBuffer& cmd : m_buffers)
+			cmd.UpdateSubmitState();
 	}
 
-	void SingleTimeCmdManager::waitForAllExecutions() noexcept
+	void SingleTimeCmdManager::WaitForAllExecutions() noexcept
 	{
-		for(CmdBuffer& cmd : _buffers)
-			cmd.waitForExecution();
+		for(CmdBuffer& cmd : m_buffers)
+			cmd.WaitForExecution();
 	}
 
-	void SingleTimeCmdManager::destroy() noexcept
+	void SingleTimeCmdManager::Destroy() noexcept
 	{
-		std::for_each(_buffers.begin(), _buffers.end(), [](CmdBuffer& buf)
+		std::for_each(m_buffers.begin(), m_buffers.end(), [](CommandBuffer& buf)
 		{
-			buf.destroy();
+			buf.Destroy();
 		});
-		_pool.destroy();
+		m_pool.Destroy();
 	}
 }

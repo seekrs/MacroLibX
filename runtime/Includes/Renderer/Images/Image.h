@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:54:21 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/28 22:08:35 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/23 20:00:53 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ namespace mlx
 			void CreateSampler() noexcept;
 			void CopyFromBuffer(class Buffer& buffer);
 			void CopyToBuffer(class Buffer& buffer);
-			void TransitionLayout(VkImageLayout new_layout, CmdBuffer* cmd = nullptr);
+			void TransitionLayout(VkImageLayout new_layout, NonOwningPtr<CommandBuffer> cmd = nullptr);
 			virtual void Destroy() noexcept;
 
 			inline VkImage Get() noexcept { return m_image; }

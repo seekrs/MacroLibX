@@ -6,103 +6,110 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 22:10:52 by maldavid          #+#    #+#             */
-/*   Updated: 2024/04/02 17:06:34 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/23 15:06:26 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <PreCompiled.h>
 
 #include <Core/Application.h>
-#include <renderer/texts/text_library.h>
-#include <renderer/texts/font_library.h>
-#include <renderer/images/texture.h>
-#include <renderer/core/render_core.h>
-#include <Core/memory.h>
+#include <Renderer/Texts/TextLibrary.h>
+#include <Renderer/Texts/FontLibrary.h>
+#include <Renderer/Images/Texture.h>
+#include <Renderer/Core/RenderCore.h>
+#include <Core/Memory.h>
 #include <Core/EventBus.h>
 
-namespace mlx::core
+namespace mlx
 {
-	Application::Application() : _fps(), _in(std::make_unique<Input>()) 
+	Application::Application() : m_fps(), m_in() 
 	{
 		EventBus::RegisterListener({[](const EventBase& event)
 		{
-
 		}, "__internal_application" });
 
-		_fps.init();
+		m_fps.init();
 	}
 
-	void Application::run() noexcept
+	void Application::Run() noexcept
 	{
-		while(_in->isRunning())
+		m_in.Run();
+
+		while(m_in.IsRunning())
 		{
-			if(!_fps.update())
+			if(!m_fps.Update())
 				continue;
-			_in->update();
+			m_in.Update();
 
-			if(_loop_hook)
-				_loop_hook(_param);
+			if(f_loop_hook)
+				f_loop_hook(p_param);
 
-			for(auto& gs : _graphics)
-				gs->render();
+			for(auto& gs : m_graphics)
+			{
+				if(gs)
+					gs->Render();
+			}
 		}
 
-		Render_Core::get().getSingleTimeCmdManager().updateSingleTimesCmdBuffersSubmitState();
+		RenderCore::Get().GetSingleTimeCmdManager().UpdateSingleTimesCmdBuffersSubmitState();
 
-		for(auto& gs : _graphics)
+		for(auto& gs : m_graphics)
 		{
+			if(!gs)
+				continue;
 			for(int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
-				gs->getRenderer().getCmdBuffer(i).waitForExecution();
+				gs->GetRenderer().GetCmdBuffer(i).WaitForExecution();
 		}
 	}
 
-	void* Application::newTexture(int w, int h)
+	void* Application::NewTexture(int w, int h)
 	{
 		MLX_PROFILE_FUNCTION();
+		Texture* texture = new Texture;
 		#ifdef DEBUG
-			_textures.emplace_front().create(nullptr, w, h, VK_FORMAT_R8G8B8A8_UNORM, "__mlx_unamed_user_texture");
+			texture->Create(nullptr, w, h, VK_FORMAT_R8G8B8A8_UNORM, "__mlx_unamed_user_texture");
 		#else
-			_textures.emplace_front().create(nullptr, w, h, VK_FORMAT_R8G8B8A8_UNORM, nullptr);
+			texture->Create(nullptr, w, h, VK_FORMAT_R8G8B8A8_UNORM, nullptr);
 		#endif
-		return &_textures.front();
+		m_image_registry.RegisterTexture(texture);
+		return texture;
 	}
 
-	void* Application::newStbTexture(char* file, int* w, int* h)
+	void* Application::NewStbTexture(char* file, int* w, int* h)
 	{
 		MLX_PROFILE_FUNCTION();
-		_textures.emplace_front(stbTextureLoad(file, w, h));
-		return &_textures.front();
+		Texture* texture = StbTextureLoad(file, w, h);
+		m_image_registry.RegisterTexture(texture);
+		return texture;
 	}
 
-	void Application::destroyTexture(void* ptr)
+	void Application::DestroyTexture(void* ptr)
 	{
 		MLX_PROFILE_FUNCTION();
-		vkDeviceWaitIdle(Render_Core::get().getDevice().get()); // TODO : synchronize with another method than waiting for GPU to be idle
-		if(ptr == nullptr)
+		vkDeviceWaitIdle(RenderCore::Get().GetDevice().Get()); // TODO : synchronize with another method than waiting for GPU to be idle
+		if(!m_image_registry.Find(ptr))
 		{
-			core::error::report(e_kind::error, "invalid image ptr (NULL)");
+			Error("invalid image ptr");
 			return;
 		}
 
-		auto it = std::find_if(_textures.begin(), _textures.end(), [=](const Texture& texture) { return &texture == ptr; });
-		if(it == _textures.end())
-		{
-			core::error::report(e_kind::error, "invalid image ptr");
-			return;
-		}
 		Texture* texture = static_cast<Texture*>(ptr);
-		if(!texture->isInit())
-			core::error::report(e_kind::error, "trying to destroy a texture that has already been destroyed");
+		if(!texture->IsInit())
+			Error("trying to destroy a texture that has already been destroyed");
 		else
-			texture->destroy();
+			texture->Destroy();
 		for(auto& gs : _graphics)
-			gs->tryEraseTextureFromManager(texture);
-		_textures.erase(it);
+		{
+			if(gs)
+				gs->TryEraseTextureFromManager(texture);
+		}
+		m_image_registry.UnregisterTexture(texture);
+		delete texture;
 	}
 
 	Application::~Application()
 	{
-		TextLibrary::get().clearLibrary();
-		FontLibrary::get().clearLibrary();
+		TextLibrary::Get().ClearLibrary();
+		FontLibrary::Get().ClearLibrary();
 	}
 }

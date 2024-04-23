@@ -1,63 +1,67 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vk_instance.cpp                                    :+:      :+:    :+:   */
+/*   Instance.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:04:21 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 23:10:37 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/23 18:43:47 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <pre_compiled.h>
+#include <PreCompiled.h>
 
-#include "vk_instance.h"
-#include "render_core.h"
-#include <platform/window.h>
+#include <Renderer/Core/Instance.h>
+#include <Renderer/Core/RenderCore.h>
 
 namespace mlx
 {
-	void Instance::init()
+	void Instance::Init()
 	{
-		VkApplicationInfo appInfo{};
-		appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
-		appInfo.pEngineName = "MacroLibX";
-		appInfo.engineVersion = VK_MAKE_VERSION(1, 3, 1);
-		appInfo.apiVersion = VK_API_VERSION_1_2;
+		std::uint32_t api_version = std::min(volkGetInstanceVersion(), MLX_TARGET_VULKAN_API_VERSION);
 
-		auto extensions = getRequiredExtensions();
+		if(api_version == 0)
+			FatalError("Vulkan API is not supported by this driver");
 
-		VkInstanceCreateInfo createInfo{};
-		createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
-		createInfo.pApplicationInfo = &appInfo;
-		createInfo.enabledExtensionCount = static_cast<std::uint32_t>(extensions.size());
-		createInfo.ppEnabledExtensionNames = extensions.data();
-		createInfo.enabledLayerCount = 0; // will be replaced if validation layers are enabled
-		createInfo.pNext = nullptr;
+		m_instance_version = api_version;
 
-		VkDebugUtilsMessengerCreateInfoEXT debugCreateInfo;
-		if constexpr(enableValidationLayers)
+		VkApplicationInfo app_info{};
+		app_info.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
+		app_info.pEngineName = "MacroLibX";
+		app_info.engineVersion = MLX_VERSION;
+		app_info.apiVersion = api_version;
+
+		auto extensions = GetRequiredExtensions();
+
+		VkInstanceCreateInfo create_info{};
+		create_info.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+		create_info.pApplicationInfo = &app_info;
+		create_info.enabledExtensionCount = static_cast<std::uint32_t>(extensions.size());
+		create_info.ppEnabledExtensionNames = extensions.data();
+		create_info.enabledLayerCount = 0; // will be replaced if validation layers are enabled
+		create_info.pNext = nullptr;
+
+		VkDebugUtilsMessengerCreateInfoEXT debug_create_info;
+		if constexpr(enable_validation_layers)
 		{
-			if(Render_Core::get().getLayers().checkValidationLayerSupport())
+			if(RenderCore::Get().GetLayers().CheckValidationLayerSupport())
 			{
-				createInfo.enabledLayerCount = static_cast<std::uint32_t>(validationLayers.size());
-				createInfo.ppEnabledLayerNames = validationLayers.data();
-				Render_Core::get().getLayers().populateDebugMessengerCreateInfo(debugCreateInfo);
-				createInfo.pNext = static_cast<VkDebugUtilsMessengerCreateInfoEXT*>(&debugCreateInfo);
+				create_info.enabledLayerCount = static_cast<std::uint32_t>(validation_layers.size());
+				create_info.ppEnabledLayerNames = validation_layers.data();
+				RenderCore::Get().GetLayers().PopulateDebugMessengerCreateInfo(debug_create_info);
+				create_info.pNext = static_cast<VkDebugUtilsMessengerCreateInfoEXT*>(&debug_create_info);
 			}
 		}
 
 		VkResult res;
-		if((res = vkCreateInstance(&createInfo, nullptr, &_instance)) != VK_SUCCESS)
-			core::error::report(e_kind::fatal_error, "Vulkan : failed to create Vulkan instance, %s", RCore::verbaliseResultVk(res));
-		volkLoadInstance(_instance);
-		#ifdef DEBUG
-			core::error::report(e_kind::message, "Vulkan : created new instance");
-		#endif
+		if((res = vkCreateInstance(&create_info, nullptr, &m_instance)) != VK_SUCCESS)
+			FatalError("Vulkan : failed to create Vulkan instance, %", VerbaliseVkResult(res));
+		volkLoadInstance(m_instance);
+		DebugLog("Vulkan : created new instance");
 	}
 
-	std::vector<const char*> Instance::getRequiredExtensions()
+	std::vector<const char*> Instance::GetRequiredExtensions()
 	{
 		std::uint32_t glfw_extension_count = 0;
 		const char** glfw_extensions = glfwGetRequiredInstanceExtensions(&glfw_extension_count);
@@ -75,12 +79,10 @@ namespace mlx
 		return extensions;
 	}
 
-	void Instance::destroy() noexcept
+	void Instance::Destroy() noexcept
 	{
-		vkDestroyInstance(_instance, nullptr);
-		_instance = VK_NULL_HANDLE;
-		#ifdef DEBUG
-			core::error::report(e_kind::message, "Vulkan : destroyed an instance");
-		#endif
+		vkDestroyInstance(m_instance, nullptr);
+		m_instance = VK_NULL_HANDLE;
+		DebugLog("Vulkan : destroyed an instance");
 	}
 }

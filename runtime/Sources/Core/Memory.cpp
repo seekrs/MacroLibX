@@ -1,64 +1,63 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   memory.cpp                                         :+:      :+:    :+:   */
+/*   Memory.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:32:01 by kbz_8             #+#    #+#             */
-/*   Updated: 2024/03/25 19:01:02 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/23 14:05:52 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <pre_compiled.h>
+#include <PreCompiled.h>
 
-#include <core/memory.h>
-#include <core/errors.h>
+#include <Core/Memory.h>
 
 namespace mlx
 {
-	void* MemManager::malloc(std::size_t size)
+	void* MemManager::Malloc(std::size_t size)
 	{
 		void* ptr = std::malloc(size);
 		if(ptr != nullptr)
-			_blocks.push_back(ptr);
+			s_blocks.push_back(ptr);
 		return ptr;
 	}
 
-	void* MemManager::calloc(std::size_t n, std::size_t size)
+	void* MemManager::Calloc(std::size_t n, std::size_t size)
 	{
 		void* ptr = std::calloc(n, size);
 		if(ptr != nullptr)
-			_blocks.push_back(ptr);
+			s_blocks.push_back(ptr);
 		return ptr;
 	}
 
-	void* MemManager::realloc(void* ptr, std::size_t size)
+	void* MemManager::Realloc(void* ptr, std::size_t size)
 	{
 		void* ptr2 = std::realloc(ptr, size);
 		if(ptr2 != nullptr)
-			_blocks.push_back(ptr2);
-		auto it = std::find(_blocks.begin(), _blocks.end(), ptr);
-		if(it != _blocks.end())
-			_blocks.erase(it);
+			s_blocks.push_back(ptr2);
+		auto it = std::find(s_blocks.begin(), s_blocks.end(), ptr);
+		if(it != s_blocks.end())
+			s_blocks.erase(it);
 		return ptr2;
 	}
 
-	void MemManager::free(void* ptr)
+	void MemManager::Free(void* ptr)
 	{
-		auto it = std::find(_blocks.begin(), _blocks.end(), ptr);
-		if(it == _blocks.end())
+		auto it = std::find(s_blocks.begin(), s_blocks.end(), ptr);
+		if(it == s_blocks.end())
 		{
-			core::error::report(e_kind::error, "Memory Manager : trying to free a pointer not allocated by the memory manager");
+			Error("Memory Manager : trying to free a pointer not allocated by the memory manager");
 			return;
 		}
 		std::free(*it);
-		_blocks.erase(it);
+		s_blocks.erase(it);
 	}
 
 	MemManager::~MemManager()
 	{
-		std::for_each(_blocks.begin(), _blocks.end(), [](void* ptr)
+		std::for_each(s_blocks.begin(), s_blocks.end(), [](void* ptr)
 		{
 			std::free(ptr);
 		});

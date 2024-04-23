@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 23:18:52 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/27 22:09:07 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/23 14:20:49 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ namespace mlx
 			void Create(BufferType type, VkDeviceSize size, VkBufferUsageFlags usage, const char* name, const void* data = nullptr);
 			void Destroy() noexcept;
 
-			inline void MapMem(void** data) noexcept { Render_Core::get().getAllocator().mapMemory(m_allocation, data); m_is_mapped = true; }
+			inline void MapMem(void** data) noexcept { RenderCore::Get().GetAllocator().MapMemory(m_allocation, data); m_is_mapped = true; }
 			inline bool IsMapped() const noexcept { return m_is_mapped; }
-			inline void UnmapMem() noexcept { Render_Core::get().getAllocator().unmapMemory(m_allocation); m_is_mapped = false; }
+			inline void UnmapMem() noexcept { RenderCore::Get().GetAllocator().UnmapMemory(m_allocation); m_is_mapped = false; }
 
 			void Flush(VkDeviceSize size = VK_WHOLE_SIZE, VkDeviceSize offset = 0);
 			bool CopyFromBuffer(const Buffer& buffer) noexcept;

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 21:03:37 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/27 21:05:05 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/21 20:21:56 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,17 @@ namespace mlx
 }
 
 #include <Utils/NonOwningPtr.inl>
+
+namespace std
+{
+	template <typename T>
+	struct hash<mlx::NonOwningPtr<T>>
+	{
+		std::size_t operator()(const mlx::NonOwningPtr<T>& ptr) const noexcept
+		{
+			return std::hash<T*>{}(ptr.Get());
+		}
+	};
+}
 
 #endif

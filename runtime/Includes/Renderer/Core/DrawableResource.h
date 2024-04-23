@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 21:00:37 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/27 22:47:32 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/23 18:10:56 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ namespace mlx
 	{
 		public:
 			DrawableResource() = default;
-			virtual void Render(std::array<VkDescriptorSet, 2>& sets, class Renderer& renderer) = 0;
+			virtual void Render(class Renderer& renderer) = 0;
 			virtual void ResetUpdate() {}
 			virtual ~DrawableResource() = default;
 	};

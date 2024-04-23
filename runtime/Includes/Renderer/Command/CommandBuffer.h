@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:25:42 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/27 22:44:58 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/23 17:59:50 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ namespace mlx
 			void Destroy() noexcept;
 
 			void BeginRecord(VkCommandBufferUsageFlags usage = 0);
-			void Submit(class Semaphore* semaphores) noexcept;
+			void Submit(NonOwningPtr<class Semaphore> signal, NonOwningPtr<class Semaphore> wait) noexcept;
 			void SubmitIdle(bool shouldWaitForExecution = true) noexcept; // TODO : handle `shouldWaitForExecution` as false by default (needs to modify CmdResources lifetimes to do so)
 			void UpdateSubmitState() noexcept;
 			inline void WaitForExecution() noexcept { m_fence.wait(); UpdateSubmitState(); m_state = CommandBufferState::Ready; }
@@ -58,7 +58,7 @@ namespace mlx
 			void PostTransferBarrier() noexcept;
 
 		private:
-			std::vector<class CmdResource*> m_cmd_resources;
+			std::vector<NonOwningPtr<class CommandResource>> m_cmd_resources;
 			Fence m_fence;
 			VkCommandBuffer m_cmd_buffer = VK_NULL_HANDLE;
 			NonOwningPtr<class CmdPool> m_pool;

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 18:39:36 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/27 23:02:38 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/23 19:49:02 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #define __VK_DESCRIPTOR_SET__
 
 #include <Renderer/Core/RenderCore.h>
+#include <Renderer/Descriptors/DescriptorSetLayout.h>
 
 namespace mlx
 {
@@ -22,7 +23,7 @@ namespace mlx
 		public:
 			DescriptorSet() = default;
 
-			void Init(class Renderer* renderer, class DescriptorPool* pool, class DescriptorSetLayout* layout);
+			void Init(NonOwningPtr<class Renderer> renderer, NonOwningPtr<class DescriptorPool> pool, DescriptorSetLayout layout);
 
 			void WriteDescriptor(int binding, NonOwningPtr<class UniformBuffer> ubo) const noexcept;
 			void WriteDescriptor(int binding, const class Image& image) const noexcept;
@@ -41,9 +42,9 @@ namespace mlx
 			~DescriptorSet() = default;
 
 		private:
+			DescriptorSetLayout p_layout;
 			std::array<VkDescriptorSet, MAX_FRAMES_IN_FLIGHT> m_desc_set;
 			NonOwningPtr<class DescriptorPool> p_pool;
-			NonOwningPtr<class DescriptorSetLayout> p_layout;
 			NonOwningPtr<class Renderer> p_renderer;
 	};
 }

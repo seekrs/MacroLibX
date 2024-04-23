@@ -1,56 +1,56 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vk_vbo.cpp                                         :+:      :+:    :+:   */
+/*   VertexBuffer.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:28:08 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 19:01:25 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/23 14:48:15 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <pre_compiled.h>
+#include <PreCompiled.h>
 
-#include "vk_vbo.h"
+#include <Renderer/Buffers/VertexBuffer.h>
 
 namespace mlx
 {
-	void VBO::setData(std::uint32_t size, const void* data)
+	void RAMVertexBuffer::SetData(std::uint32_t size, const void* data)
 	{
-		if(size > getSize())
+		if(size > GetSize())
 		{
-			core::error::report(e_kind::error, "Vulkan : trying to store to much data in a vertex buffer (%d bytes in %d bytes)", size, getSize());
+			Error("Vulkan : trying to store to much data in a vertex buffer (% bytes in % bytes)", size, GetSize());
 			return;
 		}
 
 		if(data == nullptr)
-			core::error::report(e_kind::warning, "Vulkan : mapping null data in a vertex buffer");
+			Warning("Vulkan : mapping null data in a vertex buffer");
 
 		void* temp = nullptr;
-		mapMem(&temp);
+		MapMem(&temp);
 			std::memcpy(temp, data, static_cast<std::size_t>(size));
-		unmapMem();
+		UnmapMem();
 	}
 
-	void D_VBO::setData(std::uint32_t size, const void* data)
+	void DeviceVertexBuffer::SetData(std::uint32_t size, const void* data)
 	{
-		if(size > getSize())
+		if(size > GetSize())
 		{
-			core::error::report(e_kind::error, "Vulkan : trying to store to much data in a vertex buffer (%d bytes in %d bytes)", size, getSize());
+			Error("Vulkan : trying to store to much data in a vertex buffer (% bytes in % bytes)", size, GetSize());
 			return;
 		}
 
 		if(data == nullptr)
-			core::error::report(e_kind::warning, "Vulkan : mapping null data in a vertex buffer");
+			Warning("Vulkan : mapping null data in a vertex buffer");
 
 		Buffer tmp_buf;
 		#ifdef DEBUG
-			tmp_buf.create(Buffer::kind::dynamic, size, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_SRC_BIT, "tmp_buffer", data);
+			tmp_buf.Create(BufferType::HighDynamic, size, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_SRC_BIT, "tmp_buffer", data);
 		#else
-			tmp_buf.create(Buffer::kind::dynamic, size, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_SRC_BIT, nullptr, data);
+			tmp_buf.Create(BufferType::HighDynamic, size, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_SRC_BIT, nullptr, data);
 		#endif
-		copyFromBuffer(tmp_buf);
-		tmp_buf.destroy();
+		CopyFromBuffer(tmp_buf);
+		tmp_buf.Destroy();
 	}
 }

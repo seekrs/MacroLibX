@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 14:49:49 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/27 21:16:11 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/23 14:02:48 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,14 @@ namespace mlx
 			inline void LoadFont(const std::filesystem::path& filepath, float scale);
 			inline void TryEraseTextureFromManager(NonOwningPtr<Texture> texture) noexcept;
 
-			inline bool HasWindow() const noexcept  { return _has_window; }
+			inline bool HasWindow() const noexcept  { return m_has_window; }
 
-			inline Renderer& GetRenderer() { return *_renderer; }
+			inline Renderer& GetRenderer() { return m_renderer; }
 
 			~GraphicsSupport();
 
 		private:
+			Renderer m_renderer;
 			PixelPutPipeline m_pixel_put_pipeline;
 
 			std::vector<NonOwningPtr<DrawableResource>> m_drawlist;
@@ -59,7 +60,6 @@ namespace mlx
 			glm::mat4 m_proj = glm::mat4(1.0);
 
 			std::shared_ptr<Window> p_window;
-			std::unique_ptr<Renderer> p_renderer;
 
 			std::size_t m_width = 0;
 			std::size_t m_height = 0;

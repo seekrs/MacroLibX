@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 18:32:43 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/27 23:00:29 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/23 19:36:03 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,9 @@ namespace mlx
 		public:
 			DescriptorPool() = default;
 
-			void Init(std::size_t n, NonOwningPtr<VkDescriptorPoolSize> size);
-			void FreeDescriptor(const class DescriptorSet& set);
+			void Init(std::vector<VkDescriptorPoolSize> sizes);
+			VkDescriptorSet AllocateDescriptorSet(class DescriptorSetLayout& layout);
+			void FreeDescriptor(VkDescriptorSet set);
 			void Destroy() noexcept;
 
 			inline VkDescriptorPool& operator()() noexcept { return m_pool; }

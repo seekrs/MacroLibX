@@ -1,58 +1,54 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vk_fence.cpp                                       :+:      :+:    :+:   */
+/*   Fence.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 17:53:06 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 19:02:14 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/23 18:13:09 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <pre_compiled.h>
+#include <Precompiled.h>
 
-#include <renderer/core/vk_fence.h>
-#include <renderer/core/render_core.h>
+#include <Renderer/Core/Fence.h>
+#include <Renderer/Core/RenderCore.h>
 
 namespace mlx
 {
-	void Fence::init()
+	void Fence::Init()
 	{
-		VkFenceCreateInfo fenceInfo{};
-		fenceInfo.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
-		fenceInfo.flags = VK_FENCE_CREATE_SIGNALED_BIT;
+		VkFenceCreateInfo fence_info{};
+		fence_info.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
+		fence_info.flags = VK_FENCE_CREATE_SIGNALED_BIT;
 
 		VkResult res;
-		if((res = vkCreateFence(Render_Core::get().getDevice().get(), &fenceInfo, nullptr, &_fence)) != VK_SUCCESS)
-			core::error::report(e_kind::fatal_error, "Vulkan : failed to create a synchronization object (fence), %s", RCore::verbaliseResultVk(res));
-		#ifdef DEBUG
-			core::error::report(e_kind::message, "Vulkan : created new fence");
-		#endif
+		if((res = vkCreateFence(RenderCore::Get().GetDevice().Get(), &fence_info, nullptr, &m_fence)) != VK_SUCCESS)
+			FatalError("Vulkan : failed to create a synchronization object (fence), %", VerbaliseVkResult(res));
+		DebugLog("Vulkan : created new fence");
 	}
 
-	void Fence::wait() noexcept
+	void Fence::Wait() noexcept
 	{
-		vkWaitForFences(Render_Core::get().getDevice().get(), 1, &_fence, VK_TRUE, UINT64_MAX);
+		vkWaitForFences(RenderCore::Get().GetDevice().Get(), 1, &m_fence, VK_TRUE, UINT64_MAX);
 	}
 
-	void Fence::reset() noexcept
+	void Fence::Reset() noexcept
 	{
-		vkResetFences(Render_Core::get().getDevice().get(), 1, &_fence);
+		vkResetFences(RenderCore::Get().GetDevice().Get(), 1, &m_fence);
 	}
 
-	bool Fence::isReady() const noexcept
+	bool Fence::IsReady() const noexcept
 	{
-		return vkGetFenceStatus(Render_Core::get().getDevice().get(), _fence) == VK_SUCCESS;
+		return vkGetFenceStatus(RenderCore::Get().GetDevice().Get(), m_fence) == VK_SUCCESS;
 	}
 
 	void Fence::destroy() noexcept
 	{
-		if(_fence != VK_NULL_HANDLE)
-			vkDestroyFence(Render_Core::get().getDevice().get(), _fence, nullptr);
-		_fence = VK_NULL_HANDLE;
-		#ifdef DEBUG
-			core::error::report(e_kind::message, "Vulkan : destroyed fence");
-		#endif
+		if(m_fence != VK_NULL_HANDLE)
+			vkDestroyFence(RenderCore::Get().GetDevice().Get(), m_fence, nullptr);
+		m_fence = VK_NULL_HANDLE;
+		DebugLog("Vulkan : destroyed fence");
 	}
 }

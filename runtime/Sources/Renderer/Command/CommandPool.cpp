@@ -1,37 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vk_cmd_pool.cpp                                    :+:      :+:    :+:   */
+/*   CommandPool.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:24:33 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 19:01:41 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/23 14:57:15 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <pre_compiled.h>
+#include <PreCompiled.h>
 
-#include "vk_cmd_pool.h"
-#include <renderer/core/render_core.h>
+#include <Renderer/Command/CommandPool.h>
+#include <Renderer/Core/RenderCore.h>
 
 namespace mlx
 {
-	void CmdPool::init()
+	void CommandPool::Init()
 	{
-		VkCommandPoolCreateInfo poolInfo{};
-		poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
-		poolInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
-		poolInfo.queueFamilyIndex = Render_Core::get().getQueue().getFamilies().graphics_family.value();
+		VkCommandPoolCreateInfo pool_info{};
+		pool_info.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
+		pool_info.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
+		pool_info.queueFamilyIndex = RenderCore::Get().GetQueue().GetFamilies().graphics_family.value();
 
-		VkResult res = vkCreateCommandPool(Render_Core::get().getDevice().get(), &poolInfo, nullptr, &_cmd_pool);
+		VkResult res = vkCreateCommandPool(RenderCore::Get().GetDevice().Get(), &pool_info, nullptr, &m_cmd_pool);
 		if(res != VK_SUCCESS)
-			core::error::report(e_kind::fatal_error, "Vulkan : failed to create command pool, %s", RCore::verbaliseResultVk(res));
+			FatalError("Vulkan : failed to create command pool, %", VerbaliseVkResult(res));
 	}
 
-	void CmdPool::destroy() noexcept
+	void CommandPool::Destroy() noexcept
 	{
-		vkDestroyCommandPool(Render_Core::get().getDevice().get(), _cmd_pool, nullptr);
-		_cmd_pool = VK_NULL_HANDLE;
+		vkDestroyCommandPool(RenderCore::Get().GetDevice().Get(), m_cmd_pool, nullptr);
+		m_cmd_pool = VK_NULL_HANDLE;
 	}
 }

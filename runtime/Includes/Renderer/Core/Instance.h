@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:03:04 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/27 22:48:55 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/23 18:44:02 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ namespace mlx
 			void Init();
 			void Destroy() noexcept;
 
+			inline std::uint32_t GetInstanceVersion() const noexcept { return m_instance_version; }
+
 			inline VkInstance& operator()() noexcept { return m_instance; }
 			inline VkInstance& Get() noexcept { return m_instance; }
 
@@ -29,6 +31,7 @@ namespace mlx
 
 		private:
 			VkInstance m_instance = VK_NULL_HANDLE;
+			std::uint32_t m_instance_version = 0;
 	};
 }
 
