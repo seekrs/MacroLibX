@@ -35,7 +35,7 @@ jobs:
 
     # Build the lib
     - name: Build MacroLibX
-      run: make -j && make fclean && make -j DEBUG=true
+      run: make -j && make fclean && make debug 
 
     # Build the example
     - name: Build Example
