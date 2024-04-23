@@ -6,7 +6,7 @@
 #    By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/04 16:43:41 by maldavid          #+#    #+#              #
-#    Updated: 2024/04/23 20:37:01 by kiroussa         ###   ########.fr        #
+#    Updated: 2024/04/23 20:38:01 by kiroussa         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,9 +19,9 @@ SRCS					+= $(wildcard $(addsuffix /*.cpp, src/renderer))
 SRCS					+= $(wildcard $(addsuffix /*.cpp, src/renderer/**))
 
 OBJ_DIR					= objs
-OBJS					= $(addprefix $(OBJ_DIR)/, $(SRCS:.cpp=.o))
+OBJS					:= $(addprefix $(OBJ_DIR)/, $(SRCS:.cpp=.o))
 
-OS 						= $(shell uname -s)
+OS 						:= $(shell uname -s)
 DEBUG					?= false
 TOOLCHAIN				?= clang
 IMAGES_OPTIMIZED		?= true
@@ -73,20 +73,20 @@ CXXFLAGS 				+= $(addprefix -D, $(_ENABLEDFLAGS))
 RM = rm -rf
 
 TPUT 					= tput -T xterm-256color
-_RESET 					= $(shell $(TPUT) sgr0)
-_BOLD 					= $(shell $(TPUT) bold)
-_ITALIC 				= $(shell $(TPUT) sitm)
-_UNDER 					= $(shell $(TPUT) smul)
-_GREEN 					= $(shell $(TPUT) setaf 2)
-_YELLOW 				= $(shell $(TPUT) setaf 3)
-_RED 					= $(shell $(TPUT) setaf 1)
-_GRAY 					= $(shell $(TPUT) setaf 8)
-_PURPLE 				= $(shell $(TPUT) setaf 5)
+_RESET 					:= $(shell $(TPUT) sgr0)
+_BOLD 					:= $(shell $(TPUT) bold)
+_ITALIC 				:= $(shell $(TPUT) sitm)
+_UNDER 					:= $(shell $(TPUT) smul)
+_GREEN 					:= $(shell $(TPUT) setaf 2)
+_YELLOW 				:= $(shell $(TPUT) setaf 3)
+_RED 					:= $(shell $(TPUT) setaf 1)
+_GRAY 					:= $(shell $(TPUT) setaf 8)
+_PURPLE 				:= $(shell $(TPUT) setaf 5)
 
 ifeq ($(DEBUG), true)
-MODE 					= $(_RESET)$(_PURPLE)$(_BOLD)Debug$(_RESET)
+MODE 					:= $(_RESET)$(_PURPLE)$(_BOLD)Debug$(_RESET)
 else
-MODE 					= $(_RESET)$(_GREEN)$(_BOLD)Release$(_RESET)
+MODE 					:= $(_RESET)$(_GREEN)$(_BOLD)Release$(_RESET)
 endif
 
 $(OBJ_DIR)/%.o: %.cpp
