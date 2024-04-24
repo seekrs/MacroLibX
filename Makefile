@@ -6,7 +6,7 @@
 #    By: kiroussa <oss@xtrm.me>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/04 16:43:41 by maldavid          #+#    #+#              #
-#    Updated: 2024/04/24 14:55:02 by kiroussa         ###   ########.fr        #
+#    Updated: 2024/04/24 14:59:23 by kiroussa         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -85,8 +85,10 @@ _PURPLE 				:= $(shell $(TPUT) setaf 5)
 
 ifeq ($(DEBUG), true)
 MODE 					:= $(_RESET)$(_PURPLE)$(_BOLD)Debug$(_RESET)$(_PURPLE)
+COLOR					:= $(_PURPLE)
 else
 MODE 					:= $(_RESET)$(_GREEN)$(_BOLD)Release$(_RESET)$(_GREEN)
+COLOR					:= $(_GREEN)
 endif
 
 OBJS_TOTAL				= $(words $(OBJS))
@@ -98,7 +100,7 @@ $(OBJ_DIR)/%.o: %.cpp
 	@mkdir -p $(dir $@)
 	@$(eval CURR_OBJ=$(shell echo $$(( $(CURR_OBJ) + 1 ))))
 	@$(eval PERCENT=$(shell echo $$(( $(CURR_OBJ) * 100 / $(OBJS_TOTAL) ))))
-	@printf "$(_GREEN)($(_BOLD)%3s%%$(_RESET)$(_GREEN)) $(_RESET)Compiling $(_BOLD)$<$(_RESET)\n" "$(PERCENT)"
+	@printf "$(COLOR)($(_BOLD)%3s%%$(_RESET)$(COLOR)) $(_RESET)Compiling $(_BOLD)$<$(_RESET)\n" "$(PERCENT)"
 	@$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
 
 all:		_printbuildinfos
@@ -107,7 +109,7 @@ all:		_printbuildinfos
 $(NAME):	 $(OBJS)
 	@printf "Linking $(_BOLD)$(NAME)$(_RESET)\n"
 	@$(CXX) -shared -o $(NAME) $(OBJS) $(LDFLAGS)
-	@printf "$(_BOLD)$(NAME)$(_RESET) compiled $(_GREEN)$(_BOLD)successfully$(_RESET)\n"
+	@printf "$(_BOLD)$(NAME)$(_RESET) compiled $(COLOR)$(_BOLD)successfully$(_RESET)\n"
 
 _printbuildinfos:
 	@printf "$(_PURPLE)$(_BOLD)MacroLibX $(_RESET)Compiling in $(_BOLD)$(MODE)$(_RESET) mode on $(_BOLD)$(OS)$(_RESET) | Using $(_BOLD)$(CXX)$(_RESET), flags: $(_BOLD)$(_ENABLEDFLAGS)$(_RESET)\n"
