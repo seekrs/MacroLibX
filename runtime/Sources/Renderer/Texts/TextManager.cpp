@@ -1,34 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   text_manager.cpp                                   :+:      :+:    :+:   */
+/*   TextManager.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 16:41:13 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 19:05:13 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/24 01:42:19 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <pre_compiled.h>
+#include <PreCompiled.h>
 
-#include <renderer/texts/text_descriptor.h>
-#include <renderer/texts/text_library.h>
-#include <renderer/texts/text.h>
-#include <renderer/texts/text_manager.h>
-#include <core/profiler.h>
-
-#include <utils/dogica_ttf.h>
+#include <Renderer/Texts/TextDescriptor.h>
+#include <Renderer/Texts/TextLibrary.h>
+#include <Renderer/Texts/Text.h>
+#include <Renderer/Texts/TextManager.h>
+#include <Utils/DogicaTTF.h>
 
 namespace mlx
 {
-	void TextManager::init(Renderer& renderer) noexcept
+	void TextManager::Init(Renderer& renderer) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
-		loadFont(renderer, "default", 6.f);
+		LoadFont(renderer, "default", 6.f);
 	}
 
-	void TextManager::loadFont(Renderer& renderer, const std::filesystem::path& filepath, float scale)
+	void TextManager::LoadFont(Renderer& renderer, const std::filesystem::path& filepath, float scale)
 	{
 		MLX_PROFILE_FUNCTION();
 		std::shared_ptr<Font> font;
@@ -36,33 +34,32 @@ namespace mlx
 			font = std::make_shared<Font>(renderer, "default", dogica_ttf, scale);
 		else
 			font = std::make_shared<Font>(renderer, filepath, scale);
-
-		_font_in_use = FontLibrary::get().addFontToLibrary(font);
+		m_font_in_use = FontLibrary::Get().AddFontToLibrary(font);
 	}
 
-	std::pair<DrawableResource*, bool> TextManager::registerText(int x, int y, std::uint32_t color, std::string str)
+	std::pair<DrawableResource*, bool> TextManager::RegisterText(int x, int y, std::uint32_t color, std::string str)
 	{
 		MLX_PROFILE_FUNCTION();
-		auto res = _text_descriptors.emplace(std::move(str), color, x, y);
+		auto res = m_text_descriptors.emplace(std::move(str), color, x, y);
 		if(res.second)
 		{
-			const_cast<TextDrawDescriptor&>(*res.first).init(_font_in_use);
+			const_cast<TextDrawDescriptor&>(*res.first).Init(m_font_in_use);
 			return std::make_pair(static_cast<DrawableResource*>(&const_cast<TextDrawDescriptor&>(*res.first)), true);
 		}
 
-		auto text_ptr = TextLibrary::get().getTextData(res.first->id);
-		if(_font_in_use != text_ptr->getFontInUse())
+		auto text_ptr = TextLibrary::Get().GetTextData(res.first->id);
+		if(_font_in_use != text_ptr->GetFontInUse())
 		{
 			// TODO : update text vertex buffers rather than destroying it and recreating it
-			TextLibrary::get().removeTextFromLibrary(res.first->id);
-			const_cast<TextDrawDescriptor&>(*res.first).init(_font_in_use);
+			TextLibrary::Get().RemoveTextFromLibrary(res.first->id);
+			const_cast<TextDrawDescriptor&>(*res.first).Init(_font_in_use);
 		}
 		return std::make_pair(static_cast<DrawableResource*>(&const_cast<TextDrawDescriptor&>(*res.first)), false);
 	}
 
-	void TextManager::destroy() noexcept
+	void TextManager::Destroy() noexcept
 	{
 		MLX_PROFILE_FUNCTION();
-		_text_descriptors.clear();
+		m_text_descriptors.clear();
 	}
 }

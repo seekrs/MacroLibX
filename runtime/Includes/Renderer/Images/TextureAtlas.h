@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 16:36:33 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/28 22:12:13 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/24 01:37:54 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ namespace mlx
 			void Destroy() noexcept override;
 
 			inline void SetDescriptor(DescriptorSet&& set) noexcept { m_set = set; }
-			inline VkDescriptorSet GetVkSet() noexcept { return m_set.isInit() ? m_set.get() : VK_NULL_HANDLE; }
 			inline DescriptorSet GetSet() noexcept { return m_set; }
 			inline void UpdateSet(int binding) noexcept { m_set.writeDescriptor(binding, *this); m_has_been_updated = true; }
 			inline bool HasBeenUpdated() const noexcept { return m_has_been_updated; }
