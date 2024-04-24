@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+         #
+#    By: kiroussa <oss@xtrm.me>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/04 16:43:41 by maldavid          #+#    #+#              #
-#    Updated: 2024/04/23 22:45:41 by kiroussa         ###   ########.fr        #
+#    Updated: 2024/04/24 14:55:02 by kiroussa         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -91,39 +91,39 @@ endif
 
 OBJS_TOTAL				= $(words $(OBJS))
 N_OBJS					:= $(shell find $(OBJ_DIR) -type f -name '*.o' 2>/dev/null | wc -l)
-OBJS_TOTAL				:= $(shell echo $(OBJS_TOTAL) - $(N_OBJS) | bc)
+OBJS_TOTAL				:= $(shell echo $$(( $(OBJS_TOTAL) - $(N_OBJS) )))
 CURR_OBJ				= 0
 
 $(OBJ_DIR)/%.o: %.cpp
-	mkdir -p $(dir $@)
-	$(eval CURR_OBJ=$(shell echo $(CURR_OBJ) + 1 | bc))
-	$(eval PERCENT=$(shell echo $(CURR_OBJ) \* 100 / $(OBJS_TOTAL) | bc))
-	printf "$(_GREEN)($(_BOLD)%3s%%$(_RESET)$(_GREEN)) $(_RESET)Compiling $(_BOLD)$<$(_RESET)\n" "$(PERCENT)"
-	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+	@mkdir -p $(dir $@)
+	@$(eval CURR_OBJ=$(shell echo $$(( $(CURR_OBJ) + 1 ))))
+	@$(eval PERCENT=$(shell echo $$(( $(CURR_OBJ) * 100 / $(OBJS_TOTAL) ))))
+	@printf "$(_GREEN)($(_BOLD)%3s%%$(_RESET)$(_GREEN)) $(_RESET)Compiling $(_BOLD)$<$(_RESET)\n" "$(PERCENT)"
+	@$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
 
-all:		_printbuildinfos $(NAME)
+all:		_printbuildinfos
+	@$(MAKE) $(NAME)
 
 $(NAME):	 $(OBJS)
-	printf "Linking $(_BOLD)$(NAME)$(_RESET)\n"
-	$(CXX) -shared -o $(NAME) $(OBJS) $(LDFLAGS)
-	printf "$(_BOLD)$(NAME)$(_RESET) compiled $(_GREEN)$(_BOLD)successfully$(_RESET)\n"
+	@printf "Linking $(_BOLD)$(NAME)$(_RESET)\n"
+	@$(CXX) -shared -o $(NAME) $(OBJS) $(LDFLAGS)
+	@printf "$(_BOLD)$(NAME)$(_RESET) compiled $(_GREEN)$(_BOLD)successfully$(_RESET)\n"
 
 _printbuildinfos:
-	printf "$(_PURPLE)$(_BOLD)MacroLibX $(_RESET)Compiling in $(_BOLD)$(MODE)$(_RESET) mode on $(_BOLD)$(OS)$(_RESET) | Using $(_BOLD)$(CXX)$(_RESET), flags: $(_BOLD)$(_ENABLEDFLAGS)\n"
+	@printf "$(_PURPLE)$(_BOLD)MacroLibX $(_RESET)Compiling in $(_BOLD)$(MODE)$(_RESET) mode on $(_BOLD)$(OS)$(_RESET) | Using $(_BOLD)$(CXX)$(_RESET), flags: $(_BOLD)$(_ENABLEDFLAGS)$(_RESET)\n"
 
 debug:
-	$(MAKE) all DEBUG=true -j
+	@$(MAKE) all DEBUG=true -j$(shell nproc)
 
 clean:
-	$(RM) $(OBJ_DIR)
-	printf "Cleaned $(_BOLD)$(OBJ_DIR)$(_RESET)\n"
+	@$(RM) $(OBJ_DIR)
+	@printf "Cleaned $(_BOLD)$(OBJ_DIR)$(_RESET)\n"
 
 fclean:		clean
-	$(RM) $(NAME)
-	printf "Cleaned $(_BOLD)$(NAME)$(_RESET)\n"
+	@$(RM) $(NAME)
+	@printf "Cleaned $(_BOLD)$(NAME)$(_RESET)\n"
 
-re:			fclean all
+re:			fclean _printbuildinfos
+	@$(MAKE) $(NAME)
 
 .PHONY:		all clean debug fclean re
-
-.SILENT:
