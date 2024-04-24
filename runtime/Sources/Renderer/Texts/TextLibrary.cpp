@@ -1,64 +1,62 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   text_library.cpp                                   :+:      :+:    :+:   */
+/*   TextLibrary.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 11:59:57 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 19:05:09 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/24 01:40:28 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <pre_compiled.h>
+#include <PreCompiled.h>
 
-#include <renderer/texts/text_library.h>
-#include <renderer/texts/text.h>
-#include <core/errors.h>
-#include <renderer/renderer.h>
-#include <core/profiler.h>
+#include <Renderer/Texts/TextLibrary.h>
+#include <Renderer/Texts/Text.h>
+#include <Renderer/Renderer.h>
 
 namespace mlx
 {
-	std::shared_ptr<Text> TextLibrary::getTextData(TextID id)
+	std::shared_ptr<Text> TextLibrary::GetTextData(TextID id)
 	{
 		MLX_PROFILE_FUNCTION();
-		if(!_cache.count(id))
-			core::error::report(e_kind::fatal_error, "Text Library : wrong text ID '%d'", id);
-		return _cache[id];
+		if(!m_cache.count(id))
+			FatalError("Text Library : wrong text ID '%d'", id);
+		return m_cache[id];
 	}
 
-	TextID TextLibrary::addTextToLibrary(std::shared_ptr<Text> text)
+	TextID TextLibrary::AddTextToLibrary(std::shared_ptr<Text> text)
 	{
 		MLX_PROFILE_FUNCTION();
-		auto it = std::find_if(_cache.begin(), _cache.end(), [&](const std::pair<TextID, std::shared_ptr<Text>>& v)
+		auto it = std::find_if(m_cache.begin(), m_cache.end(), [&](const std::pair<TextID, std::shared_ptr<Text>>& v)
 		{
-			return v.second->getText() == text->getText() && v.second->getColor() == text->getColor();
+			return v.second->GetText() == text->GetText() && v.second->GetColor() == text->GetColor();
 		});
-		if(it != _cache.end())
+		if(it != m_cache.end())
 			return it->first;
-		_cache[_current_id] = text;
-		_current_id++;
-		return _current_id - 1;
+		m_cache[m_current_id] = text;
+		m_current_id++;
+		return m_current_id - 1;
 	}
 
-	void TextLibrary::removeTextFromLibrary(TextID id)
+	void TextLibrary::RemoveTextFromLibrary(TextID id)
 	{
 		MLX_PROFILE_FUNCTION();
-		if(!_cache.count(id))
+		if(!m_cache.count(id))
 		{
-			core::error::report(e_kind::warning, "Text Library : trying to remove a text with an unkown or invalid ID '%d'", id);
+			Warning("Text Library : trying to remove a text with an unkown or invalid ID '%d'", id);
 			return;
 		}
-		_cache[id]->destroy();
-		_cache.erase(id);
+		m_cache[id]->Destroy();
+		m_cache.erase(id);
 	}
 
-	void TextLibrary::clearLibrary()
+	void TextLibrary::ClearLibrary()
 	{
 		MLX_PROFILE_FUNCTION();
-		for(auto& [id, text] : _cache)
-			text->destroy();
-		_cache.clear();
+		for(auto& [id, text] : m_cache)
+			text->Destroy();
+		m_cache.clear();
 	}
 }

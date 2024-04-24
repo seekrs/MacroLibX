@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 13:18:50 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/28 22:28:46 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/24 01:46:11 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,12 @@ namespace mlx
 			void Init(std::uint32_t width, std::uint32_t height, class Renderer& renderer) noexcept;
 
 			void SetPixel(int x, int y, std::uint32_t color) noexcept;
-			void Render(std::array<VkDescriptorSet, 2>& sets, class Renderer& renderer) noexcept;
+			void Render(class Renderer& renderer) noexcept;
 
 			void Clear();
 			void Destroy() noexcept;
 
-			~PixelPutPipeline();
+			~PixelPutPipeline() = default;
 
 		private:
 			Texture m_texture;

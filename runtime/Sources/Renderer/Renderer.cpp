@@ -1,192 +1,195 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   renderer.cpp                                       :+:      :+:    :+:   */
+/*   Renderer.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:25:16 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 19:03:49 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/24 01:58:51 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <pre_compiled.h>
+#include <PreCompiled.h>
 
-#include <renderer/renderer.h>
-#include <renderer/images/texture.h>
-#include <renderer/core/render_core.h>
-#include <core/profiler.h>
+#include <Renderer/Renderer.h>
+#include <Renderer/Images/Texture.h>
+#include <Renderer/Core/RenderCore.h>
 
 namespace mlx
 {
-	void Renderer::init(Texture* render_target)
+	void Renderer::Init(NonOwningPtr<Texture> render_target)
 	{
 		MLX_PROFILE_FUNCTION();
-		if(render_target == nullptr)
+		if(!render_target)
 		{
-			_surface.create(*this);
-			_swapchain.init(this);
-			_pass.init(_swapchain.getImagesFormat(), VK_IMAGE_LAYOUT_PRESENT_SRC_KHR);
-			for(std::size_t i = 0; i < _swapchain.getImagesNumber(); i++)
-				_framebuffers.emplace_back().init(_pass, _swapchain.getImage(i));
+			m_surface.Create(*this);
+			m_swapchain.Init(this);
+			m_pass.Init(m_swapchain.GetImagesFormat(), VK_IMAGE_LAYOUT_PRESENT_SRC_KHR);
+			for(std::size_t i = 0; i < m_swapchain.GetImagesNumber(); i++)
+				m_framebuffers.emplace_back().Init(m_pass, m_swapchain.GetImage(i));
 		}
 		else
 		{
-			_render_target = render_target;
-			_render_target->transitionLayout(VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
-			_pass.init(_render_target->getFormat(), _render_target->getLayout());
-			_framebuffers.emplace_back().init(_pass, *static_cast<Image*>(_render_target));
+			m_render_target = render_target;
+			m_render_target->TransitionLayout(VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
+			m_pass.Init(m_render_target->GetFormat(), m_render_target->GetLayout());
+			m_framebuffers.emplace_back().Init(m_pass, *static_cast<Image*>(m_render_target));
 		}
-		_cmd.init();
+		m_cmd.Init();
 
 		for(std::size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
-			_semaphores[i].init();
+		{
+			m_render_finished_semaphores[i].Init();
+			m_image_available_semaphores[i].Init();
+		}
 
-		_uniform_buffer.reset(new UBO);
+		m_uniform_buffer.reset(new UniformBuffer);
 		#ifdef DEBUG
-			_uniform_buffer->create(this, sizeof(glm::mat4), "__mlx_matrices_uniform_buffer_");
+			m_uniform_buffer->Create(this, sizeof(glm::mat4), "__mlx_matrices_uniform_buffer_");
 		#else
-			_uniform_buffer->create(this, sizeof(glm::mat4), nullptr);
+			m_uniform_buffer->Create(this, sizeof(glm::mat4), nullptr);
 		#endif
 
-		_vert_layout.init({
+		DescriptorSetLayout vert_layout;
+		DescriptorSetLayout frag_layout;
+
+		vert_layout.Init({
 				{0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER}
 			}, VK_SHADER_STAGE_VERTEX_BIT);
-		_frag_layout.init({
+		frag_layout.Init({
 				{0, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER}
 			}, VK_SHADER_STAGE_FRAGMENT_BIT);
 
-		_vert_set.init(this, &Render_Core::get().getDescriptorPool(), &_vert_layout);
-		_frag_set.init(this, &Render_Core::get().getDescriptorPool(), &_frag_layout);
+		m_vert_set.Init(this, &RenderCore::Get().GetDescriptorPool(), std::move(vert_layout));
+		m_frag_set.Init(this, &RenderCore::Get().GetDescriptorPool(), std::move(frag_layout));
 
-		_vert_set.writeDescriptor(0, _uniform_buffer.get());
+		m_vert_set.WriteDescriptor(0, m_uniform_buffer.Get());
 
-		_pipeline.init(*this);
+		m_pipeline.Init(*this);
 
-		_framebuffer_resized = false;
+		m_framebuffer_resized = false;
 	}
 
-	bool Renderer::beginFrame()
+	bool Renderer::BeginFrame()
 	{
 		MLX_PROFILE_FUNCTION();
-		auto device = Render_Core::get().getDevice().get();
+		auto device = RenderCore::Get().GetDevice().Get();
 
-		if(_render_target == nullptr)
+		if(!m_render_target)
 		{
-			_cmd.getCmdBuffer(_current_frame_index).waitForExecution();
-			VkResult result = vkAcquireNextImageKHR(device, _swapchain(), UINT64_MAX, _semaphores[_current_frame_index].getImageSemaphore(), VK_NULL_HANDLE, &_image_index);
+			m_cmd.GetCmdBuffer(m_current_frame_index).WaitForExecution();
+			VkResult result = vkAcquireNextImageKHR(device, m_swapchain.Get(), UINT64_MAX, m_image_available_semaphores[m_current_frame_index].Get(), VK_NULL_HANDLE, &m_image_index);
 
 			if(result == VK_ERROR_OUT_OF_DATE_KHR)
 			{
-				recreateRenderData();
+				RecreateRenderData();
 				return false;
 			}
 			else if(result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR)
-				core::error::report(e_kind::fatal_error, "Vulkan error : failed to acquire swapchain image");
+				FatalError("Vulkan error : failed to acquire swapchain image");
 		}
 		else
 		{
-			_image_index = 0;
-			if(_render_target->getLayout() != VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL)
-				_render_target->transitionLayout(VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
+			m_image_index = 0;
+			if(m_render_target->GetLayout() != VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL)
+				m_render_target->TransitionLayout(VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
 		}
 
-		_cmd.getCmdBuffer(_current_frame_index).reset();
-		_cmd.getCmdBuffer(_current_frame_index).beginRecord();
+		m_cmd.GetCmdBuffer(m_current_frame_index).Reset();
+		m_cmd.GetCmdBuffer(m_current_frame_index).BeginRecord();
 		auto& fb = _framebuffers[_image_index];
-		_pass.begin(getActiveCmdBuffer(), fb);
+		m_pass.Begin(GetActiveCmdBuffer(), fb);
 
-		_pipeline.bindPipeline(_cmd.getCmdBuffer(_current_frame_index));
+		m_pipeline.BindPipeline(m_cmd.GetCmdBuffer(m_current_frame_index));
 
 		VkViewport viewport{};
 		viewport.x = 0.0f;
 		viewport.y = 0.0f;
-		viewport.width = static_cast<float>(fb.getWidth());
-		viewport.height = static_cast<float>(fb.getHeight());
+		viewport.width = static_cast<float>(fb.GetWidth());
+		viewport.height = static_cast<float>(fb.GetHeight());
 		viewport.minDepth = 0.0f;
 		viewport.maxDepth = 1.0f;
-		vkCmdSetViewport(_cmd.getCmdBuffer(_current_frame_index).get(), 0, 1, &viewport);
+		vkCmdSetViewport(m_cmd.GetCmdBuffer(m_current_frame_index).Get(), 0, 1, &viewport);
 
 		VkRect2D scissor{};
 		scissor.offset = { 0, 0 };
-		scissor.extent = { fb.getWidth(), fb.getHeight()};
-		vkCmdSetScissor(_cmd.getCmdBuffer(_current_frame_index).get(), 0, 1, &scissor);
+		scissor.extent = { fb.GetWidth(), fb.GetHeight()};
+		vkCmdSetScissor(m_cmd.GetCmdBuffer(m_current_frame_index).Get(), 0, 1, &scissor);
 
 		return true;
 	}
 
-	void Renderer::endFrame()
+	void Renderer::EndFrame()
 	{
 		MLX_PROFILE_FUNCTION();
-		_pass.end(getActiveCmdBuffer());
-		_cmd.getCmdBuffer(_current_frame_index).endRecord();
+		m_pass.End(GetActiveCmdBuffer());
+		m_cmd.GetCmdBuffer(m_current_frame_index).EndRecord();
 
-		if(_render_target == nullptr)
+		if(!m_render_target)
 		{
-			_cmd.getCmdBuffer(_current_frame_index).submit(&_semaphores[_current_frame_index]);
+			m_cmd.GetCmdBuffer(m_current_frame_index).Submit(&m_render_finished_semaphores[m_current_frame_index]);
 
-			VkSwapchainKHR swapchain = _swapchain();
-			VkSemaphore signalSemaphores[] = { _semaphores[_current_frame_index].getRenderImageSemaphore() };
+			VkSwapchainKHR swapchain = m_swapchain.Get();
+			VkSemaphore signal_semaphores[] = { m_render_finished_semaphores[m_current_frame_index].Get() };
 
-			VkPresentInfoKHR presentInfo{};
-			presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
-			presentInfo.waitSemaphoreCount = 1;
-			presentInfo.pWaitSemaphores = signalSemaphores;
-			presentInfo.swapchainCount = 1;
-			presentInfo.pSwapchains = &swapchain;
-			presentInfo.pImageIndices = &_image_index;
-
-			VkResult result = vkQueuePresentKHR(Render_Core::get().getQueue().getPresent(), &presentInfo);
-
-			if(result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || _framebuffer_resized)
+			VkPresentInfoKHR present_info{};
+			present_info.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+			present_info.waitSemaphoreCount = 1;
+			present_info.pWaitSemaphores = signal_semaphores;
+			present_info.swapchainCount = 1;
+			present_info.pSwapchains = &swapchain;
+			present_info.pImageIndices = &m_image_index;
+			VkResult result = vkQueuePresentKHR(RenderCore::Get().GetQueue().GetPresent(), &present_info);
+			if(result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || m_framebuffer_resized)
 			{
-				_framebuffer_resized = false;
-				recreateRenderData();
+				m_framebuffer_resized = false;
+				RecreateRenderData();
 			}
 			else if(result != VK_SUCCESS)
-				core::error::report(e_kind::fatal_error, "Vulkan error : failed to present swap chain image");
-			_current_frame_index = (_current_frame_index + 1) % MAX_FRAMES_IN_FLIGHT;
+				FatalError("Vulkan error : failed to present swap chain image");
+			m_current_frame_index = (m_current_frame_index + 1) % MAX_FRAMES_IN_FLIGHT;
 		}
 		else
 		{
-			_cmd.getCmdBuffer(_current_frame_index).submitIdle(true);
-			_current_frame_index = 0;
+			m_cmd.GetCmdBuffer(m_current_frame_index).SubmitIdle(true);
+			m_current_frame_index = 0;
 		}
 	}
 
-	void Renderer::recreateRenderData()
+	void Renderer::RecreateRenderData()
 	{
-		_swapchain.recreate();
-		_pass.destroy();
-		_pass.init(_swapchain.getImagesFormat(), VK_IMAGE_LAYOUT_PRESENT_SRC_KHR);
-		for(auto& fb : _framebuffers)
-			fb.destroy();
-		_framebuffers.clear();
-		for(std::size_t i = 0; i < _swapchain.getImagesNumber(); i++)
-			_framebuffers.emplace_back().init(_pass, _swapchain.getImage(i));
+		m_swapchain.Recreate();
+		m_pass.Destroy();
+		m_pass.Init(m_swapchain.GetImagesFormat(), VK_IMAGE_LAYOUT_PRESENT_SRC_KHR);
+		for(auto& fb : m_framebuffers)
+			fb.Destroy();
+		m_framebuffers.clear();
+		for(std::size_t i = 0; i < m_swapchain.GetImagesNumber(); i++)
+			m_framebuffers.emplace_back().Init(m_pass, m_swapchain.GetImage(i));
 	}
 
-	void Renderer::destroy()
+	void Renderer::Destroy()
 	{
 		MLX_PROFILE_FUNCTION();
-		vkDeviceWaitIdle(Render_Core::get().getDevice().get());
+		vkDeviceWaitIdle(RenderCore::Get().GetDevice().Get());
 
-		_pipeline.destroy();
-		_uniform_buffer->destroy();
-		_vert_layout.destroy();
-		_frag_layout.destroy();
-		_frag_set.destroy();
-		_vert_set.destroy();
-		_cmd.destroy();
-		_pass.destroy();
-		if(_render_target == nullptr)
+		m_ipeline.Destroy();
+		muniform_buffer->Destroy();
+		mvert_layout.Destroy();
+		mfrag_layout.Destroy();
+		mfrag_set.Destroy();
+		mvert_set.Destroy();
+		mcmd.Destroy();
+		mpass.Destroy();
+		if(!m_render_target)
 		{
-			_swapchain.destroy();
-			_surface.destroy();
+			m_swapchain.Destroy();
+			m_surface.Destroy();
 		}
-		for(auto& fb : _framebuffers)
-			fb.destroy();
+		for(auto& fb : m_framebuffers)
+			fb.Destroy();
 		for(int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
-			_semaphores[i].destroy();
+			m_semaphores[i].Destroy();
 	}
 }
