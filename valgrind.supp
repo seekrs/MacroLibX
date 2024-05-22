@@ -73,29 +73,62 @@
    ...
 }
 {
-   name
-   Memcheck:Leak
-   fun:*
-   obj:*
-   ...
-   fun:_dl_*
-   ...
+	memcheck_malloc_suppressions
+	Memcheck:Leak
+	fun:malloc
+	...
+	obj:/var/cache/nscd/passwd
 }
 {
-   name
-   Memcheck:Leak
-   fun:*
-   obj:*
-   ...
-   fun:dl_*
-   ...
+	memcheck_calloc_suppressions
+	Memcheck:Leak
+	fun:calloc
+	...
+	obj:/var/cache/nscd/passwd
 }
 {
-   name
-   Memcheck:Addr8
-   fun:*
-   obj:*
-   ...
-   fun:dl_*
-   ...
+	memcheck_realloc_suppressions
+	Memcheck:Leak
+	fun:realloc
+	...
+	obj:/var/cache/nscd/passwd
+}
+{
+	dl_catch_exception_suppressions
+	Memcheck:Leak
+	...
+	fun:_dl_catch_exception
+	...
+}
+{
+	dl_catch_exception_suppressions_addr8
+	Memcheck:Addr8
+	...
+	fun:_dl_catch_exception
+	...
+}
+{
+	dlopen_malloc-suppressions
+	Memcheck:Leak
+	match-leak-kinds: definite
+	fun:malloc
+	...
+	fun:_dl_open
+	...
+}
+{
+	_dl_init_suppressions
+	Memcheck:Leak
+	match-leak-kinds: reachable
+	fun:_Znwm
+	...
+	fun:_dl_init
+}
+{
+	dbus_suppressions
+	Memcheck:Leak
+	match-leak-kinds: reachable
+	...
+	fun:_dbus*
+	...
 }
