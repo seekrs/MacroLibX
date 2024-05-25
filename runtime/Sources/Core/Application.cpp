@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 22:10:52 by maldavid          #+#    #+#             */
-/*   Updated: 2024/04/23 15:06:26 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/05/25 16:06:57 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include <Renderer/Core/RenderCore.h>
 #include <Core/Memory.h>
 #include <Core/EventBus.h>
+#include <Core/SDLManager.h>
 
 namespace mlx
 {
@@ -29,6 +30,7 @@ namespace mlx
 		}, "__internal_application" });
 
 		m_fps.init();
+		SDLManager::Get().Init();
 	}
 
 	void Application::Run() noexcept
@@ -111,5 +113,6 @@ namespace mlx
 	{
 		TextLibrary::Get().ClearLibrary();
 		FontLibrary::Get().ClearLibrary();
+		SDLManager::Get().Shutdown();
 	}
 }

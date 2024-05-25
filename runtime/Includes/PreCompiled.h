@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:37:23 by maldavid          #+#    #+#             */
-/*   Updated: 2024/04/23 13:49:52 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/05/25 15:46:37 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,8 @@
 #include <iostream>
 #include <volk.h>
 
-#ifdef MLX_LEGACY
-	#include <SDL2/SDL.h>
-	#include <SDL2/SDL_vulkan.h>
-#else
-	#include <GLFW/glfw3.h>
-#endif
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_vulkan.h>
 
 #include <functional>
 #include <memory>

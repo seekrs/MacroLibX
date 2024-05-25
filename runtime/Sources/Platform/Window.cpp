@@ -1,40 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   window.cpp                                         :+:      :+:    :+:   */
+/*   Window.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:36:44 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/26 23:03:59 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/05/25 16:13:31 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <pre_compiled.h>
+#include <PreCompiled.h>
 
-#include <platform/window.h>
-#include <core/errors.h>
-#include <utils/icon_mlx.h>
+#include <Core/SDLManager.h>
+#include <Platform/Window.h>
 
 namespace mlx
 {
-	Window::Window(std::size_t w, std::size_t h, const std::string& title) : _width(w), _height(h)
+	Window::Window(std::size_t w, std::size_t h, const std::string& title) : m_width(w), m_height(h)
 	{
 		static std::uint64_t ids = 0;
 
 		if(title.find("vvaas") != std::string::npos)
-			core::error::report(e_kind::message, "vvaas est mauvais");
-		glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-		_win = glfwCreateWindow(_width, _height, title.c_str(), NULL, NULL);;
-		_id = ids++;
+			Message("vvaas est mauvais");
+		p_window = SDLManager::Get().CreateWindow(title, w, h);
+		m_id = ids++;
 	}
 
-	void Window::destroy() noexcept
+	void Window::Destroy() noexcept
 	{
-		if(_win != nullptr)
+		if(p_window != nullptr)
 		{
-			glfwDestroyWindow(_win);
-			_win = nullptr;
+			SDLManager::Get().DestroyWindow(p_window);
+			p_window = nullptr;
 		}
 	}
 }

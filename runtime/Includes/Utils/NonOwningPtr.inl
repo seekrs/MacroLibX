@@ -16,7 +16,7 @@ namespace mlx
 {
 	template<typename T>
 	NonOwningPtr<T>::NonOwningPtr(T* ptr) : p_ptr(ptr) {}
-	
+
 	template<typename T>
 	NonOwningPtr<T>::NonOwningPtr(NonOwningPtr<T>&& ptr) noexcept : p_ptr(ptr.p_ptr)
 	{
@@ -28,7 +28,7 @@ namespace mlx
 	{
 		p_ptr = ptr;
 	}
-	
+
 	template<typename T>
 	NonOwningPtr<T>& NonOwningPtr<T>::operator=(NonOwningPtr&& ptr) noexcept
 	{
@@ -47,13 +47,13 @@ namespace mlx
 	{
 		return p_ptr;
 	}
-	
+
 	template<typename T>
 	T* NonOwningPtr<T>::operator->() const noexcept
 	{
 		return p_ptr;
 	}
-	
+
 	template<typename T>
 	T& NonOwningPtr<T>::operator*() const noexcept
 	{
