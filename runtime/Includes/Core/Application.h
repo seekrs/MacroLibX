@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:49:46 by maldavid          #+#    #+#             */
-/*   Updated: 2024/04/21 20:39:33 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/05/25 15:26:36 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 #include <Core/Graphics.h>
 #include <Platform/Inputs.h>
-#include <Core/DriverLoader.h>
 #include <Core/ImagesRegistry.h>
 #include <Core/Fps.h>
 
@@ -61,7 +60,6 @@ namespace mlx
 		private:
 			FpsManager m_fps;
 			Input m_in;
-			DriverLoader m_driver_loader;
 			ImageRegistry m_image_registry;
 			std::vector<std::unique_ptr<GraphicsSupport>> m_graphics;
 			std::function<int(void*)> f_loop_hook;
@@ -69,6 +67,6 @@ namespace mlx
 	};
 }
 
-#include <core/application.inl>
+#include <Core/Application.inl>
 
 #endif // __MLX_APPLICATION__

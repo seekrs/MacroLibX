@@ -6,7 +6,7 @@
 #    By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/04 16:43:41 by maldavid          #+#    #+#              #
-#    Updated: 2024/03/27 21:30:44 by maldavid         ###   ########.fr        #
+#    Updated: 2024/05/25 16:08:57 by maldavid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,6 @@ SRCS =  $(wildcard $(addsuffix /*.cpp, ./runtime/Sources/Core))
 SRCS += $(wildcard $(addsuffix /*.cpp, ./runtime/Sources/Platform))
 SRCS += $(wildcard $(addsuffix /*.cpp, ./runtime/Sources/Renderer))
 SRCS += $(wildcard $(addsuffix /*.cpp, ./runtime/Sources/Renderer/**))
-SRCS += $(wildcard $(addsuffix /*.cpp, ./runtime/Sources/Drivers/**))
 
 OBJ_DIR = objs/makefile
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRCS:.cpp=.o))
@@ -31,7 +30,7 @@ IMAGES_OPTIMIZED ?= true
 FORCE_INTEGRATED_GPU ?= false
 GRAPHICS_MEMORY_DUMP ?= false
 PROFILER ?= false
-LEGACY ?= false
+FORCE_WAYLAND ?= false
 
 MODE = "release"
 
@@ -73,8 +72,8 @@ ifeq ($(PROFILER), true)
 	CXXFLAGS += -D PROFILER
 endif
 
-ifeq ($(LEGACY), true)
-	CXXFLAGS += -D LEGACY
+ifeq ($(FORCE_WAYLAND), true)
+	CXXFLAGS += -D FORCE_WAYLAND
 endif
 
 RM = rm -rf

@@ -44,6 +44,11 @@ option("profiler")
 	add_defines("PROFILER")
 option_end()
 
+option("force_wayland")
+	set_default(false)
+	add_defines("FORCE_WAYLAND")
+option_end()
+
 -- Targets
 
 target("mlx")
