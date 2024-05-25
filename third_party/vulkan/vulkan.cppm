@@ -2387,6 +2387,10 @@ export namespace VULKAN_HPP_NAMESPACE
   using VULKAN_HPP_NAMESPACE::EXTMutableDescriptorTypeExtensionName;
   using VULKAN_HPP_NAMESPACE::EXTMutableDescriptorTypeSpecVersion;
 
+  //=== VK_EXT_legacy_vertex_attributes ===
+  using VULKAN_HPP_NAMESPACE::EXTLegacyVertexAttributesExtensionName;
+  using VULKAN_HPP_NAMESPACE::EXTLegacyVertexAttributesSpecVersion;
+
   //=== VK_EXT_layer_settings ===
   using VULKAN_HPP_NAMESPACE::EXTLayerSettingsExtensionName;
   using VULKAN_HPP_NAMESPACE::EXTLayerSettingsSpecVersion;
@@ -2505,6 +2509,10 @@ export namespace VULKAN_HPP_NAMESPACE
   //=== VK_NV_ray_tracing_validation ===
   using VULKAN_HPP_NAMESPACE::NVRayTracingValidationExtensionName;
   using VULKAN_HPP_NAMESPACE::NVRayTracingValidationSpecVersion;
+
+  //=== VK_MESA_image_alignment_control ===
+  using VULKAN_HPP_NAMESPACE::MESAImageAlignmentControlExtensionName;
+  using VULKAN_HPP_NAMESPACE::MESAImageAlignmentControlSpecVersion;
 
   //========================
   //=== CONSTEXPR VALUEs ===
@@ -4218,6 +4226,10 @@ export namespace VULKAN_HPP_NAMESPACE
   using VULKAN_HPP_NAMESPACE::PhysicalDeviceMutableDescriptorTypeFeaturesEXT;
   using VULKAN_HPP_NAMESPACE::PhysicalDeviceMutableDescriptorTypeFeaturesVALVE;
 
+  //=== VK_EXT_legacy_vertex_attributes ===
+  using VULKAN_HPP_NAMESPACE::PhysicalDeviceLegacyVertexAttributesFeaturesEXT;
+  using VULKAN_HPP_NAMESPACE::PhysicalDeviceLegacyVertexAttributesPropertiesEXT;
+
   //=== VK_EXT_layer_settings ===
   using VULKAN_HPP_NAMESPACE::LayerSettingEXT;
   using VULKAN_HPP_NAMESPACE::LayerSettingsCreateInfoEXT;
@@ -4351,6 +4363,11 @@ export namespace VULKAN_HPP_NAMESPACE
 
   //=== VK_NV_ray_tracing_validation ===
   using VULKAN_HPP_NAMESPACE::PhysicalDeviceRayTracingValidationFeaturesNV;
+
+  //=== VK_MESA_image_alignment_control ===
+  using VULKAN_HPP_NAMESPACE::ImageAlignmentControlCreateInfoMESA;
+  using VULKAN_HPP_NAMESPACE::PhysicalDeviceImageAlignmentControlFeaturesMESA;
+  using VULKAN_HPP_NAMESPACE::PhysicalDeviceImageAlignmentControlPropertiesMESA;
 
   //===============
   //=== HANDLEs ===
@@ -4675,7 +4692,7 @@ export namespace VULKAN_HPP_NAMESPACE
   using VULKAN_HPP_NAMESPACE::StructExtends;
 #endif /*VULKAN_HPP_DISABLE_ENHANCED_MODE*/
 
-#if defined( VULKAN_HPP_ENABLE_DYNAMIC_LOADER_TOOL )
+#if VULKAN_HPP_ENABLE_DYNAMIC_LOADER_TOOL
   using VULKAN_HPP_NAMESPACE::DynamicLoader;
 #endif /*VULKAN_HPP_ENABLE_DYNAMIC_LOADER_TOOL*/
 
