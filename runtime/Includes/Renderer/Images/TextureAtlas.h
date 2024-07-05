@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 16:36:33 by maldavid          #+#    #+#             */
-/*   Updated: 2024/04/24 01:37:54 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/07/05 13:52:40 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ namespace mlx
 
 			inline void SetDescriptor(DescriptorSet&& set) noexcept { m_set = set; }
 			inline DescriptorSet GetSet() noexcept { return m_set; }
-			inline void UpdateSet(int binding) noexcept { m_set.writeDescriptor(binding, *this); m_has_been_updated = true; }
+			inline void UpdateSet(int binding) noexcept { m_set.WriteDescriptor(binding, *this); m_has_been_updated = true; }
 			inline bool HasBeenUpdated() const noexcept { return m_has_been_updated; }
 			inline constexpr void ResetUpdate() noexcept { m_has_been_updated = false; }
 

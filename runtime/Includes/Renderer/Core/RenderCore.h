@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:16:32 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/27 22:55:43 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/07/05 13:39:11 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 #include <Renderer/Core/Device.h>
 #include <Renderer/Core/Instance.h>
 #include <Renderer/Core/ValidationLayers.h>
-#include <Renderer/Core/memory.h>
+#include <Renderer/Core/Memory.h>
 
 #include <Utils/Singleton.h>
 

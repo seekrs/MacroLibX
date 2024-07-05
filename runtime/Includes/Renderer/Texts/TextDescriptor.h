@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 00:13:34 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/28 22:25:09 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/07/05 14:03:43 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ namespace mlx
 
 			void Init(FontID font) noexcept;
 			bool operator==(const TextDrawDescriptor& rhs) const { return m_text == rhs.m_text && x == rhs.x && y == rhs.y && color == rhs.color; }
-			void Render(std::array<VkDescriptorSet, 2>& sets, Renderer& renderer) override;
+			void Render(Renderer& renderer) override;
 			void ResetUpdate() override;
 
 			TextDrawDescriptor() = default;

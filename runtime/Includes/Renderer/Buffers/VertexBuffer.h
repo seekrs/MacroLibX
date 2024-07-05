@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:27:38 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/28 22:23:32 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/07/05 13:24:41 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #define __MLX_VK_VBO__
 
 #include <Renderer/Enums.h>
-#include <Renderer/Buffer/Buffer.h>
+#include <Renderer/Buffers/Buffer.h>
 #include <Renderer/Renderer.h>
 
 namespace mlx

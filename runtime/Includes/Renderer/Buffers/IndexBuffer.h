@@ -6,14 +6,14 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 15:05:05 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/28 22:11:05 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/07/05 13:24:46 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __VK_IBO__
 #define __VK_IBO__
 
-#include <Renderer/Buffer/Buffer.h>
+#include <Renderer/Buffers/Buffer.h>
 #include <Renderer/Renderer.h>
 
 namespace mlx

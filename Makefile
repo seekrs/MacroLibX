@@ -6,7 +6,7 @@
 #    By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/04 16:43:41 by maldavid          #+#    #+#              #
-#    Updated: 2024/05/25 16:08:57 by maldavid         ###   ########.fr        #
+#    Updated: 2024/07/05 13:34:03 by maldavid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -85,10 +85,10 @@ $(OBJ_DIR)/%.o: %.cpp $(GCH)
 all: $(NAME)
 
 $(GCH):
-	@printf "\033[1;32m[compiling "$(MODE)" "$(CXX)"]\033[1;00m PreCompiled header\n"
+	@printf "\033[1;32m[compiling... "$(MODE)" "$(CXX)"]\033[1;00m PreCompiled header\n"
 	@$(CXX) $(CXXFLAGS) $(INCLUDES) -c $(PCH) -o $(GCH)
 
-$(NAME): $(GCH) $(OBJ_DIR) $(OBJS)
+$(NAME): $(OBJ_DIR) $(GCH) $(OBJS)
 	@printf "\033[1;32m[linking ... "$(MODE)"]\033[1;00m "$@"\n"
 	@$(CXX) -shared -o $(NAME) $(OBJS) $(LDLIBS)
 	@printf "\033[1;32m[build finished]\033[1;00m\n"

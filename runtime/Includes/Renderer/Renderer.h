@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:14:45 by maldavid          #+#    #+#             */
-/*   Updated: 2024/04/24 01:53:20 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/07/05 13:40:20 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@
 #include <Renderer/Core/Surface.h>
 #include <Renderer/Core/RenderCore.h>
 #include <Renderer/Core/Semaphore.h>
-#include <Renderer/Pipeline/Pipeline.h>
+#include <Renderer/Pipelines/Pipeline.h>
 #include <Renderer/Command/CommandManager.h>
-#include <Renderer/Swapchain/Swapchain.h>
+#include <Renderer/Renderpass/Swapchain.h>
 #include <Renderer/Renderpass/RenderPass.h>
 #include <Renderer/Renderpass/FrameBuffer.h>
 #include <Renderer/Descriptors/DescriptorSet.h>
