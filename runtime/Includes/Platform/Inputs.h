@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:27:35 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/27 18:36:21 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/07/05 20:35:09 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,12 @@ namespace mlx
 		public:
 			Inputs() = default;
 
-			virtual void Update() noexcept = 0;
+			void RegisterWindow(std::shared_ptr<Window> window);
 
-			virtual void RegisterWindow(std::shared_ptr<Window> window) = 0;
-
-			virtual std::int32_t GetX() const noexcept = 0;
-			virtual std::int32_t GetY() const noexcept = 0;
-			virtual std::int32_t GetXRel() const noexcept = 0;
-			virtual std::int32_t GetYRel() const noexcept = 0;
+			std::int32_t GetX() const noexcept;
+			std::int32_t GetY() const noexcept;
+			std::int32_t GetXRel() const noexcept;
+			std::int32_t GetYRel() const noexcept;
 
 			inline bool IsMouseMoving() const noexcept { return GetXRel() || GetYRel(); }
 			MLX_FORCEINLINE bool IsRunning() const noexcept { return m_run; }
@@ -50,7 +48,7 @@ namespace mlx
 				m_events_hooks[id][event].param = param;
 			}
 
-			virtual ~Inputs() = default;
+			~Inputs() = default;
 
 		protected:
 			std::unordered_map<std::uint32_t, std::shared_ptr<Window>> m_windows;

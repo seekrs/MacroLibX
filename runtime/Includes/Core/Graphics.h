@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 14:49:49 by maldavid          #+#    #+#             */
-/*   Updated: 2024/05/25 01:00:10 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/07/05 13:46:58 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <Renderer/Renderer.h>
 #include <Renderer/PixelPut.h>
 #include <Renderer/Core/DrawableResource.h>
-#include <Renderer/Images/TextureManager.h>
+#include <Renderer/Images/TextureRegistry.h>
 #include <Renderer/Texts/TextManager.h>
 #include <Utils/NonCopyable.h>
 #include <Renderer/Images/Texture.h>
@@ -55,7 +55,7 @@ namespace mlx
 			std::vector<NonOwningPtr<DrawableResource>> m_drawlist;
 
 			TextManager m_text_manager;
-			TextureManager m_texture_manager;
+			TextureRegistry m_texture_registry;
 
 			glm::mat4 m_proj = glm::mat4(1.0);
 

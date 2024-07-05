@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 17:15:24 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/27 17:16:03 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/07/05 13:23:10 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,12 @@ namespace mlx
 		Warning,
 		Error,
 		FatalError,
+		Debug,
 
 		EndEnum
 	};
 
-	constexpr std::size_t LogTypeCount = static_cast<std::size_t>(LogType::EndEnum) + 1;
+	constexpr std::size_t LogTypeCount = static_cast<std::size_t>(LogType::EndEnum);
 }
 
 #endif

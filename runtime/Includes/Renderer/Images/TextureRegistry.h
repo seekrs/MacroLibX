@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 00:56:15 by maldavid          #+#    #+#             */
-/*   Updated: 2024/04/23 22:10:08 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/07/05 13:43:48 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,6 @@ namespace mlx
 	};
 }
 
-#include <Renderer/Image/TextureRegistry.inl>
+#include <Renderer/Images/TextureRegistry.inl>
 
 #endif

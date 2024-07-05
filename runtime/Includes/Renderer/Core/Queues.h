@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 19:01:49 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/28 22:05:15 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/07/05 13:38:50 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ namespace mlx
 
 			void Init();
 
-			inline VkQueue& GetGraphic() noexcept { return _graphics_queue; }
-			inline VkQueue& GetPresent() noexcept { return _present_queue; }
+			inline VkQueue& GetGraphic() noexcept { return m_graphics_queue; }
+			inline VkQueue& GetPresent() noexcept { return m_present_queue; }
 			inline QueueFamilyIndices GetFamilies() noexcept
 			{
 				if(m_families.has_value())

@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 15:28:59 by maldavid          #+#    #+#             */
-/*   Updated: 2024/05/25 16:11:50 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/07/05 22:15:22 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ namespace mlx
 
 			void* CreateWindow(const std::string& title, std::size_t w, std::size_t h);
 			void DestroyWindow(void* window) noexcept;
+
+			void SetEventCallback();
 
 		private:
 			SDLManager() = default;

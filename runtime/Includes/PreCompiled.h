@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:37:23 by maldavid          #+#    #+#             */
-/*   Updated: 2024/05/25 15:46:37 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/07/05 13:25:07 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@
 #include <thread>
 #include <mutex>
 #include <string>
+#include <string_view>
 #include <chrono>
 #include <unordered_set>
 #include <glm/glm.hpp>
@@ -78,7 +79,7 @@
 #undef Window
 
 #include <Core/Logs.h>
-#include <EventBus.h>
+#include <Core/EventBus.h>
 #include <Core/Profiler.h>
 #include <Utils/NonOwningPtr.h>
 

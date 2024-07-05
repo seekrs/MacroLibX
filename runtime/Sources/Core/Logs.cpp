@@ -6,14 +6,12 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 17:20:55 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/27 17:26:59 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/07/05 13:31:02 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <Core/Logs.h>
+#include <PreCompiled.h>
 #include <Utils/Ansi.h>
-#include <Core/EventBase.h>
-#include <Core/EventBus.h>
 
 namespace mlx
 {

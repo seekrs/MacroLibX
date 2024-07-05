@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:35:45 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/27 21:19:01 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/07/05 13:24:17 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ namespace mlx
 				auto high_res_start = FloatingPointMilliseconds{ m_start_timepoint.time_since_epoch() };
 				auto elapsed_time = std::chrono::time_point_cast<std::chrono::milliseconds>(end_timepoint).time_since_epoch() - std::chrono::time_point_cast<std::chrono::milliseconds>(m_start_timepoint).time_since_epoch();
 
-				Profiler::get().appendProfileData({ m_name, elapsed_time, std::this_thread::get_id() });
+				Profiler::Get().AppendProfileData({ m_name, elapsed_time, std::this_thread::get_id() });
 
 				m_stopped = true;
 			}
@@ -84,7 +84,7 @@ namespace mlx
 			~ProfilerTimer()
 			{
 				if(!m_stopped)
-					stop();
+					Stop();
 			}
 
 		private:

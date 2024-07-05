@@ -23,7 +23,7 @@ namespace mlx
 		m_drawlist.clear();
 		m_pixel_put_pipeline.Clear();
 		m_text_manager.Clear();
-		m_texture_manager.Clear();
+		m_texture_registry.Clear();
 	}
 
 	void GraphicsSupport::PixelPut(int x, int y, std::uint32_t color) noexcept
@@ -48,7 +48,7 @@ namespace mlx
 	void GraphicsSupport::TexturePut(NonOwningPtr<Texture> texture, int x, int y)
 	{
 		MLX_PROFILE_FUNCTION();
-		auto res = m_texture_manager.RegisterTexture(texture, x, y);
+		auto res = m_texture_registry.RegisterTexture(texture, x, y);
 		if(!res.second) // if this is not a completly new texture draw
 		{
 			auto it = std::find(m_drawlist.begin(), m_drawlist.end(), res.first);
@@ -61,7 +61,7 @@ namespace mlx
 	void GraphicsSupport::LoadFont(const std::filesystem::path& filepath, float scale)
 	{
 		MLX_PROFILE_FUNCTION();
-		m_text_manager.LoadFont(*_renderer, filepath, scale);
+		m_text_manager.LoadFont(m_renderer, filepath, scale);
 	}
 
 	void GraphicsSupport::TryEraseTextureFromManager(NonOwningPtr<Texture> texture) noexcept
@@ -69,11 +69,11 @@ namespace mlx
 		MLX_PROFILE_FUNCTION();
 		for(auto it = m_drawlist.begin(); it != m_drawlist.end();)
 		{
-			if(m_texture_manager.IsTextureKnown(texture))
+			if(m_texture_registry.IsTextureKnown(texture))
 				it = m_drawlist.erase(it);
 			else
 				++it;
 		}
-		m_texture_manager.EraseTextures(texture);
+		m_texture_registry.EraseTextures(texture);
 	}
 }

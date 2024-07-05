@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 18:39:36 by maldavid          #+#    #+#             */
-/*   Updated: 2024/04/23 22:14:48 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/07/05 13:42:22 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ namespace mlx
 			void WriteDescriptor(int binding, NonOwningPtr<class UniformBuffer> ubo) const noexcept;
 			void WriteDescriptor(int binding, const class Image& image) const noexcept;
 
-			inline bool IsInit() const noexcept { return m_pool != nullptr && m_renderer != nullptr; }
+			inline bool IsInit() const noexcept { return p_pool && p_renderer; }
 
 			void Bind() noexcept;
 

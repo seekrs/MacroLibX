@@ -6,14 +6,14 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:45:29 by maldavid          #+#    #+#             */
-/*   Updated: 2024/04/23 14:23:56 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/07/05 13:39:32 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MLX_VK_UBO__
 #define __MLX_VK_UBO__
 
-#include <Renderer/Buffer/Buffer.h>
+#include <Renderer/Buffers/Buffer.h>
 
 namespace mlx
 {
@@ -33,10 +33,10 @@ namespace mlx
 			VkBuffer& operator()() noexcept;
 			VkBuffer& Get() noexcept;
 
-			inline VkDeviceSize GetSize(int i) noexcept { return m_buffers[i].getSize(); }
-			inline VkDeviceSize GetOffset(int i) noexcept { return m_buffers[i].getOffset(); }
-			inline VkBuffer& operator()(int i) noexcept { return m_buffers[i].get(); }
-			inline VkBuffer& Get(int i) noexcept { return m_buffers[i].get(); }
+			inline VkDeviceSize GetSize(int i) noexcept { return m_buffers[i].GetSize(); }
+			inline VkDeviceSize GetOffset(int i) noexcept { return m_buffers[i].GetOffset(); }
+			inline VkBuffer& operator()(int i) noexcept { return m_buffers[i].Get(); }
+			inline VkBuffer& Get(int i) noexcept { return m_buffers[i].Get(); }
 
 			~UniformBuffer() = default;
 

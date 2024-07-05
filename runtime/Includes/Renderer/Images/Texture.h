@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 02:24:58 by maldavid          #+#    #+#             */
-/*   Updated: 2024/04/23 20:03:59 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/07/05 13:42:41 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ namespace mlx
 			int GetPixel(int x, int y) noexcept;
 
 			inline void SetDescriptor(DescriptorSet&& set) noexcept { m_set = set; }
-			inline VkDescriptorSet GetSet() noexcept { return m_set.IsInit() ? m_set.get() : VK_NULL_HANDLE; }
+			inline VkDescriptorSet GetSet() noexcept { return m_set.IsInit() ? m_set.Get() : VK_NULL_HANDLE; }
 			inline void UpdateSet(int binding) noexcept { m_set.WriteDescriptor(binding, *this); m_has_set_been_updated = true; }
 			inline bool HasBeenUpdated() const noexcept { return m_has_set_been_updated; }
 			inline constexpr void ResetUpdate() noexcept { m_has_set_been_updated = false; }

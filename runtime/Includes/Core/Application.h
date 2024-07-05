@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:49:46 by maldavid          #+#    #+#             */
-/*   Updated: 2024/05/25 15:26:36 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/07/05 14:04:19 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ namespace mlx
 
 		private:
 			FpsManager m_fps;
-			Input m_in;
+			Inputs m_in;
 			ImageRegistry m_image_registry;
 			std::vector<std::unique_ptr<GraphicsSupport>> m_graphics;
 			std::function<int(void*)> f_loop_hook;

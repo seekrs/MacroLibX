@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 18:25:57 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/27 22:46:48 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/07/05 13:38:11 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,15 @@ namespace mlx
 			void WaitForAllExecutions() noexcept;
 
 			inline CommandPool& GetCmdPool() noexcept { return m_pool; }
-			CommanddBuffer& GetCmdBuffer() noexcept;
+			CommandBuffer& GetCmdBuffer() noexcept;
 
 			~SingleTimeCmdManager() = default;
 
 			inline static constexpr const std::uint8_t BASE_POOL_SIZE = 16;
 
 		private:
-			std::vector<CommanddBuffer> m_buffers;
-			CommanddPool m_pool;
+			std::vector<CommandBuffer> m_buffers;
+			CommandPool m_pool;
 	};
 }
 
