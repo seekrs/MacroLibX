@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vk_cmd_buffer.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
+/*   By: bonsthie <bonsthie@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:25:42 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/07 01:25:50 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/08/08 17:46:00 by bonsthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <volk.h>
 #include <renderer/core/vk_fence.h>
 #include <vector>
+#include <algorithm>
 
 namespace mlx
 {

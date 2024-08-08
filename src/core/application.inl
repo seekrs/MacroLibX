@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <algorithm>
 #include <core/application.h>
 
 #define CHECK_WINDOW_PTR(win) \
