@@ -62,6 +62,8 @@ export namespace VULKAN_HPP_NAMESPACE
   using VULKAN_HPP_NAMESPACE::UniqueHandle;
 #endif /*VULKAN_HPP_NO_SMART_HANDLE*/
 
+  using VULKAN_HPP_NAMESPACE::exchange;
+
   //==================
   //=== BASE TYPEs ===
   //==================
@@ -943,9 +945,6 @@ export namespace VULKAN_HPP_NAMESPACE
 
   using VULKAN_HPP_NAMESPACE::ResultValue;
   using VULKAN_HPP_NAMESPACE::ResultValueType;
-  using VULKAN_HPP_NAMESPACE::detail::createResultValueType;
-  using VULKAN_HPP_NAMESPACE::detail::ignore;
-  using VULKAN_HPP_NAMESPACE::detail::resultCheck;
 
   //===========================
   //=== CONSTEXPR CONSTANTs ===
@@ -2542,6 +2541,10 @@ export namespace VULKAN_HPP_NAMESPACE
   //=== VK_KHR_shader_relaxed_extended_instruction ===
   using VULKAN_HPP_NAMESPACE::KHRShaderRelaxedExtendedInstructionExtensionName;
   using VULKAN_HPP_NAMESPACE::KHRShaderRelaxedExtendedInstructionSpecVersion;
+
+  //=== VK_NV_command_buffer_inheritance ===
+  using VULKAN_HPP_NAMESPACE::NVCommandBufferInheritanceExtensionName;
+  using VULKAN_HPP_NAMESPACE::NVCommandBufferInheritanceSpecVersion;
 
   //=== VK_KHR_maintenance7 ===
   using VULKAN_HPP_NAMESPACE::KHRMaintenance7ExtensionName;
@@ -4415,6 +4418,9 @@ export namespace VULKAN_HPP_NAMESPACE
   //=== VK_KHR_shader_relaxed_extended_instruction ===
   using VULKAN_HPP_NAMESPACE::PhysicalDeviceShaderRelaxedExtendedInstructionFeaturesKHR;
 
+  //=== VK_NV_command_buffer_inheritance ===
+  using VULKAN_HPP_NAMESPACE::PhysicalDeviceCommandBufferInheritanceFeaturesNV;
+
   //=== VK_KHR_maintenance7 ===
   using VULKAN_HPP_NAMESPACE::PhysicalDeviceLayeredApiPropertiesKHR;
   using VULKAN_HPP_NAMESPACE::PhysicalDeviceLayeredApiPropertiesListKHR;
@@ -4812,7 +4818,6 @@ export namespace VULKAN_HPP_NAMESPACE
     using VULKAN_HPP_RAII_NAMESPACE::Context;
     using VULKAN_HPP_RAII_NAMESPACE::ContextDispatcher;
     using VULKAN_HPP_RAII_NAMESPACE::DeviceDispatcher;
-    using VULKAN_HPP_RAII_NAMESPACE::exchange;
     using VULKAN_HPP_RAII_NAMESPACE::InstanceDispatcher;
 
     //====================
