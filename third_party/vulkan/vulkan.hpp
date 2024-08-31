@@ -57,7 +57,7 @@ extern "C" __declspec( dllimport ) FARPROC __stdcall GetProcAddress( HINSTANCE h
 #  include <span>
 #endif
 
-static_assert( VK_HEADER_VERSION == 293, "Wrong VK_HEADER_VERSION!" );
+static_assert( VK_HEADER_VERSION == 295, "Wrong VK_HEADER_VERSION!" );
 
 // <tuple> includes <sys/sysmacros.h> through some other header
 // this results in major(x) being resolved to gnu_dev_major(x)
@@ -608,6 +608,8 @@ namespace VULKAN_HPP_NAMESPACE
   template <typename... ChainElements>
   class StructureChain : public std::tuple<ChainElements...>
   {
+    // Note: StructureChain has no move constructor or move assignment operator, as it is not supposed to contain movable containers.
+    //       In order to get a copy-operation on a move-operations, those functions are neither deleted nor defaulted.
   public:
     StructureChain() VULKAN_HPP_NOEXCEPT
     {
@@ -616,15 +618,6 @@ namespace VULKAN_HPP_NAMESPACE
     }
 
     StructureChain( StructureChain const & rhs ) VULKAN_HPP_NOEXCEPT : std::tuple<ChainElements...>( rhs )
-    {
-      static_assert( StructureChainValidation<sizeof...( ChainElements ) - 1, ChainElements...>::valid, "The structure chain is not valid!" );
-      link( &std::get<0>( *this ),
-            &std::get<0>( rhs ),
-            reinterpret_cast<VkBaseOutStructure *>( &std::get<0>( *this ) ),
-            reinterpret_cast<VkBaseInStructure const *>( &std::get<0>( rhs ) ) );
-    }
-
-    StructureChain( StructureChain && rhs ) VULKAN_HPP_NOEXCEPT : std::tuple<ChainElements...>( std::forward<std::tuple<ChainElements...>>( rhs ) )
     {
       static_assert( StructureChainValidation<sizeof...( ChainElements ) - 1, ChainElements...>::valid, "The structure chain is not valid!" );
       link( &std::get<0>( *this ),
@@ -648,8 +641,6 @@ namespace VULKAN_HPP_NAMESPACE
             reinterpret_cast<VkBaseInStructure const *>( &std::get<0>( rhs ) ) );
       return *this;
     }
-
-    StructureChain & operator=( StructureChain && rhs ) = delete;
 
     template <typename T = typename std::tuple_element<0, std::tuple<ChainElements...>>::type, size_t Which = 0>
     T & get() VULKAN_HPP_NOEXCEPT
@@ -5751,6 +5742,44 @@ namespace VULKAN_HPP_NAMESPACE
       return ::vkCmdBindShadersEXT( commandBuffer, stageCount, pStages, pShaders );
     }
 
+    //=== VK_KHR_pipeline_binary ===
+
+    VkResult vkCreatePipelineBinariesKHR( VkDevice                              device,
+                                          const VkPipelineBinaryCreateInfoKHR * pCreateInfo,
+                                          const VkAllocationCallbacks *         pAllocator,
+                                          VkPipelineBinaryHandlesInfoKHR *      pBinaries ) const VULKAN_HPP_NOEXCEPT
+    {
+      return ::vkCreatePipelineBinariesKHR( device, pCreateInfo, pAllocator, pBinaries );
+    }
+
+    void vkDestroyPipelineBinaryKHR( VkDevice device, VkPipelineBinaryKHR pipelineBinary, const VkAllocationCallbacks * pAllocator ) const VULKAN_HPP_NOEXCEPT
+    {
+      return ::vkDestroyPipelineBinaryKHR( device, pipelineBinary, pAllocator );
+    }
+
+    VkResult vkGetPipelineKeyKHR( VkDevice                        device,
+                                  const VkPipelineCreateInfoKHR * pPipelineCreateInfo,
+                                  VkPipelineBinaryKeyKHR *        pPipelineKey ) const VULKAN_HPP_NOEXCEPT
+    {
+      return ::vkGetPipelineKeyKHR( device, pPipelineCreateInfo, pPipelineKey );
+    }
+
+    VkResult vkGetPipelineBinaryDataKHR( VkDevice                            device,
+                                         const VkPipelineBinaryDataInfoKHR * pInfo,
+                                         VkPipelineBinaryKeyKHR *            pPipelineBinaryKey,
+                                         size_t *                            pPipelineBinaryDataSize,
+                                         void *                              pPipelineBinaryData ) const VULKAN_HPP_NOEXCEPT
+    {
+      return ::vkGetPipelineBinaryDataKHR( device, pInfo, pPipelineBinaryKey, pPipelineBinaryDataSize, pPipelineBinaryData );
+    }
+
+    VkResult vkReleaseCapturedPipelineDataKHR( VkDevice                                     device,
+                                               const VkReleaseCapturedPipelineDataInfoKHR * pInfo,
+                                               const VkAllocationCallbacks *                pAllocator ) const VULKAN_HPP_NOEXCEPT
+    {
+      return ::vkReleaseCapturedPipelineDataKHR( device, pInfo, pAllocator );
+    }
+
     //=== VK_QCOM_tile_properties ===
 
     VkResult vkGetFramebufferTilePropertiesQCOM( VkDevice               device,
@@ -6528,6 +6557,14 @@ namespace VULKAN_HPP_NAMESPACE
     CompressionExhaustedEXTError( char const * message ) : SystemError( make_error_code( Result::eErrorCompressionExhaustedEXT ), message ) {}
   };
 
+  class NotEnoughSpaceKHRError : public SystemError
+  {
+  public:
+    NotEnoughSpaceKHRError( std::string const & message ) : SystemError( make_error_code( Result::eErrorNotEnoughSpaceKHR ), message ) {}
+
+    NotEnoughSpaceKHRError( char const * message ) : SystemError( make_error_code( Result::eErrorNotEnoughSpaceKHR ), message ) {}
+  };
+
   namespace detail
   {
     [[noreturn]] VULKAN_HPP_INLINE void throwResultException( Result result, char const * message )
@@ -6570,6 +6607,7 @@ namespace VULKAN_HPP_NAMESPACE
 #  endif /*VK_USE_PLATFORM_WIN32_KHR*/
         case Result::eErrorInvalidVideoStdParametersKHR: throw InvalidVideoStdParametersKHRError( message );
         case Result::eErrorCompressionExhaustedEXT: throw CompressionExhaustedEXTError( message );
+        case Result::eErrorNotEnoughSpaceKHR: throw NotEnoughSpaceKHRError( message );
         default: throw SystemError( make_error_code( result ), message );
       }
     }
@@ -6827,6 +6865,9 @@ namespace VULKAN_HPP_NAMESPACE
 
   //=== VK_EXT_shader_module_identifier ===
   VULKAN_HPP_CONSTEXPR_INLINE uint32_t MaxShaderModuleIdentifierSizeEXT = VK_MAX_SHADER_MODULE_IDENTIFIER_SIZE_EXT;
+
+  //=== VK_KHR_pipeline_binary ===
+  VULKAN_HPP_CONSTEXPR_INLINE uint32_t MaxPipelineBinaryKeySizeKHR = VK_MAX_PIPELINE_BINARY_KEY_SIZE_KHR;
 
   //=== VK_KHR_video_decode_av1 ===
   VULKAN_HPP_CONSTEXPR_INLINE uint32_t MaxVideoAv1ReferencesPerFrameKHR = VK_MAX_VIDEO_AV1_REFERENCES_PER_FRAME_KHR;
@@ -8357,6 +8398,10 @@ namespace VULKAN_HPP_NAMESPACE
   VULKAN_HPP_CONSTEXPR_INLINE auto EXTShaderObjectExtensionName = VK_EXT_SHADER_OBJECT_EXTENSION_NAME;
   VULKAN_HPP_CONSTEXPR_INLINE auto EXTShaderObjectSpecVersion   = VK_EXT_SHADER_OBJECT_SPEC_VERSION;
 
+  //=== VK_KHR_pipeline_binary ===
+  VULKAN_HPP_CONSTEXPR_INLINE auto KHRPipelineBinaryExtensionName = VK_KHR_PIPELINE_BINARY_EXTENSION_NAME;
+  VULKAN_HPP_CONSTEXPR_INLINE auto KHRPipelineBinarySpecVersion   = VK_KHR_PIPELINE_BINARY_SPEC_VERSION;
+
   //=== VK_QCOM_tile_properties ===
   VULKAN_HPP_CONSTEXPR_INLINE auto QCOMTilePropertiesExtensionName = VK_QCOM_TILE_PROPERTIES_EXTENSION_NAME;
   VULKAN_HPP_CONSTEXPR_INLINE auto QCOMTilePropertiesSpecVersion   = VK_QCOM_TILE_PROPERTIES_SPEC_VERSION;
@@ -8412,6 +8457,10 @@ namespace VULKAN_HPP_NAMESPACE
   //=== VK_QCOM_multiview_per_view_render_areas ===
   VULKAN_HPP_CONSTEXPR_INLINE auto QCOMMultiviewPerViewRenderAreasExtensionName = VK_QCOM_MULTIVIEW_PER_VIEW_RENDER_AREAS_EXTENSION_NAME;
   VULKAN_HPP_CONSTEXPR_INLINE auto QCOMMultiviewPerViewRenderAreasSpecVersion   = VK_QCOM_MULTIVIEW_PER_VIEW_RENDER_AREAS_SPEC_VERSION;
+
+  //=== VK_KHR_compute_shader_derivatives ===
+  VULKAN_HPP_CONSTEXPR_INLINE auto KHRComputeShaderDerivativesExtensionName = VK_KHR_COMPUTE_SHADER_DERIVATIVES_EXTENSION_NAME;
+  VULKAN_HPP_CONSTEXPR_INLINE auto KHRComputeShaderDerivativesSpecVersion   = VK_KHR_COMPUTE_SHADER_DERIVATIVES_SPEC_VERSION;
 
   //=== VK_KHR_video_decode_av1 ===
   VULKAN_HPP_CONSTEXPR_INLINE auto KHRVideoDecodeAv1ExtensionName = VK_KHR_VIDEO_DECODE_AV1_EXTENSION_NAME;
@@ -11906,25 +11955,6 @@ namespace VULKAN_HPP_NAMESPACE
     };
   };
 #  endif /*VK_USE_PLATFORM_GGP*/
-
-  //=== VK_NV_compute_shader_derivatives ===
-  template <>
-  struct StructExtends<PhysicalDeviceComputeShaderDerivativesFeaturesNV, PhysicalDeviceFeatures2>
-  {
-    enum
-    {
-      value = true
-    };
-  };
-
-  template <>
-  struct StructExtends<PhysicalDeviceComputeShaderDerivativesFeaturesNV, DeviceCreateInfo>
-  {
-    enum
-    {
-      value = true
-    };
-  };
 
   //=== VK_NV_mesh_shader ===
   template <>
@@ -15640,6 +15670,70 @@ namespace VULKAN_HPP_NAMESPACE
     };
   };
 
+  //=== VK_KHR_pipeline_binary ===
+  template <>
+  struct StructExtends<PhysicalDevicePipelineBinaryFeaturesKHR, PhysicalDeviceFeatures2>
+  {
+    enum
+    {
+      value = true
+    };
+  };
+
+  template <>
+  struct StructExtends<PhysicalDevicePipelineBinaryFeaturesKHR, DeviceCreateInfo>
+  {
+    enum
+    {
+      value = true
+    };
+  };
+
+  template <>
+  struct StructExtends<PhysicalDevicePipelineBinaryPropertiesKHR, PhysicalDeviceProperties2>
+  {
+    enum
+    {
+      value = true
+    };
+  };
+
+  template <>
+  struct StructExtends<DevicePipelineBinaryInternalCacheControlKHR, DeviceCreateInfo>
+  {
+    enum
+    {
+      value = true
+    };
+  };
+
+  template <>
+  struct StructExtends<PipelineBinaryInfoKHR, GraphicsPipelineCreateInfo>
+  {
+    enum
+    {
+      value = true
+    };
+  };
+
+  template <>
+  struct StructExtends<PipelineBinaryInfoKHR, ComputePipelineCreateInfo>
+  {
+    enum
+    {
+      value = true
+    };
+  };
+
+  template <>
+  struct StructExtends<PipelineBinaryInfoKHR, RayTracingPipelineCreateInfoKHR>
+  {
+    enum
+    {
+      value = true
+    };
+  };
+
   //=== VK_QCOM_tile_properties ===
   template <>
   struct StructExtends<PhysicalDeviceTilePropertiesFeaturesQCOM, PhysicalDeviceFeatures2>
@@ -15998,6 +16092,34 @@ namespace VULKAN_HPP_NAMESPACE
 
   template <>
   struct StructExtends<MultiviewPerViewRenderAreasRenderPassBeginInfoQCOM, RenderingInfo>
+  {
+    enum
+    {
+      value = true
+    };
+  };
+
+  //=== VK_KHR_compute_shader_derivatives ===
+  template <>
+  struct StructExtends<PhysicalDeviceComputeShaderDerivativesFeaturesKHR, PhysicalDeviceFeatures2>
+  {
+    enum
+    {
+      value = true
+    };
+  };
+
+  template <>
+  struct StructExtends<PhysicalDeviceComputeShaderDerivativesFeaturesKHR, DeviceCreateInfo>
+  {
+    enum
+    {
+      value = true
+    };
+  };
+
+  template <>
+  struct StructExtends<PhysicalDeviceComputeShaderDerivativesPropertiesKHR, PhysicalDeviceProperties2>
   {
     enum
     {
@@ -17920,6 +18042,13 @@ namespace VULKAN_HPP_NAMESPACE
     PFN_vkGetShaderBinaryDataEXT vkGetShaderBinaryDataEXT = 0;
     PFN_vkCmdBindShadersEXT      vkCmdBindShadersEXT      = 0;
 
+    //=== VK_KHR_pipeline_binary ===
+    PFN_vkCreatePipelineBinariesKHR      vkCreatePipelineBinariesKHR      = 0;
+    PFN_vkDestroyPipelineBinaryKHR       vkDestroyPipelineBinaryKHR       = 0;
+    PFN_vkGetPipelineKeyKHR              vkGetPipelineKeyKHR              = 0;
+    PFN_vkGetPipelineBinaryDataKHR       vkGetPipelineBinaryDataKHR       = 0;
+    PFN_vkReleaseCapturedPipelineDataKHR vkReleaseCapturedPipelineDataKHR = 0;
+
     //=== VK_QCOM_tile_properties ===
     PFN_vkGetFramebufferTilePropertiesQCOM      vkGetFramebufferTilePropertiesQCOM      = 0;
     PFN_vkGetDynamicRenderingTilePropertiesQCOM vkGetDynamicRenderingTilePropertiesQCOM = 0;
@@ -19325,6 +19454,13 @@ namespace VULKAN_HPP_NAMESPACE
       vkGetShaderBinaryDataEXT = PFN_vkGetShaderBinaryDataEXT( vkGetInstanceProcAddr( instance, "vkGetShaderBinaryDataEXT" ) );
       vkCmdBindShadersEXT      = PFN_vkCmdBindShadersEXT( vkGetInstanceProcAddr( instance, "vkCmdBindShadersEXT" ) );
 
+      //=== VK_KHR_pipeline_binary ===
+      vkCreatePipelineBinariesKHR      = PFN_vkCreatePipelineBinariesKHR( vkGetInstanceProcAddr( instance, "vkCreatePipelineBinariesKHR" ) );
+      vkDestroyPipelineBinaryKHR       = PFN_vkDestroyPipelineBinaryKHR( vkGetInstanceProcAddr( instance, "vkDestroyPipelineBinaryKHR" ) );
+      vkGetPipelineKeyKHR              = PFN_vkGetPipelineKeyKHR( vkGetInstanceProcAddr( instance, "vkGetPipelineKeyKHR" ) );
+      vkGetPipelineBinaryDataKHR       = PFN_vkGetPipelineBinaryDataKHR( vkGetInstanceProcAddr( instance, "vkGetPipelineBinaryDataKHR" ) );
+      vkReleaseCapturedPipelineDataKHR = PFN_vkReleaseCapturedPipelineDataKHR( vkGetInstanceProcAddr( instance, "vkReleaseCapturedPipelineDataKHR" ) );
+
       //=== VK_QCOM_tile_properties ===
       vkGetFramebufferTilePropertiesQCOM = PFN_vkGetFramebufferTilePropertiesQCOM( vkGetInstanceProcAddr( instance, "vkGetFramebufferTilePropertiesQCOM" ) );
       vkGetDynamicRenderingTilePropertiesQCOM =
@@ -20377,6 +20513,13 @@ namespace VULKAN_HPP_NAMESPACE
       vkDestroyShaderEXT       = PFN_vkDestroyShaderEXT( vkGetDeviceProcAddr( device, "vkDestroyShaderEXT" ) );
       vkGetShaderBinaryDataEXT = PFN_vkGetShaderBinaryDataEXT( vkGetDeviceProcAddr( device, "vkGetShaderBinaryDataEXT" ) );
       vkCmdBindShadersEXT      = PFN_vkCmdBindShadersEXT( vkGetDeviceProcAddr( device, "vkCmdBindShadersEXT" ) );
+
+      //=== VK_KHR_pipeline_binary ===
+      vkCreatePipelineBinariesKHR      = PFN_vkCreatePipelineBinariesKHR( vkGetDeviceProcAddr( device, "vkCreatePipelineBinariesKHR" ) );
+      vkDestroyPipelineBinaryKHR       = PFN_vkDestroyPipelineBinaryKHR( vkGetDeviceProcAddr( device, "vkDestroyPipelineBinaryKHR" ) );
+      vkGetPipelineKeyKHR              = PFN_vkGetPipelineKeyKHR( vkGetDeviceProcAddr( device, "vkGetPipelineKeyKHR" ) );
+      vkGetPipelineBinaryDataKHR       = PFN_vkGetPipelineBinaryDataKHR( vkGetDeviceProcAddr( device, "vkGetPipelineBinaryDataKHR" ) );
+      vkReleaseCapturedPipelineDataKHR = PFN_vkReleaseCapturedPipelineDataKHR( vkGetDeviceProcAddr( device, "vkReleaseCapturedPipelineDataKHR" ) );
 
       //=== VK_QCOM_tile_properties ===
       vkGetFramebufferTilePropertiesQCOM = PFN_vkGetFramebufferTilePropertiesQCOM( vkGetDeviceProcAddr( device, "vkGetFramebufferTilePropertiesQCOM" ) );
