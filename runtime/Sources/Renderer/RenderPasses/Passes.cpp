@@ -15,7 +15,7 @@ namespace mlx
 	{
 		if(!m_main_render_texture.IsInit())
 		{
-			std::function<void(const EventBase&)> functor = [this, renderer](const EventBase& event)
+			func::function<void(const EventBase&)> functor = [this, renderer](const EventBase& event)
 			{
 				if(event.What() == Event::ResizeEventCode)
 				{
@@ -31,6 +31,7 @@ namespace mlx
 		}
 
 		m_main_render_texture.Clear(renderer.GetActiveCommandBuffer(), Vec4f{ 0.0f, 0.0f, 0.0f, 1.0f });
+		scene.GetDepth().Clear(renderer.GetActiveCommandBuffer(), {});
 
 		m_2Dpass.Pass(scene, renderer, m_main_render_texture);
 		m_final.Pass(scene, renderer, m_main_render_texture);

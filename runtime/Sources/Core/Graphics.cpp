@@ -1,5 +1,4 @@
 #include <PreCompiled.h>
-
 #include <Core/Graphics.h>
 
 namespace mlx
@@ -14,8 +13,11 @@ namespace mlx
 		MLX_PROFILE_FUNCTION();
 		m_renderer.SetWindow(nullptr);
 		m_renderer.Init(render_target);
-		m_pixel_put_pipeline.Init(w, h, m_renderer);
-		m_text_manager.Init(m_renderer);
+		m_scene_renderer.Init();
+
+		SceneDescriptor descriptor{};
+		descriptor.renderer = &m_renderer;
+		p_scene = std::make_unique<Scene>(std::move(descriptor));
 	}
 
 	GraphicsSupport::GraphicsSupport(std::size_t w, std::size_t h, std::string title, int id) :
@@ -28,29 +30,21 @@ namespace mlx
 		MLX_PROFILE_FUNCTION();
 		m_renderer.SetWindow(p_window.get());
 		m_renderer.Init(nullptr);
-		m_pixel_put_pipeline.Init(w, h, m_renderer);
-		m_text_manager.Init(m_renderer);
+		m_scene_renderer.Init();
+
+		SceneDescriptor descriptor{};
+		descriptor.renderer = &m_renderer;
+		p_scene = std::make_unique<Scene>(std::move(descriptor));
 	}
 
 	void GraphicsSupport::Render() noexcept
 	{
 		MLX_PROFILE_FUNCTION();
-		if(!m_renderer.BeginFrame())
-			return;
-		m_proj = glm::ortho<float>(0, m_width, 0, m_height);
-		m_renderer.GetUniformBuffer()->SetData(sizeof(m_proj), &m_proj);
-
-		m_renderer.getVertDescriptorSet().Bind();
-
-		for(auto& data : m_drawlist)
-			data->Render(m_renderer);
-
-		m_pixel_put_pipeline.Render(m_renderer);
-
-		m_renderer.EndFrame();
-
-		for(auto& data : _drawlist)
-			data->ResetUpdate();
+		if(m_renderer.BeginFrame())
+		{
+			m_scene_renderer.Render(*p_scene, m_renderer);
+			m_renderer.EndFrame();
+		}
 
 		#ifdef GRAPHICS_MEMORY_DUMP
 			// dump memory to file every two seconds
@@ -67,9 +61,9 @@ namespace mlx
 	GraphicsSupport::~GraphicsSupport()
 	{
 		MLX_PROFILE_FUNCTION();
-		vkDeviceWaitIdle(RenderCore::Get().GetDevice().Get());
-		m_text_manager.Destroy();
-		m_pixel_put_pipeline.Destroy();
+		RenderCore::Get().WaitDeviceIdle();
+		p_scene.reset();
+		m_scene_renderer.Destroy();
 		m_renderer->Destroy();
 		if(p_window)
 			p_window->Destroy();

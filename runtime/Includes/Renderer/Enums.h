@@ -17,6 +17,7 @@ namespace mlx
 	enum class ImageType
 	{
 		Color = 0,
+		Depth,
 
 		EndEnum
 	};

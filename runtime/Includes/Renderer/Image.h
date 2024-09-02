@@ -23,7 +23,7 @@ namespace mlx
 				m_layout = layout;
 			}
 
-			void Init(ImageType type, std::uint32_t width, std::uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, VkMemoryPropertyFlags properties, bool is_multisampled = false);
+			void Init(ImageType type, std::uint32_t width, std::uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, bool is_multisampled = false);
 			void CreateImageView(VkImageViewType type, VkImageAspectFlags aspectFlags, int layer_count = 1) noexcept;
 			void CreateSampler() noexcept;
 			void TransitionLayout(VkImageLayout new_layout, VkCommandBuffer cmd = VK_NULL_HANDLE);
@@ -34,7 +34,6 @@ namespace mlx
 			virtual void Destroy() noexcept;
 
 			[[nodiscard]] MLX_FORCEINLINE VkImage Get() const noexcept { return m_image; }
-			[[nodiscard]] MLX_FORCEINLINE VkImage operator()() const noexcept { return m_image; }
 			[[nodiscard]] MLX_FORCEINLINE VkDeviceMemory GetDeviceMemory() const noexcept { return m_memory.memory; }
 			[[nodiscard]] MLX_FORCEINLINE VkImageView GetImageView() const noexcept { return m_image_view; }
 			[[nodiscard]] MLX_FORCEINLINE VkFormat GetFormat() const noexcept { return m_format; }
@@ -62,6 +61,21 @@ namespace mlx
 			bool m_is_multisampled = false;
 	};
 
+	class DepthImage : public Image
+	{
+		public:
+			DepthImage() = default;
+			inline void Init(std::uint32_t width, std::uint32_t height, bool is_multisampled = false)
+			{
+				std::vector<VkFormat> candidates = { VK_FORMAT_D32_SFLOAT, VK_FORMAT_D32_SFLOAT_S8_UINT, VK_FORMAT_D24_UNORM_S8_UINT };
+				VkFormat format = kvfFindSupportFormatInCandidates(RenderCore::Get().GetDevice(), candidates.data(), candidates.size(), VK_IMAGE_TILING_OPTIMAL, VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT);
+				Image::Init(ImageType::Depth, width, height, format, VK_IMAGE_TILING_OPTIMAL, VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT, is_multisampled); 
+				Image::CreateImageView(VK_IMAGE_VIEW_TYPE_2D, VK_IMAGE_ASPECT_DEPTH_BIT);
+				Image::TransitionLayout(VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL);
+			}
+			~DepthImage() = default;
+	};
+
 	class Texture : public Image
 	{
 		public:
@@ -72,7 +86,7 @@ namespace mlx
 			}
 			inline void Init(CPUBuffer pixels, std::uint32_t width, std::uint32_t height, VkFormat format = VK_FORMAT_R8G8B8A8_SRGB, bool is_multisampled = false)
 			{
-				Image::Init(ImageType::Color, width, height, format, VK_IMAGE_TILING_OPTIMAL, VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT | VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, is_multisampled);
+				Image::Init(ImageType::Color, width, height, format, VK_IMAGE_TILING_OPTIMAL, VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT | VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT, is_multisampled);
 				Image::CreateImageView(VK_IMAGE_VIEW_TYPE_2D, VK_IMAGE_ASPECT_COLOR_BIT);
 				Image::CreateSampler();
 				if(pixels)

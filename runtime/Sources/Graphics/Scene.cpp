@@ -3,11 +3,13 @@
 #include <Renderer/Renderer.h>
 #include <Renderer/RenderCore.h>
 
-namespace Scop
+namespace mlx
 {
 	Scene::Scene(SceneDescriptor desc)
 	: m_descriptor(std::move(desc))
 	{
+		Verify((bool)m_descriptor.renderer, "invalid renderer");
+		m_depth.Init(m_descriptor.renderer->GetSwapchainImages().back().GetWidth(), m_descriptor.renderer->GetSwapchainImages().back().GetHeight());
 	}
 
 	Sprite& Scene::CreateSprite(std::shared_ptr<Texture> texture) noexcept

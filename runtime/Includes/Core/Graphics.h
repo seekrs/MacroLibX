@@ -3,12 +3,10 @@
 
 #include <Platform/Window.h>
 #include <Renderer/Renderer.h>
-#include <Renderer/PixelPut.h>
-#include <Renderer/Core/DrawableResource.h>
-#include <Renderer/Images/TextureRegistry.h>
-#include <Renderer/Texts/TextManager.h>
-#include <Utils/NonCopyable.h>
-#include <Renderer/Images/Texture.h>
+#include <Graphics/Scene.h>
+#include <Graphics/Sprite.h>
+#include <Renderer/ScenesRenderer.h>
+#include <Maths/Mat4.h>
 
 namespace mlx
 {
@@ -18,36 +16,31 @@ namespace mlx
 			GraphicsSupport(std::size_t w, std::size_t h, NonOwningPtr<Texture> render_target, int id);
 			GraphicsSupport(std::size_t w, std::size_t h, std::string title, int id);
 
-			inline int& GetID() noexcept;
-			inline std::shared_ptr<Window> GetWindow();
+			[[nodiscard]] MLX_FORCEINLINE int& GetID() noexcept { return m_id; }
+			[[nodiscard]] inline std::shared_ptr<Window> GetWindow() { return p_window; }
 
 			void Render() noexcept;
 
-			inline void ClearRenderData() noexcept;
+			inline void ResetRenderData() noexcept;
+
 			inline void PixelPut(int x, int y, std::uint32_t color) noexcept;
 			inline void StringPut(int x, int y, std::uint32_t color, std::string str);
 			inline void TexturePut(NonOwningPtr<class Texture> texture, int x, int y);
+
 			inline void LoadFont(const std::filesystem::path& filepath, float scale);
-			inline void TryEraseTextureFromManager(NonOwningPtr<Texture> texture) noexcept;
 
-			inline bool HasWindow() const noexcept  { return m_has_window; }
+			inline void TryEraseTextureFromRegistry(NonOwningPtr<Texture> texture) noexcept;
 
-			inline Renderer& GetRenderer() { return m_renderer; }
+			[[nodiscard]] MLX_FORCEINLINE bool HasWindow() const noexcept  { return m_has_window; }
+			[[nodiscard]] MLX_FORCEINLINE Renderer& GetRenderer() { return m_renderer; }
 
 			~GraphicsSupport();
 
 		private:
 			Renderer m_renderer;
-			PixelPutPipeline m_pixel_put_pipeline;
-
-			std::vector<NonOwningPtr<DrawableResource>> m_drawlist;
-
-			TextManager m_text_manager;
-			TextureRegistry m_texture_registry;
-
-			glm::mat4 m_proj = glm::mat4(1.0);
-
+			SceneRenderer m_scene_renderer;
 			std::shared_ptr<Window> p_window;
+			std::unique_ptr<Scene> p_scene;
 
 			std::size_t m_width = 0;
 			std::size_t m_height = 0;

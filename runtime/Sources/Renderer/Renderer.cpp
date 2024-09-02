@@ -18,11 +18,16 @@ namespace mlx
 		{
 			Event What() const override { return Event::FrameBeginEventCode; }
 		};
+
+		struct DescriptorPoolResetEventBroadcast : public EventBase
+		{
+			Event What() const override { return Event::DescriptorPoolResetEventCode; }
+		};
 	}
 
 	void Renderer::Init(NonOwningPtr<Window> window)
 	{
-		std::function<void(const EventBase&)> functor = [this](const EventBase& event)
+		func::function<void(const EventBase&)> functor = [this](const EventBase& event)
 		{
 			if(event.What() == Event::ResizeEventCode)
 				this->RequireFramebufferResize();
@@ -86,6 +91,7 @@ namespace mlx
 		}
 		m_current_frame_index = (m_current_frame_index + 1) % MAX_FRAMES_IN_FLIGHT;
 		kvfResetDeviceDescriptorPools(RenderCore::Get().GetDevice());
+		EventBus::SendBroadcast(Internal::DescriptorPoolResetEventBroadcast{});
 	}
 
 	void Renderer::CreateSwapchain()

@@ -16,6 +16,7 @@ namespace Scop
 		p_vertex_shader = descriptor.vertex_shader;
 		p_fragment_shader = descriptor.fragment_shader;
 		p_renderer = descriptor.renderer;
+		p_depth = descriptor.depth;
 
 		std::vector<VkPushConstantRange> push_constants;
 		std::vector<VkDescriptorSetLayout> set_layouts;
@@ -37,7 +38,10 @@ namespace Scop
 		kvfGPipelineBuilderSetInputTopology(builder, VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST);
 		kvfGPipelineBuilderSetCullMode(builder, VK_CULL_MODE_NONE, VK_FRONT_FACE_CLOCKWISE);
 		kvfGPipelineBuilderEnableAlphaBlending(builder);
-		kvfGPipelineBuilderDisableDepthTest(builder);
+		if(p_depth)
+			kvfGPipelineBuilderEnableDepthTest(builder, (descriptor.depth_test_equal ? VK_COMPARE_OP_EQUAL : VK_COMPARE_OP_LESS), true);
+		else
+			kvfGPipelineBuilderDisableDepthTest(builder);
 		kvfGPipelineBuilderSetPolygonMode(builder, VK_POLYGON_MODE_FILL, 1.0f);
 		if(features.sampleRateShading)
 			kvfGPipelineBuilderSetMultisamplingShading(builder, VK_SAMPLE_COUNT_1_BIT, 0.25f);
@@ -84,6 +88,9 @@ namespace Scop
 			m_clears[i].color.float32[3] = clear[3];
 		}
 
+		if(p_depth)
+			m_clears.back().depthStencil = VkClearDepthStencilValue{ 1.0f, 0 };
+
 		kvfBeginRenderPass(m_renderpass, command_buffer, fb, fb_extent, m_clears.data(), m_clears.size());
 		vkCmdBindPipeline(command_buffer, GetPipelineBindPoint(), GetPipeline());
 		return true;
@@ -127,8 +134,14 @@ namespace Scop
 
 		for(NonOwningPtr<Texture> image : render_targets)
 		{
-			attachments.push_back(kvfBuildAttachmentDescription(KVF_IMAGE_COLOR, image->GetFormat(), image->GetLayout(), image->GetLayout(), clear_attachments, VK_SAMPLE_COUNT_1_BIT));
+			attachments.push_back(kvfBuildAttachmentDescription((kvfIsDepthFormat(image->GetFormat()) ? KVF_IMAGE_DEPTH : KVF_IMAGE_COLOR), image->GetFormat(), image->GetLayout(), image->GetLayout(), clear_attachments, VK_SAMPLE_COUNT_1_BIT));
 			attachment_views.push_back(image->GetImageView());
+		}
+
+		if(p_depth)
+		{
+			attachments.push_back(kvfBuildAttachmentDescription((kvfIsDepthFormat(p_depth->GetFormat()) ? KVF_IMAGE_DEPTH : KVF_IMAGE_COLOR), p_depth->GetFormat(), p_depth->GetLayout(), p_depth->GetLayout(), clear_attachments, VK_SAMPLE_COUNT_1_BIT));
+			attachment_views.push_back(p_depth->GetImageView());
 		}
 
 		m_renderpass = kvfCreateRenderPass(RenderCore::Get().GetDevice(), attachments.data(), attachments.size(), GetPipelineBindPoint());
@@ -154,6 +167,9 @@ namespace Scop
 
 	void GraphicPipeline::TransitionAttachments(VkCommandBuffer cmd)
 	{
+		if(p_depth)
+			p_depth->TransitionLayout(VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL, cmd);
+
 		for(NonOwningPtr<Texture> image : m_attachments)
 		{
 			if(!image->IsInit())
