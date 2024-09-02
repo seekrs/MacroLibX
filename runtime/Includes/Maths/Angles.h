@@ -1,11 +1,9 @@
-#ifndef __SCOP_ANGLES__
-#define __SCOP_ANGLES__
+#ifndef __MLX_ANGLES__
+#define __MLX_ANGLES__
 
 #include <Maths/Enums.h>
-#include <utility>
-#include <string>
 
-namespace Scop
+namespace mlx
 {
 	template<typename T> struct EulerAngles;
 	template<typename T> struct Quat;

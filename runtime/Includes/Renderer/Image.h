@@ -34,7 +34,7 @@ namespace mlx
 			virtual void Destroy() noexcept;
 
 			[[nodiscard]] MLX_FORCEINLINE VkImage Get() const noexcept { return m_image; }
-			[[nodiscard]] MLX_FORCEINLINE VkDeviceMemory GetDeviceMemory() const noexcept { return m_memory.memory; }
+			[[nodiscard]] MLX_FORCEINLINE VmaAllocation GetAllocation() const noexcept { return m_allocation; }
 			[[nodiscard]] MLX_FORCEINLINE VkImageView GetImageView() const noexcept { return m_image_view; }
 			[[nodiscard]] MLX_FORCEINLINE VkFormat GetFormat() const noexcept { return m_format; }
 			[[nodiscard]] MLX_FORCEINLINE VkImageTiling GetTiling() const noexcept { return m_tiling; }

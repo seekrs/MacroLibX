@@ -1,8 +1,7 @@
 #pragma once
-
 #include <Maths/Vec2.h>
 
-namespace Scop
+namespace mlx
 {
 	template<typename T>
 	constexpr Vec2<T>::Vec2(T X, T Y) : x(X), y(Y) {}
@@ -116,14 +115,14 @@ namespace Scop
 	template<typename T>
 	constexpr T& Vec2<T>::operator[](std::size_t i)
 	{
-		Scop::Assert(i < 2, "index out of range");
+		mlx::Assert(i < 2, "index out of range");
 		return *(&x + i);
 	}
 
 	template<typename T>
 	constexpr T Vec2<T>::operator[](std::size_t i) const
 	{
-		Scop::Assert(i < 2, "index out of range");
+		mlx::Assert(i < 2, "index out of range");
 		return *(&x + i);
 	}
 

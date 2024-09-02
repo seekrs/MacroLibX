@@ -1,9 +1,7 @@
-#ifndef __SCOP_MATHS_UTILS__
-#define __SCOP_MATHS_UTILS__
+#ifndef __MLX_MATHS_UTILS__
+#define __MLX_MATHS_UTILS__
 
-#include <concepts>
-
-namespace Scop
+namespace mlx
 {
 	template<typename T>
 	[[nodiscard]] constexpr T Mod(T x, T y) noexcept;

@@ -1,7 +1,6 @@
 #pragma once
 #include <Maths/Mat4.h>
 
-#include <Core/Logs.h>
 #include <Maths/EulerAngles.h>
 #include <Maths/Quaternions.h>
 #include <Maths/Vec2.h>
@@ -9,10 +8,7 @@
 #include <Maths/Vec4.h>
 #include <Maths/MathsUtils.h>
 
-#include <cstring>
-#include <sstream>
-
-namespace Scop
+namespace mlx
 {
 	template<typename T>
 	constexpr Mat4<T>::Mat4(T r11, T r12, T r13, T r14,

@@ -1,13 +1,10 @@
 #pragma once
 #include <Maths/Angles.h>
 
-#include <algorithm>
-#include <sstream>
-
 #include <Maths/Constants.h>
 #include <Maths/MathsUtils.h>
 
-namespace Scop
+namespace mlx
 {
 	namespace Internal
 	{

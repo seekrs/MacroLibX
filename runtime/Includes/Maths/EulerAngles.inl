@@ -1,7 +1,7 @@
 #pragma once
 #include <Maths/EulerAngles.h>
 
-namespace Scop
+namespace mlx
 {
 	template<typename T>
 	constexpr EulerAngles<T>::EulerAngles(DegreeAngle<T> P, DegreeAngle<T> Y, DegreeAngle<T> R) :

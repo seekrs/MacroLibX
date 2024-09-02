@@ -19,11 +19,11 @@ namespace mlx
 
 			void Swap(GPUBuffer& buffer) noexcept;
 
-			[[nodiscard]] MLX_FORCEINLINE void* GetMap() const noexcept { return m_memory.map; }
+			[[nodiscard]] MLX_FORCEINLINE void* GetMap() const noexcept { return p_map; }
 			[[nodiscard]] MLX_FORCEINLINE VkBuffer Get() const noexcept { return m_buffer; }
-			[[nodiscard]] MLX_FORCEINLINE VkDeviceMemory GetMemory() const noexcept { return m_memory.memory; }
-			[[nodiscard]] MLX_FORCEINLINE VkDeviceSize GetSize() const noexcept { return m_memory.size; }
-			[[nodiscard]] MLX_FORCEINLINE VkDeviceSize GetOffset() const noexcept { return 0; }
+			[[nodiscard]] MLX_FORCEINLINE VmaAllocation GetAllocation() const noexcept { return m_allocation; }
+			[[nodiscard]] MLX_FORCEINLINE VkDeviceSize GetSize() const noexcept { return m_size; }
+			[[nodiscard]] MLX_FORCEINLINE VkDeviceSize GetOffset() const noexcept { return m_offset; }
 
 			[[nodiscard]] inline bool IsInit() const noexcept { return m_buffer != VK_NULL_HANDLE; }
 

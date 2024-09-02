@@ -1,11 +1,9 @@
-#ifndef __SCOP_EULER_ANGLES__
-#define __SCOP_EULER_ANGLES__
-
-#include <string>
+#ifndef __MLX_EULER_ANGLES__
+#define __MLX_EULER_ANGLES__
 
 #include <Maths/Angles.h>
 
-namespace Scop
+namespace mlx
 {
 	template<typename T>
 	struct EulerAngles

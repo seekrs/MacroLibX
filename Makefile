@@ -27,7 +27,7 @@ MODE = "release"
 
 CXX = clang++
 
-CXXFLAGS = -std=c++17 -O3 -fPIC -Wall -Wextra -Wno-deprecated -DSDL_MAIN_HANDLED
+CXXFLAGS = -std=c++20 -O3 -fPIC -Wall -Wextra -Wno-deprecated -DSDL_MAIN_HANDLED
 INCLUDES = -I./includes -I./runtime/Includes -I./runtime/Sources -I./third_party
 
 LDLIBS =

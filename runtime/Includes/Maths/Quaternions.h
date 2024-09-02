@@ -1,10 +1,10 @@
-#ifndef __SCOP_QUATERNIONS__
-#define __SCOP_QUATERNIONS__
+#ifndef __MLX_QUATERNIONS__
+#define __MLX_QUATERNIONS__
 
 #include <Maths/Angles.h>
 #include <Maths/Vec3.h>
 
-namespace Scop
+namespace mlx
 {
 	template<typename T>
 	struct Quat

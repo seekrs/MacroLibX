@@ -2,6 +2,7 @@
 #define __MLX_WINDOW__
 
 #include <Maths/Vec2.h>
+#include <Core/SDLManager.h>
 
 namespace mlx
 {

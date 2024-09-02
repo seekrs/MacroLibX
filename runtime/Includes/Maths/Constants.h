@@ -1,11 +1,7 @@
-#ifndef __SCOP_MATHS_CONSTANTS__
-#define __SCOP_MATHS_CONSTANTS__
+#ifndef __MLX_MATHS_CONSTANTS__
+#define __MLX_MATHS_CONSTANTS__
 
-#include <climits>
-#include <limits>
-#include <type_traits>
-
-namespace Scop
+namespace mlx
 {
 	template<typename T> constexpr std::size_t BitCount = CHAR_BIT * sizeof(T);
 
