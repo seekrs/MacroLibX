@@ -5,7 +5,7 @@
 
 namespace mlx
 {
-	void Image::Init(ImageType type, std::uint32_t width, std::uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, VkMemoryPropertyFlags properties, bool is_multisampled)
+	void Image::Init(ImageType type, std::uint32_t width, std::uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, bool is_multisampled)
 	{
 		m_type = type;
 		m_width = width;
@@ -55,6 +55,8 @@ namespace mlx
 		switch(m_type)
 		{
 			case ImageType::Color: kvf_type = KVF_IMAGE_COLOR; break;
+			case ImageType::Depth: kvf_type = KVF_IMAGE_DEPTH; break;
+
 			default: break;
 		}
 		kvfTransitionImageLayout(RenderCore::Get().GetDevice(), m_image, kvf_type, cmd, m_format, m_layout, new_layout, is_single_time_cmd_buffer);

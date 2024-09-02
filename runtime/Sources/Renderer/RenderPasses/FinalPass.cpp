@@ -30,10 +30,12 @@ namespace mlx
 		};
 		p_fragment_shader = std::make_shared<Shader>(fragment_shader_code, ShaderType::Fragment, std::move(fragment_shader_layout));
 
-		std::function<void(const EventBase&)> functor = [this](const EventBase& event)
+		func::function<void(const EventBase&)> functor = [this](const EventBase& event)
 		{
 			if(event.What() == Event::ResizeEventCode)
 				m_pipeline.Destroy();
+			if(event.What() == Event::DescriptorPoolResetEventCode)
+				p_set->Reallocate();
 		};
 		EventBus::RegisterListener({ functor, "__ScopFinalPass" });
 

@@ -138,4 +138,10 @@ namespace mlx
 		}
 		vkUpdateDescriptorSets(RenderCore::Get().GetDevice(), writes.size(), writes.data(), 0, nullptr);
 	}
+
+	void Descriptor::Reallocate() noexcept
+	{
+		for(std::size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
+			m_set[i] = kvfAllocateDescriptorSet(RenderCore::Get().GetDevice(), m_set_layout);
+	}
 }

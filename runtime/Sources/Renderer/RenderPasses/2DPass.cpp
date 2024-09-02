@@ -11,7 +11,7 @@ namespace mlx
 	struct SpriteData
 	{
 		Vec4f color;
-		Vec2f position;
+		Vec4f position;
 	};
 
 	void Render2DPass::Init()
@@ -43,10 +43,20 @@ namespace mlx
 		};
 		p_fragment_shader = std::make_shared<Shader>(fragment_shader, ShaderType::Fragment, std::move(fragment_shader_layout));
 
-		std::function<void(const EventBase&)> functor = [this](const EventBase& event)
+		func::function<void(const EventBase&)> functor = [this](const EventBase& event)
 		{
 			if(event.What() == Event::ResizeEventCode)
 				m_pipeline.Destroy();
+			if(event.What() == Event::DescriptorPoolResetEventCode)
+			{
+				p_texture_set->Reallocate();
+				p_viewer_data_set.Reallocate();
+				for(std::size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
+				{
+					p_viewer_data_set->SetUniformBuffer(i, 0, p_viewer_data_buffer->Get(i));
+					p_viewer_data_set->Update(i);
+				}
+			}
 		};
 		EventBus::RegisterListener({ functor, "__ScopRender2DPass" });
 
@@ -70,6 +80,7 @@ namespace mlx
 			pipeline_descriptor.vertex_shader = p_vertex_shader;
 			pipeline_descriptor.fragment_shader = p_fragment_shader;
 			pipeline_descriptor.color_attachments = { &render_target };
+			pipeline_descriptor.depth = scene.GetDepth();
 			pipeline_descriptor.clear_color_attachments = false;
 			m_pipeline.Init(pipeline_descriptor);
 		}
@@ -87,7 +98,7 @@ namespace mlx
 		for(auto sprite : scene.GetSprites())
 		{
 			SpriteData sprite_data;
-			sprite_data.position = Vec2f{ static_cast<float>(sprite->GetPosition().x), static_cast<float>(sprite->GetPosition().y) };
+			sprite_data.position = Vec4f{ sprite->GetPosition(), 1.0f };
 			sprite_data.color = sprite->GetColor();
 			if(!sprite->IsSetInit())
 				sprite->UpdateDescriptorSet(*p_texture_set);

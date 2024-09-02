@@ -5,7 +5,7 @@ namespace mlx
 {
 	struct EventBase
 	{
-		virtual std::uint32_t What() const = 0;
+		virtual Event What() const = 0;
 	};
 }
 

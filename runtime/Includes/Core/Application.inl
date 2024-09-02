@@ -7,7 +7,7 @@
 		Error("invalid window ptr (NULL)"); \
 		return; \
 	} \
-	else if(*static_cast<int*>(win) < 0 || *static_cast<int*>(win) > static_cast<int>(_graphics.size()))\
+	else if(*static_cast<int*>(win) < 0 || *static_cast<int*>(win) > static_cast<int>(m_graphics.size()))\
 	{ \
 		Error("invalid window ptr"); \
 		return; \
@@ -33,7 +33,7 @@ namespace mlx
 		*y = p_in->GetY();
 	}
 
-	void Application::MouseMove(void* win, int x, int y) noexcept
+	void Application::MouseMove(Handle win, int x, int y) noexcept
 	{
 		CHECK_WINDOW_PTR(win);
 		if(!m_graphics[*static_cast<int*>(win)]->HasWindow())
@@ -43,7 +43,7 @@ namespace mlx
 		}
 	}
 
-	void Application::OnEvent(void* win, int event, int (*funct_ptr)(int, void*), void* param) noexcept
+	void Application::OnEvent(Handle win, int event, int (*funct_ptr)(int, void*), void* param) noexcept
 	{
 		CHECK_WINDOW_PTR(win);
 		if(!m_graphics[*static_cast<int*>(win)]->HasWindow())
@@ -54,7 +54,7 @@ namespace mlx
 		m_in.OnEvent(m_graphics[*static_cast<int*>(win)]->GetWindow()->GetID(), event, funct_ptr, param);
 	}
 
-	void Application::GetScreenSize(void* win, int* w, int* h) noexcept
+	void Application::GetScreenSize(Handle win, int* w, int* h) noexcept
 	{
 		CHECK_WINDOW_PTR(win);
 		*w = 0;
@@ -88,28 +88,28 @@ namespace mlx
 		return static_cast<void*>(&m_graphics.back()->GetID());
 	}
 
-	void Application::ClearGraphicsSupport(void* win)
+	void Application::ClearGraphicsSupport(Handle win)
 	{
 		MLX_PROFILE_FUNCTION();
 		CHECK_WINDOW_PTR(win);
 		m_graphics[*static_cast<int*>(win)]->ClearRenderData();
 	}
 
-	void Application::DestroyGraphicsSupport(void* win)
+	void Application::DestroyGraphicsSupport(Handle win)
 	{
 		MLX_PROFILE_FUNCTION();
 		CHECK_WINDOW_PTR(win);
 		m_graphics[*static_cast<int*>(win)].reset();
 	}
 
-	void Application::PixelPut(void* win, int x, int y, std::uint32_t color) const noexcept
+	void Application::PixelPut(Handle win, int x, int y, std::uint32_t color) const noexcept
 	{
 		MLX_PROFILE_FUNCTION();
 		CHECK_WINDOW_PTR(win);
 		m_graphics[*static_cast<int*>(win)]->PixelPut(x, y, color);
 	}
 
-	void Application::StringPut(void* win, int x, int y, std::uint32_t color, char* str)
+	void Application::StringPut(Handle win, int x, int y, std::uint32_t color, char* str)
 	{
 		MLX_PROFILE_FUNCTION();
 		CHECK_WINDOW_PTR(win);
@@ -126,14 +126,14 @@ namespace mlx
 		m_graphics[*static_cast<int*>(win)]->StringPut(x, y, color, str);
 	}
 
-	void Application::LoadFont(void* win, const std::filesystem::path& filepath, float scale)
+	void Application::LoadFont(Handle win, const std::filesystem::path& filepath, float scale)
 	{
 		MLX_PROFILE_FUNCTION();
 		CHECK_WINDOW_PTR(win);
 		m_graphics[*static_cast<int*>(win)]->LoadFont(filepath, scale);
 	}
 
-	void Application::TexturePut(void* win, void* img, int x, int y)
+	void Application::TexturePut(Handle win, Handle img, int x, int y)
 	{
 		MLX_PROFILE_FUNCTION();
 		CHECK_WINDOW_PTR(win);
@@ -145,7 +145,7 @@ namespace mlx
 			m_graphics[*static_cast<int*>(win)]->TexturePut(texture, x, y);
 	}
 
-	int Application::GetTexturePixel(void* img, int x, int y)
+	int Application::GetTexturePixel(Handle img, int x, int y)
 	{
 		MLX_PROFILE_FUNCTION();
 		CHECK_IMAGE_PTR(img, return 0);
@@ -158,7 +158,7 @@ namespace mlx
 		return texture->GetPixel(x, y);
 	}
 
-	void Application::setTexturePixel(void* img, int x, int y, std::uint32_t color)
+	void Application::SetTexturePixel(Handle img, int x, int y, std::uint32_t color)
 	{
 		MLX_PROFILE_FUNCTION();
 		CHECK_IMAGE_PTR(img, return);

@@ -40,5 +40,12 @@ namespace mlx
 		Verify((bool)texture, "Sprite: invalid texture");
 		p_mesh = CreateQuad(0, 0, texture->GetWidth(), texture->GetHeight());
 		p_texture = texture;
+
+		func::function<void(const EventBase&)> functor = [this](const EventBase& event)
+		{
+			if(event.What() == Event::DescriptorPoolResetEventCode)
+				m_set.Reallocate();
+		};
+		EventBus::RegisterListener({ functor, "__Sprite" + std::to_string(reinterpret_cast<std::uintptr_t>(this)) });
 	}
 }

@@ -14,6 +14,7 @@ namespace mlx
 		std::shared_ptr<Shader> fragment_shader;
 		std::vector<NonOwningPtr<Texture>> color_attachments;
 		NonOwningPtr<class Renderer> renderer = nullptr;
+		NonOwningPtr<DepthImage> depth = nullptr;
 		bool clear_color_attachments = true;
 		bool no_vertex_inputs = false;
 	};
@@ -51,6 +52,7 @@ namespace mlx
 			VkPipeline m_pipeline = VK_NULL_HANDLE;
 			VkPipelineLayout m_pipeline_layout = VK_NULL_HANDLE;
 			NonOwningPtr<class Renderer> p_renderer;
+			NonOwningPtr<DepthImage> p_depth;
 	};
 }
 

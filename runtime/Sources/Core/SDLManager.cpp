@@ -1,7 +1,7 @@
 #include <PreCompiled.h>
 #include <Core/SDLManager.h>
 #include <Core/Memory.h>
-#include <Utils/IconMlx.h>
+#include <Embedded/IconMlx.h>
 
 namespace mlx
 {
@@ -101,6 +101,8 @@ namespace mlx
 
 				default: break;
 			}
+
+			return 0;
 		}, &watcher_data);
 	}
 
