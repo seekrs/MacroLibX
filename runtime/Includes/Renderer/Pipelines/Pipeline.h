@@ -1,36 +1,23 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Pipeline.h                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/18 21:23:52 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/28 22:15:38 by maldavid         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#ifndef __MLX_PIPELINE__
+#define __MLX_PIPELINE__
 
-#ifndef __PIPELINE__
-#define __PIPELINE__
-
-#include <Renderer/Command/CommandBuffer.h>
+#include <Renderer/Vulkan/VulkanPrototypes.h>
 
 namespace mlx
 {
-	class GraphicPipeline
+	class Pipeline
 	{
 		public:
-			void init(class Renderer& renderer);
-			void Destroy() noexcept;
+			Pipeline() = default;
 
-			inline void BindPipeline(CommandBuffer& command_buffer) noexcept { vkCmdBindPipeline(command_buffer.Get(), VK_PIPELINE_BIND_POINT_GRAPHICS, m_graphics_pipeline); }
+			inline virtual bool BindPipeline(VkCommandBuffer command_buffer) noexcept { vkCmdBindPipeline(command_buffer, GetPipelineBindPoint(), GetPipeline()); return true; }
+			inline virtual void EndPipeline([[maybe_unused]] VkCommandBuffer command_buffer) noexcept {}
 
-			inline const VkPipeline& GetPipeline() const noexcept { return m_graphics_pipeline; }
-			inline const VkPipelineLayout& GetPipelineLayout() const noexcept { return m_pipeline_layout; }
+			virtual VkPipeline GetPipeline() const = 0;
+			virtual VkPipelineLayout GetPipelineLayout() const = 0;
+			virtual VkPipelineBindPoint GetPipelineBindPoint() const = 0;
 
-		private:
-			VkPipeline m_graphics_pipeline = VK_NULL_HANDLE;
-			VkPipelineLayout m_pipeline_layout = VK_NULL_HANDLE;
+			virtual ~Pipeline() = default;
 	};
 }
 

@@ -1,20 +1,6 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   inputs.cpp                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/05 16:30:19 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/27 15:50:07 by maldavid         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#include <PreCompiled.h>
 
-#include <pre_compiled.h>
-
-#include "inputs.h"
-#include <mlx.h>
-#include <core/profiler.h>
+#include <Platform/Inputs.h>
 
 namespace mlx
 {

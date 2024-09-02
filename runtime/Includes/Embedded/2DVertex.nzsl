@@ -1,0 +1,45 @@
+[nzsl_version("1.0")]
+module;
+
+struct VertIn
+{
+	[location(0)] pos: vec4[f32],
+	[location(1)] color: vec4[f32], // unused
+	[location(2)] normal: vec4[f32], // unused
+	[location(3)] uv: vec2[f32]
+}
+
+struct VertOut
+{
+	[location(0)] color: vec4[f32],
+	[location(1)] uv: vec2[f32],
+	[builtin(position)] pos: vec4[f32]
+}
+
+struct ViewerData
+{
+	projection_matrix: mat4[f32]
+}
+
+struct SpriteData
+{
+	color: vec4[f32],
+	position: vec2[f32]
+}
+
+external
+{
+	[set(0), binding(0)] viewer_data: uniform[ViewerData],
+	model : push_constant[SpriteData]
+}
+
+[entry(vert)]
+fn main(input: VertIn) -> VertOut
+{
+	input.uv.x *= -1.0;
+	let output: VertOut;
+	output.uv = input.uv;
+	output.color = model.color;
+	output.pos = viewer_data.projection_matrix * vec4[f32](input.pos.xy + model.position, 0.0, 1.0);
+	return output;
+}

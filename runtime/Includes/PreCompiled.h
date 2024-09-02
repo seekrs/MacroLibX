@@ -1,30 +1,19 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   PreCompiled.h                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/25 17:37:23 by maldavid          #+#    #+#             */
-/*   Updated: 2024/07/05 13:25:07 by maldavid         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef __MLX_PRE_COMPILED_HEADER__
 #define __MLX_PRE_COMPILED_HEADER__
 
 #define VK_NO_PROTOTYPES
 
-#define Window X11Window // fuck X11
+#define Window X11Window // f*ck X11
 
 #include <mlx_profile.h>
 #include <cstdio>
 #include <cstdarg>
 #include <iostream>
-#include <volk.h>
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_vulkan.h>
+
+#include <kvf.h>
 
 #include <functional>
 #include <memory>
@@ -40,8 +29,6 @@
 #include <string_view>
 #include <chrono>
 #include <unordered_set>
-#include <glm/glm.hpp>
-#include <glm/gtc/type_ptr.hpp>
 #include <function.h>
 #include <array>
 #include <cstdint>
@@ -82,5 +69,8 @@
 #include <Core/EventBus.h>
 #include <Core/Profiler.h>
 #include <Utils/NonOwningPtr.h>
+#include <Renderer/Vulkan/VulkanPrototypes.h>
+
+using Handle = void*;
 
 #endif

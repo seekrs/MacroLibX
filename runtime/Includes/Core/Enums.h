@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Enums.h                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/27 17:15:24 by maldavid          #+#    #+#             */
-/*   Updated: 2024/07/05 13:23:10 by maldavid         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef __MLX_CORE_ENUMS__
 #define __MLX_CORE_ENUMS__
 
@@ -27,8 +15,18 @@ namespace mlx
 
 		EndEnum
 	};
-
 	constexpr std::size_t LogTypeCount = static_cast<std::size_t>(LogType::EndEnum);
+
+	enum class Event
+	{
+		ResizeEventCode = 56,
+		FrameBeginEventCode = 57,
+		FatalErrorEventCode = 168,
+		QuitEventCode = 168,
+
+		EndEnum
+	};
+	constexpr std::size_t EventCount = static_cast<std::size_t>(Event::EndEnum);
 }
 
 #endif

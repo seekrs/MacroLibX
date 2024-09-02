@@ -1,195 +1,139 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Renderer.cpp                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/18 17:25:16 by maldavid          #+#    #+#             */
-/*   Updated: 2024/04/24 01:58:51 by maldavid         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include <PreCompiled.h>
-
 #include <Renderer/Renderer.h>
-#include <Renderer/Images/Texture.h>
-#include <Renderer/Core/RenderCore.h>
+#include <Renderer/RenderCore.h>
+#include <Core/Enums.h>
+#include <Renderer/Pipelines/Shader.h>
+#include <Core/EventBus.h>
 
 namespace mlx
 {
-	void Renderer::Init(NonOwningPtr<Texture> render_target)
+	namespace Internal
 	{
-		MLX_PROFILE_FUNCTION();
-		if(!render_target)
+		struct ResizeEventBroadcast : public EventBase
 		{
-			m_surface.Create(*this);
-			m_swapchain.Init(this);
-			m_pass.Init(m_swapchain.GetImagesFormat(), VK_IMAGE_LAYOUT_PRESENT_SRC_KHR);
-			for(std::size_t i = 0; i < m_swapchain.GetImagesNumber(); i++)
-				m_framebuffers.emplace_back().Init(m_pass, m_swapchain.GetImage(i));
-		}
-		else
+			Event What() const override { return Event::ResizeEventCode; }
+		};
+
+		struct FrameBeginEventBroadcast : public EventBase
 		{
-			m_render_target = render_target;
-			m_render_target->TransitionLayout(VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
-			m_pass.Init(m_render_target->GetFormat(), m_render_target->GetLayout());
-			m_framebuffers.emplace_back().Init(m_pass, *static_cast<Image*>(m_render_target));
-		}
-		m_cmd.Init();
+			Event What() const override { return Event::FrameBeginEventCode; }
+		};
+	}
+
+	void Renderer::Init(NonOwningPtr<Window> window)
+	{
+		std::function<void(const EventBase&)> functor = [this](const EventBase& event)
+		{
+			if(event.What() == Event::ResizeEventCode)
+				this->RequireFramebufferResize();
+		};
+		EventBus::RegisterListener({ functor, "__ScopRenderer" });
+
+		p_window = window;
+
+		auto& render_core = RenderCore::Get();
+		m_surface = p_window->CreateVulkanSurface(render_core::GetInstance());
+		DebugLog("Vulkan : surface created");
+
+		CreateSwapchain();
 
 		for(std::size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
 		{
-			m_render_finished_semaphores[i].Init();
-			m_image_available_semaphores[i].Init();
+			m_image_available_semaphores[i] = kvfCreateSemaphore(render_core.GetDevice());
+			DebugLog("Vulkan : image available semaphore created");
+			m_render_finished_semaphores[i] = kvfCreateSemaphore(render_core.GetDevice());
+			DebugLog("Vulkan : render finished semaphore created");
+			m_cmd_buffers[i] = kvfCreateCommandBuffer(render_core.GetDevice());
+			DebugLog("Vulkan : command buffer created");
+			m_cmd_fences[i] = kvfCreateFence(render_core.GetDevice());
+			DebugLog("Vulkan : fence created");
 		}
-
-		m_uniform_buffer.reset(new UniformBuffer);
-		#ifdef DEBUG
-			m_uniform_buffer->Create(this, sizeof(glm::mat4), "__mlx_matrices_uniform_buffer_");
-		#else
-			m_uniform_buffer->Create(this, sizeof(glm::mat4), nullptr);
-		#endif
-
-		DescriptorSetLayout vert_layout;
-		DescriptorSetLayout frag_layout;
-
-		vert_layout.Init({
-				{0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER}
-			}, VK_SHADER_STAGE_VERTEX_BIT);
-		frag_layout.Init({
-				{0, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER}
-			}, VK_SHADER_STAGE_FRAGMENT_BIT);
-
-		m_vert_set.Init(this, &RenderCore::Get().GetDescriptorPool(), std::move(vert_layout));
-		m_frag_set.Init(this, &RenderCore::Get().GetDescriptorPool(), std::move(frag_layout));
-
-		m_vert_set.WriteDescriptor(0, m_uniform_buffer.Get());
-
-		m_pipeline.Init(*this);
-
-		m_framebuffer_resized = false;
 	}
 
 	bool Renderer::BeginFrame()
 	{
-		MLX_PROFILE_FUNCTION();
-		auto device = RenderCore::Get().GetDevice().Get();
-
-		if(!m_render_target)
+		kvfWaitForFence(RenderCore::Get().GetDevice(), m_cmd_fences[m_current_frame_index]);
+		VkResult result = vkAcquireNextImageKHR(RenderCore::Get().GetDevice(), m_swapchain, UINT64_MAX, m_image_available_semaphores[m_current_frame_index], VK_NULL_HANDLE, &m_swapchain_image_index);
+		if(result == VK_ERROR_OUT_OF_DATE_KHR)
 		{
-			m_cmd.GetCmdBuffer(m_current_frame_index).WaitForExecution();
-			VkResult result = vkAcquireNextImageKHR(device, m_swapchain.Get(), UINT64_MAX, m_image_available_semaphores[m_current_frame_index].Get(), VK_NULL_HANDLE, &m_image_index);
-
-			if(result == VK_ERROR_OUT_OF_DATE_KHR)
-			{
-				RecreateRenderData();
-				return false;
-			}
-			else if(result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR)
-				FatalError("Vulkan error : failed to acquire swapchain image");
+			DestroySwapchain();
+			CreateSwapchain();
+			EventBus::SendBroadcast(Internal::ResizeEventBroadcast{});
+			return false;
 		}
-		else
-		{
-			m_image_index = 0;
-			if(m_render_target->GetLayout() != VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL)
-				m_render_target->TransitionLayout(VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
-		}
+		else if(result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR)
+			FatalError("Vulkan error : failed to acquire swapchain image, %", kvfVerbaliseVkResult(result));
 
-		m_cmd.GetCmdBuffer(m_current_frame_index).Reset();
-		m_cmd.GetCmdBuffer(m_current_frame_index).BeginRecord();
-		auto& fb = _framebuffers[_image_index];
-		m_pass.Begin(GetActiveCmdBuffer(), fb);
-
-		m_pipeline.BindPipeline(m_cmd.GetCmdBuffer(m_current_frame_index));
-
-		VkViewport viewport{};
-		viewport.x = 0.0f;
-		viewport.y = 0.0f;
-		viewport.width = static_cast<float>(fb.GetWidth());
-		viewport.height = static_cast<float>(fb.GetHeight());
-		viewport.minDepth = 0.0f;
-		viewport.maxDepth = 1.0f;
-		vkCmdSetViewport(m_cmd.GetCmdBuffer(m_current_frame_index).Get(), 0, 1, &viewport);
-
-		VkRect2D scissor{};
-		scissor.offset = { 0, 0 };
-		scissor.extent = { fb.GetWidth(), fb.GetHeight()};
-		vkCmdSetScissor(m_cmd.GetCmdBuffer(m_current_frame_index).Get(), 0, 1, &scissor);
-
+		vkResetCommandBuffer(m_cmd_buffers[m_current_frame_index], 0);
+		kvfBeginCommandBuffer(m_cmd_buffers[m_current_frame_index], 0);
+		m_drawcalls = 0;
+		m_polygons_drawn = 0;
+		EventBus::SendBroadcast(Internal::FrameBeginEventBroadcast{});
 		return true;
 	}
 
 	void Renderer::EndFrame()
 	{
-		MLX_PROFILE_FUNCTION();
-		m_pass.End(GetActiveCmdBuffer());
-		m_cmd.GetCmdBuffer(m_current_frame_index).EndRecord();
-
-		if(!m_render_target)
+		VkPipelineStageFlags wait_stages[] = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
+		kvfEndCommandBuffer(m_cmd_buffers[m_current_frame_index]);
+		kvfSubmitCommandBuffer(RenderCore::Get().GetDevice(), m_cmd_buffers[m_current_frame_index], KVF_GRAPHICS_QUEUE, m_render_finished_semaphores[m_current_frame_index], m_image_available_semaphores[m_current_frame_index], m_cmd_fences[m_current_frame_index], wait_stages);
+		if(!kvfQueuePresentKHR(RenderCore::Get().GetDevice(), m_render_finished_semaphores[m_current_frame_index], m_swapchain, m_swapchain_image_index) || m_framebuffers_resize)
 		{
-			m_cmd.GetCmdBuffer(m_current_frame_index).Submit(&m_render_finished_semaphores[m_current_frame_index]);
-
-			VkSwapchainKHR swapchain = m_swapchain.Get();
-			VkSemaphore signal_semaphores[] = { m_render_finished_semaphores[m_current_frame_index].Get() };
-
-			VkPresentInfoKHR present_info{};
-			present_info.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
-			present_info.waitSemaphoreCount = 1;
-			present_info.pWaitSemaphores = signal_semaphores;
-			present_info.swapchainCount = 1;
-			present_info.pSwapchains = &swapchain;
-			present_info.pImageIndices = &m_image_index;
-			VkResult result = vkQueuePresentKHR(RenderCore::Get().GetQueue().GetPresent(), &present_info);
-			if(result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || m_framebuffer_resized)
-			{
-				m_framebuffer_resized = false;
-				RecreateRenderData();
-			}
-			else if(result != VK_SUCCESS)
-				FatalError("Vulkan error : failed to present swap chain image");
-			m_current_frame_index = (m_current_frame_index + 1) % MAX_FRAMES_IN_FLIGHT;
+			m_framebuffers_resize = false;
+			DestroySwapchain();
+			CreateSwapchain();
+			EventBus::SendBroadcast(Internal::ResizeEventBroadcast{});
 		}
-		else
-		{
-			m_cmd.GetCmdBuffer(m_current_frame_index).SubmitIdle(true);
-			m_current_frame_index = 0;
-		}
+		m_current_frame_index = (m_current_frame_index + 1) % MAX_FRAMES_IN_FLIGHT;
+		kvfResetDeviceDescriptorPools(RenderCore::Get().GetDevice());
 	}
 
-	void Renderer::RecreateRenderData()
+	void Renderer::CreateSwapchain()
 	{
-		m_swapchain.Recreate();
-		m_pass.Destroy();
-		m_pass.Init(m_swapchain.GetImagesFormat(), VK_IMAGE_LAYOUT_PRESENT_SRC_KHR);
-		for(auto& fb : m_framebuffers)
-			fb.Destroy();
-		m_framebuffers.clear();
-		for(std::size_t i = 0; i < m_swapchain.GetImagesNumber(); i++)
-			m_framebuffers.emplace_back().Init(m_pass, m_swapchain.GetImage(i));
+		Vec2ui drawable_size = p_window->GetVulkanDrawableSize();
+		VkExtent2D extent = { drawable_size.x, drawable_size.y };
+		m_swapchain = kvfCreateSwapchainKHR(RenderCore::Get().GetDevice(), RenderCore::Get().GetPhysicalDevice(), m_surface, extent, false);
+
+		std::uint32_t images_count = kvfGetSwapchainImagesCount(m_swapchain);
+		std::vector<VkImage> tmp(images_count);
+		m_swapchain_images.resize(images_count);
+		vkGetSwapchainImagesKHR(RenderCore::Get().GetDevice(), m_swapchain, &images_count, tmp.data());
+		for(std::size_t i = 0; i < images_count; i++)
+		{
+			m_swapchain_images[i].Init(tmp[i], kvfGetSwapchainImagesFormat(m_swapchain), extent.width, extent.height);
+			m_swapchain_images[i].TransitionLayout(VK_IMAGE_LAYOUT_PRESENT_SRC_KHR);
+			m_swapchain_images[i].CreateImageView(VK_IMAGE_VIEW_TYPE_2D, VK_IMAGE_ASPECT_COLOR_BIT);
+		}
+		DebugLog("Vulkan : swapchain created");
 	}
 
-	void Renderer::Destroy()
+	void Renderer::DestroySwapchain()
 	{
-		MLX_PROFILE_FUNCTION();
-		vkDeviceWaitIdle(RenderCore::Get().GetDevice().Get());
+		RenderCore::Get().WaitDeviceIdle();
+		for(Image& img : m_swapchain_images)
+			img.DestroyImageView();
+		kvfDestroySwapchainKHR(RenderCore::Get().GetDevice(), m_swapchain);
+		DebugLog("Vulkan : swapchain destroyed");
+	}
 
-		m_ipeline.Destroy();
-		muniform_buffer->Destroy();
-		mvert_layout.Destroy();
-		mfrag_layout.Destroy();
-		mfrag_set.Destroy();
-		mvert_set.Destroy();
-		mcmd.Destroy();
-		mpass.Destroy();
-		if(!m_render_target)
+	void Renderer::Destroy() noexcept
+	{
+		auto& render_core = RenderCore::Get();
+		render_core.WaitDeviceIdle();
+
+		for(std::size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
 		{
-			m_swapchain.Destroy();
-			m_surface.Destroy();
+			kvfDestroySemaphore(render_core.GetDevice(), m_image_available_semaphores[i]);
+			DebugLog("Vulkan : image available semaphore destroyed");
+			kvfDestroySemaphore(render_core.GetDevice(), m_render_finished_semaphores[i]);
+			DebugLog("Vulkan : render finished semaphore destroyed");
+			kvfDestroyFence(render_core.GetDevice(), m_cmd_fences[i]);
+			DebugLog("Vulkan : fence destroyed");
 		}
-		for(auto& fb : m_framebuffers)
-			fb.Destroy();
-		for(int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
-			m_semaphores[i].Destroy();
+
+		DestroySwapchain();
+		vkDestroySurfaceKHR(render_core.GetInstance(), m_surface, nullptr);
+		DebugLog("Vulkan : surface destroyed");
+		m_surface = VK_NULL_HANDLE;
 	}
 }
