@@ -1,7 +1,7 @@
 #pragma once
 #include <Maths/Quaternions.h>
 
-namespace Scop
+namespace mlx
 {
 	template<typename T>
 	constexpr Quat<T>::Quat(T W, T X, T Y, T Z) : w(W), x(X), y(Y), z(Z)
@@ -46,7 +46,7 @@ namespace Scop
 	RadianAngle<T> Quat<T>::AngleBetween(const Quat& quat) const
 	{
 		T alpha = Vec3<T>::DotProduct(Vec3<T>(x, y, z), Vec3<T>(quat.x, quat.y, quat.z));
-		return std::acos(Scop::Clamp(alpha, T(-1.0), T(1.0)));
+		return std::acos(mlx::Clamp(alpha, T(-1.0), T(1.0)));
 	}
 
 	template<typename T>
@@ -366,10 +366,10 @@ namespace Scop
 	constexpr Quat<T> Quat<T>::Lerp(const Quat& from, const Quat& to, T interpolation)
 	{
 		Quat interpolated;
-		interpolated.w = Scop::Lerp(from.w, to.w, interpolation);
-		interpolated.x = Scop::Lerp(from.x, to.x, interpolation);
-		interpolated.y = Scop::Lerp(from.y, to.y, interpolation);
-		interpolated.z = Scop::Lerp(from.z, to.z, interpolation);
+		interpolated.w = mlx::Lerp(from.w, to.w, interpolation);
+		interpolated.x = mlx::Lerp(from.x, to.x, interpolation);
+		interpolated.y = mlx::Lerp(from.y, to.y, interpolation);
+		interpolated.z = mlx::Lerp(from.z, to.z, interpolation);
 
 		return interpolated;
 	}

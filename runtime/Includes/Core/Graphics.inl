@@ -7,7 +7,6 @@ namespace mlx
 	{
 		MLX_PROFILE_FUNCTION();
 		p_scene->ResetSprites();
-		m_images_registry.Clear();
 	}
 
 	void GraphicsSupport::PixelPut(int x, int y, std::uint32_t color) noexcept

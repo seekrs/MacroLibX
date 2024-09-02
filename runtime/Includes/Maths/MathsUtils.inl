@@ -1,12 +1,9 @@
 #pragma once
 #include <Maths/MathsUtils.h>
 
-#include <type_traits>
-#include <cmath>
-
 #include <Maths/Constants.h>
 
-namespace Scop
+namespace mlx
 {
 	template<typename T>
 	[[nodiscard]] constexpr T Mod(T x, T y) noexcept

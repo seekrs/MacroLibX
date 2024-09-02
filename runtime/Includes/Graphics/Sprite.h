@@ -46,7 +46,7 @@ namespace mlx
 			std::shared_ptr<Texture> p_texture;
 			std::shared_ptr<Mesh> p_mesh;
 			Vec4f m_color = Vec4f{ 1.0f, 1.0f, 1.0f, 1.0f };
-			Vec3f m_position = Vec4f{ 0.0f, 0.0f, 0.0f };
+			Vec3f m_position = Vec3f{ 0.0f, 0.0f, 0.0f };
 	};
 }
 

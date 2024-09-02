@@ -1,17 +1,10 @@
-#ifndef __SCOP_VEC2__
-#define __SCOP_VEC2__
+#ifndef __MLX_VEC2__
+#define __MLX_VEC2__
 
-#include <string>
-#include <limits>
-#include <cstdint>
-#include <cmath>
-
-#include <Core/Logs.h>
-
-namespace Scop
+namespace mlx
 {
-	template <typename T> class Vec3;
-	template <typename T> class Vec4;
+	template <typename T> struct Vec3;
+	template <typename T> struct Vec4;
 
 	template <typename T>
 	struct Vec2

@@ -1,8 +1,7 @@
 #pragma once
-
 #include <Maths/Vec4.h>
 
-namespace Scop
+namespace mlx
 {
 	template<typename T>
 	constexpr Vec4<T>::Vec4(T X, T Y, T Z, T W) : x(X), y(Y), z(Z), w(W) {}
@@ -120,14 +119,14 @@ namespace Scop
 	template<typename T>
 	constexpr T& Vec4<T>::operator[](std::size_t i)
 	{
-		Scop::Assert(i < 4, "index out of range");
+		mlx::Assert(i < 4, "index out of range");
 		return *(&x + i);
 	}
 
 	template<typename T>
 	constexpr const T& Vec4<T>::operator[](std::size_t i) const
 	{
-		Scop::Assert(i < 4, "index out of range");
+		mlx::Assert(i < 4, "index out of range");
 		return *(&x + i);
 	}
 

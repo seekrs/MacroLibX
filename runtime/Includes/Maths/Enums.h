@@ -1,9 +1,7 @@
-#ifndef __SCOPE_MATHS_ENUMS__
-#define __SCOPE_MATHS_ENUMS__
+#ifndef __MLX_MATHS_ENUMS__
+#define __MLX_MATHS_ENUMS__
 
-#include <cstddef>
-
-namespace Scop
+namespace mlx
 {
 	enum class AngleUnit
 	{

@@ -1,8 +1,7 @@
 #pragma once
-
 #include <Maths/Vec3.h>
 
-namespace Scop
+namespace mlx
 {
 	template<typename T>
 	constexpr Vec3<T>::Vec3(T X, T Y, T Z) : x(X), y(Y), z(Z) {}
@@ -145,14 +144,14 @@ namespace Scop
 	template<typename T>
 	constexpr T& Vec3<T>::operator[](std::size_t i)
 	{
-		Scop::Assert(i < 3, "index out of range");
+		mlx::Assert(i < 3, "index out of range");
 		return *(&x + i);
 	}
 
 	template<typename T>
 	constexpr const T& Vec3<T>::operator[](std::size_t i) const
 	{
-		Scop::Assert(i < 3, "index out of range");
+		mlx::Assert(i < 3, "index out of range");
 		return *(&x + i);
 	}
 

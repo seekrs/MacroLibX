@@ -14,7 +14,7 @@ namespace mlx
 
 	std::array<VkVertexInputAttributeDescription, 2> Vertex::GetAttributeDescriptions()
 	{
-		std::array<VkVertexInputAttributeDescription, 3> attribute_descriptions;
+		std::array<VkVertexInputAttributeDescription, 2> attribute_descriptions;
 
 		attribute_descriptions[0].binding = 0;
 		attribute_descriptions[0].location = 0;

@@ -19,7 +19,7 @@
 		Error("invalid image ptr (NULL)"); \
 		retval; \
 	} \
-	else if(m_image_registry.Find(img)) \
+	else if(!m_image_registry.IsTextureKnown(img)) \
 	{ \
 		Error("invalid image ptr"); \
 		retval; \
@@ -29,8 +29,8 @@ namespace mlx
 {
 	void Application::GetMousePos(int* x, int* y) noexcept
 	{
-		*x = p_in->GetX();
-		*y = p_in->GetY();
+		*x = m_in.GetX();
+		*y = m_in.GetY();
 	}
 
 	void Application::MouseMove(Handle win, int x, int y) noexcept
@@ -69,11 +69,7 @@ namespace mlx
 	void* Application::NewGraphicsSuport(std::size_t w, std::size_t h, const char* title)
 	{
 		MLX_PROFILE_FUNCTION();
-		auto it = std::find_if(m_textures.begin(), m_textures.end(), [=](const Texture& texture)
-		{
-			return &texture == reinterpret_cast<Texture*>(const_cast<char*>(title));
-		});
-		if(it != _textures.end())
+		if(m_image_registry.IsTextureKnown(reinterpret_cast<Texture*>(const_cast<char*>(title))))
 			m_graphics.emplace_back(std::make_unique<GraphicsSupport>(w, h, reinterpret_cast<Texture*>(const_cast<char*>(title)), m_graphics.size()));
 		else
 		{
@@ -92,7 +88,7 @@ namespace mlx
 	{
 		MLX_PROFILE_FUNCTION();
 		CHECK_WINDOW_PTR(win);
-		m_graphics[*static_cast<int*>(win)]->ClearRenderData();
+		m_graphics[*static_cast<int*>(win)]->ResetRenderData();
 	}
 
 	void Application::DestroyGraphicsSupport(Handle win)
@@ -177,6 +173,6 @@ namespace mlx
 	
 	void Application::LoopEnd() noexcept
 	{
-		p_in->Finish();
+		m_in.Finish();
 	}
 }

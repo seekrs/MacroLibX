@@ -1,13 +1,9 @@
-#ifndef __SCOP_MAT4__
-#define __SCOP_MAT4__
-
-#include <cstddef>
-#include <limits>
-#include <string>
+#ifndef __MLX_MAT4__
+#define __MLX_MAT4__
 
 #include <Maths/Angles.h>
 
-namespace Scop
+namespace mlx
 {
 	template<typename T> struct Vec2;
 	template<typename T> struct Vec3;

@@ -6,6 +6,7 @@
 #define Window X11Window // f*ck X11
 
 #include <mlx_profile.h>
+#include <mlx.h>
 #include <cstdio>
 #include <cstdarg>
 #include <iostream>
@@ -38,6 +39,7 @@
 #include <cstddef>
 #include <cstdlib>
 #include <random>
+#include <concepts>
 #include <algorithm>
 #include <sstream>
 #include <iomanip>

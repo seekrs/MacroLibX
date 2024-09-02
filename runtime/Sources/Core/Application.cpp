@@ -1,13 +1,10 @@
 #include <PreCompiled.h>
 
 #include <Core/Application.h>
-#include <Renderer/Texts/TextLibrary.h>
-#include <Renderer/Texts/FontLibrary.h>
-#include <Renderer/Images/Texture.h>
-#include <Renderer/Core/RenderCore.h>
+#include <Renderer/Image.h>
+#include <Renderer/RenderCore.h>
 #include <Core/Memory.h>
 #include <Core/EventBus.h>
-#include <Core/SDLManager.h>
 
 namespace mlx
 {
@@ -15,7 +12,7 @@ namespace mlx
 	{
 		EventBus::RegisterListener({[](const EventBase& event)
 		{
-		}, "__internal_application" });
+		}, "__Application" });
 
 		m_fps.init();
 		SDLManager::Get().Init();
@@ -76,7 +73,7 @@ namespace mlx
 	void Application::DestroyTexture(void* ptr)
 	{
 		MLX_PROFILE_FUNCTION();
-		vkDeviceWaitIdle(RenderCore::Get().GetDevice().Get()); // TODO : synchronize with another method than waiting for GPU to be idle
+		RenderCore::Get().WaitDeviceIdle(); // TODO : synchronize with another method than waiting for GPU to be idle
 		if(!m_image_registry.Find(ptr))
 		{
 			Error("invalid image ptr");
