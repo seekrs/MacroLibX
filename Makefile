@@ -1,21 +1,12 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/10/04 16:43:41 by maldavid          #+#    #+#              #
-#    Updated: 2024/07/05 13:34:03 by maldavid         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 NAME = libmlx.so
 
 SRCS =  $(wildcard $(addsuffix /*.cpp, ./runtime/Sources/Core))
 SRCS += $(wildcard $(addsuffix /*.cpp, ./runtime/Sources/Platform))
+SRCS += $(wildcard $(addsuffix /*.cpp, ./runtime/Sources/Graphics))
 SRCS += $(wildcard $(addsuffix /*.cpp, ./runtime/Sources/Renderer))
-SRCS += $(wildcard $(addsuffix /*.cpp, ./runtime/Sources/Renderer/**))
+SRCS += $(wildcard $(addsuffix /*.cpp, ./runtime/Sources/Renderer/Vulkan))
+SRCS += $(wildcard $(addsuffix /*.cpp, ./runtime/Sources/Renderer/Pipelines))
+SRCS += $(wildcard $(addsuffix /*.cpp, ./runtime/Sources/Renderer/RenderPasses))
 
 OBJ_DIR = objs/makefile
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRCS:.cpp=.o))
@@ -37,7 +28,7 @@ MODE = "release"
 CXX = clang++
 
 CXXFLAGS = -std=c++17 -O3 -fPIC -Wall -Wextra -Wno-deprecated -DSDL_MAIN_HANDLED
-INCLUDES = -I./includes -I./runtime/Includes -I./third_party
+INCLUDES = -I./includes -I./runtime/Includes -I./runtime/Sources -I./third_party
 
 LDLIBS =
 

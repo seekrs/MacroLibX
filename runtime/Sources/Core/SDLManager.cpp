@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   SDLManager.cpp                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/25 15:44:03 by maldavid          #+#    #+#             */
-/*   Updated: 2024/05/25 16:46:48 by maldavid         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include <PreCompiled.h>
 #include <Core/SDLManager.h>
 #include <Core/Memory.h>
@@ -52,14 +40,76 @@ namespace mlx
 
 		if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER) != 0)
 			FatalError("SDL : unable to init all subsystems; %", SDL_GetError());
+
+		struct WatcherData
+		{
+			func::function<void(mlx_event_type, int, void*)> callback;
+			NonOwningPtr<SDLManager> manager;
+			void* userdata;
+		};
+
+		WatcherData watcher_data;
+		watcher_data.callback = f_callback;
+		watcher_data.userdata = p_callback_data;
+
+		SDL_AddEventWatch([](void* userdata, SDL_Event* event) -> int
+		{
+			WatcherData* data = static_cast<WatcherData*>(userdata);
+
+			if(event->type == SDL_MOUSEMOTION) 
+			{
+			}
+
+			std::uint32_t id = event->window.windowID;
+			if(events_hooks.find(id) == events_hooks.end())
+				continue;
+			switch(event->type) 
+			{
+				case SDL_KEYUP: data->callback(MLX_KEYUP, event->key.keysym.scancode, data->userdata); break;
+				case SDL_KEYDOWN: data->callback(MLX_KEYDOWN, event->key.keysym.scancode, data->userdata); break;
+				case SDL_MOUSEBUTTONUP: data->callback(MLX_MOUSEUP, event->button.button, data->userdata); break;
+				case SDL_MOUSEBUTTONDOWN: data->callback(MLX_MOUSEDOWN, event->button.button, data->userdata); break;
+				case SDL_MOUSEWHEEL:
+				{
+					if(event->wheel.y > 0) // scroll up
+						data->callback(MLX_MOUSEWHEEL, 1, data->userdata);
+					else if(event->wheel.y < 0) // scroll down
+						data->callback(MLX_MOUSEWHEEL, 2, data->userdata);
+					if(event->wheel.x > 0) // scroll right
+						data->callback(MLX_MOUSEWHEEL, 3, data->userdata);
+					else if(event->wheel.x < 0) // scroll left
+						data->callback(MLX_MOUSEWHEEL, 4, data->userdata);
+					break;
+				}
+				case SDL_WINDOWEVENT:
+				{
+					switch(event.window.event)
+					{
+						case SDL_WINDOWEVENT_CLOSE: data->callback(MLX_WINDOW_EVENT, 0, data->userdata); break;
+						case SDL_WINDOWEVENT_MOVED: data->callback(MLX_WINDOW_EVENT, 1, data->userdata); break;
+						case SDL_WINDOWEVENT_MINIMIZED: data->callback(MLX_WINDOW_EVENT, 2, data->userdata); break;
+						case SDL_WINDOWEVENT_MAXIMIZED: data->callback(MLX_WINDOW_EVENT, 3, data->userdata); break;
+						case SDL_WINDOWEVENT_ENTER: data->callback(MLX_WINDOW_EVENT, 4, data->userdata); break;
+						case SDL_WINDOWEVENT_FOCUS_GAINED: data->callback(MLX_WINDOW_EVENT, 5, data->userdata); break;
+						case SDL_WINDOWEVENT_LEAVE: data->callback(MLX_WINDOW_EVENT, 6, data->userdata); break;
+						case SDL_WINDOWEVENT_FOCUS_LOST: data->callback(MLX_WINDOW_EVENT, 7, data->userdata); break;
+
+						default : break;
+					}
+					break;
+				}
+
+				default: break;
+			}
+		}, &watcher_data);
 	}
 
-	void* SDLManager::CreateWindow(const std::string& title, std::size_t w, std::size_t h)
+	void* SDLManager::CreateWindow(const std::string& title, std::size_t w, std::size_t h, bool hidden)
 	{
 		details::WindowInfos* infos = new details::WindowInfos;
 		Verify(infos != nullptr, "SDL : window allocation failed");
 
-		infos->window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, SDL_WINDOW_VULKAN | SDL_WINDOW_SHOWN);
+		infos->window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, SDL_WINDOW_VULKAN | (hidden ? SDL_WINDOW_HIDDEN : SDL_WINDOW_SHOWN));
 		if(!infos->window)
 			FatalError("SDL : unable to open a new window; %", SDL_GetError());
 		infos->icon = SDL_CreateRGBSurfaceFrom(static_cast<void*>(logo_mlx), logo_mlx_width, logo_mlx_height, 32, 4 * logo_mlx_width, rmask, gmask, bmask, amask);
@@ -82,6 +132,34 @@ namespace mlx
 
 		m_windows_registry.erase(infos);
 		delete infos;
+	}
+
+	VkSurfaceKHR SDLManager::CreateVulkanSurface(Handle window, VkInstance instance) const noexcept
+	{
+		VkSurfaceKHR surface;
+		if(!SDL_Vulkan_CreateSurface(static_cast<SDL_Window*>(window), instance, &surface))
+			FatalError("SDL : could not create a Vulkan surface; %", SDL_GetError());
+		return surface;
+	}
+
+	std::vector<const char*> SDLManager::GetRequiredVulkanInstanceExtentions(Handle window) const noexcept
+	{
+		std::uint32_t count;
+		if(!SDL_Vulkan_GetInstanceExtensions(static_cast<SDL_Window*>(window), &count, nullptr))
+			FatalError("Vulkan : cannot get instance extentions from window : %",  SDL_GetError());
+
+		std::vector<const char*> extensions(count);
+
+		if(!SDL_Vulkan_GetInstanceExtensions(static_cast<SDL_Window*>(window), &count, extensions.data()))
+			FatalError("Vulkan : cannot get instance extentions from window : %", SDL_GetError());
+		return extentions;
+	}
+
+	Vec2ui SDLManager::GetVulkanDrawableSize(Handle window) const noexcept
+	{
+		Vec2ui extent;
+		SDL_Vulkan_GetDrawableSize(window, &extent.x, &extent.y);
+		return extent;
 	}
 
 	void SDLManager::Shutdown() noexcept

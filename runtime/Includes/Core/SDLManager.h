@@ -1,19 +1,7 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   SDLManager.h                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/25 15:28:59 by maldavid          #+#    #+#             */
-/*   Updated: 2024/07/05 22:15:22 by maldavid         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef __MLX_SDL_MANAGER__
 #define __MLX_SDL_MANAGER__
 
-#include <Utils/Singleton.h>
+#include <Maths/Vec2.h>
 
 namespace mlx
 {
@@ -25,17 +13,27 @@ namespace mlx
 			void Init() noexcept;
 			void Shutdown() noexcept;
 
-			void* CreateWindow(const std::string& title, std::size_t w, std::size_t h);
-			void DestroyWindow(void* window) noexcept;
+			Handle CreateWindow(const std::string& title, std::size_t w, std::size_t h, bool hidden);
+			void DestroyWindow(Handle window) noexcept;
 
-			void SetEventCallback();
+			VkSurfaceKHR CreateVulkanSurface(Handle window, VkInstance instance) const noexcept;
+			std::vector<const char*> GetRequiredVulkanInstanceExtentions(Handle window) const noexcept;
+			Vec2ui GetVulkanDrawableSize(Handle window) const noexcept;
+
+			inline void SetEventCallback(func::function<void(mlx_event_type, int, void*)> functor, void* userdata) { f_callback = std::move(functor); p_callback_data = userdata; }
 
 		private:
 			SDLManager() = default;
 			~SDLManager() = default;
 
 		private:
-			std::unordered_set<void*> m_windows_registry;
+			std::unordered_set<Handle> m_windows_registry;
+			func::function<void(mlx_event_type, int, void*)> f_callback;
+			void* p_callback_data = nullptr;
+			std::int32_t m_x;
+			std::int32_t m_y;
+			std::int32_t m_rel_x;
+			std::int32_t m_rel_y;
 			bool m_drop_sdl_responsability = false;
 	};
 }

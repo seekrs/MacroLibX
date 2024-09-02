@@ -1,60 +1,25 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Vertex.h                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/23 22:24:33 by maldavid          #+#    #+#             */
-/*   Updated: 2024/04/23 22:25:01 by maldavid         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#ifndef __MLX_VERTEX__
+#define __MLX_VERTEX__
 
-#ifndef __MLX_RENDERER_VERTEX__
-#define __MLX_RENDERER_VERTEX__
+#include <Maths/Vec4.h>
+#include <Maths/Vec2.h>
 
 namespace mlx
 {
 	struct Vertex
 	{
-		glm::vec2 pos;
-		glm::vec4 color;
-		glm::vec2 uv;
+		alignas(16) Vec2f position = Vec4f{ 0.0f, 0.0f };
+		alignas(16) Vec4f color = Vec4f{ 1.0f, 1.0f, 1.0f, 1.0f };
+		alignas(16) Vec2f uv = Vec2f{ 0.0f, 0.0f };
 
-		Vertex(glm::vec2 _pos, glm::vec4 _color, glm::vec2 _uv) : pos(std::move(_pos)), color(std::move(_color)), uv(std::move(_uv)) {}
+		Vertex() = default;
+		Vertex(Vec2f p, Vec4f c, Vec2f u) : position(std::move(p)), color(std::move(c)), uv(std::move(u)) {}
 
-		static VkVertexInputBindingDescription GetBindingDescription()
-		{
-			VkVertexInputBindingDescription binding_description{};
-			binding_description.binding = 0;
-			binding_description.stride = sizeof(Vertex);
-			binding_description.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
-
-			return binding_description;
-		}
-
-		static std::array<VkVertexInputAttributeDescription, 3> GetAttributeDescriptions()
-		{
-			std::array<VkVertexInputAttributeDescription, 3> attribute_descriptions;
-
-			attribute_descriptions[0].binding = 0;
-			attribute_descriptions[0].location = 0;
-			attribute_descriptions[0].format = VK_FORMAT_R32G32_SFLOAT;
-			attribute_descriptions[0].offset = offsetof(Vertex, pos);
-
-			attribute_descriptions[1].binding = 0;
-			attribute_descriptions[1].location = 1;
-			attribute_descriptions[1].format = VK_FORMAT_R32G32B32A32_SFLOAT;
-			attribute_descriptions[1].offset = offsetof(Vertex, color);
-
-			attribute_descriptions[2].binding = 0;
-			attribute_descriptions[2].location = 2;
-			attribute_descriptions[2].format = VK_FORMAT_R32G32_SFLOAT;
-			attribute_descriptions[2].offset = offsetof(Vertex, uv);
-
-			return attribute_descriptions;
-		}
+		[[nodiscard]] inline static VkVertexInputBindingDescription GetBindingDescription();
+		[[nodiscard]] inline static std::array<VkVertexInputAttributeDescription, 3> GetAttributeDescriptions();
 	};
 }
+
+#include <Renderer/Vertex.inl>
 
 #endif

@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Application.h                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/04 21:49:46 by maldavid          #+#    #+#             */
-/*   Updated: 2024/07/05 14:04:19 by maldavid         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef __MLX_APPLICATION__
 #define __MLX_APPLICATION__
 
@@ -26,32 +14,32 @@ namespace mlx
 			Application();
 
 			inline void GetMousePos(int* x, int* y) noexcept;
-			inline void MouseMove(void* win, int x, int y) noexcept;
+			inline void MouseMove(Handle win, int x, int y) noexcept;
 
-			inline void OnEvent(void* win, int event, int (*funct_ptr)(int, void*), void* param) noexcept;
+			inline void OnEvent(Handle win, int event, int (*funct_ptr)(int, void*), void* param) noexcept;
 
-			inline void GetScreenSize(void* win, int* w, int* h) noexcept;
+			inline void GetScreenSize(Handle win, int* w, int* h) noexcept;
 
 			inline void SetFPSCap(std::uint32_t fps) noexcept;
 
-			inline void* NewGraphicsSuport(std::size_t w, std::size_t h, const char* title);
-			inline void ClearGraphicsSupport(void* win);
-			inline void DestroyGraphicsSupport(void* win);
+			inline Handle NewGraphicsSuport(std::size_t w, std::size_t h, const char* title);
+			inline void ClearGraphicsSupport(Handle win);
+			inline void DestroyGraphicsSupport(Handle win);
 
-			inline void PixelPut(void* win, int x, int y, std::uint32_t color) const noexcept;
-			inline void StringPut(void* win, int x, int y, std::uint32_t color, char* str);
+			inline void PixelPut(Handle win, int x, int y, std::uint32_t color) const noexcept;
+			inline void StringPut(Handle win, int x, int y, std::uint32_t color, char* str);
 
-			void* NewTexture(int w, int h);
-			void* NewStbTexture(char* file, int* w, int* h); // stb textures are image files (png, jpg, bpm, ...)
-			inline void TexturePut(void* win, void* img, int x, int y);
-			inline int GetTexturePixel(void* img, int x, int y);
-			inline void SetTexturePixel(void* img, int x, int y, std::uint32_t color);
-			void DestroyTexture(void* ptr);
+			Handle NewTexture(int w, int h);
+			Handle NewStbTexture(char* file, int* w, int* h); // stb textures are image files (png, jpg, bpm, ...)
+			inline void TexturePut(Handle win, Handle img, int x, int y);
+			inline int GetTexturePixel(Handle img, int x, int y);
+			inline void SetTexturePixel(Handle img, int x, int y, std::uint32_t color);
+			void DestroyTexture(Handle ptr);
 
 			inline void LoopHook(int (*f)(void*), void* param);
 			inline void LoopEnd() noexcept;
 
-			inline void LoadFont(void* win, const std::filesystem::path& filepath, float scale);
+			inline void LoadFont(Handle win, const std::filesystem::path& filepath, float scale);
 
 			void Run() noexcept;
 
@@ -62,8 +50,8 @@ namespace mlx
 			Inputs m_in;
 			ImageRegistry m_image_registry;
 			std::vector<std::unique_ptr<GraphicsSupport>> m_graphics;
-			std::function<int(void*)> f_loop_hook;
-			void* p_param = nullptr;
+			std::function<int(Handle)> f_loop_hook;
+			Handle p_param = nullptr;
 	};
 }
 
