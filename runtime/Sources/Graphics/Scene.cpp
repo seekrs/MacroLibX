@@ -21,20 +21,21 @@ namespace mlx
 
 	NonOwningPtr<Sprite> Scene::GetSpriteFromTextureAndPosition(NonOwningPtr<Texture> texture, const Vec2f& position) const
 	{
-		auto it = std::find_if(m_sprites.begin(), m_sprites.end(), [texture, position](const Sprite& sprite)
+		auto it = std::find_if(m_sprites.begin(), m_sprites.end(), [texture, position](std::shared_ptr<Sprite> sprite)
 		{
-			return sprite.GetPosition().x == position.x && sprite.GetPosition().y == position.y && sprite.GetTexture() == texture;
+			return sprite->GetPosition().x == position.x && sprite->GetPosition().y == position.y && sprite->GetTexture() == texture;
 		});
-		return (it != m_sprites.end() ? &(*it) : nullptr);
+		return (it != m_sprites.end() ? it->get() : nullptr);
 	}
 
 	void Scene::TryEraseSpriteFromTexture(NonOwningPtr<Texture> texture)
 	{
+		auto it = m_sprites.begin();
 		do
 		{
-			auto it = std::find_if(m_sprites.begin(), m_sprites.end(), [texture, position](const Sprite& sprite)
+			it = std::find_if(m_sprites.begin(), m_sprites.end(), [texture](std::shared_ptr<Sprite> sprite)
 			{
-				return sprite.GetPosition().x == position.x && sprite.GetPosition().y == position.y && sprite.GetTexture() == texture;
+				return sprite->GetTexture() == texture;
 			});
 			m_sprites.erase(it);
 		} while(it != m_sprites.end());

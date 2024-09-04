@@ -5,6 +5,7 @@
 #include <Renderer/Renderer.h>
 #include <Graphics/Scene.h>
 #include <Graphics/Sprite.h>
+#include <Graphics/PutPixelManager.h>
 #include <Renderer/ScenesRenderer.h>
 #include <Maths/Mat4.h>
 
@@ -39,6 +40,7 @@ namespace mlx
 		private:
 			Renderer m_renderer;
 			SceneRenderer m_scene_renderer;
+			PutPixelManager m_put_pixel_manager;
 			std::shared_ptr<Window> p_window;
 			std::unique_ptr<Scene> p_scene;
 

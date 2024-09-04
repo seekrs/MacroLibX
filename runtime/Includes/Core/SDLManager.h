@@ -20,7 +20,7 @@ namespace mlx
 			std::vector<const char*> GetRequiredVulkanInstanceExtentions(Handle window) const noexcept;
 			Vec2ui GetVulkanDrawableSize(Handle window) const noexcept;
 
-			inline void SetEventCallback(func::function<void(mlx_event_type, int, void*)> functor, void* userdata) { f_callback = std::move(functor); p_callback_data = userdata; }
+			inline void SetEventCallback(func::function<void(mlx_event_type, int, int, void*)> functor, void* userdata) { f_callback = std::move(functor); p_callback_data = userdata; }
 
 		private:
 			SDLManager() = default;
@@ -28,7 +28,7 @@ namespace mlx
 
 		private:
 			std::unordered_set<Handle> m_windows_registry;
-			func::function<void(mlx_event_type, int, void*)> f_callback;
+			func::function<void(mlx_event_type, int, int, void*)> f_callback;
 			void* p_callback_data = nullptr;
 			std::int32_t m_x;
 			std::int32_t m_y;

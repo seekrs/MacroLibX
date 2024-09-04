@@ -20,7 +20,7 @@ namespace mlx
 
 	void Profiler::AppendProfileData(ProfileResult&& result)
 	{
-		std::lock_guard lock(_mutex);
+		std::lock_guard lock(m_mutex);
 		auto it = m_profile_data.find(result.name);
 		if(it != m_profile_data.end())
 		{

@@ -1,6 +1,7 @@
 #ifndef __MLX_SCENE__
 #define __MLX_SCENE__
 
+#include <Renderer/Renderer.h>
 #include <Graphics/Sprite.h>
 #include <Renderer/ViewerData.h>
 

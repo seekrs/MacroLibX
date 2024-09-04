@@ -24,7 +24,7 @@ namespace mlx
 					m_main_render_texture.Init({}, extent.width, extent.height);
 				}
 			};
-			EventBus::RegisterListener({ functor, "__ScopRenderPasses" });
+			EventBus::RegisterListener({ functor, "__MlxRenderPasses" });
 			auto extent = kvfGetSwapchainImagesSize(renderer.GetSwapchain());
 
 			m_main_render_texture.Init({}, extent.width, extent.height);

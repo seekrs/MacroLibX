@@ -17,7 +17,7 @@ namespace mlx
 			};
 
 		public:
-			Inputs() = default;
+			Inputs();
 
 			void RegisterWindow(std::shared_ptr<Window> window);
 
@@ -39,7 +39,7 @@ namespace mlx
 
 			~Inputs() = default;
 
-		protected:
+		private:
 			std::unordered_map<std::uint32_t, std::shared_ptr<Window>> m_windows;
 			std::unordered_map<std::uint32_t, std::array<Hook, 6>> m_events_hooks;
 			bool m_run = false;
