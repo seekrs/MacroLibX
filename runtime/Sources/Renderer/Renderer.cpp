@@ -32,7 +32,7 @@ namespace mlx
 			if(event.What() == Event::ResizeEventCode)
 				this->RequireFramebufferResize();
 		};
-		EventBus::RegisterListener({ functor, "__ScopRenderer" });
+		EventBus::RegisterListener({ functor, "__MlxRenderer" + std::to_string(reinterpret_cast<std::uintptr_t>(this)) });
 
 		p_window = window;
 

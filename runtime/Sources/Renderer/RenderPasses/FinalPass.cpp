@@ -37,7 +37,7 @@ namespace mlx
 			if(event.What() == Event::DescriptorPoolResetEventCode)
 				p_set->Reallocate();
 		};
-		EventBus::RegisterListener({ functor, "__ScopFinalPass" });
+		EventBus::RegisterListener({ functor, "__MlxFinalPass" });
 
 		p_set = std::make_shared<DescriptorSet>(p_fragment_shader->GetShaderLayout().set_layouts[0].second, p_fragment_shader->GetPipelineLayout().set_layouts[0], ShaderType::Fragment);
 	}

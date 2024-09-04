@@ -58,7 +58,7 @@ namespace mlx
 				}
 			}
 		};
-		EventBus::RegisterListener({ functor, "__ScopRender2DPass" });
+		EventBus::RegisterListener({ functor, "__MlxRender2DPass" });
 
 		p_viewer_data_set = std::make_shared<DescriptorSet>(p_vertex_shader->GetShaderLayout().set_layouts[0].second, p_vertex_shader->GetPipelineLayout().set_layouts[0], ShaderType::Vertex);
 		p_texture_set = std::make_shared<DescriptorSet>(p_fragment_shader->GetShaderLayout().set_layouts[0].second, p_fragment_shader->GetPipelineLayout().set_layouts[0], ShaderType::Fragment);

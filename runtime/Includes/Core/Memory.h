@@ -1,8 +1,6 @@
 #ifndef __MLX_MEMORY__
 #define __MLX_MEMORY__
 
-#include <Utils/Singleton.h>
-
 namespace mlx
 {
 	class MemManager : public Singleton<MemManager>

@@ -32,7 +32,7 @@ namespace mlx
 		m_drop_sdl_responsability = SDL_WasInit(SDL_INIT_VIDEO);
 		if(m_drop_sdl_responsability) // is case the mlx is running in a sandbox like MacroUnitTester where SDL is already init
 			return;
-		SDL_SetMemoryFunctions(MemManager::malloc, MemManager::calloc, MemManager::realloc, MemManager::free);
+		SDL_SetMemoryFunctions(MemManager::Get().Malloc, MemManager::Get().Calloc, MemManager::Get().Realloc, MemManager::Get().Free);
 
 		#ifdef FORCE_WAYLAND
 			SDL_SetHint(SDL_HINT_VIDEODRIVER, "wayland,x11");
@@ -43,7 +43,7 @@ namespace mlx
 
 		struct WatcherData
 		{
-			func::function<void(mlx_event_type, int, void*)> callback;
+			func::function<void(mlx_event_type, int, int, void*)> callback;
 			NonOwningPtr<SDLManager> manager;
 			void* userdata;
 		};
@@ -61,38 +61,36 @@ namespace mlx
 			}
 
 			std::uint32_t id = event->window.windowID;
-			if(events_hooks.find(id) == events_hooks.end())
-				continue;
 			switch(event->type) 
 			{
-				case SDL_KEYUP: data->callback(MLX_KEYUP, event->key.keysym.scancode, data->userdata); break;
-				case SDL_KEYDOWN: data->callback(MLX_KEYDOWN, event->key.keysym.scancode, data->userdata); break;
-				case SDL_MOUSEBUTTONUP: data->callback(MLX_MOUSEUP, event->button.button, data->userdata); break;
-				case SDL_MOUSEBUTTONDOWN: data->callback(MLX_MOUSEDOWN, event->button.button, data->userdata); break;
+				case SDL_KEYUP: data->callback(MLX_KEYUP, id, event->key.keysym.scancode, data->userdata); break;
+				case SDL_KEYDOWN: data->callback(MLX_KEYDOWN, id, event->key.keysym.scancode, data->userdata); break;
+				case SDL_MOUSEBUTTONUP: data->callback(MLX_MOUSEUP, id, event->button.button, data->userdata); break;
+				case SDL_MOUSEBUTTONDOWN: data->callback(MLX_MOUSEDOWN, id, event->button.button, data->userdata); break;
 				case SDL_MOUSEWHEEL:
 				{
 					if(event->wheel.y > 0) // scroll up
-						data->callback(MLX_MOUSEWHEEL, 1, data->userdata);
+						data->callback(MLX_MOUSEWHEEL, id, 1, data->userdata);
 					else if(event->wheel.y < 0) // scroll down
-						data->callback(MLX_MOUSEWHEEL, 2, data->userdata);
+						data->callback(MLX_MOUSEWHEEL, id, 2, data->userdata);
 					if(event->wheel.x > 0) // scroll right
-						data->callback(MLX_MOUSEWHEEL, 3, data->userdata);
+						data->callback(MLX_MOUSEWHEEL, id, 3, data->userdata);
 					else if(event->wheel.x < 0) // scroll left
-						data->callback(MLX_MOUSEWHEEL, 4, data->userdata);
+						data->callback(MLX_MOUSEWHEEL, id, 4, data->userdata);
 					break;
 				}
 				case SDL_WINDOWEVENT:
 				{
-					switch(event.window.event)
+					switch(event->window.event)
 					{
-						case SDL_WINDOWEVENT_CLOSE: data->callback(MLX_WINDOW_EVENT, 0, data->userdata); break;
-						case SDL_WINDOWEVENT_MOVED: data->callback(MLX_WINDOW_EVENT, 1, data->userdata); break;
-						case SDL_WINDOWEVENT_MINIMIZED: data->callback(MLX_WINDOW_EVENT, 2, data->userdata); break;
-						case SDL_WINDOWEVENT_MAXIMIZED: data->callback(MLX_WINDOW_EVENT, 3, data->userdata); break;
-						case SDL_WINDOWEVENT_ENTER: data->callback(MLX_WINDOW_EVENT, 4, data->userdata); break;
-						case SDL_WINDOWEVENT_FOCUS_GAINED: data->callback(MLX_WINDOW_EVENT, 5, data->userdata); break;
-						case SDL_WINDOWEVENT_LEAVE: data->callback(MLX_WINDOW_EVENT, 6, data->userdata); break;
-						case SDL_WINDOWEVENT_FOCUS_LOST: data->callback(MLX_WINDOW_EVENT, 7, data->userdata); break;
+						case SDL_WINDOWEVENT_CLOSE: data->callback(MLX_WINDOW_EVENT, id, 0, data->userdata); break;
+						case SDL_WINDOWEVENT_MOVED: data->callback(MLX_WINDOW_EVENT, id, 1, data->userdata); break;
+						case SDL_WINDOWEVENT_MINIMIZED: data->callback(MLX_WINDOW_EVENT, id, 2, data->userdata); break;
+						case SDL_WINDOWEVENT_MAXIMIZED: data->callback(MLX_WINDOW_EVENT, id, 3, data->userdata); break;
+						case SDL_WINDOWEVENT_ENTER: data->callback(MLX_WINDOW_EVENT, id, 4, data->userdata); break;
+						case SDL_WINDOWEVENT_FOCUS_GAINED: data->callback(MLX_WINDOW_EVENT, id, 5, data->userdata); break;
+						case SDL_WINDOWEVENT_LEAVE: data->callback(MLX_WINDOW_EVENT, id, 6, data->userdata); break;
+						case SDL_WINDOWEVENT_FOCUS_LOST: data->callback(MLX_WINDOW_EVENT, id, 7, data->userdata); break;
 
 						default : break;
 					}
@@ -154,14 +152,14 @@ namespace mlx
 
 		if(!SDL_Vulkan_GetInstanceExtensions(static_cast<SDL_Window*>(window), &count, extensions.data()))
 			FatalError("Vulkan : cannot get instance extentions from window : %", SDL_GetError());
-		return extentions;
+		return extensions;
 	}
 
 	Vec2ui SDLManager::GetVulkanDrawableSize(Handle window) const noexcept
 	{
-		Vec2ui extent;
-		SDL_Vulkan_GetDrawableSize(window, &extent.x, &extent.y);
-		return extent;
+		Vec2i extent;
+		SDL_Vulkan_GetDrawableSize(static_cast<SDL_Window*>(window), &extent.x, &extent.y);
+		return Vec2ui{ extent };
 	}
 
 	void SDLManager::Shutdown() noexcept

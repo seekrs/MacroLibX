@@ -12,7 +12,11 @@ namespace mlx
 	{
 		EventBus::RegisterListener({[](const EventBase& event)
 		{
-		}, "__Application" });
+			if(event.What() == Event::FatalErrorEventCode)
+			{
+				std::abort();
+			}
+		}, "__MlxApplication" });
 
 		m_fps.Init();
 		SDLManager::Get().Init();

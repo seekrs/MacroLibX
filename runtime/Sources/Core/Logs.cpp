@@ -1,4 +1,5 @@
 #include <PreCompiled.h>
+#include <Core/Enums.h>
 #include <Utils/Ansi.h>
 
 namespace mlx
@@ -7,7 +8,7 @@ namespace mlx
 	{
 		struct FatalErrorEvent : public EventBase
 		{
-			std::uint32_t What() const override { return 167; }
+			Event What() const override { return Event::FatalErrorEventCode; }
 		};
 	}
 
@@ -48,7 +49,7 @@ namespace mlx
 		if(type == LogType::FatalError)
 		{
 			std::cout << Ansi::bg_red << "Fatal Error: emergency exit" << Ansi::bg_def << std::endl;
-			EventBus::Send("__internal_application", Internal::FatalErrorEvent{});
+			EventBus::Send("__MlxApplication", Internal::FatalErrorEvent{});
 		}
 	}
 }

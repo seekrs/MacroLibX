@@ -32,7 +32,7 @@ namespace mlx
 		if(!data.Empty())
 		{
 			if(p_map != nullptr)
-				std::memcpy(m_memory.map, data.GetData(), data.GetSize());
+				std::memcpy(p_map, data.GetData(), data.GetSize());
 		}
 		if(type == BufferType::Constant || type == BufferType::LowDynamic)
 			PushToGPU();
@@ -46,7 +46,7 @@ namespace mlx
 		bufferInfo.usage = usage;
 		bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
-		m_allocation = RenderCore::Get().GetAllocator().CreateBuffer(&bufferInfo, &info, m_buffer, nullptr);
+		m_allocation = RenderCore::Get().GetAllocator().CreateBuffer(&bufferInfo, &alloc_info, m_buffer, nullptr);
 		if(alloc_info.flags != 0)
 			RenderCore::Get().GetAllocator().MapMemory(m_allocation, &p_map);
 	}
@@ -66,7 +66,7 @@ namespace mlx
 
 		VkCommandBuffer cmd = kvfCreateCommandBuffer(RenderCore::Get().GetDevice());
 		kvfBeginCommandBuffer(cmd, VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT);
-		kvfCopyBufferToBuffer(cmd, m_buffer, buffer.Get(), m_memory.size);
+		kvfCopyBufferToBuffer(cmd, m_buffer, buffer.Get(), m_size);
 		kvfEndCommandBuffer(cmd);
 		VkFence fence = kvfCreateFence(RenderCore::Get().GetDevice());
 		kvfSubmitSingleTimeCommandBuffer(RenderCore::Get().GetDevice(), cmd, KVF_GRAPHICS_QUEUE, fence);
@@ -82,7 +82,7 @@ namespace mlx
 
 		GPUBuffer new_buffer;
 		new_buffer.m_usage = (this->m_usage & 0xFFFFFFFC) | VK_BUFFER_USAGE_TRANSFER_DST_BIT;
-		new_buffer.CreateBuffer(m_memory.size, new_buffer.m_usage, alloc_info);
+		new_buffer.CreateBuffer(m_size, new_buffer.m_usage, alloc_info);
 
 		if(new_buffer.CopyFrom(*this))
 			Swap(new_buffer);
@@ -111,9 +111,9 @@ namespace mlx
 
 	void VertexBuffer::SetData(CPUBuffer data)
 	{
-		if(data.GetSize() > m_memory.size)
+		if(data.GetSize() > m_size)
 		{
-			Error("Vulkan : trying to store to much data in a vertex buffer (% bytes in % bytes)", data.GetSize(), m_memory.size);
+			Error("Vulkan : trying to store to much data in a vertex buffer (% bytes in % bytes)", data.GetSize(), m_size);
 			return;
 		}
 		if(data.Empty())
@@ -129,9 +129,9 @@ namespace mlx
 
 	void IndexBuffer::SetData(CPUBuffer data)
 	{
-		if(data.GetSize() > m_memory.size)
+		if(data.GetSize() > m_size)
 		{
-			Error("Vulkan : trying to store to much data in an index buffer (% bytes in % bytes)", data.GetSize(), m_memory.size);
+			Error("Vulkan : trying to store to much data in an index buffer (% bytes in % bytes)", data.GetSize(), m_size);
 			return;
 		}
 		if(data.Empty())

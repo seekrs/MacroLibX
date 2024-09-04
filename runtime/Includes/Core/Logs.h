@@ -48,7 +48,7 @@ namespace mlx
 namespace mlx
 {
 	#undef  DebugLog
-	#define DebugLog(...) DebugLog(__LINE__, __FILE__, AK_FUNC_SIG, __VA_ARGS__)
+	#define DebugLog(...) DebugLog(__LINE__, __FILE__, __func__, __VA_ARGS__)
 
 	#undef  Message
 	#define Message(...) Message(__LINE__, __FILE__, __func__, __VA_ARGS__)
