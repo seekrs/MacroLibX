@@ -14,7 +14,7 @@ namespace mlx
 		friend class Render2DPass;
 
 		public:
-			Sprite(std::shared_ptr<Texture> texture);
+			Sprite(NonOwningPtr<Texture> texture);
 
 			inline void SetColor(Vec4f color) noexcept { m_color = color; }
 			inline void SetPosition(Vec3f position) noexcept { m_position = position; }
@@ -22,7 +22,7 @@ namespace mlx
 			[[nodiscard]] inline const Vec4f& GetColor() const noexcept { return m_color; }
 			[[nodiscard]] inline const Vec3f& GetPosition() const noexcept { return m_position; }
 			[[nodiscard]] inline std::shared_ptr<Mesh> GetMesh() const { return p_mesh; }
-			[[nodiscard]] inline std::shared_ptr<Texture> GetTexture() const { return p_texture; }
+			[[nodiscard]] inline NonOwningPtr<Texture> GetTexture() const { return p_texture; }
 
 			~Sprite() = default;
 
@@ -43,7 +43,7 @@ namespace mlx
 
 		private:
 			DescriptorSet m_set;
-			std::shared_ptr<Texture> p_texture;
+			NonOwningPtr<Texture> p_texture;
 			std::shared_ptr<Mesh> p_mesh;
 			Vec4f m_color = Vec4f{ 1.0f, 1.0f, 1.0f, 1.0f };
 			Vec3f m_position = Vec3f{ 0.0f, 0.0f, 0.0f };

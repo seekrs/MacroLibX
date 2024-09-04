@@ -102,6 +102,8 @@ namespace mlx
 			sprite_data.color = sprite->GetColor();
 			if(!sprite->IsSetInit())
 				sprite->UpdateDescriptorSet(*p_texture_set);
+			Verify((bool)sprite->GetTexture(), "a sprite has no texture attached");
+			sprite->GetTexture()->Update(cmd);
 			sprite->Bind(frame_index, cmd);
 			std::array<VkDescriptorSet, 2> sets = { p_viewer_data_set->GetSet(frame_index), sprite->GetSet(frame_index) };
 			vkCmdBindDescriptorSets(cmd, m_pipeline.GetPipelineBindPoint(), m_pipeline.GetPipelineLayout(), 0, sets.size(), sets.data(), 0, nullptr);
