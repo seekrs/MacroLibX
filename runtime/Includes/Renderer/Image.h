@@ -47,7 +47,7 @@ namespace mlx
 
 			virtual ~Image() = default;
 
-		private:
+		protected:
 			VmaAllocation m_allocation;
 			VkImage m_image = VK_NULL_HANDLE;
 			VkImageView m_image_view = VK_NULL_HANDLE;
@@ -84,6 +84,7 @@ namespace mlx
 			{
 				Init(std::move(pixels), width, height, format, is_multisampled);
 			}
+
 			inline void Init(CPUBuffer pixels, std::uint32_t width, std::uint32_t height, VkFormat format = VK_FORMAT_R8G8B8A8_SRGB, bool is_multisampled = false)
 			{
 				Image::Init(ImageType::Color, width, height, format, VK_IMAGE_TILING_OPTIMAL, VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT | VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT, is_multisampled);
@@ -91,12 +92,12 @@ namespace mlx
 				Image::CreateSampler();
 				if(pixels)
 				{
-					TransitionLayout(VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
 					GPUBuffer staging_buffer;
 					std::size_t size = width * height * kvfFormatSize(format);
 					staging_buffer.Init(BufferType::Staging, size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, pixels);
 					VkCommandBuffer cmd = kvfCreateCommandBuffer(RenderCore::Get().GetDevice());
 					kvfBeginCommandBuffer(cmd, VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT);
+					TransitionLayout(VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, cmd);
 					kvfCopyBufferToImage(cmd, Image::Get(), staging_buffer.Get(), staging_buffer.GetOffset(), VK_IMAGE_ASPECT_COLOR_BIT, { width, height, 1 });
 					vkEndCommandBuffer(cmd);
 					VkFence fence = kvfCreateFence(RenderCore::Get().GetDevice());
@@ -104,13 +105,26 @@ namespace mlx
 					kvfDestroyFence(RenderCore::Get().GetDevice(), fence);
 					staging_buffer.Destroy();
 				}
-				if(!pixels)
-					TransitionLayout(VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
-				else
-					TransitionLayout(VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
+				TransitionLayout(VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
 			}
+
+			void SetPixel(int x, int y, std::uint32_t color) noexcept;
+			int GetPixel(int x, int y) noexcept;
+
+			void Update(VkCommandBuffer cmd) const;
+
 			~Texture() override { Destroy(); }
+
+		private:
+			void OpenCPUBuffer();
+
+		private:
+			std::vector<std::uint32_t> m_cpu_buffer;
+			std::optional<GPUBuffer> m_staging_buffer;
+			bool m_has_been_modified = false;
 	};
+
+	Texture* StbTextureLoad(const std::filesystem::path& file, int* w, int* h);
 }
 
 #endif

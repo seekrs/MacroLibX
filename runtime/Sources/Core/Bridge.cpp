@@ -1,7 +1,7 @@
 #include <PreCompiled.h>
 
 #include <Core/Application.h>
-#include <Renderer/Core/RenderCore.h>
+#include <Renderer/RenderCore.h>
 #include <mlx.h>
 #include <Core/Memory.h>
 
@@ -18,7 +18,7 @@ extern "C"
 	{
 		if(__mlx_ptr != nullptr)
 		{
-			Error("MLX cannot be initialized multiple times");
+			mlx::Error("MLX cannot be initialized multiple times");
 			return nullptr;
 		}
 		mlx::MemManager::Get(); // just to initialize the C garbage collector

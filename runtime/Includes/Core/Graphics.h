@@ -29,7 +29,7 @@ namespace mlx
 
 			inline void LoadFont(const std::filesystem::path& filepath, float scale);
 
-			inline void TryEraseTextureFromRegistry(NonOwningPtr<Texture> texture) noexcept;
+			inline void TryEraseSpritesInScene(NonOwningPtr<Texture> texture) noexcept;
 
 			[[nodiscard]] MLX_FORCEINLINE bool HasWindow() const noexcept  { return m_has_window; }
 			[[nodiscard]] MLX_FORCEINLINE Renderer& GetRenderer() { return m_renderer; }
@@ -41,6 +41,8 @@ namespace mlx
 			SceneRenderer m_scene_renderer;
 			std::shared_ptr<Window> p_window;
 			std::unique_ptr<Scene> p_scene;
+
+			std::uint64_t m_current_depth = 0;
 
 			std::size_t m_width = 0;
 			std::size_t m_height = 0;

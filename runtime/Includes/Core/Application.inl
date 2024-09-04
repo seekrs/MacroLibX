@@ -19,7 +19,7 @@
 		Error("invalid image ptr (NULL)"); \
 		retval; \
 	} \
-	else if(!m_image_registry.IsTextureKnown(img)) \
+	else if(!m_image_registry.IsTextureKnown(static_cast<Texture*>(img))) \
 	{ \
 		Error("invalid image ptr"); \
 		retval; \

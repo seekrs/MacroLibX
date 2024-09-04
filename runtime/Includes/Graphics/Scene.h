@@ -17,7 +17,9 @@ namespace mlx
 		public:
 			Scene(SceneDescriptor desc);
 
-			Sprite& CreateSprite(std::shared_ptr<class Texture> texture) noexcept;
+			Sprite& CreateSprite(NonOwningPtr<class Texture> texture) noexcept;
+			NonOwningPtr<Sprite> GetSpriteFromTextureAndPosition(NonOwningPtr<Texture> texture, const Vec2f& position) const;
+			void TryEraseSpriteFromTexture(NonOwningPtr<Texture> texture);
 
 			inline void ResetSprites() { m_sprites.clear(); }
 

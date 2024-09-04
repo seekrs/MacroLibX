@@ -14,7 +14,7 @@ namespace mlx
 		{
 		}, "__Application" });
 
-		m_fps.init();
+		m_fps.Init();
 		SDLManager::Get().Init();
 	}
 
@@ -26,7 +26,6 @@ namespace mlx
 		{
 			if(!m_fps.Update())
 				continue;
-			m_in.Update();
 
 			if(f_loop_hook)
 				f_loop_hook(p_param);
@@ -37,27 +36,15 @@ namespace mlx
 					gs->Render();
 			}
 		}
-
-		RenderCore::Get().GetSingleTimeCmdManager().UpdateSingleTimesCmdBuffersSubmitState();
-
-		for(auto& gs : m_graphics)
-		{
-			if(!gs)
-				continue;
-			for(int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
-				gs->GetRenderer().GetCmdBuffer(i).WaitForExecution();
-		}
+		RenderCore::Get().WaitDeviceIdle();
 	}
 
 	void* Application::NewTexture(int w, int h)
 	{
 		MLX_PROFILE_FUNCTION();
-		Texture* texture = new Texture;
-		#ifdef DEBUG
-			texture->Create(nullptr, w, h, VK_FORMAT_R8G8B8A8_UNORM, "__mlx_unamed_user_texture");
-		#else
-			texture->Create(nullptr, w, h, VK_FORMAT_R8G8B8A8_UNORM, nullptr);
-		#endif
+		Texture* texture;
+		try { texture = new Texture({}, w, h); }
+		catch(...) { return NULL; }
 		m_image_registry.RegisterTexture(texture);
 		return texture;
 	}
@@ -66,6 +53,8 @@ namespace mlx
 	{
 		MLX_PROFILE_FUNCTION();
 		Texture* texture = StbTextureLoad(file, w, h);
+		if(texture == nullptr)
+			return NULL; // NULL for C compatibility
 		m_image_registry.RegisterTexture(texture);
 		return texture;
 	}
@@ -74,7 +63,7 @@ namespace mlx
 	{
 		MLX_PROFILE_FUNCTION();
 		RenderCore::Get().WaitDeviceIdle(); // TODO : synchronize with another method than waiting for GPU to be idle
-		if(!m_image_registry.Find(ptr))
+		if(!m_image_registry.IsTextureKnown(static_cast<Texture*>(ptr)))
 		{
 			Error("invalid image ptr");
 			return;
@@ -85,10 +74,10 @@ namespace mlx
 			Error("trying to destroy a texture that has already been destroyed");
 		else
 			texture->Destroy();
-		for(auto& gs : _graphics)
+		for(auto& gs : m_graphics)
 		{
 			if(gs)
-				gs->TryEraseTextureFromManager(texture);
+				gs->TryEraseSpritesInScene(texture);
 		}
 		m_image_registry.UnregisterTexture(texture);
 		delete texture;
@@ -96,8 +85,6 @@ namespace mlx
 
 	Application::~Application()
 	{
-		TextLibrary::Get().ClearLibrary();
-		FontLibrary::Get().ClearLibrary();
 		SDLManager::Get().Shutdown();
 	}
 }

@@ -64,7 +64,7 @@ namespace mlx
 		RenderCore::Get().WaitDeviceIdle();
 		p_scene.reset();
 		m_scene_renderer.Destroy();
-		m_renderer->Destroy();
+		m_renderer.Destroy();
 		if(p_window)
 			p_window->Destroy();
 	}

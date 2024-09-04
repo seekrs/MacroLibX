@@ -50,7 +50,10 @@ namespace mlx
 			return;
 		bool is_single_time_cmd_buffer = (cmd == VK_NULL_HANDLE);
 		if(is_single_time_cmd_buffer)
+		{
 			cmd = kvfCreateCommandBuffer(RenderCore::Get().GetDevice());
+			kvfBeginCommandBuffer(cmd, VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT);
+		}
 		KvfImageType kvf_type = KVF_IMAGE_OTHER;
 		switch(m_type)
 		{
@@ -61,6 +64,13 @@ namespace mlx
 		}
 		kvfTransitionImageLayout(RenderCore::Get().GetDevice(), m_image, kvf_type, cmd, m_format, m_layout, new_layout, is_single_time_cmd_buffer);
 		m_layout = new_layout;
+		if(is_single_time_cmd_buffer)
+		{
+			vkEndCommandBuffer(cmd);
+			VkFence fence = kvfCreateFence(RenderCore::Get().GetDevice());
+			kvfSubmitSingleTimeCommandBuffer(RenderCore::Get().GetDevice(), cmd, KVF_GRAPHICS_QUEUE, fence);
+			kvfDestroyFence(RenderCore::Get().GetDevice(), fence);
+		}
 	}
 
 	void Image::Clear(VkCommandBuffer cmd, Vec4f color)
@@ -111,5 +121,106 @@ namespace mlx
 		if(m_image != VK_NULL_HANDLE)
 			RenderCore::Get().GetAllocator().DestroyImage(m_allocation, m_image);
 		m_image = VK_NULL_HANDLE;
+	}
+
+	void Texture::SetPixel(int x, int y, std::uint32_t color) noexcept
+	{
+		MLX_PROFILE_FUNCTION();
+		if(x < 0 || y < 0 || static_cast<std::uint32_t>(x) > m_width || static_cast<std::uint32_t>(y) > m_height)
+			return;
+		if(!m_staging_buffer.has_value())
+			OpenCPUBuffer();
+		m_cpu_buffer[(y * m_width) + x] = color;
+		m_has_been_modified = true;
+	}
+
+	int GetPixel(int x, int y) noexcept
+	{
+		MLX_PROFILE_FUNCTION();
+		if(x < 0 || y < 0 || static_cast<std::uint32_t>(x) > getWidth() || static_cast<std::uint32_t>(y) > getHeight())
+			return 0;
+		if(!m_staging_buffer.has_value())
+			OpenCPUBuffer();
+		std::uint32_t color = m_cpu_buffer[(y * m_width) + x];
+		std::uint8_t* bytes = reinterpret_cast<std::uint8_t*>(&color);
+		std::uint8_t tmp = bytes[0];
+		bytes[0] = bytes[2];
+		bytes[2] = tmp;
+		return *reinterpret_cast<int*>(bytes);
+	}
+
+	void Update(VkCommandBuffer cmd) const
+	{
+		if(!m_has_been_modified)
+			return;
+		std::memcpy(m_staging_buffer.GetMap(), m_cpu_buffer.data(), m_cpu_buffer.size() * kvfGetFormatSize(m_format));
+
+		VkImageLayout old_layout = m_layout;
+		VkCommandBuffer cmd = kvfCreateCommandBuffer(RenderCore::Get().GetDevice());
+		kvfBeginCommandBuffer(cmd, VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT);
+		TransitionLayout(VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, cmd);
+		kvfCopyBufferToImage(cmd, Image::Get(), staging_buffer.Get(), staging_buffer.GetOffset(), VK_IMAGE_ASPECT_COLOR_BIT, { width, height, 1 });
+		TransitionLayout(old_layout, cmd);
+		vkEndCommandBuffer(cmd);
+		VkFence fence = kvfCreateFence(RenderCore::Get().GetDevice());
+		kvfSubmitSingleTimeCommandBuffer(RenderCore::Get().GetDevice(), cmd, KVF_GRAPHICS_QUEUE, fence);
+		kvfDestroyFence(RenderCore::Get().GetDevice(), fence);
+
+		m_has_been_modified = false;
+	}
+
+	void Texture::OpenCPUBuffer()
+	{
+		MLX_PROFILE_FUNCTION();
+		if(m_staging_buffer.has_value())
+			return;
+		DebugLog("Texture : enabling CPU mapping");
+		m_staging_buffer.emplace();
+		std::size_t size = m_width * m_height * kvfGetFormatSize(m_format);
+		m_staging_buffer->Init(BufferType::Staging, size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT, {});
+
+		VkImageLayout old_layout = m_layout;
+		VkCommandBuffer cmd = kvfCreateCommandBuffer(RenderCore::Get().GetDevice());
+		kvfBeginCommandBuffer(cmd, VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT);
+		TransitionLayout(VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, cmd);
+		kvfImageToBuffer(cmd, m_image, m_staging_buffer.Get(), m_staging_buffer.GetOffset(), VK_IMAGE_ASPECT_COLOR_BIT, { m_width, m_height, 1 });
+		TransitionLayout(old_layout, cmd);
+		vkEndCommandBuffer(cmd);
+		VkFence fence = kvfCreateFence(RenderCore::Get().GetDevice());
+		kvfSubmitSingleTimeCommandBuffer(RenderCore::Get().GetDevice(), cmd, KVF_GRAPHICS_QUEUE, fence);
+		kvfDestroyFence(RenderCore::Get().GetDevice(), fence);
+
+		m_cpu_buffer.resize(m_width * m_height);
+		std::memcpy(m_cpu_buffer.data(), m_staging_buffer.GetMap(), m_cpu_buffer.size());
+	}
+
+	Texture* StbTextureLoad(const std::filesystem::path& file, int* w, int* h)
+	{
+		MLX_PROFILE_FUNCTION();
+		std::string filename = file.string();
+
+		if(!std::filesystem::exists(file))
+		{
+			Error("Image : file not found %", file);
+			return nullptr;
+		}
+		if(stbi_is_hdr(filename.c_str()))
+		{
+			Error("Texture : unsupported image format %", file);
+			return nullptr;
+		}
+		int dummy_w;
+		int dummy_h;
+		int channels;
+		std::uint8_t* data = stbi_load(filename.c_str(), (w == nullptr ? &dummy_w : w), (h == nullptr ? &dummy_h : h), &channels, 4);
+		CPUBuffer buffer((w == nullptr ? dummy_w : *w) * (h == nullptr ? dummy_h : *h) * 4);
+		std::memcpy(buffer.GetData(), data, buffer.GetSize());
+		Texture* texture;
+
+		try { texture = new Texture(buffer, (w == nullptr ? dummy_w : *w), (h == nullptr ? dummy_h : *h)); }
+		catch(...) { return NULL; }
+		
+		stbi_image_free(data);
+		return texture;
 	}
 }
