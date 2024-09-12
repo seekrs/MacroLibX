@@ -72,7 +72,8 @@ namespace mlx::core
 		_in->onEvent(_graphics[*static_cast<int*>(win)]->getWindow()->getID(), event, funct_ptr, param);
 	}
 
-	void Application::setWindowPosition(void *win, int x, int y) {
+	void Application::setWindowPosition(void* win, int x, int y)
+	{
 		CHECK_WINDOW_PTR(win);
 		if(!_graphics[*static_cast<int*>(win)]->hasWindow())
 		{
