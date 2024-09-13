@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 18:03:35 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/14 19:07:01 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/09/14 00:04:29 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,14 @@
 #include <cstring>
 
 #define STB_IMAGE_IMPLEMENTATION
-#include <stb_image.h>
+#ifdef MLX_COMPILER_GCC
+	#pragma GCC diagnostic push
+	#pragma GCC diagnostic ignored "-Wstringop-overflow"
+		#include <stb_image.h>
+	#pragma GCC diagnostic pop
+#else
+	#include <stb_image.h>
+#endif
 
 #ifdef IMAGE_OPTIMIZED
 	#define TILING VK_IMAGE_TILING_OPTIMAL

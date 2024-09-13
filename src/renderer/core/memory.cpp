@@ -6,7 +6,7 @@
 /*   By: kbz_8 <kbz_8.dev@akel-engine.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 22:02:37 by kbz_8             #+#    #+#             */
-/*   Updated: 2024/03/14 16:34:53 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/09/14 00:04:16 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@
 	#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 	#pragma GCC diagnostic ignored "-Wunused-parameter"
 	#pragma GCC diagnostic ignored "-Wunused-variable"
+	#pragma GCC diagnostic ignored "-Wunused-function"
+	#pragma GCC diagnostic ignored "-Wparentheses"
 	#pragma GCC diagnostic ignored "-Wparentheses"
 		#include <renderer/core/memory.h>
 	#pragma GCC diagnostic pop
