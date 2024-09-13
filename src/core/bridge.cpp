@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:35:20 by maldavid          #+#    #+#             */
-/*   Updated: 2024/02/23 22:37:24 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/09/12 01:29:33 by tdelage          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,12 @@ extern "C"
 		static_cast<mlx::core::Application*>(mlx)->loopHook(f, param);
 		return 0;
 	}
+
+        void	mlx_set_window_position(void *mlx, void *win, int x, int y)
+        {
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		static_cast<mlx::core::Application*>(mlx)->setWindowPosition(win, x, y);
+        }
 
 	int mlx_loop(void* mlx)
 	{
