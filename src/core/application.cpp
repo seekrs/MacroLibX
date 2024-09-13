@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 22:10:52 by maldavid          #+#    #+#             */
-/*   Updated: 2024/04/21 18:13:29 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/04/24 13:52:18 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ namespace mlx::core
 
 	void Application::run() noexcept
 	{
+		_in->run();
 		while(_in->isRunning())
 		{
 			if(!_fps.update())
@@ -107,7 +108,10 @@ namespace mlx::core
 		else
 			texture->destroy();
 		for(auto& gs : _graphics)
-			gs->tryEraseTextureFromManager(texture);
+		{
+			if(gs)
+				gs->tryEraseTextureFromManager(texture);
+		}
 		_textures.erase(it);
 	}
 
