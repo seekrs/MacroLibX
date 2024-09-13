@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <SDL2/SDL_video.h>
+#include <algorithm>
 #include <core/application.h>
 
 #define CHECK_WINDOW_PTR(win) \
@@ -69,6 +71,17 @@ namespace mlx::core
 		}
 		_in->onEvent(_graphics[*static_cast<int*>(win)]->getWindow()->getID(), event, funct_ptr, param);
 	}
+
+	void Application::setWindowPosition(void* win, int x, int y)
+	{
+		CHECK_WINDOW_PTR(win);
+		if(!_graphics[*static_cast<int*>(win)]->hasWindow())
+		{
+			error::report(e_kind::warning, "trying to move a window that is targeting an image and not a real window, this is not allowed");
+			return;
+		}
+		SDL_SetWindowPosition(_graphics[*static_cast<int*>(win)]->getWindow()->getNativeWindow(), x, y);
+        }
 
 	void Application::getScreenSize(void* win, int* w, int* h) noexcept
 	{

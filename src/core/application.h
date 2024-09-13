@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:49:46 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/26 11:26:54 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/09/12 01:30:35 by tdelage          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ namespace mlx::core
 			inline void* newGraphicsSuport(std::size_t w, std::size_t h, const char* title);
 			inline void clearGraphicsSupport(void* win);
 			inline void destroyGraphicsSupport(void* win);
+			inline void setWindowPosition(void *win, int x, int y);
 
 			inline void pixelPut(void* win, int x, int y, std::uint32_t color) const noexcept;
 			inline void stringPut(void* win, int x, int y, std::uint32_t color, char* str);
