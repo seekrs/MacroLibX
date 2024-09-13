@@ -42,6 +42,9 @@ namespace mlx
 
 		Window window(1, 1, "", true);
 		std::vector<const char*> instance_extentions = window.GetRequiredVulkanInstanceExtentions();
+		#ifdef MLX_PLAT_MACOS
+			instance_extentions.push_back(VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME);
+		#endif
 
 		m_instance = kvfCreateInstance(instance_extensions.data(), instance_extensions.size());
 		DebugLog("Vulkan : instance created");
