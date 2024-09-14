@@ -1,21 +1,9 @@
---------------------------------------------------------------------------------
---                                                                            --
---                                                        :::      ::::::::   --
---   xmake.lua                                          :+:      :+:    :+:   --
---                                                    +:+ +:+         +:+     --
---   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        --
---                                                +#+#+#+#+#+   +#+           --
---   Created: 2023/12/07 15:21:38 by kbz_8             #+#    #+#             --
---   Updated: 2024/01/02 23:40:20 by kbz_8            ###   ########.fr       --
---                                                                            --
---------------------------------------------------------------------------------
-
 -- Global settings
 
-add_requires("libsdl", {configs = { sdlmain = false }})
+add_requires("libsdl", { configs = { sdlmain = false }})
 
 add_rules("mode.debug", "mode.release")
-set_languages("cxx17", "c99")
+set_languages("cxx20", "c99")
 
 set_objectdir("objs/xmake/$(os)_$(arch)")
 set_targetdir("./")
