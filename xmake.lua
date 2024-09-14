@@ -50,7 +50,7 @@ target("mlx")
 	add_options("force_wayland")
 	add_includedirs("runtime/Includes", "runtime/Sources", "includes", "third_party")
 
-	set_pcxxheader("runtime/Sources/PreCompiled.h")
+	set_pcxxheader("runtime/Includes/PreCompiled.h")
 
 	add_defines("MLX_BUILD", "SDL_MAIN_HANDLED")
 
