@@ -153,8 +153,6 @@ namespace mlx
 			{
 				double s, c;
 				::sincos(x, &s, &c);
-
-
 				*sin = static_cast<T>(s);
 				*cos = static_cast<T>(c);
 			}

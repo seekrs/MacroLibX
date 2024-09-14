@@ -3,8 +3,6 @@
 
 #define VK_NO_PROTOTYPES
 
-#define Window X11Window // f*ck X11
-
 #include <mlx_profile.h>
 #include <mlx.h>
 #include <cstdio>
@@ -13,9 +11,6 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_vulkan.h>
-
-#include <Renderer/Vulkan/VulkanPrototypes.h>
-#include <kvf.h>
 
 #include <functional>
 #include <memory>
@@ -47,6 +42,7 @@
 #include <iterator>
 #include <stb_truetype.h>
 #include <variant>
+
 #if defined(MLX_PLAT_LINUX)
 	#include <math.h> // sincos
 #endif
@@ -69,7 +65,11 @@
 	#include <vma.h>
 #endif
 
-#undef Window
+#include <Utils/AntiX11.h>
+#include <Utils/AntiWindows.h>
+
+#include <Renderer/Vulkan/VulkanPrototypes.h>
+#include <kvf.h>
 
 #include <Core/Logs.h>
 #include <Core/EventBus.h>
