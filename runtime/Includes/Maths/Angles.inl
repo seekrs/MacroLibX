@@ -147,27 +147,37 @@ namespace mlx
 			}
 		};
 
-		template<typename T>
-		void SinCos(T x, T* sin, T* cos)
-		{
-			double s, c;
-			::sincos(x, &s, &c);
+		#ifdef MLX_PLAT_LINUX
+			template<typename T>
+			void SinCos(T x, T* sin, T* cos)
+			{
+				double s, c;
+				::sincos(x, &s, &c);
 
-			*sin = static_cast<T>(s);
-			*cos = static_cast<T>(c);
-		}
 
-		template<>
-		inline void SinCos(float x, float* s, float* c)
-		{
-			::sincosf(x, s, c);
-		}
+				*sin = static_cast<T>(s);
+				*cos = static_cast<T>(c);
+			}
 
-		template<>
-		inline void SinCos(long double x, long double* s, long double* c)
-		{
-			::sincosl(x, s, c);
-		}
+			template<>
+			inline void SinCos(float x, float* s, float* c)
+			{
+				::sincosf(x, s, c);
+			}
+
+			template<>
+			inline void SinCos(long double x, long double* s, long double* c)
+			{
+				::sincosl(x, s, c);
+			}
+		#else
+			template<typename T>
+			void SinCos(T x, T* sin, T* cos)
+			{
+				*sin = std::sin(x);
+				*cos = std::cos(x);
+			}
+		#endif
 	}
 
 	template<AngleUnit Unit, typename T>

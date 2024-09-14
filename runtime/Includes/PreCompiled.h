@@ -47,7 +47,7 @@
 #include <iterator>
 #include <stb_truetype.h>
 #include <variant>
-#if defined(MLX_PLAT_MACOS) || defined(MLX_PLAT_LINUX) || defined(MLX_PLAT_UNIX)
+#if defined(MLX_PLAT_LINUX)
 	#include <math.h> // sincos
 #endif
 
