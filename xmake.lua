@@ -46,13 +46,15 @@ target("mlx")
 	add_options("images_optimized")
 	add_options("force_integrated_gpu")
 	add_options("graphics_memory_dump")
-	add_includedirs("runtime/Includes", "runtime/Sources", "third_party")
+	add_options("profiler")
+	add_options("force_wayland")
+	add_includedirs("runtime/Includes", "runtime/Sources", "includes", "third_party")
 
 	set_pcxxheader("runtime/Sources/PreCompiled.h")
 
 	add_defines("MLX_BUILD", "SDL_MAIN_HANDLED")
 
-	add_files("src/**.cpp")
+	add_files("runtime/Sources/**.cpp")
 
 	add_packages("libsdl")
 
