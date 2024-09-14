@@ -16,6 +16,7 @@ namespace mlx
 	NonOwningPtr<T>& NonOwningPtr<T>::operator=(T* ptr)
 	{
 		p_ptr = ptr;
+		return *this;
 	}
 
 	template<typename T>
@@ -23,6 +24,7 @@ namespace mlx
 	{
 		p_ptr = ptr.p_ptr;
 		ptr.p_ptr = nullptr;
+		return *this;
 	}
 
 	template<typename T>

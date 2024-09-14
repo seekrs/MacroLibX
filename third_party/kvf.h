@@ -134,7 +134,7 @@ void kvfDestroySemaphore(VkDevice device, VkSemaphore semaphore);
 #endif
 
 VkImage kvfCreateImage(VkDevice device, uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, KvfImageType type);
-void kvfImageToBuffer(VkCommandBuffer cmd, VkBuffer dst, VkImage src, size_t buffer_offset, VkImageAspectFlagBits aspect, VkExtent3D extent);
+void kvfCopyImageToBuffer(VkCommandBuffer cmd, VkBuffer dst, VkImage src, size_t buffer_offset, VkImageAspectFlagBits aspect, VkExtent3D extent);
 void kvfDestroyImage(VkDevice device, VkImage image);
 VkImageView kvfCreateImageView(VkDevice device, VkImage image, VkFormat format, VkImageViewType type, VkImageAspectFlags aspect, int layer_count);
 void kvfDestroyImageView(VkDevice device, VkImageView image_view);
@@ -970,6 +970,8 @@ const char* kvfVerbaliseVkResult(VkResult result)
 
 	VKAPI_ATTR VkBool32 VKAPI_CALL __kvfDebugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, void* pUserData)
 	{
+		(void)messageType;
+		(void)pUserData;
 		if(messageSeverity == VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT)
 		{
 			if(__kvf_validation_error_callback != NULL)
@@ -1138,7 +1140,7 @@ __KvfQueueFamilies __kvfFindQueueFamilies(VkPhysicalDevice physical, VkSurfaceKH
 	VkQueueFamilyProperties* queue_families = (VkQueueFamilyProperties*)KVF_MALLOC(sizeof(VkQueueFamilyProperties) * queue_family_count);
 	vkGetPhysicalDeviceQueueFamilyProperties(physical, &queue_family_count, queue_families);
 
-	for(int i = 0; i < queue_family_count; i++)
+	for(uint32_t i = 0; i < queue_family_count; i++)
 	{
 		// try to find a queue family index that supports compute but not graphics
 		if(queue_families[i].queueFlags & VK_QUEUE_COMPUTE_BIT && (queue_families[i].queueFlags & VK_QUEUE_GRAPHICS_BIT) == 0)
@@ -1201,10 +1203,10 @@ int32_t __kvfScorePhysicalDevice(VkPhysicalDevice device, VkSurfaceKHR surface, 
 	vkEnumerateDeviceExtensionProperties(device, NULL, &extension_count, props);
 
 	bool are_there_required_device_extensions = true;
-	for(int j = 0; j < device_extensions_count; j++)
+	for(uint32_t j = 0; j < device_extensions_count; j++)
 	{
 		bool is_there_extension = false;
-		for(int k = 0; k < extension_count; k++)
+		for(uint32_t k = 0; k < extension_count; k++)
 		{
 			if(strcmp(device_extensions[j], props[k].extensionName) == 0)
 			{
@@ -1270,7 +1272,7 @@ VkPhysicalDevice kvfPickGoodPhysicalDevice(VkInstance instance, VkSurfaceKHR sur
 	devices = (VkPhysicalDevice*)KVF_MALLOC(sizeof(VkPhysicalDevice) * device_count + 1);
 	vkEnumeratePhysicalDevices(instance, &device_count, devices);
 
-	for(int i = 0; i < device_count; i++)
+	for(uint32_t i = 0; i < device_count; i++)
 	{
 		int32_t current_device_score = __kvfScorePhysicalDevice(devices[i], surface, device_extensions, device_extensions_count);
 		if(current_device_score > best_device_score)
@@ -1465,7 +1467,6 @@ uint32_t kvfGetDeviceQueueFamily(VkDevice device, KvfQueueType queue)
 	KVF_ASSERT(device != VK_NULL_HANDLE);
 	__KvfDevice* kvfdevice = __kvfGetKvfDeviceFromVkDevice(device);
 	KVF_ASSERT(kvfdevice != NULL);
-	VkQueue vk_queue = VK_NULL_HANDLE;
 	if(queue == KVF_GRAPHICS_QUEUE)
 		return kvfdevice->queues.graphics;
 	else if(queue == KVF_PRESENT_QUEUE)
@@ -1508,7 +1509,7 @@ int32_t kvfFindDeviceQueueFamily(VkPhysicalDevice physical, KvfQueueType type)
 
 	int32_t queue = -1;
 
-	for(int i = 0; i < queue_family_count; i++)
+	for(uint32_t i = 0; i < queue_family_count; i++)
 	{
 		if(type == KVF_COMPUTE_QUEUE)
 		{
@@ -1546,7 +1547,7 @@ int32_t kvfFindDeviceQueueFamily(VkPhysicalDevice physical, KvfQueueType type)
 
 		int32_t queue = -1;
 
-		for(int i = 0; i < queue_family_count; i++)
+		for(uint32_t i = 0; i < queue_family_count; i++)
 		{
 			VkBool32 present_support = false;
 			vkGetPhysicalDeviceSurfaceSupportKHR(physical, i, surface, &present_support);
@@ -1629,7 +1630,7 @@ void kvfDestroySemaphore(VkDevice device, VkSemaphore semaphore)
 
 	VkSurfaceFormatKHR __kvfChooseSwapSurfaceFormat(__KvfSwapchainSupportInternal* support)
 	{
-		for(int i = 0; i < support->formats_count; i++)
+		for(uint32_t i = 0; i < support->formats_count; i++)
 		{
 			if(support->formats[i].format == VK_FORMAT_R8G8B8A8_SRGB && support->formats[i].colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR)
 				return support->formats[i];
@@ -1641,7 +1642,7 @@ void kvfDestroySemaphore(VkDevice device, VkSemaphore semaphore)
 	{
 		if(try_vsync == false)
 			return VK_PRESENT_MODE_IMMEDIATE_KHR;
-		for(int i = 0; i < support->presentModes_count; i++)
+		for(uint32_t i = 0; i < support->presentModes_count; i++)
 		{
 			if(support->presentModes[i] == VK_PRESENT_MODE_MAILBOX_KHR)
 				return support->presentModes[i];
@@ -1781,7 +1782,7 @@ VkImage kvfCreateImage(VkDevice device, uint32_t width, uint32_t height, VkForma
 	return image;
 }
 
-void kvfImageToBuffer(VkCommandBuffer cmd, VkBuffer dst, VkImage src, size_t buffer_offset, VkImageAspectFlagBits aspect, VkExtent3D extent)
+void kvfCopyImageToBuffer(VkCommandBuffer cmd, VkBuffer dst, VkImage src, size_t buffer_offset, VkImageAspectFlagBits aspect, VkExtent3D extent)
 {
 	KVF_ASSERT(cmd != VK_NULL_HANDLE);
 	KVF_ASSERT(dst != VK_NULL_HANDLE);
@@ -2286,7 +2287,7 @@ VkDescriptorSet kvfAllocateDescriptorSet(VkDevice device, VkDescriptorSetLayout 
 	__KvfDevice* kvf_device = __kvfGetKvfDeviceFromVkDevice(device);
 	KVF_ASSERT(kvf_device != NULL);
 	VkDescriptorPool pool = VK_NULL_HANDLE;
-	for(int i = 0; i < kvf_device->sets_pools_size; i++)
+	for(uint32_t i = 0; i < kvf_device->sets_pools_size; i++)
 	{
 		if(kvf_device->sets_pools[i].size < kvf_device->sets_pools[i].capacity)
 			pool = kvf_device->sets_pools[i].pool;
@@ -2397,7 +2398,7 @@ void kvfResetDeviceDescriptorPools(VkDevice device)
 	KVF_ASSERT(device != VK_NULL_HANDLE);
 	__KvfDevice* kvf_device = __kvfGetKvfDeviceFromVkDevice(device);
 	KVF_ASSERT(kvf_device != NULL);
-	for(int i = 0; i < kvf_device->sets_pools_size; i++)
+	for(uint32_t i = 0; i < kvf_device->sets_pools_size; i++)
 	{
 		vkResetDescriptorPool(device, kvf_device->sets_pools[i].pool, 0);
 		kvf_device->sets_pools[i].size = 0;

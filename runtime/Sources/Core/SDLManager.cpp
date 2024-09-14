@@ -56,10 +56,6 @@ namespace mlx
 		{
 			WatcherData* data = static_cast<WatcherData*>(userdata);
 
-			if(event->type == SDL_MOUSEMOTION) 
-			{
-			}
-
 			std::uint32_t id = event->window.windowID;
 			switch(event->type) 
 			{
@@ -102,6 +98,7 @@ namespace mlx
 
 			return 0;
 		}, &watcher_data);
+		DebugLog("SDL Manager initialized");
 	}
 
 	void* SDLManager::CreateWindow(const std::string& title, std::size_t w, std::size_t h, bool hidden)
@@ -162,11 +159,44 @@ namespace mlx
 		return Vec2ui{ extent };
 	}
 
+	std::int32_t SDLManager::GetX() const noexcept
+	{
+		int dummy;
+		int x;
+		SDL_GetMouseState(&x, &dummy);
+		return x;
+	}
+
+	std::int32_t SDLManager::GetY() const noexcept
+	{
+		int dummy;
+		int y;
+		SDL_GetMouseState(&dummy, &y);
+		return y;
+	}
+
+	std::int32_t SDLManager::GetXRel() const noexcept
+	{
+		int dummy;
+		int x;
+		SDL_GetRelativeMouseState(&x, &dummy);
+		return x;
+	}
+
+	std::int32_t SDLManager::GetYRel() const noexcept
+	{
+		int dummy;
+		int y;
+		SDL_GetRelativeMouseState(&dummy, &y);
+		return y;
+	}
+
 	void SDLManager::Shutdown() noexcept
 	{
 		if(m_drop_sdl_responsability)
 			return;
 		SDL_QuitSubSystem(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS);
 		SDL_Quit();
+		DebugLog("SDL Manager uninitialized");
 	}
 }

@@ -5,7 +5,7 @@
 #include <Renderer/Vertex.h>
 #include <Core/EventBus.h>
 
-namespace Scop
+namespace mlx
 {
 	void GraphicPipeline::Init(const GraphicPipelineDescriptor& descriptor)
 	{
@@ -39,7 +39,7 @@ namespace Scop
 		kvfGPipelineBuilderSetCullMode(builder, VK_CULL_MODE_NONE, VK_FRONT_FACE_CLOCKWISE);
 		kvfGPipelineBuilderEnableAlphaBlending(builder);
 		if(p_depth)
-			kvfGPipelineBuilderEnableDepthTest(builder, (descriptor.depth_test_equal ? VK_COMPARE_OP_EQUAL : VK_COMPARE_OP_LESS), true);
+			kvfGPipelineBuilderEnableDepthTest(builder, VK_COMPARE_OP_LESS, true);
 		else
 			kvfGPipelineBuilderDisableDepthTest(builder);
 		kvfGPipelineBuilderSetPolygonMode(builder, VK_POLYGON_MODE_FILL, 1.0f);
@@ -80,7 +80,7 @@ namespace Scop
 		scissor.extent = fb_extent;
 		vkCmdSetScissor(command_buffer, 0, 1, &scissor);
 
-		for(int i = 0; i < m_clears.size(); i++)
+		for(std::size_t i = 0; i < m_clears.size(); i++)
 		{
 			m_clears[i].color.float32[0] = clear[0];
 			m_clears[i].color.float32[1] = clear[1];

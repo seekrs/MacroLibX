@@ -41,7 +41,7 @@ namespace mlx
 		std::vector<std::uint8_t> fragment_shader_code = {
 			#include <Embedded/2DFragment.spv.h>
 		};
-		p_fragment_shader = std::make_shared<Shader>(fragment_shader, ShaderType::Fragment, std::move(fragment_shader_layout));
+		p_fragment_shader = std::make_shared<Shader>(fragment_shader_code, ShaderType::Fragment, std::move(fragment_shader_layout));
 
 		func::function<void(const EventBase&)> functor = [this](const EventBase& event)
 		{
@@ -50,7 +50,7 @@ namespace mlx
 			if(event.What() == Event::DescriptorPoolResetEventCode)
 			{
 				p_texture_set->Reallocate();
-				p_viewer_data_set.Reallocate();
+				p_viewer_data_set->Reallocate();
 				for(std::size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
 				{
 					p_viewer_data_set->SetUniformBuffer(i, 0, p_viewer_data_buffer->Get(i));
@@ -64,7 +64,7 @@ namespace mlx
 		p_texture_set = std::make_shared<DescriptorSet>(p_fragment_shader->GetShaderLayout().set_layouts[0].second, p_fragment_shader->GetPipelineLayout().set_layouts[0], ShaderType::Fragment);
 
 		p_viewer_data_buffer = std::make_shared<UniformBuffer>();
-		p_viewer_data_buffer->Init(sizeof(ViewerData2D));
+		p_viewer_data_buffer->Init(sizeof(ViewerData));
 		for(std::size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
 		{
 			p_viewer_data_set->SetUniformBuffer(i, 0, p_viewer_data_buffer->Get(i));
@@ -80,7 +80,7 @@ namespace mlx
 			pipeline_descriptor.vertex_shader = p_vertex_shader;
 			pipeline_descriptor.fragment_shader = p_fragment_shader;
 			pipeline_descriptor.color_attachments = { &render_target };
-			pipeline_descriptor.depth = scene.GetDepth();
+			pipeline_descriptor.depth = &scene.GetDepth();
 			pipeline_descriptor.clear_color_attachments = false;
 			m_pipeline.Init(pipeline_descriptor);
 		}
@@ -88,8 +88,8 @@ namespace mlx
 		std::uint32_t frame_index = renderer.GetCurrentFrameIndex();
 
 		ViewerData viewer_data;
-		viewer_data.projection = Mat4f::Ortho(0.0f, render_target.GetWidth(), render_target.GetHeight(), 0.0f);
-		static CPUBuffer buffer(sizeof(ViewerData2D));
+		viewer_data.projection_matrix = Mat4f::Ortho(0.0f, render_target.GetWidth(), render_target.GetHeight(), 0.0f);
+		static CPUBuffer buffer(sizeof(ViewerData));
 		std::memcpy(buffer.GetData(), &viewer_data, buffer.GetSize());
 		p_viewer_data_buffer->SetData(buffer, frame_index);
 

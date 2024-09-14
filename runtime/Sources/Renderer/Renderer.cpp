@@ -36,21 +36,20 @@ namespace mlx
 
 		p_window = window;
 
-		auto& render_core = RenderCore::Get();
-		m_surface = p_window->CreateVulkanSurface(render_core::GetInstance());
+		m_surface = p_window->CreateVulkanSurface(RenderCore::Get().GetInstance());
 		DebugLog("Vulkan : surface created");
 
 		CreateSwapchain();
 
 		for(std::size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
 		{
-			m_image_available_semaphores[i] = kvfCreateSemaphore(render_core.GetDevice());
+			m_image_available_semaphores[i] = kvfCreateSemaphore(RenderCore::Get().GetDevice());
 			DebugLog("Vulkan : image available semaphore created");
-			m_render_finished_semaphores[i] = kvfCreateSemaphore(render_core.GetDevice());
+			m_render_finished_semaphores[i] = kvfCreateSemaphore(RenderCore::Get().GetDevice());
 			DebugLog("Vulkan : render finished semaphore created");
-			m_cmd_buffers[i] = kvfCreateCommandBuffer(render_core.GetDevice());
+			m_cmd_buffers[i] = kvfCreateCommandBuffer(RenderCore::Get().GetDevice());
 			DebugLog("Vulkan : command buffer created");
-			m_cmd_fences[i] = kvfCreateFence(render_core.GetDevice());
+			m_cmd_fences[i] = kvfCreateFence(RenderCore::Get().GetDevice());
 			DebugLog("Vulkan : fence created");
 		}
 	}
@@ -124,21 +123,20 @@ namespace mlx
 
 	void Renderer::Destroy() noexcept
 	{
-		auto& render_core = RenderCore::Get();
-		render_core.WaitDeviceIdle();
+		RenderCore::Get().WaitDeviceIdle();
 
 		for(std::size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
 		{
-			kvfDestroySemaphore(render_core.GetDevice(), m_image_available_semaphores[i]);
+			kvfDestroySemaphore(RenderCore::Get().GetDevice(), m_image_available_semaphores[i]);
 			DebugLog("Vulkan : image available semaphore destroyed");
-			kvfDestroySemaphore(render_core.GetDevice(), m_render_finished_semaphores[i]);
+			kvfDestroySemaphore(RenderCore::Get().GetDevice(), m_render_finished_semaphores[i]);
 			DebugLog("Vulkan : render finished semaphore destroyed");
-			kvfDestroyFence(render_core.GetDevice(), m_cmd_fences[i]);
+			kvfDestroyFence(RenderCore::Get().GetDevice(), m_cmd_fences[i]);
 			DebugLog("Vulkan : fence destroyed");
 		}
 
 		DestroySwapchain();
-		vkDestroySurfaceKHR(render_core.GetInstance(), m_surface, nullptr);
+		vkDestroySurfaceKHR(RenderCore::Get().GetInstance(), m_surface, nullptr);
 		DebugLog("Vulkan : surface destroyed");
 		m_surface = VK_NULL_HANDLE;
 	}

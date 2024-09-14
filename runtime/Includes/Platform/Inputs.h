@@ -19,7 +19,7 @@ namespace mlx
 		public:
 			Inputs();
 
-			void RegisterWindow(std::shared_ptr<Window> window);
+			inline void RegisterWindow(std::shared_ptr<Window> window) { m_windows[window->GetID()] = window; }
 
 			std::int32_t GetX() const noexcept;
 			std::int32_t GetY() const noexcept;

@@ -111,7 +111,7 @@ namespace mlx
 			void SetPixel(int x, int y, std::uint32_t color) noexcept;
 			int GetPixel(int x, int y) noexcept;
 
-			void Update(VkCommandBuffer cmd) const;
+			void Update(VkCommandBuffer cmd);
 
 			~Texture() override { Destroy(); }
 
