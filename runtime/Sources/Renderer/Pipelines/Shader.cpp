@@ -2,9 +2,9 @@
 #include <Renderer/Pipelines/Shader.h>
 #include <Renderer/RenderCore.h>
 
-namespace Scop
+namespace mlx
 {
-	Shader::Shader(const std::vector<std::uint8_t>& bytecode, ShaderType type, ShaderLayout layout) : m_bytecode(bytecode), m_layout(std::move(layout))
+	Shader::Shader(const std::vector<std::uint8_t>& bytecode, ShaderType type, ShaderLayout layout) : m_layout(std::move(layout)), m_bytecode(bytecode)
 	{
 		switch(type)
 		{
@@ -14,7 +14,7 @@ namespace Scop
 
 			default : FatalError("wtf"); break;
 		}
-		m_module = kvfCreateShaderModule(RenderCore::Get().GetDevice(), m_bytecode.data(), m_bytecode.size() * 4);
+		m_module = kvfCreateShaderModule(RenderCore::Get().GetDevice(), reinterpret_cast<std::uint32_t*>(m_bytecode.data()), m_bytecode.size() * 4);
 		DebugLog("Vulkan : shader module created");
 
 		GeneratePipelineLayout(m_layout);
@@ -62,22 +62,5 @@ namespace Scop
 			kvfDestroyDescriptorSetLayout(RenderCore::Get().GetDevice(), layout);
 			DebugLog("Vulkan : descriptor set layout destroyed");
 		}
-	}
-
-	std::shared_ptr<Shader> LoadShaderFromFile(const std::filesystem::path& filepath, ShaderType type, ShaderLayout layout)
-	{
-		std::ifstream stream(filepath, std::ios::binary);
-		if(!stream.is_open())
-			FatalError("Renderer : unable to open a spirv shader file, %", filepath);
-		std::vector<std::uint32_t> data;
-		stream.seekg(0);
-		std::uint32_t part = 0;
-		while(stream.read(reinterpret_cast<char*>(&part), sizeof(part)))
-			data.push_back(part);
-		stream.close();
-
-		std::shared_ptr<Shader> shader = std::make_shared<Shader>(data, type, layout);
-		DebugLog("Vulkan : shader loaded %", filepath);
-		return shader;
 	}
 }

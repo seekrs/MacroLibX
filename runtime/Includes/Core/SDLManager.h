@@ -22,6 +22,11 @@ namespace mlx
 
 			inline void SetEventCallback(func::function<void(mlx_event_type, int, int, void*)> functor, void* userdata) { f_callback = std::move(functor); p_callback_data = userdata; }
 
+			std::int32_t GetX() const noexcept;
+			std::int32_t GetY() const noexcept;
+			std::int32_t GetXRel() const noexcept;
+			std::int32_t GetYRel() const noexcept;
+
 		private:
 			SDLManager() = default;
 			~SDLManager() = default;

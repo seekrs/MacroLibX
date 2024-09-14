@@ -3,6 +3,16 @@
 #include <Maths/Vec4.h>
 #include <Renderer/RenderCore.h>
 
+#define STB_IMAGE_IMPLEMENTATION
+#ifdef MLX_COMPILER_GCC
+	#pragma GCC diagnostic push
+	#pragma GCC diagnostic ignored "-Wstringop-overflow"
+		#include <stb_image.h>
+	#pragma GCC diagnostic pop
+#else
+	#include <stb_image.h>
+#endif
+
 namespace mlx
 {
 	void Image::Init(ImageType type, std::uint32_t width, std::uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, bool is_multisampled)
@@ -31,7 +41,7 @@ namespace mlx
 		image_info.usage = usage;
 		image_info.samples = (m_is_multisampled ? VK_SAMPLE_COUNT_4_BIT : VK_SAMPLE_COUNT_1_BIT);
 		image_info.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
-		m_allocation = RenderCore::Get().GetAllocator().CreateImage(&image_info, alloc_info, &m_image);
+		m_allocation = RenderCore::Get().GetAllocator().CreateImage(&image_info, &alloc_info, m_image);
 	}
 
 	void Image::CreateImageView(VkImageViewType type, VkImageAspectFlags aspect_flags, int layer_count) noexcept
@@ -77,11 +87,11 @@ namespace mlx
 	{
 		VkImageSubresourceRange subresource_range{};
 		subresource_range.baseMipLevel = 0;
-		subresource_range.layerCount = (m_type == ImageType::Cube ? 6 : 1);
+		subresource_range.layerCount = 1;
 		subresource_range.levelCount = 1;
 		subresource_range.baseArrayLayer = 0;
 
-		if(m_type == ImageType::Color || m_type == ImageType::Cube)
+		if(m_type == ImageType::Color)
 		{
 			VkImageLayout old_layout = m_layout;
 			TransitionLayout(VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, cmd);
@@ -134,10 +144,10 @@ namespace mlx
 		m_has_been_modified = true;
 	}
 
-	int GetPixel(int x, int y) noexcept
+	int Texture::GetPixel(int x, int y) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
-		if(x < 0 || y < 0 || static_cast<std::uint32_t>(x) > getWidth() || static_cast<std::uint32_t>(y) > getHeight())
+		if(x < 0 || y < 0 || static_cast<std::uint32_t>(x) > m_width || static_cast<std::uint32_t>(y) > m_height)
 			return 0;
 		if(!m_staging_buffer.has_value())
 			OpenCPUBuffer();
@@ -149,22 +159,16 @@ namespace mlx
 		return *reinterpret_cast<int*>(bytes);
 	}
 
-	void Update(VkCommandBuffer cmd) const
+	void Texture::Update(VkCommandBuffer cmd)
 	{
 		if(!m_has_been_modified)
 			return;
-		std::memcpy(m_staging_buffer.GetMap(), m_cpu_buffer.data(), m_cpu_buffer.size() * kvfGetFormatSize(m_format));
+		std::memcpy(m_staging_buffer->GetMap(), m_cpu_buffer.data(), m_cpu_buffer.size() * kvfFormatSize(m_format));
 
 		VkImageLayout old_layout = m_layout;
-		VkCommandBuffer cmd = kvfCreateCommandBuffer(RenderCore::Get().GetDevice());
-		kvfBeginCommandBuffer(cmd, VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT);
 		TransitionLayout(VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, cmd);
-		kvfCopyBufferToImage(cmd, Image::Get(), staging_buffer.Get(), staging_buffer.GetOffset(), VK_IMAGE_ASPECT_COLOR_BIT, { width, height, 1 });
+		kvfCopyBufferToImage(cmd, Image::Get(), m_staging_buffer->Get(), m_staging_buffer->GetOffset(), VK_IMAGE_ASPECT_COLOR_BIT, { m_width, m_height, 1 });
 		TransitionLayout(old_layout, cmd);
-		vkEndCommandBuffer(cmd);
-		VkFence fence = kvfCreateFence(RenderCore::Get().GetDevice());
-		kvfSubmitSingleTimeCommandBuffer(RenderCore::Get().GetDevice(), cmd, KVF_GRAPHICS_QUEUE, fence);
-		kvfDestroyFence(RenderCore::Get().GetDevice(), fence);
 
 		m_has_been_modified = false;
 	}
@@ -176,14 +180,14 @@ namespace mlx
 			return;
 		DebugLog("Texture : enabling CPU mapping");
 		m_staging_buffer.emplace();
-		std::size_t size = m_width * m_height * kvfGetFormatSize(m_format);
+		std::size_t size = m_width * m_height * kvfFormatSize(m_format);
 		m_staging_buffer->Init(BufferType::Staging, size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT, {});
 
 		VkImageLayout old_layout = m_layout;
 		VkCommandBuffer cmd = kvfCreateCommandBuffer(RenderCore::Get().GetDevice());
 		kvfBeginCommandBuffer(cmd, VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT);
 		TransitionLayout(VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, cmd);
-		kvfImageToBuffer(cmd, m_image, m_staging_buffer.Get(), m_staging_buffer.GetOffset(), VK_IMAGE_ASPECT_COLOR_BIT, { m_width, m_height, 1 });
+		kvfCopyImageToBuffer(cmd, m_staging_buffer->Get(), m_image, m_staging_buffer->GetOffset(), VK_IMAGE_ASPECT_COLOR_BIT, { m_width, m_height, 1 });
 		TransitionLayout(old_layout, cmd);
 		vkEndCommandBuffer(cmd);
 		VkFence fence = kvfCreateFence(RenderCore::Get().GetDevice());
@@ -191,7 +195,7 @@ namespace mlx
 		kvfDestroyFence(RenderCore::Get().GetDevice(), fence);
 
 		m_cpu_buffer.resize(m_width * m_height);
-		std::memcpy(m_cpu_buffer.data(), m_staging_buffer.GetMap(), m_cpu_buffer.size());
+		std::memcpy(m_cpu_buffer.data(), m_staging_buffer->GetMap(), m_cpu_buffer.size());
 	}
 
 	Texture* StbTextureLoad(const std::filesystem::path& file, int* w, int* h)

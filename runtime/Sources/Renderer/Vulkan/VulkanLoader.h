@@ -1,7 +1,9 @@
 #ifndef __MLX_VULKAN_LOADER__
 #define __MLX_VULKAN_LOADER__
 
-#ifdef _WIN32
+#include <mlx_profile.h>
+
+#ifdef MLX_PLAT_WINDOWS
 	typedef const char* LPCSTR;
 	typedef struct HINSTANCE__* HINSTANCE;
 	typedef HINSTANCE HMODULE;
@@ -31,7 +33,7 @@ namespace mlx
 			void LoadDeviceFunctions(void* context, PFN_vkVoidFunction (*load)(void*, const char*)) noexcept;
 
 		private:
-			#ifdef _WIN32
+			#ifdef MLX_PLAT_WINDOWS
 				HMODULE p_module = nullptr;
 			#else
 				Handle p_module = nullptr;

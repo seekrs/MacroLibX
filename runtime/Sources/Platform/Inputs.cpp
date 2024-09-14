@@ -15,4 +15,24 @@ namespace mlx
 			m_events_hooks[window_id][event].hook(code, m_events_hooks[window_id][event].param);
 		}, nullptr);
 	}
+
+	std::int32_t Inputs::GetX() const noexcept
+	{
+		return SDLManager::Get().GetX();
+	}
+
+	std::int32_t Inputs::GetY() const noexcept
+	{
+		return SDLManager::Get().GetY();
+	}
+
+	std::int32_t Inputs::GetXRel() const noexcept
+	{
+		return SDLManager::Get().GetXRel();
+	}
+
+	std::int32_t Inputs::GetYRel() const noexcept
+	{
+		return SDLManager::Get().GetYRel();
+	}
 }

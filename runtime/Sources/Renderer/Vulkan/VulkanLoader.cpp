@@ -1,7 +1,7 @@
 #include <PreCompiled.h>
 #include <Renderer/Vulkan/VulkanLoader.h>
 
-#ifdef _WIN32
+#ifdef MLX_PLAT_WINDOWS
 	__declspec(dllimport) HMODULE __stdcall LoadLibraryA(LPCSTR);
 	__declspec(dllimport) FARPROC __stdcall GetProcAddress(HMODULE, LPCSTR);
 	__declspec(dllimport) int __stdcall FreeLibrary(HMODULE);
@@ -22,20 +22,20 @@ namespace mlx
 {
 	namespace Internal
 	{
-		static PFN_vkVoidFunction vkGetInstanceProcAddrStub(Handle context, const char* name)
+		static inline PFN_vkVoidFunction vkGetInstanceProcAddrStub(Handle context, const char* name)
 		{
-			return vkGetInstanceProcAddr((VkInstance)context, name);
+			return vkGetInstanceProcAddr(static_cast<VkInstance>(context), name);
 		}
 	}
 
 	VulkanLoader::VulkanLoader()
 	{
-		#if defined(_WIN32)
+		#if defined(MLX_PLAT_WINDOWS)
 			p_module = LoadLibraryA("vulkan-1.dll");
 			if(!p_module)
 				FatalError("Vulkan loader : failed to load libvulkan");
 			vkGetInstanceProcAddr = (PFN_vkGetInstanceProcAddr)(void(*)(void))GetProcAddress(p_module, "vkGetInstanceProcAddr");
-		#elif defined(__APPLE__)
+		#elif defined(MLX_PLAT_MACOS)
 			p_module = dlopen("libvulkan.dylib", RTLD_NOW | RTLD_LOCAL);
 			if(!p_module)
 				p_module = dlopen("libvulkan.1.dylib", RTLD_NOW | RTLD_LOCAL);
@@ -55,16 +55,18 @@ namespace mlx
 				p_module = dlopen("/usr/local/lib/libvulkan.dylib", RTLD_NOW | RTLD_LOCAL);
 			if(!p_module)
 				FatalError("Vulkan loader : failed to load libvulkan");
-
-			vkGetInstanceProcAddr = (PFN_vkGetInstanceProcAddr)dlsym(p_module, "vkGetInstanceProcAddr");
+			void* symbol_ptr = dlsym(p_module, "vkGetInstanceProcAddr");
+			*(void**)(&vkGetInstanceProcAddr) = symbol_ptr;
 		#else
+			dlerror();
 			p_module = dlopen("libvulkan.so.1", RTLD_NOW | RTLD_LOCAL);
 			if(!p_module)
 				p_module = dlopen("libvulkan.so", RTLD_NOW | RTLD_LOCAL);
 			if(!p_module)
-				FatalError("Vulkan loader : failed to load libvulkan");
+				FatalError("Vulkan loader : failed to load libvulkan due to %", dlerror());
 			DISABLE_GCC_PEDANTIC_WARNINGS
-			vkGetInstanceProcAddr = (PFN_vkGetInstanceProcAddr)dlsym(p_module, "vkGetInstanceProcAddr");
+			void* symbol_ptr = dlsym(p_module, "vkGetInstanceProcAddr");
+			*(void**)(&vkGetInstanceProcAddr) = symbol_ptr;
 			RESTORE_GCC_PEDANTIC_WARNINGS
 		#endif
 		DebugLog("Vulkan loader : libvulkan loaded");
@@ -251,7 +253,7 @@ namespace mlx
 
 	VulkanLoader::~VulkanLoader()
 	{
-		#if defined(_WIN32)
+		#if defined(MLX_PLAT_WINDOWS)
 			FreeLibrary((HMODULE)p_module);
 		#else
 			dlclose(p_module);

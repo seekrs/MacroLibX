@@ -21,7 +21,6 @@ namespace mlx
 			[[nodiscard]] MLX_FORCEINLINE VkPhysicalDevice GetPhysicalDevice() const noexcept { return m_physical_device; }
 			[[nodiscard]] MLX_FORCEINLINE GPUAllocator& GetAllocator() noexcept { return m_allocator; }
 
-
 			inline void WaitDeviceIdle() const noexcept { vkDeviceWaitIdle(m_device); }
 
 		private:

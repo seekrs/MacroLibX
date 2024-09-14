@@ -14,6 +14,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_vulkan.h>
 
+#include <Renderer/Vulkan/VulkanPrototypes.h>
 #include <kvf.h>
 
 #include <functional>
@@ -71,7 +72,6 @@
 #include <Core/EventBus.h>
 #include <Core/Profiler.h>
 #include <Utils/NonOwningPtr.h>
-#include <Renderer/Vulkan/VulkanPrototypes.h>
 
 using Handle = void*;
 

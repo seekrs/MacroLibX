@@ -4,7 +4,7 @@
 #include <Graphics/Scene.h>
 #include <Renderer/ViewerData.h>
 
-namespacemlx
+namespace mlx
 {
 	void SceneRenderer::Init()
 	{

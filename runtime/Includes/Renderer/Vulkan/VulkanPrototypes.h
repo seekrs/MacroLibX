@@ -1,5 +1,5 @@
-#ifndef __SCOP_VK_PROTOTYPES__
-#define __SCOP_VK_PROTOTYPES__
+#ifndef __MLX_VK_PROTOTYPES__
+#define __MLX_VK_PROTOTYPES__
 
 #if defined(VULKAN_H_) && !defined(VK_NO_PROTOTYPES)
 	#error "define VK_NO_PROTOTYPES needed"

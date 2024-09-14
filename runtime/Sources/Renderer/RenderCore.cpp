@@ -12,28 +12,30 @@
 
 namespace mlx
 {
-	static VulkanLoader loader;
+	static std::unique_ptr<VulkanLoader> loader;
 
 	void ErrorCallback(const char* message) noexcept
 	{
-		FatalError(message);
+		FatalError(message, 0, "", "");
 		std::cout << std::endl;
 	}
 
 	void ValidationErrorCallback(const char* message) noexcept
 	{
-		Error(message);
+		Error(message, 0, "", "");
 		std::cout << std::endl;
 	}
 
 	void ValidationWarningCallback(const char* message) noexcept
 	{
-		Warning(message);
+		Warning(message, 0, "", "");
 		std::cout << std::endl;
 	}
 
 	void RenderCore::Init() noexcept
 	{
+		loader = std::make_unique<VulkanLoader>();
+
 		kvfSetErrorCallback(&ErrorCallback);
 		kvfSetValidationErrorCallback(&ValidationErrorCallback);
 		kvfSetValidationWarningCallback(&ValidationWarningCallback);
@@ -41,15 +43,15 @@ namespace mlx
 		//kvfAddLayer("VK_LAYER_MESA_overlay");
 
 		Window window(1, 1, "", true);
-		std::vector<const char*> instance_extentions = window.GetRequiredVulkanInstanceExtentions();
+		std::vector<const char*> instance_extensions = window.GetRequiredVulkanInstanceExtentions();
 		#ifdef MLX_PLAT_MACOS
-			instance_extentions.push_back(VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME);
+			instance_extensions.push_back(VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME);
 		#endif
 
 		m_instance = kvfCreateInstance(instance_extensions.data(), instance_extensions.size());
 		DebugLog("Vulkan : instance created");
 
-		loader.LoadInstance(m_instance);
+		loader->LoadInstance(m_instance);
 
 		VkSurfaceKHR surface = window.CreateVulkanSurface(m_instance);
 
@@ -77,5 +79,6 @@ namespace mlx
 		DebugLog("Vulkan : logical device destroyed");
 		kvfDestroyInstance(m_instance);
 		DebugLog("Vulkan : instance destroyed");
+		loader.reset();
 	}
 }
