@@ -159,6 +159,20 @@ namespace mlx
 		return Vec2ui{ extent };
 	}
 
+	void SDLManager::MoveMouseOnWindow(Handle window, int x, int y) const noexcept
+	{
+		SDL_WarpMouseInWindow(static_cast<SDL_Window*>(window), x, y);
+		SDL_PumpEvents();
+	}
+
+	void SDLManager::GetScreenSizeWindowIsOn(Handle window, int* x, int* y) const noexcept
+	{
+		SDL_DisplayMode DM;
+		SDL_GetDesktopDisplayMode(SDL_GetWindowDisplayIndex(static_cast<SDL_Window*>(window)), &DM);
+		*x = DM.w;
+		*y = DM.h;
+	}
+
 	std::int32_t SDLManager::GetX() const noexcept
 	{
 		int dummy;

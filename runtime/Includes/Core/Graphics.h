@@ -46,9 +46,6 @@ namespace mlx
 
 			std::uint64_t m_current_depth = 0;
 
-			std::size_t m_width = 0;
-			std::size_t m_height = 0;
-
 			int m_id;
 
 			bool m_has_window;

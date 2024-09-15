@@ -42,6 +42,10 @@
 #include <iterator>
 #include <stb_truetype.h>
 #include <variant>
+#include <type_traits>
+#include <string_view>
+#include <sstream>
+#include <ostream>
 
 #ifndef MLX_PLAT_WINDOWS
 	#include <dlfcn.h>

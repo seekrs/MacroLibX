@@ -7,10 +7,14 @@
 
 static void* __mlx_ptr = nullptr;
 
-#define MLX_CHECK_APPLICATION_POINTER(ptr) \
-	if(ptr != __mlx_ptr || ptr == NULL) \
-		mlx::FatalError("invalid mlx pointer passed to '%'", MLX_FUNC_SIG); \
-	else {} // just to avoid issues with possible if-else statements outside this macro
+#ifndef DISABLE_ALL_SAFETIES
+	#define MLX_CHECK_APPLICATION_POINTER(ptr) \
+		if(ptr != __mlx_ptr || ptr == NULL) \
+			mlx::FatalError("invalid mlx pointer passed to '%'", MLX_FUNC_SIG); \
+		else {} // just to avoid issues with possible if-else statements outside this macro
+#else
+	#define MLX_CHECK_APPLICATION_POINTER(ptr)
+#endif
 
 extern "C"
 {

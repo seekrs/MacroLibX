@@ -1,9 +1,6 @@
 #ifndef __MLX_FORMAT__
 #define __MLX_FORMAT__
 
-#include <type_traits>
-#include <string_view>
-
 namespace mlx
 {
 	template<typename T, typename = void>

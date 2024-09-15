@@ -37,6 +37,11 @@ option("force_wayland")
 	add_defines("FORCE_WAYLAND")
 option_end()
 
+option("disable_all_safeties")
+	set_default(false)
+	add_defines("DISABLE_ALL_SAFETIES")
+option_end()
+
 -- Targets
 
 target("mlx")
@@ -48,6 +53,8 @@ target("mlx")
 	add_options("graphics_memory_dump")
 	add_options("profiler")
 	add_options("force_wayland")
+	add_options("disable_all_safeties")
+
 	add_includedirs("runtime/Includes", "runtime/Sources", "includes", "third_party")
 
 	set_pcxxheader("runtime/Includes/PreCompiled.h")

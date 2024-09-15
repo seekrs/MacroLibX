@@ -1,7 +1,5 @@
 #pragma once
 #include <Core/Format.h>
-#include <sstream>
-#include <ostream>
 
 namespace mlx
 {

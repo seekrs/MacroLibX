@@ -8,6 +8,8 @@ IMAGES_OPTIMIZED ?= true
 FORCE_INTEGRATED_GPU ?= false
 GRAPHICS_MEMORY_DUMP ?= false
 PROFILER ?= false
+FORCE_WAYLAND ?= false
+DISABLE_ALL_SAFETIES ?= false
 _ENABLEDFLAGS =
 
 SRCS =  $(wildcard $(addsuffix /*.cpp, runtime/Sources/Core))
@@ -55,6 +57,14 @@ endif
 
 ifeq ($(PROFILER), true)
 	_ENABLEDFLAGS += PROFILER
+endif
+
+ifeq ($(FORCE_WAYLAND), true)
+	_ENABLEDFLAGS += FORCE_WAYLAND
+endif
+
+ifeq ($(DISABLE_ALL_SAFETIES), true)
+	_ENABLEDFLAGS += DISABLE_ALL_SAFETIES
 endif
 
 CXXFLAGS += $(addprefix -D, $(_ENABLEDFLAGS))
