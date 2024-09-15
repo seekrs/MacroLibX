@@ -45,6 +45,12 @@ extern "C"
 		return static_cast<mlx::Application*>(mlx)->NewGraphicsSuport(w, h, title);
 	}
 
+	void mlx_set_window_position(void *mlx, void *win, int x, int y)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		static_cast<mlx::Application*>(mlx)->SetGraphicsSupportPosition(win, x, y);
+	}
+
 	int	mlx_loop_hook(void* mlx, int (*f)(void*), void* param)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);

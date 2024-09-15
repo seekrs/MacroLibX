@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:56:35 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/18 14:36:12 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/09/15 09:23:48 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,17 @@ MLX_API void* mlx_init();
  */
 MLX_API void* mlx_new_window(void* mlx, int w, int h, const char* title);
 
+
+/**
+ * @brief			Creates a new window
+ *
+ * @param mlx		Internal MLX application
+ * @param win		Internal window to move
+ * @param x			New x position
+ * @param y			New y position
+ *
+ */
+MLX_API void mlx_set_window_position(void *mlx, void *win, int x, int y);
 
 /**
  * @brief			Gives a function to be executed at each loop turn

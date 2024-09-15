@@ -25,6 +25,7 @@ namespace mlx
 			inline Handle NewGraphicsSuport(std::size_t w, std::size_t h, const char* title);
 			inline void ClearGraphicsSupport(Handle win);
 			inline void DestroyGraphicsSupport(Handle win);
+			inline void SetGraphicsSupportPosition(Handle win, int x, int y);
 
 			inline void PixelPut(Handle win, int x, int y, std::uint32_t color) const noexcept;
 			inline void StringPut(Handle win, int x, int y, std::uint32_t color, char* str);

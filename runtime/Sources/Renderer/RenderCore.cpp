@@ -1,3 +1,4 @@
+#include <mlx_profile.h>
 #include <PreCompiled.h>
 
 #define KVF_IMPLEMENTATION
@@ -5,7 +6,14 @@
 	#define KVF_ENABLE_VALIDATION_LAYERS
 #endif
 
-#include <kvf.h>
+#if defined(MLX_COMPILER_GCC) || defined(MLX_COMPILER_CLANG)
+	#pragma clang diagnostic push
+	#pragma clang diagnostic ignored "-Wmissing-field-initializers"
+		#include <kvf.h>
+	#pragma clang diagnostic pop
+#else
+	#include <kvf.h>
+#endif
 
 #include <Renderer/RenderCore.h>
 #include <Renderer/Vulkan/VulkanLoader.h>

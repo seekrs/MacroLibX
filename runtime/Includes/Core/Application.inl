@@ -104,6 +104,15 @@ namespace mlx
 		m_graphics.erase(m_graphics.begin() + *static_cast<int*>(win));
 	}
 
+	void Application::SetGraphicsSupportPosition(Handle win, int x, int y)
+	{
+		CHECK_WINDOW_PTR(win);
+		if(!m_graphics[*static_cast<int*>(win)]->HasWindow())
+			Warning("trying to move a window that is targeting an image and not a real window, this is not allowed");
+		else
+			m_graphics[*static_cast<int*>(win)]->GetWindow()->SetPosition(x, y);
+	}
+
 	void Application::PixelPut(Handle win, int x, int y, std::uint32_t color) const noexcept
 	{
 		MLX_PROFILE_FUNCTION();

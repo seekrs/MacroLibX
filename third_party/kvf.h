@@ -1062,6 +1062,7 @@ void kvfAddLayer(const char* layer)
 		strcpy(__kvf_extra_layers[__kvf_extra_layers_count], layer);
 		__kvf_extra_layers_count++;
 	#else
+		(void)layer;
 		if(__kvf_validation_error_callback != NULL)
 		{
 			char buffer[4096];
