@@ -173,6 +173,11 @@ namespace mlx
 		*y = DM.h;
 	}
 
+	void SDLManager::SetWindowPosition(Handle window, int x, int y) const noexcept
+	{
+		SDL_SetWindowPosition(static_cast<SDL_Window*>(window), x, y);
+	}
+
 	std::int32_t SDLManager::GetX() const noexcept
 	{
 		int dummy;
