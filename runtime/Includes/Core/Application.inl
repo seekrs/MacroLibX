@@ -8,7 +8,7 @@
 			Error("invalid window ptr (NULL)"); \
 			return; \
 		} \
-		else if(std::find_if(m_graphics.begin(), m_graphics.end(), [win](const std::unique_ptr<GraphicsSupport>& gs){ return *static_cast<int*>(win) == gs->GetID(); } != m_graphics.end())) \
+		else if(std::find_if(m_graphics.begin(), m_graphics.end(), [win](const std::unique_ptr<GraphicsSupport>& gs){ return *static_cast<int*>(win) == gs->GetID(); }) != m_graphics.end()) \
 		{ \
 			Error("invalid window ptr"); \
 			return; \
@@ -63,7 +63,7 @@ namespace mlx
 	void Application::GetScreenSize(Handle win, int* w, int* h) noexcept
 	{
 		CHECK_WINDOW_PTR(win);
-		m_graphics[*static_cast<int*>(win)]->GetWindow()->GetScreenSizeWindowIsOn(x, y);
+		m_graphics[*static_cast<int*>(win)]->GetWindow()->GetScreenSizeWindowIsOn(w, h);
 	}
 
 	void Application::SetFPSCap(std::uint32_t fps) noexcept
