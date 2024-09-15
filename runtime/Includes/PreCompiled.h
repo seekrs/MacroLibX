@@ -47,6 +47,11 @@
 	#include <math.h> // sincos
 #endif
 
+#define VMA_STATIC_VULKAN_FUNCTIONS 0
+#define VMA_DYNAMIC_VULKAN_FUNCTIONS 0
+#define VMA_VULKAN_VERSION 1000000
+#define VMA_ASSERT(expr) ((void)0)
+
 #ifdef MLX_COMPILER_CLANG
 	#pragma clang diagnostic push
 	#pragma clang diagnostic ignored "-Weverything"
@@ -69,6 +74,9 @@
 #include <Utils/AntiWindows.h>
 
 #include <Renderer/Vulkan/VulkanPrototypes.h>
+#ifdef DEBUG
+	#define KVF_ENABLE_VALIDATION_LAYERS
+#endif
 #include <kvf.h>
 
 #include <Core/Logs.h>
