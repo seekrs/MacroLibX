@@ -25,6 +25,10 @@ namespace mlx
 	void GraphicsSupport::StringPut(int x, int y, std::uint32_t color, std::string str)
 	{
 		MLX_PROFILE_FUNCTION();
+		(void)x;
+		(void)y;
+		(void)color;
+		(void)str;
 	}
 
 	void GraphicsSupport::TexturePut(NonOwningPtr<Texture> texture, int x, int y)
@@ -44,6 +48,8 @@ namespace mlx
 	void GraphicsSupport::LoadFont(const std::filesystem::path& filepath, float scale)
 	{
 		MLX_PROFILE_FUNCTION();
+		(void)filepath;
+		(void)scale;
 	}
 
 	void GraphicsSupport::TryEraseSpritesInScene(NonOwningPtr<Texture> texture) noexcept

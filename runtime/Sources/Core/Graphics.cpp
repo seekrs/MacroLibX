@@ -6,8 +6,6 @@ namespace mlx
 	GraphicsSupport::GraphicsSupport(std::size_t w, std::size_t h, NonOwningPtr<Texture> render_target, int id) :
 		m_put_pixel_manager(&m_renderer),
 		p_window(nullptr),
-		m_width(w),
-		m_height(h),
 		m_id(id),
 		m_has_window(false)
 	{
@@ -24,8 +22,6 @@ namespace mlx
 	GraphicsSupport::GraphicsSupport(std::size_t w, std::size_t h, std::string title, int id) :
 		m_put_pixel_manager(&m_renderer),
 		p_window(std::make_shared<Window>(w, h, title)),
-		m_width(w),
-		m_height(h),
 		m_id(id),
 		m_has_window(true)
 	{

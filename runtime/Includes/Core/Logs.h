@@ -39,7 +39,7 @@ namespace mlx
 		void Assert(bool cond, unsigned int line, std::string_view file, std::string_view function, std::string message, const Args&... args);
 	#else
 		template<typename... Args>
-		void Assert(bool cond, unsigned int line, std::string_view file, std::string_view function, std::string message, const Args&... args) {}
+		void Assert([[maybe_unused]] bool cond, [[maybe_unused]] unsigned int line, [[maybe_unused]] std::string_view file, [[maybe_unused]] std::string_view function, [[maybe_unused]] std::string message, [[maybe_unused]] const Args&... args) {}
 	#endif
 }
 

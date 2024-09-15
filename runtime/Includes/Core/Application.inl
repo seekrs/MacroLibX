@@ -1,29 +1,34 @@
 #pragma once
 #include <Core/Application.h>
 
-#define CHECK_WINDOW_PTR(win) \
-	if(win == nullptr) \
-	{ \
-		Error("invalid window ptr (NULL)"); \
-		return; \
-	} \
-	else if(*static_cast<int*>(win) < 0 || *static_cast<int*>(win) > static_cast<int>(m_graphics.size()))\
-	{ \
-		Error("invalid window ptr"); \
-		return; \
-	} else {}
+#ifndef DISABLE_ALL_SAFETIES
+	#define CHECK_WINDOW_PTR(win) \
+		if(win == nullptr) \
+		{ \
+			Error("invalid window ptr (NULL)"); \
+			return; \
+		} \
+		else if(std::find_if(m_graphics.begin(), m_graphics.end(), [win](const std::unique_ptr<GraphicsSupport>& gs){ return *static_cast<int*>(win) == gs->GetID(); } != m_graphics.end())) \
+		{ \
+			Error("invalid window ptr"); \
+			return; \
+		} else {}
 
-#define CHECK_IMAGE_PTR(img, retval) \
-	if(img == nullptr) \
-	{ \
-		Error("invalid image ptr (NULL)"); \
-		retval; \
-	} \
-	else if(!m_image_registry.IsTextureKnown(static_cast<Texture*>(img))) \
-	{ \
-		Error("invalid image ptr"); \
-		retval; \
-	} else {}
+	#define CHECK_IMAGE_PTR(img, retval) \
+		if(img == nullptr) \
+		{ \
+			Error("invalid image ptr (NULL)"); \
+			retval; \
+		} \
+		else if(!m_image_registry.IsTextureKnown(static_cast<Texture*>(img))) \
+		{ \
+			Error("invalid image ptr"); \
+			retval; \
+		} else {}
+#else
+	#define CHECK_WINDOW_PTR(win)
+	#define CHECK_IMAGE_PTR(img, retval)
+#endif
 
 namespace mlx
 {
@@ -41,6 +46,7 @@ namespace mlx
 			Warning("trying to move the mouse relative to a window that is targeting an image and not a real window, this is not allowed (move ignored)");
 			return;
 		}
+		m_graphics[*static_cast<int*>(win)]->GetWindow()->MoveMouse(x, y);
 	}
 
 	void Application::OnEvent(Handle win, int event, int (*funct_ptr)(int, void*), void* param) noexcept
@@ -57,8 +63,7 @@ namespace mlx
 	void Application::GetScreenSize(Handle win, int* w, int* h) noexcept
 	{
 		CHECK_WINDOW_PTR(win);
-		*w = 0;
-		*h = 0;
+		m_graphics[*static_cast<int*>(win)]->GetWindow()->GetScreenSizeWindowIsOn(x, y);
 	}
 
 	void Application::SetFPSCap(std::uint32_t fps) noexcept
@@ -96,6 +101,7 @@ namespace mlx
 		MLX_PROFILE_FUNCTION();
 		CHECK_WINDOW_PTR(win);
 		m_graphics[*static_cast<int*>(win)].reset();
+		m_graphics.erase(m_graphics.begin() + *static_cast<int*>(win));
 	}
 
 	void Application::PixelPut(Handle win, int x, int y, std::uint32_t color) const noexcept
