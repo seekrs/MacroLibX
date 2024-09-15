@@ -3,7 +3,7 @@
 
 namespace mlx
 {
-	GraphicsSupport::GraphicsSupport(std::size_t w, std::size_t h, NonOwningPtr<Texture> render_target, int id) :
+	GraphicsSupport::GraphicsSupport([[maybe_unused]] std::size_t w, [[maybe_unused]] std::size_t h, NonOwningPtr<Texture> render_target, int id) :
 		m_put_pixel_manager(&m_renderer),
 		p_window(nullptr),
 		m_id(id),
