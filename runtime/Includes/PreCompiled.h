@@ -43,6 +43,10 @@
 #include <stb_truetype.h>
 #include <variant>
 
+#ifndef MLX_PLAT_WINDOWS
+	#include <dlfcn.h>
+#endif
+
 #if defined(MLX_PLAT_LINUX)
 	#include <math.h> // sincos
 #endif
