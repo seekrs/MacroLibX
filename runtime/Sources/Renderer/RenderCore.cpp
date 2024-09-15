@@ -1,8 +1,11 @@
+#include <PreCompiled.h>
+
 #define KVF_IMPLEMENTATION
 #ifdef DEBUG
 	#define KVF_ENABLE_VALIDATION_LAYERS
 #endif
-#include <PreCompiled.h>
+
+#include <kvf.h>
 
 #include <Renderer/RenderCore.h>
 #include <Renderer/Vulkan/VulkanLoader.h>

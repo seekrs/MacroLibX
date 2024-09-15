@@ -14,8 +14,6 @@
 	#else
 		typedef int (__stdcall* FARPROC)(void);
 	#endif
-#else
-	#include <dlfcn.h>
 #endif
 
 namespace mlx

@@ -1,6 +1,6 @@
 -- Global settings
 
-add_requires("libsdl", { configs = { sdlmain = false }})
+add_requires("libsdl", { configs = { sdlmain = false } })
 
 add_rules("mode.debug", "mode.release")
 set_languages("cxx20", "c99")
@@ -61,7 +61,22 @@ target("mlx")
 	if is_mode("debug") then
 		add_defines("DEBUG")
 	end
-target_end() -- optional but I think the code is cleaner with this -- optional but I think the code is cleaner with this
+
+	on_clean(function(target)
+		if target:objectfiles() then
+			for _, file in ipairs(target:objectfiles()) do
+				if os.exists(file) then
+					print("Removing " .. file)
+					os.rm(file)
+				end
+			end
+		end
+		if target:targetfile() and os.exists(target:targetfile()) then
+			print("Removing " .. target:targetfile())
+			os.rm(target:targetfile())
+		end
+	end)
+target_end()
 
 target("Test")
 	set_default(false)

@@ -1,15 +1,11 @@
 #include <mlx_profile.h>
+#include <PreCompiled.h>
 
-#define VMA_STATIC_VULKAN_FUNCTIONS 0
-#define VMA_DYNAMIC_VULKAN_FUNCTIONS 0
-#define VMA_VULKAN_VERSION 1000000
-#define VMA_ASSERT(expr) ((void)0)
 #define VMA_IMPLEMENTATION
-
 #ifdef MLX_COMPILER_CLANG
 	#pragma clang diagnostic push
 	#pragma clang diagnostic ignored "-Weverything"
-		#include <PreCompiled.h>
+		#include <vma.h>
 	#pragma clang diagnostic pop
 #elif defined(MLX_COMPILER_GCC)
 	#pragma GCC diagnostic push
@@ -18,10 +14,10 @@
 	#pragma GCC diagnostic ignored "-Wunused-parameter"
 	#pragma GCC diagnostic ignored "-Wunused-variable"
 	#pragma GCC diagnostic ignored "-Wparentheses"
-		#include <PreCompiled.h>
+		#include <vma.h>
 	#pragma GCC diagnostic pop
 #else
-	#include <PreCompiled.h>
+	#include <vma.h>
 #endif
 
 #include <Renderer/RenderCore.h>
