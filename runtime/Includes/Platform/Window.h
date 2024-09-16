@@ -21,12 +21,12 @@ namespace mlx
 			inline void SetPosition(int x, int y) { SDLManager::Get().SetWindowPosition(p_window, x, y); }
 
 			inline VkSurfaceKHR CreateVulkanSurface(VkInstance instance) const noexcept { return SDLManager::Get().CreateVulkanSurface(p_window, instance); }
-			inline std::vector<const char*> GetRequiredVulkanInstanceExtentions() const noexcept { return SDLManager::Get().GetRequiredVulkanInstanceExtentions(p_window); }
+			inline std::vector<const char*> GetRequiredVulkanInstanceExtentions() const noexcept { return SDLManager::Get().GetRequiredVulkanInstanceExtentions(); }
 			inline Vec2ui GetVulkanDrawableSize() const noexcept { return SDLManager::Get().GetVulkanDrawableSize(p_window); }
 
 			void Destroy() noexcept;
 
-			~Window() = default;
+			~Window() { Destroy(); }
 
 		private:
 			Handle p_window = nullptr;

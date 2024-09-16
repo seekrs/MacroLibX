@@ -17,7 +17,7 @@ namespace mlx
 			void DestroyWindow(Handle window) noexcept;
 
 			VkSurfaceKHR CreateVulkanSurface(Handle window, VkInstance instance) const noexcept;
-			std::vector<const char*> GetRequiredVulkanInstanceExtentions(Handle window) const noexcept;
+			std::vector<const char*> GetRequiredVulkanInstanceExtentions() const noexcept;
 			Vec2ui GetVulkanDrawableSize(Handle window) const noexcept;
 			void MoveMouseOnWindow(Handle window, int x, int y) const noexcept;
 			void GetScreenSizeWindowIsOn(Handle window, int* x, int* y) const noexcept;

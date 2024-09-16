@@ -13,7 +13,7 @@
 	#include <vulkan/vulkan.h>
 #endif
 
-#if defined(VK_VERSION_1_0)
+#ifdef VK_VERSION_1_0
 	extern PFN_vkAllocateCommandBuffers vkAllocateCommandBuffers;
 	extern PFN_vkAllocateDescriptorSets vkAllocateDescriptorSets;
 	extern PFN_vkAllocateMemory vkAllocateMemory;
@@ -151,20 +151,20 @@
 	extern PFN_vkUnmapMemory vkUnmapMemory;
 	extern PFN_vkUpdateDescriptorSets vkUpdateDescriptorSets;
 	extern PFN_vkWaitForFences vkWaitForFences;
-#endif /* defined(VK_VERSION_1_0) */
-#if defined(VK_KHR_swapchain)
+#endif
+#ifdef VK_KHR_swapchain
 	extern PFN_vkAcquireNextImageKHR vkAcquireNextImageKHR;
 	extern PFN_vkCreateSwapchainKHR vkCreateSwapchainKHR;
 	extern PFN_vkDestroySwapchainKHR vkDestroySwapchainKHR;
 	extern PFN_vkGetSwapchainImagesKHR vkGetSwapchainImagesKHR;
 	extern PFN_vkQueuePresentKHR vkQueuePresentKHR;
-#endif /* defined(VK_KHR_swapchain) */
-#if defined(VK_KHR_surface)
+#endif
+#ifdef VK_KHR_surface
 	extern PFN_vkDestroySurfaceKHR vkDestroySurfaceKHR;
 	extern PFN_vkGetPhysicalDeviceSurfaceCapabilitiesKHR vkGetPhysicalDeviceSurfaceCapabilitiesKHR;
 	extern PFN_vkGetPhysicalDeviceSurfaceFormatsKHR vkGetPhysicalDeviceSurfaceFormatsKHR;
 	extern PFN_vkGetPhysicalDeviceSurfacePresentModesKHR vkGetPhysicalDeviceSurfacePresentModesKHR;
 	extern PFN_vkGetPhysicalDeviceSurfaceSupportKHR vkGetPhysicalDeviceSurfaceSupportKHR;
-#endif /* defined(VK_KHR_surface) */
+#endif
 
 #endif

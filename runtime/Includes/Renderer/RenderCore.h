@@ -1,6 +1,7 @@
 #ifndef __MLX_RENDER_CORE__
 #define __MLX_RENDER_CORE__
 
+#include <Renderer/Vulkan/VulkanPrototypes.h>
 #include <Renderer/Memory.h>
 
 namespace mlx

@@ -1,5 +1,6 @@
 #include <mlx_profile.h>
 #include <PreCompiled.h>
+#include <Renderer/RenderCore.h>
 
 #define KVF_IMPLEMENTATION
 #ifdef DEBUG
@@ -15,7 +16,6 @@
 	#include <kvf.h>
 #endif
 
-#include <Renderer/RenderCore.h>
 #include <Renderer/Vulkan/VulkanLoader.h>
 #include <Core/SDLManager.h>
 #include <Platform/Window.h>
@@ -79,8 +79,10 @@ namespace mlx
 		m_device = kvfCreateDevice(m_physical_device, device_extensions, sizeof(device_extensions) / sizeof(device_extensions[0]), &features);
 		DebugLog("Vulkan : logical device created");
 
+		loader->LoadDevice(m_device);
+
 		vkDestroySurfaceKHR(m_instance, surface, nullptr);
-		window.Destroy();
+		FatalError("caca");
 	}
 
 	void RenderCore::Destroy() noexcept
