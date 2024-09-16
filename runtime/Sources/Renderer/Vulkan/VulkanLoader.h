@@ -23,6 +23,7 @@ namespace mlx
 		public:
 			VulkanLoader();
 			void LoadInstance(VkInstance instance);
+			void LoadDevice(VkDevice device);
 			~VulkanLoader();
 
 		private:

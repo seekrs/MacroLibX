@@ -81,7 +81,6 @@
 #include <Utils/AntiX11.h>
 #include <Utils/AntiWindows.h>
 
-#include <Renderer/Vulkan/VulkanPrototypes.h>
 #ifdef DEBUG
 	#define KVF_ENABLE_VALIDATION_LAYERS
 #endif
