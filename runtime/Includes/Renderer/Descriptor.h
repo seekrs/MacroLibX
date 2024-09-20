@@ -4,7 +4,6 @@
 #include <Renderer/Enums.h>
 #include <Renderer/RenderCore.h>
 #include <Renderer/Pipelines/Shader.h>
-#include <Renderer/Vulkan/VulkanPrototypes.h>
 
 namespace mlx
 {

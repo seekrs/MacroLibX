@@ -27,23 +27,23 @@ namespace mlx
 	void GPUAllocator::Init() noexcept
 	{
 		VmaVulkanFunctions vma_vulkan_func{};
-		vma_vulkan_func.vkAllocateMemory                    = vkAllocateMemory;
-		vma_vulkan_func.vkBindBufferMemory                  = vkBindBufferMemory;
-		vma_vulkan_func.vkBindImageMemory                   = vkBindImageMemory;
-		vma_vulkan_func.vkCreateBuffer                      = vkCreateBuffer;
-		vma_vulkan_func.vkCreateImage                       = vkCreateImage;
-		vma_vulkan_func.vkDestroyBuffer                     = vkDestroyBuffer;
-		vma_vulkan_func.vkDestroyImage                      = vkDestroyImage;
-		vma_vulkan_func.vkFlushMappedMemoryRanges           = vkFlushMappedMemoryRanges;
-		vma_vulkan_func.vkFreeMemory                        = vkFreeMemory;
-		vma_vulkan_func.vkGetBufferMemoryRequirements       = vkGetBufferMemoryRequirements;
-		vma_vulkan_func.vkGetImageMemoryRequirements        = vkGetImageMemoryRequirements;
-		vma_vulkan_func.vkGetPhysicalDeviceMemoryProperties = vkGetPhysicalDeviceMemoryProperties;
-		vma_vulkan_func.vkGetPhysicalDeviceProperties       = vkGetPhysicalDeviceProperties;
-		vma_vulkan_func.vkInvalidateMappedMemoryRanges      = vkInvalidateMappedMemoryRanges;
-		vma_vulkan_func.vkMapMemory                         = vkMapMemory;
-		vma_vulkan_func.vkUnmapMemory                       = vkUnmapMemory;
-		vma_vulkan_func.vkCmdCopyBuffer                     = vkCmdCopyBuffer;
+		vma_vulkan_func.vkAllocateMemory                    = RenderCore::Get().vkAllocateMemory;
+		vma_vulkan_func.vkBindBufferMemory                  = RenderCore::Get().vkBindBufferMemory;
+		vma_vulkan_func.vkBindImageMemory                   = RenderCore::Get().vkBindImageMemory;
+		vma_vulkan_func.vkCreateBuffer                      = RenderCore::Get().vkCreateBuffer;
+		vma_vulkan_func.vkCreateImage                       = RenderCore::Get().vkCreateImage;
+		vma_vulkan_func.vkDestroyBuffer                     = RenderCore::Get().vkDestroyBuffer;
+		vma_vulkan_func.vkDestroyImage                      = RenderCore::Get().vkDestroyImage;
+		vma_vulkan_func.vkFlushMappedMemoryRanges           = RenderCore::Get().vkFlushMappedMemoryRanges;
+		vma_vulkan_func.vkFreeMemory                        = RenderCore::Get().vkFreeMemory;
+		vma_vulkan_func.vkGetBufferMemoryRequirements       = RenderCore::Get().vkGetBufferMemoryRequirements;
+		vma_vulkan_func.vkGetImageMemoryRequirements        = RenderCore::Get().vkGetImageMemoryRequirements;
+		vma_vulkan_func.vkGetPhysicalDeviceMemoryProperties = RenderCore::Get().vkGetPhysicalDeviceMemoryProperties;
+		vma_vulkan_func.vkGetPhysicalDeviceProperties       = RenderCore::Get().vkGetPhysicalDeviceProperties;
+		vma_vulkan_func.vkInvalidateMappedMemoryRanges      = RenderCore::Get().vkInvalidateMappedMemoryRanges;
+		vma_vulkan_func.vkMapMemory                         = RenderCore::Get().vkMapMemory;
+		vma_vulkan_func.vkUnmapMemory                       = RenderCore::Get().vkUnmapMemory;
+		vma_vulkan_func.vkCmdCopyBuffer                     = RenderCore::Get().vkCmdCopyBuffer;
 
 		VmaAllocatorCreateInfo allocator_create_info{};
 		allocator_create_info.vulkanApiVersion = VK_API_VERSION_1_0;

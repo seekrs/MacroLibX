@@ -43,9 +43,15 @@ namespace mlx
 		std::cout << std::endl;
 	}
 
-	void RenderCore::Init() noexcept
+	RenderCore* RenderCore::s_instance = nullptr;
+
+	RenderCore::RenderCore()
 	{
+		s_instance = this;
+
 		loader = std::make_unique<VulkanLoader>();
+
+		LoadKVFGlobalVulkanFunctionPointers();
 
 		kvfSetErrorCallback(&ErrorCallback);
 		kvfSetValidationErrorCallback(&ValidationErrorCallback);
@@ -63,6 +69,7 @@ namespace mlx
 		DebugLog("Vulkan : instance created");
 
 		loader->LoadInstance(m_instance);
+		LoadKVFInstanceVulkanFunctionPointers();
 
 		VkSurfaceKHR surface = window.CreateVulkanSurface(m_instance);
 
@@ -80,12 +87,109 @@ namespace mlx
 		DebugLog("Vulkan : logical device created");
 
 		loader->LoadDevice(m_device);
+		LoadKVFDeviceVulkanFunctionPointers();
 
 		vkDestroySurfaceKHR(m_instance, surface, nullptr);
 		FatalError("caca");
 	}
 
-	void RenderCore::Destroy() noexcept
+#undef MLX_LOAD_FUNCTION
+#define MLX_LOAD_FUNCTION(fn) pfns.fn = this->fn
+
+	void RenderCore::LoadKVFGlobalVulkanFunctionPointers() const noexcept
+	{
+		KvfGlobalVulkanFunctions pfns;
+		MLX_LOAD_FUNCTION(vkCreateInstance);
+		MLX_LOAD_FUNCTION(vkEnumerateInstanceExtensionProperties);
+		MLX_LOAD_FUNCTION(vkEnumerateInstanceLayerProperties);
+		MLX_LOAD_FUNCTION(vkGetInstanceProcAddr);
+		kvfPassGlobalVulkanFunctionPointers(&pfns);
+	}
+
+	void RenderCore::LoadKVFInstanceVulkanFunctionPointers() const noexcept
+	{
+		KvfInstanceVulkanFunctions pfns;
+		MLX_LOAD_FUNCTION(vkCreateDevice);
+		MLX_LOAD_FUNCTION(vkDestroyInstance);
+		MLX_LOAD_FUNCTION(vkEnumerateDeviceExtensionProperties);
+		MLX_LOAD_FUNCTION(vkEnumeratePhysicalDevices);
+		MLX_LOAD_FUNCTION(vkGetPhysicalDeviceFeatures);
+		MLX_LOAD_FUNCTION(vkGetPhysicalDeviceFormatProperties);
+		MLX_LOAD_FUNCTION(vkGetPhysicalDeviceImageFormatProperties);
+		MLX_LOAD_FUNCTION(vkGetPhysicalDeviceMemoryProperties);
+		MLX_LOAD_FUNCTION(vkGetPhysicalDeviceProperties);
+		MLX_LOAD_FUNCTION(vkGetPhysicalDeviceQueueFamilyProperties);
+		MLX_LOAD_FUNCTION(vkDestroySurfaceKHR);
+		MLX_LOAD_FUNCTION(vkGetPhysicalDeviceSurfaceCapabilitiesKHR);
+		MLX_LOAD_FUNCTION(vkGetPhysicalDeviceSurfaceFormatsKHR);
+		MLX_LOAD_FUNCTION(vkGetPhysicalDeviceSurfacePresentModesKHR);
+		MLX_LOAD_FUNCTION(vkGetPhysicalDeviceSurfaceSupportKHR);
+		kvfPassInstanceVulkanFunctionPointers(&pfns);
+	}
+
+	void RenderCore::LoadKVFDeviceVulkanFunctionPointers() const noexcept
+	{
+		KvfDeviceVulkanFunctions pfns;
+		MLX_LOAD_FUNCTION(vkAllocateCommandBuffers);
+		MLX_LOAD_FUNCTION(vkAllocateDescriptorSets);
+		MLX_LOAD_FUNCTION(vkBeginCommandBuffer);
+		MLX_LOAD_FUNCTION(vkCmdBeginRenderPass);
+		MLX_LOAD_FUNCTION(vkCmdCopyBuffer);
+		MLX_LOAD_FUNCTION(vkCmdCopyBufferToImage);
+		MLX_LOAD_FUNCTION(vkCmdCopyImage);
+		MLX_LOAD_FUNCTION(vkCmdCopyImageToBuffer);
+		MLX_LOAD_FUNCTION(vkCmdEndRenderPass);
+		MLX_LOAD_FUNCTION(vkCmdPipelineBarrier);
+		MLX_LOAD_FUNCTION(vkCreateBuffer);
+		MLX_LOAD_FUNCTION(vkCreateCommandPool);
+		MLX_LOAD_FUNCTION(vkCreateDescriptorPool);
+		MLX_LOAD_FUNCTION(vkCreateDescriptorSetLayout);
+		MLX_LOAD_FUNCTION(vkCreateFence);
+		MLX_LOAD_FUNCTION(vkCreateFramebuffer);
+		MLX_LOAD_FUNCTION(vkCreateGraphicsPipelines);
+		MLX_LOAD_FUNCTION(vkCreateImage);
+		MLX_LOAD_FUNCTION(vkCreateImageView);
+		MLX_LOAD_FUNCTION(vkCreatePipelineLayout);
+		MLX_LOAD_FUNCTION(vkCreateRenderPass);
+		MLX_LOAD_FUNCTION(vkCreateSampler);
+		MLX_LOAD_FUNCTION(vkCreateSemaphore);
+		MLX_LOAD_FUNCTION(vkCreateShaderModule);
+		MLX_LOAD_FUNCTION(vkDestroyBuffer);
+		MLX_LOAD_FUNCTION(vkDestroyCommandPool);
+		MLX_LOAD_FUNCTION(vkDestroyDescriptorPool);
+		MLX_LOAD_FUNCTION(vkDestroyDescriptorSetLayout);
+		MLX_LOAD_FUNCTION(vkDestroyDevice);
+		MLX_LOAD_FUNCTION(vkDestroyFence);
+		MLX_LOAD_FUNCTION(vkDestroyFramebuffer);
+		MLX_LOAD_FUNCTION(vkDestroyImage);
+		MLX_LOAD_FUNCTION(vkDestroyImageView);
+		MLX_LOAD_FUNCTION(vkDestroyPipeline);
+		MLX_LOAD_FUNCTION(vkDestroyPipelineLayout);
+		MLX_LOAD_FUNCTION(vkDestroyRenderPass);
+		MLX_LOAD_FUNCTION(vkDestroySampler);
+		MLX_LOAD_FUNCTION(vkDestroySemaphore);
+		MLX_LOAD_FUNCTION(vkDestroyShaderModule);
+		MLX_LOAD_FUNCTION(vkDeviceWaitIdle);
+		MLX_LOAD_FUNCTION(vkEndCommandBuffer);
+		MLX_LOAD_FUNCTION(vkGetDeviceQueue);
+		MLX_LOAD_FUNCTION(vkGetImageSubresourceLayout);
+		MLX_LOAD_FUNCTION(vkQueueSubmit);
+		MLX_LOAD_FUNCTION(vkResetCommandBuffer);
+		MLX_LOAD_FUNCTION(vkResetDescriptorPool);
+		MLX_LOAD_FUNCTION(vkResetEvent);
+		MLX_LOAD_FUNCTION(vkResetFences);
+		MLX_LOAD_FUNCTION(vkUpdateDescriptorSets);
+		MLX_LOAD_FUNCTION(vkWaitForFences);
+		MLX_LOAD_FUNCTION(vkCreateSwapchainKHR);
+		MLX_LOAD_FUNCTION(vkDestroySwapchainKHR);
+		MLX_LOAD_FUNCTION(vkGetSwapchainImagesKHR);
+		MLX_LOAD_FUNCTION(vkQueuePresentKHR);
+		kvfPassDeviceVulkanFunctionPointers(m_device, &pfns);
+	}
+
+#undef MLX_LOAD_FUNCTION
+
+	RenderCore::~RenderCore()
 	{
 		WaitDeviceIdle();
 		kvfDestroyDevice(m_device);
@@ -93,5 +197,7 @@ namespace mlx
 		kvfDestroyInstance(m_instance);
 		DebugLog("Vulkan : instance destroyed");
 		loader.reset();
+
+		s_instance = nullptr;
 	}
 }

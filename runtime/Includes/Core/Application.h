@@ -47,6 +47,7 @@ namespace mlx
 			~Application();
 
 		private:
+			RenderCore m_render_core;
 			FpsManager m_fps;
 			Inputs m_in;
 			ImageRegistry m_image_registry;

@@ -8,7 +8,7 @@
 
 namespace mlx
 {
-	Application::Application() : m_fps(), m_in() 
+	Application::Application() : m_render_core(), m_fps(), m_in() 
 	{
 		EventBus::RegisterListener({[](const EventBase& event)
 		{
