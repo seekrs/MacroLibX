@@ -9,9 +9,9 @@ namespace mlx
 
 	class RenderCore
 	{
-		friend class Application;
-
 		public:
+			RenderCore();
+
 			[[nodiscard]] MLX_FORCEINLINE VkInstance GetInstance() const noexcept { return m_instance; }
 			[[nodiscard]] MLX_FORCEINLINE VkInstance& GetInstanceRef() noexcept { return m_instance; }
 			[[nodiscard]] MLX_FORCEINLINE VkDevice GetDevice() const noexcept { return m_device; }
@@ -31,12 +31,12 @@ namespace mlx
 			#undef MLX_VULKAN_INSTANCE_FUNCTION
 			#undef MLX_VULKAN_DEVICE_FUNCTION
 
+			~RenderCore();
+
 		private:
-			RenderCore();
 			void LoadKVFGlobalVulkanFunctionPointers() const noexcept;
 			void LoadKVFInstanceVulkanFunctionPointers() const noexcept;
 			void LoadKVFDeviceVulkanFunctionPointers() const noexcept;
-			~RenderCore();
 
 		private:
 			static RenderCore* s_instance;
