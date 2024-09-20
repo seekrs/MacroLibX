@@ -8,7 +8,7 @@
 
 namespace mlx
 {
-	Application::Application() : m_fps(), m_in() 
+	Application::Application() : p_mem_manager(std::make_unique<MemManager>()), p_sdl_manager(std::make_unique<SDLManager>()), m_fps(), m_in() 
 	{
 		EventBus::RegisterListener({[](const EventBase& event)
 		{
@@ -16,8 +16,11 @@ namespace mlx
 				std::abort();
 		}, "__MlxApplication" });
 
+		#ifdef PROFILER
+			p_profiler = std::make_unique<Profiler>();
+		#endif
+
 		m_fps.Init();
-		SDLManager::Get().Init();
 		p_render_core = std::make_unique<RenderCore>();
 	}
 
@@ -89,6 +92,10 @@ namespace mlx
 	Application::~Application()
 	{
 		p_render_core.reset();
-		SDLManager::Get().Shutdown();
+		p_sdl_manager.reset();
+		#ifdef PROFILER
+			p_profiler.reset();
+		#endif
+		p_mem_manager.reset();
 	}
 }

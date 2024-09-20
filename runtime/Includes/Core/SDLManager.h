@@ -5,13 +5,10 @@
 
 namespace mlx
 {
-	class SDLManager : public Singleton<SDLManager>
+	class SDLManager
 	{
-		friend class Singleton<SDLManager>;
-
 		public:
-			void Init() noexcept;
-			void Shutdown() noexcept;
+			SDLManager();
 
 			Handle CreateWindow(const std::string& title, std::size_t w, std::size_t h, bool hidden);
 			void DestroyWindow(Handle window) noexcept;
@@ -30,18 +27,17 @@ namespace mlx
 			std::int32_t GetXRel() const noexcept;
 			std::int32_t GetYRel() const noexcept;
 
-		private:
-			SDLManager() = default;
-			~SDLManager() = default;
+			inline static bool IsInit() noexcept { return s_instance != nullptr; }
+			inline static SDLManager& Get() noexcept { return *s_instance; }
+
+			~SDLManager();
 
 		private:
+			static SDLManager* s_instance;
+
 			std::unordered_set<Handle> m_windows_registry;
 			func::function<void(mlx_event_type, int, int, void*)> f_callback;
 			void* p_callback_data = nullptr;
-			std::int32_t m_x;
-			std::int32_t m_y;
-			std::int32_t m_rel_x;
-			std::int32_t m_rel_y;
 			bool m_drop_sdl_responsability = false;
 	};
 }

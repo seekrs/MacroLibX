@@ -3,21 +3,23 @@
 
 namespace mlx
 {
-	class MemManager : public Singleton<MemManager>
+	class MemManager
 	{
-		friend class Singleton<MemManager>;
-
 		public:
+			MemManager();
+
 			static void* Malloc(std::size_t size);
 			static void* Calloc(std::size_t n, std::size_t size);
 			static void* Realloc(void* ptr, std::size_t size);
 			static void Free(void* ptr);
 
-		private:
-			MemManager() = default;
+			inline static bool IsInit() noexcept { return s_instance != nullptr; }
+			inline static MemManager& Get() noexcept { return *s_instance; }
+
 			~MemManager();
 
 		private:
+			static MemManager* s_instance;
 			inline static std::list<void*> s_blocks;
 	};
 }
