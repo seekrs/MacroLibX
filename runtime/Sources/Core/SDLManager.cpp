@@ -17,7 +17,7 @@ namespace mlx
 		constexpr const std::uint32_t amask = 0xff000000;
 	#endif
 
-	namespace details
+	namespace Internal
 	{
 		struct WindowInfos
 		{
@@ -101,9 +101,9 @@ namespace mlx
 		DebugLog("SDL Manager initialized");
 	}
 
-	void* SDLManager::CreateWindow(const std::string& title, std::size_t w, std::size_t h, bool hidden)
+	Handle SDLManager::CreateWindow(const std::string& title, std::size_t w, std::size_t h, bool hidden)
 	{
-		details::WindowInfos* infos = new details::WindowInfos;
+		Internal::WindowInfos* infos = new Internal::WindowInfos;
 		Verify(infos != nullptr, "SDL : window allocation failed");
 
 		infos->window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, SDL_WINDOW_VULKAN | (hidden ? SDL_WINDOW_HIDDEN : SDL_WINDOW_SHOWN));
@@ -117,11 +117,11 @@ namespace mlx
 		return infos;
 	}
 
-	void SDLManager::DestroyWindow(void* window) noexcept
+	void SDLManager::DestroyWindow(Handle window) noexcept
 	{
 		Verify(m_windows_registry.find(window) != m_windows_registry.end(), "SDL : cannot destroy window; unknown window pointer");
 
-		details::WindowInfos* infos = static_cast<details::WindowInfos*>(window);
+		Internal::WindowInfos* infos = static_cast<Internal::WindowInfos*>(window);
 		if(infos->window != nullptr)
 			SDL_DestroyWindow(infos->window);
 		if(infos->icon != nullptr)
@@ -134,7 +134,7 @@ namespace mlx
 	VkSurfaceKHR SDLManager::CreateVulkanSurface(Handle window, VkInstance instance) const noexcept
 	{
 		VkSurfaceKHR surface;
-		if(!SDL_Vulkan_CreateSurface(static_cast<SDL_Window*>(window), instance, &surface))
+		if(!SDL_Vulkan_CreateSurface(static_cast<Internal::WindowInfos*>(window)->window, instance, &surface))
 			FatalError("SDL : could not create a Vulkan surface; %", SDL_GetError());
 		return surface;
 	}
@@ -169,27 +169,27 @@ namespace mlx
 	Vec2ui SDLManager::GetVulkanDrawableSize(Handle window) const noexcept
 	{
 		Vec2i extent;
-		SDL_Vulkan_GetDrawableSize(static_cast<SDL_Window*>(window), &extent.x, &extent.y);
+		SDL_Vulkan_GetDrawableSize(static_cast<Internal::WindowInfos*>(window)->window, &extent.x, &extent.y);
 		return Vec2ui{ extent };
 	}
 
 	void SDLManager::MoveMouseOnWindow(Handle window, int x, int y) const noexcept
 	{
-		SDL_WarpMouseInWindow(static_cast<SDL_Window*>(window), x, y);
+		SDL_WarpMouseInWindow(static_cast<Internal::WindowInfos*>(window)->window, x, y);
 		SDL_PumpEvents();
 	}
 
 	void SDLManager::GetScreenSizeWindowIsOn(Handle window, int* x, int* y) const noexcept
 	{
 		SDL_DisplayMode DM;
-		SDL_GetDesktopDisplayMode(SDL_GetWindowDisplayIndex(static_cast<SDL_Window*>(window)), &DM);
+		SDL_GetDesktopDisplayMode(SDL_GetWindowDisplayIndex(static_cast<Internal::WindowInfos*>(window)->window), &DM);
 		*x = DM.w;
 		*y = DM.h;
 	}
 
 	void SDLManager::SetWindowPosition(Handle window, int x, int y) const noexcept
 	{
-		SDL_SetWindowPosition(static_cast<SDL_Window*>(window), x, y);
+		SDL_SetWindowPosition(static_cast<Internal::WindowInfos*>(window)->window, x, y);
 	}
 
 	std::int32_t SDLManager::GetX() const noexcept

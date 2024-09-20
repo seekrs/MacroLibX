@@ -47,12 +47,12 @@ namespace mlx
 			~Application();
 
 		private:
-			RenderCore m_render_core;
 			FpsManager m_fps;
 			Inputs m_in;
 			ImageRegistry m_image_registry;
 			std::vector<std::unique_ptr<GraphicsSupport>> m_graphics;
 			std::function<int(Handle)> f_loop_hook;
+			std::unique_ptr<RenderCore> p_render_core;
 			Handle p_param = nullptr;
 	};
 }

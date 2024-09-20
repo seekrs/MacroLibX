@@ -27,19 +27,19 @@ namespace mlx
 
 	void ErrorCallback(const char* message) noexcept
 	{
-		FatalError(message, 0, "", "");
+		Logs::Report(LogType::FatalError, 0, "", "", message);
 		std::cout << std::endl;
 	}
 
 	void ValidationErrorCallback(const char* message) noexcept
 	{
-		Error(message, 0, "", "");
+		Logs::Report(LogType::Error, 0, "", "", message);
 		std::cout << std::endl;
 	}
 
 	void ValidationWarningCallback(const char* message) noexcept
 	{
-		Warning(message, 0, "", "");
+		Logs::Report(LogType::Warning, 0, "", "", message);
 		std::cout << std::endl;
 	}
 

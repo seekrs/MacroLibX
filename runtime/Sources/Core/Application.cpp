@@ -8,7 +8,7 @@
 
 namespace mlx
 {
-	Application::Application() : m_render_core(), m_fps(), m_in() 
+	Application::Application() : m_fps(), m_in() 
 	{
 		EventBus::RegisterListener({[](const EventBase& event)
 		{
@@ -18,6 +18,7 @@ namespace mlx
 
 		m_fps.Init();
 		SDLManager::Get().Init();
+		p_render_core = std::make_unique<RenderCore>();
 	}
 
 	void Application::Run() noexcept
@@ -87,6 +88,7 @@ namespace mlx
 
 	Application::~Application()
 	{
+		p_render_core.reset();
 		SDLManager::Get().Shutdown();
 	}
 }
