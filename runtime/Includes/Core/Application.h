@@ -10,6 +10,7 @@
 
 namespace mlx
 {
+	// TODO : FIX THIS DAMN GOD CLASS !!!!!!!!!!!!!!!!
 	class Application
 	{
 		public:

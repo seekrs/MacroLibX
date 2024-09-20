@@ -128,7 +128,7 @@ VkDevice kvfCreateDevice(VkPhysicalDevice physical, const char** extensions, uin
 VkDevice kvfCreateDefaultDevicePhysicalDeviceAndCustomQueues(VkPhysicalDevice physical, int32_t graphics_queue, int32_t present_queue, int32_t compute_queue);
 VkDevice kvfCreateDeviceCustomPhysicalDeviceAndQueues(VkPhysicalDevice physical, const char** extensions, uint32_t extensions_count, VkPhysicalDeviceFeatures* features, int32_t graphics_queue, int32_t present_queue, int32_t compute_queue);
 #ifdef KVF_IMPL_VK_NO_PROTOTYPES
-	void kvfPassDeviceVulkanFunctionPointers(VkDevice device, const KvfDeviceVulkanFunctions* fns);
+	void kvfPassDeviceVulkanFunctionPointers(VkPhysicalDevice physical, VkDevice device, const KvfDeviceVulkanFunctions* fns);
 #endif
 void kvfDestroyDevice(VkDevice device);
 
@@ -1552,7 +1552,9 @@ VkDevice kvfCreateDevice(VkPhysicalDevice physical, const char** extensions, uin
 
 	VkDevice device;
 	__kvfCheckVk(KVF_GET_INSTANCE_FUNCTION(vkCreateDevice)(physical, &createInfo, NULL, &device));
-	__kvfCompleteDevice(physical, device);
+	#ifndef KVF_IMPL_VK_NO_PROTOTYPES
+		__kvfCompleteDevice(physical, device);
+	#endif
 
 	return device;
 }
@@ -1621,19 +1623,22 @@ VkDevice kvfCreateDeviceCustomPhysicalDeviceAndQueues(VkPhysicalDevice physical,
 
 	VkDevice device;
 	__kvfCheckVk(KVF_GET_INSTANCE_FUNCTION(vkCreateDevice)(physical, &createInfo, NULL, &device));
-	__kvfCompleteDeviceCustomPhysicalDeviceAndQueues(physical, device, graphics_queue, present_queue, compute_queue);
+	#ifndef KVF_IMPL_VK_NO_PROTOTYPES
+		__kvfCompleteDeviceCustomPhysicalDeviceAndQueues(physical, device, graphics_queue, present_queue, compute_queue);
+	#endif
 
 	return device;
 }
 
 #ifdef KVF_IMPL_VK_NO_PROTOTYPES
-	void kvfPassDeviceVulkanFunctionPointers(VkDevice device, const KvfDeviceVulkanFunctions* fns)
+	void kvfPassDeviceVulkanFunctionPointers(VkPhysicalDevice physical, VkDevice device, const KvfDeviceVulkanFunctions* fns)
 	{
 		KVF_ASSERT(device != VK_NULL_HANDLE);
 		KVF_ASSERT(fns != NULL);
-		__KvfDevice* kvf_device = __kvfGetKvfDeviceFromVkDevice(device);
+		__KvfDevice* kvf_device = __kvfGetKvfDeviceFromVkPhysicalDevice(physical);
 		KVF_ASSERT(kvf_device != NULL);
 		kvf_device->fns = *fns;
+		__kvfCompleteDevice(physical, device);
 	}
 #endif
 
@@ -2318,10 +2323,9 @@ VkCommandBuffer kvfCreateCommandBufferLeveled(VkDevice device, VkCommandBufferLe
 		kvf_device->cmd_buffers_capacity += KVF_COMMAND_POOL_CAPACITY;
 		kvf_device->cmd_buffers = (VkCommandBuffer*)KVF_REALLOC(kvf_device->cmd_buffers, kvf_device->cmd_buffers_capacity * sizeof(VkCommandBuffer));
 		KVF_ASSERT(kvf_device->cmd_buffers != NULL && "allocation failed :(");
-		kvf_device->cmd_buffers[kvf_device->cmd_buffers_size] = buffer;
-		kvf_device->cmd_buffers_size++;
 	}
-
+	kvf_device->cmd_buffers[kvf_device->cmd_buffers_size] = buffer;
+	kvf_device->cmd_buffers_size++;
 	return buffer;
 }
 

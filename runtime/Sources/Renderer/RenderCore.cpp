@@ -90,7 +90,6 @@ namespace mlx
 		LoadKVFDeviceVulkanFunctionPointers();
 
 		vkDestroySurfaceKHR(m_instance, surface, nullptr);
-		FatalError("caca");
 	}
 
 #undef MLX_LOAD_FUNCTION
@@ -184,7 +183,7 @@ namespace mlx
 		MLX_LOAD_FUNCTION(vkDestroySwapchainKHR);
 		MLX_LOAD_FUNCTION(vkGetSwapchainImagesKHR);
 		MLX_LOAD_FUNCTION(vkQueuePresentKHR);
-		kvfPassDeviceVulkanFunctionPointers(m_device, &pfns);
+		kvfPassDeviceVulkanFunctionPointers(m_physical_device, m_device, &pfns);
 	}
 
 #undef MLX_LOAD_FUNCTION
