@@ -29,7 +29,6 @@ extern "C"
 		mlx::Application* app = new mlx::Application;
 		if(app == nullptr)
 			mlx::FatalError("Tout a pété");
-		mlx::RenderCore::Get().Init();
 		__mlx_ptr = static_cast<void*>(app);
 		return __mlx_ptr;
 	}
@@ -281,7 +280,6 @@ extern "C"
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		delete static_cast<mlx::Application*>(mlx);
-		mlx::RenderCore::Get().Destroy();
 		__mlx_ptr = nullptr;
 		return 0;
 	}

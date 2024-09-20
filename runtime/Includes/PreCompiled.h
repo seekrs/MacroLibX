@@ -9,6 +9,8 @@
 #include <cstdarg>
 #include <iostream>
 
+#include <vulkan/vulkan_core.h>
+
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_vulkan.h>
 
@@ -81,6 +83,7 @@
 #include <Utils/AntiX11.h>
 #include <Utils/AntiWindows.h>
 
+#define KVF_IMPL_VK_NO_PROTOTYPES
 #ifdef DEBUG
 	#define KVF_ENABLE_VALIDATION_LAYERS
 #endif

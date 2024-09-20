@@ -1,21 +1,17 @@
 #ifndef __MLX_RENDER_CORE__
 #define __MLX_RENDER_CORE__
 
-#include <Renderer/Vulkan/VulkanPrototypes.h>
 #include <Renderer/Memory.h>
 
 namespace mlx
 {
 	constexpr const int MAX_FRAMES_IN_FLIGHT = 3;
 
-	class RenderCore : public Singleton<RenderCore>
+	class RenderCore
 	{
-		friend class Singleton<RenderCore>;
+		friend class Application;
 
 		public:
-			void Init() noexcept;
-			void Destroy() noexcept;
-
 			[[nodiscard]] MLX_FORCEINLINE VkInstance GetInstance() const noexcept { return m_instance; }
 			[[nodiscard]] MLX_FORCEINLINE VkInstance& GetInstanceRef() noexcept { return m_instance; }
 			[[nodiscard]] MLX_FORCEINLINE VkDevice GetDevice() const noexcept { return m_device; }
@@ -24,11 +20,27 @@ namespace mlx
 
 			inline void WaitDeviceIdle() const noexcept { vkDeviceWaitIdle(m_device); }
 
-		private:
-			RenderCore() = default;
-			~RenderCore() = default;
+			inline static bool IsInit() noexcept { return s_instance != nullptr; }
+			inline static RenderCore& Get() noexcept { return *s_instance; }
+
+			#define MLX_VULKAN_GLOBAL_FUNCTION(fn) PFN_##fn fn = nullptr;
+			#define MLX_VULKAN_INSTANCE_FUNCTION(fn) PFN_##fn fn = nullptr;
+			#define MLX_VULKAN_DEVICE_FUNCTION(fn) PFN_##fn fn = nullptr;
+				#include <Renderer/Vulkan/VulkanDefs.h>
+			#undef MLX_VULKAN_GLOBAL_FUNCTION
+			#undef MLX_VULKAN_INSTANCE_FUNCTION
+			#undef MLX_VULKAN_DEVICE_FUNCTION
 
 		private:
+			RenderCore();
+			void LoadKVFGlobalVulkanFunctionPointers() const noexcept;
+			void LoadKVFInstanceVulkanFunctionPointers() const noexcept;
+			void LoadKVFDeviceVulkanFunctionPointers() const noexcept;
+			~RenderCore();
+
+		private:
+			static RenderCore* s_instance;
+
 			GPUAllocator m_allocator;
 			VkInstance m_instance = VK_NULL_HANDLE;
 			VkDevice m_device = VK_NULL_HANDLE;

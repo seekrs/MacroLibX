@@ -15,7 +15,7 @@ namespace mlx
 		Verify(submesh_index < m_sub_meshes.size(), "invalid submesh index");
 		m_sub_meshes[submesh_index].vbo.Bind(cmd);
 		m_sub_meshes[submesh_index].ibo.Bind(cmd);
-		vkCmdDrawIndexed(cmd, static_cast<std::uint32_t>(m_sub_meshes[submesh_index].ibo.GetSize() / sizeof(std::uint32_t)), 1, 0, 0, 0);
+		mlx::RenderCore::Get().vkCmdDrawIndexed(cmd, static_cast<std::uint32_t>(m_sub_meshes[submesh_index].ibo.GetSize() / sizeof(std::uint32_t)), 1, 0, 0, 0);
 		polygondrawn += m_sub_meshes[submesh_index].triangle_count;
 		drawcalls++;
 	}
