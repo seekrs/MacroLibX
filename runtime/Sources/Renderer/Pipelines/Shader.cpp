@@ -14,7 +14,7 @@ namespace mlx
 
 			default : FatalError("wtf"); break;
 		}
-		m_module = kvfCreateShaderModule(RenderCore::Get().GetDevice(), reinterpret_cast<std::uint32_t*>(m_bytecode.data()), m_bytecode.size() * 4);
+		m_module = kvfCreateShaderModule(RenderCore::Get().GetDevice(), reinterpret_cast<std::uint32_t*>(m_bytecode.data()), m_bytecode.size() / 4);
 		DebugLog("Vulkan : shader module created");
 
 		GeneratePipelineLayout(m_layout);
