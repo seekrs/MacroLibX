@@ -60,27 +60,16 @@ namespace mlx
 			return;
 		bool is_single_time_cmd_buffer = (cmd == VK_NULL_HANDLE);
 		if(is_single_time_cmd_buffer)
-		{
 			cmd = kvfCreateCommandBuffer(RenderCore::Get().GetDevice());
-			kvfBeginCommandBuffer(cmd, VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT);
-		}
 		KvfImageType kvf_type = KVF_IMAGE_OTHER;
 		switch(m_type)
 		{
 			case ImageType::Color: kvf_type = KVF_IMAGE_COLOR; break;
 			case ImageType::Depth: kvf_type = KVF_IMAGE_DEPTH; break;
-
 			default: break;
 		}
 		kvfTransitionImageLayout(RenderCore::Get().GetDevice(), m_image, kvf_type, cmd, m_format, m_layout, new_layout, is_single_time_cmd_buffer);
 		m_layout = new_layout;
-		if(is_single_time_cmd_buffer)
-		{
-			RenderCore::Get().vkEndCommandBuffer(cmd);
-			VkFence fence = kvfCreateFence(RenderCore::Get().GetDevice());
-			kvfSubmitSingleTimeCommandBuffer(RenderCore::Get().GetDevice(), cmd, KVF_GRAPHICS_QUEUE, fence);
-			kvfDestroyFence(RenderCore::Get().GetDevice(), fence);
-		}
 	}
 
 	void Image::Clear(VkCommandBuffer cmd, Vec4f color)

@@ -90,6 +90,8 @@ namespace mlx
 		LoadKVFDeviceVulkanFunctionPointers();
 
 		vkDestroySurfaceKHR(m_instance, surface, nullptr);
+
+		m_allocator.Init();
 	}
 
 #undef MLX_LOAD_FUNCTION
@@ -191,6 +193,7 @@ namespace mlx
 	RenderCore::~RenderCore()
 	{
 		WaitDeviceIdle();
+		m_allocator.Destroy();
 		kvfDestroyDevice(m_device);
 		DebugLog("Vulkan : logical device destroyed");
 		kvfDestroyInstance(m_instance);
