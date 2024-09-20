@@ -4,6 +4,8 @@
 
 namespace mlx
 {
+	Profiler* Profiler::s_instance = nullptr;
+
 	void Profiler::BeginRuntimeSession()
 	{
 		std::lock_guard lock(m_mutex);
@@ -63,5 +65,6 @@ namespace mlx
 		if(!m_runtime_session_began)
 			return;
 		EndRuntimeSession();
+		s_instance = nullptr;
 	}
 }

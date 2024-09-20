@@ -4,6 +4,13 @@
 
 namespace mlx
 {
+	MemManager* MemManager::s_instance = nullptr;
+
+	MemManager::MemManager()
+	{
+		s_instance = this;
+	}
+
 	void* MemManager::Malloc(std::size_t size)
 	{
 		void* ptr = std::malloc(size);
@@ -49,5 +56,6 @@ namespace mlx
 		{
 			std::free(ptr);
 		});
+		s_instance = nullptr;
 	}
 }

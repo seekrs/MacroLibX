@@ -26,9 +26,13 @@ namespace mlx
 		};
 	}
 
-	void SDLManager::Init() noexcept
+	SDLManager* SDLManager::s_instance = nullptr;
+
+	SDLManager::SDLManager()
 	{
 		MLX_PROFILE_FUNCTION();
+		s_instance = this;
+
 		m_drop_sdl_responsability = SDL_WasInit(SDL_INIT_VIDEO);
 		if(m_drop_sdl_responsability) // is case the mlx is running in a sandbox like MacroUnitTester where SDL is already init
 			return;
@@ -224,12 +228,13 @@ namespace mlx
 		return y;
 	}
 
-	void SDLManager::Shutdown() noexcept
+	SDLManager::~SDLManager()
 	{
 		if(m_drop_sdl_responsability)
 			return;
 		SDL_QuitSubSystem(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS);
 		SDL_Quit();
+		s_instance = nullptr;
 		DebugLog("SDL Manager uninitialized");
 	}
 }

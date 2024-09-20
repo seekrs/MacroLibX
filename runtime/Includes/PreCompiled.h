@@ -93,6 +93,7 @@
 #include <Core/EventBus.h>
 #include <Core/Profiler.h>
 #include <Utils/NonOwningPtr.h>
+#include <Utils/NonCopyable.h>
 
 using Handle = void*;
 

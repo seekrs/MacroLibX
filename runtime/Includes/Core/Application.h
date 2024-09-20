@@ -4,6 +4,8 @@
 #include <Core/Graphics.h>
 #include <Platform/Inputs.h>
 #include <Core/ImagesRegistry.h>
+#include <Core/SDLManager.h>
+#include <Core/Memory.h>
 #include <Core/Fps.h>
 
 namespace mlx
@@ -47,12 +49,17 @@ namespace mlx
 			~Application();
 
 		private:
+			std::unique_ptr<MemManager> p_mem_manager; // Putting ptr here to initialise them before inputs, even if it f*cks the padding
+			std::unique_ptr<SDLManager> p_sdl_manager;
 			FpsManager m_fps;
 			Inputs m_in;
 			ImageRegistry m_image_registry;
 			std::vector<std::unique_ptr<GraphicsSupport>> m_graphics;
 			std::function<int(Handle)> f_loop_hook;
 			std::unique_ptr<RenderCore> p_render_core;
+			#ifdef PROFILER
+				std::unique_ptr<Profiler> p_profiler;
+			#endif
 			Handle p_param = nullptr;
 	};
 }

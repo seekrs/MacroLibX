@@ -1,8 +1,6 @@
 #ifndef __MLX_PROFILER__
 #define __MLX_PROFILER__
 
-#include <Utils/Singleton.h>
-
 namespace mlx
 {
 	using FloatingPointMilliseconds = std::chrono::duration<double, std::milli>;
@@ -14,20 +12,21 @@ namespace mlx
 		std::thread::id thread_id;
 	};
 
-	class Profiler : public Singleton<Profiler>
+	class Profiler
 	{
-		friend class Singleton<Profiler>;
-
 		public:
 			Profiler(const Profiler&) = delete;
 			Profiler(Profiler&&) = delete;
+			Profiler() { BeginRuntimeSession(); s_instance = this; }
 
 			void AppendProfileData(ProfileResult&& result);
 
-		private:
-			Profiler() { BeginRuntimeSession(); }
+			inline static bool IsInit() noexcept { return s_instance != nullptr; }
+			inline static Profiler& Get() noexcept { return *s_instance; }
+
 			~Profiler();
 
+		private:
 			void BeginRuntimeSession();
 			void WriteProfile(const ProfileResult& result);
 			void EndRuntimeSession();
@@ -44,6 +43,8 @@ namespace mlx
 			}
 
 		private:
+			static Profiler* s_instance;
+
 			std::unordered_map<std::string, std::pair<std::size_t, ProfileResult>> m_profile_data;
 			std::ofstream m_output_stream;
 			std::mutex m_mutex;
