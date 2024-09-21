@@ -12,7 +12,7 @@ namespace mlx
 		public:
 			GPUBuffer() = default;
 
-			void Init(BufferType type, VkDeviceSize size, VkBufferUsageFlags usage, CPUBuffer data);
+			void Init(BufferType type, VkDeviceSize size, VkBufferUsageFlags usage, CPUBuffer data, std::string_view debug_name);
 			void Destroy() noexcept;
 
 			bool CopyFrom(const GPUBuffer& buffer) noexcept;
@@ -33,6 +33,9 @@ namespace mlx
 			void PushToGPU() noexcept;
 
 		protected:
+			#ifdef DEBUG
+				std::string m_debug_name;
+			#endif
 			VkBuffer m_buffer = VK_NULL_HANDLE;
 			VmaAllocation m_allocation;
 			VkDeviceSize m_offset = 0;
@@ -40,7 +43,7 @@ namespace mlx
 			void* p_map = nullptr;
 
 		private:
-			void CreateBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VmaAllocationCreateInfo alloc_info);
+			void CreateBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VmaAllocationCreateInfo alloc_info, std::string_view debug_name);
 
 		private:
 			VkBufferUsageFlags m_usage = 0;
@@ -49,7 +52,7 @@ namespace mlx
 	class VertexBuffer : public GPUBuffer
 	{
 		public:
-			inline void Init(std::uint32_t size, VkBufferUsageFlags additional_flags = 0) { GPUBuffer::Init(BufferType::LowDynamic, size, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | additional_flags, {}); }
+			inline void Init(std::uint32_t size, VkBufferUsageFlags additional_flags, std::string_view debug_name) { GPUBuffer::Init(BufferType::LowDynamic, size, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | additional_flags, {}, std::move(debug_name)); }
 			void SetData(CPUBuffer data);
 			inline void Bind(VkCommandBuffer cmd) const noexcept { VkDeviceSize offset = 0; RenderCore::Get().vkCmdBindVertexBuffers(cmd, 0, 1, &m_buffer, &offset); }
 	};
@@ -57,7 +60,7 @@ namespace mlx
 	class IndexBuffer : public GPUBuffer
 	{
 		public:
-			inline void Init(std::uint32_t size, VkBufferUsageFlags additional_flags = 0) { GPUBuffer::Init(BufferType::LowDynamic, size, VK_BUFFER_USAGE_INDEX_BUFFER_BIT | additional_flags, {}); }
+			inline void Init(std::uint32_t size, VkBufferUsageFlags additional_flags, std::string_view debug_name) { GPUBuffer::Init(BufferType::LowDynamic, size, VK_BUFFER_USAGE_INDEX_BUFFER_BIT | additional_flags, {}, std::move(debug_name)); }
 			void SetData(CPUBuffer data);
 			inline void Bind(VkCommandBuffer cmd) const noexcept { RenderCore::Get().vkCmdBindIndexBuffer(cmd, m_buffer, 0, VK_INDEX_TYPE_UINT32); }
 	};
@@ -65,7 +68,7 @@ namespace mlx
 	class UniformBuffer
 	{
 		public:
-			void Init(std::uint32_t size);
+			void Init(std::uint32_t size, std::string_view debug_name);
 			void SetData(CPUBuffer data, std::size_t frame_index);
 			void Destroy() noexcept;
 

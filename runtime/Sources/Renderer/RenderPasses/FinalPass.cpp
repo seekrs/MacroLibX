@@ -9,6 +9,7 @@ namespace mlx
 {
 	void FinalPass::Init()
 	{
+		MLX_PROFILE_FUNCTION();
 		ShaderLayout vertex_shader_layout(
 			{}, {}
 		);
@@ -44,6 +45,7 @@ namespace mlx
 
 	void FinalPass::Pass([[maybe_unused]] Scene& scene, Renderer& renderer, Texture& render_target)
 	{
+		MLX_PROFILE_FUNCTION();
 		if(m_pipeline.GetPipeline() == VK_NULL_HANDLE)
 		{
 			GraphicPipelineDescriptor pipeline_descriptor;
@@ -70,6 +72,7 @@ namespace mlx
 
 	void FinalPass::Destroy()
 	{
+		MLX_PROFILE_FUNCTION();
 		m_pipeline.Destroy();
 		p_vertex_shader.reset();
 		p_fragment_shader.reset();

@@ -8,12 +8,14 @@ namespace mlx
 	Scene::Scene(SceneDescriptor desc)
 	: m_descriptor(std::move(desc))
 	{
+		MLX_PROFILE_FUNCTION();
 		Verify((bool)m_descriptor.renderer, "invalid renderer");
-		m_depth.Init(m_descriptor.renderer->GetSwapchainImages().back().GetWidth(), m_descriptor.renderer->GetSwapchainImages().back().GetHeight());
+		m_depth.Init(m_descriptor.renderer->GetSwapchainImages().back().GetWidth(), m_descriptor.renderer->GetSwapchainImages().back().GetHeight(), false, "mlx_scene_depth");
 	}
 
 	Sprite& Scene::CreateSprite(NonOwningPtr<Texture> texture) noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		std::shared_ptr<Sprite> sprite = std::make_shared<Sprite>(texture);
 		m_sprites.push_back(sprite);
 		return *sprite;
@@ -21,6 +23,7 @@ namespace mlx
 
 	NonOwningPtr<Sprite> Scene::GetSpriteFromTextureAndPosition(NonOwningPtr<Texture> texture, const Vec2f& position) const
 	{
+		MLX_PROFILE_FUNCTION();
 		auto it = std::find_if(m_sprites.begin(), m_sprites.end(), [texture, position](std::shared_ptr<Sprite> sprite)
 		{
 			return sprite->GetPosition().x == position.x && sprite->GetPosition().y == position.y && sprite->GetTexture() == texture;
@@ -30,6 +33,7 @@ namespace mlx
 
 	void Scene::TryEraseSpriteFromTexture(NonOwningPtr<Texture> texture)
 	{
+		MLX_PROFILE_FUNCTION();
 		auto it = m_sprites.begin();
 		do
 		{

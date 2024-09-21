@@ -26,6 +26,7 @@ namespace mlx
 {
 	void GPUAllocator::Init() noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		VmaVulkanFunctions vma_vulkan_func{};
 		vma_vulkan_func.vkAllocateMemory                    = RenderCore::Get().vkAllocateMemory;
 		vma_vulkan_func.vkBindBufferMemory                  = RenderCore::Get().vkBindBufferMemory;
@@ -63,6 +64,15 @@ namespace mlx
 		kvfCheckVk(vmaCreateBuffer(m_allocator, binfo, vinfo, &buffer, &allocation, nullptr));
 		if(name != nullptr)
 		{
+			if constexpr(RenderCore::HAS_DEBUG_UTILS_FUNCTIONS)
+			{
+				VkDebugUtilsObjectNameInfoEXT name_info{};
+				name_info.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_OBJECT_NAME_INFO_EXT;
+				name_info.objectType = VK_OBJECT_TYPE_BUFFER;
+				name_info.objectHandle = reinterpret_cast<std::uint64_t>(buffer);
+				name_info.pObjectName = name;
+				RenderCore::Get().vkSetDebugUtilsObjectNameEXT(RenderCore::Get().GetDevice(), &name_info);
+			}
 			vmaSetAllocationName(m_allocator, allocation, name);
 		}
 		DebugLog("Graphics Allocator : created new buffer '%'", name);
@@ -70,12 +80,15 @@ namespace mlx
 		return allocation;
 	}
 
-	void GPUAllocator::DestroyBuffer(VmaAllocation allocation, VkBuffer buffer) noexcept
+	void GPUAllocator::DestroyBuffer(VmaAllocation allocation, VkBuffer buffer, const char* name) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
 		RenderCore::Get().WaitDeviceIdle();
 		vmaDestroyBuffer(m_allocator, buffer, allocation);
-		DebugLog("Graphics Allocator : destroyed buffer");
+		if(name != nullptr)
+			DebugLog("Graphics Allocator : destroyed buffer '%'", name);
+		else
+			DebugLog("Graphics Allocator : destroyed buffer");
 		m_active_buffers_allocations--;
 	}
 
@@ -86,6 +99,15 @@ namespace mlx
 		kvfCheckVk(vmaCreateImage(m_allocator, iminfo, vinfo, &image, &allocation, nullptr));
 		if(name != nullptr)
 		{
+			if constexpr(RenderCore::HAS_DEBUG_UTILS_FUNCTIONS)
+			{
+				VkDebugUtilsObjectNameInfoEXT name_info{};
+				name_info.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_OBJECT_NAME_INFO_EXT;
+				name_info.objectType = VK_OBJECT_TYPE_IMAGE;
+				name_info.objectHandle = reinterpret_cast<std::uint64_t>(image);
+				name_info.pObjectName = name;
+				RenderCore::Get().vkSetDebugUtilsObjectNameEXT(RenderCore::Get().GetDevice(), &name_info);
+			}
 			vmaSetAllocationName(m_allocator, allocation, name);
 		}
 		DebugLog("Graphics Allocator : created new image '%'", name);
@@ -93,12 +115,15 @@ namespace mlx
 		return allocation;
 	}
 
-	void GPUAllocator::DestroyImage(VmaAllocation allocation, VkImage image) noexcept
+	void GPUAllocator::DestroyImage(VmaAllocation allocation, VkImage image, const char* name) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
 		RenderCore::Get().WaitDeviceIdle();
 		vmaDestroyImage(m_allocator, image, allocation);
-		DebugLog("Graphics Allocator : destroyed image");
+		if(name != nullptr)
+			DebugLog("Graphics Allocator : destroyed image '%'", name);
+		else
+			DebugLog("Graphics Allocator : destroyed image");
 		m_active_images_allocations--;
 	}
 
@@ -141,6 +166,7 @@ namespace mlx
 
 	void GPUAllocator::Destroy() noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		if(m_active_images_allocations != 0)
 			Error("Graphics allocator : some user-dependant allocations were not freed before destroying the display (% active allocations). You may have not destroyed all the MLX resources you've created", m_active_images_allocations);
 		else if(m_active_buffers_allocations != 0)

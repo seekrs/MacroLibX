@@ -20,12 +20,12 @@ namespace mlx
 				{
 					CPUBuffer vb(vertices.size() * sizeof(Vertex));
 					std::memcpy(vb.GetData(), vertices.data(), vb.GetSize());
-					vbo.Init(vb.GetSize());
+					vbo.Init(vb.GetSize(), 0, "mlx_mesh");
 					vbo.SetData(std::move(vb));
 
 					CPUBuffer ib(indices.size() * sizeof(std::uint32_t));
 					std::memcpy(ib.GetData(), indices.data(), ib.GetSize());
-					ibo.Init(ib.GetSize());
+					ibo.Init(ib.GetSize(), 0, "mlx_mesh");
 					ibo.SetData(std::move(ib));
 
 					triangle_count = vertices.size() / 3;

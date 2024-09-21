@@ -31,6 +31,12 @@ namespace mlx
 			#undef MLX_VULKAN_INSTANCE_FUNCTION
 			#undef MLX_VULKAN_DEVICE_FUNCTION
 
+			#if defined(DEBUG) && defined(VK_EXT_debug_utils)
+				inline static constexpr bool HAS_DEBUG_UTILS_FUNCTIONS = true;
+			#else
+				inline static constexpr bool HAS_DEBUG_UTILS_FUNCTIONS = false;
+			#endif
+
 			~RenderCore();
 
 		private:

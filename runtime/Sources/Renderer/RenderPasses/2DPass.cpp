@@ -16,6 +16,7 @@ namespace mlx
 
 	void Render2DPass::Init()
 	{
+		MLX_PROFILE_FUNCTION();
 		ShaderLayout vertex_shader_layout(
 			{
 				{ 0,
@@ -64,7 +65,7 @@ namespace mlx
 		p_texture_set = std::make_shared<DescriptorSet>(p_fragment_shader->GetShaderLayout().set_layouts[0].second, p_fragment_shader->GetPipelineLayout().set_layouts[0], ShaderType::Fragment);
 
 		p_viewer_data_buffer = std::make_shared<UniformBuffer>();
-		p_viewer_data_buffer->Init(sizeof(ViewerData));
+		p_viewer_data_buffer->Init(sizeof(ViewerData), "mlx_2d_pass_viewer_data");
 		for(std::size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
 		{
 			p_viewer_data_set->SetUniformBuffer(i, 0, p_viewer_data_buffer->Get(i));
@@ -74,6 +75,7 @@ namespace mlx
 
 	void Render2DPass::Pass(Scene& scene, Renderer& renderer, Texture& render_target)
 	{
+		MLX_PROFILE_FUNCTION();
 		if(m_pipeline.GetPipeline() == VK_NULL_HANDLE)
 		{
 			GraphicPipelineDescriptor pipeline_descriptor;
@@ -115,6 +117,7 @@ namespace mlx
 
 	void Render2DPass::Destroy()
 	{
+		MLX_PROFILE_FUNCTION();
 		m_pipeline.Destroy();
 		p_vertex_shader.reset();
 		p_fragment_shader.reset();

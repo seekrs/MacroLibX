@@ -49,7 +49,7 @@ namespace mlx
 	{
 		MLX_PROFILE_FUNCTION();
 		Texture* texture;
-		try { texture = new Texture({}, w, h); }
+		try { texture = new Texture({}, w, h, VK_FORMAT_R8G8B8A8_SRGB, false, "mlx_user_image"); }
 		catch(...) { return NULL; }
 		m_image_registry.RegisterTexture(texture);
 		return texture;

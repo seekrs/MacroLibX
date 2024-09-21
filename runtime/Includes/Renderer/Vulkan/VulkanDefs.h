@@ -20,6 +20,12 @@
 		MLX_VULKAN_INSTANCE_FUNCTION(vkGetPhysicalDeviceMemoryProperties)
 		MLX_VULKAN_INSTANCE_FUNCTION(vkGetPhysicalDeviceProperties)
 		MLX_VULKAN_INSTANCE_FUNCTION(vkGetPhysicalDeviceQueueFamilyProperties)
+		#ifdef DEBUG
+			#ifdef VK_EXT_debug_utils
+				MLX_VULKAN_INSTANCE_FUNCTION(vkSetDebugUtilsObjectNameEXT)
+				//MLX_VULKAN_INSTANCE_FUNCTION(vkSetDebugUtilsObjectTagEXT)
+			#endif
+		#endif
 	#endif
 
 	#ifdef MLX_VULKAN_DEVICE_FUNCTION
