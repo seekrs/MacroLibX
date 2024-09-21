@@ -64,15 +64,14 @@ namespace mlx
 		kvfCheckVk(vmaCreateBuffer(m_allocator, binfo, vinfo, &buffer, &allocation, nullptr));
 		if(name != nullptr)
 		{
-			if constexpr(RenderCore::HAS_DEBUG_UTILS_FUNCTIONS)
-			{
+			#ifdef MLX_HAS_DEBUG_UTILS_FUNCTIONS
 				VkDebugUtilsObjectNameInfoEXT name_info{};
 				name_info.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_OBJECT_NAME_INFO_EXT;
 				name_info.objectType = VK_OBJECT_TYPE_BUFFER;
 				name_info.objectHandle = reinterpret_cast<std::uint64_t>(buffer);
 				name_info.pObjectName = name;
 				RenderCore::Get().vkSetDebugUtilsObjectNameEXT(RenderCore::Get().GetDevice(), &name_info);
-			}
+			#endif
 			vmaSetAllocationName(m_allocator, allocation, name);
 		}
 		DebugLog("Graphics Allocator : created new buffer '%'", name);
@@ -99,15 +98,14 @@ namespace mlx
 		kvfCheckVk(vmaCreateImage(m_allocator, iminfo, vinfo, &image, &allocation, nullptr));
 		if(name != nullptr)
 		{
-			if constexpr(RenderCore::HAS_DEBUG_UTILS_FUNCTIONS)
-			{
+			#ifdef MLX_HAS_DEBUG_UTILS_FUNCTIONS
 				VkDebugUtilsObjectNameInfoEXT name_info{};
 				name_info.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_OBJECT_NAME_INFO_EXT;
 				name_info.objectType = VK_OBJECT_TYPE_IMAGE;
 				name_info.objectHandle = reinterpret_cast<std::uint64_t>(image);
 				name_info.pObjectName = name;
 				RenderCore::Get().vkSetDebugUtilsObjectNameEXT(RenderCore::Get().GetDevice(), &name_info);
-			}
+			#endif
 			vmaSetAllocationName(m_allocator, allocation, name);
 		}
 		DebugLog("Graphics Allocator : created new image '%'", name);

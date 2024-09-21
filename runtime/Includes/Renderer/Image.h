@@ -14,7 +14,7 @@ namespace mlx
 		public:
 			Image() = default;
 
-			inline void Init(VkImage image, VkFormat format, std::uint32_t width, std::uint32_t height, VkImageLayout layout, std::string_view debug_name) noexcept
+			inline void Init(VkImage image, VkFormat format, std::uint32_t width, std::uint32_t height, VkImageLayout layout, [[maybe_unused]] std::string_view debug_name) noexcept
 			{
 				m_image = image;
 				m_format = format;
@@ -71,7 +71,7 @@ namespace mlx
 	{
 		public:
 			DepthImage() = default;
-			inline void Init(std::uint32_t width, std::uint32_t height, bool is_multisampled, std::string_view debug_name)
+			inline void Init(std::uint32_t width, std::uint32_t height, bool is_multisampled, [[maybe_unused]] std::string_view debug_name)
 			{
 				MLX_PROFILE_FUNCTION();
 				std::vector<VkFormat> candidates = { VK_FORMAT_D32_SFLOAT, VK_FORMAT_D32_SFLOAT_S8_UINT, VK_FORMAT_D24_UNORM_S8_UINT };
@@ -87,12 +87,12 @@ namespace mlx
 	{
 		public:
 			Texture() = default;
-			Texture(CPUBuffer pixels, std::uint32_t width, std::uint32_t height, VkFormat format, bool is_multisampled, std::string_view debug_name)
+			Texture(CPUBuffer pixels, std::uint32_t width, std::uint32_t height, VkFormat format, bool is_multisampled, [[maybe_unused]] std::string_view debug_name)
 			{
 				Init(std::move(pixels), width, height, format, is_multisampled, std::move(debug_name));
 			}
 
-			void Init(CPUBuffer pixels, std::uint32_t width, std::uint32_t height, VkFormat format, bool is_multisampled, std::string_view debug_name);
+			void Init(CPUBuffer pixels, std::uint32_t width, std::uint32_t height, VkFormat format, bool is_multisampled, [[maybe_unused]] std::string_view debug_name);
 
 			void SetPixel(int x, int y, std::uint32_t color) noexcept;
 			int GetPixel(int x, int y) noexcept;

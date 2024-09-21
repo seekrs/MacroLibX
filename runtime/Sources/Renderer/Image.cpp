@@ -15,7 +15,7 @@
 
 namespace mlx
 {
-	void Image::Init(ImageType type, std::uint32_t width, std::uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, bool is_multisampled, std::string_view debug_name)
+	void Image::Init(ImageType type, std::uint32_t width, std::uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, bool is_multisampled, [[maybe_unused]] std::string_view debug_name)
 	{
 		MLX_PROFILE_FUNCTION();
 		m_type = type;
@@ -56,16 +56,13 @@ namespace mlx
 	{
 		MLX_PROFILE_FUNCTION();
 		m_image_view = kvfCreateImageView(RenderCore::Get().GetDevice(), m_image, m_format, type, aspect_flags, layer_count);
-		#ifdef DEBUG
-			if constexpr(RenderCore::HAS_DEBUG_UTILS_FUNCTIONS)
-			{
-				VkDebugUtilsObjectNameInfoEXT name_info{};
-				name_info.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_OBJECT_NAME_INFO_EXT;
-				name_info.objectType = VK_OBJECT_TYPE_IMAGE_VIEW;
-				name_info.objectHandle = reinterpret_cast<std::uint64_t>(m_image_view);
-				name_info.pObjectName = m_debug_name.c_str();
-				RenderCore::Get().vkSetDebugUtilsObjectNameEXT(RenderCore::Get().GetDevice(), &name_info);
-			}
+		#ifdef MLX_HAS_DEBUG_UTILS_FUNCTIONS
+			VkDebugUtilsObjectNameInfoEXT name_info{};
+			name_info.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_OBJECT_NAME_INFO_EXT;
+			name_info.objectType = VK_OBJECT_TYPE_IMAGE_VIEW;
+			name_info.objectHandle = reinterpret_cast<std::uint64_t>(m_image_view);
+			name_info.pObjectName = m_debug_name.c_str();
+			RenderCore::Get().vkSetDebugUtilsObjectNameEXT(RenderCore::Get().GetDevice(), &name_info);
 		#endif
 	}
 
@@ -154,7 +151,7 @@ namespace mlx
 		m_image = VK_NULL_HANDLE;
 	}
 
-	void Texture::Init(CPUBuffer pixels, std::uint32_t width, std::uint32_t height, VkFormat format, bool is_multisampled, std::string_view debug_name)
+	void Texture::Init(CPUBuffer pixels, std::uint32_t width, std::uint32_t height, VkFormat format, bool is_multisampled, [[maybe_unused]] std::string_view debug_name)
 	{
 		MLX_PROFILE_FUNCTION();
 		Image::Init(ImageType::Color, width, height, format, VK_IMAGE_TILING_OPTIMAL, VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT | VK_IMAGE_USAGE_SAMPLED_BIT | VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT, is_multisampled, std::move(debug_name));
@@ -229,7 +226,11 @@ namespace mlx
 		#endif
 		m_staging_buffer.emplace();
 		std::size_t size = m_width * m_height * kvfFormatSize(m_format);
-		m_staging_buffer->Init(BufferType::Staging, size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT, {}, m_debug_name);
+		#ifdef DEBUG
+			m_staging_buffer->Init(BufferType::Staging, size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT, {}, m_debug_name);
+		#else
+			m_staging_buffer->Init(BufferType::Staging, size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT, {}, {});
+		#endif
 
 		VkImageLayout old_layout = m_layout;
 		VkCommandBuffer cmd = kvfCreateCommandBuffer(RenderCore::Get().GetDevice());

@@ -13,7 +13,7 @@ namespace mlx
 		#ifdef DEBUG
 			auto res = m_textures.try_emplace(z, CPUBuffer{}, swapchain_extent.width, swapchain_extent.height, VK_FORMAT_R8G8B8A8_SRGB, false, "mlx_put_pixel_layer_" + std::to_string(z));
 		#else
-			auto res = m_textures.try_emplace(z, CPUBuffer{}, swapchain_extent.width, swapchain_extent.height, VK_FORMAT_R8G8B8A8_SRGB, false, {});
+			auto res = m_textures.try_emplace(z, CPUBuffer{}, swapchain_extent.width, swapchain_extent.height, VK_FORMAT_R8G8B8A8_SRGB, false, std::string_view{});
 		#endif
 		res.first->second.SetPixel(x, y, color);
 		return (res.second ? &res.first->second : nullptr);
