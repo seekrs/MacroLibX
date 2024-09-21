@@ -10,6 +10,7 @@ namespace mlx
 {
 	void TransitionImageToCorrectLayout(Image& image, VkCommandBuffer cmd)
 	{
+		MLX_PROFILE_FUNCTION();
 		if(!image.IsInit())
 			return;
 		if(image.GetType() == ImageType::Color)
@@ -21,6 +22,7 @@ namespace mlx
 	DescriptorSet::DescriptorSet(const ShaderSetLayout& layout, VkDescriptorSetLayout vklayout, ShaderType shader_type)
 	: m_set_layout(vklayout)
 	{
+		MLX_PROFILE_FUNCTION();
 		for(auto& [binding, type] : layout.binds)
 		{
 			m_descriptors.emplace_back();
@@ -35,12 +37,14 @@ namespace mlx
 	DescriptorSet::DescriptorSet(VkDescriptorSetLayout layout, const std::vector<Descriptor>& descriptors)
 	: m_descriptors(descriptors), m_set_layout(layout)
 	{
+		MLX_PROFILE_FUNCTION();
 		for(std::size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
 			m_set[i] = kvfAllocateDescriptorSet(RenderCore::Get().GetDevice(), layout);
 	}
 
 	void DescriptorSet::SetImage(std::size_t i, std::uint32_t binding, class Image& image)
 	{
+		MLX_PROFILE_FUNCTION();
 		Verify(m_set[i] != VK_NULL_HANDLE, "invalid descriptor");
 		auto it = std::find_if(m_descriptors.begin(), m_descriptors.end(), [=](Descriptor descriptor)
 		{
@@ -61,6 +65,7 @@ namespace mlx
 
 	void DescriptorSet::SetStorageBuffer(std::size_t i, std::uint32_t binding, class GPUBuffer& buffer)
 	{
+		MLX_PROFILE_FUNCTION();
 		Verify(m_set[i] != VK_NULL_HANDLE, "invalid descriptor");
 		auto it = std::find_if(m_descriptors.begin(), m_descriptors.end(), [=](Descriptor descriptor)
 		{
@@ -81,6 +86,7 @@ namespace mlx
 
 	void DescriptorSet::SetUniformBuffer(std::size_t i, std::uint32_t binding, class GPUBuffer& buffer)
 	{
+		MLX_PROFILE_FUNCTION();
 		Verify(m_set[i] != VK_NULL_HANDLE, "invalid descriptor");
 		auto it = std::find_if(m_descriptors.begin(), m_descriptors.end(), [=](Descriptor descriptor)
 		{
@@ -101,6 +107,7 @@ namespace mlx
 
 	void DescriptorSet::Update(std::size_t i, VkCommandBuffer cmd) noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		Verify(m_set[i] != VK_NULL_HANDLE, "invalid descriptor");
 		std::vector<VkWriteDescriptorSet> writes;
 		std::vector<VkDescriptorBufferInfo> buffer_infos;
@@ -141,6 +148,7 @@ namespace mlx
 
 	void DescriptorSet::Reallocate() noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		for(std::size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
 			m_set[i] = kvfAllocateDescriptorSet(RenderCore::Get().GetDevice(), m_set_layout);
 	}

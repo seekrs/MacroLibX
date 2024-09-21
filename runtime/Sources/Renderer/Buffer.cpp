@@ -4,8 +4,9 @@
 
 namespace mlx
 {
-	void GPUBuffer::Init(BufferType type, VkDeviceSize size, VkBufferUsageFlags usage, CPUBuffer data)
+	void GPUBuffer::Init(BufferType type, VkDeviceSize size, VkBufferUsageFlags usage, CPUBuffer data, std::string_view debug_name)
 	{
+		MLX_PROFILE_FUNCTION();
 		VmaAllocationCreateInfo alloc_info{};
 		alloc_info.flags = VMA_ALLOCATION_CREATE_HOST_ACCESS_SEQUENTIAL_WRITE_BIT;
 		alloc_info.usage = VMA_MEMORY_USAGE_AUTO;
@@ -24,10 +25,7 @@ namespace mlx
 		else // LowDynamic or Staging
 			m_usage = usage | VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
 
-		if(type == BufferType::Staging && data.Empty())
-			Warning("Vulkan : trying to create staging buffer without data (wtf?)");
-
-		CreateBuffer(size, m_usage, alloc_info);
+		CreateBuffer(size, m_usage, alloc_info, std::move(debug_name));
 
 		if(!data.Empty())
 		{
@@ -38,21 +36,38 @@ namespace mlx
 			PushToGPU();
 	}
 
-	void GPUBuffer::CreateBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VmaAllocationCreateInfo alloc_info)
+	void GPUBuffer::CreateBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VmaAllocationCreateInfo alloc_info, std::string_view debug_name)
 	{
+		MLX_PROFILE_FUNCTION();
 		VkBufferCreateInfo bufferInfo{};
 		bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
 		bufferInfo.size = size;
 		bufferInfo.usage = usage;
 		bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
-		m_allocation = RenderCore::Get().GetAllocator().CreateBuffer(&bufferInfo, &alloc_info, m_buffer, nullptr);
+		#ifdef DEBUG
+			std::string alloc_name{ debug_name };
+			if(usage & VK_BUFFER_USAGE_INDEX_BUFFER_BIT)
+				alloc_name.append("_index_buffer");
+			else if(usage & VK_BUFFER_USAGE_VERTEX_BUFFER_BIT)
+				alloc_name.append("_vertex_buffer");
+			else if(usage & VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT)
+				alloc_name.append("_uniform_buffer");
+			else
+				alloc_name.append("_buffer");
+			m_allocation = RenderCore::Get().GetAllocator().CreateBuffer(&bufferInfo, &alloc_info, m_buffer, alloc_name.c_str());
+			m_debug_name = std::move(alloc_name);
+		#else
+			m_allocation = RenderCore::Get().GetAllocator().CreateBuffer(&bufferInfo, &alloc_info, m_buffer, nullptr);
+		#endif
 		if(alloc_info.flags != 0)
 			RenderCore::Get().GetAllocator().MapMemory(m_allocation, &p_map);
+		m_size = size;
 	}
 
 	bool GPUBuffer::CopyFrom(const GPUBuffer& buffer) noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		if(!(m_usage & VK_BUFFER_USAGE_TRANSFER_DST_BIT))
 		{
 			Error("Vulkan : buffer cannot be the destination of a copy because it does not have the correct usage flag");
@@ -77,12 +92,19 @@ namespace mlx
 
 	void GPUBuffer::PushToGPU() noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		VmaAllocationCreateInfo alloc_info{};
 		alloc_info.usage = VMA_MEMORY_USAGE_AUTO_PREFER_DEVICE;
 
 		GPUBuffer new_buffer;
 		new_buffer.m_usage = (this->m_usage & 0xFFFFFFFC) | VK_BUFFER_USAGE_TRANSFER_DST_BIT;
-		new_buffer.CreateBuffer(m_size, new_buffer.m_usage, alloc_info);
+
+		#ifdef DEBUG
+			std::string new_name = m_debug_name + "_gpu";
+			new_buffer.CreateBuffer(m_size, new_buffer.m_usage, alloc_info, new_name);
+		#else
+			new_buffer.CreateBuffer(m_size, new_buffer.m_usage, alloc_info, {});
+		#endif
 
 		if(new_buffer.CopyFrom(*this))
 			Swap(new_buffer);
@@ -92,15 +114,21 @@ namespace mlx
 
 	void GPUBuffer::Destroy() noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		if(m_buffer == VK_NULL_HANDLE)
 			return;
 		RenderCore::Get().GetAllocator().UnmapMemory(m_allocation);
-		RenderCore::Get().GetAllocator().DestroyBuffer(m_allocation, m_buffer);
+		#ifdef DEBUG
+			RenderCore::Get().GetAllocator().DestroyBuffer(m_allocation, m_buffer, m_debug_name.c_str());
+		#else
+			RenderCore::Get().GetAllocator().DestroyBuffer(m_allocation, m_buffer, nullptr);
+		#endif
 		m_buffer = VK_NULL_HANDLE;
 	}
 
 	void GPUBuffer::Swap(GPUBuffer& buffer) noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		std::swap(m_buffer, buffer.m_buffer);
 		std::swap(m_allocation, buffer.m_allocation);
 		std::swap(m_size, buffer.m_size);
@@ -111,6 +139,7 @@ namespace mlx
 
 	void VertexBuffer::SetData(CPUBuffer data)
 	{
+		MLX_PROFILE_FUNCTION();
 		if(data.GetSize() > m_size)
 		{
 			Error("Vulkan : trying to store to much data in a vertex buffer (% bytes in % bytes)", data.GetSize(), m_size);
@@ -122,13 +151,18 @@ namespace mlx
 			return;
 		}
 		GPUBuffer staging;
-		staging.Init(BufferType::Staging, data.GetSize(), VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, data);
+		#ifdef DEBUG
+			staging.Init(BufferType::Staging, data.GetSize(), VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, data, m_debug_name);
+		#else
+			staging.Init(BufferType::Staging, data.GetSize(), VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, data, {});
+		#endif
 		CopyFrom(staging);
 		staging.Destroy();
 	}
 
 	void IndexBuffer::SetData(CPUBuffer data)
 	{
+		MLX_PROFILE_FUNCTION();
 		if(data.GetSize() > m_size)
 		{
 			Error("Vulkan : trying to store to much data in an index buffer (% bytes in % bytes)", data.GetSize(), m_size);
@@ -140,16 +174,25 @@ namespace mlx
 			return;
 		}
 		GPUBuffer staging;
-		staging.Init(BufferType::Staging, data.GetSize(), VK_BUFFER_USAGE_INDEX_BUFFER_BIT, data);
+		#ifdef DEBUG
+			staging.Init(BufferType::Staging, data.GetSize(), VK_BUFFER_USAGE_INDEX_BUFFER_BIT, data, m_debug_name);
+		#else
+			staging.Init(BufferType::Staging, data.GetSize(), VK_BUFFER_USAGE_INDEX_BUFFER_BIT, data, {});
+		#endif
 		CopyFrom(staging);
 		staging.Destroy();
 	}
 
-	void UniformBuffer::Init(std::uint32_t size)
+	void UniformBuffer::Init(std::uint32_t size, std::string_view debug_name)
 	{
+		MLX_PROFILE_FUNCTION();
 		for(int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
 		{
-			m_buffers[i].Init(BufferType::HighDynamic, size, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, {});
+			#ifdef DEBUG
+				m_buffers[i].Init(BufferType::HighDynamic, size, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, {}, std::string{ debug_name } + '_' + std::to_string(i));
+			#else
+				m_buffers[i].Init(BufferType::HighDynamic, size, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, {}, {});
+			#endif
 			m_maps[i] = m_buffers[i].GetMap();
 			if(m_maps[i] == nullptr)
 				FatalError("Vulkan : unable to map a uniform buffer");
@@ -158,6 +201,7 @@ namespace mlx
 
 	void UniformBuffer::SetData(CPUBuffer data, std::size_t frame_index)
 	{
+		MLX_PROFILE_FUNCTION();
 		if(data.GetSize() != m_buffers[frame_index].GetSize())
 		{
 			Error("Vulkan : invalid data size to update to a uniform buffer, % != %", data.GetSize(), m_buffers[frame_index].GetSize());
@@ -169,6 +213,7 @@ namespace mlx
 
 	void UniformBuffer::Destroy() noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		for(int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
 			m_buffers[i].Destroy();
 	}

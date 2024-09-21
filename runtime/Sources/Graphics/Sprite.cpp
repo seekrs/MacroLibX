@@ -7,6 +7,7 @@ namespace mlx
 {
 	std::shared_ptr<Mesh> CreateQuad(float x, float y, float width, float height)
 	{
+		MLX_PROFILE_FUNCTION();
 		std::vector<Vertex> data(4);
 
 		data[0].position = Vec4f(x, y, 0.0f, 1.0f);
@@ -37,6 +38,7 @@ namespace mlx
 
 	Sprite::Sprite(NonOwningPtr<Texture> texture)
 	{
+		MLX_PROFILE_FUNCTION();
 		Verify((bool)texture, "Sprite: invalid texture");
 		p_mesh = CreateQuad(0, 0, texture->GetWidth(), texture->GetHeight());
 		p_texture = texture;

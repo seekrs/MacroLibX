@@ -37,7 +37,7 @@ namespace mlx
 		std::cout << std::endl;
 	}
 
-	void ValidationWarningCallback(const char* message) noexcept
+	void WarningCallback(const char* message) noexcept
 	{
 		Logs::Report(LogType::Warning, 0, "", "", message);
 		std::cout << std::endl;
@@ -54,8 +54,9 @@ namespace mlx
 		LoadKVFGlobalVulkanFunctionPointers();
 
 		kvfSetErrorCallback(&ErrorCallback);
+		kvfSetWarningCallback(&WarningCallback);
 		kvfSetValidationErrorCallback(&ValidationErrorCallback);
-		kvfSetValidationWarningCallback(&ValidationWarningCallback);
+		kvfSetValidationWarningCallback(&WarningCallback);
 
 		//kvfAddLayer("VK_LAYER_MESA_overlay");
 

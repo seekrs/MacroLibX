@@ -27,6 +27,7 @@ namespace mlx
 
 	void Renderer::Init(NonOwningPtr<Window> window)
 	{
+		MLX_PROFILE_FUNCTION();
 		func::function<void(const EventBase&)> functor = [this](const EventBase& event)
 		{
 			if(event.What() == Event::ResizeEventCode)
@@ -56,6 +57,7 @@ namespace mlx
 
 	bool Renderer::BeginFrame()
 	{
+		MLX_PROFILE_FUNCTION();
 		kvfWaitForFence(RenderCore::Get().GetDevice(), m_cmd_fences[m_current_frame_index]);
 		VkResult result = RenderCore::Get().vkAcquireNextImageKHR(RenderCore::Get().GetDevice(), m_swapchain, UINT64_MAX, m_image_available_semaphores[m_current_frame_index], VK_NULL_HANDLE, &m_swapchain_image_index);
 		if(result == VK_ERROR_OUT_OF_DATE_KHR)
@@ -78,6 +80,7 @@ namespace mlx
 
 	void Renderer::EndFrame()
 	{
+		MLX_PROFILE_FUNCTION();
 		VkPipelineStageFlags wait_stages[] = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
 		kvfEndCommandBuffer(m_cmd_buffers[m_current_frame_index]);
 		kvfSubmitCommandBuffer(RenderCore::Get().GetDevice(), m_cmd_buffers[m_current_frame_index], KVF_GRAPHICS_QUEUE, m_render_finished_semaphores[m_current_frame_index], m_image_available_semaphores[m_current_frame_index], m_cmd_fences[m_current_frame_index], wait_stages);
@@ -95,6 +98,7 @@ namespace mlx
 
 	void Renderer::CreateSwapchain()
 	{
+		MLX_PROFILE_FUNCTION();
 		Vec2ui drawable_size = p_window->GetVulkanDrawableSize();
 		VkExtent2D extent = { drawable_size.x, drawable_size.y };
 		m_swapchain = kvfCreateSwapchainKHR(RenderCore::Get().GetDevice(), RenderCore::Get().GetPhysicalDevice(), m_surface, extent, false);
@@ -105,7 +109,11 @@ namespace mlx
 		RenderCore::Get().vkGetSwapchainImagesKHR(RenderCore::Get().GetDevice(), m_swapchain, &images_count, tmp.data());
 		for(std::size_t i = 0; i < images_count; i++)
 		{
-			m_swapchain_images[i].Init(tmp[i], kvfGetSwapchainImagesFormat(m_swapchain), extent.width, extent.height);
+			#ifdef DEBUG
+				m_swapchain_images[i].Init(tmp[i], kvfGetSwapchainImagesFormat(m_swapchain), extent.width, extent.height, VK_IMAGE_LAYOUT_UNDEFINED, "mlx_swapchain_image_" + std::to_string(i));
+			#else
+				m_swapchain_images[i].Init(tmp[i], kvfGetSwapchainImagesFormat(m_swapchain), extent.width, extent.height, VK_IMAGE_LAYOUT_UNDEFINED, {});
+			#endif
 			m_swapchain_images[i].TransitionLayout(VK_IMAGE_LAYOUT_PRESENT_SRC_KHR);
 			m_swapchain_images[i].CreateImageView(VK_IMAGE_VIEW_TYPE_2D, VK_IMAGE_ASPECT_COLOR_BIT);
 		}
@@ -114,6 +122,7 @@ namespace mlx
 
 	void Renderer::DestroySwapchain()
 	{
+		MLX_PROFILE_FUNCTION();
 		RenderCore::Get().WaitDeviceIdle();
 		for(Image& img : m_swapchain_images)
 			img.DestroyImageView();
@@ -123,6 +132,7 @@ namespace mlx
 
 	void Renderer::Destroy() noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		RenderCore::Get().WaitDeviceIdle();
 
 		for(std::size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)

@@ -93,6 +93,7 @@ typedef void (*KvfErrorCallback)(const char* message);
 typedef struct KvfGraphicsPipelineBuilder KvfGraphicsPipelineBuilder;
 
 void kvfSetErrorCallback(KvfErrorCallback callback);
+void kvfSetWarningCallback(KvfErrorCallback callback);
 void kvfSetValidationErrorCallback(KvfErrorCallback callback);
 void kvfSetValidationWarningCallback(KvfErrorCallback callback);
 
@@ -469,6 +470,7 @@ size_t __kvf_internal_framebuffers_capacity = 0;
 #endif
 
 KvfErrorCallback __kvf_error_callback = NULL;
+KvfErrorCallback __kvf_warning_callback = NULL;
 KvfErrorCallback __kvf_validation_error_callback = NULL;
 KvfErrorCallback __kvf_validation_warning_callback = NULL;
 
@@ -479,7 +481,7 @@ KvfErrorCallback __kvf_validation_warning_callback = NULL;
 
 void __kvfCheckVk(VkResult result, const char* function)
 {
-	if(result != VK_SUCCESS)
+	if(result < VK_SUCCESS)
 	{
 		if(__kvf_error_callback != NULL)
 		{
@@ -492,6 +494,17 @@ void __kvfCheckVk(VkResult result, const char* function)
 		#ifndef KVF_NO_EXIT_ON_FAILURE
 			exit(EXIT_FAILURE);
 		#endif
+	}
+	else if(result > VK_SUCCESS)
+	{
+		if(__kvf_warning_callback != NULL)
+		{
+			char buffer[1024];
+			snprintf(buffer, 1024, "KVF Vulkan warning in '%s': %s", function, kvfVerbaliseVkResult(result));
+			__kvf_warning_callback(buffer);
+			return;
+		}
+		printf("KVF Vulkan warning in '%s': %s\n", function, kvfVerbaliseVkResult(result));
 	}
 }
 
@@ -815,6 +828,11 @@ void __kvfDestroyDescriptorPools(VkDevice device)
 void kvfSetErrorCallback(KvfErrorCallback callback)
 {
 	__kvf_error_callback = callback;
+}
+
+void kvfSetWarningCallback(KvfErrorCallback callback)
+{
+	__kvf_warning_callback = callback;
 }
 
 void kvfSetValidationErrorCallback(KvfErrorCallback callback)

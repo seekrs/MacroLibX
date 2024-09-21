@@ -14,16 +14,19 @@ namespace mlx
 		public:
 			Image() = default;
 
-			inline void Init(VkImage image, VkFormat format, std::uint32_t width, std::uint32_t height, VkImageLayout layout = VK_IMAGE_LAYOUT_UNDEFINED) noexcept
+			inline void Init(VkImage image, VkFormat format, std::uint32_t width, std::uint32_t height, VkImageLayout layout, std::string_view debug_name) noexcept
 			{
 				m_image = image;
 				m_format = format;
 				m_width = width;
 				m_height = height;
 				m_layout = layout;
+				#ifdef DEBUG
+					m_debug_name = std::move(debug_name);
+				#endif
 			}
 
-			void Init(ImageType type, std::uint32_t width, std::uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, bool is_multisampled = false);
+			void Init(ImageType type, std::uint32_t width, std::uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, bool is_multisampled, std::string_view debug_name);
 			void CreateImageView(VkImageViewType type, VkImageAspectFlags aspectFlags, int layer_count = 1) noexcept;
 			void CreateSampler() noexcept;
 			void TransitionLayout(VkImageLayout new_layout, VkCommandBuffer cmd = VK_NULL_HANDLE);
@@ -48,6 +51,9 @@ namespace mlx
 			virtual ~Image() = default;
 
 		protected:
+			#ifdef DEBUG
+				std::string m_debug_name;
+			#endif
 			VmaAllocation m_allocation;
 			VkImage m_image = VK_NULL_HANDLE;
 			VkImageView m_image_view = VK_NULL_HANDLE;
@@ -65,11 +71,12 @@ namespace mlx
 	{
 		public:
 			DepthImage() = default;
-			inline void Init(std::uint32_t width, std::uint32_t height, bool is_multisampled = false)
+			inline void Init(std::uint32_t width, std::uint32_t height, bool is_multisampled, std::string_view debug_name)
 			{
+				MLX_PROFILE_FUNCTION();
 				std::vector<VkFormat> candidates = { VK_FORMAT_D32_SFLOAT, VK_FORMAT_D32_SFLOAT_S8_UINT, VK_FORMAT_D24_UNORM_S8_UINT };
 				VkFormat format = kvfFindSupportFormatInCandidates(RenderCore::Get().GetDevice(), candidates.data(), candidates.size(), VK_IMAGE_TILING_OPTIMAL, VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT);
-				Image::Init(ImageType::Depth, width, height, format, VK_IMAGE_TILING_OPTIMAL, VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT, is_multisampled); 
+				Image::Init(ImageType::Depth, width, height, format, VK_IMAGE_TILING_OPTIMAL, VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT, is_multisampled, std::move(debug_name)); 
 				Image::CreateImageView(VK_IMAGE_VIEW_TYPE_2D, VK_IMAGE_ASPECT_DEPTH_BIT);
 				Image::TransitionLayout(VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL);
 			}
@@ -80,33 +87,12 @@ namespace mlx
 	{
 		public:
 			Texture() = default;
-			Texture(CPUBuffer pixels, std::uint32_t width, std::uint32_t height, VkFormat format = VK_FORMAT_R8G8B8A8_SRGB, bool is_multisampled = false)
+			Texture(CPUBuffer pixels, std::uint32_t width, std::uint32_t height, VkFormat format, bool is_multisampled, std::string_view debug_name)
 			{
-				Init(std::move(pixels), width, height, format, is_multisampled);
+				Init(std::move(pixels), width, height, format, is_multisampled, std::move(debug_name));
 			}
 
-			inline void Init(CPUBuffer pixels, std::uint32_t width, std::uint32_t height, VkFormat format = VK_FORMAT_R8G8B8A8_SRGB, bool is_multisampled = false)
-			{
-				Image::Init(ImageType::Color, width, height, format, VK_IMAGE_TILING_OPTIMAL, VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT | VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT, is_multisampled);
-				Image::CreateImageView(VK_IMAGE_VIEW_TYPE_2D, VK_IMAGE_ASPECT_COLOR_BIT);
-				Image::CreateSampler();
-				if(pixels)
-				{
-					GPUBuffer staging_buffer;
-					std::size_t size = width * height * kvfFormatSize(format);
-					staging_buffer.Init(BufferType::Staging, size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, pixels);
-					VkCommandBuffer cmd = kvfCreateCommandBuffer(RenderCore::Get().GetDevice());
-					kvfBeginCommandBuffer(cmd, VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT);
-					TransitionLayout(VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, cmd);
-					kvfCopyBufferToImage(cmd, Image::Get(), staging_buffer.Get(), staging_buffer.GetOffset(), VK_IMAGE_ASPECT_COLOR_BIT, { width, height, 1 });
-					RenderCore::Get().vkEndCommandBuffer(cmd);
-					VkFence fence = kvfCreateFence(RenderCore::Get().GetDevice());
-					kvfSubmitSingleTimeCommandBuffer(RenderCore::Get().GetDevice(), cmd, KVF_GRAPHICS_QUEUE, fence);
-					kvfDestroyFence(RenderCore::Get().GetDevice(), fence);
-					staging_buffer.Destroy();
-				}
-				TransitionLayout(VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
-			}
+			void Init(CPUBuffer pixels, std::uint32_t width, std::uint32_t height, VkFormat format, bool is_multisampled, std::string_view debug_name);
 
 			void SetPixel(int x, int y, std::uint32_t color) noexcept;
 			int GetPixel(int x, int y) noexcept;

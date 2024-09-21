@@ -9,6 +9,7 @@ namespace mlx
 {
 	void GraphicPipeline::Init(const GraphicPipelineDescriptor& descriptor)
 	{
+		MLX_PROFILE_FUNCTION();
 		if(!descriptor.vertex_shader || !descriptor.fragment_shader)
 			FatalError("Vulkan : invalid shaders");
 
@@ -62,6 +63,7 @@ namespace mlx
 
 	bool GraphicPipeline::BindPipeline(VkCommandBuffer command_buffer, std::size_t framebuffer_index, std::array<float, 4> clear) noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		TransitionAttachments(command_buffer);
 		VkFramebuffer fb = m_framebuffers[framebuffer_index];
 		VkExtent2D fb_extent = kvfGetFramebufferSize(fb);
@@ -98,11 +100,13 @@ namespace mlx
 
 	void GraphicPipeline::EndPipeline(VkCommandBuffer command_buffer) noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		RenderCore::Get().vkCmdEndRenderPass(command_buffer);
 	}
 
 	void GraphicPipeline::Destroy() noexcept
 	{
+		MLX_PROFILE_FUNCTION();
 		p_vertex_shader.reset();
 		p_fragment_shader.reset();
 		for(auto& fb : m_framebuffers)
@@ -124,6 +128,7 @@ namespace mlx
 
 	void GraphicPipeline::CreateFramebuffers(const std::vector<NonOwningPtr<Texture>>& render_targets, bool clear_attachments)
 	{
+		MLX_PROFILE_FUNCTION();
 		std::vector<VkAttachmentDescription> attachments;
 		std::vector<VkImageView> attachment_views;
 		if(p_renderer)
@@ -167,6 +172,7 @@ namespace mlx
 
 	void GraphicPipeline::TransitionAttachments(VkCommandBuffer cmd)
 	{
+		MLX_PROFILE_FUNCTION();
 		if(p_depth)
 			p_depth->TransitionLayout(VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL, cmd);
 

@@ -6,6 +6,7 @@ namespace mlx
 {
 	Shader::Shader(const std::vector<std::uint8_t>& bytecode, ShaderType type, ShaderLayout layout) : m_layout(std::move(layout)), m_bytecode(bytecode)
 	{
+		MLX_PROFILE_FUNCTION();
 		switch(type)
 		{
 			case ShaderType::Vertex : m_stage = VK_SHADER_STAGE_VERTEX_BIT; break;
@@ -22,6 +23,7 @@ namespace mlx
 
 	void Shader::GeneratePipelineLayout(ShaderLayout layout)
 	{
+		MLX_PROFILE_FUNCTION();
 		for(auto& [n, set] : layout.set_layouts)
 		{
 			std::vector<VkDescriptorSetLayoutBinding> bindings(set.binds.size());
@@ -55,6 +57,7 @@ namespace mlx
 
 	Shader::~Shader()
 	{
+		MLX_PROFILE_FUNCTION();
 		kvfDestroyShaderModule(RenderCore::Get().GetDevice(), m_module);
 		DebugLog("Vulkan : shader module destroyed");
 		for(auto& layout : m_set_layouts)
