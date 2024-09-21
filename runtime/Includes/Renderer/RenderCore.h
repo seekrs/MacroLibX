@@ -7,6 +7,10 @@ namespace mlx
 {
 	constexpr const int MAX_FRAMES_IN_FLIGHT = 3;
 
+	#if defined(DEBUG) && defined(VK_EXT_debug_utils)
+		#define MLX_HAS_DEBUG_UTILS_FUNCTIONS
+	#endif
+
 	class RenderCore
 	{
 		public:
@@ -30,12 +34,6 @@ namespace mlx
 			#undef MLX_VULKAN_GLOBAL_FUNCTION
 			#undef MLX_VULKAN_INSTANCE_FUNCTION
 			#undef MLX_VULKAN_DEVICE_FUNCTION
-
-			#if defined(DEBUG) && defined(VK_EXT_debug_utils)
-				inline static constexpr bool HAS_DEBUG_UTILS_FUNCTIONS = true;
-			#else
-				inline static constexpr bool HAS_DEBUG_UTILS_FUNCTIONS = false;
-			#endif
 
 			~RenderCore();
 

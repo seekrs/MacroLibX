@@ -4,7 +4,7 @@
 
 namespace mlx
 {
-	void GPUBuffer::Init(BufferType type, VkDeviceSize size, VkBufferUsageFlags usage, CPUBuffer data, std::string_view debug_name)
+	void GPUBuffer::Init(BufferType type, VkDeviceSize size, VkBufferUsageFlags usage, CPUBuffer data, [[maybe_unused]] std::string_view debug_name)
 	{
 		MLX_PROFILE_FUNCTION();
 		VmaAllocationCreateInfo alloc_info{};
@@ -36,7 +36,7 @@ namespace mlx
 			PushToGPU();
 	}
 
-	void GPUBuffer::CreateBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VmaAllocationCreateInfo alloc_info, std::string_view debug_name)
+	void GPUBuffer::CreateBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VmaAllocationCreateInfo alloc_info, [[maybe_unused]] std::string_view debug_name)
 	{
 		MLX_PROFILE_FUNCTION();
 		VkBufferCreateInfo bufferInfo{};
@@ -183,7 +183,7 @@ namespace mlx
 		staging.Destroy();
 	}
 
-	void UniformBuffer::Init(std::uint32_t size, std::string_view debug_name)
+	void UniformBuffer::Init(std::uint32_t size, [[maybe_unused]] std::string_view debug_name)
 	{
 		MLX_PROFILE_FUNCTION();
 		for(int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)

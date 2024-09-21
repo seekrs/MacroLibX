@@ -39,10 +39,10 @@ namespace mlx
 		{
 			Sprite& new_sprite = p_scene->CreateSprite(texture);
 			new_sprite.SetPosition(Vec3f{ static_cast<float>(x), static_cast<float>(y), static_cast<float>(m_current_depth) });
-			m_current_depth++; 
 		}
 		else
 			sprite->SetPosition(Vec3f{ static_cast<float>(x), static_cast<float>(y), static_cast<float>(m_current_depth) });
+		m_current_depth++; 
 	}
 
 	void GraphicsSupport::LoadFont(const std::filesystem::path& filepath, float scale)
