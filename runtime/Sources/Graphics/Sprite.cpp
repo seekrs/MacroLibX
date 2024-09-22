@@ -2,6 +2,7 @@
 #include <Graphics/Sprite.h>
 #include <Renderer/Image.h>
 #include <Renderer/Vertex.h>
+#include <Renderer/Renderer.h>
 
 namespace mlx
 {
@@ -36,17 +37,17 @@ namespace mlx
 		return mesh;
 	}
 
-	Sprite::Sprite(NonOwningPtr<Texture> texture)
+	Sprite::Sprite(Renderer& renderer, NonOwningPtr<Texture> texture)
 	{
 		MLX_PROFILE_FUNCTION();
 		Verify((bool)texture, "Sprite: invalid texture");
 		p_mesh = CreateQuad(0, 0, texture->GetWidth(), texture->GetHeight());
 		p_texture = texture;
 
-		func::function<void(const EventBase&)> functor = [this](const EventBase& event)
+		func::function<void(const EventBase&)> functor = [this, &renderer](const EventBase& event)
 		{
 			if(event.What() == Event::DescriptorPoolResetEventCode)
-				m_set.Reallocate();
+				m_set.Reallocate(renderer.GetCurrentFrameIndex());
 		};
 		EventBus::RegisterListener({ functor, "__Sprite" + std::to_string(reinterpret_cast<std::uintptr_t>(this)) });
 	}

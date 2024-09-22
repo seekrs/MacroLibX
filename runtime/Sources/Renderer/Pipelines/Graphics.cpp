@@ -1,3 +1,4 @@
+#include "vulkan/vulkan_core.h"
 #include <PreCompiled.h>
 #include <Renderer/Pipelines/Graphics.h>
 #include <Renderer/RenderCore.h>
@@ -7,7 +8,7 @@
 
 namespace mlx
 {
-	void GraphicPipeline::Init(const GraphicPipelineDescriptor& descriptor)
+	void GraphicPipeline::Init(const GraphicPipelineDescriptor& descriptor, std::string_view debug_name)
 	{
 		MLX_PROFILE_FUNCTION();
 		if(!descriptor.vertex_shader || !descriptor.fragment_shader)
@@ -18,6 +19,10 @@ namespace mlx
 		p_fragment_shader = descriptor.fragment_shader;
 		p_renderer = descriptor.renderer;
 		p_depth = descriptor.depth;
+
+		#ifdef DEBUG
+			m_debug_name = debug_name;
+		#endif
 
 		std::vector<VkPushConstantRange> push_constants;
 		std::vector<VkDescriptorSetLayout> set_layouts;
@@ -31,7 +36,7 @@ namespace mlx
 		CreateFramebuffers(m_attachments, descriptor.clear_color_attachments);
 
 		VkPhysicalDeviceFeatures features{};
-		mlx::RenderCore::Get().vkGetPhysicalDeviceFeatures(RenderCore::Get().GetPhysicalDevice(), &features);
+		RenderCore::Get().vkGetPhysicalDeviceFeatures(RenderCore::Get().GetPhysicalDevice(), &features);
 
 		KvfGraphicsPipelineBuilder* builder = kvfCreateGPipelineBuilder();
 		kvfGPipelineBuilderAddShaderStage(builder, p_vertex_shader->GetShaderStage(), p_vertex_shader->GetShaderModule(), "main");
@@ -59,6 +64,33 @@ namespace mlx
 		m_pipeline = kvfCreateGraphicsPipeline(RenderCore::Get().GetDevice(), m_pipeline_layout, builder, m_renderpass);
 		DebugLog("Vulkan : graphics pipeline created");
 		kvfDestroyGPipelineBuilder(builder);
+
+		#ifdef MLX_HAS_DEBUG_UTILS_FUNCTIONS
+			VkDebugUtilsObjectNameInfoEXT name_info{};
+			name_info.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_OBJECT_NAME_INFO_EXT;
+			name_info.objectType = VK_OBJECT_TYPE_PIPELINE;
+			name_info.objectHandle = reinterpret_cast<std::uint64_t>(m_pipeline);
+			name_info.pObjectName = m_debug_name.c_str();
+			RenderCore::Get().vkSetDebugUtilsObjectNameEXT(RenderCore::Get().GetDevice(), &name_info);
+
+			name_info.objectType = VK_OBJECT_TYPE_RENDER_PASS;
+			name_info.objectHandle = reinterpret_cast<std::uint64_t>(m_renderpass);
+			RenderCore::Get().vkSetDebugUtilsObjectNameEXT(RenderCore::Get().GetDevice(), &name_info);
+
+			name_info.objectType = VK_OBJECT_TYPE_SHADER_MODULE;
+			name_info.objectHandle = reinterpret_cast<std::uint64_t>(p_vertex_shader->GetShaderModule());
+			RenderCore::Get().vkSetDebugUtilsObjectNameEXT(RenderCore::Get().GetDevice(), &name_info);
+
+			name_info.objectHandle = reinterpret_cast<std::uint64_t>(p_fragment_shader->GetShaderModule());
+			RenderCore::Get().vkSetDebugUtilsObjectNameEXT(RenderCore::Get().GetDevice(), &name_info);
+
+			name_info.objectType = VK_OBJECT_TYPE_FRAMEBUFFER;
+			for(VkFramebuffer fb : m_framebuffers)
+			{
+				name_info.objectHandle = reinterpret_cast<std::uint64_t>(fb);
+				RenderCore::Get().vkSetDebugUtilsObjectNameEXT(RenderCore::Get().GetDevice(), &name_info);
+			}
+		#endif
 	}
 
 	bool GraphicPipeline::BindPipeline(VkCommandBuffer command_buffer, std::size_t framebuffer_index, std::array<float, 4> clear) noexcept

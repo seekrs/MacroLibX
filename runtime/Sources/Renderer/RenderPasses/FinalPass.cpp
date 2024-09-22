@@ -7,7 +7,7 @@
 
 namespace mlx
 {
-	void FinalPass::Init()
+	void FinalPass::Init(Renderer& renderer)
 	{
 		MLX_PROFILE_FUNCTION();
 		ShaderLayout vertex_shader_layout(
@@ -31,16 +31,16 @@ namespace mlx
 		};
 		p_fragment_shader = std::make_shared<Shader>(fragment_shader_code, ShaderType::Fragment, std::move(fragment_shader_layout));
 
-		func::function<void(const EventBase&)> functor = [this](const EventBase& event)
+		func::function<void(const EventBase&)> functor = [this, &renderer](const EventBase& event)
 		{
 			if(event.What() == Event::ResizeEventCode)
 				m_pipeline.Destroy();
 			if(event.What() == Event::DescriptorPoolResetEventCode)
-				p_set->Reallocate();
+				p_set->Reallocate(renderer.GetCurrentFrameIndex());
 		};
 		EventBus::RegisterListener({ functor, "__MlxFinalPass" });
 
-		p_set = std::make_shared<DescriptorSet>(p_fragment_shader->GetShaderLayout().set_layouts[0].second, p_fragment_shader->GetPipelineLayout().set_layouts[0], ShaderType::Fragment);
+		p_set = std::make_shared<DescriptorSet>(renderer.GetDescriptorPoolManager(), p_fragment_shader->GetShaderLayout().set_layouts[0].second, p_fragment_shader->GetPipelineLayout().set_layouts[0], ShaderType::Fragment);
 	}
 
 	void FinalPass::Pass([[maybe_unused]] Scene& scene, Renderer& renderer, Texture& render_target)
@@ -53,7 +53,11 @@ namespace mlx
 			pipeline_descriptor.fragment_shader = p_fragment_shader;
 			pipeline_descriptor.renderer = &renderer;
 			pipeline_descriptor.no_vertex_inputs = true;
-			m_pipeline.Init(pipeline_descriptor);
+			#ifdef DEBUG
+				m_pipeline.Init(pipeline_descriptor, "mlx_final_pass");
+			#else
+				m_pipeline.Init(pipeline_descriptor, {});
+			#endif
 		}
 
 		VkCommandBuffer cmd = renderer.GetActiveCommandBuffer();

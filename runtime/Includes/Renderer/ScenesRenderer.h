@@ -9,7 +9,7 @@ namespace mlx
 	{
 		public:
 			SceneRenderer() = default;
-			void Init();
+			void Init(class Renderer& renderer);
 			void Render(class Scene& scene, class Renderer& renderer); // TODO : add RTT support
 			void Destroy();
 			~SceneRenderer() = default;

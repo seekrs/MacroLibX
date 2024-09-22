@@ -12,7 +12,7 @@ namespace mlx
 		MLX_PROFILE_FUNCTION();
 		// TODO : re-enable render targets
 		m_renderer.Init(nullptr);
-		m_scene_renderer.Init();
+		m_scene_renderer.Init(m_renderer);
 
 		SceneDescriptor descriptor{};
 		descriptor.renderer = &m_renderer;
@@ -27,7 +27,7 @@ namespace mlx
 	{
 		MLX_PROFILE_FUNCTION();
 		m_renderer.Init(p_window.get());
-		m_scene_renderer.Init();
+		m_scene_renderer.Init(m_renderer);
 
 		SceneDescriptor descriptor{};
 		descriptor.renderer = &m_renderer;

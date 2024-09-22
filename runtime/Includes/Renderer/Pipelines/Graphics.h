@@ -24,7 +24,7 @@ namespace mlx
 		public:
 			GraphicPipeline() = default;
 
-			void Init(const GraphicPipelineDescriptor& descriptor);
+			void Init(const GraphicPipelineDescriptor& descriptor, std::string_view debug_name);
 			bool BindPipeline(VkCommandBuffer command_buffer, std::size_t framebuffer_index, std::array<float, 4> clear) noexcept;
 			void EndPipeline(VkCommandBuffer command_buffer) noexcept override;
 			void Destroy() noexcept;
@@ -46,6 +46,9 @@ namespace mlx
 			std::vector<NonOwningPtr<Texture>> m_attachments;
 			std::vector<VkFramebuffer> m_framebuffers;
 			std::vector<VkClearValue> m_clears;
+			#ifdef DEBUG
+				std::string m_debug_name;
+			#endif
 			std::shared_ptr<Shader> p_vertex_shader;
 			std::shared_ptr<Shader> p_fragment_shader;
 			VkRenderPass m_renderpass = VK_NULL_HANDLE;

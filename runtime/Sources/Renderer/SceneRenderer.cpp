@@ -6,10 +6,10 @@
 
 namespace mlx
 {
-	void SceneRenderer::Init()
+	void SceneRenderer::Init(Renderer& renderer)
 	{
 		MLX_PROFILE_FUNCTION();
-		m_passes.Init();
+		m_passes.Init(renderer);
 	}
 
 	void SceneRenderer::Render(Scene& scene, Renderer& renderer)

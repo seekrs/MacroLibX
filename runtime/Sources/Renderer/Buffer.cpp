@@ -46,6 +46,7 @@ namespace mlx
 		bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
 		#ifdef DEBUG
+			m_debug_name = debug_name;
 			std::string alloc_name{ debug_name };
 			if(usage & VK_BUFFER_USAGE_INDEX_BUFFER_BIT)
 				alloc_name.append("_index_buffer");
@@ -56,7 +57,6 @@ namespace mlx
 			else
 				alloc_name.append("_buffer");
 			m_allocation = RenderCore::Get().GetAllocator().CreateBuffer(&bufferInfo, &alloc_info, m_buffer, alloc_name.c_str());
-			m_debug_name = std::move(alloc_name);
 		#else
 			m_allocation = RenderCore::Get().GetAllocator().CreateBuffer(&bufferInfo, &alloc_info, m_buffer, nullptr);
 		#endif
@@ -85,7 +85,6 @@ namespace mlx
 		kvfEndCommandBuffer(cmd);
 		VkFence fence = kvfCreateFence(RenderCore::Get().GetDevice());
 		kvfSubmitSingleTimeCommandBuffer(RenderCore::Get().GetDevice(), cmd, KVF_GRAPHICS_QUEUE, fence);
-		kvfWaitForFence(RenderCore::Get().GetDevice(), fence);	
 		kvfDestroyFence(RenderCore::Get().GetDevice(), fence);
 		return true;
 	}

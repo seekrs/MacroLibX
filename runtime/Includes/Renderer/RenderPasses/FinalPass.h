@@ -11,7 +11,7 @@ namespace mlx
 	{
 		public:
 			FinalPass() = default;
-			void Init();
+			void Init(class Renderer& renderer);
 			void Pass(class Scene& scene, class Renderer& renderer, class Texture& render_target);
 			void Destroy();
 			~FinalPass() = default;

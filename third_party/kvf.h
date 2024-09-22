@@ -2415,7 +2415,7 @@ void kvfSubmitSingleTimeCommandBuffer(VkDevice device, VkCommandBuffer buffer, K
 	submit_info.pCommandBuffers = &buffer;
 	__kvfCheckVk(KVF_GET_DEVICE_FUNCTION(vkQueueSubmit)(kvfGetDeviceQueue(device, queue), 1, &submit_info, fence));
 	if(fence != VK_NULL_HANDLE)
-		KVF_GET_DEVICE_FUNCTION(vkWaitForFences)(device, 1, &fence, VK_TRUE, UINT64_MAX);
+		kvfWaitForFence(device, fence);	
 }
 
 VkAttachmentDescription kvfBuildAttachmentDescription(KvfImageType type, VkFormat format, VkImageLayout initial, VkImageLayout final, bool clear, VkSampleCountFlagBits samples)
