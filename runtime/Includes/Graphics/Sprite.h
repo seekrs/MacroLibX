@@ -14,15 +14,15 @@ namespace mlx
 		friend class Render2DPass;
 
 		public:
-			Sprite(NonOwningPtr<Texture> texture);
+			Sprite(class Renderer& renderer, NonOwningPtr<Texture> texture);
 
 			inline void SetColor(Vec4f color) noexcept { m_color = color; }
 			inline void SetPosition(Vec3f position) noexcept { m_position = position; }
 
-			[[nodiscard]] inline const Vec4f& GetColor() const noexcept { return m_color; }
-			[[nodiscard]] inline const Vec3f& GetPosition() const noexcept { return m_position; }
-			[[nodiscard]] inline std::shared_ptr<Mesh> GetMesh() const { return p_mesh; }
-			[[nodiscard]] inline NonOwningPtr<Texture> GetTexture() const { return p_texture; }
+			[[nodiscard]] MLX_FORCEINLINE const Vec4f& GetColor() const noexcept { return m_color; }
+			[[nodiscard]] MLX_FORCEINLINE const Vec3f& GetPosition() const noexcept { return m_position; }
+			[[nodiscard]] MLX_FORCEINLINE std::shared_ptr<Mesh> GetMesh() const { return p_mesh; }
+			[[nodiscard]] MLX_FORCEINLINE NonOwningPtr<Texture> GetTexture() const { return p_texture; }
 
 			~Sprite() = default;
 

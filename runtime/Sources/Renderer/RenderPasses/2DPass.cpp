@@ -14,7 +14,7 @@ namespace mlx
 		Vec4f position;
 	};
 
-	void Render2DPass::Init()
+	void Render2DPass::Init(Renderer& renderer)
 	{
 		MLX_PROFILE_FUNCTION();
 		ShaderLayout vertex_shader_layout(
@@ -44,25 +44,24 @@ namespace mlx
 		};
 		p_fragment_shader = std::make_shared<Shader>(fragment_shader_code, ShaderType::Fragment, std::move(fragment_shader_layout));
 
-		func::function<void(const EventBase&)> functor = [this](const EventBase& event)
+
+		func::function<void(const EventBase&)> functor = [this, &renderer](const EventBase& event)
 		{
 			if(event.What() == Event::ResizeEventCode)
 				m_pipeline.Destroy();
 			if(event.What() == Event::DescriptorPoolResetEventCode)
 			{
-				p_texture_set->Reallocate();
-				p_viewer_data_set->Reallocate();
-				for(std::size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
-				{
-					p_viewer_data_set->SetUniformBuffer(i, 0, p_viewer_data_buffer->Get(i));
-					p_viewer_data_set->Update(i);
-				}
+				std::uint32_t frame_index = renderer.GetCurrentFrameIndex();
+				p_texture_set->Reallocate(frame_index);
+				p_viewer_data_set->Reallocate(frame_index);
+				p_viewer_data_set->SetUniformBuffer(frame_index, 0, p_viewer_data_buffer->Get(frame_index));
+				p_viewer_data_set->Update(frame_index);
 			}
 		};
 		EventBus::RegisterListener({ functor, "__MlxRender2DPass" });
 
-		p_viewer_data_set = std::make_shared<DescriptorSet>(p_vertex_shader->GetShaderLayout().set_layouts[0].second, p_vertex_shader->GetPipelineLayout().set_layouts[0], ShaderType::Vertex);
-		p_texture_set = std::make_shared<DescriptorSet>(p_fragment_shader->GetShaderLayout().set_layouts[0].second, p_fragment_shader->GetPipelineLayout().set_layouts[0], ShaderType::Fragment);
+		p_viewer_data_set = std::make_shared<DescriptorSet>(renderer.GetDescriptorPoolManager(), p_vertex_shader->GetShaderLayout().set_layouts[0].second, p_vertex_shader->GetPipelineLayout().set_layouts[0], ShaderType::Vertex);
+		p_texture_set = std::make_shared<DescriptorSet>(renderer.GetDescriptorPoolManager(), p_fragment_shader->GetShaderLayout().set_layouts[0].second, p_fragment_shader->GetPipelineLayout().set_layouts[0], ShaderType::Fragment);
 
 		p_viewer_data_buffer = std::make_shared<UniformBuffer>();
 		p_viewer_data_buffer->Init(sizeof(ViewerData), "mlx_2d_pass_viewer_data");
@@ -84,13 +83,17 @@ namespace mlx
 			pipeline_descriptor.color_attachments = { &render_target };
 			pipeline_descriptor.depth = &scene.GetDepth();
 			pipeline_descriptor.clear_color_attachments = false;
-			m_pipeline.Init(pipeline_descriptor);
+			#ifdef DEBUG
+				m_pipeline.Init(pipeline_descriptor, "mlx_2D_pass");
+			#else
+				m_pipeline.Init(pipeline_descriptor, {});
+			#endif
 		}
 
 		std::uint32_t frame_index = renderer.GetCurrentFrameIndex();
 
 		ViewerData viewer_data;
-		viewer_data.projection_matrix = Mat4f::Ortho(0.0f, render_target.GetWidth(), render_target.GetHeight(), 0.0f);
+		viewer_data.projection_matrix = Mat4f::Ortho(0.0f, render_target.GetWidth(), 0.0f, render_target.GetHeight(), -1.0f, 100'000.0f);
 		static CPUBuffer buffer(sizeof(ViewerData));
 		std::memcpy(buffer.GetData(), &viewer_data, buffer.GetSize());
 		p_viewer_data_buffer->SetData(buffer, frame_index);
@@ -108,8 +111,8 @@ namespace mlx
 			sprite->GetTexture()->Update(cmd);
 			sprite->Bind(frame_index, cmd);
 			std::array<VkDescriptorSet, 2> sets = { p_viewer_data_set->GetSet(frame_index), sprite->GetSet(frame_index) };
-			mlx::RenderCore::Get().vkCmdBindDescriptorSets(cmd, m_pipeline.GetPipelineBindPoint(), m_pipeline.GetPipelineLayout(), 0, sets.size(), sets.data(), 0, nullptr);
-			mlx::RenderCore::Get().vkCmdPushConstants(cmd, m_pipeline.GetPipelineLayout(), VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(SpriteData), &sprite_data);
+			RenderCore::Get().vkCmdBindDescriptorSets(cmd, m_pipeline.GetPipelineBindPoint(), m_pipeline.GetPipelineLayout(), 0, sets.size(), sets.data(), 0, nullptr);
+			RenderCore::Get().vkCmdPushConstants(cmd, m_pipeline.GetPipelineLayout(), VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(SpriteData), &sprite_data);
 			sprite->GetMesh()->Draw(cmd, renderer.GetDrawCallsCounterRef(), renderer.GetPolygonDrawnCounterRef());
 		}
 		m_pipeline.EndPipeline(cmd);

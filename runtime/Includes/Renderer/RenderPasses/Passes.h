@@ -11,7 +11,7 @@ namespace mlx
 	{
 		public:
 			RenderPasses() = default;
-			void Init();
+			void Init(class Renderer& renderer);
 			void Pass(class Scene& scene, class Renderer& renderer);
 			void Destroy();
 			~RenderPasses() = default;

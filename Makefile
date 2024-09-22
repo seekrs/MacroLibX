@@ -16,14 +16,22 @@ SRCS =  $(wildcard $(addsuffix /*.cpp, runtime/Sources/Core))
 SRCS += $(wildcard $(addsuffix /*.cpp, runtime/Sources/Graphics))
 SRCS += $(wildcard $(addsuffix /*.cpp, runtime/Sources/Platform))
 SRCS += $(wildcard $(addsuffix /*.cpp, runtime/Sources/Renderer))
-SRCS += $(wildcard $(addsuffix /*.cpp, runtime/Sources/Renderer/**))
+SRCS += $(wildcard $(addsuffix /*.cpp, runtime/Sources/Renderer/Vulkan))
+SRCS += $(wildcard $(addsuffix /*.cpp, runtime/Sources/Renderer/Pipelines))
+SRCS += $(wildcard $(addsuffix /*.cpp, runtime/Sources/Renderer/RenderPasses))
 
 OBJ_DIR = objs/make/$(shell echo $(OS) | tr '[:upper:]' '[:lower:]')
 OBJS := $(addprefix $(OBJ_DIR)/, $(SRCS:.cpp=.o))
 
+SHADERS_DIR = runtime/Includes/Embedded
+SHADERS_SRCS = $(wildcard $(addsuffix /*.nzsl, $(SHADERS_DIR)))
+SPVS = $(SHADERS_SRCS:.nzsl=.spv.h)
+
 CXX = clang++
 CXXFLAGS = -std=c++20 -O3 -fPIC -Wall -Wextra -DSDL_MAIN_HANDLED
 INCLUDES = -I./includes -I./runtime/Includes -I./runtime/Sources -I./third_party
+
+NZSLC = nzslc
 
 ifeq ($(TOOLCHAIN), gcc)
 	CXX = g++
@@ -93,6 +101,9 @@ endif
 OBJS_TOTAL = $(words $(OBJS))
 N_OBJS := $(shell find $(OBJ_DIR) -type f -name '*.o' 2>/dev/null | wc -l)
 OBJS_TOTAL := $(shell echo $$(( $(OBJS_TOTAL) - $(N_OBJS) )))
+ifeq ($(OBJS_TOTAL), 0) # To avoid division per 0
+	OBJS_TOTAL := 1
+endif
 CURR_OBJ = 0
 
 $(OBJ_DIR)/%.o: %.cpp
@@ -101,6 +112,20 @@ $(OBJ_DIR)/%.o: %.cpp
 	@$(eval PERCENT=$(shell echo $$(( $(CURR_OBJ) * 100 / $(OBJS_TOTAL) ))))
 	@printf "$(COLOR)($(_BOLD)%3s%%$(_RESET)$(COLOR)) $(_RESET)Compiling $(_BOLD)$<$(_RESET)\n" "$(PERCENT)"
 	@$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+
+SPVS_TOTAL = $(words $(SPVS))
+N_SPVS := $(shell find $(SHADERS_DIR) -type f -name '*.spv.h' 2>/dev/null | wc -l)
+SPVS_TOTAL := $(shell echo $$(( $(SPVS_TOTAL) - $(N_SPVS) )))
+ifeq ($(SPVS_TOTAL), 0) # Same
+	SPVS_TOTAL := 1
+endif
+CURR_SPV = 0
+
+%.spv.h: %.nzsl
+	@$(eval CURR_SPV=$(shell echo $$(( $(CURR_SPV) + 1 ))))
+	@$(eval PERCENT=$(shell echo $$(( $(CURR_SPV) * 100 / $(SPVS_TOTAL) ))))
+	@printf "$(COLOR)($(_BOLD)%3s%%$(_RESET)$(COLOR)) $(_RESET)Compiling $(_BOLD)$<$(_RESET)\n" "$(PERCENT)"
+	@$(NZSLC) --compile=spv-header $< -o $(SHADERS_DIR) --optimize
 
 all: _printbuildinfos
 	@$(MAKE) $(NAME)
@@ -116,6 +141,11 @@ _printbuildinfos:
 debug:
 	@$(MAKE) all DEBUG=true -j$(shell nproc)
 
+clean-shaders:
+	@$(RM) $(SPVS)
+
+shaders: clean-shaders $(SPVS)
+
 clean:
 	@$(RM) $(OBJ_DIR)
 	@printf "Cleaned $(_BOLD)$(OBJ_DIR)$(_RESET)\n"
@@ -127,4 +157,4 @@ fclean: clean
 re: fclean _printbuildinfos
 	@$(MAKE) $(NAME)
 
-.PHONY: all clean debug fclean re
+.PHONY: all clean debug shaders clean-shaders fclean re
