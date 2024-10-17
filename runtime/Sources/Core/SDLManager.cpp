@@ -44,68 +44,10 @@ namespace mlx
 
 		if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER) != 0)
 			FatalError("SDL : unable to init all subsystems; %", SDL_GetError());
-
-		struct WatcherData
-		{
-			func::function<void(mlx_event_type, int, int, void*)> callback;
-			NonOwningPtr<SDLManager> manager;
-			void* userdata;
-		};
-
-		WatcherData watcher_data;
-		watcher_data.callback = f_callback;
-		watcher_data.userdata = p_callback_data;
-
-		SDL_AddEventWatch([](void* userdata, SDL_Event* event) -> int
-		{
-			WatcherData* data = static_cast<WatcherData*>(userdata);
-
-			std::uint32_t id = event->window.windowID;
-			switch(event->type) 
-			{
-				case SDL_KEYUP: data->callback(MLX_KEYUP, id, event->key.keysym.scancode, data->userdata); break;
-				case SDL_KEYDOWN: data->callback(MLX_KEYDOWN, id, event->key.keysym.scancode, data->userdata); break;
-				case SDL_MOUSEBUTTONUP: data->callback(MLX_MOUSEUP, id, event->button.button, data->userdata); break;
-				case SDL_MOUSEBUTTONDOWN: data->callback(MLX_MOUSEDOWN, id, event->button.button, data->userdata); break;
-				case SDL_MOUSEWHEEL:
-				{
-					if(event->wheel.y > 0) // scroll up
-						data->callback(MLX_MOUSEWHEEL, id, 1, data->userdata);
-					else if(event->wheel.y < 0) // scroll down
-						data->callback(MLX_MOUSEWHEEL, id, 2, data->userdata);
-					if(event->wheel.x > 0) // scroll right
-						data->callback(MLX_MOUSEWHEEL, id, 3, data->userdata);
-					else if(event->wheel.x < 0) // scroll left
-						data->callback(MLX_MOUSEWHEEL, id, 4, data->userdata);
-					break;
-				}
-				case SDL_WINDOWEVENT:
-				{
-					switch(event->window.event)
-					{
-						case SDL_WINDOWEVENT_CLOSE: data->callback(MLX_WINDOW_EVENT, id, 0, data->userdata); break;
-						case SDL_WINDOWEVENT_MOVED: data->callback(MLX_WINDOW_EVENT, id, 1, data->userdata); break;
-						case SDL_WINDOWEVENT_MINIMIZED: data->callback(MLX_WINDOW_EVENT, id, 2, data->userdata); break;
-						case SDL_WINDOWEVENT_MAXIMIZED: data->callback(MLX_WINDOW_EVENT, id, 3, data->userdata); break;
-						case SDL_WINDOWEVENT_ENTER: data->callback(MLX_WINDOW_EVENT, id, 4, data->userdata); break;
-						case SDL_WINDOWEVENT_FOCUS_GAINED: data->callback(MLX_WINDOW_EVENT, id, 5, data->userdata); break;
-						case SDL_WINDOWEVENT_LEAVE: data->callback(MLX_WINDOW_EVENT, id, 6, data->userdata); break;
-						case SDL_WINDOWEVENT_FOCUS_LOST: data->callback(MLX_WINDOW_EVENT, id, 7, data->userdata); break;
-
-						default : break;
-					}
-					break;
-				}
-
-				default: break;
-			}
-
-			return 0;
-		}, &watcher_data);
 		DebugLog("SDL Manager initialized");
 	}
 
-	Handle SDLManager::CreateWindow(const std::string& title, std::size_t w, std::size_t h, bool hidden)
+	Handle SDLManager::CreateWindow(const std::string& title, std::size_t w, std::size_t h, bool hidden, std::int32_t& id)
 	{
 		Internal::WindowInfos* infos = new Internal::WindowInfos;
 		Verify(infos != nullptr, "SDL : window allocation failed");
@@ -117,6 +59,8 @@ namespace mlx
 		SDL_SetWindowIcon(infos->window, infos->icon);
 
 		m_windows_registry.insert(infos);
+
+		id = SDL_GetWindowID(infos->window);
 
 		return infos;
 	}
@@ -226,6 +170,53 @@ namespace mlx
 		int y;
 		SDL_GetRelativeMouseState(&dummy, &y);
 		return y;
+	}
+
+	void SDLManager::InputsFetcher(func::function<void(mlx_event_type, int, int)> functor)
+	{
+		SDL_Event event;
+		while(SDL_PollEvent(&event))
+		{
+			std::uint32_t id = event.window.windowID;
+			switch(event.type)
+			{
+				case SDL_KEYUP: functor(MLX_KEYUP, id, event.key.keysym.scancode); break;
+				case SDL_KEYDOWN: functor(MLX_KEYDOWN, id, event.key.keysym.scancode); break;
+				case SDL_MOUSEBUTTONUP: functor(MLX_MOUSEUP, id, event.button.button); break;
+				case SDL_MOUSEBUTTONDOWN: functor(MLX_MOUSEDOWN, id, event.button.button); break;
+				case SDL_MOUSEWHEEL:
+				{
+					if(event.wheel.y > 0) // scroll up
+						functor(MLX_MOUSEWHEEL, id, 1);
+					else if(event.wheel.y < 0) // scroll down
+						functor(MLX_MOUSEWHEEL, id, 2);
+					if(event.wheel.x > 0) // scroll right
+						functor(MLX_MOUSEWHEEL, id, 3);
+					else if(event.wheel.x < 0) // scroll left
+						functor(MLX_MOUSEWHEEL, id, 4);
+					break;
+				}
+				case SDL_WINDOWEVENT:
+				{
+					switch(event.window.event)
+					{
+						case SDL_WINDOWEVENT_CLOSE: functor(MLX_WINDOW_EVENT, id, 0); break;
+						case SDL_WINDOWEVENT_MOVED: functor(MLX_WINDOW_EVENT, id, 1); break;
+						case SDL_WINDOWEVENT_MINIMIZED: functor(MLX_WINDOW_EVENT, id, 2); break;
+						case SDL_WINDOWEVENT_MAXIMIZED: functor(MLX_WINDOW_EVENT, id, 3); break;
+						case SDL_WINDOWEVENT_ENTER: functor(MLX_WINDOW_EVENT, id, 4); break;
+						case SDL_WINDOWEVENT_FOCUS_GAINED: functor(MLX_WINDOW_EVENT, id, 5); break;
+						case SDL_WINDOWEVENT_LEAVE: functor(MLX_WINDOW_EVENT, id, 6); break;
+						case SDL_WINDOWEVENT_FOCUS_LOST: functor(MLX_WINDOW_EVENT, id, 7); break;
+
+						default : break;
+					}
+					break;
+				}
+
+				default: break;
+			}
+		}
 	}
 
 	SDLManager::~SDLManager()

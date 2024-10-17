@@ -44,4 +44,9 @@ namespace mlx
 			m_sprites.erase(it);
 		} while(it != m_sprites.end());
 	}
+
+	Scene::~Scene()
+	{
+		m_depth.Destroy();
+	}
 }

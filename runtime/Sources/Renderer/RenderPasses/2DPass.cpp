@@ -5,7 +5,6 @@
 #include <Renderer/Renderer.h>
 #include <Graphics/Scene.h>
 #include <Maths/Mat4.h>
-#include <iostream>
 
 namespace mlx
 {

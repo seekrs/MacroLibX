@@ -33,6 +33,8 @@ namespace mlx
 			if(!m_fps.Update())
 				continue;
 
+			m_in.FetchInputs();
+
 			if(f_loop_hook)
 				f_loop_hook(p_param);
 

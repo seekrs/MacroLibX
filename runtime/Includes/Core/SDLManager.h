@@ -10,8 +10,10 @@ namespace mlx
 		public:
 			SDLManager();
 
-			Handle CreateWindow(const std::string& title, std::size_t w, std::size_t h, bool hidden);
+			Handle CreateWindow(const std::string& title, std::size_t w, std::size_t h, bool hidden, std::int32_t& id);
 			void DestroyWindow(Handle window) noexcept;
+
+			void InputsFetcher(func::function<void(mlx_event_type, int, int)> functor);
 
 			VkSurfaceKHR CreateVulkanSurface(Handle window, VkInstance instance) const noexcept;
 			std::vector<const char*> GetRequiredVulkanInstanceExtentions() const noexcept;
@@ -19,8 +21,6 @@ namespace mlx
 			void MoveMouseOnWindow(Handle window, int x, int y) const noexcept;
 			void GetScreenSizeWindowIsOn(Handle window, int* x, int* y) const noexcept;
 			void SetWindowPosition(Handle window, int x, int y) const noexcept;
-
-			inline void SetEventCallback(func::function<void(mlx_event_type, int, int, void*)> functor, void* userdata) { f_callback = std::move(functor); p_callback_data = userdata; }
 
 			std::int32_t GetX() const noexcept;
 			std::int32_t GetY() const noexcept;
@@ -36,8 +36,6 @@ namespace mlx
 			static SDLManager* s_instance;
 
 			std::unordered_set<Handle> m_windows_registry;
-			func::function<void(mlx_event_type, int, int, void*)> f_callback;
-			void* p_callback_data = nullptr;
 			bool m_drop_sdl_responsability = false;
 	};
 }
