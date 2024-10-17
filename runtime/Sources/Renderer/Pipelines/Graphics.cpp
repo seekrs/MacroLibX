@@ -1,10 +1,10 @@
-#include "vulkan/vulkan_core.h"
 #include <PreCompiled.h>
 #include <Renderer/Pipelines/Graphics.h>
 #include <Renderer/RenderCore.h>
 #include <Renderer/Renderer.h>
 #include <Renderer/Vertex.h>
 #include <Core/EventBus.h>
+#include <iostream>
 
 namespace mlx
 {
@@ -114,6 +114,7 @@ namespace mlx
 		scissor.extent = fb_extent;
 		RenderCore::Get().vkCmdSetScissor(command_buffer, 0, 1, &scissor);
 
+		#pragma omp parallel for
 		for(std::size_t i = 0; i < m_clears.size(); i++)
 		{
 			m_clears[i].color.float32[0] = clear[0];
@@ -141,6 +142,7 @@ namespace mlx
 		MLX_PROFILE_FUNCTION();
 		p_vertex_shader.reset();
 		p_fragment_shader.reset();
+		#pragma omp parallel for
 		for(auto& fb : m_framebuffers)
 		{
 			kvfDestroyFramebuffer(RenderCore::Get().GetDevice(), fb);
@@ -169,6 +171,7 @@ namespace mlx
 			attachment_views.push_back(p_renderer->GetSwapchainImages()[0].GetImageView());
 		}
 
+		#pragma omp parallel for
 		for(NonOwningPtr<Texture> image : render_targets)
 		{
 			attachments.push_back(kvfBuildAttachmentDescription((kvfIsDepthFormat(image->GetFormat()) ? KVF_IMAGE_DEPTH : KVF_IMAGE_COLOR), image->GetFormat(), image->GetLayout(), image->GetLayout(), clear_attachments, VK_SAMPLE_COUNT_1_BIT));
@@ -195,6 +198,7 @@ namespace mlx
 				DebugLog("Vulkan : framebuffer created");
 			}
 		}
+		#pragma omp parallel for
 		for(NonOwningPtr<Texture> image : render_targets)
 		{
 			m_framebuffers.push_back(kvfCreateFramebuffer(RenderCore::Get().GetDevice(), m_renderpass, attachment_views.data(), attachment_views.size(), { .width = image->GetWidth(), .height = image->GetHeight() }));
@@ -208,6 +212,7 @@ namespace mlx
 		if(p_depth)
 			p_depth->TransitionLayout(VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL, cmd);
 
+		#pragma omp parallel for
 		for(NonOwningPtr<Texture> image : m_attachments)
 		{
 			if(!image->IsInit())

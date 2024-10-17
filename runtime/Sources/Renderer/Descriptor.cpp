@@ -99,6 +99,7 @@ namespace mlx
 
 	void DescriptorPoolManager::Destroy()
 	{
+		#pragma omp parallel for
 		for(auto& pool : m_pools)
 			pool.Destroy();
 	}

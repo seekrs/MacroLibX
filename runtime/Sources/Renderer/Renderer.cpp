@@ -69,10 +69,10 @@ namespace mlx
 		VkResult result = RenderCore::Get().vkAcquireNextImageKHR(RenderCore::Get().GetDevice(), m_swapchain, UINT64_MAX, m_image_available_semaphores[m_current_frame_index], VK_NULL_HANDLE, &m_swapchain_image_index);
 		if(result == VK_ERROR_OUT_OF_DATE_KHR)
 		{
-			DestroySwapchain();
-			CreateSwapchain();
-			EventBus::SendBroadcast(Internal::ResizeEventBroadcast{});
-			return false;
+			//DestroySwapchain();
+			//CreateSwapchain();
+			//EventBus::SendBroadcast(Internal::ResizeEventBroadcast{});
+			//return false;
 		}
 		else if(result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR)
 			FatalError("Vulkan error : failed to acquire swapchain image, %", kvfVerbaliseVkResult(result));
@@ -94,9 +94,9 @@ namespace mlx
 		if(!kvfQueuePresentKHR(RenderCore::Get().GetDevice(), m_render_finished_semaphores[m_current_frame_index], m_swapchain, m_swapchain_image_index) || m_framebuffers_resize)
 		{
 			m_framebuffers_resize = false;
-			DestroySwapchain();
-			CreateSwapchain();
-			EventBus::SendBroadcast(Internal::ResizeEventBroadcast{});
+			//DestroySwapchain();
+			//CreateSwapchain();
+			//EventBus::SendBroadcast(Internal::ResizeEventBroadcast{});
 		}
 		m_current_frame_index = (m_current_frame_index + 1) % MAX_FRAMES_IN_FLIGHT;
 	}

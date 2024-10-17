@@ -34,10 +34,11 @@ external
 [entry(vert)]
 fn main(input: VertIn) -> VertOut
 {
-	input.uv.x *= -1.0;
+	let position: vec2[f32] = input.pos.xy + model.position.xy;
+	input.uv *= -1.0;
 	let output: VertOut;
 	output.uv = input.uv;
 	output.color = model.color;
-	output.pos = viewer_data.projection_matrix * (input.pos + model.position);
+	output.pos = viewer_data.projection_matrix * vec4[f32](position, 0.0, 1.0);
 	return output;
 }

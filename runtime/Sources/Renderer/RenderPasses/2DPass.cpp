@@ -5,6 +5,7 @@
 #include <Renderer/Renderer.h>
 #include <Graphics/Scene.h>
 #include <Maths/Mat4.h>
+#include <iostream>
 
 namespace mlx
 {
@@ -44,7 +45,6 @@ namespace mlx
 		};
 		p_fragment_shader = std::make_shared<Shader>(fragment_shader_code, ShaderType::Fragment, std::move(fragment_shader_layout));
 
-
 		func::function<void(const EventBase&)> functor = [this, &renderer](const EventBase& event)
 		{
 			if(event.What() == Event::ResizeEventCode)
@@ -65,6 +65,7 @@ namespace mlx
 
 		p_viewer_data_buffer = std::make_shared<UniformBuffer>();
 		p_viewer_data_buffer->Init(sizeof(ViewerData), "mlx_2d_pass_viewer_data");
+
 		for(std::size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
 		{
 			p_viewer_data_set->SetUniformBuffer(i, 0, p_viewer_data_buffer->Get(i));
@@ -93,13 +94,15 @@ namespace mlx
 		std::uint32_t frame_index = renderer.GetCurrentFrameIndex();
 
 		ViewerData viewer_data;
-		viewer_data.projection_matrix = Mat4f::Ortho(0.0f, render_target.GetWidth(), 0.0f, render_target.GetHeight(), -1.0f, 100'000.0f);
+		viewer_data.projection_matrix = Mat4f::Ortho(0.0f, render_target.GetWidth(), render_target.GetHeight(), 0.0f, -1.0f, 100'000.0f);
 		static CPUBuffer buffer(sizeof(ViewerData));
 		std::memcpy(buffer.GetData(), &viewer_data, buffer.GetSize());
 		p_viewer_data_buffer->SetData(buffer, frame_index);
 
 		VkCommandBuffer cmd = renderer.GetActiveCommandBuffer();
 		m_pipeline.BindPipeline(cmd, 0, {});
+
+		#pragma omp parallel for
 		for(auto sprite : scene.GetSprites())
 		{
 			SpriteData sprite_data;
@@ -107,7 +110,7 @@ namespace mlx
 			sprite_data.color = sprite->GetColor();
 			if(!sprite->IsSetInit())
 				sprite->UpdateDescriptorSet(*p_texture_set);
-			Verify((bool)sprite->GetTexture(), "a sprite has no texture attached");
+			Verify((bool)sprite->GetTexture(), "a sprite has no texture attached (internal mlx issue, please report to the devs)");
 			sprite->GetTexture()->Update(cmd);
 			sprite->Bind(frame_index, cmd);
 			std::array<VkDescriptorSet, 2> sets = { p_viewer_data_set->GetSet(frame_index), sprite->GetSet(frame_index) };
