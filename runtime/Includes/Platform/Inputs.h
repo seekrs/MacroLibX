@@ -17,7 +17,9 @@ namespace mlx
 			};
 
 		public:
-			Inputs();
+			Inputs() = default;
+
+			void FetchInputs();
 
 			inline void RegisterWindow(std::shared_ptr<Window> window) { m_windows[window->GetID()] = window; }
 

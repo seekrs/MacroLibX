@@ -29,7 +29,7 @@ namespace mlx
 			[[nodiscard]] MLX_FORCEINLINE DepthImage& GetDepth() noexcept { return m_depth; }
 			[[nodiscard]] MLX_FORCEINLINE ViewerData& GetViewerData() noexcept { return m_viewer_data; }
 
-			~Scene() = default;
+			~Scene();
 
 		private:
 			SceneDescriptor m_descriptor;

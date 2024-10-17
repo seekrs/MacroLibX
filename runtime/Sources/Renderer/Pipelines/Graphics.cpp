@@ -4,7 +4,6 @@
 #include <Renderer/Renderer.h>
 #include <Renderer/Vertex.h>
 #include <Core/EventBus.h>
-#include <iostream>
 
 namespace mlx
 {

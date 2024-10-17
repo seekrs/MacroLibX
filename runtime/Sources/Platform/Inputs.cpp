@@ -6,14 +6,16 @@
 
 namespace mlx
 {
-	Inputs::Inputs()
+	void Inputs::FetchInputs()
 	{
-		SDLManager::Get().SetEventCallback([this](mlx_event_type event, int window_id, int code, [[maybe_unused]] void* userdata)
+		SDLManager::Get().InputsFetcher([this](mlx_event_type event, int window_id, int code)
 		{
-			if(m_windows.find(window_id) == m_windows.end())
+			if(!m_windows.contains(window_id))
+				return;
+			if(!m_events_hooks.contains(window_id) || !m_events_hooks[window_id][event].hook)
 				return;
 			m_events_hooks[window_id][event].hook(code, m_events_hooks[window_id][event].param);
-		}, nullptr);
+		});
 	}
 
 	std::int32_t Inputs::GetX() const noexcept

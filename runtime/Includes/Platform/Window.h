@@ -30,7 +30,7 @@ namespace mlx
 
 		private:
 			Handle p_window = nullptr;
-			std::uint32_t m_id = -1;
+			std::int32_t m_id;
 			int m_width = 0;
 			int m_height = 0;
 	};
