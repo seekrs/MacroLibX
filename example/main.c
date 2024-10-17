@@ -6,13 +6,14 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:55:21 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 18:10:41 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/10/03 06:39:01 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include "../includes/mlx.h"
 
+/*
 typedef struct
 {
 	void* mlx;
@@ -32,13 +33,13 @@ int update(void* param)
 
 	if(i == 200)
 		mlx_clear_window(mlx->mlx, mlx->win);
-/*
-	if(img)
-		mlx_destroy_image(mlx->mlx,img);
-	img = mlx_new_image(mlx->mlx, 800, 800);
-	mlx_set_image_pixel(mlx->mlx, img, 4, 4, 0xFF00FF00);
-	mlx_put_image_to_window(mlx->mlx, mlx->win, img, 0, 0);
-*/
+
+//	if(img)
+//		mlx_destroy_image(mlx->mlx,img);
+//	img = mlx_new_image(mlx->mlx, 800, 800);
+//	mlx_set_image_pixel(mlx->mlx, img, 4, 4, 0xFF00FF00);
+//	mlx_put_image_to_window(mlx->mlx, mlx->win, img, 0, 0);
+
 	if(i >= 250)
 		mlx_set_font_scale(mlx->mlx, mlx->win, "default", 16.f);
 	else
@@ -173,6 +174,44 @@ int main(void)
 	mlx_destroy_image(mlx.mlx, mlx.img);
 	mlx_destroy_window(mlx.mlx, mlx.win);
 	mlx_destroy_display(mlx.mlx);
+	
+	return 0;
+}
+*/
+
+int window_hook(int event, void* param)
+{
+	if(event == 0)
+		mlx_loop_end(param);
+	return 0;
+}
+
+int main(void)
+{
+	void* mlx;
+	void* win;
+
+	mlx = mlx_init();
+	win = mlx_new_window(mlx, 400, 400, "My window");
+
+	mlx_set_fps_goal(mlx, 60);
+
+	mlx_on_event(mlx, win, MLX_WINDOW_EVENT, window_hook, mlx);
+
+	int dummy;
+	void* logo_png = mlx_png_file_to_image(mlx, "42_logo.png", &dummy, &dummy);
+
+	mlx_put_image_to_window(mlx, win, logo_png, 10, 190);
+	mlx_put_image_to_window(mlx, win, logo_png, 11, 190);
+	mlx_put_image_to_window(mlx, win, logo_png, 10, 190);
+	mlx_put_image_to_window(mlx, win, logo_png, 100, 190);
+	mlx_put_image_to_window(mlx, win, logo_png, 10, 190);
+
+	mlx_loop(mlx);
+
+	mlx_destroy_image(mlx, logo_png);
+	mlx_destroy_window(mlx, win);
+	mlx_destroy_display(mlx);
 	
 	return 0;
 }

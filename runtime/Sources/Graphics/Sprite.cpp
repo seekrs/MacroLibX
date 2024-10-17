@@ -23,7 +23,7 @@ namespace mlx
 		data[3].position = Vec4f(x, y + height, 0.0f, 1.0f);
 		data[3].uv = Vec2f(1.0f, 0.0f);
 
-		std::vector<std::uint32_t> indices = {
+		std::vector<std::uint32_t> indices{
 			0,
 			1,
 			2,
@@ -40,7 +40,7 @@ namespace mlx
 	Sprite::Sprite(Renderer& renderer, NonOwningPtr<Texture> texture)
 	{
 		MLX_PROFILE_FUNCTION();
-		Verify((bool)texture, "Sprite: invalid texture");
+		Verify((bool)texture, "Sprite: invalid texture (internal mlx issue, please report to devs)");
 		p_mesh = CreateQuad(0, 0, texture->GetWidth(), texture->GetHeight());
 		p_texture = texture;
 
@@ -49,6 +49,6 @@ namespace mlx
 			if(event.What() == Event::DescriptorPoolResetEventCode)
 				m_set.Reallocate(renderer.GetCurrentFrameIndex());
 		};
-		EventBus::RegisterListener({ functor, "__Sprite" + std::to_string(reinterpret_cast<std::uintptr_t>(this)) });
+		EventBus::RegisterListener({ functor, "__MlxSprite" + std::to_string(reinterpret_cast<std::uintptr_t>(this)) });
 	}
 }

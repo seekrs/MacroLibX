@@ -1,5 +1,6 @@
 #pragma once
 #include <Core/Graphics.h>
+#include <iostream>
 
 namespace mlx
 {
