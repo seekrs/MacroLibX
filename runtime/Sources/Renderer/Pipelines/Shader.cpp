@@ -41,15 +41,13 @@ namespace mlx
 		}
 
 		std::size_t i = 0;
-		std::vector<VkPushConstantRange> push_constants(layout.push_constants.size());
 		m_pipeline_layout_part.push_constants.resize(layout.push_constants.size());
-		for(auto& pc : layout.push_constants)
+		for(const auto& pc : layout.push_constants)
 		{
 			VkPushConstantRange push_constant_range = {};
 			push_constant_range.offset = pc.offset;
 			push_constant_range.size = pc.size;
 			push_constant_range.stageFlags = m_stage;
-			push_constants[i] = push_constant_range;
 			m_pipeline_layout_part.push_constants[i] = push_constant_range;
 			i++;
 		}

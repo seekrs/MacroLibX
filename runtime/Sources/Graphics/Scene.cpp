@@ -10,7 +10,6 @@ namespace mlx
 	{
 		MLX_PROFILE_FUNCTION();
 		Verify((bool)m_descriptor.renderer, "invalid renderer");
-		m_depth.Init(m_descriptor.renderer->GetSwapchainImages().back().GetWidth(), m_descriptor.renderer->GetSwapchainImages().back().GetHeight(), false, "mlx_scene_depth");
 	}
 
 	Sprite& Scene::CreateSprite(NonOwningPtr<Texture> texture) noexcept
@@ -31,6 +30,18 @@ namespace mlx
 		return (it != m_sprites.end() ? it->get() : nullptr);
 	}
 
+	void Scene::BringToFront(NonOwningPtr<Sprite> sprite)
+	{
+		MLX_PROFILE_FUNCTION();
+		auto it = std::find_if(m_sprites.begin(), m_sprites.end(), [&sprite](std::shared_ptr<Sprite> sprite_ptr)
+		{
+			return sprite_ptr.get() == sprite.Get();
+		});
+		if(it == m_sprites.end())
+			return;
+		std::rotate(it, it + 1, m_sprites.end());
+	}
+
 	void Scene::TryEraseSpriteFromTexture(NonOwningPtr<Texture> texture)
 	{
 		MLX_PROFILE_FUNCTION();
@@ -43,10 +54,5 @@ namespace mlx
 			});
 			m_sprites.erase(it);
 		} while(it != m_sprites.end());
-	}
-
-	Scene::~Scene()
-	{
-		m_depth.Destroy();
 	}
 }

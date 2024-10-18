@@ -67,22 +67,6 @@ namespace mlx
 			bool m_is_multisampled = false;
 	};
 
-	class DepthImage : public Image
-	{
-		public:
-			DepthImage() = default;
-			inline void Init(std::uint32_t width, std::uint32_t height, bool is_multisampled, [[maybe_unused]] std::string_view debug_name)
-			{
-				MLX_PROFILE_FUNCTION();
-				std::vector<VkFormat> candidates = { VK_FORMAT_D32_SFLOAT, VK_FORMAT_D32_SFLOAT_S8_UINT, VK_FORMAT_D24_UNORM_S8_UINT };
-				VkFormat format = kvfFindSupportFormatInCandidates(RenderCore::Get().GetDevice(), candidates.data(), candidates.size(), VK_IMAGE_TILING_OPTIMAL, VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT);
-				Image::Init(ImageType::Depth, width, height, format, VK_IMAGE_TILING_OPTIMAL, VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT | VK_IMAGE_USAGE_TRANSFER_DST_BIT, is_multisampled, std::move(debug_name)); 
-				Image::CreateImageView(VK_IMAGE_VIEW_TYPE_2D, VK_IMAGE_ASPECT_DEPTH_BIT);
-				Image::TransitionLayout(VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL);
-			}
-			~DepthImage() = default;
-	};
-
 	class Texture : public Image
 	{
 		public:

@@ -48,6 +48,7 @@
 #include <string_view>
 #include <sstream>
 #include <ostream>
+#include <ranges>
 
 #ifndef MLX_PLAT_WINDOWS
 	#include <dlfcn.h>

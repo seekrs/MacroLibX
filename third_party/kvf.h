@@ -2974,10 +2974,10 @@ VkPipeline kvfCreateGraphicsPipeline(VkDevice device, VkPipelineLayout layout, K
 	color_blending.logicOp = VK_LOGIC_OP_COPY;
 	color_blending.attachmentCount = 1;
 	color_blending.pAttachments = &builder->color_blend_attachment_state;
-	color_blending.blendConstants[0] = 0.0f;
-	color_blending.blendConstants[1] = 0.0f;
-	color_blending.blendConstants[2] = 0.0f;
-	color_blending.blendConstants[3] = 0.0f;
+	color_blending.blendConstants[0] = 1.0f;
+	color_blending.blendConstants[1] = 1.0f;
+	color_blending.blendConstants[2] = 1.0f;
+	color_blending.blendConstants[3] = 1.0f;
 
 	VkDynamicState states[] = { VK_DYNAMIC_STATE_VIEWPORT, VK_DYNAMIC_STATE_SCISSOR };
 

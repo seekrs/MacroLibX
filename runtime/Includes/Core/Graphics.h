@@ -44,11 +44,11 @@ namespace mlx
 			std::shared_ptr<Window> p_window;
 			std::unique_ptr<Scene> p_scene;
 
-			std::uint64_t m_current_depth = 0;
-
 			int m_id;
 
 			bool m_has_window;
+
+			bool m_insert_new_pixel_put_texture = false;
 	};
 }
 
