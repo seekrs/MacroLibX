@@ -17,7 +17,6 @@ namespace mlx
 		p_vertex_shader = descriptor.vertex_shader;
 		p_fragment_shader = descriptor.fragment_shader;
 		p_renderer = descriptor.renderer;
-		p_depth = descriptor.depth;
 
 		#ifdef DEBUG
 			m_debug_name = debug_name;
@@ -34,24 +33,15 @@ namespace mlx
 		TransitionAttachments();
 		CreateFramebuffers(m_attachments, descriptor.clear_color_attachments);
 
-		VkPhysicalDeviceFeatures features{};
-		RenderCore::Get().vkGetPhysicalDeviceFeatures(RenderCore::Get().GetPhysicalDevice(), &features);
-
 		KvfGraphicsPipelineBuilder* builder = kvfCreateGPipelineBuilder();
 		kvfGPipelineBuilderAddShaderStage(builder, p_vertex_shader->GetShaderStage(), p_vertex_shader->GetShaderModule(), "main");
 		kvfGPipelineBuilderAddShaderStage(builder, p_fragment_shader->GetShaderStage(), p_fragment_shader->GetShaderModule(), "main");
 		kvfGPipelineBuilderSetInputTopology(builder, VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST);
 		kvfGPipelineBuilderSetCullMode(builder, VK_CULL_MODE_NONE, VK_FRONT_FACE_CLOCKWISE);
-		kvfGPipelineBuilderEnableAlphaBlending(builder);
-		if(p_depth)
-			kvfGPipelineBuilderEnableDepthTest(builder, VK_COMPARE_OP_LESS, true);
-		else
-			kvfGPipelineBuilderDisableDepthTest(builder);
+		kvfGPipelineBuilderDisableDepthTest(builder);
 		kvfGPipelineBuilderSetPolygonMode(builder, VK_POLYGON_MODE_FILL, 1.0f);
-		if(features.sampleRateShading)
-			kvfGPipelineBuilderSetMultisamplingShading(builder, VK_SAMPLE_COUNT_1_BIT, 0.25f);
-		else
-			kvfGPipelineBuilderSetMultisampling(builder, VK_SAMPLE_COUNT_1_BIT);
+		kvfGPipelineBuilderSetMultisampling(builder, VK_SAMPLE_COUNT_1_BIT);
+		kvfGPipelineBuilderEnableAlphaBlending(builder);
 
 		if(!descriptor.no_vertex_inputs)
 		{
@@ -122,9 +112,6 @@ namespace mlx
 			m_clears[i].color.float32[3] = clear[3];
 		}
 
-		if(p_depth)
-			m_clears.back().depthStencil = VkClearDepthStencilValue{ 1.0f, 0 };
-
 		kvfBeginRenderPass(m_renderpass, command_buffer, fb, fb_extent, m_clears.data(), m_clears.size());
 		RenderCore::Get().vkCmdBindPipeline(command_buffer, GetPipelineBindPoint(), GetPipeline());
 		return true;
@@ -177,12 +164,6 @@ namespace mlx
 			attachment_views.push_back(image->GetImageView());
 		}
 
-		if(p_depth)
-		{
-			attachments.push_back(kvfBuildAttachmentDescription((kvfIsDepthFormat(p_depth->GetFormat()) ? KVF_IMAGE_DEPTH : KVF_IMAGE_COLOR), p_depth->GetFormat(), p_depth->GetLayout(), p_depth->GetLayout(), clear_attachments, VK_SAMPLE_COUNT_1_BIT));
-			attachment_views.push_back(p_depth->GetImageView());
-		}
-
 		m_renderpass = kvfCreateRenderPass(RenderCore::Get().GetDevice(), attachments.data(), attachments.size(), GetPipelineBindPoint());
 		m_clears.clear();
 		m_clears.resize(attachments.size());
@@ -208,10 +189,6 @@ namespace mlx
 	void GraphicPipeline::TransitionAttachments(VkCommandBuffer cmd)
 	{
 		MLX_PROFILE_FUNCTION();
-		if(p_depth)
-			p_depth->TransitionLayout(VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL, cmd);
-
-		#pragma omp parallel for
 		for(NonOwningPtr<Texture> image : m_attachments)
 		{
 			if(!image->IsInit())

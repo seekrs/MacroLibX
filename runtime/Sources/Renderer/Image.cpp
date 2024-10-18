@@ -100,6 +100,13 @@ namespace mlx
 		subresource_range.levelCount = 1;
 		subresource_range.baseArrayLayer = 0;
 
+		bool is_single_time_cmd_buffer = (cmd == VK_NULL_HANDLE);
+		if(is_single_time_cmd_buffer)
+		{
+			cmd = kvfCreateCommandBuffer(RenderCore::Get().GetDevice());
+			kvfBeginCommandBuffer(cmd, VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT);
+		}
+
 		VkImageLayout old_layout = m_layout;
 		TransitionLayout(VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, cmd);
 		if(m_type == ImageType::Color)
@@ -115,6 +122,14 @@ namespace mlx
 			RenderCore::Get().vkCmdClearDepthStencilImage(cmd, m_image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, &clear_depth_stencil, 1, &subresource_range);
 		}
 		TransitionLayout(old_layout, cmd);
+
+		if(is_single_time_cmd_buffer)
+		{
+			kvfEndCommandBuffer(cmd);
+			VkFence fence = kvfCreateFence(RenderCore::Get().GetDevice());
+			kvfSubmitSingleTimeCommandBuffer(RenderCore::Get().GetDevice(), cmd, KVF_GRAPHICS_QUEUE, fence);
+			kvfDestroyFence(RenderCore::Get().GetDevice(), fence);
+		}
 	}
 
 	void Image::DestroySampler() noexcept
@@ -165,7 +180,7 @@ namespace mlx
 			kvfBeginCommandBuffer(cmd, VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT);
 			TransitionLayout(VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, cmd);
 			kvfCopyBufferToImage(cmd, Image::Get(), staging_buffer.Get(), staging_buffer.GetOffset(), VK_IMAGE_ASPECT_COLOR_BIT, { width, height, 1 });
-			RenderCore::Get().vkEndCommandBuffer(cmd);
+			kvfEndCommandBuffer(cmd);
 			VkFence fence = kvfCreateFence(RenderCore::Get().GetDevice());
 			kvfSubmitSingleTimeCommandBuffer(RenderCore::Get().GetDevice(), cmd, KVF_GRAPHICS_QUEUE, fence);
 			kvfDestroyFence(RenderCore::Get().GetDevice(), fence);
@@ -237,7 +252,7 @@ namespace mlx
 		TransitionLayout(VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, cmd);
 		kvfCopyImageToBuffer(cmd, m_staging_buffer->Get(), m_image, m_staging_buffer->GetOffset(), VK_IMAGE_ASPECT_COLOR_BIT, { m_width, m_height, 1 });
 		TransitionLayout(old_layout, cmd);
-		RenderCore::Get().vkEndCommandBuffer(cmd);
+		kvfEndCommandBuffer(cmd);
 		VkFence fence = kvfCreateFence(RenderCore::Get().GetDevice());
 		kvfSubmitSingleTimeCommandBuffer(RenderCore::Get().GetDevice(), cmd, KVF_GRAPHICS_QUEUE, fence);
 		kvfDestroyFence(RenderCore::Get().GetDevice(), fence);

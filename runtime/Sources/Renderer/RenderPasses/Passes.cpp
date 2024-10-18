@@ -37,7 +37,6 @@ namespace mlx
 	void RenderPasses::Pass(Scene& scene, Renderer& renderer)
 	{
 		m_main_render_texture.Clear(renderer.GetActiveCommandBuffer(), Vec4f{ 0.0f, 0.0f, 0.0f, 1.0f });
-		scene.GetDepth().Clear(renderer.GetActiveCommandBuffer(), {});
 
 		m_2Dpass.Pass(scene, renderer, m_main_render_texture);
 		m_final.Pass(scene, renderer, m_main_render_texture);

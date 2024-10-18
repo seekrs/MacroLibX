@@ -17,6 +17,7 @@ namespace mlx
 	void Render2DPass::Init(Renderer& renderer)
 	{
 		MLX_PROFILE_FUNCTION();
+
 		ShaderLayout vertex_shader_layout(
 			{
 				{ 0,
@@ -81,7 +82,6 @@ namespace mlx
 			pipeline_descriptor.vertex_shader = p_vertex_shader;
 			pipeline_descriptor.fragment_shader = p_fragment_shader;
 			pipeline_descriptor.color_attachments = { &render_target };
-			pipeline_descriptor.depth = &scene.GetDepth();
 			pipeline_descriptor.clear_color_attachments = false;
 			#ifdef DEBUG
 				m_pipeline.Init(pipeline_descriptor, "mlx_2D_pass");
@@ -93,28 +93,38 @@ namespace mlx
 		std::uint32_t frame_index = renderer.GetCurrentFrameIndex();
 
 		ViewerData viewer_data;
-		viewer_data.projection_matrix = Mat4f::Ortho(0.0f, render_target.GetWidth(), render_target.GetHeight(), 0.0f, -1.0f, 100'000.0f);
+		viewer_data.projection_matrix = Mat4f::Ortho(0.0f, render_target.GetWidth(), render_target.GetHeight(), 0.0f, -1.0f, 1.0f);
 		static CPUBuffer buffer(sizeof(ViewerData));
 		std::memcpy(buffer.GetData(), &viewer_data, buffer.GetSize());
 		p_viewer_data_buffer->SetData(buffer, frame_index);
 
 		VkCommandBuffer cmd = renderer.GetActiveCommandBuffer();
-		m_pipeline.BindPipeline(cmd, 0, {});
 
-		#pragma omp parallel for
-		for(auto sprite : scene.GetSprites())
+		const auto& sprites = scene.GetSprites();
+
+		for(auto sprite : sprites)
 		{
-			SpriteData sprite_data;
-			sprite_data.position = Vec4f{ sprite->GetPosition(), 1.0f };
-			sprite_data.color = sprite->GetColor();
+			// Check every textures and update modified ones to GPU before starting the render pass
 			if(!sprite->IsSetInit())
 				sprite->UpdateDescriptorSet(*p_texture_set);
 			Verify((bool)sprite->GetTexture(), "a sprite has no texture attached (internal mlx issue, please report to the devs)");
 			sprite->GetTexture()->Update(cmd);
+		}
+
+		m_pipeline.BindPipeline(cmd, 0, {});
+		for(auto sprite : sprites)
+		{
+			SpriteData sprite_data;
+			sprite_data.position = Vec4f{ sprite->GetPosition(), 0.0f, 1.0f };
+			sprite_data.color = sprite->GetColor();
+
 			sprite->Bind(frame_index, cmd);
+
 			std::array<VkDescriptorSet, 2> sets = { p_viewer_data_set->GetSet(frame_index), sprite->GetSet(frame_index) };
-			RenderCore::Get().vkCmdBindDescriptorSets(cmd, m_pipeline.GetPipelineBindPoint(), m_pipeline.GetPipelineLayout(), 0, sets.size(), sets.data(), 0, nullptr);
+
 			RenderCore::Get().vkCmdPushConstants(cmd, m_pipeline.GetPipelineLayout(), VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(SpriteData), &sprite_data);
+			RenderCore::Get().vkCmdBindDescriptorSets(cmd, m_pipeline.GetPipelineBindPoint(), m_pipeline.GetPipelineLayout(), 0, sets.size(), sets.data(), 0, nullptr);
+
 			sprite->GetMesh()->Draw(cmd, renderer.GetDrawCallsCounterRef(), renderer.GetPolygonDrawnCounterRef());
 		}
 		m_pipeline.EndPipeline(cmd);

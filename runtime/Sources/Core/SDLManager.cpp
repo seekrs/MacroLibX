@@ -101,7 +101,7 @@ namespace mlx
 		#endif
 
 		#ifdef VK_USE_PLATFORM_WAYLAND_KHR
-			extensions.push_back(VK_KHR_WAYLAND_SURFACE_EXTENSION_NAME);
+	//		extensions.push_back(VK_KHR_WAYLAND_SURFACE_EXTENSION_NAME);
 		#endif
 
 		#ifdef VK_USE_PLATFORM_WIN32_KHR

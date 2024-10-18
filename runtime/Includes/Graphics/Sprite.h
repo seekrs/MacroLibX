@@ -17,10 +17,10 @@ namespace mlx
 			Sprite(class Renderer& renderer, NonOwningPtr<Texture> texture);
 
 			inline void SetColor(Vec4f color) noexcept { m_color = color; }
-			inline void SetPosition(Vec3f position) noexcept { m_position = position; }
+			inline void SetPosition(Vec2f position) noexcept { m_position = position; }
 
 			[[nodiscard]] MLX_FORCEINLINE const Vec4f& GetColor() const noexcept { return m_color; }
-			[[nodiscard]] MLX_FORCEINLINE const Vec3f& GetPosition() const noexcept { return m_position; }
+			[[nodiscard]] MLX_FORCEINLINE const Vec2f& GetPosition() const noexcept { return m_position; }
 			[[nodiscard]] MLX_FORCEINLINE std::shared_ptr<Mesh> GetMesh() const { return p_mesh; }
 			[[nodiscard]] MLX_FORCEINLINE NonOwningPtr<Texture> GetTexture() const { return p_texture; }
 
@@ -46,7 +46,7 @@ namespace mlx
 			NonOwningPtr<Texture> p_texture;
 			std::shared_ptr<Mesh> p_mesh;
 			Vec4f m_color = Vec4f{ 1.0f, 1.0f, 1.0f, 1.0f };
-			Vec3f m_position = Vec3f{ 0.0f, 0.0f, 0.0f };
+			Vec2f m_position = Vec2f{ 0.0f, 0.0f };
 	};
 }
 
