@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 22:10:52 by maldavid          #+#    #+#             */
-/*   Updated: 2024/04/24 13:52:18 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/10/19 10:49:21 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,9 @@ namespace mlx::core
 	Application::~Application()
 	{
 		TextLibrary::get().clearLibrary();
+		TextLibrary::get().reset();
 		FontLibrary::get().clearLibrary();
+		FontLibrary::get().reset();
 		if(__drop_sdl_responsability)
 			return;
 		SDL_QuitSubSystem(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS);

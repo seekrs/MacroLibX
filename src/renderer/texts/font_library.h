@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 09:26:03 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/18 09:33:30 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/10/19 10:47:32 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ namespace mlx
 			void removeFontFromLibrary(FontID id);
 
 			void clearLibrary();
+
+			inline void reset() { _cache.clear(); _invalid_ids.clear(); _current_id = 1; }
 
 		private:
 			FontLibrary() = default;
