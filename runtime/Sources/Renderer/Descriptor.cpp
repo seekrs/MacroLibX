@@ -234,6 +234,7 @@ namespace mlx
 	void DescriptorSet::Reallocate(std::size_t frame_index) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
+		Assert(!p_pools_manager, "invalid pools manager");
 		m_set[frame_index] = p_pools_manager->GetAvailablePool().AllocateDescriptorSet(frame_index, m_set_layout);
 	}
 }
