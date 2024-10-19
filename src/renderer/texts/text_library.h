@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 11:52:30 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 16:04:47 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/10/19 10:49:02 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ namespace mlx
 			void removeTextFromLibrary(TextID id);
 
 			void clearLibrary();
+
+			inline void reset() { _cache.clear(); _current_id = 1; }
 
 		private:
 			TextLibrary() = default;

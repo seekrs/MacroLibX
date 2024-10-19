@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 23:33:34 by maldavid          #+#    #+#             */
-/*   Updated: 2024/04/23 20:32:54 by kiroussa         ###   ########.fr       */
+/*   Updated: 2024/10/19 10:50:13 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,8 @@ namespace mlx
 
 	void Render_Core::init()
 	{
+		if(_is_init)
+			return;
 		if(volkInitialize() != VK_SUCCESS)
 			core::error::report(e_kind::fatal_error, "Vulkan loader : cannot load %s, are you sure Vulkan is installed on your system ?", VULKAN_LIB_NAME);
 
@@ -143,6 +145,8 @@ namespace mlx
 		_device.destroy();
 		_layers.destroy();
 		_instance.destroy();
+
+		volkFinalize();
 
 		_is_init = false;
 	}
