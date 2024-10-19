@@ -114,7 +114,7 @@ MLX_API int mlx_mouse_hide();
 
 
 /**
- * @brief			Moves cursor to givent position
+ * @brief			Moves cursor to given position
  *
  * @param mlx		Internal MLX application
  * @param win		Internal window from which cursor moves
