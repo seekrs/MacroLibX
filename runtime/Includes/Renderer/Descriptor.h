@@ -13,7 +13,6 @@ namespace mlx
 		NonOwningPtr<class GPUBuffer> uniform_buffer_ptr;
 		NonOwningPtr<class Image> image_ptr;
 		VkDescriptorType type;
-		ShaderType shader_type;
 		std::uint32_t binding;
 	};
 
@@ -25,17 +24,18 @@ namespace mlx
 			void Init() noexcept;
 			void Destroy() noexcept;
 
-			VkDescriptorSet AllocateDescriptorSet(std::uint32_t frame_index, VkDescriptorSetLayout layout);
+			std::shared_ptr<class DescriptorSet> RequestDescriptorSet(const ShaderSetLayout& layout, ShaderType shader_type);
+			void ReturnDescriptorSet(std::shared_ptr<class DescriptorSet> set);
 
-			void ResetPoolFromFrameIndex(std::size_t frame_index);
-			
-			[[nodiscard]] inline VkDescriptorPool Get(std::uint32_t index) const noexcept { return m_pools[index]; }
+			[[nodiscard]] inline VkDescriptorPool Get() const noexcept { return m_pool; }
 			[[nodiscard]] MLX_FORCEINLINE std::size_t GetNumberOfSetsAllocated() const noexcept { return m_allocation_count; }
 
 			~DescriptorPool() = default;
 
 		private:
-			std::array<VkDescriptorPool, MAX_FRAMES_IN_FLIGHT> m_pools;
+			std::vector<std::shared_ptr<class DescriptorSet>> m_free_sets;
+			std::vector<std::shared_ptr<class DescriptorSet>> m_used_sets;
+			VkDescriptorPool m_pool;
 			std::size_t m_allocation_count = 0;
 	};
 
@@ -44,42 +44,45 @@ namespace mlx
 		public:
 			DescriptorPoolManager() = default;
 
-			void ResetPoolsFromFrameIndex(std::size_t frame_index);
 			DescriptorPool& GetAvailablePool();
 			void Destroy();
 
 			~DescriptorPoolManager() = default;
 
 		private:
-			std::list<DescriptorPool> m_pools;
+			std::vector<DescriptorPool> m_pools;
 	};
 
-	class DescriptorSet
+	class DescriptorSet : public std::enable_shared_from_this<DescriptorSet>
 	{
-		public:
-			DescriptorSet() { m_set.fill(VK_NULL_HANDLE); }
-			DescriptorSet(DescriptorPoolManager& pools_manager, const ShaderSetLayout& layout, VkDescriptorSetLayout vklayout, ShaderType shader_type);
+		friend DescriptorPool;
 
+		public:
 			void SetImage(std::size_t i, std::uint32_t binding, class Image& image);
 			void SetStorageBuffer(std::size_t i, std::uint32_t binding, class GPUBuffer& buffer);
 			void SetUniformBuffer(std::size_t i, std::uint32_t binding, class GPUBuffer& buffer);
 			void Update(std::size_t i, VkCommandBuffer cmd = VK_NULL_HANDLE) noexcept;
-			void Reallocate(std::size_t frame_index) noexcept;
 
-			[[nodiscard]] inline VkDescriptorSet GetSet(std::size_t i) const noexcept { return m_set[i]; }
-			[[nodiscard]] inline DescriptorSet Duplicate() const { return DescriptorSet{ *p_pools_manager, m_set_layout, m_descriptors }; }
-			[[nodiscard]] inline bool IsInit() const noexcept { return m_set[0] != VK_NULL_HANDLE; }
+			void ReturnDescriptorSetToPool();
+
+			[[nodiscard]] inline VkDescriptorSet GetSet(std::size_t i) const noexcept { return m_sets[i]; }
+			[[nodiscard]] MLX_FORCEINLINE bool IsInit() const noexcept { return m_sets[0] != VK_NULL_HANDLE; }
+			[[nodiscard]] MLX_FORCEINLINE VkDescriptorSetLayout GetVulkanLayout() const noexcept { return m_set_layout; }
+			[[nodiscard]] MLX_FORCEINLINE const ShaderSetLayout& GetShaderLayout() const { return m_shader_layout; }
+			[[nodiscard]] MLX_FORCEINLINE ShaderType GetShaderType() const noexcept { return m_shader_type; }
 
 			~DescriptorSet() = default;
 
 		private:
-			DescriptorSet(DescriptorPoolManager& pools_manager, VkDescriptorSetLayout layout, const std::vector<Descriptor>& descriptors);
+			DescriptorSet(DescriptorPool& pool, VkDescriptorSetLayout vulkan_layout, const ShaderSetLayout& layout, std::array<VkDescriptorSet, MAX_FRAMES_IN_FLIGHT> vulkan_sets, ShaderType shader_type);
 
 		private:
+			ShaderSetLayout m_shader_layout;
 			std::vector<Descriptor> m_descriptors;
-			std::array<VkDescriptorSet, MAX_FRAMES_IN_FLIGHT> m_set;
+			std::array<VkDescriptorSet, MAX_FRAMES_IN_FLIGHT> m_sets;
 			VkDescriptorSetLayout m_set_layout;
-			NonOwningPtr<DescriptorPoolManager> p_pools_manager;
+			ShaderType m_shader_type;
+			DescriptorPool& m_pool;
 	};
 }
 

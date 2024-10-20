@@ -17,11 +17,16 @@ namespace mlx
 	enum class ImageType
 	{
 		Color = 0,
-		Depth,
 
 		EndEnum
 	};
 	constexpr std::size_t ImageTypeCount = static_cast<std::size_t>(ImageType::EndEnum);
+
+	enum class ShaderType
+	{
+		Vertex,
+		Fragment
+	};
 }
 
 #endif

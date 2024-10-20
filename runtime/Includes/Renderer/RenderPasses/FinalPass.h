@@ -1,7 +1,7 @@
 #ifndef __MLX_FINAL_PASS__
 #define __MLX_FINAL_PASS__
 
-#include <Renderer/Descriptor.h>
+#include <Renderer/RenderCore.h>
 #include <Renderer/Pipelines/Shader.h>
 #include <Renderer/Pipelines/Graphics.h>
 

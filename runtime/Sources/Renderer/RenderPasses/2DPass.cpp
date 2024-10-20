@@ -45,23 +45,15 @@ namespace mlx
 		};
 		p_fragment_shader = std::make_shared<Shader>(fragment_shader_code, ShaderType::Fragment, std::move(fragment_shader_layout));
 
-		func::function<void(const EventBase&)> functor = [this, &renderer](const EventBase& event)
+		func::function<void(const EventBase&)> functor = [this](const EventBase& event)
 		{
 			if(event.What() == Event::ResizeEventCode)
 				m_pipeline.Destroy();
-			if(event.What() == Event::DescriptorPoolResetEventCode)
-			{
-				std::uint32_t frame_index = renderer.GetCurrentFrameIndex();
-				p_texture_set->Reallocate(frame_index);
-				p_viewer_data_set->Reallocate(frame_index);
-				p_viewer_data_set->SetUniformBuffer(frame_index, 0, p_viewer_data_buffer->Get(frame_index));
-				p_viewer_data_set->Update(frame_index);
-			}
 		};
 		EventBus::RegisterListener({ functor, "__MlxRender2DPass" });
 
-		p_viewer_data_set = std::make_shared<DescriptorSet>(renderer.GetDescriptorPoolManager(), p_vertex_shader->GetShaderLayout().set_layouts[0].second, p_vertex_shader->GetPipelineLayout().set_layouts[0], ShaderType::Vertex);
-		p_texture_set = std::make_shared<DescriptorSet>(renderer.GetDescriptorPoolManager(), p_fragment_shader->GetShaderLayout().set_layouts[0].second, p_fragment_shader->GetPipelineLayout().set_layouts[0], ShaderType::Fragment);
+		p_viewer_data_set = RenderCore::Get().GetDescriptorPoolManager().GetAvailablePool().RequestDescriptorSet(p_vertex_shader->GetShaderLayout().set_layouts[0].second, ShaderType::Vertex);
+		p_texture_set = RenderCore::Get().GetDescriptorPoolManager().GetAvailablePool().RequestDescriptorSet(p_fragment_shader->GetShaderLayout().set_layouts[0].second, ShaderType::Fragment);
 
 		p_viewer_data_buffer = std::make_shared<UniformBuffer>();
 		p_viewer_data_buffer->Init(sizeof(ViewerData), "mlx_2d_pass_viewer_data");
@@ -106,7 +98,7 @@ namespace mlx
 		{
 			// Check every textures and update modified ones to GPU before starting the render pass
 			if(!sprite->IsSetInit())
-				sprite->UpdateDescriptorSet(*p_texture_set);
+				sprite->UpdateDescriptorSet(p_texture_set);
 			Verify((bool)sprite->GetTexture(), "a sprite has no texture attached (internal mlx issue, please report to the devs)");
 			sprite->GetTexture()->Update(cmd);
 		}
@@ -136,8 +128,10 @@ namespace mlx
 		m_pipeline.Destroy();
 		p_vertex_shader.reset();
 		p_fragment_shader.reset();
+		p_viewer_data_set->ReturnDescriptorSetToPool();
 		p_viewer_data_set.reset();
 		p_viewer_data_buffer->Destroy();
+		p_texture_set->ReturnDescriptorSetToPool();
 		p_texture_set.reset();
 	}
 }

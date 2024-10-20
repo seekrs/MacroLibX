@@ -48,6 +48,21 @@ namespace mlx
 		private:
 			std::vector<SubMesh> m_sub_meshes;
 	};
+
+	class MeshRegistry
+	{
+		public:
+			MeshRegistry() = default;
+
+			inline void RegisterMesh(std::shared_ptr<Mesh> mesh);
+			inline void UnregisterMesh(std::shared_ptr<Mesh> mesh);
+			inline bool IsMeshKnown(std::shared_ptr<Mesh> mesh);
+
+			~MeshRegistry() = default;
+
+		private:
+			std::unordered_set<std::shared_ptr<Mesh>> m_mesh_registry;
+	};
 }
 
 #endif

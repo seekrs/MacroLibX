@@ -47,6 +47,8 @@ namespace mlx
 
 	RenderCore::RenderCore()
 	{
+		if(s_instance != nullptr)
+			return;
 		s_instance = this;
 
 		loader = std::make_unique<VulkanLoader>();
@@ -193,7 +195,10 @@ namespace mlx
 
 	RenderCore::~RenderCore()
 	{
+		if(s_instance == nullptr)
+			return;
 		WaitDeviceIdle();
+		m_descriptor_pool_manager.Destroy();
 		m_allocator.Destroy();
 		kvfDestroyDevice(m_device);
 		DebugLog("Vulkan : logical device destroyed");

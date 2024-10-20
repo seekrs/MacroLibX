@@ -31,16 +31,14 @@ namespace mlx
 		};
 		p_fragment_shader = std::make_shared<Shader>(fragment_shader_code, ShaderType::Fragment, std::move(fragment_shader_layout));
 
-		func::function<void(const EventBase&)> functor = [this, &renderer](const EventBase& event)
+		func::function<void(const EventBase&)> functor = [this](const EventBase& event)
 		{
 			if(event.What() == Event::ResizeEventCode)
 				m_pipeline.Destroy();
-			if(event.What() == Event::DescriptorPoolResetEventCode)
-				p_set->Reallocate(renderer.GetCurrentFrameIndex());
 		};
 		EventBus::RegisterListener({ functor, "__MlxFinalPass" });
 
-		p_set = std::make_shared<DescriptorSet>(renderer.GetDescriptorPoolManager(), p_fragment_shader->GetShaderLayout().set_layouts[0].second, p_fragment_shader->GetPipelineLayout().set_layouts[0], ShaderType::Fragment);
+		p_set = RenderCore::Get().GetDescriptorPoolManager().GetAvailablePool().RequestDescriptorSet(p_fragment_shader->GetShaderLayout().set_layouts[0].second, ShaderType::Fragment);
 	}
 
 	void FinalPass::Pass([[maybe_unused]] Scene& scene, Renderer& renderer, Texture& render_target)
@@ -80,6 +78,7 @@ namespace mlx
 		m_pipeline.Destroy();
 		p_vertex_shader.reset();
 		p_fragment_shader.reset();
+		p_set->ReturnDescriptorSetToPool();
 		p_set.reset();
 	}
 }

@@ -5,17 +5,10 @@
 
 namespace mlx
 {
-	Scene::Scene(SceneDescriptor desc)
-	: m_descriptor(std::move(desc))
-	{
-		MLX_PROFILE_FUNCTION();
-		Verify((bool)m_descriptor.renderer, "invalid renderer");
-	}
-
 	Sprite& Scene::CreateSprite(NonOwningPtr<Texture> texture) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
-		std::shared_ptr<Sprite> sprite = std::make_shared<Sprite>(*m_descriptor.renderer, texture);
+		std::shared_ptr<Sprite> sprite = std::make_shared<Sprite>(texture);
 		m_sprites.push_back(sprite);
 		return *sprite;
 	}
@@ -52,7 +45,15 @@ namespace mlx
 			{
 				return sprite->GetTexture() == texture;
 			});
-			m_sprites.erase(it);
+			if(it != m_sprites.end())
+				m_sprites.erase(it);
 		} while(it != m_sprites.end());
+	}
+	
+	bool Scene::IsTextureAtGivenDrawLayer(NonOwningPtr<Texture> texture, std::uint64_t draw_layer) const
+	{
+		if(draw_layer >= m_sprites.size())
+			return false;
+		return m_sprites[draw_layer]->GetTexture() == texture;
 	}
 }

@@ -1,7 +1,7 @@
 #ifndef __MLX_2D_PASS__
 #define __MLX_2D_PASS__
 
-#include <Renderer/Descriptor.h>
+#include <Renderer/RenderCore.h>
 #include <Renderer/Pipelines/Shader.h>
 #include <Renderer/Pipelines/Graphics.h>
 

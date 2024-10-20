@@ -19,7 +19,6 @@ namespace mlx
 
 	enum class Event
 	{
-		DescriptorPoolResetEventCode = 55,
 		ResizeEventCode = 56,
 		FrameBeginEventCode = 57,
 		FatalErrorEventCode = 168,

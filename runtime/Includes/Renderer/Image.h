@@ -77,6 +77,7 @@ namespace mlx
 			}
 
 			void Init(CPUBuffer pixels, std::uint32_t width, std::uint32_t height, VkFormat format, bool is_multisampled, [[maybe_unused]] std::string_view debug_name);
+			void Destroy() noexcept override;
 
 			void SetPixel(int x, int y, std::uint32_t color) noexcept;
 			int GetPixel(int x, int y) noexcept;

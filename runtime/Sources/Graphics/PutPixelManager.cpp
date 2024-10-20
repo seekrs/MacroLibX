@@ -19,8 +19,12 @@ namespace mlx
 			#endif
 			texture.Clear(VK_NULL_HANDLE, Vec4f{ 0.0f });
 		}
-		m_textures.back().SetPixel(x, y, color);
-		return (insert_new_texture ? &m_textures.back() : nullptr);
+		if(!m_textures.empty())
+		{
+			m_textures.back().SetPixel(x, y, color);
+			return (insert_new_texture ? &m_textures.back() : nullptr);
+		}
+		return nullptr;
 	}
 
 	void PutPixelManager::ResetRenderData()
