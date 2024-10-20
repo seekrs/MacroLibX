@@ -11,7 +11,6 @@ namespace mlx
 		{
 			case ShaderType::Vertex : m_stage = VK_SHADER_STAGE_VERTEX_BIT; break;
 			case ShaderType::Fragment : m_stage = VK_SHADER_STAGE_FRAGMENT_BIT; break;
-			case ShaderType::Compute : m_stage = VK_SHADER_STAGE_COMPUTE_BIT; break;
 
 			default : FatalError("wtf"); break;
 		}

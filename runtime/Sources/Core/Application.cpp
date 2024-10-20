@@ -10,7 +10,7 @@ namespace mlx
 {
 	Application::Application() : p_mem_manager(std::make_unique<MemManager>()), p_sdl_manager(std::make_unique<SDLManager>()), m_fps(), m_in() 
 	{
-		EventBus::RegisterListener({[](const EventBase& event)
+		EventBus::RegisterListener({ [](const EventBase& event)
 		{
 			if(event.What() == Event::FatalErrorEventCode)
 				std::abort();
@@ -53,7 +53,7 @@ namespace mlx
 		MLX_PROFILE_FUNCTION();
 		Texture* texture;
 		try { texture = new Texture({}, w, h, VK_FORMAT_R8G8B8A8_SRGB, false, "mlx_user_image"); }
-		catch(...) { return NULL; }
+		catch(...) { return nullptr; }
 		m_image_registry.RegisterTexture(texture);
 		return texture;
 	}
@@ -63,7 +63,7 @@ namespace mlx
 		MLX_PROFILE_FUNCTION();
 		Texture* texture = StbTextureLoad(file, w, h);
 		if(texture == nullptr)
-			return NULL; // NULL for C compatibility
+			return nullptr;
 		m_image_registry.RegisterTexture(texture);
 		return texture;
 	}

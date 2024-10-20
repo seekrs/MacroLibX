@@ -1,12 +1,13 @@
 #ifndef __MLX_RENDER_CORE__
 #define __MLX_RENDER_CORE__
 
+constexpr const int MAX_FRAMES_IN_FLIGHT = 3;
+
 #include <Renderer/Memory.h>
+#include <Renderer/Descriptor.h>
 
 namespace mlx
 {
-	constexpr const int MAX_FRAMES_IN_FLIGHT = 3;
-
 	#if defined(DEBUG) && defined(VK_EXT_debug_utils)
 		#define MLX_HAS_DEBUG_UTILS_FUNCTIONS
 	#endif
@@ -21,6 +22,7 @@ namespace mlx
 			[[nodiscard]] MLX_FORCEINLINE VkDevice GetDevice() const noexcept { return m_device; }
 			[[nodiscard]] MLX_FORCEINLINE VkPhysicalDevice GetPhysicalDevice() const noexcept { return m_physical_device; }
 			[[nodiscard]] MLX_FORCEINLINE GPUAllocator& GetAllocator() noexcept { return m_allocator; }
+			[[nodiscard]] inline DescriptorPoolManager& GetDescriptorPoolManager() noexcept { return m_descriptor_pool_manager; }
 
 			inline void WaitDeviceIdle() const noexcept { vkDeviceWaitIdle(m_device); }
 
@@ -45,6 +47,7 @@ namespace mlx
 		private:
 			static RenderCore* s_instance;
 
+			DescriptorPoolManager m_descriptor_pool_manager;
 			GPUAllocator m_allocator;
 			VkInstance m_instance = VK_NULL_HANDLE;
 			VkDevice m_device = VK_NULL_HANDLE;

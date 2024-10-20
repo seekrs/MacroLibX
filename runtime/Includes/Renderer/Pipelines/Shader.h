@@ -1,13 +1,17 @@
 #ifndef __MLX_SHADER__
 #define __MLX_SHADER__
 
+#include <Renderer/Enums.h>
+
 namespace mlx
 {
 	struct ShaderSetLayout
 	{
-		std::vector<std::pair<int, VkDescriptorType> > binds;
+		std::vector<std::pair<int, VkDescriptorType>> binds;
 
 		ShaderSetLayout(std::vector<std::pair<int, VkDescriptorType> > b) : binds(std::move(b)) {}
+
+		inline bool operator==(const ShaderSetLayout& rhs) const { return binds == rhs.binds; }
 	};
 
 	struct ShaderPushConstantLayout
@@ -20,17 +24,10 @@ namespace mlx
 
 	struct ShaderLayout
 	{
-		std::vector<std::pair<int, ShaderSetLayout> > set_layouts;
+		std::vector<std::pair<int, ShaderSetLayout>> set_layouts;
 		std::vector<ShaderPushConstantLayout> push_constants;
 
 		ShaderLayout(std::vector<std::pair<int, ShaderSetLayout> > s, std::vector<ShaderPushConstantLayout> pc) : set_layouts(std::move(s)), push_constants(std::move(pc)) {}
-	};
-
-	enum class ShaderType
-	{
-		Vertex,
-		Fragment,
-		Compute
 	};
 
 	struct ShaderPipelineLayoutPart

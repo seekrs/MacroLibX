@@ -18,11 +18,6 @@ namespace mlx
 		{
 			Event What() const override { return Event::FrameBeginEventCode; }
 		};
-
-		struct DescriptorPoolResetEventBroadcast : public EventBase
-		{
-			Event What() const override { return Event::DescriptorPoolResetEventCode; }
-		};
 	}
 
 	void Renderer::Init(NonOwningPtr<Window> window)
@@ -59,13 +54,6 @@ namespace mlx
 	{
 		MLX_PROFILE_FUNCTION();
 		kvfWaitForFence(RenderCore::Get().GetDevice(), m_cmd_fences[m_current_frame_index]);
-		static bool first_run = true;
-		if(!first_run)
-		{
-			m_descriptor_pool_manager.ResetPoolsFromFrameIndex(m_current_frame_index);
-			EventBus::SendBroadcast(Internal::DescriptorPoolResetEventBroadcast{});
-		}
-		first_run = false;
 		VkResult result = RenderCore::Get().vkAcquireNextImageKHR(RenderCore::Get().GetDevice(), m_swapchain, UINT64_MAX, m_image_available_semaphores[m_current_frame_index], VK_NULL_HANDLE, &m_swapchain_image_index);
 		if(result == VK_ERROR_OUT_OF_DATE_KHR)
 		{
@@ -150,7 +138,6 @@ namespace mlx
 			DebugLog("Vulkan : fence destroyed");
 		}
 
-		m_descriptor_pool_manager.Destroy();
 		DestroySwapchain();
 		RenderCore::Get().vkDestroySurfaceKHR(RenderCore::Get().GetInstance(), m_surface, nullptr);
 		DebugLog("Vulkan : surface destroyed");

@@ -44,6 +44,8 @@ namespace mlx
 			std::shared_ptr<Window> p_window;
 			std::unique_ptr<Scene> p_scene;
 
+			std::uint64_t m_draw_layer = 0;
+
 			int m_id;
 
 			bool m_has_window;

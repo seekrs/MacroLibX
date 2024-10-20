@@ -5,7 +5,6 @@
 #include <Utils/NonOwningPtr.h>
 #include <Renderer/RenderCore.h>
 #include <Renderer/Image.h>
-#include <Renderer/Descriptor.h>
 #include <Core/EventBus.h>
 
 namespace mlx
@@ -32,7 +31,6 @@ namespace mlx
 			[[nodiscard]] inline std::size_t GetSwapchainImageIndex() const noexcept { return m_swapchain_image_index; }
 			[[nodiscard]] inline std::size_t GetCurrentFrameIndex() const noexcept { return m_current_frame_index; }
 			[[nodiscard]] inline NonOwningPtr<Window> GetWindow() const noexcept { return p_window; }
-			[[nodiscard]] inline DescriptorPoolManager& GetDescriptorPoolManager() noexcept { return m_descriptor_pool_manager; }
 
 			MLX_FORCEINLINE constexpr void RequireFramebufferResize() noexcept { m_framebuffers_resize = true; }
 
@@ -45,7 +43,6 @@ namespace mlx
 			void DestroySwapchain();
 
 		private:
-			DescriptorPoolManager m_descriptor_pool_manager;
 			std::array<VkSemaphore, MAX_FRAMES_IN_FLIGHT> m_image_available_semaphores;
 			std::array<VkSemaphore, MAX_FRAMES_IN_FLIGHT> m_render_finished_semaphores;
 			std::array<VkCommandBuffer, MAX_FRAMES_IN_FLIGHT> m_cmd_buffers;

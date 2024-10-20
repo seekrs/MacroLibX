@@ -2,6 +2,7 @@
 #include <Renderer/Image.h>
 #include <Maths/Vec4.h>
 #include <Renderer/RenderCore.h>
+#include <Utils/CallOnExit.h>
 
 #define STB_IMAGE_IMPLEMENTATION
 #ifdef MLX_COMPILER_GCC
@@ -80,14 +81,7 @@ namespace mlx
 		bool is_single_time_cmd_buffer = (cmd == VK_NULL_HANDLE);
 		if(is_single_time_cmd_buffer)
 			cmd = kvfCreateCommandBuffer(RenderCore::Get().GetDevice());
-		KvfImageType kvf_type = KVF_IMAGE_OTHER;
-		switch(m_type)
-		{
-			case ImageType::Color: kvf_type = KVF_IMAGE_COLOR; break;
-			case ImageType::Depth: kvf_type = KVF_IMAGE_DEPTH; break;
-			default: break;
-		}
-		kvfTransitionImageLayout(RenderCore::Get().GetDevice(), m_image, kvf_type, cmd, m_format, m_layout, new_layout, is_single_time_cmd_buffer);
+		kvfTransitionImageLayout(RenderCore::Get().GetDevice(), m_image, KVF_IMAGE_COLOR, cmd, m_format, m_layout, new_layout, is_single_time_cmd_buffer);
 		m_layout = new_layout;
 	}
 
@@ -109,18 +103,9 @@ namespace mlx
 
 		VkImageLayout old_layout = m_layout;
 		TransitionLayout(VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, cmd);
-		if(m_type == ImageType::Color)
-		{
-			subresource_range.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-			VkClearColorValue clear_color = VkClearColorValue({ { color.x, color.y, color.z, color.w } });
-			RenderCore::Get().vkCmdClearColorImage(cmd, m_image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, &clear_color, 1, &subresource_range);
-		}
-		else if(m_type == ImageType::Depth)
-		{
-			VkClearDepthStencilValue clear_depth_stencil = { 1.0f, 1 };
-			subresource_range.aspectMask = VK_IMAGE_ASPECT_DEPTH_BIT;
-			RenderCore::Get().vkCmdClearDepthStencilImage(cmd, m_image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, &clear_depth_stencil, 1, &subresource_range);
-		}
+		subresource_range.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+		VkClearColorValue clear_color = VkClearColorValue({ { color.x, color.y, color.z, color.w } });
+		RenderCore::Get().vkCmdClearColorImage(cmd, m_image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, &clear_color, 1, &subresource_range);
 		TransitionLayout(old_layout, cmd);
 
 		if(is_single_time_cmd_buffer)
@@ -187,6 +172,13 @@ namespace mlx
 			staging_buffer.Destroy();
 		}
 		TransitionLayout(VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
+	}
+
+	void Texture::Destroy() noexcept
+	{
+		if(m_staging_buffer.has_value())
+			m_staging_buffer->Destroy();
+		Image::Destroy();
 	}
 
 	void Texture::SetPixel(int x, int y, std::uint32_t color) noexcept
@@ -266,6 +258,9 @@ namespace mlx
 		MLX_PROFILE_FUNCTION();
 		std::string filename = file.string();
 
+		if(file.stem() == "banana")
+			Message("banana, banana, banana, banana, terracotta banana terracotta, terracotta pie");
+
 		if(!std::filesystem::exists(file))
 		{
 			Error("Image : file not found %", file);
@@ -280,14 +275,15 @@ namespace mlx
 		int dummy_h;
 		int channels;
 		std::uint8_t* data = stbi_load(filename.c_str(), (w == nullptr ? &dummy_w : w), (h == nullptr ? &dummy_h : h), &channels, 4);
+
+		CallOnExit defer([=]() { stbi_image_free(data); });
+
 		CPUBuffer buffer((w == nullptr ? dummy_w : *w) * (h == nullptr ? dummy_h : *h) * 4);
 		std::memcpy(buffer.GetData(), data, buffer.GetSize());
-		Texture* texture;
 
-		try { texture = new Texture(buffer, (w == nullptr ? dummy_w : *w), (h == nullptr ? dummy_h : *h), VK_FORMAT_R8G8B8A8_SRGB, false, std::move(filename)); }
-		catch(...) { return NULL; }
-		
-		stbi_image_free(data);
+		Texture* texture;
+		try { texture = new Texture(std::move(buffer), (w == nullptr ? dummy_w : *w), (h == nullptr ? dummy_h : *h), VK_FORMAT_R8G8B8A8_SRGB, false, std::move(filename)); }
+		catch(...) { return nullptr; }
 		return texture;
 	}
 }
