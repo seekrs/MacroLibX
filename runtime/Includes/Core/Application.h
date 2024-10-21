@@ -7,6 +7,7 @@
 #include <Core/SDLManager.h>
 #include <Core/Memory.h>
 #include <Core/Fps.h>
+#include <Graphics/Font.h>
 
 namespace mlx
 {
@@ -54,6 +55,7 @@ namespace mlx
 			std::unique_ptr<SDLManager> p_sdl_manager;
 			FpsManager m_fps;
 			Inputs m_in;
+			FontRegistry m_font_registry;
 			ImageRegistry m_image_registry;
 			std::vector<std::unique_ptr<GraphicsSupport>> m_graphics;
 			std::function<int(Handle)> f_loop_hook;
