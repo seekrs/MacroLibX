@@ -8,6 +8,19 @@ namespace mlx
 	Sprite& Scene::CreateSprite(NonOwningPtr<Texture> texture) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
+		Verify((bool)texture, "Scene: invalid texture (internal mlx issue, please report to devs)");
+
+		#pragma omp parallel for
+		for(auto& sprite : m_sprites)
+		{
+			if(texture->GetWidth() == sprite->GetTexture()->GetWidth() && texture->GetHeight() == sprite->GetTexture()->GetHeight())
+			{
+				std::shared_ptr<Sprite> new_sprite = std::make_shared<Sprite>(sprite->GetMesh(), texture);
+				m_sprites.push_back(new_sprite);
+				return *new_sprite;
+			}
+		}
+
 		std::shared_ptr<Sprite> sprite = std::make_shared<Sprite>(texture);
 		m_sprites.push_back(sprite);
 		return *sprite;
@@ -52,6 +65,7 @@ namespace mlx
 	
 	bool Scene::IsTextureAtGivenDrawLayer(NonOwningPtr<Texture> texture, std::uint64_t draw_layer) const
 	{
+		MLX_PROFILE_FUNCTION();
 		if(draw_layer >= m_sprites.size())
 			return false;
 		return m_sprites[draw_layer]->GetTexture() == texture;

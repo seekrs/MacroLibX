@@ -15,6 +15,7 @@ namespace mlx
 
 		public:
 			Sprite(NonOwningPtr<Texture> texture);
+			Sprite(std::shared_ptr<Mesh> mesh, NonOwningPtr<Texture> texture);
 
 			inline void SetColor(Vec4f color) noexcept { m_color = color; }
 			inline void SetPosition(Vec2f position) noexcept { m_position = position; }

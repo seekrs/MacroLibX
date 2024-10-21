@@ -14,7 +14,7 @@ namespace mlx
 		Vec4f position;
 	};
 
-	void Render2DPass::Init(Renderer& renderer)
+	void Render2DPass::Init()
 	{
 		MLX_PROFILE_FUNCTION();
 

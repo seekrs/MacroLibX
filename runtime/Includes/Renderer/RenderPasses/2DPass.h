@@ -11,7 +11,7 @@ namespace mlx
 	{
 		public:
 			Render2DPass() = default;
-			void Init(class Renderer& renderer);
+			void Init();
 			void Pass(class Scene& scene, class Renderer& renderer, class Texture& render_target);
 			void Destroy();
 			~Render2DPass() = default;

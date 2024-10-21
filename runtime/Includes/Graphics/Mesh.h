@@ -16,20 +16,7 @@ namespace mlx
 				IndexBuffer ibo;
 				std::size_t triangle_count = 0;
 
-				inline SubMesh(const std::vector<Vertex>& vertices, const std::vector<std::uint32_t>& indices)
-				{
-					CPUBuffer vb(vertices.size() * sizeof(Vertex));
-					std::memcpy(vb.GetData(), vertices.data(), vb.GetSize());
-					vbo.Init(vb.GetSize(), 0, "mlx_mesh");
-					vbo.SetData(std::move(vb));
-
-					CPUBuffer ib(indices.size() * sizeof(std::uint32_t));
-					std::memcpy(ib.GetData(), indices.data(), ib.GetSize());
-					ibo.Init(ib.GetSize(), 0, "mlx_mesh");
-					ibo.SetData(std::move(ib));
-
-					triangle_count = vertices.size() / 3;
-				}
+				inline SubMesh(const std::vector<Vertex>& vertices, const std::vector<std::uint32_t>& indices);
 			};
 
 		public:
@@ -48,21 +35,8 @@ namespace mlx
 		private:
 			std::vector<SubMesh> m_sub_meshes;
 	};
-
-	class MeshRegistry
-	{
-		public:
-			MeshRegistry() = default;
-
-			inline void RegisterMesh(std::shared_ptr<Mesh> mesh);
-			inline void UnregisterMesh(std::shared_ptr<Mesh> mesh);
-			inline bool IsMeshKnown(std::shared_ptr<Mesh> mesh);
-
-			~MeshRegistry() = default;
-
-		private:
-			std::unordered_set<std::shared_ptr<Mesh>> m_mesh_registry;
-	};
 }
+
+#include <Graphics/Mesh.inl>
 
 #endif
