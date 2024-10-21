@@ -16,7 +16,7 @@ namespace mlx
 			inline const std::string& GetName() const { return m_name; }
 			inline float GetScale() const noexcept { return m_scale; }
 			inline const std::array<stbtt_packedchar, 96>& GetCharData() const { return m_cdata; }
-			inline const Texture& GetTexture() const noexcept { return m_atlas; }
+			inline const Font& GetFont() const noexcept { return m_atlas; }
 			inline bool operator==(const Font& rhs) const { return rhs.m_name == m_name && rhs.m_scale == m_scale; }
 			inline bool operator!=(const Font& rhs) const { return rhs.m_name != m_name || rhs.m_scale != m_scale; }
 
@@ -27,11 +27,28 @@ namespace mlx
 
 		private:
 			std::array<stbtt_packedchar, 96> m_cdata;
-			Texture m_atlas;
+			Font m_atlas;
 			std::variant<std::filesystem::path, std::vector<std::uint8_t>> m_build_data;
 			std::string m_name;
 			float m_scale;
 	};
+
+	class FontRegistry
+	{
+		public:
+			FontRegistry() = default;
+
+			inline void RegisterFont(std::shared_ptr<Font> font);
+			inline void UnregisterFont(std::shared_ptr<Font> font);
+			inline bool IsFontKnown(std::shared_ptr<Font> font);
+
+			~FontRegistry() = default;
+
+		private:
+			std::unordered_set<std::shared_ptr<Font>> m_fonts_registry;
+	};
 }
+
+#include <Graphics/Font.inl>
 
 #endif

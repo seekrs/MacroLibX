@@ -38,7 +38,6 @@ namespace mlx
 			if(f_loop_hook)
 				f_loop_hook(p_param);
 
-			#pragma omp parallel for
 			for(auto& gs : m_graphics)
 			{
 				if(gs)
