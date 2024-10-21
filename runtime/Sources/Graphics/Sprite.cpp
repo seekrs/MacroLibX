@@ -44,4 +44,13 @@ namespace mlx
 		p_mesh = CreateQuad(0, 0, texture->GetWidth(), texture->GetHeight());
 		p_texture = texture;
 	}
+
+	Sprite::Sprite(std::shared_ptr<Mesh> mesh, NonOwningPtr<Texture> texture)
+	{
+		MLX_PROFILE_FUNCTION();
+		Verify((bool)texture, "Sprite: invalid texture (internal mlx issue, please report to devs)");
+		Verify((bool)mesh, "Sprite: invalid mesh (internal mlx issue, please report to devs)");
+		p_mesh = mesh;
+		p_texture = texture;
+	}
 }

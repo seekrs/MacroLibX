@@ -7,7 +7,7 @@
 
 namespace mlx
 {
-	void FinalPass::Init(Renderer& renderer)
+	void FinalPass::Init()
 	{
 		MLX_PROFILE_FUNCTION();
 		ShaderLayout vertex_shader_layout(

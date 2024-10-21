@@ -69,7 +69,7 @@ void* create_image(mlx_t* mlx)
 			pixel[1] = j;
 			pixel[2] = k;
 			pixel[3] = 0x99;
-			mlx_set_image_pixel(mlx->mlx, img, j, k, *((int *)pixel));
+			mlx_set_image_pixel(mlx->mlx, img, j, k, *((int*)pixel));
 		}
 	}
 	return img;

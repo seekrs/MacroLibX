@@ -7,8 +7,8 @@ namespace mlx
 {
 	void RenderPasses::Init(Renderer& renderer)
 	{
-		m_2Dpass.Init(renderer);
-		m_final.Init(renderer);
+		m_2Dpass.Init();
+		m_final.Init();
 		func::function<void(const EventBase&)> functor = [this, renderer](const EventBase& event)
 		{
 			if(event.What() == Event::ResizeEventCode)

@@ -20,7 +20,7 @@ namespace mlx
 
 		private:
 			static MemManager* s_instance;
-			inline static std::list<void*> s_blocks;
+			inline static std::vector<void*> s_blocks;
 	};
 }
 

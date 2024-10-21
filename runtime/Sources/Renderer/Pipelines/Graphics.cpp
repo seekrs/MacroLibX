@@ -7,7 +7,7 @@
 
 namespace mlx
 {
-	void GraphicPipeline::Init(const GraphicPipelineDescriptor& descriptor, std::string_view debug_name)
+	void GraphicPipeline::Init(const GraphicPipelineDescriptor& descriptor, [[maybe_unused]] std::string_view debug_name)
 	{
 		MLX_PROFILE_FUNCTION();
 		if(!descriptor.vertex_shader || !descriptor.fragment_shader)

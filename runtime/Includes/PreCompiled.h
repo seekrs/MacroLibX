@@ -54,7 +54,7 @@
 	#include <dlfcn.h>
 #endif
 
-#if defined(MLX_PLAT_LINUX)
+#ifdef MLX_PLAT_LINUX
 	#include <math.h> // sincos
 #endif
 

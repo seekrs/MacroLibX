@@ -48,6 +48,10 @@ namespace mlx
 			[[nodiscard]] MLX_FORCEINLINE bool IsInit() const noexcept { return m_image != VK_NULL_HANDLE; }
 			[[nodiscard]] MLX_FORCEINLINE ImageType GetType() const noexcept { return m_type; }
 
+			#ifdef DEBUG
+				[[nodiscard]] MLX_FORCEINLINE const std::string& GetDebugName() const { return m_debug_name; }
+			#endif
+
 			virtual ~Image() = default;
 
 		protected:
