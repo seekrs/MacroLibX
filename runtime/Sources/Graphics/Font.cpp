@@ -1,6 +1,12 @@
 #include <PreCompiled.h>
 
 #include <Graphics/Font.h>
+#include <Core/Memory.h>
+
+#define STB_TRUETYPE_IMPLEMENTATION
+#define STB_malloc(x, u) ((void)(u), MemManager::Get().Malloc(x))
+#define STB_free(x, u) ((void)(u), MemManager::Get().Free(x))
+#include <stb_truetype.h>
 
 namespace mlx
 {

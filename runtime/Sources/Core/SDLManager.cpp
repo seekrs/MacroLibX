@@ -87,30 +87,15 @@ namespace mlx
 		return surface;
 	}
 
-	std::vector<const char*> SDLManager::GetRequiredVulkanInstanceExtentions() const noexcept
+	std::vector<const char*> SDLManager::GetRequiredVulkanInstanceExtentions(Handle window) const noexcept
 	{
-		std::vector<const char*> extensions;
+		std::uint32_t count;
+		if(!SDL_Vulkan_GetInstanceExtensions(static_cast<Internal::WindowInfos*>(window)->window, &count, nullptr))
+			FatalError("SDL Manager : could not retrieve Vulkan instance extensions");
+		std::vector<const char*> extensions(count);
+		if(!SDL_Vulkan_GetInstanceExtensions(static_cast<Internal::WindowInfos*>(window)->window, &count, extensions.data()))
+			FatalError("SDL Manager : could not retrieve Vulkan instance extensions");
 		extensions.push_back(VK_KHR_SURFACE_EXTENSION_NAME);
-
-		#ifdef VK_USE_PLATFORM_XCB_KHR
-			extensions.push_back(VK_KHR_XCB_SURFACE_EXTENSION_NAME);
-		#endif
-
-		#ifdef VK_USE_PLATFORM_XLIB_KHR
-			extensions.push_back(VK_KHR_XLIB_SURFACE_EXTENSION_NAME);
-		#endif
-
-		#ifdef VK_USE_PLATFORM_WAYLAND_KHR
-	//		extensions.push_back(VK_KHR_WAYLAND_SURFACE_EXTENSION_NAME);
-		#endif
-
-		#ifdef VK_USE_PLATFORM_WIN32_KHR
-			extensions.push_back(VK_KHR_WIN32_SURFACE_EXTENSION_NAME);
-		#endif
-
-		#ifdef VK_USE_PLATFORM_METAL_EXT
-			extensions.push_back(VK_EXT_METAL_SURFACE_EXTENSION_NAME);
-		#endif
 		return extensions;
 	}
 
