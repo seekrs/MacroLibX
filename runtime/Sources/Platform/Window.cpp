@@ -5,7 +5,7 @@
 
 namespace mlx
 {
-	Window::Window(std::size_t w, std::size_t h, const std::string& title, bool hidden) : m_width(w), m_height(h)
+	Window::Window(std::size_t w, std::size_t h, const std::string& title, bool hidden) : m_name(title), m_width(w), m_height(h)
 	{
 		p_window = SDLManager::Get().CreateWindow(title, w, h, hidden, m_id);
 	}
