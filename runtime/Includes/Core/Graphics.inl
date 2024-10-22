@@ -46,13 +46,6 @@ namespace mlx
 			p_scene->BringToFront(std::move(sprite));
 	}
 
-	void GraphicsSupport::LoadFont(const std::filesystem::path& filepath, float scale)
-	{
-		MLX_PROFILE_FUNCTION();
-		(void)filepath;
-		(void)scale;
-	}
-
 	void GraphicsSupport::TryEraseSpritesInScene(NonOwningPtr<Texture> texture) noexcept
 	{
 		MLX_PROFILE_FUNCTION();

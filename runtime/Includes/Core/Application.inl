@@ -1,5 +1,6 @@
 #pragma once
 #include <Core/Application.h>
+#include <Embedded/DogicaTTF.h>
 
 #ifndef DISABLE_ALL_SAFETIES
 	#define CHECK_WINDOW_PTR(win) \
@@ -137,11 +138,17 @@ namespace mlx
 		m_graphics[*static_cast<int*>(win)]->StringPut(x, y, color, str);
 	}
 
-	void Application::LoadFont(Handle win, const std::filesystem::path& filepath, float scale)
+	void Application::LoadFont(const std::filesystem::path& filepath, float scale)
 	{
 		MLX_PROFILE_FUNCTION();
-		CHECK_WINDOW_PTR(win);
-		m_graphics[*static_cast<int*>(win)]->LoadFont(filepath, scale);
+		std::shared_ptr<Font> font;
+		if(filepath.string() == "default")
+			font = std::make_shared<Font>("default", dogica_ttf, scale);
+		else
+			font = std::make_shared<Font>(filepath, scale);
+		if(!m_font_registry.IsFontKnown(font))
+			return;
+		m_font_registry.RegisterFont(font);
 	}
 
 	void Application::TexturePut(Handle win, Handle img, int x, int y)

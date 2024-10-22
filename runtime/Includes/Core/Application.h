@@ -44,7 +44,7 @@ namespace mlx
 			inline void LoopHook(int (*f)(void*), void* param);
 			inline void LoopEnd() noexcept;
 
-			inline void LoadFont(Handle win, const std::filesystem::path& filepath, float scale);
+			inline void LoadFont(const std::filesystem::path& filepath, float scale);
 
 			void Run() noexcept;
 

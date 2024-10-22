@@ -16,7 +16,7 @@ namespace mlx
 			void InputsFetcher(func::function<void(mlx_event_type, int, int)> functor);
 
 			VkSurfaceKHR CreateVulkanSurface(Handle window, VkInstance instance) const noexcept;
-			std::vector<const char*> GetRequiredVulkanInstanceExtentions() const noexcept;
+			std::vector<const char*> GetRequiredVulkanInstanceExtentions(Handle window) const noexcept;
 			Vec2ui GetVulkanDrawableSize(Handle window) const noexcept;
 			void MoveMouseOnWindow(Handle window, int x, int y) const noexcept;
 			void GetScreenSizeWindowIsOn(Handle window, int* x, int* y) const noexcept;
