@@ -9,7 +9,7 @@ namespace mlx
 		p_scene->ResetSprites();
 		m_put_pixel_manager.ResetRenderData();
 		m_draw_layer = 0;
-		PixelPut(0, 0, 0x00000000); // bozoman solution FIXME
+		PixelPut(0, 0, 0x00000000); // bozoman solution FIXME WTF
 	}
 
 	void GraphicsSupport::PixelPut(int x, int y, std::uint32_t color) noexcept
