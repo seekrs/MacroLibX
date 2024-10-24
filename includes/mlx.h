@@ -6,7 +6,7 @@
 /*   By: maldavid <contact@kbz8.me>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:56:35 by maldavid          #+#    #+#             */
-/*   Updated: 2024/10/17 17:51:28 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/10/22 11:56:44 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -312,7 +312,7 @@ MLX_API int mlx_string_put(void* mlx, void* win, int x, int y, int color, char* 
  *
  * @return (void)	
  */
-MLX_API void mlx_set_font(void* mlx, void* win, char* filepath);
+MLX_API void mlx_set_font(void* mlx, char* filepath);
 
 
 /**
@@ -325,7 +325,7 @@ MLX_API void mlx_set_font(void* mlx, void* win, char* filepath);
  *
  * @return (void)	
  */
-MLX_API void mlx_set_font_scale(void* mlx, void* win, char* filepath, float scale);
+MLX_API void mlx_set_font_scale(void* mlx, char* filepath, float scale);
 
 
 /**

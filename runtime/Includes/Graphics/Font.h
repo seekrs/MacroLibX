@@ -11,6 +11,7 @@ namespace mlx
 			Font(const std::filesystem::path& path, float scale) : m_build_data(path), m_name(path.string()), m_scale(scale) {}
 			Font(const std::string& name, const std::vector<std::uint8_t>& ttf_data, float scale) : m_build_data(ttf_data), m_name(name), m_scale(scale) {}
 
+			void BuildFont();
 			void Destroy();
 
 			inline const std::string& GetName() const { return m_name; }
@@ -23,15 +24,29 @@ namespace mlx
 			inline ~Font() { Destroy(); }
 
 		private:
-			void BuildFont();
-
-		private:
 			std::array<stbtt_packedchar, 96> m_cdata;
 			Texture m_atlas;
 			std::variant<std::filesystem::path, std::vector<std::uint8_t>> m_build_data;
 			std::string m_name;
 			float m_scale;
 	};
+
+	class FontRegistry
+	{
+		public:
+			FontRegistry() = default;
+
+			inline void RegisterFont(std::shared_ptr<Font> font);
+			inline void UnregisterFont(std::shared_ptr<Font> font);
+			inline bool IsFontKnown(std::shared_ptr<Font> font);
+
+			~FontRegistry() = default;
+
+		private:
+			std::unordered_set<std::shared_ptr<Font>> m_fonts_registry;
+	};
 }
+
+#include <Graphics/Font.inl>
 
 #endif

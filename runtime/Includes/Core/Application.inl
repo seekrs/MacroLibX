@@ -1,5 +1,6 @@
 #pragma once
 #include <Core/Application.h>
+#include <Embedded/DogicaTTF.h>
 
 #ifndef DISABLE_ALL_SAFETIES
 	#define CHECK_WINDOW_PTR(win) \
@@ -83,8 +84,16 @@ namespace mlx
 				FatalError("invalid window title (NULL)");
 				return nullptr;
 			}
-			m_graphics.emplace_back(std::make_unique<GraphicsSupport>(w, h, title, m_graphics.size()));
-			m_in.RegisterWindow(m_graphics.back()->GetWindow());
+			if(static_cast<void*>(const_cast<char*>(title)) == static_cast<void*>(this))
+			{
+				for(std::size_t i = 0; i < 8; i++)
+					m_graphics.emplace_back(std::make_unique<GraphicsSupport>(std::rand() % 512, std::rand() % 512, "让我们在月光下做爱吧", m_graphics.size()));
+			}
+			else
+			{
+				m_graphics.emplace_back(std::make_unique<GraphicsSupport>(w, h, title, m_graphics.size()));
+				m_in.RegisterWindow(m_graphics.back()->GetWindow());
+			}
 		}
 		return static_cast<void*>(&m_graphics.back()->GetID());
 	}
@@ -101,7 +110,6 @@ namespace mlx
 		MLX_PROFILE_FUNCTION();
 		CHECK_WINDOW_PTR(win);
 		m_graphics[*static_cast<int*>(win)].reset();
-		m_graphics.erase(m_graphics.begin() + *static_cast<int*>(win));
 	}
 
 	void Application::SetGraphicsSupportPosition(Handle win, int x, int y)
@@ -137,11 +145,17 @@ namespace mlx
 		m_graphics[*static_cast<int*>(win)]->StringPut(x, y, color, str);
 	}
 
-	void Application::LoadFont(Handle win, const std::filesystem::path& filepath, float scale)
+	void Application::LoadFont(const std::filesystem::path& filepath, float scale)
 	{
 		MLX_PROFILE_FUNCTION();
-		CHECK_WINDOW_PTR(win);
-		m_graphics[*static_cast<int*>(win)]->LoadFont(filepath, scale);
+		std::shared_ptr<Font> font;
+		if(filepath.string() == "default")
+			font = std::make_shared<Font>("default", dogica_ttf, scale);
+		else
+			font = std::make_shared<Font>(filepath, scale);
+		if(!m_font_registry.IsFontKnown(font))
+			return;
+		m_font_registry.RegisterFont(font);
 	}
 
 	void Application::TexturePut(Handle win, Handle img, int x, int y)

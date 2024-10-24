@@ -28,8 +28,6 @@ namespace mlx
 			inline void StringPut(int x, int y, std::uint32_t color, std::string str);
 			inline void TexturePut(NonOwningPtr<class Texture> texture, int x, int y);
 
-			inline void LoadFont(const std::filesystem::path& filepath, float scale);
-
 			inline void TryEraseSpritesInScene(NonOwningPtr<Texture> texture) noexcept;
 
 			[[nodiscard]] MLX_FORCEINLINE bool HasWindow() const noexcept  { return m_has_window; }

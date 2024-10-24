@@ -225,7 +225,7 @@ extern "C"
 		return 0;
 	}
 
-	void mlx_set_font(void* mlx, void* win, char* filepath)
+	void mlx_set_font(void* mlx, char* filepath)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		if (filepath == nullptr)
@@ -240,12 +240,12 @@ extern "C"
 			return;
 		}
 		if(std::strcmp(filepath, "default") == 0)
-			static_cast<mlx::Application*>(mlx)->LoadFont(win, file, 6.f);
+			static_cast<mlx::Application*>(mlx)->LoadFont(file, 6.f);
 		else
-			static_cast<mlx::Application*>(mlx)->LoadFont(win, file, 16.f);
+			static_cast<mlx::Application*>(mlx)->LoadFont(file, 16.f);
 	}
 
-	void mlx_set_font_scale(void* mlx, void* win, char* filepath, float scale)
+	void mlx_set_font_scale(void* mlx, char* filepath, float scale)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		if (filepath == nullptr)
@@ -259,7 +259,7 @@ extern "C"
 			mlx::Error("TTF loader : not a truetype font file '%'", filepath);
 			return;
 		}
-		static_cast<mlx::Application*>(mlx)->LoadFont(win, file, scale);
+		static_cast<mlx::Application*>(mlx)->LoadFont(file, scale);
 	}
 
 	int mlx_clear_window(void* mlx, void* win)
