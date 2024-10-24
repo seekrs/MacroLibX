@@ -47,7 +47,7 @@ namespace mlx
 			int m_id;
 
 			bool m_has_window;
-			bool m_putpixel_called = false;
+			bool m_pixelput_called = false;
 	};
 }
 
