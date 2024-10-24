@@ -20,9 +20,9 @@ int update(void* param)
 		mlx_clear_window(mlx->mlx, mlx->win);
 
 	if(i >= 250)
-		mlx_set_font_scale(mlx->mlx, mlx->win, "default", 16.f);
+		mlx_set_font_scale(mlx->mlx, "default", 16.f);
 	else
-		mlx_set_font_scale(mlx->mlx, mlx->win, "default", 6.f);
+		mlx_set_font_scale(mlx->mlx, "default", 6.f);
 
 	mlx_string_put(mlx->mlx, mlx->win, 160, 120, 0xFFFF2066, "this text should be hidden");
 
@@ -30,7 +30,7 @@ int update(void* param)
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->logo_bmp, 220, 40);
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 150, 60);
 
-	mlx_set_font(mlx->mlx, mlx->win, "default");
+	mlx_set_font(mlx->mlx, "default");
 	mlx_string_put(mlx->mlx, mlx->win, 20, 50, 0xFFFFFFFF, "that's a text");
 
 	for(int j = 0, color = 0; j < 400; j++)
@@ -129,6 +129,7 @@ int main(void)
 	int dummy;
 
 	mlx.mlx = mlx_init();
+	mlx_new_window(mlx.mlx, 400, 400, mlx.mlx);
 	mlx.win = mlx_new_window(mlx.mlx, 400, 400, "My window");
 
 	mlx_set_fps_goal(mlx.mlx, 60);
@@ -145,7 +146,7 @@ int main(void)
 
 	mlx.img = create_image(&mlx);
 
-	mlx_set_font_scale(mlx.mlx, mlx.win, "font.ttf", 16.f);
+	mlx_set_font_scale(mlx.mlx, "font.ttf", 16.f);
 	mlx_string_put(mlx.mlx, mlx.win, 20, 20, 0xFF0020FF, "that text will disappear");
 
 	mlx_loop_hook(mlx.mlx, update, &mlx);

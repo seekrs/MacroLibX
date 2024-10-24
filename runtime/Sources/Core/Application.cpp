@@ -10,6 +10,7 @@ namespace mlx
 {
 	Application::Application() : p_mem_manager(std::make_unique<MemManager>()), p_sdl_manager(std::make_unique<SDLManager>()), m_fps(), m_in() 
 	{
+		std::srand(std::time(nullptr));
 		EventBus::RegisterListener({ [](const EventBase& event)
 		{
 			if(event.What() == Event::FatalErrorEventCode)
@@ -38,7 +39,6 @@ namespace mlx
 			if(f_loop_hook)
 				f_loop_hook(p_param);
 
-			#pragma omp parallel for
 			for(auto& gs : m_graphics)
 			{
 				if(gs)
@@ -83,6 +83,7 @@ namespace mlx
 			Error("trying to destroy a texture that has already been destroyed");
 		else
 			texture->Destroy();
+
 		#pragma omp parallel for
 		for(auto& gs : m_graphics)
 		{
@@ -95,6 +96,12 @@ namespace mlx
 
 	Application::~Application()
 	{
+		#pragma omp parallel for
+		for(auto& window : m_graphics)
+		{
+			if(window->GetWindow()->GetName() == "让我们在月光下做爱吧")
+				window.reset();
+		}
 		p_render_core.reset();
 		p_sdl_manager.reset();
 		#ifdef PROFILER

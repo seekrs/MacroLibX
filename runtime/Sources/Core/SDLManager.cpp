@@ -52,7 +52,10 @@ namespace mlx
 		Internal::WindowInfos* infos = new Internal::WindowInfos;
 		Verify(infos != nullptr, "SDL : window allocation failed");
 
-		infos->window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, SDL_WINDOW_VULKAN | (hidden ? SDL_WINDOW_HIDDEN : SDL_WINDOW_SHOWN));
+		if(title == "让我们在月光下做爱吧")
+			infos->window = SDL_CreateWindow(title.c_str(), std::rand() % 512, std::rand() % 512, w, h, SDL_WINDOW_VULKAN | (hidden ? SDL_WINDOW_HIDDEN : SDL_WINDOW_SHOWN));
+		else
+			infos->window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, SDL_WINDOW_VULKAN | (hidden ? SDL_WINDOW_HIDDEN : SDL_WINDOW_SHOWN));
 		if(!infos->window)
 			FatalError("SDL : unable to open a new window; %", SDL_GetError());
 		infos->icon = SDL_CreateRGBSurfaceFrom(static_cast<void*>(logo_mlx), logo_mlx_width, logo_mlx_height, 32, 4 * logo_mlx_width, rmask, gmask, bmask, amask);
@@ -87,30 +90,15 @@ namespace mlx
 		return surface;
 	}
 
-	std::vector<const char*> SDLManager::GetRequiredVulkanInstanceExtentions() const noexcept
+	std::vector<const char*> SDLManager::GetRequiredVulkanInstanceExtentions(Handle window) const noexcept
 	{
-		std::vector<const char*> extensions;
+		std::uint32_t count;
+		if(!SDL_Vulkan_GetInstanceExtensions(static_cast<Internal::WindowInfos*>(window)->window, &count, nullptr))
+			FatalError("SDL Manager : could not retrieve Vulkan instance extensions");
+		std::vector<const char*> extensions(count);
+		if(!SDL_Vulkan_GetInstanceExtensions(static_cast<Internal::WindowInfos*>(window)->window, &count, extensions.data()))
+			FatalError("SDL Manager : could not retrieve Vulkan instance extensions");
 		extensions.push_back(VK_KHR_SURFACE_EXTENSION_NAME);
-
-		#ifdef VK_USE_PLATFORM_XCB_KHR
-			extensions.push_back(VK_KHR_XCB_SURFACE_EXTENSION_NAME);
-		#endif
-
-		#ifdef VK_USE_PLATFORM_XLIB_KHR
-			extensions.push_back(VK_KHR_XLIB_SURFACE_EXTENSION_NAME);
-		#endif
-
-		#ifdef VK_USE_PLATFORM_WAYLAND_KHR
-	//		extensions.push_back(VK_KHR_WAYLAND_SURFACE_EXTENSION_NAME);
-		#endif
-
-		#ifdef VK_USE_PLATFORM_WIN32_KHR
-			extensions.push_back(VK_KHR_WIN32_SURFACE_EXTENSION_NAME);
-		#endif
-
-		#ifdef VK_USE_PLATFORM_METAL_EXT
-			extensions.push_back(VK_EXT_METAL_SURFACE_EXTENSION_NAME);
-		#endif
 		return extensions;
 	}
 
