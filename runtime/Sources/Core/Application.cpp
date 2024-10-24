@@ -10,6 +10,7 @@ namespace mlx
 {
 	Application::Application() : p_mem_manager(std::make_unique<MemManager>()), p_sdl_manager(std::make_unique<SDLManager>()), m_fps(), m_in() 
 	{
+		MLX_PROFILE_FUNCTION();
 		std::srand(std::time(nullptr));
 		EventBus::RegisterListener({ [](const EventBase& event)
 		{
@@ -71,7 +72,7 @@ namespace mlx
 	void Application::DestroyTexture(void* ptr)
 	{
 		MLX_PROFILE_FUNCTION();
-		RenderCore::Get().WaitDeviceIdle(); // TODO : synchronize with another method than waiting for GPU to be idle
+		RenderCore::Get().WaitDeviceIdle();
 		if(!m_image_registry.IsTextureKnown(static_cast<Texture*>(ptr)))
 		{
 			Error("invalid image ptr");
@@ -84,7 +85,6 @@ namespace mlx
 		else
 			texture->Destroy();
 
-		#pragma omp parallel for
 		for(auto& gs : m_graphics)
 		{
 			if(gs)
@@ -96,12 +96,12 @@ namespace mlx
 
 	Application::~Application()
 	{
-		#pragma omp parallel for
 		for(auto& window : m_graphics)
 		{
-			if(window->GetWindow()->GetName() == "让我们在月光下做爱吧")
+			if(window && window->GetWindow()->GetName() == "让我们在月光下做爱吧")
 				window.reset();
 		}
+
 		p_render_core.reset();
 		p_sdl_manager.reset();
 		#ifdef PROFILER
