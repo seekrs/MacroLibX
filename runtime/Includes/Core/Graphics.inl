@@ -9,7 +9,7 @@ namespace mlx
 		p_scene->ResetSprites();
 		m_put_pixel_manager.ResetRenderData();
 		m_draw_layer = 0;
-		PixelPut(0, 0, 0x00000000); // bozoman solution FIXME WTF
+		m_pixelput_called = false;
 	}
 
 	void GraphicsSupport::PixelPut(int x, int y, std::uint32_t color) noexcept
@@ -18,6 +18,7 @@ namespace mlx
 		NonOwningPtr<Texture> texture = m_put_pixel_manager.DrawPixel(x, y, m_draw_layer, color);
 		if(texture)
 		{
+			m_pixelput_called = true;
 			Sprite& new_sprite = p_scene->CreateSprite(texture);
 			new_sprite.SetPosition(Vec2f{ 0.0f, 0.0f });
 		}
@@ -38,12 +39,20 @@ namespace mlx
 		NonOwningPtr<Sprite> sprite = p_scene->GetSpriteFromTextureAndPosition(texture, Vec2f{ static_cast<float>(x), static_cast<float>(y) });
 		if(!sprite)
 		{
+			
 			Sprite& new_sprite = p_scene->CreateSprite(texture);
 			new_sprite.SetPosition(Vec2f{ static_cast<float>(x), static_cast<float>(y) });
-			m_draw_layer++;
+			if(m_pixelput_called)
+			{
+				m_draw_layer++;
+				m_pixelput_called = false;
+			}
 		}
 		else if(!p_scene->IsTextureAtGivenDrawLayer(texture, m_draw_layer))
+		{
 			p_scene->BringToFront(std::move(sprite));
+			m_draw_layer++;
+		}
 	}
 
 	void GraphicsSupport::TryEraseSpritesInScene(NonOwningPtr<Texture> texture) noexcept
