@@ -37,7 +37,7 @@ namespace mlx
 		return mesh;
 	}
 
-	Sprite::Sprite(NonOwningPtr<Texture> texture)
+	Sprite::Sprite(NonOwningPtr<Texture> texture) : Drawable(DrawableType::Sprite)
 	{
 		MLX_PROFILE_FUNCTION();
 		Verify((bool)texture, "Sprite: invalid texture (internal mlx issue, please report to devs)");
@@ -45,7 +45,7 @@ namespace mlx
 		p_texture = texture;
 	}
 
-	Sprite::Sprite(std::shared_ptr<Mesh> mesh, NonOwningPtr<Texture> texture)
+	Sprite::Sprite(std::shared_ptr<Mesh> mesh, NonOwningPtr<Texture> texture) : Drawable(DrawableType::Sprite)
 	{
 		MLX_PROFILE_FUNCTION();
 		Verify((bool)texture, "Sprite: invalid texture (internal mlx issue, please report to devs)");

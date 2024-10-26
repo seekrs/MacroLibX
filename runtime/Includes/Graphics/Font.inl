@@ -15,6 +15,9 @@ namespace mlx
 
 	bool FontRegistry::IsFontKnown(std::shared_ptr<Font> font)
 	{
-		return m_fonts_registry.find(font) != m_fonts_registry.end();
+		return std::find_if(m_fonts_registry.begin(), m_fonts_registry.end(), [&font](std::shared_ptr<Font> rhs)
+		{
+			return font->GetName() == rhs->GetName() && font->GetScale() == rhs->GetScale();
+		}) != m_fonts_registry.end();
 	}
 }

@@ -24,6 +24,7 @@ namespace mlx
 
 		m_fps.Init();
 		p_render_core = std::make_unique<RenderCore>();
+		LoadFont("default", 6.0f);
 	}
 
 	void Application::Run() noexcept

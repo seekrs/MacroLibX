@@ -894,7 +894,7 @@ VkPipelineStageFlags kvfLayoutToAccessMask(VkImageLayout layout, bool is_destina
 	{
 		case VK_IMAGE_LAYOUT_UNDEFINED:
 			if(is_destination)
-				KVF_ASSERT(false && "Vulkan : the new layout used in a transition must not be VK_IMAGE_LAYOUT_UNDEFINED");
+				KVF_ASSERT(false && "Vulkan: the new layout used in a transition must not be VK_IMAGE_LAYOUT_UNDEFINED");
 		break;
 		case VK_IMAGE_LAYOUT_GENERAL: access_mask = VK_ACCESS_SHADER_READ_BIT | VK_ACCESS_SHADER_WRITE_BIT; break;
 		case VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL: access_mask = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT; break;
@@ -909,13 +909,13 @@ VkPipelineStageFlags kvfLayoutToAccessMask(VkImageLayout layout, bool is_destina
 			if(!is_destination)
 				access_mask = VK_ACCESS_HOST_WRITE_BIT;
 			else
-				KVF_ASSERT(false && "Vulkan : the new layout used in a transition must not be VK_IMAGE_LAYOUT_PREINITIALIZED");
+				KVF_ASSERT(false && "Vulkan: the new layout used in a transition must not be VK_IMAGE_LAYOUT_PREINITIALIZED");
 		break;
 		case VK_IMAGE_LAYOUT_DEPTH_READ_ONLY_STENCIL_ATTACHMENT_OPTIMAL: access_mask = VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT; break;
 		case VK_IMAGE_LAYOUT_DEPTH_ATTACHMENT_STENCIL_READ_ONLY_OPTIMAL: access_mask = VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT; break;
 		case VK_IMAGE_LAYOUT_PRESENT_SRC_KHR: access_mask = VK_ACCESS_MEMORY_READ_BIT; break;
 
-		default: KVF_ASSERT(false && "Vulkan : unexpected image layout"); break;
+		default: KVF_ASSERT(false && "Vulkan: unexpected image layout"); break;
 	}
 
 	return access_mask;
@@ -929,7 +929,7 @@ VkPipelineStageFlags kvfAccessFlagsToPipelineStage(VkAccessFlags access_flags, V
 	{
 		VkAccessFlagBits _access_flag = (VkAccessFlagBits)(access_flags & (~(access_flags - 1)));
 		if(_access_flag == 0 || (_access_flag & (_access_flag - 1)) != 0)
-			KVF_ASSERT(false && "Vulkan : an error has been caught during access flag to pipeline stage operation");
+			KVF_ASSERT(false && "Vulkan: an error has been caught during access flag to pipeline stage operation");
 		access_flags &= ~_access_flag;
 
 		switch(_access_flag)
@@ -952,7 +952,7 @@ VkPipelineStageFlags kvfAccessFlagsToPipelineStage(VkAccessFlags access_flags, V
 			case VK_ACCESS_MEMORY_READ_BIT: break;
 			case VK_ACCESS_MEMORY_WRITE_BIT: break;
 
-			default: KVF_ASSERT(false && "Vulkan : unknown access flag"); break;
+			default: KVF_ASSERT(false && "Vulkan: unknown access flag"); break;
 		}
 	}
 	return stages;
@@ -973,7 +973,7 @@ VkFormat kvfFindSupportFormatInCandidates(VkDevice device, VkFormat* candidates,
 			return candidates[i];
 	}
 
-	KVF_ASSERT(false && "Vulkan : failed to find image format");
+	KVF_ASSERT(false && "Vulkan: failed to find image format");
 	return VK_FORMAT_R8G8B8A8_SRGB; // just to avoir warning
 }
 

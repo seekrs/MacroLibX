@@ -155,13 +155,13 @@ extern "C"
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		if (filename == nullptr)
 		{
-			mlx::Error("PNG loader : filename is NULL");
+			mlx::Error("PNG loader: filename is NULL");
 			return nullptr;
 		}
 		std::filesystem::path file(filename);
 		if(file.extension() != ".png")
 		{
-			mlx::Error("PNG loader : not a png file '%'", filename);
+			mlx::Error("PNG loader: not a png file '%'", filename);
 			return nullptr;
 		}
 		return static_cast<mlx::Application*>(mlx)->NewStbTexture(filename, width, height);
@@ -172,13 +172,13 @@ extern "C"
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		if (filename == nullptr)
 		{
-			mlx::Error("JPG loader : filename is NULL");
+			mlx::Error("JPG loader: filename is NULL");
 			return nullptr;
 		}
 		std::filesystem::path file(filename);
 		if(file.extension() != ".jpg" && file.extension() != ".jpeg")
 		{
-			mlx::Error("JPG loader : not a jpg file '%'", filename);
+			mlx::Error("JPG loader: not a jpg file '%'", filename);
 			return nullptr;
 		}
 		return static_cast<mlx::Application*>(mlx)->NewStbTexture(filename, width, height);
@@ -189,13 +189,13 @@ extern "C"
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		if (filename == nullptr)
 		{
-			mlx::Error("BMP loader : filename is NULL");
+			mlx::Error("BMP loader: filename is NULL");
 			return nullptr;
 		}
 		std::filesystem::path file(filename);
 		if(file.extension() != ".bmp" && file.extension() != ".dib")
 		{
-			mlx::Error("BMP loader : not a bmp file '%'", filename);
+			mlx::Error("BMP loader: not a bmp file '%'", filename);
 			return nullptr;
 		}
 		return static_cast<mlx::Application*>(mlx)->NewStbTexture(filename, width, height);
@@ -230,13 +230,13 @@ extern "C"
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		if (filepath == nullptr)
 		{
-			mlx::Error("Font loader : filepath is NULL");
+			mlx::Error("Font loader: filepath is NULL");
 			return;
 		}
 		std::filesystem::path file(filepath);
 		if(std::strcmp(filepath, "default") != 0 && file.extension() != ".ttf" && file.extension() != ".tte")
 		{
-			mlx::Error("TTF loader : not a truetype font file '%'", filepath);
+			mlx::Error("TTF loader: not a truetype font file '%'", filepath);
 			return;
 		}
 		if(std::strcmp(filepath, "default") == 0)
@@ -250,13 +250,13 @@ extern "C"
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		if (filepath == nullptr)
 		{
-			mlx::Error("Font loader : filepath is NULL");
+			mlx::Error("Font loader: filepath is NULL");
 			return;
 		}
 		std::filesystem::path file(filepath);
 		if(std::strcmp(filepath, "default") != 0 && file.extension() != ".ttf" && file.extension() != ".tte")
 		{
-			mlx::Error("TTF loader : not a truetype font file '%'", filepath);
+			mlx::Error("TTF loader: not a truetype font file '%'", filepath);
 			return;
 		}
 		static_cast<mlx::Application*>(mlx)->LoadFont(file, scale);

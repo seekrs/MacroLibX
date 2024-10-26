@@ -96,6 +96,8 @@
 #include <Utils/NonOwningPtr.h>
 #include <Utils/NonCopyable.h>
 
+constexpr const int RANGE = 1024;
+
 using Handle = void*;
 
 #endif

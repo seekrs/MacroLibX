@@ -6,7 +6,7 @@ namespace mlx
 	void GraphicsSupport::ResetRenderData() noexcept
 	{
 		MLX_PROFILE_FUNCTION();
-		p_scene->ResetSprites();
+		p_scene->ResetScene();
 		m_put_pixel_manager.ResetRenderData();
 		m_draw_layer = 0;
 		m_pixelput_called = false;
@@ -27,10 +27,30 @@ namespace mlx
 	void GraphicsSupport::StringPut(int x, int y, std::uint32_t color, std::string str)
 	{
 		MLX_PROFILE_FUNCTION();
-		(void)x;
-		(void)y;
-		(void)color;
-		(void)str;
+		Vec4f vec_color = {
+			static_cast<float>((color & 0x000000FF)) / 255.f,
+			static_cast<float>((color & 0x0000FF00) >> 8) / 255.f,
+			static_cast<float>((color & 0x00FF0000) >> 16) / 255.f,
+			static_cast<float>((color & 0xFF000000) >> 24) / 255.f
+		};
+
+		NonOwningPtr<Text> text = p_scene->GetTextFromPositionAndColor(str, Vec2f{ static_cast<float>(x), static_cast<float>(y) }, vec_color);
+		if(!text)
+		{
+			Text& new_text = p_scene->CreateText(str);
+			new_text.SetPosition(Vec2f{ static_cast<float>(x), static_cast<float>(y) });
+			new_text.SetColor(std::move(vec_color));
+			if(m_pixelput_called)
+			{
+				m_draw_layer++;
+				m_pixelput_called = false;
+			}
+		}
+		else if(!p_scene->IsTextAtGivenDrawLayer(str, m_draw_layer))
+		{
+			p_scene->BringToFront(text.Get());
+			m_draw_layer++;
+		}
 	}
 
 	void GraphicsSupport::TexturePut(NonOwningPtr<Texture> texture, int x, int y)
@@ -50,7 +70,7 @@ namespace mlx
 		}
 		else if(!p_scene->IsTextureAtGivenDrawLayer(texture, m_draw_layer))
 		{
-			p_scene->BringToFront(std::move(sprite));
+			p_scene->BringToFront(sprite.Get());
 			m_draw_layer++;
 		}
 	}

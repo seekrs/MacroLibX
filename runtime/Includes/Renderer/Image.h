@@ -71,7 +71,7 @@ namespace mlx
 			bool m_is_multisampled = false;
 	};
 
-	class Texture : public Image
+	class Texture: public Image
 	{
 		public:
 			Texture() = default;

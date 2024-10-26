@@ -92,32 +92,31 @@ namespace mlx
 
 		VkCommandBuffer cmd = renderer.GetActiveCommandBuffer();
 
-		const auto& sprites = scene.GetSprites();
+		const auto& drawables = scene.GetDrawables();
 
-		for(auto sprite : sprites)
+		for(auto drawable : drawables)
 		{
 			// Check every textures and update modified ones to GPU before starting the render pass
-			if(!sprite->IsSetInit())
-				sprite->UpdateDescriptorSet(p_texture_set);
-			Verify((bool)sprite->GetTexture(), "a sprite has no texture attached (internal mlx issue, please report to the devs)");
-			sprite->GetTexture()->Update(cmd);
+			if(!drawable->IsSetInit())
+				drawable->UpdateDescriptorSet(p_texture_set);
+			drawable->Update(cmd);
 		}
 
 		m_pipeline.BindPipeline(cmd, 0, {});
-		for(auto sprite : sprites)
+		for(auto drawable : drawables)
 		{
-			SpriteData sprite_data;
-			sprite_data.position = Vec4f{ sprite->GetPosition(), 0.0f, 1.0f };
-			sprite_data.color = sprite->GetColor();
+			SpriteData drawable_data;
+			drawable_data.position = Vec4f{ drawable->GetPosition(), 0.0f, 1.0f };
+			drawable_data.color = drawable->GetColor();
 
-			sprite->Bind(frame_index, cmd);
+			drawable->Bind(frame_index, cmd);
 
-			std::array<VkDescriptorSet, 2> sets = { p_viewer_data_set->GetSet(frame_index), sprite->GetSet(frame_index) };
+			std::array<VkDescriptorSet, 2> sets = { p_viewer_data_set->GetSet(frame_index), drawable->GetSet(frame_index) };
 
-			RenderCore::Get().vkCmdPushConstants(cmd, m_pipeline.GetPipelineLayout(), VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(SpriteData), &sprite_data);
+			RenderCore::Get().vkCmdPushConstants(cmd, m_pipeline.GetPipelineLayout(), VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(SpriteData), &drawable_data);
 			RenderCore::Get().vkCmdBindDescriptorSets(cmd, m_pipeline.GetPipelineBindPoint(), m_pipeline.GetPipelineLayout(), 0, sets.size(), sets.data(), 0, nullptr);
 
-			sprite->GetMesh()->Draw(cmd, renderer.GetDrawCallsCounterRef(), renderer.GetPolygonDrawnCounterRef());
+			drawable->GetMesh()->Draw(cmd, renderer.GetDrawCallsCounterRef(), renderer.GetPolygonDrawnCounterRef());
 		}
 		m_pipeline.EndPipeline(cmd);
 	}

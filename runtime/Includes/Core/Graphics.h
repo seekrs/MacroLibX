@@ -32,6 +32,7 @@ namespace mlx
 
 			[[nodiscard]] MLX_FORCEINLINE bool HasWindow() const noexcept  { return m_has_window; }
 			[[nodiscard]] MLX_FORCEINLINE Renderer& GetRenderer() { return m_renderer; }
+			[[nodiscard]] MLX_FORCEINLINE Scene& GetScene() { return *p_scene; }
 
 			~GraphicsSupport();
 

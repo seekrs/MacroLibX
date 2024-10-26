@@ -69,7 +69,7 @@ namespace mlx
 		#endif
 
 		m_instance = kvfCreateInstance(instance_extensions.data(), instance_extensions.size());
-		DebugLog("Vulkan : instance created");
+		DebugLog("Vulkan: instance created");
 
 		loader->LoadInstance(m_instance);
 		LoadKVFInstanceVulkanFunctionPointers();
@@ -81,13 +81,13 @@ namespace mlx
 		// just for style
 		VkPhysicalDeviceProperties props;
 		vkGetPhysicalDeviceProperties(m_physical_device, &props);
-		DebugLog("Vulkan : physical device picked '%'", props.deviceName);
+		DebugLog("Vulkan: physical device picked '%'", props.deviceName);
 
 		const char* device_extensions[] = { VK_KHR_SWAPCHAIN_EXTENSION_NAME };
 		VkPhysicalDeviceFeatures features{};
 		vkGetPhysicalDeviceFeatures(m_physical_device, &features);
 		m_device = kvfCreateDevice(m_physical_device, device_extensions, sizeof(device_extensions) / sizeof(device_extensions[0]), &features);
-		DebugLog("Vulkan : logical device created");
+		DebugLog("Vulkan: logical device created");
 
 		loader->LoadDevice(m_device);
 		LoadKVFDeviceVulkanFunctionPointers();
@@ -201,9 +201,9 @@ namespace mlx
 		m_descriptor_pool_manager.Destroy();
 		m_allocator.Destroy();
 		kvfDestroyDevice(m_device);
-		DebugLog("Vulkan : logical device destroyed");
+		DebugLog("Vulkan: logical device destroyed");
 		kvfDestroyInstance(m_instance);
-		DebugLog("Vulkan : instance destroyed");
+		DebugLog("Vulkan: instance destroyed");
 		loader.reset();
 
 		s_instance = nullptr;

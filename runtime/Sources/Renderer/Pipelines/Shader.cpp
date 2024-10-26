@@ -15,7 +15,7 @@ namespace mlx
 			default : FatalError("wtf"); break;
 		}
 		m_module = kvfCreateShaderModule(RenderCore::Get().GetDevice(), reinterpret_cast<std::uint32_t*>(m_bytecode.data()), m_bytecode.size() / 4);
-		DebugLog("Vulkan : shader module created");
+		DebugLog("Vulkan: shader module created");
 
 		GeneratePipelineLayout(m_layout);
 	}
@@ -35,7 +35,7 @@ namespace mlx
 				bindings[i].stageFlags = m_stage;
 			}
 			m_set_layouts.emplace_back(kvfCreateDescriptorSetLayout(RenderCore::Get().GetDevice(), bindings.data(), bindings.size()));
-			DebugLog("Vulkan : descriptor set layout created");
+			DebugLog("Vulkan: descriptor set layout created");
 			m_pipeline_layout_part.set_layouts.push_back(m_set_layouts.back());
 		}
 
@@ -56,11 +56,11 @@ namespace mlx
 	{
 		MLX_PROFILE_FUNCTION();
 		kvfDestroyShaderModule(RenderCore::Get().GetDevice(), m_module);
-		DebugLog("Vulkan : shader module destroyed");
+		DebugLog("Vulkan: shader module destroyed");
 		for(auto& layout : m_set_layouts)
 		{
 			kvfDestroyDescriptorSetLayout(RenderCore::Get().GetDevice(), layout);
-			DebugLog("Vulkan : descriptor set layout destroyed");
+			DebugLog("Vulkan: descriptor set layout destroyed");
 		}
 	}
 }
