@@ -14,9 +14,9 @@
 #include <core/errors.h>
 #include <utils/icon_mlx.h>
 
-#ifndef __MLX_WINDOW_CREATE_FLAGS__
-# define __MLX_WINDOW_CREATE_FLAGS__	SDL_WINDOW_VULKAN | SDL_WINDOW_SHOWN
-#endif // !__MLX_WINDOW_CREATE_FLAGS__
+#ifndef MLX_WINDOW_CREATE_FLAGS
+	#define MLX_WINDOW_CREATE_FLAGS	SDL_WINDOW_VULKAN | SDL_WINDOW_SHOWN
+#endif // MLX_WINDOW_CREATE_FLAGS
 
 namespace mlx
 {
@@ -36,7 +36,7 @@ namespace mlx
 	{
 		if(title.find("vvaas") != std::string::npos)
 			core::error::report(e_kind::message, "vvaas est mauvais");
-		_win = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, __MLX_WINDOW_CREATE_FLAGS__);
+		_win = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, MLX_WINDOW_CREATE_FLAGS);
 		if(!_win)
 			core::error::report(e_kind::fatal_error, std::string("unable to open a new window, ") + SDL_GetError());
 		_id = SDL_GetWindowID(_win);
