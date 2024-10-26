@@ -15,7 +15,7 @@ namespace mlx
 		{
 			if(data.Empty())
 			{
-				Warning("Vulkan : trying to create constant buffer without data (constant buffers cannot be modified after creation)");
+				Warning("Vulkan: trying to create constant buffer without data (constant buffers cannot be modified after creation)");
 				return;
 			}
 			m_usage = usage | VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
@@ -70,12 +70,12 @@ namespace mlx
 		MLX_PROFILE_FUNCTION();
 		if(!(m_usage & VK_BUFFER_USAGE_TRANSFER_DST_BIT))
 		{
-			Error("Vulkan : buffer cannot be the destination of a copy because it does not have the correct usage flag");
+			Error("Vulkan: buffer cannot be the destination of a copy because it does not have the correct usage flag");
 			return false;
 		}
 		if(!(buffer.m_usage & VK_BUFFER_USAGE_TRANSFER_SRC_BIT))
 		{
-			Error("Vulkan : buffer cannot be the source of a copy because it does not have the correct usage flag");
+			Error("Vulkan: buffer cannot be the source of a copy because it does not have the correct usage flag");
 			return false;
 		}
 
@@ -108,7 +108,7 @@ namespace mlx
 		if(new_buffer.CopyFrom(*this))
 			Swap(new_buffer);
 		new_buffer.Destroy();
-		DebugLog("Vulkan : pushed buffer to GPU memory");
+		DebugLog("Vulkan: pushed buffer to GPU memory");
 	}
 
 	void GPUBuffer::Destroy() noexcept
@@ -141,12 +141,12 @@ namespace mlx
 		MLX_PROFILE_FUNCTION();
 		if(data.GetSize() > m_size)
 		{
-			Error("Vulkan : trying to store to much data in a vertex buffer (% bytes in % bytes)", data.GetSize(), m_size);
+			Error("Vulkan: trying to store to much data in a vertex buffer (% bytes in % bytes)", data.GetSize(), m_size);
 			return;
 		}
 		if(data.Empty())
 		{
-			Warning("Vulkan : cannot set empty data in a vertex buffer");
+			Warning("Vulkan: cannot set empty data in a vertex buffer");
 			return;
 		}
 		GPUBuffer staging;
@@ -164,12 +164,12 @@ namespace mlx
 		MLX_PROFILE_FUNCTION();
 		if(data.GetSize() > m_size)
 		{
-			Error("Vulkan : trying to store to much data in an index buffer (% bytes in % bytes)", data.GetSize(), m_size);
+			Error("Vulkan: trying to store to much data in an index buffer (% bytes in % bytes)", data.GetSize(), m_size);
 			return;
 		}
 		if(data.Empty())
 		{
-			Warning("Vulkan : cannot set empty data in an index buffer");
+			Warning("Vulkan: cannot set empty data in an index buffer");
 			return;
 		}
 		GPUBuffer staging;
@@ -194,7 +194,7 @@ namespace mlx
 			#endif
 			m_maps[i] = m_buffers[i].GetMap();
 			if(m_maps[i] == nullptr)
-				FatalError("Vulkan : unable to map a uniform buffer");
+				FatalError("Vulkan: unable to map a uniform buffer");
 		}
 	}
 
@@ -203,7 +203,7 @@ namespace mlx
 		MLX_PROFILE_FUNCTION();
 		if(data.GetSize() != m_buffers[frame_index].GetSize())
 		{
-			Error("Vulkan : invalid data size to update to a uniform buffer, % != %", data.GetSize(), m_buffers[frame_index].GetSize());
+			Error("Vulkan: invalid data size to update to a uniform buffer, % != %", data.GetSize(), m_buffers[frame_index].GetSize());
 			return;
 		}
 		if(m_maps[frame_index] != nullptr)

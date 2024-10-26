@@ -33,20 +33,20 @@ namespace mlx
 		p_window = window;
 
 		m_surface = p_window->CreateVulkanSurface(RenderCore::Get().GetInstance());
-		DebugLog("Vulkan : surface created");
+		DebugLog("Vulkan: surface created");
 
 		CreateSwapchain();
 
 		for(std::size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
 		{
 			m_image_available_semaphores[i] = kvfCreateSemaphore(RenderCore::Get().GetDevice());
-			DebugLog("Vulkan : image available semaphore created");
+			DebugLog("Vulkan: image available semaphore created");
 			m_render_finished_semaphores[i] = kvfCreateSemaphore(RenderCore::Get().GetDevice());
-			DebugLog("Vulkan : render finished semaphore created");
+			DebugLog("Vulkan: render finished semaphore created");
 			m_cmd_buffers[i] = kvfCreateCommandBuffer(RenderCore::Get().GetDevice());
-			DebugLog("Vulkan : command buffer created");
+			DebugLog("Vulkan: command buffer created");
 			m_cmd_fences[i] = kvfCreateFence(RenderCore::Get().GetDevice());
-			DebugLog("Vulkan : fence created");
+			DebugLog("Vulkan: fence created");
 		}
 	}
 
@@ -63,7 +63,7 @@ namespace mlx
 			//return false;
 		}
 		else if(result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR)
-			FatalError("Vulkan error : failed to acquire swapchain image, %", kvfVerbaliseVkResult(result));
+			FatalError("Vulkan error: failed to acquire swapchain image, %", kvfVerbaliseVkResult(result));
 
 		RenderCore::Get().vkResetCommandBuffer(m_cmd_buffers[m_current_frame_index], 0);
 		kvfBeginCommandBuffer(m_cmd_buffers[m_current_frame_index], 0);
@@ -110,7 +110,7 @@ namespace mlx
 			m_swapchain_images[i].TransitionLayout(VK_IMAGE_LAYOUT_PRESENT_SRC_KHR);
 			m_swapchain_images[i].CreateImageView(VK_IMAGE_VIEW_TYPE_2D, VK_IMAGE_ASPECT_COLOR_BIT);
 		}
-		DebugLog("Vulkan : swapchain created");
+		DebugLog("Vulkan: swapchain created");
 	}
 
 	void Renderer::DestroySwapchain()
@@ -120,7 +120,7 @@ namespace mlx
 		for(Image& img : m_swapchain_images)
 			img.DestroyImageView();
 		kvfDestroySwapchainKHR(RenderCore::Get().GetDevice(), m_swapchain);
-		DebugLog("Vulkan : swapchain destroyed");
+		DebugLog("Vulkan: swapchain destroyed");
 	}
 
 	void Renderer::Destroy() noexcept
@@ -131,16 +131,16 @@ namespace mlx
 		for(std::size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
 		{
 			kvfDestroySemaphore(RenderCore::Get().GetDevice(), m_image_available_semaphores[i]);
-			DebugLog("Vulkan : image available semaphore destroyed");
+			DebugLog("Vulkan: image available semaphore destroyed");
 			kvfDestroySemaphore(RenderCore::Get().GetDevice(), m_render_finished_semaphores[i]);
-			DebugLog("Vulkan : render finished semaphore destroyed");
+			DebugLog("Vulkan: render finished semaphore destroyed");
 			kvfDestroyFence(RenderCore::Get().GetDevice(), m_cmd_fences[i]);
-			DebugLog("Vulkan : fence destroyed");
+			DebugLog("Vulkan: fence destroyed");
 		}
 
 		DestroySwapchain();
 		RenderCore::Get().vkDestroySurfaceKHR(RenderCore::Get().GetInstance(), m_surface, nullptr);
-		DebugLog("Vulkan : surface destroyed");
+		DebugLog("Vulkan: surface destroyed");
 		m_surface = VK_NULL_HANDLE;
 	}
 }

@@ -43,21 +43,21 @@ namespace mlx
 		#endif
 
 		if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER) != 0)
-			FatalError("SDL : unable to init all subsystems; %", SDL_GetError());
+			FatalError("SDL: unable to init all subsystems; %", SDL_GetError());
 		DebugLog("SDL Manager initialized");
 	}
 
 	Handle SDLManager::CreateWindow(const std::string& title, std::size_t w, std::size_t h, bool hidden, std::int32_t& id)
 	{
 		Internal::WindowInfos* infos = new Internal::WindowInfos;
-		Verify(infos != nullptr, "SDL : window allocation failed");
+		Verify(infos != nullptr, "SDL: window allocation failed");
 
 		if(title == "让我们在月光下做爱吧")
 			infos->window = SDL_CreateWindow(title.c_str(), std::rand() % 512, std::rand() % 512, w, h, SDL_WINDOW_VULKAN | (hidden ? SDL_WINDOW_HIDDEN : SDL_WINDOW_SHOWN));
 		else
 			infos->window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, SDL_WINDOW_VULKAN | (hidden ? SDL_WINDOW_HIDDEN : SDL_WINDOW_SHOWN));
 		if(!infos->window)
-			FatalError("SDL : unable to open a new window; %", SDL_GetError());
+			FatalError("SDL: unable to open a new window; %", SDL_GetError());
 		infos->icon = SDL_CreateRGBSurfaceFrom(static_cast<void*>(logo_mlx), logo_mlx_width, logo_mlx_height, 32, 4 * logo_mlx_width, rmask, gmask, bmask, amask);
 		SDL_SetWindowIcon(infos->window, infos->icon);
 
@@ -70,7 +70,7 @@ namespace mlx
 
 	void SDLManager::DestroyWindow(Handle window) noexcept
 	{
-		Verify(m_windows_registry.find(window) != m_windows_registry.end(), "SDL : cannot destroy window; unknown window pointer");
+		Verify(m_windows_registry.find(window) != m_windows_registry.end(), "SDL: cannot destroy window; unknown window pointer");
 
 		Internal::WindowInfos* infos = static_cast<Internal::WindowInfos*>(window);
 		if(infos->window != nullptr)
@@ -86,7 +86,7 @@ namespace mlx
 	{
 		VkSurfaceKHR surface;
 		if(!SDL_Vulkan_CreateSurface(static_cast<Internal::WindowInfos*>(window)->window, instance, &surface))
-			FatalError("SDL : could not create a Vulkan surface; %", SDL_GetError());
+			FatalError("SDL: could not create a Vulkan surface; %", SDL_GetError());
 		return surface;
 	}
 
@@ -94,10 +94,10 @@ namespace mlx
 	{
 		std::uint32_t count;
 		if(!SDL_Vulkan_GetInstanceExtensions(static_cast<Internal::WindowInfos*>(window)->window, &count, nullptr))
-			FatalError("SDL Manager : could not retrieve Vulkan instance extensions");
+			FatalError("SDL Manager: could not retrieve Vulkan instance extensions");
 		std::vector<const char*> extensions(count);
 		if(!SDL_Vulkan_GetInstanceExtensions(static_cast<Internal::WindowInfos*>(window)->window, &count, extensions.data()))
-			FatalError("SDL Manager : could not retrieve Vulkan instance extensions");
+			FatalError("SDL Manager: could not retrieve Vulkan instance extensions");
 		extensions.push_back(VK_KHR_SURFACE_EXTENSION_NAME);
 		return extensions;
 	}

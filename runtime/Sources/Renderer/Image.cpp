@@ -14,6 +14,12 @@
 	#include <stb_image.h>
 #endif
 
+#ifdef IMAGE_OPTIMIZED
+	#define TILING VK_IMAGE_TILING_OPTIMAL
+#else
+	#define TILING VK_IMAGE_TILING_LINEAR
+#endif
+
 namespace mlx
 {
 	void Image::Init(ImageType type, std::uint32_t width, std::uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, bool is_multisampled, [[maybe_unused]] std::string_view debug_name)
@@ -153,7 +159,7 @@ namespace mlx
 	void Texture::Init(CPUBuffer pixels, std::uint32_t width, std::uint32_t height, VkFormat format, bool is_multisampled, [[maybe_unused]] std::string_view debug_name)
 	{
 		MLX_PROFILE_FUNCTION();
-		Image::Init(ImageType::Color, width, height, format, VK_IMAGE_TILING_OPTIMAL, VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT | VK_IMAGE_USAGE_SAMPLED_BIT | VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT, is_multisampled, std::move(debug_name));
+		Image::Init(ImageType::Color, width, height, format, TILING, VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT | VK_IMAGE_USAGE_SAMPLED_BIT | VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT, is_multisampled, std::move(debug_name));
 		Image::CreateImageView(VK_IMAGE_VIEW_TYPE_2D, VK_IMAGE_ASPECT_COLOR_BIT);
 		Image::CreateSampler();
 		if(pixels)
@@ -228,7 +234,7 @@ namespace mlx
 		if(m_staging_buffer.has_value())
 			return;
 		#ifdef DEBUG
-			DebugLog("Texture : enabling CPU mapping for '%'", m_debug_name);
+			DebugLog("Texture: enabling CPU mapping for '%'", m_debug_name);
 		#endif
 		m_staging_buffer.emplace();
 		std::size_t size = m_width * m_height * kvfFormatSize(m_format);
@@ -263,12 +269,12 @@ namespace mlx
 
 		if(!std::filesystem::exists(file))
 		{
-			Error("Image : file not found %", file);
+			Error("Image: file not found %", file);
 			return nullptr;
 		}
 		if(stbi_is_hdr(filename.c_str()))
 		{
-			Error("Texture : unsupported image format % (HDR image)", file);
+			Error("Texture: unsupported image format % (HDR image)", file);
 			return nullptr;
 		}
 		int dummy_w;

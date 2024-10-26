@@ -16,7 +16,7 @@ namespace mlx
 		if(m_output_stream.is_open())
 			WriteHeader();
 		else
-			Error("Profiler : cannot open runtime profile file");
+			Error("Profiler: cannot open runtime profile file");
 		m_runtime_session_began = true;
 	}
 

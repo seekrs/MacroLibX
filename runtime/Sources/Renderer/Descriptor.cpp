@@ -19,7 +19,7 @@ namespace mlx
 		if(image.GetType() == ImageType::Color)
 			image.TransitionLayout(VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, cmd);
 		else
-			Error("Vulkan : cannot transition descriptor image layout, unkown image type");
+			Error("Vulkan: cannot transition descriptor image layout, unkown image type");
 	}
 
 	void DescriptorPool::Init() noexcept
@@ -128,7 +128,7 @@ namespace mlx
 		});
 		if(it == m_used_sets.end())
 		{
-			Error("Vulkan : cannot return descriptor set to pool, invalid pool");
+			Error("Vulkan: cannot return descriptor set to pool, invalid pool");
 			return;
 		}
 		m_used_sets.erase(it);
@@ -182,12 +182,12 @@ namespace mlx
 		});
 		if(it == m_descriptors.end())
 		{
-			Warning("Vulkan : cannot update descriptor set image; invalid binding");
+			Warning("Vulkan: cannot update descriptor set image; invalid binding");
 			return;
 		}
 		if(it->type != VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER)
 		{
-			Error("Vulkan : trying to bind an image to the wrong descriptor");
+			Error("Vulkan: trying to bind an image to the wrong descriptor");
 			return;
 		}
 		it->image_ptr = &image;
@@ -203,12 +203,12 @@ namespace mlx
 		});
 		if(it == m_descriptors.end())
 		{
-			Warning("Vulkan : cannot update descriptor set buffer; invalid binding");
+			Warning("Vulkan: cannot update descriptor set buffer; invalid binding");
 			return;
 		}
 		if(it->type != VK_DESCRIPTOR_TYPE_STORAGE_BUFFER)
 		{
-			Error("Vulkan : trying to bind a buffer to the wrong descriptor");
+			Error("Vulkan: trying to bind a buffer to the wrong descriptor");
 			return;
 		}
 		it->storage_buffer_ptr = &buffer;
@@ -224,12 +224,12 @@ namespace mlx
 		});
 		if(it == m_descriptors.end())
 		{
-			Warning("Vulkan : cannot update descriptor set buffer; invalid binding");
+			Warning("Vulkan: cannot update descriptor set buffer; invalid binding");
 			return;
 		}
 		if(it->type != VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER)
 		{
-			Error("Vulkan : trying to bind a buffer to the wrong descriptor");
+			Error("Vulkan: trying to bind a buffer to the wrong descriptor");
 			return;
 		}
 		it->uniform_buffer_ptr = &buffer;

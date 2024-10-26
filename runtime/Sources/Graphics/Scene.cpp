@@ -1,3 +1,4 @@
+#include "Graphics/Enums.h"
 #include <PreCompiled.h>
 #include <Graphics/Scene.h>
 #include <Renderer/Renderer.h>
@@ -10,64 +11,117 @@ namespace mlx
 		MLX_PROFILE_FUNCTION();
 		Verify((bool)texture, "Scene: invalid texture (internal mlx issue, please report to devs)");
 
-		#pragma omp parallel for
-		for(auto& sprite : m_sprites)
+		for(auto& drawable : m_drawables)
 		{
-			if(texture->GetWidth() == sprite->GetTexture()->GetWidth() && texture->GetHeight() == sprite->GetTexture()->GetHeight())
+			if(!drawable || drawable->GetType() != DrawableType::Sprite)
+				continue;
+			if(texture->GetWidth() == static_cast<Sprite*>(drawable.get())->GetTexture()->GetWidth() && texture->GetHeight() == static_cast<Sprite*>(drawable.get())->GetTexture()->GetHeight())
 			{
-				std::shared_ptr<Sprite> new_sprite = std::make_shared<Sprite>(sprite->GetMesh(), texture);
-				m_sprites.push_back(new_sprite);
+				std::shared_ptr<Sprite> new_sprite = std::make_shared<Sprite>(drawable->GetMesh(), texture);
+				m_drawables.push_back(new_sprite);
 				return *new_sprite;
 			}
 		}
 
 		std::shared_ptr<Sprite> sprite = std::make_shared<Sprite>(texture);
-		m_sprites.push_back(sprite);
+		m_drawables.push_back(sprite);
 		return *sprite;
 	}
 
 	NonOwningPtr<Sprite> Scene::GetSpriteFromTextureAndPosition(NonOwningPtr<Texture> texture, const Vec2f& position) const
 	{
 		MLX_PROFILE_FUNCTION();
-		auto it = std::find_if(m_sprites.begin(), m_sprites.end(), [&texture, &position](std::shared_ptr<Sprite> sprite)
+		auto it = std::find_if(m_drawables.begin(), m_drawables.end(), [&texture, &position](std::shared_ptr<Drawable> drawable)
 		{
-			return sprite->GetTexture() == texture && sprite->GetPosition().x == position.x && sprite->GetPosition().y == position.y;
+			if(!drawable || drawable->GetType() != DrawableType::Sprite)
+				return false;
+			return static_cast<Sprite*>(drawable.get())->GetTexture() == texture && drawable->GetPosition() == position;
 		});
-		return (it != m_sprites.end() ? it->get() : nullptr);
-	}
-
-	void Scene::BringToFront(NonOwningPtr<Sprite> sprite)
-	{
-		MLX_PROFILE_FUNCTION();
-		auto it = std::find_if(m_sprites.begin(), m_sprites.end(), [&sprite](std::shared_ptr<Sprite> sprite_ptr)
-		{
-			return sprite_ptr.get() == sprite.Get();
-		});
-		if(it == m_sprites.end())
-			return;
-		std::rotate(it, it + 1, m_sprites.end());
+		return static_cast<Sprite*>(it != m_drawables.end() ? it->get() : nullptr);
 	}
 
 	void Scene::TryEraseSpriteFromTexture(NonOwningPtr<Texture> texture)
 	{
 		MLX_PROFILE_FUNCTION();
-		auto it = m_sprites.begin();
+		auto it = m_drawables.begin();
 		do
 		{
-			it = std::find_if(m_sprites.begin(), m_sprites.end(), [&texture](std::shared_ptr<Sprite> sprite)
+			it = std::find_if(m_drawables.begin(), m_drawables.end(), [&texture](std::shared_ptr<Drawable> drawable)
 			{
-				return sprite->GetTexture() == texture;
+				if(!drawable || drawable->GetType() != DrawableType::Sprite)
+					return false;
+				return static_cast<Sprite*>(drawable.get())->GetTexture() == texture;
 			});
-			if(it != m_sprites.end())
-				m_sprites.erase(it);
-		} while(it != m_sprites.end());
+			if(it != m_drawables.end())
+				m_drawables.erase(it);
+		} while(it != m_drawables.end());
 	}
-	
+
 	bool Scene::IsTextureAtGivenDrawLayer(NonOwningPtr<Texture> texture, std::uint64_t draw_layer) const
 	{
 		MLX_PROFILE_FUNCTION();
-		if(draw_layer >= m_sprites.size())
+		if(draw_layer >= m_drawables.size())
 			return false;
-		return m_sprites[draw_layer]->GetTexture() == texture;
+		if(!m_drawables[draw_layer] || m_drawables[draw_layer]->GetType() != DrawableType::Sprite)
+			return false;
+		return static_cast<Sprite*>(m_drawables[draw_layer].get())->GetTexture() == texture;
+	}
+
+	Text& Scene::CreateText(const std::string& text) noexcept
+	{
+		MLX_PROFILE_FUNCTION();
+
+		Assert((bool)p_bound_font, "no font bound");
+
+		for(auto& drawable : m_drawables)
+		{
+			if(!drawable || drawable->GetType() != DrawableType::Text)
+				continue;
+			if(text == static_cast<Text*>(drawable.get())->GetText() && p_bound_font == static_cast<Text*>(drawable.get())->GetFont())
+			{
+				std::shared_ptr<Text> new_text = std::make_shared<Text>(text, p_bound_font, drawable->GetMesh());
+				m_drawables.push_back(new_text);
+				return *new_text;
+			}
+		}
+
+		std::shared_ptr<Text> new_text = std::make_shared<Text>(text, p_bound_font);
+		m_drawables.push_back(new_text);
+		return *new_text;
+	}
+
+	NonOwningPtr<Text> Scene::GetTextFromPositionAndColor(const std::string& text, const Vec2f& position, const Vec4f& color) const
+	{
+		MLX_PROFILE_FUNCTION();
+		auto it = std::find_if(m_drawables.begin(), m_drawables.end(), [&text, &position, &color](std::shared_ptr<Drawable> drawable)
+		{
+			if(!drawable || drawable->GetType() != DrawableType::Text)
+				return false;
+			return static_cast<Text*>(drawable.get())->GetText() == text && drawable->GetPosition() == position && drawable->GetColor() == color;
+		});
+		return static_cast<Text*>(it != m_drawables.end() ? it->get() : nullptr);
+	}
+
+	bool Scene::IsTextAtGivenDrawLayer(const std::string& text, std::uint64_t draw_layer) const
+	{
+		MLX_PROFILE_FUNCTION();
+		if(draw_layer >= m_drawables.size())
+			return false;
+		if(!m_drawables[draw_layer] || m_drawables[draw_layer]->GetType() != DrawableType::Text)
+			return false;
+		Text* ptr = static_cast<Text*>(m_drawables[draw_layer].get());
+		return ptr->GetText() == text && ptr->GetFont() == p_bound_font;
+	}
+
+	void Scene::BringToFront(NonOwningPtr<Drawable> drawable)
+	{
+		MLX_PROFILE_FUNCTION();
+		auto it = std::find_if(m_drawables.begin(), m_drawables.end(), [&drawable](std::shared_ptr<Drawable> drawable_ptr)
+		{
+			return drawable_ptr.get() == drawable.Get();
+		});
+		if(it == m_drawables.end())
+			return;
+		std::rotate(it, it + 1, m_drawables.end());
 	}
 }

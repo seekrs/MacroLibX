@@ -10,8 +10,6 @@
 
 namespace mlx
 {
-	constexpr const int RANGE = 1024;
-
 	void Font::BuildFont()
 	{
 		MLX_PROFILE_FUNCTION();
@@ -21,7 +19,7 @@ namespace mlx
 			std::ifstream file(std::get<std::filesystem::path>(m_build_data), std::ios::binary);
 			if(!file.is_open())
 			{
-				Error("Font : cannot open font file, %", m_name);
+				Error("Font: cannot open font file, %", m_name);
 				return;
 			}
 			std::ifstream::pos_type file_size = std::filesystem::file_size(std::get<std::filesystem::path>(m_build_data));
@@ -56,6 +54,8 @@ namespace mlx
 		#else
 			m_atlas.Init(vulkan_bitmap, RANGE, RANGE, VK_FORMAT_R8G8B8A8_SRGB, false, {});
 		#endif
+
+		DebugLog("Font: loaded %", m_name);
 	}
 
 	void Font::Destroy()

@@ -43,7 +43,7 @@ namespace mlx
 		auto it = std::find(s_blocks.begin(), s_blocks.end(), ptr);
 		if(it == s_blocks.end())
 		{
-			Error("Memory Manager : trying to free a pointer not allocated by the memory manager");
+			Error("Memory Manager: trying to free a pointer not allocated by the memory manager");
 			return;
 		}
 		std::free(*it);

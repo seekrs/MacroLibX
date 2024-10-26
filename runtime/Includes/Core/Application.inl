@@ -153,8 +153,14 @@ namespace mlx
 			font = std::make_shared<Font>("default", dogica_ttf, scale);
 		else
 			font = std::make_shared<Font>(filepath, scale);
-		if(!m_font_registry.IsFontKnown(font))
+		for(auto& gs : m_graphics)
+		{
+			if(gs)
+				gs->GetScene().BindFont(font);
+		}
+		if(m_font_registry.IsFontKnown(font))
 			return;
+		font->BuildFont();
 		m_font_registry.RegisterFont(font);
 	}
 

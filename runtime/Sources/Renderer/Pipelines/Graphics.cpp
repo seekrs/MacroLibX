@@ -11,7 +11,7 @@ namespace mlx
 	{
 		MLX_PROFILE_FUNCTION();
 		if(!descriptor.vertex_shader || !descriptor.fragment_shader)
-			FatalError("Vulkan : invalid shaders");
+			FatalError("Vulkan: invalid shaders");
 
 		m_attachments = descriptor.color_attachments;
 		p_vertex_shader = descriptor.vertex_shader;
@@ -51,7 +51,7 @@ namespace mlx
 		}
 
 		m_pipeline = kvfCreateGraphicsPipeline(RenderCore::Get().GetDevice(), m_pipeline_layout, builder, m_renderpass);
-		DebugLog("Vulkan : graphics pipeline created");
+		DebugLog("Vulkan: graphics pipeline created");
 		kvfDestroyGPipelineBuilder(builder);
 
 		#ifdef MLX_HAS_DEBUG_UTILS_FUNCTIONS
@@ -132,18 +132,18 @@ namespace mlx
 		for(auto& fb : m_framebuffers)
 		{
 			kvfDestroyFramebuffer(RenderCore::Get().GetDevice(), fb);
-			DebugLog("Vulkan : framebuffer destroyed");
+			DebugLog("Vulkan: framebuffer destroyed");
 		}
 		m_framebuffers.clear();
 		kvfDestroyPipelineLayout(RenderCore::Get().GetDevice(), m_pipeline_layout);
 		m_pipeline_layout = VK_NULL_HANDLE;
-		DebugLog("Vulkan : graphics pipeline layout destroyed");
+		DebugLog("Vulkan: graphics pipeline layout destroyed");
 		kvfDestroyRenderPass(RenderCore::Get().GetDevice(), m_renderpass);
 		m_renderpass = VK_NULL_HANDLE;
-		DebugLog("Vulkan : renderpass destroyed");
+		DebugLog("Vulkan: renderpass destroyed");
 		kvfDestroyPipeline(RenderCore::Get().GetDevice(), m_pipeline);
 		m_pipeline = VK_NULL_HANDLE;
-		DebugLog("Vulkan : graphics pipeline destroyed");
+		DebugLog("Vulkan: graphics pipeline destroyed");
 	}
 
 	void GraphicPipeline::CreateFramebuffers(const std::vector<NonOwningPtr<Texture>>& render_targets, bool clear_attachments)
@@ -167,7 +167,7 @@ namespace mlx
 		m_renderpass = kvfCreateRenderPass(RenderCore::Get().GetDevice(), attachments.data(), attachments.size(), GetPipelineBindPoint());
 		m_clears.clear();
 		m_clears.resize(attachments.size());
-		DebugLog("Vulkan : renderpass created");
+		DebugLog("Vulkan: renderpass created");
 
 		if(p_renderer)
 		{
@@ -175,14 +175,14 @@ namespace mlx
 			{
 				attachment_views[0] = image.GetImageView();
 				m_framebuffers.push_back(kvfCreateFramebuffer(RenderCore::Get().GetDevice(), m_renderpass, attachment_views.data(), attachment_views.size(), { .width = image.GetWidth(), .height = image.GetHeight() }));
-				DebugLog("Vulkan : framebuffer created");
+				DebugLog("Vulkan: framebuffer created");
 			}
 		}
 		#pragma omp parallel for
 		for(NonOwningPtr<Texture> image : render_targets)
 		{
 			m_framebuffers.push_back(kvfCreateFramebuffer(RenderCore::Get().GetDevice(), m_renderpass, attachment_views.data(), attachment_views.size(), { .width = image->GetWidth(), .height = image->GetHeight() }));
-			DebugLog("Vulkan : framebuffer created");
+			DebugLog("Vulkan: framebuffer created");
 		}
 	}
 

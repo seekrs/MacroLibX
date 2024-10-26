@@ -30,8 +30,8 @@ namespace mlx
 		{
 			PFN_vkVoidFunction function = RenderCore::Get().vkGetInstanceProcAddr(static_cast<VkInstance>(context), name);
 			if(!function)
-				FatalError("Vulkan loader : could not load '%'", name);
-			//DebugLog("Vulkan loader : loaded %", name);
+				FatalError("Vulkan Loader: could not load '%'", name);
+			//DebugLog("Vulkan Loader: loaded %", name);
 			return function;
 		}
 
@@ -39,8 +39,8 @@ namespace mlx
 		{
 			PFN_vkVoidFunction function = RenderCore::Get().vkGetDeviceProcAddr(static_cast<VkDevice>(context), name);
 			if(!function)
-				FatalError("Vulkan loader : could not load '%'", name);
-			//DebugLog("Vulkan loader : loaded %", name);
+				FatalError("Vulkan Loader: could not load '%'", name);
+			//DebugLog("Vulkan Loader: loaded %", name);
 			return function;
 		}
 
@@ -95,13 +95,13 @@ namespace mlx
 				RESTORE_GCC_PEDANTIC_WARNINGS
 				if(RenderCore::Get().vkGetInstanceProcAddr)
 				{
-					DebugLog("Vulkan loader : libvulkan loaded using '%'", libname);
+					DebugLog("Vulkan Loader: libvulkan loaded using '%'", libname);
 					break;
 				}
 			}
 		}
 		if(!p_module || !RenderCore::Get().vkGetInstanceProcAddr)
-			FatalError("Vulkan loader : failed to load libvulkan");
+			FatalError("Vulkan Loader: failed to load libvulkan");
 		LoadGlobalFunctions(nullptr, Internal::vkGetInstanceProcAddrStub);
 	}
 
@@ -120,7 +120,7 @@ namespace mlx
 		#define MLX_VULKAN_GLOBAL_FUNCTION(fn) RenderCore::Get().fn = reinterpret_cast<PFN_##fn>(load(context, #fn));
 			#include <Renderer/Vulkan/VulkanDefs.h>
 		#undef MLX_VULKAN_GLOBAL_FUNCTION
-		DebugLog("Vulkan loader : global functions loaded");
+		DebugLog("Vulkan Loader: global functions loaded");
 	}
 
 	void VulkanLoader::LoadInstanceFunctions(void* context, PFN_vkVoidFunction (*load)(void*, const char*)) noexcept
@@ -128,7 +128,7 @@ namespace mlx
 		#define MLX_VULKAN_INSTANCE_FUNCTION(fn) RenderCore::Get().fn = reinterpret_cast<PFN_##fn>(load(context, #fn));
 			#include <Renderer/Vulkan/VulkanDefs.h>
 		#undef MLX_VULKAN_INSTANCE_FUNCTION
-		DebugLog("Vulkan loader : instance functions loaded");
+		DebugLog("Vulkan Loader: instance functions loaded");
 	}
 
 	void VulkanLoader::LoadDeviceFunctions(void* context, PFN_vkVoidFunction (*load)(void*, const char*)) noexcept
@@ -136,7 +136,7 @@ namespace mlx
 		#define MLX_VULKAN_DEVICE_FUNCTION(fn) RenderCore::Get().fn = reinterpret_cast<PFN_##fn>(load(context, #fn));
 			#include <Renderer/Vulkan/VulkanDefs.h>
 		#undef MLX_VULKAN_DEVICE_FUNCTION
-		DebugLog("Vulkan loader : device functions loaded");
+		DebugLog("Vulkan Loader: device functions loaded");
 	}
 
 	VulkanLoader::~VulkanLoader()
@@ -147,6 +147,6 @@ namespace mlx
 			dlclose(p_module);
 		#endif
 		p_module = nullptr;
-		DebugLog("Vulkan loader : libvulkan unloaded");
+		DebugLog("Vulkan Loader: libvulkan unloaded");
 	}
 }

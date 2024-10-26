@@ -54,7 +54,7 @@ namespace mlx
 		allocator_create_info.pVulkanFunctions = &vma_vulkan_func;
 
 		kvfCheckVk(vmaCreateAllocator(&allocator_create_info, &m_allocator));
-		DebugLog("Graphics allocator : created new allocator");
+		DebugLog("Graphics Allocator: created new allocator");
 	}
 
 	VmaAllocation GPUAllocator::CreateBuffer(const VkBufferCreateInfo* binfo, const VmaAllocationCreateInfo* vinfo, VkBuffer& buffer, const char* name) noexcept
@@ -74,7 +74,7 @@ namespace mlx
 			#endif
 			vmaSetAllocationName(m_allocator, allocation, name);
 		}
-		DebugLog("Graphics Allocator : created new buffer '%'", name);
+		DebugLog("Graphics Allocator: created new buffer '%'", name);
 		m_active_buffers_allocations++;
 		return allocation;
 	}
@@ -85,9 +85,9 @@ namespace mlx
 		RenderCore::Get().WaitDeviceIdle();
 		vmaDestroyBuffer(m_allocator, buffer, allocation);
 		if(name != nullptr)
-			DebugLog("Graphics Allocator : destroyed buffer '%'", name);
+			DebugLog("Graphics Allocator: destroyed buffer '%'", name);
 		else
-			DebugLog("Graphics Allocator : destroyed buffer");
+			DebugLog("Graphics Allocator: destroyed buffer");
 		m_active_buffers_allocations--;
 	}
 
@@ -108,7 +108,7 @@ namespace mlx
 			#endif
 			vmaSetAllocationName(m_allocator, allocation, name);
 		}
-		DebugLog("Graphics Allocator : created new image '%'", name);
+		DebugLog("Graphics Allocator: created new image '%'", name);
 		m_active_images_allocations++;
 		return allocation;
 	}
@@ -119,9 +119,9 @@ namespace mlx
 		RenderCore::Get().WaitDeviceIdle();
 		vmaDestroyImage(m_allocator, image, allocation);
 		if(name != nullptr)
-			DebugLog("Graphics Allocator : destroyed image '%'", name);
+			DebugLog("Graphics Allocator: destroyed image '%'", name);
 		else
-			DebugLog("Graphics Allocator : destroyed image");
+			DebugLog("Graphics Allocator: destroyed image");
 		m_active_images_allocations--;
 	}
 
@@ -145,7 +145,7 @@ namespace mlx
 		std::ofstream file(name);
 		if(!file.is_open())
 		{
-			Error("Graphics allocator : unable to dump memory to a json file");
+			Error("Graphics Allocator: unable to dump memory to a json file");
 			return;
 		}
 		char* str = nullptr;
@@ -166,14 +166,14 @@ namespace mlx
 	{
 		MLX_PROFILE_FUNCTION();
 		if(m_active_images_allocations != 0)
-			Error("Graphics allocator : some user-dependant allocations were not freed before destroying the display (% active allocations). You may have not destroyed all the MLX resources you've created", m_active_images_allocations);
+			Error("Graphics Allocator: some user-dependant allocations were not freed before destroying the display (% active allocations). You may have not destroyed all the MLX resources you've created", m_active_images_allocations);
 		else if(m_active_buffers_allocations != 0)
-			Error("Graphics allocator : some MLX-dependant allocations were not freed before destroying the display (% active allocations). This is an error in the MLX, please report this should not happen", m_active_buffers_allocations);
+			Error("Graphics Allocator: some MLX-dependant allocations were not freed before destroying the display (% active allocations). This is an error in the MLX, please report this should not happen", m_active_buffers_allocations);
 		if(m_active_images_allocations < 0 || m_active_buffers_allocations < 0)
-			Warning("Graphics allocator : the impossible happened, the MLX has freed more allocations than it has made (wtf)");
+			Warning("Graphics Allocator: the impossible happened, the MLX has freed more allocations than it has made (wtf)");
 		vmaDestroyAllocator(m_allocator);
 		m_active_buffers_allocations = 0;
 		m_active_images_allocations = 0;
-		DebugLog("Vulkan : destroyed a graphics allocator");
+		DebugLog("Vulkan: destroyed a graphics allocator");
 	}
 }
