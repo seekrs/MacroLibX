@@ -6,13 +6,17 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:36:44 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/16 07:59:21 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/10/27 00:31:39 by kiroussa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <platform/window.h>
 #include <core/errors.h>
 #include <utils/icon_mlx.h>
+
+#ifndef __MLX_WINDOW_CREATE_FLAGS__
+# define __MLX_WINDOW_CREATE_FLAGS__	SDL_WINDOW_VULKAN | SDL_WINDOW_SHOWN
+#endif // !__MLX_WINDOW_CREATE_FLAGS__
 
 namespace mlx
 {
@@ -32,7 +36,7 @@ namespace mlx
 	{
 		if(title.find("vvaas") != std::string::npos)
 			core::error::report(e_kind::message, "vvaas est mauvais");
-		_win = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, SDL_WINDOW_VULKAN | SDL_WINDOW_SHOWN);
+		_win = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, __MLX_WINDOW_CREATE_FLAGS__);
 		if(!_win)
 			core::error::report(e_kind::fatal_error, std::string("unable to open a new window, ") + SDL_GetError());
 		_id = SDL_GetWindowID(_win);
