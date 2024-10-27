@@ -38,7 +38,7 @@ namespace mlx
 
 			inline void RegisterFont(std::shared_ptr<Font> font);
 			inline void UnregisterFont(std::shared_ptr<Font> font);
-			inline bool IsFontKnown(std::shared_ptr<Font> font);
+			inline std::shared_ptr<Font> GetFont(const std::filesystem::path& name, float scale);
 
 			~FontRegistry() = default;
 

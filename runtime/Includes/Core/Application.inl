@@ -148,20 +148,22 @@ namespace mlx
 	void Application::LoadFont(const std::filesystem::path& filepath, float scale)
 	{
 		MLX_PROFILE_FUNCTION();
-		std::shared_ptr<Font> font;
-		if(filepath.string() == "default")
-			font = std::make_shared<Font>("default", dogica_ttf, scale);
-		else
-			font = std::make_shared<Font>(filepath, scale);
+		std::shared_ptr<Font> font = m_font_registry.GetFont(filepath, scale);
+		if(!font)
+		{
+			if(filepath.string() == "default")
+				font = std::make_shared<Font>("default", dogica_ttf, scale);
+			else
+				font = std::make_shared<Font>(filepath, scale);
+			font->BuildFont();
+			m_font_registry.RegisterFont(font);
+		}
+
 		for(auto& gs : m_graphics)
 		{
 			if(gs)
 				gs->GetScene().BindFont(font);
 		}
-		if(m_font_registry.IsFontKnown(font))
-			return;
-		font->BuildFont();
-		m_font_registry.RegisterFont(font);
 	}
 
 	void Application::TexturePut(Handle win, Handle img, int x, int y)

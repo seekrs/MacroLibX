@@ -118,7 +118,16 @@ namespace mlx
 			return;
 		RenderCore::Get().GetAllocator().UnmapMemory(m_allocation);
 		#ifdef DEBUG
-			RenderCore::Get().GetAllocator().DestroyBuffer(m_allocation, m_buffer, m_debug_name.c_str());
+			std::string alloc_name{ m_debug_name };
+			if(m_usage & VK_BUFFER_USAGE_INDEX_BUFFER_BIT)
+				alloc_name.append("_index_buffer");
+			else if(m_usage & VK_BUFFER_USAGE_VERTEX_BUFFER_BIT)
+				alloc_name.append("_vertex_buffer");
+			else if(m_usage & VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT)
+				alloc_name.append("_uniform_buffer");
+			else
+				alloc_name.append("_buffer");
+			RenderCore::Get().GetAllocator().DestroyBuffer(m_allocation, m_buffer, alloc_name.c_str());
 		#else
 			RenderCore::Get().GetAllocator().DestroyBuffer(m_allocation, m_buffer, nullptr);
 		#endif

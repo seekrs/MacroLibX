@@ -50,7 +50,7 @@ namespace mlx
 		}
 
 		#ifdef DEBUG
-			m_atlas.Init(vulkan_bitmap, RANGE, RANGE, VK_FORMAT_R8G8B8A8_SRGB, false, m_name + "_font_altas");
+			m_atlas.Init(vulkan_bitmap, RANGE, RANGE, VK_FORMAT_R8G8B8A8_SRGB, false, m_name + "_font_atlas");
 		#else
 			m_atlas.Init(vulkan_bitmap, RANGE, RANGE, VK_FORMAT_R8G8B8A8_SRGB, false, {});
 		#endif
@@ -61,5 +61,6 @@ namespace mlx
 	void Font::Destroy()
 	{
 		m_atlas.Destroy();
+		DebugLog("Font: unloaded %", m_name);
 	}
 }
