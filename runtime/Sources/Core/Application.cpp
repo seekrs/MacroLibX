@@ -103,6 +103,7 @@ namespace mlx
 				window.reset();
 		}
 
+		m_font_registry.Reset();
 		p_render_core.reset();
 		p_sdl_manager.reset();
 		#ifdef PROFILER
