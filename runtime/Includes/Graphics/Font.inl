@@ -21,4 +21,9 @@ namespace mlx
 		});
 		return (it != m_fonts_registry.end() ? *it : nullptr);
 	}
+
+	void FontRegistry::Reset()
+	{
+		m_fonts_registry.clear();
+	}
 }

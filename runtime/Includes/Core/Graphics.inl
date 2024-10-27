@@ -43,10 +43,10 @@ namespace mlx
 			Text& new_text = p_scene->CreateText(str);
 			new_text.SetPosition(Vec2f{ static_cast<float>(x), static_cast<float>(y) });
 			new_text.SetColor(std::move(vec_color));
-			if(m_pixelput_called)
+		//	if(m_pixelput_called)
 			{
 				m_draw_layer++;
-				m_pixelput_called = false;
+		//		m_pixelput_called = false;
 			}
 		}
 		else if(!p_scene->IsTextAtGivenDrawLayer(str, m_draw_layer))
