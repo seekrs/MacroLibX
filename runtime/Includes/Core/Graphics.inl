@@ -40,19 +40,18 @@ namespace mlx
 		NonOwningPtr<Text> text = p_scene->GetTextFromPositionAndColor(str, Vec2f{ static_cast<float>(x), static_cast<float>(y) }, vec_color);
 		if(!text)
 		{
+			if(m_pixelput_called)
+			{
+				m_draw_layer++;
+				m_pixelput_called = false;
+			}
 			Text& new_text = p_scene->CreateText(str);
 			new_text.SetPosition(Vec2f{ static_cast<float>(x), static_cast<float>(y) });
 			new_text.SetColor(std::move(vec_color));
-		//	if(m_pixelput_called)
-			{
-			//	m_draw_layer++;
-		//		m_pixelput_called = false;
-			}
 		}
 		else if(!p_scene->IsTextAtGivenDrawLayer(str, m_draw_layer))
 		{
 			p_scene->BringToDrawLayer(text.Get(), m_draw_layer);
-			//m_draw_layer++;
 		}
 	}
 
@@ -62,19 +61,18 @@ namespace mlx
 		NonOwningPtr<Sprite> sprite = p_scene->GetSpriteFromTextureAndPosition(texture, Vec2f{ static_cast<float>(x), static_cast<float>(y) });
 		if(!sprite)
 		{
-			
-			Sprite& new_sprite = p_scene->CreateSprite(texture);
-			new_sprite.SetPosition(Vec2f{ static_cast<float>(x), static_cast<float>(y) });
 			if(m_pixelput_called)
 			{
 				m_draw_layer++;
 				m_pixelput_called = false;
-			}
+			}	
+			Sprite& new_sprite = p_scene->CreateSprite(texture);
+			new_sprite.SetPosition(Vec2f{ static_cast<float>(x), static_cast<float>(y) });
+
 		}
 		else if(!p_scene->IsTextureAtGivenDrawLayer(texture, m_draw_layer))
-		{
-			p_scene->BringToDrawLayer(sprite.Get(), m_draw_layer);
-			//m_draw_layer++;
+		{	
+			p_scene->BringToDrawLayer(sprite.Get(), m_draw_layer);	
 		}
 	}
 
