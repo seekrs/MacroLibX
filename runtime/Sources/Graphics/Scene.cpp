@@ -124,4 +124,15 @@ namespace mlx
 			return;
 		std::rotate(it, it + 1, m_drawables.end());
 	}
+	void Scene::BringToDrawLayer(NonOwningPtr<Drawable> drawable, std::uint64_t draw_layer)
+    {
+        MLX_PROFILE_FUNCTION();
+        auto it = std::find_if(m_drawables.begin(), m_drawables.end(), [&drawable](std::shared_ptr<Drawable> drawable_ptr)
+        {
+            return drawable_ptr.get() == drawable.Get();
+        });
+        if (m_drawables.size() > draw_layer)
+            return;
+        std::swap(*it, *(m_drawables.begin() + draw_layer));
+    }
 }
