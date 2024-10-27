@@ -27,6 +27,9 @@ namespace mlx
 	void GraphicsSupport::StringPut(int x, int y, std::uint32_t color, std::string str)
 	{
 		MLX_PROFILE_FUNCTION();
+		if(str.empty())
+			return;
+
 		Vec4f vec_color = {
 			static_cast<float>((color & 0x000000FF)) / 255.f,
 			static_cast<float>((color & 0x0000FF00) >> 8) / 255.f,

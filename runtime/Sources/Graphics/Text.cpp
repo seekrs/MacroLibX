@@ -29,10 +29,10 @@ namespace mlx
 
 			std::size_t index = vertex_data.size();
 
-			vertex_data.emplace_back(Vec4f{ q.x0, q.y0, 0.0f, 0.0f }, Vec2f{ q.s0, q.t0 });
-			vertex_data.emplace_back(Vec4f{ q.x1, q.y0, 0.0f, 0.0f }, Vec2f{ q.s1, q.t0 });
-			vertex_data.emplace_back(Vec4f{ q.x1, q.y1, 0.0f, 0.0f }, Vec2f{ q.s1, q.t1 });
-			vertex_data.emplace_back(Vec4f{ q.x0, q.y1, 0.0f, 0.0f }, Vec2f{ q.s0, q.t1 });
+			vertex_data.emplace_back(Vec4f{ q.x0, q.y0, 0.0f, 1.0f }, Vec2f{ q.s0, q.t0 });
+			vertex_data.emplace_back(Vec4f{ q.x1, q.y0, 0.0f, 1.0f }, Vec2f{ q.s1, q.t0 });
+			vertex_data.emplace_back(Vec4f{ q.x1, q.y1, 0.0f, 1.0f }, Vec2f{ q.s1, q.t1 });
+			vertex_data.emplace_back(Vec4f{ q.x0, q.y1, 0.0f, 1.0f }, Vec2f{ q.s0, q.t1 });
 
 			index_data.emplace_back(index + 0);
 			index_data.emplace_back(index + 1);

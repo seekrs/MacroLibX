@@ -13,11 +13,12 @@ namespace mlx
 		m_fonts_registry.erase(font);
 	}
 
-	bool FontRegistry::IsFontKnown(std::shared_ptr<Font> font)
+	std::shared_ptr<Font> FontRegistry::GetFont(const std::filesystem::path& name, float scale)
 	{
-		return std::find_if(m_fonts_registry.begin(), m_fonts_registry.end(), [&font](std::shared_ptr<Font> rhs)
+		auto it = std::find_if(m_fonts_registry.begin(), m_fonts_registry.end(), [&name, scale](std::shared_ptr<Font> rhs)
 		{
-			return font->GetName() == rhs->GetName() && font->GetScale() == rhs->GetScale();
-		}) != m_fonts_registry.end();
+			return name == rhs->GetName() && scale == rhs->GetScale();
+		});
+		return (it != m_fonts_registry.end() ? *it : nullptr);
 	}
 }
