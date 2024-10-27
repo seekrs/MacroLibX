@@ -45,14 +45,14 @@ namespace mlx
 			new_text.SetColor(std::move(vec_color));
 		//	if(m_pixelput_called)
 			{
-				m_draw_layer++;
+			//	m_draw_layer++;
 		//		m_pixelput_called = false;
 			}
 		}
 		else if(!p_scene->IsTextAtGivenDrawLayer(str, m_draw_layer))
 		{
-			p_scene->BringToFront(text.Get());
-			m_draw_layer++;
+			p_scene->BringToDrawLayer(text.Get(), m_draw_layer);
+			//m_draw_layer++;
 		}
 	}
 
@@ -73,8 +73,8 @@ namespace mlx
 		}
 		else if(!p_scene->IsTextureAtGivenDrawLayer(texture, m_draw_layer))
 		{
-			p_scene->BringToFront(sprite.Get());
-			m_draw_layer++;
+			p_scene->BringToDrawLayer(sprite.Get(), m_draw_layer);
+			//m_draw_layer++;
 		}
 	}
 
