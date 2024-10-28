@@ -27,6 +27,7 @@ namespace mlx
 			inline void BindFont(std::shared_ptr<Font> font) { Verify((bool)font, "invalid fond pointer"); p_bound_font = font; }
 
 			void BringToFront(NonOwningPtr<Drawable> drawable);
+			void BringToDrawLayer(NonOwningPtr<Drawable> drawable, std::uint64_t draw_layer);
 
 			inline void ResetScene() { m_drawables.clear(); }
 
