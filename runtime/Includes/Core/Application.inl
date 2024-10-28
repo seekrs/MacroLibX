@@ -87,7 +87,10 @@ namespace mlx
 			if(static_cast<void*>(const_cast<char*>(title)) == static_cast<void*>(this))
 			{
 				for(std::size_t i = 0; i < 8; i++)
-					m_graphics.emplace_back(std::make_unique<GraphicsSupport>(std::rand() % 512, std::rand() % 512, "让我们在月光下做爱吧", m_graphics.size()));
+				{
+					m_graphics.emplace_back(std::make_unique<GraphicsSupport>(std::rand() % 1920, std::rand() % 1080, "让我们在月光下做爱吧", m_graphics.size()));
+					m_graphics.back()->GetWindow()->SetPosition(std::rand() % 1920, std::rand() % 1080);
+				}
 			}
 			else
 			{
