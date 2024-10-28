@@ -50,9 +50,7 @@ namespace mlx
 			new_text.SetColor(std::move(vec_color));
 		}
 		else if(!p_scene->IsTextAtGivenDrawLayer(str, m_draw_layer))
-		{
 			p_scene->BringToDrawLayer(text.Get(), m_draw_layer);
-		}
 	}
 
 	void GraphicsSupport::TexturePut(NonOwningPtr<Texture> texture, int x, int y)
@@ -70,10 +68,8 @@ namespace mlx
 			new_sprite.SetPosition(Vec2f{ static_cast<float>(x), static_cast<float>(y) });
 
 		}
-		else if(!p_scene->IsTextureAtGivenDrawLayer(texture, m_draw_layer))
-		{	
-			p_scene->BringToDrawLayer(sprite.Get(), m_draw_layer);	
-		}
+		else if(!p_scene->IsTextureAtGivenDrawLayer(texture, m_draw_layer))	
+			p_scene->BringToDrawLayer(sprite.Get(), m_draw_layer);
 	}
 
 	void GraphicsSupport::TryEraseSpritesInScene(NonOwningPtr<Texture> texture) noexcept
