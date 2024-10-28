@@ -11,7 +11,7 @@ namespace mlx
 	struct SpriteData
 	{
 		Vec4f color;
-		Vec4f position;
+		Vec2f position;
 	};
 
 	void Render2DPass::Init()
@@ -106,7 +106,7 @@ namespace mlx
 		for(auto drawable : drawables)
 		{
 			SpriteData drawable_data;
-			drawable_data.position = Vec4f{ drawable->GetPosition(), 0.0f, 1.0f };
+			drawable_data.position = drawable->GetPosition();
 			drawable_data.color = drawable->GetColor();
 
 			drawable->Bind(frame_index, cmd);

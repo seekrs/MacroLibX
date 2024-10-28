@@ -19,13 +19,14 @@ namespace mlx
 		float stb_x = 0.0f;
 		float stb_y = 0.0f;
 
+		auto char_data = font->GetCharData();
 		for(char c : text)
 		{
 			if(c < 32)
 				continue;
 
 			stbtt_aligned_quad q;
-			stbtt_GetPackedQuad(font->GetCharData().data(), RANGE, RANGE, c - 32, &stb_x, &stb_y, &q, 1);
+			stbtt_GetPackedQuad(char_data.data(), RANGE, RANGE, c - 32, &stb_x, &stb_y, &q, 1);
 
 			std::size_t index = vertex_data.size();
 

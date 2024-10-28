@@ -31,10 +31,10 @@ namespace mlx
 			return;
 
 		Vec4f vec_color = {
-			static_cast<float>((color & 0x000000FF)) / 255.f,
-			static_cast<float>((color & 0x0000FF00) >> 8) / 255.f,
-			static_cast<float>((color & 0x00FF0000) >> 16) / 255.f,
-			static_cast<float>((color & 0xFF000000) >> 24) / 255.f
+			static_cast<float>((color & 0x000000FF))       / 255.0f,
+			static_cast<float>((color & 0x0000FF00) >> 8)  / 255.0f,
+			static_cast<float>((color & 0x00FF0000) >> 16) / 255.0f,
+			static_cast<float>((color & 0xFF000000) >> 24) / 255.0f
 		};
 
 		NonOwningPtr<Text> text = p_scene->GetTextFromPositionAndColor(str, Vec2f{ static_cast<float>(x), static_cast<float>(y) }, vec_color);
@@ -43,10 +43,10 @@ namespace mlx
 			Text& new_text = p_scene->CreateText(str);
 			new_text.SetPosition(Vec2f{ static_cast<float>(x), static_cast<float>(y) });
 			new_text.SetColor(std::move(vec_color));
-		//	if(m_pixelput_called)
+			if(m_pixelput_called)
 			{
 				m_draw_layer++;
-		//		m_pixelput_called = false;
+				m_pixelput_called = false;
 			}
 		}
 		else if(!p_scene->IsTextAtGivenDrawLayer(str, m_draw_layer))

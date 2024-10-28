@@ -17,7 +17,7 @@ namespace mlx
 	{
 		auto it = std::find_if(m_fonts_registry.begin(), m_fonts_registry.end(), [&name, scale](std::shared_ptr<Font> rhs)
 		{
-			return name == rhs->GetName() && scale == rhs->GetScale();
+			return (name == rhs->GetName() && scale == rhs->GetScale());
 		});
 		return (it != m_fonts_registry.end() ? *it : nullptr);
 	}

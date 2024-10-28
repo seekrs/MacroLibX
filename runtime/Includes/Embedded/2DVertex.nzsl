@@ -22,7 +22,7 @@ struct ViewerData
 struct SpriteData
 {
 	color: vec4[f32],
-	position: vec4[f32]
+	position: vec2[f32]
 }
 
 external
@@ -34,7 +34,7 @@ external
 [entry(vert)]
 fn main(input: VertIn) -> VertOut
 {
-	let position: vec4[f32] = vec4[f32](input.pos.xyz + model.position.xyz, 1.0);
+	let position: vec4[f32] = vec4[f32](input.pos.xy + model.position, 1.0, 1.0);
 	input.uv *= -1.0;
 	let output: VertOut;
 	output.uv = input.uv;
