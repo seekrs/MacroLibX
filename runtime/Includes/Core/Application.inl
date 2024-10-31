@@ -137,7 +137,7 @@ namespace mlx
 		CHECK_WINDOW_PTR(win);
 		if(str == nullptr)
 		{
-			Error("wrong text (NULL)");
+			Error("invalid text (NULL)");
 			return;
 		}
 		if(std::strlen(str) == 0)

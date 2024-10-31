@@ -22,6 +22,9 @@ namespace mlx
 			void GetScreenSizeWindowIsOn(Handle window, int* x, int* y) const noexcept;
 			void SetWindowPosition(Handle window, int x, int y) const noexcept;
 
+			static void HideCursor() noexcept;
+			static void ShowCursor() noexcept;
+
 			std::int32_t GetX() const noexcept;
 			std::int32_t GetY() const noexcept;
 			std::int32_t GetXRel() const noexcept;

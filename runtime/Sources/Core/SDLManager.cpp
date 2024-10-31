@@ -125,6 +125,16 @@ namespace mlx
 		SDL_SetWindowPosition(static_cast<Internal::WindowInfos*>(window)->window, x, y);
 	}
 
+	void SDLManager::HideCursor() noexcept
+	{
+		SDL_ShowCursor(SDL_DISABLE);
+	}
+
+	void SDLManager::ShowCursor() noexcept
+	{
+		SDL_ShowCursor(SDL_ENABLE);
+	}
+
 	std::int32_t SDLManager::GetX() const noexcept
 	{
 		int dummy;
