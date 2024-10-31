@@ -1,6 +1,7 @@
 #include <PreCompiled.h>
 
 #include <Core/Application.h>
+#include <Core/SDLManager.h>
 #include <Renderer/RenderCore.h>
 #include <mlx.h>
 #include <Core/Memory.h>
@@ -54,52 +55,46 @@ extern "C"
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		static_cast<mlx::Application*>(mlx)->LoopHook(f, param);
-		return 0;
 	}
 
-	int mlx_loop(void* mlx)
+	void mlx_loop(void* mlx)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		static_cast<mlx::Application*>(mlx)->Run();
-		return 0;
 	}
 
-	int mlx_loop_end(void* mlx)
+	void mlx_loop_end(void* mlx)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		static_cast<mlx::Application*>(mlx)->LoopEnd();
-		return 0;
 	}
 
-	int mlx_mouse_show()
+	void mlx_mouse_show()
 	{
-		return 0;
+		mlx::SDLManager::ShowCursor();
 	}
 
-	int mlx_mouse_hide()
+	void mlx_mouse_hide()
 	{
-		return 0;
+		mlx::SDLManager::HideCursor();
 	}
 
-	int mlx_mouse_move(void* mlx, void* win, int x, int y)
+	void mlx_mouse_move(void* mlx, void* win, int x, int y)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		static_cast<mlx::Application*>(mlx)->MouseMove(win, x, y);
-		return 0;
 	}
 
-	int mlx_mouse_get_pos(void* mlx, int* x, int* y)
+	void mlx_mouse_get_pos(void* mlx, int* x, int* y)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		static_cast<mlx::Application*>(mlx)->GetMousePos(x, y);
-		return 0;
 	}
 
-	int mlx_on_event(void* mlx, void* win, mlx_event_type event, int (*funct_ptr)(int, void*), void* param)
+	void mlx_on_event(void* mlx, void* win, mlx_event_type event, int (*funct_ptr)(int, void*), void* param)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		static_cast<mlx::Application*>(mlx)->OnEvent(win, static_cast<int>(event), funct_ptr, param);
-		return 0;
 	}
 
 	void* mlx_new_image(void* mlx, int width, int height)
@@ -136,18 +131,16 @@ extern "C"
 		static_cast<mlx::Application*>(mlx)->SetTexturePixel(img, x, y, *reinterpret_cast<unsigned int*>(color_bits));
 	}
 
-	int mlx_put_image_to_window(void* mlx, void* win, void* img, int x, int y)
+	void mlx_put_image_to_window(void* mlx, void* win, void* img, int x, int y)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		static_cast<mlx::Application*>(mlx)->TexturePut(win, img, x, y);
-		return 0;
 	}
 
-	int mlx_destroy_image(void* mlx, void* img)
+	void mlx_destroy_image(void* mlx, void* img)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		static_cast<mlx::Application*>(mlx)->DestroyTexture(img);
-		return 0;
 	}
 
 	void* mlx_png_file_to_image(void* mlx, char* filename, int* width, int* height)
@@ -201,7 +194,7 @@ extern "C"
 		return static_cast<mlx::Application*>(mlx)->NewStbTexture(filename, width, height);
 	}
 
-	int mlx_pixel_put(void* mlx, void* win, int x, int y, int color)
+	void mlx_pixel_put(void* mlx, void* win, int x, int y, int color)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		unsigned char color_bits[4];
@@ -210,10 +203,9 @@ extern "C"
 		color_bits[2] = (color & 0x000000FF);
 		color_bits[3] = (color & 0xFF000000) >> 24;
 		static_cast<mlx::Application*>(mlx)->PixelPut(win, x, y, *reinterpret_cast<unsigned int*>(color_bits));
-		return 0;
 	}
 
-	int mlx_string_put(void* mlx, void* win, int x, int y, int color, char* str)
+	void mlx_string_put(void* mlx, void* win, int x, int y, int color, char* str)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		unsigned char color_bits[4];
@@ -222,7 +214,6 @@ extern "C"
 		color_bits[2] = (color & 0x000000FF);
 		color_bits[3] = (color & 0xFF000000) >> 24;
 		static_cast<mlx::Application*>(mlx)->StringPut(win, x, y, *reinterpret_cast<unsigned int*>(color_bits), str);
-		return 0;
 	}
 
 	void mlx_set_font(void* mlx, char* filepath)
@@ -262,49 +253,39 @@ extern "C"
 		static_cast<mlx::Application*>(mlx)->LoadFont(file, scale);
 	}
 
-	int mlx_clear_window(void* mlx, void* win)
+	void mlx_clear_window(void* mlx, void* win)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		static_cast<mlx::Application*>(mlx)->ClearGraphicsSupport(win);
-		return 0;
 	}
 
-	int mlx_destroy_window(void* mlx, void* win)
+	void mlx_destroy_window(void* mlx, void* win)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		static_cast<mlx::Application*>(mlx)->DestroyGraphicsSupport(win);
-		return 0;
 	}
 
-	int mlx_destroy_display(void* mlx)
+	void mlx_destroy_display(void* mlx)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		delete static_cast<mlx::Application*>(mlx);
 		__mlx_ptr = nullptr;
-		return 0;
 	}
 
-	int mlx_get_screens_size(void* mlx, void* win, int* w, int* h)
+	void mlx_get_screens_size(void* mlx, void* win, int* w, int* h)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		static_cast<mlx::Application*>(mlx)->GetScreenSize(win, w, h);
-		return 0;
 	}
 
-	int mlx_set_fps_goal(void* mlx, int fps)
+	void mlx_set_fps_goal(void* mlx, int fps)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		if(fps < 0)
-		{
 			mlx::Error("You cannot set a negative FPS cap (nice try)");
-			return 0;
-		}
-		if(fps == 0)
-		{
+		else if(fps == 0)
 			mlx::Error("You cannot set a FPS cap to 0 (nice try)");
-			return 0;
-		}
-		static_cast<mlx::Application*>(mlx)->SetFPSCap(static_cast<std::uint32_t>(fps));
-		return 0;
+		else
+			static_cast<mlx::Application*>(mlx)->SetFPSCap(static_cast<std::uint32_t>(fps));
 	}
 }
