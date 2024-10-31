@@ -3,6 +3,10 @@
 #include <Graphics/Font.h>
 #include <Core/Memory.h>
 
+#define STBRP_ASSERT(x) mlx::Assert(x, "internal stb assertion")
+#define STB_RECT_PACK_IMPLEMENTATION
+#include <stb_rect_pack.h>
+
 #define STB_TRUETYPE_IMPLEMENTATION
 #define STB_malloc(x, u) ((void)(u), MemManager::Get().Malloc(x))
 #define STB_free(x, u) ((void)(u), MemManager::Get().Free(x))
@@ -29,24 +33,24 @@ namespace mlx
 			file.close();
 		}
 
-		CPUBuffer tmp_bitmap(RANGE * RANGE);
+		CPUBuffer bitmap(RANGE * RANGE);
 
 		stbtt_pack_context pc;
-		stbtt_PackBegin(&pc, tmp_bitmap.GetData(), RANGE, RANGE, RANGE, 1, nullptr);
+		stbtt_PackBegin(&pc, bitmap.GetData(), RANGE, RANGE, RANGE, 1, nullptr);
 		if(std::holds_alternative<std::filesystem::path>(m_build_data))
 			stbtt_PackFontRange(&pc, file_bytes.data(), 0, m_scale, 32, 96, m_cdata.data());
 		else
 			stbtt_PackFontRange(&pc, std::get<std::vector<std::uint8_t>>(m_build_data).data(), 0, m_scale, 32, 96, m_cdata.data());
 		stbtt_PackEnd(&pc);
 
+		// TODO : find better solution
 		CPUBuffer vulkan_bitmap(RANGE * RANGE * 4);
-
 		for(int i = 0, j = 0; i < RANGE * RANGE; i++, j += 4)
 		{
-			vulkan_bitmap.GetData()[j + 0] = tmp_bitmap.GetData()[i];
-			vulkan_bitmap.GetData()[j + 1] = tmp_bitmap.GetData()[i];
-			vulkan_bitmap.GetData()[j + 2] = tmp_bitmap.GetData()[i];
-			vulkan_bitmap.GetData()[j + 3] = tmp_bitmap.GetData()[i];
+			vulkan_bitmap.GetData()[j + 0] = bitmap.GetData()[i];
+			vulkan_bitmap.GetData()[j + 1] = bitmap.GetData()[i];
+			vulkan_bitmap.GetData()[j + 2] = bitmap.GetData()[i];
+			vulkan_bitmap.GetData()[j + 3] = bitmap.GetData()[i];
 		}
 
 		#ifdef DEBUG

@@ -2,9 +2,6 @@
 
 #include <Graphics/Text.h>
 
-#define STB_RECT_PACK_IMPLEMENTATION
-#include <stb_rect_pack.h>
-
 namespace mlx
 {
 	Text::Text(const std::string& text, std::shared_ptr<Font> font) : Drawable(DrawableType::Text)
@@ -19,7 +16,7 @@ namespace mlx
 		float stb_x = 0.0f;
 		float stb_y = 0.0f;
 
-		auto char_data = font->GetCharData();
+		const auto& char_data = font->GetCharData();
 		for(char c : text)
 		{
 			if(c < 32)
