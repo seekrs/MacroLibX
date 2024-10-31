@@ -41,6 +41,8 @@ int update(void* param)
 	}
 
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->logo_jpg, 210, 150);
+	mlx_set_font_scale(mlx->mlx, "default", 8.f);
+	mlx_string_put(mlx->mlx, mlx->win, 210, 175, 0xFFAF2BFF, "hidden");
 
 	for(int j = 0; j < 20; j++)
 	{
