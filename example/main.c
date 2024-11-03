@@ -131,7 +131,7 @@ int main(void)
 	int dummy;
 
 	mlx.mlx = mlx_init();
-	mlx.win = mlx_new_window(mlx.mlx, 400, 400, "My window");
+	mlx.win = mlx_new_resizable_window(mlx.mlx, 400, 400, "My window");
 
 	mlx_set_fps_goal(mlx.mlx, 60);
 

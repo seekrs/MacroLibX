@@ -47,12 +47,20 @@ namespace mlx
 		DebugLog("SDL Manager initialized");
 	}
 
-	Handle SDLManager::CreateWindow(const std::string& title, std::size_t w, std::size_t h, bool hidden, std::int32_t& id)
+	Handle SDLManager::CreateWindow(const std::string& title, std::size_t w, std::size_t h, bool hidden, std::int32_t& id, bool is_resizable)
 	{
 		Internal::WindowInfos* infos = new Internal::WindowInfos;
 		Verify(infos != nullptr, "SDL: window allocation failed");
 
-		infos->window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, SDL_WINDOW_VULKAN | (hidden ? SDL_WINDOW_HIDDEN : SDL_WINDOW_SHOWN));
+		std::uint32_t flags = SDL_WINDOW_VULKAN;
+		if(hidden)
+			flags |= SDL_WINDOW_HIDDEN;
+		else
+			flags |= SDL_WINDOW_SHOWN;
+		if(is_resizable)
+			flags |= SDL_WINDOW_RESIZABLE;
+
+		infos->window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, flags);
 		if(!infos->window)
 			FatalError("SDL: unable to open a new window; %", SDL_GetError());
 		infos->icon = SDL_CreateRGBSurfaceFrom(static_cast<void*>(logo_mlx), logo_mlx_width, logo_mlx_height, 32, 4 * logo_mlx_width, rmask, gmask, bmask, amask);

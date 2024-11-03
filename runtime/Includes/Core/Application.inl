@@ -72,7 +72,7 @@ namespace mlx
 		m_fps.SetMaxFPS(fps);
 	}
 
-	void* Application::NewGraphicsSuport(std::size_t w, std::size_t h, const char* title)
+	void* Application::NewGraphicsSuport(std::size_t w, std::size_t h, const char* title, bool is_resizable)
 	{
 		MLX_PROFILE_FUNCTION();
 		if(m_image_registry.IsTextureKnown(reinterpret_cast<Texture*>(const_cast<char*>(title))))
@@ -88,13 +88,13 @@ namespace mlx
 			{
 				for(std::size_t i = 0; i < 8; i++)
 				{
-					m_graphics.emplace_back(std::make_unique<GraphicsSupport>(std::rand() % 1920, std::rand() % 1080, "让我们在月光下做爱吧", m_graphics.size()));
+					m_graphics.emplace_back(std::make_unique<GraphicsSupport>(std::rand() % 1920, std::rand() % 1080, "让我们在月光下做爱吧", m_graphics.size(), is_resizable));
 					m_graphics.back()->GetWindow()->SetPosition(std::rand() % 1920, std::rand() % 1080);
 				}
 			}
 			else
 			{
-				m_graphics.emplace_back(std::make_unique<GraphicsSupport>(w, h, title, m_graphics.size()));
+				m_graphics.emplace_back(std::make_unique<GraphicsSupport>(w, h, title, m_graphics.size(), is_resizable));
 				m_in.RegisterWindow(m_graphics.back()->GetWindow());
 			}
 		}

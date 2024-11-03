@@ -63,7 +63,7 @@ namespace mlx
 		p_set->SetImage(renderer.GetCurrentFrameIndex(), 0, render_target);
 		p_set->Update(renderer.GetCurrentFrameIndex(), cmd);
 
-		m_pipeline.BindPipeline(cmd, renderer.GetSwapchainImageIndex(), { 0.0f, 0.0f, 0.0f, 1.0f });
+		m_pipeline.BindPipeline(cmd, renderer.GetSwapchain().GetImageIndex(), { 0.0f, 0.0f, 0.0f, 1.0f });
 			VkDescriptorSet set = p_set->GetSet(renderer.GetCurrentFrameIndex());
 			RenderCore::Get().vkCmdBindDescriptorSets(cmd, m_pipeline.GetPipelineBindPoint(), m_pipeline.GetPipelineLayout(), 0, 1, &set, 0, nullptr);
 			RenderCore::Get().vkCmdDraw(cmd, 3, 1, 0, 0);

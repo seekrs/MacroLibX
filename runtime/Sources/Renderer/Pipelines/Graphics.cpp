@@ -153,8 +153,8 @@ namespace mlx
 		std::vector<VkImageView> attachment_views;
 		if(p_renderer)
 		{
-			attachments.push_back(kvfBuildSwapchainAttachmentDescription(p_renderer->GetSwapchain(), clear_attachments));
-			attachment_views.push_back(p_renderer->GetSwapchainImages()[0].GetImageView());
+			attachments.push_back(kvfBuildSwapchainAttachmentDescription(p_renderer->GetSwapchain().Get(), clear_attachments));
+			attachment_views.push_back(p_renderer->GetSwapchain().GetSwapchainImages()[0].GetImageView());
 		}
 
 		#pragma omp parallel for
@@ -171,7 +171,7 @@ namespace mlx
 
 		if(p_renderer)
 		{
-			for(const Image& image : p_renderer->GetSwapchainImages())
+			for(const Image& image : p_renderer->GetSwapchain().GetSwapchainImages())
 			{
 				attachment_views[0] = image.GetImageView();
 				m_framebuffers.push_back(kvfCreateFramebuffer(RenderCore::Get().GetDevice(), m_renderpass, attachment_views.data(), attachment_views.size(), { .width = image.GetWidth(), .height = image.GetHeight() }));
