@@ -1,4 +1,3 @@
-#include <mlx_profile.h>
 #include <PreCompiled.h>
 #include <Renderer/RenderCore.h>
 
@@ -6,6 +5,8 @@
 #ifdef DEBUG
 	#define KVF_ENABLE_VALIDATION_LAYERS
 #endif
+
+#define KVF_ASSERT(x) mlx::Assert(x, #x)
 
 #if defined(MLX_COMPILER_GCC) || defined(MLX_COMPILER_CLANG)
 	#pragma clang diagnostic push
@@ -59,8 +60,6 @@ namespace mlx
 		kvfSetWarningCallback(&WarningCallback);
 		kvfSetValidationErrorCallback(&ValidationErrorCallback);
 		kvfSetValidationWarningCallback(&WarningCallback);
-
-		//kvfAddLayer("VK_LAYER_MESA_overlay");
 
 		Window window(1, 1, "", true);
 		std::vector<const char*> instance_extensions = window.GetRequiredVulkanInstanceExtentions();

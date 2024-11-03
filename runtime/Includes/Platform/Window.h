@@ -9,7 +9,7 @@ namespace mlx
 	class Window
 	{
 		public:
-			Window(std::size_t w, std::size_t h, const std::string& title, bool hidden = false);
+			Window(std::size_t w, std::size_t h, const std::string& title, bool is_resizable, bool hidden = false);
 
 			inline Handle GetWindowHandle() const noexcept { return p_window; }
 			inline int GetWidth() const noexcept { return m_width; }

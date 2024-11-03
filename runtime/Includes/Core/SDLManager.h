@@ -10,7 +10,7 @@ namespace mlx
 		public:
 			SDLManager();
 
-			Handle CreateWindow(const std::string& title, std::size_t w, std::size_t h, bool hidden, std::int32_t& id);
+			Handle CreateWindow(const std::string& title, std::size_t w, std::size_t h, bool hidden, std::int32_t& id, bool is_resizable);
 			void DestroyWindow(Handle window) noexcept;
 
 			void InputsFetcher(func::function<void(mlx_event_type, int, int)> functor);

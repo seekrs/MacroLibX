@@ -15,7 +15,7 @@ namespace mlx
 	{
 		public:
 			GraphicsSupport(std::size_t w, std::size_t h, NonOwningPtr<Texture> render_target, int id);
-			GraphicsSupport(std::size_t w, std::size_t h, std::string title, int id);
+			GraphicsSupport(std::size_t w, std::size_t h, std::string title, int id, bool is_resizable);
 
 			[[nodiscard]] MLX_FORCEINLINE int& GetID() noexcept { return m_id; }
 			[[nodiscard]] inline std::shared_ptr<Window> GetWindow() { return p_window; }

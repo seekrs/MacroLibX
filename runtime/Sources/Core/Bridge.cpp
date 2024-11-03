@@ -42,7 +42,18 @@ extern "C"
 			mlx::FatalError("invalid window size (%d x %d)", w, h);
 			return NULL; // not nullptr for the C compatibility
 		}
-		return static_cast<mlx::Application*>(mlx)->NewGraphicsSuport(w, h, title);
+		return static_cast<mlx::Application*>(mlx)->NewGraphicsSuport(w, h, title, false);
+	}
+
+	void* mlx_new_resizable_window(void* mlx, int w, int h, const char* title)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		if(w <= 0 || h <= 0)
+		{
+			mlx::FatalError("invalid window size (%d x %d)", w, h);
+			return NULL; // not nullptr for the C compatibility
+		}
+		return static_cast<mlx::Application*>(mlx)->NewGraphicsSuport(w, h, title, true);
 	}
 
 	void mlx_set_window_position(void *mlx, void *win, int x, int y)
@@ -51,7 +62,7 @@ extern "C"
 		static_cast<mlx::Application*>(mlx)->SetGraphicsSupportPosition(win, x, y);
 	}
 
-	int	mlx_loop_hook(void* mlx, int (*f)(void*), void* param)
+	void mlx_loop_hook(void* mlx, int (*f)(void*), void* param)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		static_cast<mlx::Application*>(mlx)->LoopHook(f, param);

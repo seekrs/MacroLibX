@@ -9,7 +9,7 @@ namespace mlx
 	{
 		Verify((bool)p_renderer, "invalid renderer pointer");
 
-		VkExtent2D swapchain_extent = kvfGetSwapchainImagesSize(p_renderer->GetSwapchain());
+		VkExtent2D swapchain_extent = kvfGetSwapchainImagesSize(p_renderer->GetSwapchain().Get());
 		#ifdef DEBUG
 			auto res = m_textures.try_emplace(draw_layer, CPUBuffer{}, swapchain_extent.width, swapchain_extent.height, VK_FORMAT_R8G8B8A8_SRGB, false, "mlx_put_pixel_layer_" + std::to_string(draw_layer));
 		#else

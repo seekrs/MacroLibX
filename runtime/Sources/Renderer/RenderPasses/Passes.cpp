@@ -14,7 +14,7 @@ namespace mlx
 			if(event.What() == Event::ResizeEventCode)
 			{
 				m_main_render_texture.Destroy();
-				auto extent = kvfGetSwapchainImagesSize(renderer.GetSwapchain());
+				auto extent = kvfGetSwapchainImagesSize(renderer.GetSwapchain().Get());
 				#ifdef DEBUG
 					m_main_render_texture.Init({}, extent.width, extent.height, VK_FORMAT_R8G8B8A8_SRGB, false, "mlx_renderpasses_target");
 				#else
@@ -24,7 +24,7 @@ namespace mlx
 			}
 		};
 		EventBus::RegisterListener({ functor, "__MlxRenderPasses" });
-		auto extent = kvfGetSwapchainImagesSize(renderer.GetSwapchain());
+		auto extent = kvfGetSwapchainImagesSize(renderer.GetSwapchain().Get());
 
 		#ifdef DEBUG
 			m_main_render_texture.Init({}, extent.width, extent.height, VK_FORMAT_R8G8B8A8_SRGB, false, "mlx_renderpasses_target");

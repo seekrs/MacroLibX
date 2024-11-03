@@ -51,12 +51,11 @@
 #ifndef KBZ_8_VULKAN_FRAMEWORK_H
 #define KBZ_8_VULKAN_FRAMEWORK_H
 
-#include "vulkan/vulkan_core.h"
 #ifdef KVF_IMPL_VK_NO_PROTOTYPES
 	#define VK_NO_PROTOTYPES
 #endif
 
-#include <vulkan/vulkan.h>
+#include <vulkan/vulkan_core.h>
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -141,7 +140,7 @@ VkSemaphore kvfCreateSemaphore(VkDevice device);
 void kvfDestroySemaphore(VkDevice device, VkSemaphore semaphore);
 
 #ifndef KVF_NO_KHR
-	VkSwapchainKHR kvfCreateSwapchainKHR(VkDevice device, VkPhysicalDevice physical, VkSurfaceKHR surface, VkExtent2D extent, bool try_vsync);
+	VkSwapchainKHR kvfCreateSwapchainKHR(VkDevice device, VkPhysicalDevice physical, VkSurfaceKHR surface, VkExtent2D extent, VkSwapchainKHR old_swapchain, bool try_vsync);
 	VkFormat kvfGetSwapchainImagesFormat(VkSwapchainKHR swapchain);
 	uint32_t kvfGetSwapchainImagesCount(VkSwapchainKHR swapchain);
 	uint32_t kvfGetSwapchainMinImagesCount(VkSwapchainKHR swapchain);
@@ -402,10 +401,10 @@ typedef struct __KvfDevice
 	VkDevice device;
 	VkPhysicalDevice physical;
 	VkCommandPool cmd_pool;
-	VkCommandBuffer* cmd_buffers = NULL;
+	VkCommandBuffer* cmd_buffers;
 	__KvfDescriptorPool* sets_pools;
-	size_t cmd_buffers_size = 0;
-	size_t cmd_buffers_capacity = 0;
+	size_t cmd_buffers_size;
+	size_t cmd_buffers_capacity;
 	size_t sets_pools_size;
 } __KvfDevice;
 
@@ -449,34 +448,34 @@ struct KvfGraphicsPipelineBuilder
 };
 
 // Dynamic arrays
-__KvfDevice* __kvf_internal_devices = NULL;
-size_t __kvf_internal_devices_size = 0;
-size_t __kvf_internal_devices_capacity = 0;
+static __KvfDevice* __kvf_internal_devices = NULL;
+static size_t __kvf_internal_devices_size = 0;
+static size_t __kvf_internal_devices_capacity = 0;
 
 #ifndef KVF_NO_KHR
-	__KvfSwapchain* __kvf_internal_swapchains = NULL;
-	size_t __kvf_internal_swapchains_size = 0;
-	size_t __kvf_internal_swapchains_capacity = 0;
+	static __KvfSwapchain* __kvf_internal_swapchains = NULL;
+	static size_t __kvf_internal_swapchains_size = 0;
+	static size_t __kvf_internal_swapchains_capacity = 0;
 #endif
 
-__KvfFramebuffer* __kvf_internal_framebuffers = NULL;
-size_t __kvf_internal_framebuffers_size = 0;
-size_t __kvf_internal_framebuffers_capacity = 0;
+static __KvfFramebuffer* __kvf_internal_framebuffers = NULL;
+static size_t __kvf_internal_framebuffers_size = 0;
+static size_t __kvf_internal_framebuffers_capacity = 0;
 
 #ifdef KVF_ENABLE_VALIDATION_LAYERS
-	VkDebugUtilsMessengerEXT __kvf_debug_messenger = VK_NULL_HANDLE;
-	char** __kvf_extra_layers = NULL;
-	size_t __kvf_extra_layers_count = 0;
+	static VkDebugUtilsMessengerEXT __kvf_debug_messenger = VK_NULL_HANDLE;
+	static char** __kvf_extra_layers = NULL;
+	static size_t __kvf_extra_layers_count = 0;
 #endif
 
-KvfErrorCallback __kvf_error_callback = NULL;
-KvfErrorCallback __kvf_warning_callback = NULL;
-KvfErrorCallback __kvf_validation_error_callback = NULL;
-KvfErrorCallback __kvf_validation_warning_callback = NULL;
+static KvfErrorCallback __kvf_error_callback = NULL;
+static KvfErrorCallback __kvf_warning_callback = NULL;
+static KvfErrorCallback __kvf_validation_error_callback = NULL;
+static KvfErrorCallback __kvf_validation_warning_callback = NULL;
 
 #ifdef KVF_IMPL_VK_NO_PROTOTYPES
-	KvfGlobalVulkanFunctions __kvf_g_fns;
-	KvfInstanceVulkanFunctions __kvf_i_fns;
+	static KvfGlobalVulkanFunctions __kvf_g_fns;
+	static KvfInstanceVulkanFunctions __kvf_i_fns;
 #endif
 
 void __kvfCheckVk(VkResult result, const char* function)
@@ -670,7 +669,7 @@ __KvfDevice* __kvfGetKvfDeviceFromVkCommandBuffer(VkCommandBuffer cmd)
 		if(__kvf_internal_swapchains_size == __kvf_internal_swapchains_capacity)
 		{
 			// Resize the dynamic array if necessary
-			__kvf_internal_swapchains_capacity += 2;
+			__kvf_internal_swapchains_capacity += 5;
 			__kvf_internal_swapchains = (__KvfSwapchain*)KVF_REALLOC(__kvf_internal_swapchains, __kvf_internal_swapchains_capacity * sizeof(__KvfSwapchain));
 		}
 
@@ -680,6 +679,7 @@ __KvfDevice* __kvfGetKvfDeviceFromVkCommandBuffer(VkCommandBuffer cmd)
 		__kvf_internal_swapchains[__kvf_internal_swapchains_size].images_count = images_count;
 		__kvf_internal_swapchains[__kvf_internal_swapchains_size].images_extent = extent;
 		__kvf_internal_swapchains_size++;
+		printf("new size updated %zu, capacity %zu\n", __kvf_internal_swapchains_size, __kvf_internal_swapchains_capacity);
 	}
 
 	void __kvfDestroySwapchain(VkDevice device, VkSwapchainKHR swapchain)
@@ -701,6 +701,7 @@ __KvfDevice* __kvfGetKvfDeviceFromVkCommandBuffer(VkCommandBuffer cmd)
 				for(size_t j = i; j < __kvf_internal_swapchains_size - 1; j++)
 					__kvf_internal_swapchains[j] = __kvf_internal_swapchains[j + 1];
 				__kvf_internal_swapchains_size--;
+				printf("new size delete %zu, capacity %zu\n", __kvf_internal_swapchains_size, __kvf_internal_swapchains_capacity);
 				if(__kvf_internal_swapchains_size == 0)
 				{
 					KVF_FREE(__kvf_internal_swapchains);
@@ -710,15 +711,18 @@ __KvfDevice* __kvfGetKvfDeviceFromVkCommandBuffer(VkCommandBuffer cmd)
 			}
 		}
 	}
+#include <stdio.h>
 
 	__KvfSwapchain* __kvfGetKvfSwapchainFromVkSwapchainKHR(VkSwapchainKHR swapchain)
 	{
 		KVF_ASSERT(swapchain != VK_NULL_HANDLE);
+		printf("size %zu, capacity %zu\n", __kvf_internal_swapchains_size, __kvf_internal_swapchains_capacity);
 		for(size_t i = 0; i < __kvf_internal_swapchains_size; i++)
 		{
 			if(__kvf_internal_swapchains[i].swapchain == swapchain)
 				return &__kvf_internal_swapchains[i];
 		}
+		puts("not found");
 		return NULL;
 	}
 #endif
@@ -894,7 +898,7 @@ VkPipelineStageFlags kvfLayoutToAccessMask(VkImageLayout layout, bool is_destina
 	{
 		case VK_IMAGE_LAYOUT_UNDEFINED:
 			if(is_destination)
-				KVF_ASSERT(false && "Vulkan: the new layout used in a transition must not be VK_IMAGE_LAYOUT_UNDEFINED");
+				KVF_ASSERT(false && "Vulkan : the new layout used in a transition must not be VK_IMAGE_LAYOUT_UNDEFINED");
 		break;
 		case VK_IMAGE_LAYOUT_GENERAL: access_mask = VK_ACCESS_SHADER_READ_BIT | VK_ACCESS_SHADER_WRITE_BIT; break;
 		case VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL: access_mask = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT; break;
@@ -909,13 +913,13 @@ VkPipelineStageFlags kvfLayoutToAccessMask(VkImageLayout layout, bool is_destina
 			if(!is_destination)
 				access_mask = VK_ACCESS_HOST_WRITE_BIT;
 			else
-				KVF_ASSERT(false && "Vulkan: the new layout used in a transition must not be VK_IMAGE_LAYOUT_PREINITIALIZED");
+				KVF_ASSERT(false && "Vulkan : the new layout used in a transition must not be VK_IMAGE_LAYOUT_PREINITIALIZED");
 		break;
 		case VK_IMAGE_LAYOUT_DEPTH_READ_ONLY_STENCIL_ATTACHMENT_OPTIMAL: access_mask = VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT; break;
 		case VK_IMAGE_LAYOUT_DEPTH_ATTACHMENT_STENCIL_READ_ONLY_OPTIMAL: access_mask = VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT; break;
 		case VK_IMAGE_LAYOUT_PRESENT_SRC_KHR: access_mask = VK_ACCESS_MEMORY_READ_BIT; break;
 
-		default: KVF_ASSERT(false && "Vulkan: unexpected image layout"); break;
+		default: KVF_ASSERT(false && "Vulkan : unexpected image layout"); break;
 	}
 
 	return access_mask;
@@ -929,7 +933,7 @@ VkPipelineStageFlags kvfAccessFlagsToPipelineStage(VkAccessFlags access_flags, V
 	{
 		VkAccessFlagBits _access_flag = (VkAccessFlagBits)(access_flags & (~(access_flags - 1)));
 		if(_access_flag == 0 || (_access_flag & (_access_flag - 1)) != 0)
-			KVF_ASSERT(false && "Vulkan: an error has been caught during access flag to pipeline stage operation");
+			KVF_ASSERT(false && "Vulkan : an error has been caught during access flag to pipeline stage operation");
 		access_flags &= ~_access_flag;
 
 		switch(_access_flag)
@@ -952,7 +956,7 @@ VkPipelineStageFlags kvfAccessFlagsToPipelineStage(VkAccessFlags access_flags, V
 			case VK_ACCESS_MEMORY_READ_BIT: break;
 			case VK_ACCESS_MEMORY_WRITE_BIT: break;
 
-			default: KVF_ASSERT(false && "Vulkan: unknown access flag"); break;
+			default: KVF_ASSERT(false && "Vulkan : unknown access flag"); break;
 		}
 	}
 	return stages;
@@ -973,7 +977,7 @@ VkFormat kvfFindSupportFormatInCandidates(VkDevice device, VkFormat* candidates,
 			return candidates[i];
 	}
 
-	KVF_ASSERT(false && "Vulkan: failed to find image format");
+	KVF_ASSERT(false && "Vulkan : failed to find image format");
 	return VK_FORMAT_R8G8B8A8_SRGB; // just to avoir warning
 }
 
@@ -1913,7 +1917,7 @@ void kvfDestroySemaphore(VkDevice device, VkSemaphore semaphore)
 		return t > max ? max : t;
 	}
 
-	VkSwapchainKHR kvfCreateSwapchainKHR(VkDevice device, VkPhysicalDevice physical, VkSurfaceKHR surface, VkExtent2D extent, bool try_vsync)
+	VkSwapchainKHR kvfCreateSwapchainKHR(VkDevice device, VkPhysicalDevice physical, VkSurfaceKHR surface, VkExtent2D extent, VkSwapchainKHR old_swapchain, bool try_vsync)
 	{
 		KVF_ASSERT(device != VK_NULL_HANDLE);
 		VkSwapchainKHR swapchain;
@@ -1952,7 +1956,7 @@ void kvfDestroySemaphore(VkDevice device, VkSemaphore semaphore)
 		createInfo.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
 		createInfo.presentMode = presentMode;
 		createInfo.clipped = VK_TRUE;
-		createInfo.oldSwapchain = VK_NULL_HANDLE;
+		createInfo.oldSwapchain = old_swapchain;
 
 		if(kvf_device->queues.graphics != kvf_device->queues.present)
 		{
@@ -1975,6 +1979,7 @@ void kvfDestroySemaphore(VkDevice device, VkSemaphore semaphore)
 
 	VkFormat kvfGetSwapchainImagesFormat(VkSwapchainKHR swapchain)
 	{
+		KVF_ASSERT(swapchain != VK_NULL_HANDLE);
 		__KvfSwapchain* kvf_swapchain = __kvfGetKvfSwapchainFromVkSwapchainKHR(swapchain);
 		KVF_ASSERT(kvf_swapchain != NULL);
 		return kvf_swapchain->images_format;
@@ -1982,6 +1987,7 @@ void kvfDestroySemaphore(VkDevice device, VkSemaphore semaphore)
 
 	uint32_t kvfGetSwapchainImagesCount(VkSwapchainKHR swapchain)
 	{
+		KVF_ASSERT(swapchain != VK_NULL_HANDLE);
 		__KvfSwapchain* kvf_swapchain = __kvfGetKvfSwapchainFromVkSwapchainKHR(swapchain);
 		KVF_ASSERT(kvf_swapchain != NULL);
 		return kvf_swapchain->images_count;
@@ -1989,6 +1995,7 @@ void kvfDestroySemaphore(VkDevice device, VkSemaphore semaphore)
 
 	uint32_t kvfGetSwapchainMinImagesCount(VkSwapchainKHR swapchain)
 	{
+		KVF_ASSERT(swapchain != VK_NULL_HANDLE);
 		__KvfSwapchain* kvf_swapchain = __kvfGetKvfSwapchainFromVkSwapchainKHR(swapchain);
 		KVF_ASSERT(kvf_swapchain != NULL);
 		return kvf_swapchain->support.capabilities.minImageCount;
@@ -1996,6 +2003,7 @@ void kvfDestroySemaphore(VkDevice device, VkSemaphore semaphore)
 
 	VkExtent2D kvfGetSwapchainImagesSize(VkSwapchainKHR swapchain)
 	{
+		KVF_ASSERT(swapchain != VK_NULL_HANDLE);
 		__KvfSwapchain* kvf_swapchain = __kvfGetKvfSwapchainFromVkSwapchainKHR(swapchain);
 		KVF_ASSERT(kvf_swapchain != NULL);
 		return kvf_swapchain->images_extent;
@@ -2974,10 +2982,10 @@ VkPipeline kvfCreateGraphicsPipeline(VkDevice device, VkPipelineLayout layout, K
 	color_blending.logicOp = VK_LOGIC_OP_COPY;
 	color_blending.attachmentCount = 1;
 	color_blending.pAttachments = &builder->color_blend_attachment_state;
-	color_blending.blendConstants[0] = 1.0f;
-	color_blending.blendConstants[1] = 1.0f;
-	color_blending.blendConstants[2] = 1.0f;
-	color_blending.blendConstants[3] = 1.0f;
+	color_blending.blendConstants[0] = 0.0f;
+	color_blending.blendConstants[1] = 0.0f;
+	color_blending.blendConstants[2] = 0.0f;
+	color_blending.blendConstants[3] = 0.0f;
 
 	VkDynamicState states[] = { VK_DYNAMIC_STATE_VIEWPORT, VK_DYNAMIC_STATE_SCISSOR };
 

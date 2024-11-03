@@ -16,9 +16,9 @@ namespace mlx
 		p_scene = std::make_unique<Scene>();
 	}
 
-	GraphicsSupport::GraphicsSupport(std::size_t w, std::size_t h, std::string title, int id) :
+	GraphicsSupport::GraphicsSupport(std::size_t w, std::size_t h, std::string title, int id, bool is_resizable) :
 		m_put_pixel_manager(&m_renderer),
-		p_window(std::make_shared<Window>(w, h, title)),
+		p_window(std::make_shared<Window>(w, h, title, is_resizable)),
 		m_id(id),
 		m_has_window(true)
 	{
@@ -31,13 +31,10 @@ namespace mlx
 	void GraphicsSupport::Render() noexcept
 	{
 		MLX_PROFILE_FUNCTION();
-		if(m_renderer.BeginFrame())
-		{
+		m_renderer.BeginFrame();
 			m_draw_layer = 0;
 			m_scene_renderer.Render(*p_scene, m_renderer);
-			m_renderer.EndFrame();
-		}
-
+		m_renderer.EndFrame();
 		#ifdef GRAPHICS_MEMORY_DUMP
 			// dump memory to file every two seconds
 			using namespace std::chrono_literals;
