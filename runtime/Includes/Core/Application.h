@@ -27,7 +27,7 @@ namespace mlx
 			inline void SetFPSCap(std::uint32_t fps) noexcept;
 
 			inline Handle NewGraphicsSuport(std::size_t w, std::size_t h, const char* title, bool is_resizable);
-			inline void ClearGraphicsSupport(Handle win);
+			inline void ClearGraphicsSupport(Handle win, int color);
 			inline void DestroyGraphicsSupport(Handle win);
 			inline void SetGraphicsSupportPosition(Handle win, int x, int y);
 

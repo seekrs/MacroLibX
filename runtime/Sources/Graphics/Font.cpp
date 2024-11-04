@@ -3,13 +3,13 @@
 #include <Graphics/Font.h>
 #include <Core/Memory.h>
 
-#define STBRP_ASSERT(x) mlx::Assert(x, "internal stb assertion")
+#define STBRP_ASSERT(x) mlx::Assert(x, "internal stb assertion " #x)
 #define STB_RECT_PACK_IMPLEMENTATION
 #include <stb_rect_pack.h>
 
 #define STB_TRUETYPE_IMPLEMENTATION
-#define STB_malloc(x, u) ((void)(u), MemManager::Get().Malloc(x))
-#define STB_free(x, u) ((void)(u), MemManager::Get().Free(x))
+#define STB_malloc(x, u) ((void)(u), mlx::MemManager::Get().Malloc(x))
+#define STB_free(x, u) ((void)(u), mlx::MemManager::Get().Free(x))
 #include <stb_truetype.h>
 
 namespace mlx
@@ -43,7 +43,7 @@ namespace mlx
 			stbtt_PackFontRange(&pc, std::get<std::vector<std::uint8_t>>(m_build_data).data(), 0, m_scale, 32, 96, m_cdata.data());
 		stbtt_PackEnd(&pc);
 
-		// TODO : find better solution
+		// TODO : find better solution; No, using VK_FORMAT_R8_SRGB does not work
 		CPUBuffer vulkan_bitmap(RANGE * RANGE * 4);
 		for(int i = 0, j = 0; i < RANGE * RANGE; i++, j += 4)
 		{

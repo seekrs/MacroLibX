@@ -9,7 +9,7 @@ namespace mlx
 	{
 		m_2Dpass.Init();
 		m_final.Init();
-		func::function<void(const EventBase&)> functor = [this, renderer](const EventBase& event)
+		func::function<void(const EventBase&)> functor = [this, &renderer](const EventBase& event)
 		{
 			if(event.What() == Event::ResizeEventCode)
 			{
@@ -34,9 +34,9 @@ namespace mlx
 		m_main_render_texture.TransitionLayout(VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
 	}
 
-	void RenderPasses::Pass(Scene& scene, Renderer& renderer)
+	void RenderPasses::Pass(Scene& scene, Renderer& renderer, const Vec4f& clear_color)
 	{
-		m_main_render_texture.Clear(renderer.GetActiveCommandBuffer(), Vec4f{ 0.0f, 0.0f, 0.0f, 1.0f });
+		m_main_render_texture.Clear(renderer.GetActiveCommandBuffer(), clear_color);
 
 		m_2Dpass.Pass(scene, renderer, m_main_render_texture);
 		m_final.Pass(scene, renderer, m_main_render_texture);

@@ -6,7 +6,7 @@
 /*   By: maldavid <contact@kbz8.me>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:56:35 by maldavid          #+#    #+#             */
-/*   Updated: 2024/10/31 16:21:35 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/11/04 21:09:59 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -325,7 +325,7 @@ MLX_API void mlx_set_font_scale(void* mlx, char* filepath, float scale);
  *
  * @return (void)
  */
-MLX_API void mlx_clear_window(void* mlx, void* win);
+MLX_API void mlx_clear_window(void* mlx, void* win, int color);
 
 /**
  * @brief            Destroys internal window

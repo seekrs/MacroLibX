@@ -679,7 +679,6 @@ __KvfDevice* __kvfGetKvfDeviceFromVkCommandBuffer(VkCommandBuffer cmd)
 		__kvf_internal_swapchains[__kvf_internal_swapchains_size].images_count = images_count;
 		__kvf_internal_swapchains[__kvf_internal_swapchains_size].images_extent = extent;
 		__kvf_internal_swapchains_size++;
-		printf("new size updated %zu, capacity %zu\n", __kvf_internal_swapchains_size, __kvf_internal_swapchains_capacity);
 	}
 
 	void __kvfDestroySwapchain(VkDevice device, VkSwapchainKHR swapchain)
@@ -701,7 +700,6 @@ __KvfDevice* __kvfGetKvfDeviceFromVkCommandBuffer(VkCommandBuffer cmd)
 				for(size_t j = i; j < __kvf_internal_swapchains_size - 1; j++)
 					__kvf_internal_swapchains[j] = __kvf_internal_swapchains[j + 1];
 				__kvf_internal_swapchains_size--;
-				printf("new size delete %zu, capacity %zu\n", __kvf_internal_swapchains_size, __kvf_internal_swapchains_capacity);
 				if(__kvf_internal_swapchains_size == 0)
 				{
 					KVF_FREE(__kvf_internal_swapchains);
@@ -711,12 +709,10 @@ __KvfDevice* __kvfGetKvfDeviceFromVkCommandBuffer(VkCommandBuffer cmd)
 			}
 		}
 	}
-#include <stdio.h>
 
 	__KvfSwapchain* __kvfGetKvfSwapchainFromVkSwapchainKHR(VkSwapchainKHR swapchain)
 	{
 		KVF_ASSERT(swapchain != VK_NULL_HANDLE);
-		printf("size %zu, capacity %zu\n", __kvf_internal_swapchains_size, __kvf_internal_swapchains_capacity);
 		for(size_t i = 0; i < __kvf_internal_swapchains_size; i++)
 		{
 			if(__kvf_internal_swapchains[i].swapchain == swapchain)
