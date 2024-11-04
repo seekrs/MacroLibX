@@ -264,10 +264,15 @@ extern "C"
 		static_cast<mlx::Application*>(mlx)->LoadFont(file, scale);
 	}
 
-	void mlx_clear_window(void* mlx, void* win)
+	void mlx_clear_window(void* mlx, void* win, int color)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
-		static_cast<mlx::Application*>(mlx)->ClearGraphicsSupport(win);
+		unsigned char color_bits[4];
+		color_bits[0] = (color & 0x00FF0000) >> 16;
+		color_bits[1] = (color & 0x0000FF00) >> 8;
+		color_bits[2] = (color & 0x000000FF);
+		color_bits[3] = (color & 0xFF000000) >> 24;
+		static_cast<mlx::Application*>(mlx)->ClearGraphicsSupport(win, *reinterpret_cast<unsigned int*>(color_bits));
 	}
 
 	void mlx_destroy_window(void* mlx, void* win)

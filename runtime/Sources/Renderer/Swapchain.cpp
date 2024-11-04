@@ -57,7 +57,7 @@ namespace mlx
 
 		for(Image& img : m_swapchain_images)
 			img.DestroyImageView();
-	//	kvfDestroySwapchainKHR(RenderCore::Get().GetDevice(), m_swapchain);
+		kvfDestroySwapchainKHR(RenderCore::Get().GetDevice(), m_swapchain);
 
 		RenderCore::Get().vkDestroySurfaceKHR(RenderCore::Get().GetInstance(), m_surface, nullptr);
 		m_surface = VK_NULL_HANDLE;
@@ -79,8 +79,8 @@ namespace mlx
 
 		VkSwapchainKHR old_swapchain = m_swapchain;
 		m_swapchain = kvfCreateSwapchainKHR(RenderCore::Get().GetDevice(), RenderCore::Get().GetPhysicalDevice(), m_surface, extent, VK_NULL_HANDLE, true);
-	//	if(old_swapchain != VK_NULL_HANDLE)
-	//		kvfDestroySwapchainKHR(RenderCore::Get().GetDevice(), old_swapchain);
+		if(old_swapchain != VK_NULL_HANDLE)
+			kvfDestroySwapchainKHR(RenderCore::Get().GetDevice(), old_swapchain);
 
 		m_images_count = kvfGetSwapchainImagesCount(m_swapchain);
 		m_min_images_count = kvfGetSwapchainMinImagesCount(m_swapchain);

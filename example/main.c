@@ -17,7 +17,7 @@ int update(void* param)
 	mlx_t* mlx = (mlx_t*)param;
 
 	if(i == 200)
-		mlx_clear_window(mlx->mlx, mlx->win);
+		mlx_clear_window(mlx->mlx, mlx->win, 0xFF334D4D);
 
 	if(i >= 250)
 		mlx_set_font_scale(mlx->mlx, "default", 16.f);
@@ -96,7 +96,7 @@ int key_hook(int key, void* param)
 			mlx_mouse_hide();
 		break;
 		case 6 : // (C)lear
-			mlx_clear_window(mlx->mlx, mlx->win);
+			mlx_clear_window(mlx->mlx, mlx->win, 0xFF334D4D);
 		break;
 		case 79 : // RIGHT KEY
 			mlx_mouse_move(mlx->mlx, mlx->win, x + 10, y);

@@ -101,11 +101,11 @@ namespace mlx
 		return static_cast<void*>(&m_graphics.back()->GetID());
 	}
 
-	void Application::ClearGraphicsSupport(Handle win)
+	void Application::ClearGraphicsSupport(Handle win, int color)
 	{
 		MLX_PROFILE_FUNCTION();
 		CHECK_WINDOW_PTR(win);
-		m_graphics[*static_cast<int*>(win)]->ResetRenderData();
+		m_graphics[*static_cast<int*>(win)]->ResetRenderData(color);
 	}
 
 	void Application::DestroyGraphicsSupport(Handle win)

@@ -3,10 +3,16 @@
 
 namespace mlx
 {
-	void GraphicsSupport::ResetRenderData() noexcept
+	void GraphicsSupport::ResetRenderData(int color) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
-		p_scene->ResetScene();
+		Vec4f vec_color = {
+			static_cast<float>((color & 0x000000FF))       / 255.0f,
+			static_cast<float>((color & 0x0000FF00) >> 8)  / 255.0f,
+			static_cast<float>((color & 0x00FF0000) >> 16) / 255.0f,
+			static_cast<float>((color & 0xFF000000) >> 24) / 255.0f
+		};
+		p_scene->ResetScene(std::move(vec_color));
 		m_put_pixel_manager.ResetRenderData();
 		m_draw_layer = 0;
 		m_pixelput_called = false;

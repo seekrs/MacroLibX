@@ -7,6 +7,7 @@
 #include <Graphics/Sprite.h>
 #include <Graphics/Drawable.h>
 #include <Renderer/ViewerData.h>
+#include <Maths/Vec4.h>
 
 namespace mlx
 {
@@ -29,7 +30,8 @@ namespace mlx
 			void BringToFront(NonOwningPtr<Drawable> drawable);
 			void BringToDrawLayer(NonOwningPtr<Drawable> drawable, std::uint64_t draw_layer);
 
-			inline void ResetScene() { m_drawables.clear(); }
+			inline void ResetScene(Vec4f clear) { m_drawables.clear(); m_clear_color = std::move(clear); }
+			inline const Vec4f& GetClearColor() const noexcept { return m_clear_color; }
 
 			[[nodiscard]] MLX_FORCEINLINE const std::vector<std::shared_ptr<Drawable>>& GetDrawables() const noexcept { return m_drawables; }
 			[[nodiscard]] MLX_FORCEINLINE ViewerData& GetViewerData() noexcept { return m_viewer_data; }
@@ -40,6 +42,7 @@ namespace mlx
 			std::vector<std::shared_ptr<Drawable>> m_drawables;
 			ViewerData m_viewer_data;
 			std::shared_ptr<Font> p_bound_font;
+			Vec4f m_clear_color = { 0.0f, 0.0f, 0.0f, 1.0f };
 	};
 }
 

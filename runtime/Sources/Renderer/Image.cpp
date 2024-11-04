@@ -1,10 +1,18 @@
 #include <PreCompiled.h>
 #include <Renderer/Image.h>
 #include <Maths/Vec4.h>
+#include <Maths/Vec2.h>
 #include <Renderer/RenderCore.h>
 #include <Utils/CallOnExit.h>
+#include <Core/Memory.h>
 
 #define STB_IMAGE_IMPLEMENTATION
+
+#define STBI_ASSERT(x) mlx::Assert(x, "internal stb assertion " #x)
+#define STBI_MALLOC(x) (mlx::MemManager::Get().Malloc(x))
+#define STBI_REALLOC(p, x) (mlx::MemManager::Get().Realloc(p, x))
+#define STBI_FREE(x) (mlx::MemManager::Get().Free(x))
+
 #ifdef MLX_COMPILER_GCC
 	#pragma GCC diagnostic push
 	#pragma GCC diagnostic ignored "-Wstringop-overflow"
@@ -264,7 +272,7 @@ namespace mlx
 		MLX_PROFILE_FUNCTION();
 		std::string filename = file.string();
 
-		if(file.stem() == "banana")
+		if(file.stem() == "terracotta.pie")
 			Message("banana, banana, banana, banana, terracotta banana terracotta, terracotta pie");
 
 		if(!std::filesystem::exists(file))
@@ -274,21 +282,28 @@ namespace mlx
 		}
 		if(stbi_is_hdr(filename.c_str()))
 		{
-			Error("Texture: unsupported image format % (HDR image)", file);
+			Error("Texture: unsupported image format from % (HDR image)", file);
 			return nullptr;
 		}
-		int dummy_w;
-		int dummy_h;
-		int channels;
-		std::uint8_t* data = stbi_load(filename.c_str(), (w == nullptr ? &dummy_w : w), (h == nullptr ? &dummy_h : h), &channels, 4);
 
+		Vec2i size;
+		int channels;
+
+		std::uint8_t* data = stbi_load(filename.c_str(), &size.x, &size.y, &channels, STBI_rgb_alpha);
 		CallOnExit defer([=]() { stbi_image_free(data); });
 
-		CPUBuffer buffer((w == nullptr ? dummy_w : *w) * (h == nullptr ? dummy_h : *h) * 4);
+		Verify(channels == 4, "invalid channels number in image loaded (should be 4, was %)", channels);
+
+		CPUBuffer buffer(size.x * size.y * 4);
 		std::memcpy(buffer.GetData(), data, buffer.GetSize());
 
+		if(w != nullptr)
+			*w = size.x;
+		if(h != nullptr)
+			*h = size.y;
+
 		Texture* texture;
-		try { texture = new Texture(std::move(buffer), (w == nullptr ? dummy_w : *w), (h == nullptr ? dummy_h : *h), VK_FORMAT_R8G8B8A8_SRGB, false, std::move(filename)); }
+		try { texture = new Texture(std::move(buffer), size.x, size.y, VK_FORMAT_R8G8B8A8_SRGB, false, std::move(filename)); }
 		catch(...) { return nullptr; }
 		return texture;
 	}

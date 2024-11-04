@@ -15,7 +15,7 @@ namespace mlx
 	void SceneRenderer::Render(Scene& scene, Renderer& renderer)
 	{
 		MLX_PROFILE_FUNCTION();
-		m_passes.Pass(scene, renderer);
+		m_passes.Pass(scene, renderer, scene.GetClearColor());
 	}
 
 	void SceneRenderer::Destroy()

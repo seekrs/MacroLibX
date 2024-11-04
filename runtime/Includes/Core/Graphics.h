@@ -22,7 +22,7 @@ namespace mlx
 
 			void Render() noexcept;
 
-			inline void ResetRenderData() noexcept;
+			inline void ResetRenderData(int color) noexcept;
 
 			inline void PixelPut(int x, int y, std::uint32_t color) noexcept;
 			inline void StringPut(int x, int y, std::uint32_t color, std::string str);
