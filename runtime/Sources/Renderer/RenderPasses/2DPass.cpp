@@ -94,7 +94,7 @@ namespace mlx
 
 		const auto& drawables = scene.GetDrawables();
 
-		for(auto drawable : drawables)
+		for(auto& drawable : drawables)
 		{
 			// Check every textures and update modified ones to GPU before starting the render pass
 			if(!drawable->IsSetInit())
@@ -103,7 +103,7 @@ namespace mlx
 		}
 
 		m_pipeline.BindPipeline(cmd, 0, {});
-		for(auto drawable : drawables)
+		for(auto& drawable : drawables)
 		{
 			SpriteData drawable_data;
 			drawable_data.position = drawable->GetPosition();
