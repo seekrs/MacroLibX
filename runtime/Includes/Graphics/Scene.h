@@ -33,13 +33,11 @@ namespace mlx
 			inline const Vec4f& GetClearColor() const noexcept { return m_clear_color; }
 
 			[[nodiscard]] MLX_FORCEINLINE const std::vector<std::shared_ptr<Drawable>>& GetDrawables() const noexcept { return m_drawables; }
-			[[nodiscard]] MLX_FORCEINLINE ViewerData& GetViewerData() noexcept { return m_viewer_data; }
 
 			~Scene() = default;
 
 		private:
 			std::vector<std::shared_ptr<Drawable>> m_drawables;
-			ViewerData m_viewer_data;
 			std::shared_ptr<Font> p_bound_font;
 			Vec4f m_clear_color = { 0.0f, 0.0f, 0.0f, 1.0f };
 	};

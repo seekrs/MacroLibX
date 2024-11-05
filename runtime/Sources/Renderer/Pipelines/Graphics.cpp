@@ -133,15 +133,19 @@ namespace mlx
 			DebugLog("Vulkan: framebuffer destroyed");
 		}
 		m_framebuffers.clear();
+
 		kvfDestroyPipelineLayout(RenderCore::Get().GetDevice(), m_pipeline_layout);
 		m_pipeline_layout = VK_NULL_HANDLE;
 		DebugLog("Vulkan: graphics pipeline layout destroyed");
+
 		kvfDestroyRenderPass(RenderCore::Get().GetDevice(), m_renderpass);
 		m_renderpass = VK_NULL_HANDLE;
 		DebugLog("Vulkan: renderpass destroyed");
+
 		kvfDestroyPipeline(RenderCore::Get().GetDevice(), m_pipeline);
 		m_pipeline = VK_NULL_HANDLE;
 		DebugLog("Vulkan: graphics pipeline destroyed");
+
 		p_renderer = nullptr;
 		m_clears.clear();
 		m_attachments.clear();

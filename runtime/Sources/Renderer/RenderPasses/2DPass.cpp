@@ -28,7 +28,7 @@ namespace mlx
 			}, { ShaderPushConstantLayout({ 0, sizeof(SpriteData) }) }
 		);
 		std::vector<std::uint8_t> vertex_shader_code = {
-			#include <Embedded/2DVertex.spv.h>
+			#include <Embedded/Shader2DVertex.spv.h>
 		};
 		p_vertex_shader = std::make_shared<Shader>(vertex_shader_code, ShaderType::Vertex, std::move(vertex_shader_layout));
 		ShaderLayout fragment_shader_layout(
@@ -41,7 +41,7 @@ namespace mlx
 			}, {}
 		);
 		std::vector<std::uint8_t> fragment_shader_code = {
-			#include <Embedded/2DFragment.spv.h>
+			#include <Embedded/Shader2DFragment.spv.h>
 		};
 		p_fragment_shader = std::make_shared<Shader>(fragment_shader_code, ShaderType::Fragment, std::move(fragment_shader_layout));
 
