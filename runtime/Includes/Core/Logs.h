@@ -30,11 +30,16 @@ namespace mlx
 
 			static void Report(LogType type, std::string message);
 			static void Report(LogType type, unsigned int line, std::string_view file, std::string_view function, std::string message);
+			static void BeginSection();
+			static void EndSection();
 
 			~Logs() = delete;
+
+		private:
+			static std::uint32_t s_nesting;
 	};
 
-	#if defined(DEBUG)
+	#ifdef DEBUG
 		template<typename... Args>
 		void Assert(bool cond, unsigned int line, std::string_view file, std::string_view function, std::string message, const Args&... args);
 	#else

@@ -102,7 +102,7 @@ namespace mlx
 		}
 	}
 
-	#if defined(DEBUG)
+	#ifdef DEBUG
 		template<typename... Args>
 		void Assert(bool cond, unsigned int line, std::string_view file, std::string_view function, std::string message, const Args&... args)
 		{
