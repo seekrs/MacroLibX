@@ -8,7 +8,7 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 
-#define STBI_ASSERT(x) mlx::Assert(x, "internal stb assertion " #x)
+#define STBI_ASSERT(x) (mlx::Assert(x, "internal stb assertion " #x))
 #define STBI_MALLOC(x) (mlx::MemManager::Get().Malloc(x))
 #define STBI_REALLOC(p, x) (mlx::MemManager::Get().Realloc(p, x))
 #define STBI_FREE(x) (mlx::MemManager::Get().Free(x))
@@ -162,6 +162,10 @@ namespace mlx
 			#endif
 		}
 		m_image = VK_NULL_HANDLE;
+		m_layout = VK_IMAGE_LAYOUT_UNDEFINED;
+		m_width = 0;
+		m_height = 0;
+		m_is_multisampled = false;
 	}
 
 	void Texture::Init(CPUBuffer pixels, std::uint32_t width, std::uint32_t height, VkFormat format, bool is_multisampled, [[maybe_unused]] std::string_view debug_name)
@@ -269,6 +273,7 @@ namespace mlx
 
 	Texture* StbTextureLoad(const std::filesystem::path& file, int* w, int* h)
 	{
+		using namespace std::literals;
 		MLX_PROFILE_FUNCTION();
 		std::string filename = file.string();
 
@@ -289,10 +294,8 @@ namespace mlx
 		Vec2i size;
 		int channels;
 
-		std::uint8_t* data = stbi_load(filename.c_str(), &size.x, &size.y, &channels, STBI_rgb_alpha);
+		std::uint8_t* data = stbi_load(filename.c_str(), &size.x, &size.y, &channels, 4);
 		CallOnExit defer([=]() { stbi_image_free(data); });
-
-		Verify(channels == 4, "invalid channels number in image loaded (should be 4, was %)", channels);
 
 		CPUBuffer buffer(size.x * size.y * 4);
 		std::memcpy(buffer.GetData(), data, buffer.GetSize());

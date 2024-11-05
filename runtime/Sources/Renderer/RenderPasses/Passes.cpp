@@ -5,37 +5,30 @@
 
 namespace mlx
 {
-	void RenderPasses::Init(Renderer& renderer)
+	void RenderPasses::Init()
 	{
 		m_2Dpass.Init();
 		m_final.Init();
-		func::function<void(const EventBase&)> functor = [this, &renderer](const EventBase& event)
+		func::function<void(const EventBase&)> functor = [this](const EventBase& event)
 		{
 			if(event.What() == Event::ResizeEventCode)
-			{
 				m_main_render_texture.Destroy();
-				auto extent = kvfGetSwapchainImagesSize(renderer.GetSwapchain().Get());
-				#ifdef DEBUG
-					m_main_render_texture.Init({}, extent.width, extent.height, VK_FORMAT_R8G8B8A8_SRGB, false, "mlx_renderpasses_target");
-				#else
-					m_main_render_texture.Init({}, extent.width, extent.height, VK_FORMAT_R8G8B8A8_SRGB, false, {});
-				#endif
-				m_main_render_texture.TransitionLayout(VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
-			}
 		};
 		EventBus::RegisterListener({ functor, "__MlxRenderPasses" });
-		auto extent = kvfGetSwapchainImagesSize(renderer.GetSwapchain().Get());
-
-		#ifdef DEBUG
-			m_main_render_texture.Init({}, extent.width, extent.height, VK_FORMAT_R8G8B8A8_SRGB, false, "mlx_renderpasses_target");
-		#else
-			m_main_render_texture.Init({}, extent.width, extent.height, VK_FORMAT_R8G8B8A8_SRGB, false, {});
-		#endif
-		m_main_render_texture.TransitionLayout(VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
 	}
 
 	void RenderPasses::Pass(Scene& scene, Renderer& renderer, const Vec4f& clear_color)
 	{
+		if(!m_main_render_texture.IsInit())
+		{
+			auto extent = kvfGetSwapchainImagesSize(renderer.GetSwapchain().Get());
+			#ifdef DEBUG
+				m_main_render_texture.Init({}, extent.width, extent.height, VK_FORMAT_R8G8B8A8_SRGB, false, "mlx_renderpasses_target");
+			#else
+				m_main_render_texture.Init({}, extent.width, extent.height, VK_FORMAT_R8G8B8A8_SRGB, false, {});
+			#endif
+			m_main_render_texture.TransitionLayout(VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
+		}
 		m_main_render_texture.Clear(renderer.GetActiveCommandBuffer(), clear_color);
 
 		m_2Dpass.Pass(scene, renderer, m_main_render_texture);

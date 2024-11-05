@@ -40,7 +40,7 @@
  * by using #define KVF_NO_EXIT_ON_FAILURE
  *
  * If you are using Volk or any other meta loader you must define KVF_IMPL_VK_NO_PROTOTYPES
- * or VK_NO_PROTOTYPES before including this file to avoid conflicts with Vulkan prototypes.
+ * before including this file to avoid conflicts with Vulkan prototypes.
  * You will also need to pass the function pointers to kvf using dedicated functions.
  *
  * You can also #define KVF_ENABLE_VALIDATION_LAYERS to enable validation layers.
@@ -236,7 +236,7 @@ void kvfCheckVk(VkResult result);
 
 #ifdef KVF_IMPL_VK_NO_PROTOTYPES
 	#ifdef KVF_DEFINE_VULKAN_FUNCTION_PROTOTYPE
-			#undef KVF_DEFINE_VULKAN_FUNCTION_PROTOTYPE
+		#undef KVF_DEFINE_VULKAN_FUNCTION_PROTOTYPE
 	#endif
 	#define KVF_DEFINE_VULKAN_FUNCTION_PROTOTYPE(fn) PFN_##fn fn
 
@@ -2122,6 +2122,7 @@ void kvfDestroyImageView(VkDevice device, VkImageView image_view)
 void kvfTransitionImageLayout(VkDevice device, VkImage image, KvfImageType type, VkCommandBuffer cmd, VkFormat format, VkImageLayout old_layout, VkImageLayout new_layout, bool is_single_time_cmd_buffer)
 {
 	KVF_ASSERT(device != VK_NULL_HANDLE);
+	KVF_ASSERT(cmd != VK_NULL_HANDLE);
 
 	if(new_layout == old_layout)
 		return;

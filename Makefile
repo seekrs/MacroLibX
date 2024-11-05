@@ -28,7 +28,7 @@ SHADERS_SRCS = $(wildcard $(addsuffix /*.nzsl, $(SHADERS_DIR)))
 SPVS = $(SHADERS_SRCS:.nzsl=.spv.h)
 
 CXX = clang++
-CXXFLAGS = -std=c++20 -O3 -fPIC -Wall -Wextra -DSDL_MAIN_HANDLED
+CXXFLAGS = -std=c++20 -fPIC -Wall -Wextra -DSDL_MAIN_HANDLED
 INCLUDES = -I./includes -I./runtime/Includes -I./runtime/Sources -I./third_party
 
 NZSLC = nzslc
@@ -49,6 +49,8 @@ endif
 ifeq ($(DEBUG), true)
 	CXXFLAGS += -g3 -D DEBUG
 	LDFLAGS += -rdynamic
+else
+	CXXFLAGS += -O3
 endif
 
 ifeq ($(FORCE_INTEGRATED_GPU), true)

@@ -7,7 +7,6 @@ namespace mlx
 	void Mesh::Draw(VkCommandBuffer cmd, std::size_t& drawcalls, std::size_t& polygondrawn) const noexcept
 	{
 		MLX_PROFILE_FUNCTION();
-		#pragma omp parallel for
 		for(std::size_t i = 0; i < m_sub_meshes.size(); i++)
 			Draw(cmd, drawcalls, polygondrawn, i);
 	}
@@ -26,7 +25,6 @@ namespace mlx
 	Mesh::~Mesh()
 	{
 		MLX_PROFILE_FUNCTION();
-		#pragma omp parallel for
 		for(auto& mesh : m_sub_meshes)
 		{
 			mesh.vbo.Destroy();
