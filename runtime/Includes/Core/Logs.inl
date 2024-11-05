@@ -16,7 +16,7 @@ namespace mlx
 		}
 		catch(const std::exception& e)
 		{
-			Logs::Report(LogType::Error, "formatter exception catched in the log printer : "s + e.what());
+			Logs::Report(LogType::Error, line, file, function, "formatter exception catched in the log printer: "s + e.what());
 		}
 	}
 
@@ -32,7 +32,7 @@ namespace mlx
 		}
 		catch(const std::exception& e)
 		{
-			Logs::Report(LogType::Error, "formatter exception catched in the log printer : "s + e.what());
+			Logs::Report(LogType::Error, line, file, function, "formatter exception catched in the log printer: "s + e.what());
 		}
 	}
 
@@ -48,7 +48,7 @@ namespace mlx
 		}
 		catch(const std::exception& e)
 		{
-			Logs::Report(LogType::Error, "formatter exception catched in the log printer : "s + e.what());
+			Logs::Report(LogType::Error, line, file, function, "formatter exception catched in the log printer: "s + e.what());
 		}
 	}
 
@@ -64,7 +64,7 @@ namespace mlx
 		}
 		catch(const std::exception& e)
 		{
-			Logs::Report(LogType::Error, "formatter exception catched in the log printer : "s + e.what());
+			Logs::Report(LogType::Error, line, file, function, "formatter exception catched in the log printer: "s + e.what());
 		}
 	}
 
@@ -80,7 +80,7 @@ namespace mlx
 		}
 		catch(const std::exception& e)
 		{
-			Logs::Report(LogType::Error, "formatter exception catched in the log printer : "s + e.what());
+			Logs::Report(LogType::FatalError, line, file, function, "formatter exception catched in the log printer: "s + e.what());
 		}
 	}
 
@@ -98,7 +98,7 @@ namespace mlx
 		}
 		catch(const std::exception& e)
 		{
-			Logs::Report(LogType::Error, "formatter exception catched in the log printer : "s + e.what());
+			Logs::Report(LogType::FatalError, line, file, function, "formatter exception catched in the log printer: "s + e.what());
 		}
 	}
 
@@ -117,7 +117,7 @@ namespace mlx
 			}
 			catch(const std::exception& e)
 			{
-				Logs::Report(LogType::Error, "formatter exception catched in the log printer : "s + e.what());
+				Logs::Report(LogType::FatalError, line, file, function, "formatter exception catched in the log printer: "s + e.what());
 			}
 		}
 	#endif

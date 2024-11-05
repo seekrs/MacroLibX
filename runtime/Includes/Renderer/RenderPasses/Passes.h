@@ -12,7 +12,7 @@ namespace mlx
 		public:
 			RenderPasses() = default;
 
-			void Init(class Renderer& renderer);
+			void Init();
 			void Pass(class Scene& scene, class Renderer& renderer, const Vec4f& clear_color);
 			void Destroy();
 

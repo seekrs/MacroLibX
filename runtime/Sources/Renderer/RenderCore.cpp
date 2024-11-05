@@ -1,12 +1,16 @@
 #include <PreCompiled.h>
 #include <Renderer/RenderCore.h>
+#include <Core/Memory.h>
 
 #define KVF_IMPLEMENTATION
 #ifdef DEBUG
 	#define KVF_ENABLE_VALIDATION_LAYERS
 #endif
 
-#define KVF_ASSERT(x) mlx::Assert(x, #x)
+#define KVF_ASSERT(x) (mlx::Assert(x, "internal kvf assertion " #x))
+#define KVF_MALLOC(x) (mlx::MemManager::Get().Malloc(x))
+#define KVF_REALLOC(p, x) (mlx::MemManager::Get().Realloc(p, x))
+#define KVF_FREE(x) (mlx::MemManager::Get().Free(x))
 
 #if defined(MLX_COMPILER_GCC) || defined(MLX_COMPILER_CLANG)
 	#pragma clang diagnostic push

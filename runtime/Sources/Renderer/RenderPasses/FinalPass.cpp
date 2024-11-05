@@ -20,7 +20,7 @@ namespace mlx
 		ShaderLayout fragment_shader_layout(
 			{
 				{ 0,
-					ShaderSetLayout({ 
+					ShaderSetLayout({
 						{ 0, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER }
 					})
 				}

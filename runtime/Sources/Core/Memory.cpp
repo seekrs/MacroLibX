@@ -40,6 +40,8 @@ namespace mlx
 
 	void MemManager::Free(void* ptr)
 	{
+		if(ptr == nullptr)
+			return;
 		auto it = std::find(s_blocks.begin(), s_blocks.end(), ptr);
 		if(it == s_blocks.end())
 		{

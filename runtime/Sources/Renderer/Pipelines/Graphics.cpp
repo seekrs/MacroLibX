@@ -103,7 +103,6 @@ namespace mlx
 		scissor.extent = fb_extent;
 		RenderCore::Get().vkCmdSetScissor(command_buffer, 0, 1, &scissor);
 
-		#pragma omp parallel for
 		for(std::size_t i = 0; i < m_clears.size(); i++)
 		{
 			m_clears[i].color.float32[0] = clear[0];
@@ -128,7 +127,6 @@ namespace mlx
 		MLX_PROFILE_FUNCTION();
 		p_vertex_shader.reset();
 		p_fragment_shader.reset();
-		#pragma omp parallel for
 		for(auto& fb : m_framebuffers)
 		{
 			kvfDestroyFramebuffer(RenderCore::Get().GetDevice(), fb);
@@ -144,6 +142,9 @@ namespace mlx
 		kvfDestroyPipeline(RenderCore::Get().GetDevice(), m_pipeline);
 		m_pipeline = VK_NULL_HANDLE;
 		DebugLog("Vulkan: graphics pipeline destroyed");
+		p_renderer = nullptr;
+		m_clears.clear();
+		m_attachments.clear();
 	}
 
 	void GraphicPipeline::CreateFramebuffers(const std::vector<NonOwningPtr<Texture>>& render_targets, bool clear_attachments)
@@ -157,7 +158,6 @@ namespace mlx
 			attachment_views.push_back(p_renderer->GetSwapchain().GetSwapchainImages()[0].GetImageView());
 		}
 
-		#pragma omp parallel for
 		for(NonOwningPtr<Texture> image : render_targets)
 		{
 			attachments.push_back(kvfBuildAttachmentDescription((kvfIsDepthFormat(image->GetFormat()) ? KVF_IMAGE_DEPTH : KVF_IMAGE_COLOR), image->GetFormat(), image->GetLayout(), image->GetLayout(), clear_attachments, VK_SAMPLE_COUNT_1_BIT));
@@ -178,7 +178,6 @@ namespace mlx
 				DebugLog("Vulkan: framebuffer created");
 			}
 		}
-		#pragma omp parallel for
 		for(NonOwningPtr<Texture> image : render_targets)
 		{
 			m_framebuffers.push_back(kvfCreateFramebuffer(RenderCore::Get().GetDevice(), m_renderpass, attachment_views.data(), attachment_views.size(), { .width = image->GetWidth(), .height = image->GetHeight() }));
