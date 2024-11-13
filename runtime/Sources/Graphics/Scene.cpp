@@ -37,7 +37,7 @@ namespace mlx
 			return  static_cast<Sprite*>(drawable.get())->GetTexture() == texture &&
 					drawable->GetPosition() == position &&
 					drawable->GetScale() == Vec2f{ scale, scale } &&
-					drawable->GetRotation() == EulerAnglesf{ 0.0f, 0.0f, rotation };
+					drawable->GetRotation().ToEulerAngles() == EulerAnglesf{ 0.0f, 0.0f, rotation };
 		});
 		return static_cast<Sprite*>(it != m_drawables.end() ? it->get() : nullptr);
 	}

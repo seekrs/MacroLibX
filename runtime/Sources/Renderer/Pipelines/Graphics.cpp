@@ -132,7 +132,6 @@ namespace mlx
 			kvfDestroyFramebuffer(RenderCore::Get().GetDevice(), fb);
 			DebugLog("Vulkan: framebuffer destroyed");
 		}
-		m_framebuffers.clear();
 
 		kvfDestroyPipelineLayout(RenderCore::Get().GetDevice(), m_pipeline_layout);
 		m_pipeline_layout = VK_NULL_HANDLE;
@@ -149,6 +148,7 @@ namespace mlx
 		p_renderer = nullptr;
 		m_clears.clear();
 		m_attachments.clear();
+		m_framebuffers.clear();
 	}
 
 	void GraphicPipeline::CreateFramebuffers(const std::vector<NonOwningPtr<Texture>>& render_targets, bool clear_attachments)
