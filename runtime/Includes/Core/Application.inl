@@ -169,7 +169,7 @@ namespace mlx
 		}
 	}
 
-	void Application::TexturePut(Handle win, Handle img, int x, int y)
+	void Application::TexturePut(Handle win, Handle img, int x, int y, float scale, float angle)
 	{
 		MLX_PROFILE_FUNCTION();
 		CHECK_WINDOW_PTR(win);
@@ -178,7 +178,7 @@ namespace mlx
 		if(!texture->IsInit())
 			Error("trying to put a texture that has been destroyed");
 		else
-			m_graphics[*static_cast<int*>(win)]->TexturePut(texture, x, y);
+			m_graphics[*static_cast<int*>(win)]->TexturePut(texture, x, y, scale, angle);
 	}
 
 	int Application::GetTexturePixel(Handle img, int x, int y)

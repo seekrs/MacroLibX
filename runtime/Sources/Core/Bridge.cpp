@@ -145,7 +145,13 @@ extern "C"
 	void mlx_put_image_to_window(void* mlx, void* win, void* img, int x, int y)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
-		static_cast<mlx::Application*>(mlx)->TexturePut(win, img, x, y);
+		static_cast<mlx::Application*>(mlx)->TexturePut(win, img, x, y, 1.0f, 0.0f);
+	}
+
+	void mlx_transform_put_image_to_window(void* mlx, void* win, void* img, int x, int y, float scale, float angle)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		static_cast<mlx::Application*>(mlx)->TexturePut(win, img, x, y, scale, angle);
 	}
 
 	void mlx_destroy_image(void* mlx, void* img)

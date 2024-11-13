@@ -8,10 +8,10 @@
 
 namespace mlx
 {
-	struct SpriteData
+	struct DrawableData
 	{
+		Mat4f model_matrix;
 		Vec4f color;
-		Vec2f position;
 	};
 
 	void Render2DPass::Init()
@@ -25,7 +25,7 @@ namespace mlx
 						{ 0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER }
 					})
 				}
-			}, { ShaderPushConstantLayout({ 0, sizeof(SpriteData) }) }
+			}, { ShaderPushConstantLayout({ 0, sizeof(DrawableData) }) }
 		);
 		std::vector<std::uint8_t> vertex_shader_code = {
 			#include <Embedded/Shader2DVertex.spv.h>
@@ -105,15 +105,19 @@ namespace mlx
 		m_pipeline.BindPipeline(cmd, 0, {});
 		for(auto& drawable : drawables)
 		{
-			SpriteData drawable_data;
-			drawable_data.position = drawable->GetPosition();
+			DrawableData drawable_data;
 			drawable_data.color = drawable->GetColor();
+			drawable_data.model_matrix = Mat4f::Identity();
+			drawable_data.model_matrix.SetTranslation(Vec3f{ drawable->GetPosition(), 0.0f });
+			drawable_data.model_matrix.SetScale(Vec3f{ drawable->GetScale(), 1.0f });
+			drawable_data.model_matrix.SetRotation(drawable->GetRotation());
+			//drawable_data.model_matrix = Mat4f::Translate(-Vec3f{ drawable->GetCenter(), 0.0f }) * Mat4f::Rotate(drawable->GetRotation()) * drawable_data.model_matrix;
 
 			drawable->Bind(frame_index, cmd);
 
 			std::array<VkDescriptorSet, 2> sets = { p_viewer_data_set->GetSet(frame_index), drawable->GetSet(frame_index) };
 
-			RenderCore::Get().vkCmdPushConstants(cmd, m_pipeline.GetPipelineLayout(), VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(SpriteData), &drawable_data);
+			RenderCore::Get().vkCmdPushConstants(cmd, m_pipeline.GetPipelineLayout(), VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(DrawableData), &drawable_data);
 			RenderCore::Get().vkCmdBindDescriptorSets(cmd, m_pipeline.GetPipelineBindPoint(), m_pipeline.GetPipelineLayout(), 0, sets.size(), sets.data(), 0, nullptr);
 
 			drawable->GetMesh()->Draw(cmd, renderer.GetDrawCallsCounterRef(), renderer.GetPolygonDrawnCounterRef());

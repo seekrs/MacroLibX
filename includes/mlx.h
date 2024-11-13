@@ -6,7 +6,7 @@
 /*   By: maldavid <contact@kbz8.me>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:56:35 by maldavid          #+#    #+#             */
-/*   Updated: 2024/11/04 21:09:59 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/11/05 18:18:22 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,6 +233,21 @@ MLX_API void mlx_set_image_pixel(void* mlx, void* img, int x, int y, int color);
  * @return (void)
  */
 MLX_API void mlx_put_image_to_window(void* mlx, void* win, void* img, int x, int y);
+
+/**
+ * @brief            Transform and put image to the given window
+ *
+ * @param mlx        Internal MLX application
+ * @param win        Internal window
+ * @param img        Internal image
+ * @param x          X coordinate
+ * @param y          Y coordinate
+ * @param scale      Scale of the image
+ * @param angle      Rotation angle of the image (clockwise)
+ *
+ * @return (void)
+ */
+MLX_API void mlx_transform_put_image_to_window(void* mlx, void* win, void* img, int x, int y, float scale, float angle);
 
 /**
  * @brief            Destroys internal image

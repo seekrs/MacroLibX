@@ -26,7 +26,7 @@ namespace mlx
 
 			inline void PixelPut(int x, int y, std::uint32_t color) noexcept;
 			inline void StringPut(int x, int y, std::uint32_t color, std::string str);
-			inline void TexturePut(NonOwningPtr<class Texture> texture, int x, int y);
+			inline void TexturePut(NonOwningPtr<class Texture> texture, int x, int y, float scale, float angle);
 
 			inline void TryEraseSpritesInScene(NonOwningPtr<Texture> texture) noexcept;
 

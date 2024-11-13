@@ -17,7 +17,7 @@ namespace mlx
 			Scene() = default;
 
 			Sprite& CreateSprite(NonOwningPtr<class Texture> texture) noexcept;
-			NonOwningPtr<Sprite> GetSpriteFromTextureAndPosition(NonOwningPtr<Texture> texture, const Vec2f& position) const;
+			NonOwningPtr<Sprite> GetSpriteFromTexturePositionScaleRotation(NonOwningPtr<Texture> texture, const Vec2f& position, float scale, float rotation) const;
 			void TryEraseSpriteFromTexture(NonOwningPtr<Texture> texture);
 			bool IsTextureAtGivenDrawLayer(NonOwningPtr<Texture> texture, std::uint64_t draw_layer) const;
 

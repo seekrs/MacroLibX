@@ -9,7 +9,7 @@
 #include <cstdarg>
 #include <iostream>
 
-#include <vulkan/vulkan_core.h>
+#include <vulkan/vulkan.h>
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_vulkan.h>
@@ -61,7 +61,7 @@
 #define VMA_STATIC_VULKAN_FUNCTIONS 0
 #define VMA_DYNAMIC_VULKAN_FUNCTIONS 0
 #define VMA_VULKAN_VERSION 1000000
-#define VMA_ASSERT(expr) ((void)0)
+#define VMA_ASSERT(expr) ((void)0) // Because why not
 
 #ifdef MLX_COMPILER_CLANG
 	#pragma clang diagnostic push

@@ -27,7 +27,7 @@ int update(void* param)
 	mlx_string_put(mlx->mlx, mlx->win, 160, 120, 0xFFFF2066, "this text should be hidden");
 
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->logo_png, 100, 100);
-	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->logo_bmp, 220, 40);
+	mlx_transform_put_image_to_window(mlx->mlx, mlx->win, mlx->logo_bmp, 220, 40, 0.5f, 75.0f);
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 150, 60);
 
 	mlx_set_font(mlx->mlx, "default");
@@ -40,7 +40,7 @@ int update(void* param)
 		color += (color < 255);
 	}
 
-	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->logo_jpg, 210, 150);
+	mlx_transform_put_image_to_window(mlx->mlx, mlx->win, mlx->logo_jpg, 210, 150, 2.0f, 0.0f);
 	mlx_set_font_scale(mlx->mlx, "default", 8.f);
 	mlx_string_put(mlx->mlx, mlx->win, 210, 175, 0xFFAF2BFF, "hidden");
 
@@ -131,7 +131,7 @@ int main(void)
 	int dummy;
 
 	mlx.mlx = mlx_init();
-	mlx.win = mlx_new_resizable_window(mlx.mlx, 400, 400, "My window");
+	mlx.win = mlx_new_window(mlx.mlx, 400, 400, "My window");
 
 	mlx_set_fps_goal(mlx.mlx, 60);
 

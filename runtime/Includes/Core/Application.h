@@ -36,7 +36,7 @@ namespace mlx
 
 			Handle NewTexture(int w, int h);
 			Handle NewStbTexture(char* file, int* w, int* h); // stb textures are image files (png, jpg, bpm, ...)
-			inline void TexturePut(Handle win, Handle img, int x, int y);
+			inline void TexturePut(Handle win, Handle img, int x, int y, float scale, float angle);
 			inline int GetTexturePixel(Handle img, int x, int y);
 			inline void SetTexturePixel(Handle img, int x, int y, std::uint32_t color);
 			void DestroyTexture(Handle ptr);
