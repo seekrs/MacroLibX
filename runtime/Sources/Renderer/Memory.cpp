@@ -1,4 +1,3 @@
-#include <mlx_profile.h>
 #include <PreCompiled.h>
 
 #define VMA_IMPLEMENTATION

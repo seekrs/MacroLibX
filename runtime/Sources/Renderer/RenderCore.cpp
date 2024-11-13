@@ -56,7 +56,6 @@ namespace mlx
 			return;
 		s_instance = this;
 
-		Logs::BeginSection();
 		loader = std::make_unique<VulkanLoader>();
 
 		LoadKVFGlobalVulkanFunctionPointers();
@@ -80,7 +79,6 @@ namespace mlx
 
 		VkSurfaceKHR surface = window.CreateVulkanSurface(m_instance);
 
-		Logs::BeginSection();
 		m_physical_device = kvfPickGoodDefaultPhysicalDevice(m_instance, surface);
 
 		// just for style
@@ -96,12 +94,10 @@ namespace mlx
 
 		loader->LoadDevice(m_device);
 		LoadKVFDeviceVulkanFunctionPointers();
-		Logs::EndSection();
 
 		vkDestroySurfaceKHR(m_instance, surface, nullptr);
 
 		m_allocator.Init();
-		Logs::EndSection();
 	}
 
 #undef MLX_LOAD_FUNCTION
