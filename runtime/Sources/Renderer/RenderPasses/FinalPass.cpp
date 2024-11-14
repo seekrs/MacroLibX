@@ -41,7 +41,7 @@ namespace mlx
 		p_set = RenderCore::Get().GetDescriptorPoolManager().GetAvailablePool().RequestDescriptorSet(p_fragment_shader->GetShaderLayout().set_layouts[0].second, ShaderType::Fragment);
 	}
 
-	void FinalPass::Pass([[maybe_unused]] Scene& scene, Renderer& renderer, Texture& render_target)
+	void FinalPass::Pass([[maybe_unused]] Scene& scene, Renderer& renderer, Texture& render_target, NonOwningPtr<class Texture> final_target)
 	{
 		MLX_PROFILE_FUNCTION();
 		if(m_pipeline.GetPipeline() == VK_NULL_HANDLE)
@@ -49,7 +49,10 @@ namespace mlx
 			GraphicPipelineDescriptor pipeline_descriptor;
 			pipeline_descriptor.vertex_shader = p_vertex_shader;
 			pipeline_descriptor.fragment_shader = p_fragment_shader;
-			pipeline_descriptor.renderer = &renderer;
+			if(final_target)
+				pipeline_descriptor.color_attachments = { final_target };
+			else
+				pipeline_descriptor.renderer = &renderer;
 			pipeline_descriptor.no_vertex_inputs = true;
 			#ifdef DEBUG
 				m_pipeline.Init(pipeline_descriptor, "mlx_final_pass");
