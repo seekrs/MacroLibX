@@ -12,7 +12,7 @@ namespace mlx
 		public:
 			FinalPass() = default;
 			void Init();
-			void Pass(class Scene& scene, class Renderer& renderer, class Texture& render_target);
+			void Pass(class Scene& scene, class Renderer& renderer, class Texture& render_target, NonOwningPtr<class Texture> final_target);
 			void Destroy();
 			~FinalPass() = default;
 

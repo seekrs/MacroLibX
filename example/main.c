@@ -9,6 +9,8 @@ typedef struct
 	void* logo_jpg;
 	void* logo_bmp;
 	void* img;
+	void* render_target;
+	void* render_target_win;
 } mlx_t;
 
 int update(void* param)
@@ -49,6 +51,12 @@ int update(void* param)
 		for(int k = 0; k < 20; k++)
 			mlx_pixel_put(mlx->mlx, mlx->win, 220 + j, 160 + k, 0xFFFF0000);
 	}
+
+	mlx_string_put(mlx->mlx, mlx->render_target_win, 20, 20, 0xFFAF2BFF, "cacaboudin");
+	mlx_transform_put_image_to_window(mlx->mlx, mlx->render_target_win, mlx->logo_bmp, 100, 40, 0.5f, 75.0f);
+	mlx_put_image_to_window(mlx->mlx, mlx->render_target_win, mlx->img, 40, 60);
+
+	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->render_target_win, 40, 60);
 
 	i++;
 	return 0;
@@ -133,6 +141,9 @@ int main(void)
 	mlx.mlx = mlx_init();
 	mlx.win = mlx_new_window(mlx.mlx, 400, 400, "My window");
 
+	mlx.render_target = mlx_new_image(mlx.mlx, 200, 200);
+	mlx.render_target_win = mlx_new_window(mlx.mlx, 200, 200, (char*)mlx.render_target);
+
 	mlx_set_fps_goal(mlx.mlx, 60);
 
 	mlx_on_event(mlx.mlx, mlx.win, MLX_KEYDOWN, key_hook, &mlx);
@@ -161,6 +172,10 @@ int main(void)
 	mlx_destroy_image(mlx.mlx, mlx.logo_bmp);
 	mlx_destroy_image(mlx.mlx, mlx.img);
 	mlx_destroy_window(mlx.mlx, mlx.win);
+	
+	mlx_destroy_window(mlx.mlx, mlx.render_target_win);
+	mlx_destroy_image(mlx.mlx, mlx.render_target);
+
 	mlx_destroy_display(mlx.mlx);
 
 	return 0;

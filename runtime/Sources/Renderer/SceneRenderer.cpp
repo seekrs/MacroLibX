@@ -6,10 +6,10 @@
 
 namespace mlx
 {
-	void SceneRenderer::Init()
+	void SceneRenderer::Init(NonOwningPtr<class Texture> render_target)
 	{
 		MLX_PROFILE_FUNCTION();
-		m_passes.Init();
+		m_passes.Init(render_target);
 	}
 
 	void SceneRenderer::Render(Scene& scene, Renderer& renderer)

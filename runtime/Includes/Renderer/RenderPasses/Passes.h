@@ -12,7 +12,7 @@ namespace mlx
 		public:
 			RenderPasses() = default;
 
-			void Init();
+			void Init(NonOwningPtr<class Texture> render_target);
 			void Pass(class Scene& scene, class Renderer& renderer, const Vec4f& clear_color);
 			void Destroy();
 
@@ -22,6 +22,7 @@ namespace mlx
 			Render2DPass m_2Dpass;
 			FinalPass m_final;
 			Texture m_main_render_texture;
+			NonOwningPtr<class Texture> p_render_target;
 	};
 }
 

@@ -5,8 +5,10 @@
 
 namespace mlx
 {
-	void RenderPasses::Init()
+	void RenderPasses::Init(NonOwningPtr<class Texture> render_target)
 	{
+		p_render_target = render_target;
+
 		m_2Dpass.Init();
 		m_final.Init();
 		func::function<void(const EventBase&)> functor = [this](const EventBase& event)
@@ -21,7 +23,11 @@ namespace mlx
 	{
 		if(!m_main_render_texture.IsInit())
 		{
-			auto extent = kvfGetSwapchainImagesSize(renderer.GetSwapchain().Get());
+			VkExtent2D extent;
+			if(p_render_target)
+				extent = VkExtent2D{ .width = p_render_target->GetWidth(), .height = p_render_target->GetHeight() };
+			else
+				extent = kvfGetSwapchainImagesSize(renderer.GetSwapchain().Get());
 			#ifdef DEBUG
 				m_main_render_texture.Init({}, extent.width, extent.height, VK_FORMAT_R8G8B8A8_SRGB, false, "mlx_renderpasses_target");
 			#else
@@ -32,7 +38,7 @@ namespace mlx
 		m_main_render_texture.Clear(renderer.GetActiveCommandBuffer(), clear_color);
 
 		m_2Dpass.Pass(scene, renderer, m_main_render_texture);
-		m_final.Pass(scene, renderer, m_main_render_texture);
+		m_final.Pass(scene, renderer, m_main_render_texture, p_render_target);
 	}
 
 	void RenderPasses::Destroy()

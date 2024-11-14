@@ -19,7 +19,8 @@ namespace mlx
 	{
 		MLX_PROFILE_FUNCTION();
 		p_window = window;
-		m_swapchain.Init(p_window);
+		if(p_window)
+			m_swapchain.Init(p_window);
 		for(std::size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
 		{
 			m_image_available_semaphores[i] = kvfCreateSemaphore(RenderCore::Get().GetDevice());
@@ -37,7 +38,8 @@ namespace mlx
 	{
 		MLX_PROFILE_FUNCTION();
 		kvfWaitForFence(RenderCore::Get().GetDevice(), m_cmd_fences[m_current_frame_index]);
-		m_swapchain.AquireFrame(m_image_available_semaphores[m_current_frame_index]);
+		if(p_window)
+			m_swapchain.AquireFrame(m_image_available_semaphores[m_current_frame_index]);
 		RenderCore::Get().vkResetCommandBuffer(m_cmd_buffers[m_current_frame_index], 0);
 		kvfBeginCommandBuffer(m_cmd_buffers[m_current_frame_index], 0);
 		m_drawcalls = 0;
@@ -50,8 +52,12 @@ namespace mlx
 		MLX_PROFILE_FUNCTION();
 		VkPipelineStageFlags wait_stages[] = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
 		kvfEndCommandBuffer(m_cmd_buffers[m_current_frame_index]);
-		kvfSubmitCommandBuffer(RenderCore::Get().GetDevice(), m_cmd_buffers[m_current_frame_index], KVF_GRAPHICS_QUEUE, m_render_finished_semaphores[m_current_frame_index], m_image_available_semaphores[m_current_frame_index], m_cmd_fences[m_current_frame_index], wait_stages);
-		m_swapchain.Present(m_render_finished_semaphores[m_current_frame_index]);
+		if(p_window)
+			kvfSubmitCommandBuffer(RenderCore::Get().GetDevice(), m_cmd_buffers[m_current_frame_index], KVF_GRAPHICS_QUEUE, m_render_finished_semaphores[m_current_frame_index], m_image_available_semaphores[m_current_frame_index], m_cmd_fences[m_current_frame_index], wait_stages);
+		else
+			kvfSubmitCommandBuffer(RenderCore::Get().GetDevice(), m_cmd_buffers[m_current_frame_index], KVF_GRAPHICS_QUEUE, VK_NULL_HANDLE, VK_NULL_HANDLE, m_cmd_fences[m_current_frame_index], wait_stages);
+		if(p_window)
+			m_swapchain.Present(m_render_finished_semaphores[m_current_frame_index]);
 		m_current_frame_index = (m_current_frame_index + 1) % MAX_FRAMES_IN_FLIGHT;
 	}
 
@@ -68,6 +74,7 @@ namespace mlx
 			kvfDestroyFence(RenderCore::Get().GetDevice(), m_cmd_fences[i]);
 			DebugLog("Vulkan: fence destroyed");
 		}
-		m_swapchain.Destroy();
+		if(p_window)
+			m_swapchain.Destroy();
 	}
 }
