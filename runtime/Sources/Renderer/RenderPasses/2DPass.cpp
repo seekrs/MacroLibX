@@ -108,10 +108,10 @@ namespace mlx
 			DrawableData drawable_data;
 			drawable_data.color = drawable->GetColor();
 			drawable_data.model_matrix = Mat4f::Identity();
-			drawable_data.model_matrix.SetTranslation(Vec3f{ drawable->GetPosition(), 0.0f });
-			drawable_data.model_matrix.SetScale(Vec3f{ drawable->GetScale(), 1.0f });
-			drawable_data.model_matrix.SetRotation(drawable->GetRotation());
-			//drawable_data.model_matrix = Mat4f::Translate(-Vec3f{ drawable->GetCenter(), 0.0f }) * Mat4f::Rotate(drawable->GetRotation()) * drawable_data.model_matrix;
+			drawable_data.model_matrix.ApplyTranslation(Vec3f{ -drawable->GetCenter() / 2.0f, 0.0f });
+			drawable_data.model_matrix.ApplyRotation(drawable->GetRotation());
+			drawable_data.model_matrix.ApplyTranslation(Vec3f{ drawable->GetPosition() + drawable->GetCenter(), 0.0f });
+			drawable_data.model_matrix.ApplyScale(Vec3f{ drawable->GetScale(), 1.0f });
 
 			drawable->Bind(frame_index, cmd);
 

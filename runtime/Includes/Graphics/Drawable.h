@@ -50,7 +50,7 @@ namespace mlx
 			Vec4f m_color = Vec4f{ 1.0f, 1.0f, 1.0f, 1.0f };
 			Vec2f m_position = Vec2f{ 0.0f, 0.0f };
 			Vec2f m_scale = Vec2f{ 1.0f, 1.0f };
-			Vec2f m_center;
+			Vec2f m_center = Vec2f{ 0.0f, 0.0f };
 			DrawableType m_type;
 	};
 }
