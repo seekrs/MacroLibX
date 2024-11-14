@@ -95,8 +95,8 @@ namespace mlx
 		static constexpr Mat4 ConcatenateTransform(const Mat4& left, const Mat4& right);
 		static constexpr Mat4 Identity();
 		static constexpr Mat4 LookAt(const Vec3<T>& eye, const Vec3<T>& target, const Vec3<T>& up = Vec3<T>::Up());
-		static constexpr Mat4 Ortho(T left, T right, T top, T bottom, T zNear = -1.0, T zFar = 1.0);
-		static Mat4 Perspective(RadianAngle<T> angle, T ratio, T zNear, T zFar);
+		static constexpr Mat4 Ortho(T left, T right, T top, T bottom, T z_near = -1.0, T zFar = 1.0);
+		static Mat4 Perspective(RadianAngle<T> angle, T ratio, T z_near, T z_far);
 		static constexpr Mat4 Rotate(const Quat<T>& rotation);
 		static constexpr Mat4 Scale(const Vec3<T>& scale);
 		static constexpr Mat4 Translate(const Vec3<T>& translation);

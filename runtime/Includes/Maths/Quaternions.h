@@ -20,10 +20,9 @@ namespace mlx
 		template<typename U> constexpr explicit Quat(const Quat<U>& quat);
 		constexpr Quat(const Quat&) = default;
 		constexpr Quat(Quat&&) = default;
-		~Quat() = default;
 
 		RadianAngle<T> AngleBetween(const Quat& vec) const;
-		constexpr bool ApproxEqual(const Quat& quat, T maxDifference = std::numeric_limits<T>::epsilon()) const;
+		constexpr bool ApproxEqual(const Quat& quat, T max_difference = std::numeric_limits<T>::epsilon()) const;
 
 		Quat& ComputeW();
 		constexpr Quat& Conjugate();
@@ -68,16 +67,18 @@ namespace mlx
 		constexpr bool operator>=(const Quat& quat) const;
 
 		static RadianAngle<T> AngleBetween(const Quat& lhs, const Quat& rhs);
-		static constexpr bool ApproxEqual(const Quat& lhs, const Quat& rhs, T maxDifference = std::numeric_limits<T>::epsilon());
+		static constexpr bool ApproxEqual(const Quat& lhs, const Quat& rhs, T max_difference = std::numeric_limits<T>::epsilon());
 		static constexpr Quat Identity();
 		static constexpr Quat Lerp(const Quat& from, const Quat& to, T interpolation);
 		static Quat LookAt(const Vec3<T>& forward, const Vec3<T>& up);
 		static Quat Normalize(const Quat& quat, T* length = nullptr);
 		static Quat RotationBetween(const Vec3<T>& from, const Vec3<T>& to);
-		static Quat RotateTowards(const Quat& from, const Quat& to, RadianAngle<T> maxRotation);
+		static Quat RotateTowards(const Quat& from, const Quat& to, RadianAngle<T> max_rotation);
 		static Quat Mirror(Quat quat, const Vec3<T>& axis);
 		static Quat Slerp(const Quat& from, const Quat& to, T interpolation);
 		static constexpr Quat Zero();
+
+		~Quat() = default;
 	};
 
 	using Quatd = Quat<double>;
