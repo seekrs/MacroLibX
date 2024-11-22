@@ -132,3 +132,29 @@
 	fun:_dbus*
 	...
 }
+{
+   dbus_memory_leak
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:calloc
+   obj:/usr/lib/x86_64-linux-gnu/libdbus-1.so.*
+   ...
+   fun:dbus*
+   ...
+}
+{
+   name
+   Memcheck:Leak
+   fun:*
+   ...
+   obj:*libnvidia-glcore.so*
+   ...
+}
+{
+   name
+   Memcheck:Leak
+   fun:*
+   ...
+   obj:*libdbus-1.so*
+   ...
+}
