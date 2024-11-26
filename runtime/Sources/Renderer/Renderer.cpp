@@ -19,8 +19,24 @@ namespace mlx
 	{
 		MLX_PROFILE_FUNCTION();
 		p_window = window;
-		if(p_window)
-			m_swapchain.Init(p_window);
+		m_swapchain.Init(p_window);
+		for(std::size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
+		{
+			m_image_available_semaphores[i] = kvfCreateSemaphore(RenderCore::Get().GetDevice());
+			DebugLog("Vulkan: image available semaphore created");
+			m_render_finished_semaphores[i] = kvfCreateSemaphore(RenderCore::Get().GetDevice());
+			DebugLog("Vulkan: render finished semaphore created");
+			m_cmd_buffers[i] = kvfCreateCommandBuffer(RenderCore::Get().GetDevice());
+			DebugLog("Vulkan: command buffer created");
+			m_cmd_fences[i] = kvfCreateFence(RenderCore::Get().GetDevice());
+			DebugLog("Vulkan: fence created");
+		}
+	}
+
+	void Renderer::Init(NonOwningPtr<Texture> render_target)
+	{
+		MLX_PROFILE_FUNCTION();
+		p_render_target = render_target;
 		for(std::size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
 		{
 			m_image_available_semaphores[i] = kvfCreateSemaphore(RenderCore::Get().GetDevice());

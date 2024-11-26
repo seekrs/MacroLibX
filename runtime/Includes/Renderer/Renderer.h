@@ -16,6 +16,7 @@ namespace mlx
 			Renderer() = default;
 
 			void Init(NonOwningPtr<Window> window);
+			void Init(NonOwningPtr<Texture> render_target);
 
 			void BeginFrame();
 			void EndFrame();
@@ -28,6 +29,7 @@ namespace mlx
 			[[nodiscard]] inline std::size_t& GetPolygonDrawnCounterRef() noexcept { return m_polygons_drawn; }
 			[[nodiscard]] inline std::size_t GetCurrentFrameIndex() const noexcept { return m_current_frame_index; }
 			[[nodiscard]] inline NonOwningPtr<Window> GetWindow() const noexcept { return p_window; }
+			[[nodiscard]] inline NonOwningPtr<Texture> GetRenderTarget() const noexcept { return p_render_target; }
 			[[nodiscard]] inline const Swapchain& GetSwapchain() const noexcept { return m_swapchain; }
 
 			void Destroy() noexcept;
@@ -41,6 +43,7 @@ namespace mlx
 			std::array<VkCommandBuffer, MAX_FRAMES_IN_FLIGHT> m_cmd_buffers;
 			std::array<VkFence, MAX_FRAMES_IN_FLIGHT> m_cmd_fences;
 			NonOwningPtr<Window> p_window;
+			NonOwningPtr<Texture> p_render_target;
 			std::uint32_t m_current_frame_index = 0;
 			std::size_t m_polygons_drawn = 0;
 			std::size_t m_drawcalls = 0;

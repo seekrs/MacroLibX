@@ -36,7 +36,7 @@ namespace mlx
 			if(event.What() == Event::ResizeEventCode)
 				m_pipeline.Destroy();
 		};
-		EventBus::RegisterListener({ functor, "__MlxFinalPass" });
+		EventBus::RegisterListener({ functor, "mlx_final_pass" });
 
 		p_set = RenderCore::Get().GetDescriptorPoolManager().GetAvailablePool().RequestDescriptorSet(p_fragment_shader->GetShaderLayout().set_layouts[0].second, ShaderType::Fragment);
 	}

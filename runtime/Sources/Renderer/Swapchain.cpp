@@ -19,8 +19,6 @@ namespace mlx
 	void Swapchain::Init(NonOwningPtr<Window> window)
 	{
 		p_window = window;
-		m_surface = window->CreateVulkanSurface(RenderCore::Get().GetInstance());
-		DebugLog("Vulkan: surface created");
 		CreateSwapchain();
 	}
 
@@ -53,11 +51,16 @@ namespace mlx
 
 	void Swapchain::Destroy()
 	{
+		if(m_swapchain == VK_NULL_HANDLE)
+			return;
 		RenderCore::Get().WaitDeviceIdle();
 
 		for(Image& img : m_swapchain_images)
 			img.DestroyImageView();
+		m_swapchain_images.clear();
 		kvfDestroySwapchainKHR(RenderCore::Get().GetDevice(), m_swapchain);
+		m_swapchain = VK_NULL_HANDLE;
+		DebugLog("Vulkan: swapchain destroyed");
 
 		RenderCore::Get().vkDestroySurfaceKHR(RenderCore::Get().GetInstance(), m_surface, nullptr);
 		m_surface = VK_NULL_HANDLE;
@@ -66,10 +69,6 @@ namespace mlx
 
 	void Swapchain::CreateSwapchain()
 	{
-		for(Image& img : m_swapchain_images)
-			img.DestroyImageView();
-		m_swapchain_images.clear();
-
 		VkExtent2D extent;
 		do
 		{
@@ -77,10 +76,11 @@ namespace mlx
 			extent = { size.x, size.y };
 		} while(extent.width == 0 || extent.height == 0);
 
-		VkSwapchainKHR old_swapchain = m_swapchain;
-		m_swapchain = kvfCreateSwapchainKHR(RenderCore::Get().GetDevice(), RenderCore::Get().GetPhysicalDevice(), m_surface, extent, VK_NULL_HANDLE, true);
-		if(old_swapchain != VK_NULL_HANDLE)
-			kvfDestroySwapchainKHR(RenderCore::Get().GetDevice(), old_swapchain);
+		Destroy();
+
+		m_surface = p_window->CreateVulkanSurface(RenderCore::Get().GetInstance());
+		DebugLog("Vulkan: surface created");
+		m_swapchain = kvfCreateSwapchainKHR(RenderCore::Get().GetDevice(), RenderCore::Get().GetPhysicalDevice(), m_surface, extent, VK_NULL_HANDLE, false);
 
 		m_images_count = kvfGetSwapchainImagesCount(m_swapchain);
 		m_min_images_count = kvfGetSwapchainMinImagesCount(m_swapchain);
