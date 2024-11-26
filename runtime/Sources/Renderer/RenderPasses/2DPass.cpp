@@ -50,7 +50,7 @@ namespace mlx
 			if(event.What() == Event::ResizeEventCode)
 				m_pipeline.Destroy();
 		};
-		EventBus::RegisterListener({ functor, "__MlxRender2DPass" });
+		EventBus::RegisterListener({ functor, "mlx_2d_render_pass" });
 
 		p_viewer_data_set = RenderCore::Get().GetDescriptorPoolManager().GetAvailablePool().RequestDescriptorSet(p_vertex_shader->GetShaderLayout().set_layouts[0].second, ShaderType::Vertex);
 		p_texture_set = RenderCore::Get().GetDescriptorPoolManager().GetAvailablePool().RequestDescriptorSet(p_fragment_shader->GetShaderLayout().set_layouts[0].second, ShaderType::Fragment);

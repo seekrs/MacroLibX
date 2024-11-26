@@ -16,7 +16,7 @@ namespace mlx
 			if(event.What() == Event::ResizeEventCode)
 				m_main_render_texture.Destroy();
 		};
-		EventBus::RegisterListener({ functor, "__MlxRenderPasses" });
+		EventBus::RegisterListener({ functor, "mlx_render_passes" });
 	}
 
 	void RenderPasses::Pass(Scene& scene, Renderer& renderer, const Vec4f& clear_color)

@@ -132,6 +132,7 @@ namespace mlx
 			kvfDestroyFramebuffer(RenderCore::Get().GetDevice(), fb);
 			DebugLog("Vulkan: framebuffer destroyed");
 		}
+		m_framebuffers.clear();
 
 		kvfDestroyPipelineLayout(RenderCore::Get().GetDevice(), m_pipeline_layout);
 		m_pipeline_layout = VK_NULL_HANDLE;
@@ -148,7 +149,6 @@ namespace mlx
 		p_renderer = nullptr;
 		m_clears.clear();
 		m_attachments.clear();
-		m_framebuffers.clear();
 	}
 
 	void GraphicPipeline::CreateFramebuffers(const std::vector<NonOwningPtr<Texture>>& render_targets, bool clear_attachments)
@@ -156,6 +156,8 @@ namespace mlx
 		MLX_PROFILE_FUNCTION();
 		std::vector<VkAttachmentDescription> attachments;
 		std::vector<VkImageView> attachment_views;
+		std::vector<VkSubpassDependency> dependencies;
+
 		if(p_renderer)
 		{
 			attachments.push_back(kvfBuildSwapchainAttachmentDescription(p_renderer->GetSwapchain().Get(), clear_attachments));
@@ -164,11 +166,30 @@ namespace mlx
 
 		for(NonOwningPtr<Texture> image : render_targets)
 		{
-			attachments.push_back(kvfBuildAttachmentDescription((kvfIsDepthFormat(image->GetFormat()) ? KVF_IMAGE_DEPTH : KVF_IMAGE_COLOR), image->GetFormat(), image->GetLayout(), image->GetLayout(), clear_attachments, VK_SAMPLE_COUNT_1_BIT));
+			attachments.push_back(kvfBuildAttachmentDescription(KVF_IMAGE_COLOR, image->GetFormat(), image->GetLayout(), image->GetLayout(), clear_attachments, VK_SAMPLE_COUNT_1_BIT));
 			attachment_views.push_back(image->GetImageView());
+#if 0
+			VkSubpassDependency& first_dependency = dependencies.emplace_back();
+			first_dependency.srcSubpass = VK_SUBPASS_EXTERNAL;
+			first_dependency.dstSubpass = 0;
+			first_dependency.srcStageMask = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
+			first_dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+			first_dependency.srcAccessMask = VK_ACCESS_SHADER_READ_BIT;
+			first_dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+			first_dependency.dependencyFlags = VK_DEPENDENCY_BY_REGION_BIT;
+
+			VkSubpassDependency& second_dependency = dependencies.emplace_back();
+			second_dependency.srcSubpass = 0;
+			second_dependency.dstSubpass = VK_SUBPASS_EXTERNAL;
+			second_dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+			second_dependency.dstStageMask = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
+			second_dependency.srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+			second_dependency.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
+			second_dependency.dependencyFlags = VK_DEPENDENCY_BY_REGION_BIT;
+#endif
 		}
 
-		m_renderpass = kvfCreateRenderPass(RenderCore::Get().GetDevice(), attachments.data(), attachments.size(), GetPipelineBindPoint());
+		m_renderpass = kvfCreateRenderPassWithSubpassDependencies(RenderCore::Get().GetDevice(), attachments.data(), attachments.size(), GetPipelineBindPoint(), dependencies.data(), dependencies.size());
 		m_clears.clear();
 		m_clears.resize(attachments.size());
 		DebugLog("Vulkan: renderpass created");

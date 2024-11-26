@@ -1,7 +1,7 @@
 #ifndef __MLX_RENDER_CORE__
 #define __MLX_RENDER_CORE__
 
-constexpr const int MAX_FRAMES_IN_FLIGHT = 3;
+constexpr const int MAX_FRAMES_IN_FLIGHT = 2;
 
 #include <Renderer/Memory.h>
 #include <Renderer/Descriptor.h>

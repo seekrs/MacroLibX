@@ -10,7 +10,7 @@ namespace mlx
 		m_has_window(false)
 	{
 		MLX_PROFILE_FUNCTION();
-		m_renderer.Init(nullptr);
+		m_renderer.Init(render_target);
 		m_scene_renderer.Init(render_target);
 		p_scene = std::make_unique<Scene>();
 	}

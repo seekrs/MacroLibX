@@ -47,7 +47,7 @@ ifeq ($(OS), Darwin)
 endif
 
 ifeq ($(DEBUG), true)
-	CXXFLAGS += -g3 -D DEBUG
+	CXXFLAGS += -g3 -O0 -D DEBUG
 	LDFLAGS += -rdynamic
 else
 	CXXFLAGS += -O3
