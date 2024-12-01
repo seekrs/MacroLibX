@@ -18770,23 +18770,6 @@ namespace VULKAN_HPP_NAMESPACE
   //=== VK_EXT_calibrated_timestamps ===
 
   template <typename Dispatch>
-  VULKAN_HPP_INLINE void CommandBuffer::writeBufferMarker2AMD( VULKAN_HPP_NAMESPACE::PipelineStageFlags2 stage,
-                                                               VULKAN_HPP_NAMESPACE::Buffer              dstBuffer,
-                                                               VULKAN_HPP_NAMESPACE::DeviceSize          dstOffset,
-                                                               uint32_t                                  marker,
-                                                               Dispatch const &                          d ) const VULKAN_HPP_NOEXCEPT
-  {
-    VULKAN_HPP_ASSERT( d.getVkHeaderVersion() == VK_HEADER_VERSION );
-    d.vkCmdWriteBufferMarker2AMD( static_cast<VkCommandBuffer>( m_commandBuffer ),
-                                  static_cast<VkPipelineStageFlags2>( stage ),
-                                  static_cast<VkBuffer>( dstBuffer ),
-                                  static_cast<VkDeviceSize>( dstOffset ),
-                                  marker );
-  }
-
-  //=== VK_EXT_calibrated_timestamps ===
-
-  template <typename Dispatch>
   VULKAN_HPP_NODISCARD VULKAN_HPP_INLINE Result PhysicalDevice::getCalibrateableTimeDomainsEXT( uint32_t *                            pTimeDomainCount,
                                                                                                 VULKAN_HPP_NAMESPACE::TimeDomainKHR * pTimeDomains,
                                                                                                 Dispatch const & d ) const VULKAN_HPP_NOEXCEPT
