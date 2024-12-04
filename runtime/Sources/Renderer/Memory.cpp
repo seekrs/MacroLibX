@@ -1,5 +1,4 @@
 #include <PreCompiled.h>
-
 #define VMA_IMPLEMENTATION
 #ifdef MLX_COMPILER_CLANG
 	#pragma clang diagnostic push

@@ -31,19 +31,20 @@ CXX = clang++
 CXXFLAGS = -std=c++20 -fPIC -Wall -Wextra -DSDL_MAIN_HANDLED
 INCLUDES = -I./includes -I./runtime/Includes -I./runtime/Sources -I./third_party
 
-CXXPCHFLAGS =
+CXXPCHFLAGS = -xc++-header
 
 PCH = runtime/Includes/PreCompiled.h
-GCH = runtime/Includes/PreCompiled.h.gch
+GCH = 
 
 NZSLC = nzslc
 
 ifeq ($(TOOLCHAIN), gcc)
 	CXX = g++
+	GCH = runtime/Includes/PreCompiled.h.gch
 	CXXFLAGS += -Wno-error=cpp
 else
+	GCH = runtime/Includes/PreCompiled.h.pch
 	CXXFLAGS += -Wno-error=#warning -include-pch $(GCH)
-	CXXPCHFLAGS = -xc++-header
 endif
 
 ifeq ($(OS), Darwin)
