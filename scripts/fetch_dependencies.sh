@@ -1,16 +1,5 @@
 #!/bin/bash
 
-# Update volk
-rm -f ../third_party/volk.c
-rm -f ../third_party/volk.h
-tag_name=$(curl -sL https://api.github.com/repos/zeux/Volk/releases/latest | jq -r '.tag_name')
-wget https://api.github.com/repos/zeux/volk/zipball/$tag_name -O volk.zip
-unzip -o volk.zip -d ../third_party/
-mv ../third_party/zeux-volk*/volk.h ../third_party
-mv ../third_party/zeux-volk*/volk.c ../third_party
-rm -rf ../third_party/zeux-volk*
-rm volk.zip
-
 # Update VMA
 rm -f ../third_party/vma.h
 tag_name=$(curl -sL https://api.github.com/repos/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator/releases/latest | jq -r '.tag_name')
@@ -29,3 +18,9 @@ mv ../third_party/Vulkan-Headers-main/include/vulkan ../third_party/
 mv ../third_party/Vulkan-Headers-main/include/vk_video ../third_party/
 rm -rf ../third_party/Vulkan-Headers-main
 rm vulkan-headers.zip
+
+# Update KVF
+rm -f ../third_party/kvf.h
+git clone https://github.com/Kbz-8/KVF.git ../third_party/KVF/
+mv ../third_party/KVF/kvf.h ../third_party/kvf.h
+rm -rf ../third_party/KVF

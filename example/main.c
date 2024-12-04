@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/04 17:55:21 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 16:16:07 by maldavid         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include <stdio.h>
 #include "../includes/mlx.h"
 
@@ -21,9 +9,9 @@ typedef struct
 	void* logo_jpg;
 	void* logo_bmp;
 	void* img;
+	void* render_target;
+	void* render_target_win;
 } mlx_t;
-
-//void* img = NULL;
 
 int update(void* param)
 {
@@ -31,35 +19,51 @@ int update(void* param)
 	mlx_t* mlx = (mlx_t*)param;
 
 	if(i == 200)
-		mlx_clear_window(mlx->mlx, mlx->win);
-/*
-	if(img)
-		mlx_destroy_image(mlx->mlx,img);
-	img = mlx_new_image(mlx->mlx, 800, 800);
-	mlx_set_image_pixel(mlx->mlx, img, 4, 4, 0xFF00FF00);
-	mlx_put_image_to_window(mlx->mlx, mlx->win, img, 0, 0);
-*/
+		mlx_clear_window(mlx->mlx, mlx->win, 0xFF334D4D);
+
 	if(i >= 250)
-		mlx_set_font_scale(mlx->mlx, mlx->win, "default", 16.f);
+		mlx_set_font_scale(mlx->mlx, "default", 16.f);
 	else
-		mlx_set_font_scale(mlx->mlx, mlx->win, "default", 6.f);
+		mlx_set_font_scale(mlx->mlx, "default", 6.f);
+
 	mlx_string_put(mlx->mlx, mlx->win, 160, 120, 0xFFFF2066, "this text should be hidden");
 
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->logo_png, 100, 100);
-	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->logo_jpg, 210, 150);
-	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->logo_bmp, 220, 40);
+	mlx_transform_put_image_to_window(mlx->mlx, mlx->win, mlx->logo_bmp, 220, 40, 0.5f, 75.0f);
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 150, 60);
 
-	mlx_set_font(mlx->mlx, mlx->win, "default");
+	mlx_set_font(mlx->mlx, "default");
 	mlx_string_put(mlx->mlx, mlx->win, 20, 50, 0xFFFFFFFF, "that's a text");
 
-	int color = 0;
-	for(int j = 0; j < 400; j++)
+	for(int j = 0, color = 0; j < 400; j++)
 	{
 		mlx_pixel_put(mlx->mlx, mlx->win, j, j, 0xFFFF0000 + color);
 		mlx_pixel_put(mlx->mlx, mlx->win, 399 - j, j, 0xFF0000FF);
 		color += (color < 255);
 	}
+
+	mlx_transform_put_image_to_window(mlx->mlx, mlx->win, mlx->logo_jpg, 210, 150, 2.0f, 0.0f);
+	mlx_set_font_scale(mlx->mlx, "default", 8.f);
+	mlx_string_put(mlx->mlx, mlx->win, 210, 175, 0xFFAF2BFF, "hidden");
+
+	for(int j = 0; j < 20; j++)
+	{
+		for(int k = 0; k < 20; k++)
+			mlx_pixel_put(mlx->mlx, mlx->win, 220 + j, 160 + k, 0xFFFF0000);
+	}
+
+	mlx_string_put(mlx->mlx, mlx->render_target_win, 20, 20, 0xFFAF2BFF, "cacaboudin");
+	mlx_transform_put_image_to_window(mlx->mlx, mlx->render_target_win, mlx->logo_bmp, 100, 40, 0.5f, 75.0f);
+	mlx_put_image_to_window(mlx->mlx, mlx->render_target_win, mlx->img, 40, 60);
+
+	for(int j = 0, color = 0; j < 200; j++)
+	{
+		mlx_pixel_put(mlx->mlx, mlx->render_target_win, j, j, 0xFFFF0000 + color);
+		mlx_pixel_put(mlx->mlx, mlx->render_target_win, 199 - j, j, 0xFF0000FF);
+		color += (color < 255);
+	}
+
+	mlx_transform_put_image_to_window(mlx->mlx, mlx->win, mlx->render_target, 5, 250, 0.5f, 33.0f);
 
 	i++;
 	return 0;
@@ -82,7 +86,7 @@ void* create_image(mlx_t* mlx)
 			pixel[1] = j;
 			pixel[2] = k;
 			pixel[3] = 0x99;
-			mlx_set_image_pixel(mlx->mlx, img, j, k, *((int *)pixel));
+			mlx_set_image_pixel(mlx->mlx, img, j, k, *((int*)pixel));
 		}
 	}
 	return img;
@@ -107,7 +111,7 @@ int key_hook(int key, void* param)
 			mlx_mouse_hide();
 		break;
 		case 6 : // (C)lear
-			mlx_clear_window(mlx->mlx, mlx->win);
+			mlx_clear_window(mlx->mlx, mlx->win, 0xFF334D4D);
 		break;
 		case 79 : // RIGHT KEY
 			mlx_mouse_move(mlx->mlx, mlx->win, x + 10, y);
@@ -142,7 +146,14 @@ int main(void)
 	int dummy;
 
 	mlx.mlx = mlx_init();
-	mlx.win = mlx_new_window(mlx.mlx, 400, 400, "My window");
+	mlx.win = mlx_new_resizable_window(mlx.mlx, 400, 400, "My window");
+
+	mlx_get_screens_size(mlx.mlx, mlx.win, &w, &h);
+	printf("screen size : %dx%d\n", w, h);
+
+	mlx.render_target = mlx_new_image(mlx.mlx, 200, 200);
+	mlx.render_target_win = mlx_new_window(mlx.mlx, 200, 200, (char*)mlx.render_target);
+	mlx_clear_window(mlx.mlx, mlx.render_target_win, 0xFFC16868);
 
 	mlx_set_fps_goal(mlx.mlx, 60);
 
@@ -158,25 +169,22 @@ int main(void)
 
 	mlx.img = create_image(&mlx);
 
-
-	mlx_string_put(mlx.mlx, mlx.win, 0, 10, 0xFFFFFF00, "fps:");
-	mlx_string_put(mlx.mlx, mlx.win, 0, 20, 0xFFFFFFFF, "fps:");
-
-	mlx_set_font_scale(mlx.mlx, mlx.win, "font.ttf", 16.f);
+	mlx_set_font_scale(mlx.mlx, "font.ttf", 16.f);
 	mlx_string_put(mlx.mlx, mlx.win, 20, 20, 0xFF0020FF, "that text will disappear");
 
 	mlx_loop_hook(mlx.mlx, update, &mlx);
 	mlx_loop(mlx.mlx);
-
-	mlx_get_screens_size(mlx.mlx, mlx.win, &w, &h);
-	printf("screen size : %dx%d\n", w, h);
 
 	mlx_destroy_image(mlx.mlx, mlx.logo_png);
 	mlx_destroy_image(mlx.mlx, mlx.logo_jpg);
 	mlx_destroy_image(mlx.mlx, mlx.logo_bmp);
 	mlx_destroy_image(mlx.mlx, mlx.img);
 	mlx_destroy_window(mlx.mlx, mlx.win);
-	mlx_destroy_display(mlx.mlx);
 	
+	mlx_destroy_window(mlx.mlx, mlx.render_target_win);
+	mlx_destroy_image(mlx.mlx, mlx.render_target);
+
+	mlx_destroy_display(mlx.mlx);
+
 	return 0;
 }

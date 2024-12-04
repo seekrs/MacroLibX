@@ -1,0 +1,127 @@
+// No header guard
+
+#ifdef VK_VERSION_1_0
+	#ifdef MLX_VULKAN_GLOBAL_FUNCTION
+		MLX_VULKAN_GLOBAL_FUNCTION(vkCreateInstance)
+		MLX_VULKAN_GLOBAL_FUNCTION(vkEnumerateInstanceExtensionProperties)
+		MLX_VULKAN_GLOBAL_FUNCTION(vkEnumerateInstanceLayerProperties)
+		MLX_VULKAN_GLOBAL_FUNCTION(vkGetInstanceProcAddr)
+	#endif
+
+	#ifdef MLX_VULKAN_INSTANCE_FUNCTION
+		MLX_VULKAN_INSTANCE_FUNCTION(vkCreateDevice)
+		MLX_VULKAN_INSTANCE_FUNCTION(vkDestroyInstance)
+		MLX_VULKAN_INSTANCE_FUNCTION(vkEnumerateDeviceExtensionProperties)
+		MLX_VULKAN_INSTANCE_FUNCTION(vkEnumeratePhysicalDevices)
+		MLX_VULKAN_INSTANCE_FUNCTION(vkGetDeviceProcAddr)
+		MLX_VULKAN_INSTANCE_FUNCTION(vkGetPhysicalDeviceFeatures)
+		MLX_VULKAN_INSTANCE_FUNCTION(vkGetPhysicalDeviceFormatProperties)
+		MLX_VULKAN_INSTANCE_FUNCTION(vkGetPhysicalDeviceImageFormatProperties)
+		MLX_VULKAN_INSTANCE_FUNCTION(vkGetPhysicalDeviceMemoryProperties)
+		MLX_VULKAN_INSTANCE_FUNCTION(vkGetPhysicalDeviceProperties)
+		MLX_VULKAN_INSTANCE_FUNCTION(vkGetPhysicalDeviceQueueFamilyProperties)
+		#ifdef DEBUG
+			#ifdef VK_EXT_debug_utils
+				MLX_VULKAN_INSTANCE_FUNCTION(vkSetDebugUtilsObjectNameEXT)
+				//MLX_VULKAN_INSTANCE_FUNCTION(vkSetDebugUtilsObjectTagEXT)
+			#endif
+		#endif
+	#endif
+
+	#ifdef MLX_VULKAN_DEVICE_FUNCTION
+		MLX_VULKAN_DEVICE_FUNCTION(vkAllocateCommandBuffers)
+		MLX_VULKAN_DEVICE_FUNCTION(vkAllocateDescriptorSets)
+		MLX_VULKAN_DEVICE_FUNCTION(vkAllocateMemory)
+		MLX_VULKAN_DEVICE_FUNCTION(vkBeginCommandBuffer)
+		MLX_VULKAN_DEVICE_FUNCTION(vkBindBufferMemory)
+		MLX_VULKAN_DEVICE_FUNCTION(vkBindImageMemory)
+		MLX_VULKAN_DEVICE_FUNCTION(vkCmdBeginRenderPass)
+		MLX_VULKAN_DEVICE_FUNCTION(vkCmdBindDescriptorSets)
+		MLX_VULKAN_DEVICE_FUNCTION(vkCmdBindIndexBuffer)
+		MLX_VULKAN_DEVICE_FUNCTION(vkCmdBindPipeline)
+		MLX_VULKAN_DEVICE_FUNCTION(vkCmdBindVertexBuffers)
+		MLX_VULKAN_DEVICE_FUNCTION(vkCmdClearAttachments)
+		MLX_VULKAN_DEVICE_FUNCTION(vkCmdClearColorImage)
+		MLX_VULKAN_DEVICE_FUNCTION(vkCmdClearDepthStencilImage)
+		MLX_VULKAN_DEVICE_FUNCTION(vkCmdCopyBuffer)
+		MLX_VULKAN_DEVICE_FUNCTION(vkCmdCopyBufferToImage)
+		MLX_VULKAN_DEVICE_FUNCTION(vkCmdCopyImage)
+		MLX_VULKAN_DEVICE_FUNCTION(vkCmdCopyImageToBuffer)
+		MLX_VULKAN_DEVICE_FUNCTION(vkCmdDraw)
+		MLX_VULKAN_DEVICE_FUNCTION(vkCmdDrawIndexed)
+		MLX_VULKAN_DEVICE_FUNCTION(vkCmdEndRenderPass)
+		MLX_VULKAN_DEVICE_FUNCTION(vkCmdPipelineBarrier)
+		MLX_VULKAN_DEVICE_FUNCTION(vkCmdPushConstants)
+		MLX_VULKAN_DEVICE_FUNCTION(vkCmdSetScissor)
+		MLX_VULKAN_DEVICE_FUNCTION(vkCmdSetViewport)
+		MLX_VULKAN_DEVICE_FUNCTION(vkCreateBuffer)
+		MLX_VULKAN_DEVICE_FUNCTION(vkCreateCommandPool)
+		MLX_VULKAN_DEVICE_FUNCTION(vkCreateDescriptorPool)
+		MLX_VULKAN_DEVICE_FUNCTION(vkCreateDescriptorSetLayout)
+		MLX_VULKAN_DEVICE_FUNCTION(vkCreateFence)
+		MLX_VULKAN_DEVICE_FUNCTION(vkCreateFramebuffer)
+		MLX_VULKAN_DEVICE_FUNCTION(vkCreateGraphicsPipelines)
+		MLX_VULKAN_DEVICE_FUNCTION(vkCreateImage)
+		MLX_VULKAN_DEVICE_FUNCTION(vkCreateImageView)
+		MLX_VULKAN_DEVICE_FUNCTION(vkCreatePipelineLayout)
+		MLX_VULKAN_DEVICE_FUNCTION(vkCreateRenderPass)
+		MLX_VULKAN_DEVICE_FUNCTION(vkCreateSampler)
+		MLX_VULKAN_DEVICE_FUNCTION(vkCreateSemaphore)
+		MLX_VULKAN_DEVICE_FUNCTION(vkCreateShaderModule)
+		MLX_VULKAN_DEVICE_FUNCTION(vkDestroyBuffer)
+		MLX_VULKAN_DEVICE_FUNCTION(vkDestroyCommandPool)
+		MLX_VULKAN_DEVICE_FUNCTION(vkDestroyDescriptorPool)
+		MLX_VULKAN_DEVICE_FUNCTION(vkDestroyDescriptorSetLayout)
+		MLX_VULKAN_DEVICE_FUNCTION(vkDestroyDevice)
+		MLX_VULKAN_DEVICE_FUNCTION(vkDestroyFence)
+		MLX_VULKAN_DEVICE_FUNCTION(vkDestroyFramebuffer)
+		MLX_VULKAN_DEVICE_FUNCTION(vkDestroyImage)
+		MLX_VULKAN_DEVICE_FUNCTION(vkDestroyImageView)
+		MLX_VULKAN_DEVICE_FUNCTION(vkDestroyPipeline)
+		MLX_VULKAN_DEVICE_FUNCTION(vkDestroyPipelineLayout)
+		MLX_VULKAN_DEVICE_FUNCTION(vkDestroyRenderPass)
+		MLX_VULKAN_DEVICE_FUNCTION(vkDestroySampler)
+		MLX_VULKAN_DEVICE_FUNCTION(vkDestroySemaphore)
+		MLX_VULKAN_DEVICE_FUNCTION(vkDestroyShaderModule)
+		MLX_VULKAN_DEVICE_FUNCTION(vkDeviceWaitIdle)
+		MLX_VULKAN_DEVICE_FUNCTION(vkEndCommandBuffer)
+		MLX_VULKAN_DEVICE_FUNCTION(vkFlushMappedMemoryRanges)
+		MLX_VULKAN_DEVICE_FUNCTION(vkFreeCommandBuffers)
+		MLX_VULKAN_DEVICE_FUNCTION(vkFreeMemory)
+		MLX_VULKAN_DEVICE_FUNCTION(vkGetBufferMemoryRequirements)
+		MLX_VULKAN_DEVICE_FUNCTION(vkGetDeviceMemoryCommitment)
+		MLX_VULKAN_DEVICE_FUNCTION(vkGetDeviceQueue)
+		MLX_VULKAN_DEVICE_FUNCTION(vkGetFenceStatus)
+		MLX_VULKAN_DEVICE_FUNCTION(vkGetImageMemoryRequirements)
+		MLX_VULKAN_DEVICE_FUNCTION(vkGetImageSubresourceLayout)
+		MLX_VULKAN_DEVICE_FUNCTION(vkInvalidateMappedMemoryRanges)
+		MLX_VULKAN_DEVICE_FUNCTION(vkMapMemory)
+		MLX_VULKAN_DEVICE_FUNCTION(vkQueueSubmit)
+		MLX_VULKAN_DEVICE_FUNCTION(vkQueueWaitIdle)
+		MLX_VULKAN_DEVICE_FUNCTION(vkResetCommandBuffer)
+		MLX_VULKAN_DEVICE_FUNCTION(vkResetDescriptorPool)
+		MLX_VULKAN_DEVICE_FUNCTION(vkResetEvent)
+		MLX_VULKAN_DEVICE_FUNCTION(vkResetFences)
+		MLX_VULKAN_DEVICE_FUNCTION(vkUnmapMemory)
+		MLX_VULKAN_DEVICE_FUNCTION(vkUpdateDescriptorSets)
+		MLX_VULKAN_DEVICE_FUNCTION(vkWaitForFences)
+	#endif
+#endif
+#ifdef VK_KHR_swapchain
+	#ifdef MLX_VULKAN_DEVICE_FUNCTION
+		MLX_VULKAN_DEVICE_FUNCTION(vkAcquireNextImageKHR)
+		MLX_VULKAN_DEVICE_FUNCTION(vkCreateSwapchainKHR)
+		MLX_VULKAN_DEVICE_FUNCTION(vkDestroySwapchainKHR)
+		MLX_VULKAN_DEVICE_FUNCTION(vkGetSwapchainImagesKHR)
+		MLX_VULKAN_DEVICE_FUNCTION(vkQueuePresentKHR)
+	#endif
+#endif
+#ifdef VK_KHR_surface
+	#ifdef MLX_VULKAN_INSTANCE_FUNCTION
+		MLX_VULKAN_INSTANCE_FUNCTION(vkDestroySurfaceKHR)
+		MLX_VULKAN_INSTANCE_FUNCTION(vkGetPhysicalDeviceSurfaceCapabilitiesKHR)
+		MLX_VULKAN_INSTANCE_FUNCTION(vkGetPhysicalDeviceSurfaceFormatsKHR)
+		MLX_VULKAN_INSTANCE_FUNCTION(vkGetPhysicalDeviceSurfacePresentModesKHR)
+		MLX_VULKAN_INSTANCE_FUNCTION(vkGetPhysicalDeviceSurfaceSupportKHR)
+	#endif
+#endif
