@@ -36,7 +36,7 @@ namespace mlx
 			if(event.What() == Event::ResizeEventCode)
 				m_pipeline.Destroy();
 		};
-		EventBus::RegisterListener({ functor, "mlx_final_pass" });
+		EventBus::RegisterListener({ functor, "mlx_final_pass_" + std::to_string(reinterpret_cast<std::uintptr_t>(this)) });
 
 		p_set = RenderCore::Get().GetDescriptorPoolManager().GetAvailablePool().RequestDescriptorSet(p_fragment_shader->GetShaderLayout().set_layouts[0].second, ShaderType::Fragment);
 	}
@@ -55,7 +55,10 @@ namespace mlx
 				pipeline_descriptor.renderer = &renderer;
 			pipeline_descriptor.no_vertex_inputs = true;
 			#ifdef DEBUG
-				m_pipeline.Init(pipeline_descriptor, "mlx_final_pass");
+				if(final_target)
+					m_pipeline.Init(pipeline_descriptor, "mlx_final_pass");
+				else
+					m_pipeline.Init(pipeline_descriptor, "mlx_final_pass_" + renderer.GetWindow()->GetName());
 			#else
 				m_pipeline.Init(pipeline_descriptor, {});
 			#endif

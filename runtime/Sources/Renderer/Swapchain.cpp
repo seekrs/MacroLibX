@@ -27,6 +27,7 @@ namespace mlx
 		if(m_resize)
 		{
 			RenderCore::Get().WaitDeviceIdle();
+			Destroy();
 			CreateSwapchain();
 			EventBus::SendBroadcast(Internal::ResizeEventBroadcast{});
 		}
@@ -75,8 +76,6 @@ namespace mlx
 			Vec2ui size = p_window->GetVulkanDrawableSize();
 			extent = { size.x, size.y };
 		} while(extent.width == 0 || extent.height == 0);
-
-		Destroy();
 
 		m_surface = p_window->CreateVulkanSurface(RenderCore::Get().GetInstance());
 		DebugLog("Vulkan: surface created");

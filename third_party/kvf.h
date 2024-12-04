@@ -229,7 +229,7 @@ void kvfGPipelineBuilderSetVertexInputs(KvfGraphicsPipelineBuilder* builder, VkV
 void kvfGPipelineBuilderAddShaderStage(KvfGraphicsPipelineBuilder* builder, VkShaderStageFlagBits stage, VkShaderModule module, const char* entry);
 void kvfGPipelineBuilderResetShaderStages(KvfGraphicsPipelineBuilder* builder);
 
-VkPipeline kvfCreateGraphicsPipeline(VkDevice device, VkPipelineLayout layout, KvfGraphicsPipelineBuilder* builder, VkRenderPass pass);
+VkPipeline kvfCreateGraphicsPipeline(VkDevice device, VkPipelineCache cache, VkPipelineLayout layout, KvfGraphicsPipelineBuilder* builder, VkRenderPass pass);
 void kvfDestroyPipeline(VkDevice device, VkPipeline pipeline);
 
 void kvfCheckVk(VkResult result);
@@ -413,9 +413,9 @@ typedef struct __KvfDevice
 	{
 		VkSurfaceCapabilitiesKHR capabilities;
 		VkSurfaceFormatKHR* formats;
-		VkPresentModeKHR* presentModes;
+		VkPresentModeKHR* present_modes;
 		uint32_t formats_count;
-		uint32_t presentModes_count;
+		uint32_t present_modes_count;
 	} __KvfSwapchainSupportInternal;
 
 	typedef struct __KvfSwapchain
@@ -619,6 +619,7 @@ void __kvfDestroyDevice(VkDevice device)
 			if(__kvf_internal_devices_size == 0)
 			{
 				KVF_FREE(__kvf_internal_devices);
+				__kvf_internal_devices = NULL;
 				__kvf_internal_devices_capacity = 0;
 			}
 			return;
@@ -703,6 +704,7 @@ __KvfDevice* __kvfGetKvfDeviceFromVkCommandBuffer(VkCommandBuffer cmd)
 				if(__kvf_internal_swapchains_size == 0)
 				{
 					KVF_FREE(__kvf_internal_swapchains);
+					__kvf_internal_swapchains = NULL;
 					__kvf_internal_swapchains_capacity = 0;
 				}
 				return;
@@ -718,7 +720,6 @@ __KvfDevice* __kvfGetKvfDeviceFromVkCommandBuffer(VkCommandBuffer cmd)
 			if(__kvf_internal_swapchains[i].swapchain == swapchain)
 				return &__kvf_internal_swapchains[i];
 		}
-		puts("not found");
 		return NULL;
 	}
 #endif
@@ -729,7 +730,7 @@ void __kvfAddFramebufferToArray(VkFramebuffer framebuffer, VkExtent2D extent)
 	if(__kvf_internal_framebuffers_size == __kvf_internal_framebuffers_capacity)
 	{
 		// Resize the dynamic array if necessary
-		__kvf_internal_framebuffers_capacity += 2;
+		__kvf_internal_framebuffers_capacity += 5;
 		__kvf_internal_framebuffers = (__KvfFramebuffer*)KVF_REALLOC(__kvf_internal_framebuffers, __kvf_internal_framebuffers_capacity * sizeof(__KvfFramebuffer));
 	}
 
@@ -760,11 +761,13 @@ void __kvfDestroyFramebuffer(VkDevice device, VkFramebuffer framebuffer)
 			if(__kvf_internal_framebuffers_size == 0)
 			{
 				KVF_FREE(__kvf_internal_framebuffers);
+				__kvf_internal_framebuffers = NULL;
 				__kvf_internal_framebuffers_capacity = 0;
 			}
 			return;
 		}
     }
+	KVF_ASSERT(false && "could not find framebuffer");
 }
 
 __KvfFramebuffer* __kvfGetKvfFramebufferFromVkFramebuffer(VkFramebuffer framebuffer)
@@ -1875,12 +1878,12 @@ void kvfDestroySemaphore(VkDevice device, VkSemaphore semaphore)
 			KVF_GET_INSTANCE_FUNCTION(vkGetPhysicalDeviceSurfaceFormatsKHR)(physical, surface, &support.formats_count, support.formats);
 		}
 
-		KVF_GET_INSTANCE_FUNCTION(vkGetPhysicalDeviceSurfacePresentModesKHR)(physical, surface, &support.presentModes_count, NULL);
-		if(support.presentModes_count != 0)
+		KVF_GET_INSTANCE_FUNCTION(vkGetPhysicalDeviceSurfacePresentModesKHR)(physical, surface, &support.present_modes_count, NULL);
+		if(support.present_modes_count != 0)
 		{
-			support.presentModes = (VkPresentModeKHR*)KVF_MALLOC(sizeof(VkPresentModeKHR) * support.presentModes_count);
-			KVF_ASSERT(support.presentModes != NULL && "allocation failed :(");
-			KVF_GET_INSTANCE_FUNCTION(vkGetPhysicalDeviceSurfacePresentModesKHR)(physical, surface, &support.presentModes_count, support.presentModes);
+			support.present_modes = (VkPresentModeKHR*)KVF_MALLOC(sizeof(VkPresentModeKHR) * support.present_modes_count);
+			KVF_ASSERT(support.present_modes != NULL && "allocation failed :(");
+			KVF_GET_INSTANCE_FUNCTION(vkGetPhysicalDeviceSurfacePresentModesKHR)(physical, surface, &support.present_modes_count, support.present_modes);
 		}
 		return support;
 	}
@@ -1897,13 +1900,21 @@ void kvfDestroySemaphore(VkDevice device, VkSemaphore semaphore)
 
 	VkPresentModeKHR __kvfChooseSwapPresentMode(__KvfSwapchainSupportInternal* support, bool try_vsync)
 	{
-		if(try_vsync == false)
-			return VK_PRESENT_MODE_IMMEDIATE_KHR;
-		for(uint32_t i = 0; i < support->presentModes_count; i++)
+		if(try_vsync)
+			return VK_PRESENT_MODE_FIFO_KHR;
+		bool mailbox_supported = false;
+		bool immediate_supported = false;
+		for(uint32_t i = 0; i < support->present_modes_count; i++)
 		{
-			if(support->presentModes[i] == VK_PRESENT_MODE_MAILBOX_KHR)
-				return support->presentModes[i];
+			if(support->present_modes[i] == VK_PRESENT_MODE_MAILBOX_KHR)
+			mailbox_supported = true;
+			if(support->present_modes[i] == VK_PRESENT_MODE_IMMEDIATE_KHR)
+			immediate_supported = true;
 		}
+		if(mailbox_supported)
+			return VK_PRESENT_MODE_MAILBOX_KHR;
+		if(immediate_supported)
+			return VK_PRESENT_MODE_IMMEDIATE_KHR;  // Best mode for low latency
 		return VK_PRESENT_MODE_FIFO_KHR;
 	}
 
@@ -1920,7 +1931,7 @@ void kvfDestroySemaphore(VkDevice device, VkSemaphore semaphore)
 		__KvfSwapchainSupportInternal support = __kvfQuerySwapchainSupport(physical, surface);
 
 		VkSurfaceFormatKHR surfaceFormat = __kvfChooseSwapSurfaceFormat(&support);
-		VkPresentModeKHR presentMode = __kvfChooseSwapPresentMode(&support, try_vsync);
+		VkPresentModeKHR present_mode = __kvfChooseSwapPresentMode(&support, try_vsync);
 
 		uint32_t image_count = support.capabilities.minImageCount + 1;
 		if(support.capabilities.maxImageCount > 0 && image_count > support.capabilities.maxImageCount)
@@ -1950,7 +1961,7 @@ void kvfDestroySemaphore(VkDevice device, VkSemaphore semaphore)
 		createInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
 		createInfo.preTransform = support.capabilities.currentTransform;
 		createInfo.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
-		createInfo.presentMode = presentMode;
+		createInfo.presentMode = present_mode;
 		createInfo.clipped = VK_TRUE;
 		createInfo.oldSwapchain = old_swapchain;
 
@@ -2968,7 +2979,7 @@ void kvfGPipelineBuilderResetShaderStages(KvfGraphicsPipelineBuilder* builder)
 	builder->shader_stages_count = 0;
 }
 
-VkPipeline kvfCreateGraphicsPipeline(VkDevice device, VkPipelineLayout layout, KvfGraphicsPipelineBuilder* builder, VkRenderPass pass)
+VkPipeline kvfCreateGraphicsPipeline(VkDevice device, VkPipelineCache cache, VkPipelineLayout layout, KvfGraphicsPipelineBuilder* builder, VkRenderPass pass)
 {
 	KVF_ASSERT(builder != NULL);
 	KVF_ASSERT(device != VK_NULL_HANDLE);
@@ -3020,7 +3031,7 @@ VkPipeline kvfCreateGraphicsPipeline(VkDevice device, VkPipelineLayout layout, K
 		KVF_ASSERT(kvf_device != NULL);
 	#endif
 	VkPipeline pipeline;
-	__kvfCheckVk(KVF_GET_DEVICE_FUNCTION(vkCreateGraphicsPipelines)(device, VK_NULL_HANDLE, 1, &pipeline_info, NULL, &pipeline));
+	__kvfCheckVk(KVF_GET_DEVICE_FUNCTION(vkCreateGraphicsPipelines)(device, cache, 1, &pipeline_info, NULL, &pipeline));
 	return pipeline;
 }
 

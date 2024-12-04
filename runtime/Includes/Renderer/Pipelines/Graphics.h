@@ -24,8 +24,8 @@ namespace mlx
 			GraphicPipeline() = default;
 
 			void Init(const GraphicPipelineDescriptor& descriptor, std::string_view debug_name);
-			bool BindPipeline(VkCommandBuffer command_buffer, std::size_t framebuffer_index, std::array<float, 4> clear) noexcept;
-			void EndPipeline(VkCommandBuffer command_buffer) noexcept override;
+			bool BindPipeline(VkCommandBuffer cmd, std::size_t framebuffer_index, std::array<float, 4> clear) noexcept;
+			void EndPipeline(VkCommandBuffer cmd) noexcept override;
 			void Destroy() noexcept;
 
 			[[nodiscard]] inline VkPipeline GetPipeline() const override { return m_pipeline; }

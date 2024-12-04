@@ -50,7 +50,7 @@ namespace mlx
 			if(event.What() == Event::ResizeEventCode)
 				m_pipeline.Destroy();
 		};
-		EventBus::RegisterListener({ functor, "mlx_2d_render_pass" });
+		EventBus::RegisterListener({ functor, "mlx_2d_render_pass_" + std::to_string(reinterpret_cast<std::uintptr_t>(this)) });
 
 		p_viewer_data_set = RenderCore::Get().GetDescriptorPoolManager().GetAvailablePool().RequestDescriptorSet(p_vertex_shader->GetShaderLayout().set_layouts[0].second, ShaderType::Vertex);
 		p_texture_set = RenderCore::Get().GetDescriptorPoolManager().GetAvailablePool().RequestDescriptorSet(p_fragment_shader->GetShaderLayout().set_layouts[0].second, ShaderType::Fragment);
@@ -76,7 +76,10 @@ namespace mlx
 			pipeline_descriptor.color_attachments = { &render_target };
 			pipeline_descriptor.clear_color_attachments = false;
 			#ifdef DEBUG
-				m_pipeline.Init(pipeline_descriptor, "mlx_2D_pass");
+				if(renderer.GetWindow())
+					m_pipeline.Init(pipeline_descriptor, "mlx_2D_pass_" + renderer.GetWindow()->GetName());
+				else
+					m_pipeline.Init(pipeline_descriptor, "mlx_2D_pass");
 			#else
 				m_pipeline.Init(pipeline_descriptor, {});
 			#endif
