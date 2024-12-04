@@ -31,13 +31,19 @@ CXX = clang++
 CXXFLAGS = -std=c++20 -fPIC -Wall -Wextra -DSDL_MAIN_HANDLED
 INCLUDES = -I./includes -I./runtime/Includes -I./runtime/Sources -I./third_party
 
+CXXPCHFLAGS =
+
+PCH = runtime/Includes/PreCompiled.h
+GCH = runtime/Includes/PreCompiled.h.gch
+
 NZSLC = nzslc
 
 ifeq ($(TOOLCHAIN), gcc)
 	CXX = g++
 	CXXFLAGS += -Wno-error=cpp
 else
-	CXXFLAGS += -Wno-error=#warning
+	CXXFLAGS += -Wno-error=#warning -include-pch $(GCH)
+	CXXPCHFLAGS = -xc++-header
 endif
 
 ifeq ($(OS), Darwin)
@@ -108,7 +114,7 @@ ifeq ($(OBJS_TOTAL), 0) # To avoid division per 0
 endif
 CURR_OBJ = 0
 
-$(OBJ_DIR)/%.o: %.cpp
+$(OBJ_DIR)/%.o: %.cpp $(GCH)
 	@mkdir -p $(dir $@)
 	@$(eval CURR_OBJ=$(shell echo $$(( $(CURR_OBJ) + 1 ))))
 	@$(eval PERCENT=$(shell echo $$(( $(CURR_OBJ) * 100 / $(OBJS_TOTAL) ))))
@@ -132,6 +138,10 @@ CURR_SPV = 0
 all: _printbuildinfos
 	@$(MAKE) $(NAME)
 
+$(GCH):
+	@printf "$(COLOR)($(_BOLD)%3s%%$(_RESET)$(COLOR)) $(_RESET)Compiling $(_BOLD)PreCompiled header$(_RESET)\n" "0"
+	@$(CXX) $(CXXPCHFLAGS) $(INCLUDES) $(PCH) -o $(GCH)
+
 $(NAME): $(OBJS)
 	@printf "Linking $(_BOLD)$(NAME)$(_RESET)\n"
 	@$(CXX) -shared -o $(NAME) $(OBJS) $(LDFLAGS)
@@ -151,6 +161,8 @@ shaders: clean-shaders $(SPVS)
 clean:
 	@$(RM) $(OBJ_DIR)
 	@printf "Cleaned $(_BOLD)$(OBJ_DIR)$(_RESET)\n"
+	@$(RM) $(GCH)
+	@printf "Cleaned $(_BOLD)$(GCH)$(_RESET)\n"
 
 fclean: clean
 	@$(RM) $(NAME)

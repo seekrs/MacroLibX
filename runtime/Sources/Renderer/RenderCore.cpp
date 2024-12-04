@@ -12,14 +12,16 @@
 #define KVF_REALLOC(p, x) (mlx::MemManager::Get().Realloc(p, x))
 #define KVF_FREE(x) (mlx::MemManager::Get().Free(x))
 
-#if defined(MLX_COMPILER_GCC) || defined(MLX_COMPILER_CLANG)
-	#pragma clang diagnostic push
+#if defined(MLX_COMPILER_GCC)
 	#pragma GCC diagnostic push
-	#pragma clang diagnostic ignored "-Wmissing-field-initializers"
 	#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 		#include <kvf.h>
-	#pragma clang diagnostic pop
 	#pragma GCC diagnostic pop
+#elif defined(MLX_COMPILER_CLANG)
+	#pragma clang diagnostic push
+	#pragma clang diagnostic ignored "-Wmissing-field-initializers"
+		#include <kvf.h>
+	#pragma clang diagnostic pop
 #else
 	#include <kvf.h>
 #endif
