@@ -138,7 +138,7 @@ $(NAME): $(OBJS)
 	@printf "$(_BOLD)$(NAME)$(_RESET) compiled $(COLOR)$(_BOLD)successfully$(_RESET)\n"
 
 _printbuildinfos:
-	@printf "$(_PURPLE)$(_BOLD)MacroLibX $(_RESET)Compiling in $(_BOLD)$(MODE)$(_RESET) mode on $(_BOLD)$(OS)$(_RESET) | Using $(_BOLD)$(CXX)$(_RESET), flags: $(_BOLD)$(_ENABLEDFLAGS)$(_RESET)\n"
+	@printf "$(_PURPLE)$(_BOLD)MacroLibX $(_RESET)Compiling in $(_BOLD)$(MODE)$(_RESET) mode on $(_BOLD)$(OS)$(_RESET) | Using $(_BOLD)$(CXX) ($(shell $(CXX) --version | head -n 1))$(_RESET), flags: $(_BOLD)$(_ENABLEDFLAGS)$(_RESET)\n"
 
 debug:
 	@$(MAKE) all DEBUG=true -j$(shell nproc)
