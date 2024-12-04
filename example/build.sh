@@ -9,4 +9,3 @@ if [ $(uname -s) = 'Darwin' ]; then
 else
 	clang main.c ../libmlx.so -lSDL2 -g -Wall -Wextra -Werror;
 fi
-

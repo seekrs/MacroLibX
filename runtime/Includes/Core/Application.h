@@ -58,6 +58,7 @@ namespace mlx
 			FontRegistry m_font_registry;
 			ImageRegistry m_image_registry;
 			std::vector<std::unique_ptr<GraphicsSupport>> m_graphics;
+			std::shared_ptr<Font> p_last_font_bound;
 			std::function<int(Handle)> f_loop_hook;
 			std::unique_ptr<RenderCore> p_render_core;
 			#ifdef PROFILER
