@@ -178,26 +178,16 @@ namespace mlx
 		{
 			attachments.push_back(kvfBuildAttachmentDescription(KVF_IMAGE_COLOR, image->GetFormat(), image->GetLayout(), image->GetLayout(), clear_attachments, VK_SAMPLE_COUNT_1_BIT));
 			attachment_views.push_back(image->GetImageView());
-#if 0
-			VkSubpassDependency& first_dependency = dependencies.emplace_back();
-			first_dependency.srcSubpass = VK_SUBPASS_EXTERNAL;
-			first_dependency.dstSubpass = 0;
-			first_dependency.srcStageMask = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
-			first_dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
-			first_dependency.srcAccessMask = VK_ACCESS_SHADER_READ_BIT;
-			first_dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
-			first_dependency.dependencyFlags = VK_DEPENDENCY_BY_REGION_BIT;
-
-			VkSubpassDependency& second_dependency = dependencies.emplace_back();
-			second_dependency.srcSubpass = 0;
-			second_dependency.dstSubpass = VK_SUBPASS_EXTERNAL;
-			second_dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
-			second_dependency.dstStageMask = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
-			second_dependency.srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
-			second_dependency.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
-			second_dependency.dependencyFlags = VK_DEPENDENCY_BY_REGION_BIT;
-#endif
 		}
+
+		VkSubpassDependency& dependency = dependencies.emplace_back();
+		dependency.srcSubpass = VK_SUBPASS_EXTERNAL;
+		dependency.dstSubpass = 0;
+		dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+		dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+		dependency.srcAccessMask = 0;
+		dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+		dependency.dependencyFlags = 0;
 
 		m_renderpass = kvfCreateRenderPassWithSubpassDependencies(RenderCore::Get().GetDevice(), attachments.data(), attachments.size(), GetPipelineBindPoint(), dependencies.data(), dependencies.size());
 		m_clears.clear();

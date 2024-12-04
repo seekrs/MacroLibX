@@ -119,10 +119,7 @@ namespace mlx
 			return set == rhs_set;
 		});
 		if(it == m_used_sets.end())
-		{
-			Error("Vulkan: cannot return descriptor set to pool, invalid pool");
 			return;
-		}
 		m_used_sets.erase(it);
 		m_free_sets.push_back(set);
 	}
