@@ -1,0 +1,21 @@
+#include <PreCompiled.h>
+
+#include <Core/SDLManager.h>
+#include <Platform/Window.h>
+
+namespace mlx
+{
+	Window::Window(std::size_t w, std::size_t h, const std::string& title, bool is_resizable, bool hidden) : m_name(title), m_width(w), m_height(h)
+	{
+		p_window = SDLManager::Get().CreateWindow(title, w, h, hidden, m_id, is_resizable);
+	}
+
+	void Window::Destroy() noexcept
+	{
+		if(p_window != nullptr)
+		{
+			SDLManager::Get().DestroyWindow(p_window);
+			p_window = nullptr;
+		}
+	}
+}

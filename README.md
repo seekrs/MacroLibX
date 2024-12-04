@@ -97,6 +97,9 @@ And you can enjoy your project
 ### 📦 Compile mode
 By default the mlx is built in release mode but you can switch to debug by using `make DEBUG=true`.
 
+### 🦺 Safety
+MacroLibX has a strong safety support, mainly by checking every pointer that you pass to it. But this safety has a cost that can be avoided by enabling `DISABLE_ALL_SAFETIES=true` before compiling but don't be afraid to recieve segmentation faults from the mlx.
+
 ### 🛠️ Set the toolchain
 If you want to use `GCC` to build the mlx you can use `make TOOLCHAIN=gcc`
 
