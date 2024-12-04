@@ -73,29 +73,88 @@
    ...
 }
 {
-   name
+	memcheck_malloc_suppressions
+	Memcheck:Leak
+	fun:malloc
+	...
+	obj:/var/cache/nscd/passwd
+}
+{
+	memcheck_calloc_suppressions
+	Memcheck:Leak
+	fun:calloc
+	...
+	obj:/var/cache/nscd/passwd
+}
+{
+	memcheck_realloc_suppressions
+	Memcheck:Leak
+	fun:realloc
+	...
+	obj:/var/cache/nscd/passwd
+}
+{
+	dl_catch_exception_suppressions
+	Memcheck:Leak
+	...
+	fun:_dl_catch_exception
+	...
+}
+{
+	dl_catch_exception_suppressions_addr8
+	Memcheck:Addr8
+	...
+	fun:_dl_catch_exception
+	...
+}
+{
+	dlopen_malloc-suppressions
+	Memcheck:Leak
+	match-leak-kinds: definite
+	fun:malloc
+	...
+	fun:_dl_open
+	...
+}
+{
+	_dl_init_suppressions
+	Memcheck:Leak
+	match-leak-kinds: reachable
+	fun:_Znwm
+	...
+	fun:_dl_init
+}
+{
+	dbus_suppressions
+	Memcheck:Leak
+	match-leak-kinds: reachable
+	...
+	fun:_dbus*
+	...
+}
+{
+   dbus_memory_leak
    Memcheck:Leak
-   fun:*
-   obj:*
+   match-leak-kinds: definite
+   fun:calloc
+   obj:/usr/lib/x86_64-linux-gnu/libdbus-1.so.*
    ...
-   fun:_dl_*
+   fun:dbus*
    ...
 }
 {
    name
    Memcheck:Leak
    fun:*
-   obj:*
    ...
-   fun:dl_*
+   obj:*libnvidia-glcore.so*
    ...
 }
 {
    name
-   Memcheck:Addr8
+   Memcheck:Leak
    fun:*
-   obj:*
    ...
-   fun:dl_*
+   obj:*libdbus-1.so*
    ...
 }

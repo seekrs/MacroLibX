@@ -35,7 +35,7 @@ jobs:
 
     # Build the lib
     - name: Build MacroLibX
-      run: make TOOLCHAIN=gcc -j && make fclean && make TOOLCHAIN=gcc DEBUG=true -j
+      run: make TOOLCHAIN=gcc -j && make fclean && make TOOLCHAIN=gcc debug
 
     # Build the example
     - name: Build Example
