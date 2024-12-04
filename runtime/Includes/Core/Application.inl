@@ -98,6 +98,7 @@ namespace mlx
 				m_in.RegisterWindow(m_graphics.back()->GetWindow());
 			}
 		}
+		m_graphics.back()->GetScene().BindFont(p_last_font_bound);
 		return static_cast<void*>(&m_graphics.back()->GetID());
 	}
 
@@ -161,6 +162,8 @@ namespace mlx
 			font->BuildFont();
 			m_font_registry.RegisterFont(font);
 		}
+
+		p_last_font_bound = font;
 
 		for(auto& gs : m_graphics)
 		{

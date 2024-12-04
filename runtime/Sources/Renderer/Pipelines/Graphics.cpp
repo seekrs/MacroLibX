@@ -180,14 +180,26 @@ namespace mlx
 			attachment_views.push_back(image->GetImageView());
 		}
 
-		VkSubpassDependency& dependency = dependencies.emplace_back();
-		dependency.srcSubpass = VK_SUBPASS_EXTERNAL;
-		dependency.dstSubpass = 0;
-		dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
-		dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
-		dependency.srcAccessMask = 0;
-		dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
-		dependency.dependencyFlags = 0;
+		if(!render_targets.empty())
+		{
+			VkSubpassDependency& first_depedency = dependencies.emplace_back();
+			first_depedency.srcSubpass           = VK_SUBPASS_EXTERNAL;
+			first_depedency.dstSubpass           = 0;
+			first_depedency.srcStageMask         = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
+			first_depedency.srcAccessMask        = VK_ACCESS_SHADER_READ_BIT;
+			first_depedency.dstStageMask         = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+			first_depedency.dstAccessMask        = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+			first_depedency.dependencyFlags      = VK_DEPENDENCY_BY_REGION_BIT;
+
+			VkSubpassDependency& second_depedency = dependencies.emplace_back();
+			second_depedency.srcSubpass           = 0;
+			second_depedency.dstSubpass           = VK_SUBPASS_EXTERNAL;
+			second_depedency.srcStageMask         = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+			second_depedency.srcAccessMask        = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+			second_depedency.dstStageMask         = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
+			second_depedency.dstAccessMask        = VK_ACCESS_SHADER_READ_BIT;
+			second_depedency.dependencyFlags      = VK_DEPENDENCY_BY_REGION_BIT;
+		}
 
 		m_renderpass = kvfCreateRenderPassWithSubpassDependencies(RenderCore::Get().GetDevice(), attachments.data(), attachments.size(), GetPipelineBindPoint(), dependencies.data(), dependencies.size());
 		m_clears.clear();
