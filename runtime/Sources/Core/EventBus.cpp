@@ -6,7 +6,6 @@ namespace mlx
 {
 	void EventBus::Send(const std::string& listener_name, const EventBase& event)
 	{
-		#pragma omp parallel for
 		for(const EventListener& listener : s_listeners)
 		{
 			if(listener.GetName() == listener_name)
@@ -20,7 +19,6 @@ namespace mlx
 
 	void EventBus::SendBroadcast(const EventBase& event)
 	{
-		#pragma omp parallel for
 		for(const EventListener& listener : s_listeners)
 			listener.Call(event);
 	}

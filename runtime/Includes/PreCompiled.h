@@ -36,6 +36,7 @@
 #include <set>
 #include <cstddef>
 #include <cstdlib>
+#include <format>
 #include <random>
 #include <concepts>
 #include <algorithm>
