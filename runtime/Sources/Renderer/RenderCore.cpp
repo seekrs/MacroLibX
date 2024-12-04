@@ -14,9 +14,12 @@
 
 #if defined(MLX_COMPILER_GCC) || defined(MLX_COMPILER_CLANG)
 	#pragma clang diagnostic push
+	#pragma GCC diagnostic push
 	#pragma clang diagnostic ignored "-Wmissing-field-initializers"
+	#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 		#include <kvf.h>
 	#pragma clang diagnostic pop
+	#pragma GCC diagnostic pop
 #else
 	#include <kvf.h>
 #endif
