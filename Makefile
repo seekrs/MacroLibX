@@ -168,6 +168,7 @@ clean:
 fclean: clean
 	@$(RM) $(NAME)
 	@printf "Cleaned $(_BOLD)$(NAME)$(_RESET)\n"
+	@printf "Cleaned $(_BOLD)$(NAME)$(_RESET)\n"
 
 re: fclean _printbuildinfos
 	@$(MAKE) $(NAME)
