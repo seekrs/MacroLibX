@@ -50,8 +50,10 @@ namespace mlx
 			kvfGPipelineBuilderSetVertexInputs(builder, binding_description, attributes_description.data(), attributes_description.size());
 		}
 
-		m_pipeline = kvfCreateGraphicsPipeline(RenderCore::Get().GetDevice(), m_pipeline_layout, builder, m_renderpass);
-		DebugLog("Vulkan: graphics pipeline created");
+		m_pipeline = kvfCreateGraphicsPipeline(RenderCore::Get().GetDevice(), VK_NULL_HANDLE, m_pipeline_layout, builder, m_renderpass);
+		#ifdef DEBUG
+			DebugLog("Vulkan: graphics pipeline created %", m_debug_name);
+		#endif
 		kvfDestroyGPipelineBuilder(builder);
 
 		#ifdef MLX_HAS_DEBUG_UTILS_FUNCTIONS
@@ -82,10 +84,10 @@ namespace mlx
 		#endif
 	}
 
-	bool GraphicPipeline::BindPipeline(VkCommandBuffer command_buffer, std::size_t framebuffer_index, std::array<float, 4> clear) noexcept
+	bool GraphicPipeline::BindPipeline(VkCommandBuffer cmd, std::size_t framebuffer_index, std::array<float, 4> clear) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
-		TransitionAttachments(command_buffer);
+		TransitionAttachments(cmd);
 		VkFramebuffer fb = m_framebuffers[framebuffer_index];
 		VkExtent2D fb_extent = kvfGetFramebufferSize(fb);
 
@@ -96,12 +98,12 @@ namespace mlx
 		viewport.height = fb_extent.height;
 		viewport.minDepth = 0.0f;
 		viewport.maxDepth = 1.0f;
-		RenderCore::Get().vkCmdSetViewport(command_buffer, 0, 1, &viewport);
+		RenderCore::Get().vkCmdSetViewport(cmd, 0, 1, &viewport);
 
 		VkRect2D scissor{};
 		scissor.offset = { 0, 0 };
 		scissor.extent = fb_extent;
-		RenderCore::Get().vkCmdSetScissor(command_buffer, 0, 1, &scissor);
+		RenderCore::Get().vkCmdSetScissor(cmd, 0, 1, &scissor);
 
 		for(std::size_t i = 0; i < m_clears.size(); i++)
 		{
@@ -111,15 +113,15 @@ namespace mlx
 			m_clears[i].color.float32[3] = clear[3];
 		}
 
-		kvfBeginRenderPass(m_renderpass, command_buffer, fb, fb_extent, m_clears.data(), m_clears.size());
-		RenderCore::Get().vkCmdBindPipeline(command_buffer, GetPipelineBindPoint(), GetPipeline());
+		kvfBeginRenderPass(m_renderpass, cmd, fb, fb_extent, m_clears.data(), m_clears.size());
+		RenderCore::Get().vkCmdBindPipeline(cmd, GetPipelineBindPoint(), GetPipeline());
 		return true;
 	}
 
-	void GraphicPipeline::EndPipeline(VkCommandBuffer command_buffer) noexcept
+	void GraphicPipeline::EndPipeline(VkCommandBuffer cmd) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
-		RenderCore::Get().vkCmdEndRenderPass(command_buffer);
+		RenderCore::Get().vkCmdEndRenderPass(cmd);
 	}
 
 	void GraphicPipeline::Destroy() noexcept
@@ -127,25 +129,33 @@ namespace mlx
 		MLX_PROFILE_FUNCTION();
 		p_vertex_shader.reset();
 		p_fragment_shader.reset();
-		for(auto& fb : m_framebuffers)
+		for(auto fb : m_framebuffers)
 		{
 			kvfDestroyFramebuffer(RenderCore::Get().GetDevice(), fb);
-			DebugLog("Vulkan: framebuffer destroyed");
+			#ifdef DEBUG
+				DebugLog("Vulkan: framebuffer destroyed in %", m_debug_name);
+			#endif
 		}
 		m_framebuffers.clear();
 
 		kvfDestroyPipelineLayout(RenderCore::Get().GetDevice(), m_pipeline_layout);
 		m_pipeline_layout = VK_NULL_HANDLE;
-		DebugLog("Vulkan: graphics pipeline layout destroyed");
+		#ifdef DEBUG
+			DebugLog("Vulkan: graphics pipeline layout destroyed %", m_debug_name);
+		#endif
 
 		kvfDestroyRenderPass(RenderCore::Get().GetDevice(), m_renderpass);
 		m_renderpass = VK_NULL_HANDLE;
-		DebugLog("Vulkan: renderpass destroyed");
+		#ifdef DEBUG
+			DebugLog("Vulkan: renderpass destroyed for %", m_debug_name);
+		#endif
 
 		kvfDestroyPipeline(RenderCore::Get().GetDevice(), m_pipeline);
 		m_pipeline = VK_NULL_HANDLE;
-		DebugLog("Vulkan: graphics pipeline destroyed");
-
+		#ifdef DEBUG
+			DebugLog("Vulkan: graphics pipeline destroyed %", m_debug_name);
+		#endif
+	
 		p_renderer = nullptr;
 		m_clears.clear();
 		m_attachments.clear();
@@ -192,7 +202,9 @@ namespace mlx
 		m_renderpass = kvfCreateRenderPassWithSubpassDependencies(RenderCore::Get().GetDevice(), attachments.data(), attachments.size(), GetPipelineBindPoint(), dependencies.data(), dependencies.size());
 		m_clears.clear();
 		m_clears.resize(attachments.size());
-		DebugLog("Vulkan: renderpass created");
+		#ifdef DEBUG
+			DebugLog("Vulkan: renderpass created for %", m_debug_name);
+		#endif
 
 		if(p_renderer)
 		{
@@ -200,13 +212,17 @@ namespace mlx
 			{
 				attachment_views[0] = image.GetImageView();
 				m_framebuffers.push_back(kvfCreateFramebuffer(RenderCore::Get().GetDevice(), m_renderpass, attachment_views.data(), attachment_views.size(), { .width = image.GetWidth(), .height = image.GetHeight() }));
-				DebugLog("Vulkan: framebuffer created");
+				#ifdef DEBUG
+					DebugLog("Vulkan: framebuffer created for %", m_debug_name);
+				#endif
 			}
 		}
 		for(NonOwningPtr<Texture> image : render_targets)
 		{
 			m_framebuffers.push_back(kvfCreateFramebuffer(RenderCore::Get().GetDevice(), m_renderpass, attachment_views.data(), attachment_views.size(), { .width = image->GetWidth(), .height = image->GetHeight() }));
-			DebugLog("Vulkan: framebuffer created");
+			#ifdef DEBUG
+				DebugLog("Vulkan: framebuffer created for %", m_debug_name);
+			#endif
 		}
 	}
 

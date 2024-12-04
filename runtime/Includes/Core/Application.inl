@@ -9,7 +9,7 @@
 			Error("invalid window ptr (NULL)"); \
 			return; \
 		} \
-		else if(std::find_if(m_graphics.begin(), m_graphics.end(), [win](const std::unique_ptr<GraphicsSupport>& gs){ return *static_cast<int*>(win) == gs->GetID(); }) == m_graphics.end()) \
+		else if(std::find_if(m_graphics.begin(), m_graphics.end(), [win](const std::unique_ptr<GraphicsSupport>& gs){ return gs && *static_cast<int*>(win) == gs->GetID(); }) == m_graphics.end()) \
 		{ \
 			Error("invalid window ptr"); \
 			return; \
