@@ -36,7 +36,7 @@ CXXPCHFLAGS = -xc++-header
 PCH = runtime/Includes/PreCompiled.h
 GCH = 
 
-NZSLC = nzslc
+NZRRC = nzslc
 
 ifeq ($(TOOLCHAIN), gcc)
 	CXX = g++
