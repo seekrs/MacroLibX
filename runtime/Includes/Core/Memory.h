@@ -9,6 +9,7 @@ namespace mlx
 			MemManager();
 
 			static void* Malloc(std::size_t size);
+			static void* AlignedMalloc(std::size_t alignment, std::size_t size);
 			static void* Calloc(std::size_t n, std::size_t size);
 			static void* Realloc(void* ptr, std::size_t size);
 			static void Free(void* ptr);

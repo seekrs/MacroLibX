@@ -8,7 +8,7 @@ namespace mlx
 		public:
 			GPUAllocator() = default;
 
-			void Init() noexcept;
+			void Init(const VkAllocationCallbacks* callbacks) noexcept;
 			void Destroy() noexcept;
 
 			VmaAllocation CreateBuffer(const VkBufferCreateInfo* binfo, const VmaAllocationCreateInfo* vinfo, VkBuffer& buffer, const char* name = nullptr) noexcept;

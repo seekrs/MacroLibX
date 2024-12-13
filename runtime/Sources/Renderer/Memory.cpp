@@ -1,3 +1,4 @@
+#include "vulkan/vulkan_core.h"
 #include <PreCompiled.h>
 #define VMA_IMPLEMENTATION
 #ifdef MLX_COMPILER_CLANG
@@ -22,7 +23,7 @@
 
 namespace mlx
 {
-	void GPUAllocator::Init() noexcept
+	void GPUAllocator::Init(const VkAllocationCallbacks* callbacks) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
 		VmaVulkanFunctions vma_vulkan_func{};
@@ -49,6 +50,7 @@ namespace mlx
 		allocator_create_info.physicalDevice = RenderCore::Get().GetPhysicalDevice();
 		allocator_create_info.device = RenderCore::Get().GetDevice();
 		allocator_create_info.instance = RenderCore::Get().GetInstance();
+		allocator_create_info.pAllocationCallbacks = callbacks;
 		allocator_create_info.pVulkanFunctions = &vma_vulkan_func;
 
 		kvfCheckVk(vmaCreateAllocator(&allocator_create_info, &m_allocator));
