@@ -31,6 +31,7 @@
 #include <Platform/Window.h>
 #include <Maths/Mat4.h>
 
+
 namespace mlx
 {
 	static std::unique_ptr<VulkanLoader> loader;
@@ -51,6 +52,21 @@ namespace mlx
 	{
 		Logs::Report(LogType::Warning, 0, "", "", message);
 		std::cout << std::endl;
+	}
+
+	void* VulkanAllocationFunction(void*, std::size_t size, std::size_t alignment, VkSystemAllocationScope)
+	{
+		return MemManager::AlignedMalloc(alignment, size);
+	}
+
+	void* VulkanReallocationFunction(void*, void* ptr, std::size_t size, std::size_t, VkSystemAllocationScope)
+	{
+		return MemManager::Realloc(ptr, size);
+	}
+
+	void VulkanFreeFunction(void*, void* ptr)
+	{
+		MemManager::Free(ptr);
 	}
 
 	RenderCore* RenderCore::s_instance = nullptr;
@@ -102,7 +118,17 @@ namespace mlx
 
 		vkDestroySurfaceKHR(m_instance, surface, nullptr);
 
-		m_allocator.Init();
+		VkAllocationCallbacks callbacks;
+		callbacks.pUserData = nullptr;
+		callbacks.pfnAllocation = VulkanAllocationFunction;
+		callbacks.pfnReallocation = VulkanReallocationFunction;
+		callbacks.pfnFree = VulkanFreeFunction;
+		callbacks.pfnInternalAllocation = nullptr;
+		callbacks.pfnInternalFree = nullptr;
+
+		kvfSetAllocationCallbacks(m_device, &callbacks);
+
+		m_allocator.Init(&callbacks);
 	}
 
 #undef MLX_LOAD_FUNCTION

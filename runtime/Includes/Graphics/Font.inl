@@ -24,6 +24,8 @@ namespace mlx
 
 	void FontRegistry::Reset()
 	{
+		for(auto& font: m_fonts_registry)
+			font->Destroy();
 		m_fonts_registry.clear();
 	}
 }

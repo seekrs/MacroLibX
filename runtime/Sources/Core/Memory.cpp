@@ -19,6 +19,14 @@ namespace mlx
 		return ptr;
 	}
 
+	void* MemManager::AlignedMalloc(std::size_t alignment, std::size_t size)
+	{
+		void* ptr = std::aligned_alloc(alignment, size);
+		if(ptr != nullptr)
+			s_blocks.push_back(ptr);
+		return ptr;
+	}
+
 	void* MemManager::Calloc(std::size_t n, std::size_t size)
 	{
 		void* ptr = std::calloc(n, size);
