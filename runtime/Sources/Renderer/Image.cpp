@@ -9,9 +9,9 @@
 #define STB_IMAGE_IMPLEMENTATION
 
 #define STBI_ASSERT(x) (mlx::Assert(x, "internal stb assertion " #x))
-#define STBI_MALLOC(x) (mlx::MemManager::Get().Malloc(x))
-#define STBI_REALLOC(p, x) (mlx::MemManager::Get().Realloc(p, x))
-#define STBI_FREE(x) (mlx::MemManager::Get().Free(x))
+#define STBI_MALLOC(x) (mlx::MemManager::Malloc(x))
+#define STBI_REALLOC(p, x) (mlx::MemManager::Realloc(p, x))
+#define STBI_FREE(x) (mlx::MemManager::Free(x))
 
 #ifdef MLX_COMPILER_GCC
 	#pragma GCC diagnostic push
@@ -295,7 +295,7 @@ namespace mlx
 		int channels;
 
 		std::uint8_t* data = stbi_load(filename.c_str(), &size.x, &size.y, &channels, 4);
-		CallOnExit defer([=]() { stbi_image_free(data); });
+		CallOnExit defer([&]() { stbi_image_free(data); });
 
 		CPUBuffer buffer(size.x * size.y * 4);
 		std::memcpy(buffer.GetData(), data, buffer.GetSize());

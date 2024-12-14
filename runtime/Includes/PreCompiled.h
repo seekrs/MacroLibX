@@ -68,12 +68,15 @@
 #endif
 
 #include <Core/Memory.h>
+#include <Core/Logs.h>
 
 #define VMA_STATIC_VULKAN_FUNCTIONS 0
 #define VMA_DYNAMIC_VULKAN_FUNCTIONS 0
 #define VMA_VULKAN_VERSION 1000000
 #define VMA_SYSTEM_ALIGNED_MALLOC(size, alignment) (mlx::MemManager::AlignedMalloc(alignment, size))
 #define VMA_SYSTEM_ALIGNED_FREE(ptr) (mlx::MemManager::Free(ptr))
+//#define VMA_ASSERT(expr) (mlx::Assert(expr, "VMA Assertion: " #expr))
+#define VMA_ASSERT(expr) ((void)0)
 #define VMA_ASSERT_LEAK(expr) ((void)0) // Because why not
 
 #ifdef MLX_COMPILER_CLANG
@@ -104,7 +107,6 @@
 #endif
 #include <kvf.h>
 
-#include <Core/Logs.h>
 #include <Core/EventBus.h>
 #include <Core/Profiler.h>
 #include <Utils/NonOwningPtr.h>
