@@ -91,7 +91,6 @@ namespace mlx
 			if(gs)
 				gs->TryEraseSpritesInScene(texture);
 		}
-		m_image_registry.UnregisterTexture(texture);
 		delete texture;
 	}
 

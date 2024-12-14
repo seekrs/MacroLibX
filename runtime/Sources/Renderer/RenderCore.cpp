@@ -59,9 +59,9 @@ namespace mlx
 		return MemManager::AlignedMalloc(alignment, size);
 	}
 
-	void* VulkanReallocationFunction(void*, void* ptr, std::size_t size, std::size_t, VkSystemAllocationScope)
+	void* VulkanReallocationFunction(void*, void* ptr, std::size_t size, std::size_t alignment, VkSystemAllocationScope)
 	{
-		return MemManager::Realloc(ptr, size);
+		return MemManager::AlignedRealloc(ptr, alignment, size);
 	}
 
 	void VulkanFreeFunction(void*, void* ptr)

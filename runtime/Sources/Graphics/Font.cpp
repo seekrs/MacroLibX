@@ -8,8 +8,8 @@
 #include <stb_rect_pack.h>
 
 #define STB_TRUETYPE_IMPLEMENTATION
-#define STB_malloc(x, u) ((void)(u), mlx::MemManager::Get().Malloc(x))
-#define STB_free(x, u) ((void)(u), mlx::MemManager::Get().Free(x))
+#define STB_malloc(x, u) ((void)(u), mlx::MemManager::Malloc(x))
+#define STB_free(x, u) ((void)(u), mlx::MemManager::Free(x))
 #include <stb_truetype.h>
 
 namespace mlx
@@ -64,6 +64,8 @@ namespace mlx
 
 	void Font::Destroy()
 	{
+		if(!m_atlas.IsInit())
+			return;
 		m_atlas.Destroy();
 		DebugLog("Font: unloaded % with a scale of %", m_name, m_scale);
 	}

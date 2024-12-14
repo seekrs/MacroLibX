@@ -14,7 +14,7 @@
 *.gch
 *.pch
 *.exe
-*vgcore
+*vgcore.*
 *.gdb_history
 .vs/
 .xmake/
