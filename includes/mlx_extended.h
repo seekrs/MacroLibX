@@ -1,0 +1,171 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mlx_extended.h                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: maldavid <contact@kbz8.me>                 +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/14 16:17:10 by maldavid          #+#    #+#             */
+/*   Updated: 2024/12/14 16:37:49 by maldavid         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+// MacroLibX official repo https://github.com/seekrs/MacroLibX
+// MacroLibX official website https://macrolibx.kbz8.me/
+
+#ifndef MACROLIB_X_EXTENDED_H
+#define MACROLIB_X_EXTENDED_H
+
+#include "mlx_profile.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+typedef struct mlx_window_create_info_extension
+{
+	int position_x;
+	int position_y;
+	int max_width;
+	int max_height;
+	int min_width;
+	int min_height;
+} mlx_window_create_info_extension;
+
+
+
+        /* Window related functions */
+
+
+/**
+ * @brief            Sets maximum window size
+ *
+ * @param mlx        Internal MLX application
+ * @param win        Internal window to move
+ * @param x          New x maximum size
+ * @param y          New y maximum size
+ */
+MLX_API void mlx_set_window_max_size(void *mlx, void *win, int x, int y);
+
+/**
+ * @brief            Sets minimum window size
+ *
+ * @param mlx        Internal MLX application
+ * @param win        Internal window to move
+ * @param x          New x minimum size
+ * @param y          New y minimum size
+ */
+MLX_API void mlx_set_window_min_size(void *mlx, void *win, int x, int y);
+
+/**
+ * @brief            Maximizes a window
+ *
+ * @param mlx        Internal MLX application
+ * @param win        Internal window to move
+ */
+MLX_API void mlx_maximise_window(void *mlx, void *win);
+
+/**
+ * @brief            Minimizes a window
+ *
+ * @param mlx        Internal MLX application
+ * @param win        Internal window to move
+ */
+MLX_API void mlx_minimize_window(void *mlx, void *win);
+
+/**
+ * @brief            Restore window to formal size
+ *
+ * @param mlx        Internal MLX application
+ * @param win        Internal window to move
+ */
+MLX_API void mlx_restore_window(void *mlx, void *win);
+
+
+
+        /* Pixels drawing related functions */
+
+
+/**
+ * @brief            Put an array of pixels in the window
+ *
+ * @param mlx        Internal MLX application
+ * @param win        Internal window
+ * @param x          X coordinate
+ * @param y          Y coordinate
+ * @param pixels     Array of pixels (coded on 4 bytes in an int, 0xRRGGBBAA)
+ */
+MLX_API void mlx_pixel_put_array(void* mlx, void* win, int x, int y, int* pixels);
+
+
+
+        /* Images related functions */
+
+
+/**
+ * @brief            Get image region
+ *
+ * @param mlx        Internal MLX application
+ * @param img        Internal image
+ * @param x          X coordinate in the image
+ * @param y          Y coordinate in the image
+ * @param w          Width of the region
+ * @param y          Height of the region
+ * @param dst        Array of pixels to copy to
+ *
+ * Note: it is responsability of the user to make sure the size of `dst` is
+ * big enough for the given region.
+ *
+ * /!\ If you run into glitches when writing or reading pixels from images /!\
+ * You need to add IMAGES_OPTIMIZED=false to your make mlx command
+ * ```
+ *     ~ git clone https://github.com/seekrs/MacroLibX.git
+ *     ~ cd MacroLibX
+ *     ~ make IMAGES_OPTIMIZED=false
+ * ```
+ */
+MLX_API void mlx_get_image_region(void* mlx, void* img, int x, int y, int w, int h, int* dst);
+
+/**
+ * @brief            Set image region
+ *
+ * @param mlx        Internal MLX application
+ * @param img        Internal image
+ * @param x          X coordinate in the image
+ * @param y          Y coordinate in the image
+ * @param w          Width of the region
+ * @param y          Height of the region
+ * @param pixels     Array of pixels to copy from
+ *
+ * Note: it is responsability of the user to make sure the size of `pixels` is
+ * big enough for the given region.
+ *
+ * /!\ If you run into glitches when writing or reading pixels from images /!\
+ * You need to add IMAGES_OPTIMIZED=false to your make mlx command
+ * ```
+ *     ~ git clone https://github.com/seekrs/MacroLibX.git
+ *     ~ cd MacroLibX
+ *     ~ make IMAGES_OPTIMIZED=false
+ * ```
+ */
+MLX_API void mlx_set_image_region(void* mlx, void* img, int x, int y, int w, int h, int* pixels);
+
+/**
+ * @brief            Transform and put image to the given window
+ *
+ * @param mlx        Internal MLX application
+ * @param win        Internal window
+ * @param img        Internal image
+ * @param x          X coordinate
+ * @param y          Y coordinate
+ * @param scale_x    Scale x of the image
+ * @param scale_y    Scale y of the image
+ * @param angle      Rotation angle of the image (clockwise)
+ */
+MLX_API void mlx_put_transformed_image_to_window(void* mlx, void* win, void* img, int x, int y, float scale_x, float scale_y, float angle);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif

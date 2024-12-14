@@ -6,15 +6,15 @@
 /*   By: maldavid <contact@kbz8.me>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:56:35 by maldavid          #+#    #+#             */
-/*   Updated: 2024/12/04 17:52:23 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/12/14 16:33:17 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 // MacroLibX official repo https://github.com/seekrs/MacroLibX
 // MacroLibX official website https://macrolibx.kbz8.me/
 
-#ifndef __MACRO_LIB_X_H__
-#define __MACRO_LIB_X_H__
+#ifndef MACROLIB_X_H
+#define MACROLIB_X_H
 
 #include "mlx_profile.h"
 
@@ -22,7 +22,7 @@
 extern "C" {
 #endif
 
-typedef enum
+typedef enum mlx_event_type
 {
 	MLX_KEYDOWN = 0,
 	MLX_KEYUP = 1,
@@ -33,6 +33,23 @@ typedef enum
 } mlx_event_type;
 
 /**
+ * @brief           Descriptor structure for window creation
+ */
+typedef struct mlx_window_create_info
+{
+	void* mlx_extension;
+	const char* title;
+	int width;
+	int height;
+	bool is_fullscreen;
+	bool is_resizable;
+} mlx_window_create_info;
+
+
+
+        /* MLX backend related functions */
+
+/**
  * @brief           Initializes the MLX internal application
  *
  * @return (void*)  An opaque pointer to the internal MLX application or NULL (0x0) in case of error
@@ -40,39 +57,123 @@ typedef enum
 MLX_API void* mlx_init();
 
 /**
- * @brief            Creates a new window
+ * @brief            Caps the FPS
  *
  * @param mlx        Internal MLX application
- * @param w          Width of the window
- * @param h          Height of the window
- * @param title      Title of the window
- *
- * @return (void*)   An opaque pointer to the internal MLX window or NULL (0x0) in case of error
+ * @param fps        The FPS cap
  */
-MLX_API void* mlx_new_window(void* mlx, int w, int h, const char* title);
+MLX_API void mlx_set_fps_goal(void* mlx, int fps);
 
 /**
- * @brief            Creates a new resizable window
+ * @brief            Destroy internal MLX application
  *
  * @param mlx        Internal MLX application
- * @param w          Width of the window
- * @param h          Height of the window
- * @param title      Title of the window
- *
- * @return (void*)   An opaque pointer to the internal MLX window or NULL (0x0) in case of error
  */
-MLX_API void* mlx_new_resizable_window(void* mlx, int w, int h, const char* title);
+MLX_API void mlx_destroy_display(void* mlx);
+
+
+
+        /* Window related functions */
+
 
 /**
  * @brief            Creates a new window
+ *
+ * @param mlx        Internal MLX application
+ * @param info       Pointer to a descriptor structure
+ *
+ * @return (void*)   An opaque pointer to the internal MLX window or NULL (0x0) in case of error
+ */
+MLX_API void* mlx_new_window(void* mlx, const mlx_window_create_info* info);
+
+/**
+ * @brief            Destroys internal window
+ *
+ * @param mlx        Internal MLX application
+ * @param win        Internal window
+ */
+MLX_API void mlx_destroy_window(void* mlx, void* win);
+
+/**
+ * @brief            Sets window position
  *
  * @param mlx        Internal MLX application
  * @param win        Internal window to move
  * @param x          New x position
  * @param y          New y position
- *
  */
 MLX_API void mlx_set_window_position(void *mlx, void *win, int x, int y);
+
+/**
+ * @brief            Sets window size
+ *
+ * @param mlx        Internal MLX application
+ * @param win        Internal window to move
+ * @param width      New width
+ * @param height     New height
+ */
+MLX_API void mlx_set_window_size(void *mlx, void *win, int width, int height);
+
+/**
+ * @brief            Sets window title
+ *
+ * @param mlx        Internal MLX application
+ * @param win        Internal window to move
+ * @param title      New title
+ */
+MLX_API void mlx_set_window_title(void *mlx, void *win, const char* title);
+
+/**
+ * @brief            Enables/Disables window fullscreen mode
+ *
+ * @param mlx        Internal MLX application
+ * @param win        Internal window to move
+ * @param enable     Switch or not to fullscreen
+ */
+MLX_API void mlx_set_window_fullscreen(void *mlx, void *win, bool enable);
+
+/**
+ * @brief            Gets window position
+ *
+ * @param mlx        Internal MLX application
+ * @param win        Internal window to move
+ * @param x          Pointers to get position of the window
+ * @param y          Pointers to get position of the window
+ */
+MLX_API void mlx_get_window_position(void *mlx, void *win, int* x, int* y);
+
+/**
+ * @brief            Gets window size
+ *
+ * @param mlx        Internal MLX application
+ * @param win        Internal window to move
+ * @param x          Pointers to get size of the window
+ * @param y          Pointers to get size of the window
+ */
+MLX_API void mlx_get_window_size(void *mlx, void *win, int* x, int* y);
+
+/**
+ * @brief            Clears the given window (resets all rendered data)
+ *
+ * @param mlx        Internal MLX application
+ * @param win        Internal window
+ */
+MLX_API void mlx_clear_window(void* mlx, void* win, int color);
+
+/**
+ * @brief            Get the size of the screen the given window is on
+ *
+ * @param mlx        Internal MLX application
+ * @param win        Internal window to choose screen the window is on
+ * @param w          Get width size
+ * @param h          Get height size
+ */
+MLX_API void mlx_get_screens_size(void* mlx, void* win, int* w, int* h);
+
+
+
+        /* Loop related functions */
+
 
 /**
  * @brief            Gives a function to be executed at each loop turn
@@ -80,8 +181,6 @@ MLX_API void mlx_set_window_position(void *mlx, void *win, int x, int y);
  * @param mlx        Internal MLX application
  * @param f          The function
  * @param param      Param to give to the function passed
- *
- * @return (void)
  */
 MLX_API void mlx_loop_hook(void* mlx, int (*f)(void*), void* param);
 
@@ -89,8 +188,6 @@ MLX_API void mlx_loop_hook(void* mlx, int (*f)(void*), void* param);
  * @brief            Starts the internal main loop
  *
  * @param mlx        Internal MLX application
- *
- * @return (void)
  */
 MLX_API void mlx_loop(void* mlx);
 
@@ -98,22 +195,21 @@ MLX_API void mlx_loop(void* mlx);
  * @brief            Ends the internal run loop
  *
  * @param mlx        Internal MLX application
- *
- * @return (void)
  */
 MLX_API void mlx_loop_end(void* mlx);
 
+
+
+        /* Events related functions */
+
+
 /**
  * @brief            Shows mouse cursor
- *
- * @return (void)
  */
 MLX_API void mlx_mouse_show();
 
 /**
  * @brief            Hides mouse cursor
- *
- * @return (void)
  */
 MLX_API void mlx_mouse_hide();
 
@@ -124,8 +220,6 @@ MLX_API void mlx_mouse_hide();
  * @param win        Internal window from which cursor moves
  * @param x          X coordinate
  * @param y          Y coordinate
- *
- * @return (void)
  */
 MLX_API void mlx_mouse_move(void* mlx, void* win, int x, int y);
 
@@ -135,8 +229,6 @@ MLX_API void mlx_mouse_move(void* mlx, void* win, int x, int y);
  * @param mlx        Internal MLX application
  * @param x          Get x coordinate
  * @param y          Get y coordinate
- *
- * @return (void)
  */
 MLX_API void mlx_mouse_get_pos(void* mlx, int* x, int* y);
 
@@ -148,10 +240,13 @@ MLX_API void mlx_mouse_get_pos(void* mlx, int* x, int* y);
  * @param event      Event type (see union on top of this file)
  * @param f          Function to be executed
  * @param param      Parameter given to the function
- *
- * @return (void)
  */
 MLX_API void mlx_on_event(void* mlx, void* win, mlx_event_type event, int (*f)(int, void*), void* param);
+
+
+
+        /* Pixels drawing related functions */
+
 
 /**
  * @brief            Put a pixel in the window
@@ -160,14 +255,14 @@ MLX_API void mlx_on_event(void* mlx, void* win, mlx_event_type event, int (*f)(i
  * @param win        Internal window
  * @param x          X coordinate
  * @param y          Y coordinate
- * @param color      Color of the pixel (coded on 4 bytes in an int, 0xAARRGGBB)
- *
- * Note : If your're reading pixel colors from an image, don't forget to shift them 
- * one byte to the right as image pixels are encoded as 0xRRGGBBAA and pixel put takes 0xAARRGGBB.
- * 
- * @return (void)
+ * @param color      Color of the pixel (coded on 4 bytes in an int, 0xRRGGBBAA)
  */
 MLX_API void mlx_pixel_put(void* mlx, void* win, int x, int y, int color);
+
+
+
+        /* Images related functions */
+
 
 /**
  * @brief            Create a new empty image
@@ -179,6 +274,26 @@ MLX_API void mlx_pixel_put(void* mlx, void* win, int x, int y, int color);
  * @return (void*)   An opaque pointer to the internal image or NULL (0x0) in case of error
  */
 MLX_API void* mlx_new_image(void* mlx, int width, int height);
+
+/**
+ * @brief            Create a new image from a png/jpg/bmp file
+ *
+ * @param mlx        Internal MLX application
+ * @param filename   Path to the png file
+ * @param width      Get the width of the image
+ * @param heigth     Get the height of the image
+ *
+ * @return (void*)   An opaque pointer to the internal image or NULL (0x0) in case of error
+ */
+MLX_API void* mlx_new_image_from_file(void* mlx, char* filename, int* width, int* height);
+
+/**
+ * @brief            Destroys internal image
+ *
+ * @param mlx        Internal MLX application
+ * @param img        Internal image
+ */
+MLX_API void mlx_destroy_image(void* mlx, void* img);
 
 /**
  * @brief            Get image pixel data
@@ -209,8 +324,6 @@ MLX_API int mlx_get_image_pixel(void* mlx, void* img, int x, int y);
  * @param y          Y coordinate in the image
  * @param color      Color of the pixel to set
  *
- * @return (void)
- *
  * /!\ If you run into glitches when writing or reading pixels from images /!\
  * You need to add IMAGES_OPTIMIZED=false to your make mlx command
  * ```
@@ -229,71 +342,13 @@ MLX_API void mlx_set_image_pixel(void* mlx, void* img, int x, int y, int color);
  * @param img        Internal image
  * @param x          X coordinate
  * @param y          Y coordinate
- *
- * @return (void)
  */
 MLX_API void mlx_put_image_to_window(void* mlx, void* win, void* img, int x, int y);
 
-/**
- * @brief            Transform and put image to the given window
- *
- * @param mlx        Internal MLX application
- * @param win        Internal window
- * @param img        Internal image
- * @param x          X coordinate
- * @param y          Y coordinate
- * @param scale      Scale of the image
- * @param angle      Rotation angle of the image (clockwise)
- *
- * @return (void)
- */
-MLX_API void mlx_transform_put_image_to_window(void* mlx, void* win, void* img, int x, int y, float scale, float angle);
 
-/**
- * @brief            Destroys internal image
- *
- * @param mlx        Internal MLX application
- * @param img        Internal image
- *
- * @return (void)
- */
-MLX_API void mlx_destroy_image(void* mlx, void* img);
 
-/**
- * @brief            Create a new image from a png file
- *
- * @param mlx        Internal MLX application
- * @param filename   Path to the png file
- * @param width      Get the width of the image
- * @param heigth     Get the height of the image
- *
- * @return (void*)   An opaque pointer to the internal image or NULL (0x0) in case of error
- */
-MLX_API void* mlx_png_file_to_image(void* mlx, char* filename, int* width, int* height);
+        /* Strings drawing related functions */
 
-/**
- * @brief            Create a new image from a jpg file
- *
- * @param mlx        Internal MLX application
- * @param filename   Path to the jpg file
- * @param width      Get the width of the image
- * @param heigth     Get the height of the image
- *
- * @return (void*)   An opaque pointer to the internal image or NULL (0x0) in case of error
- */
-MLX_API void* mlx_jpg_file_to_image(void* mlx, char* filename, int* width, int* height);
-
-/**
- * @brief            Create a new image from a bmp file
- *
- * @param mlx        Internal MLX application
- * @param filename   Path to the bmp file
- * @param width      Get the width of the image
- * @param heigth     Get the height of the image
- *
- * @return (void*)   An opaque pointer to the internal image or NULL (0x0) in case of error
- */
-MLX_API void* mlx_bmp_file_to_image(void* mlx, char* filename, int* width, int* height);
 
 /**
  * @brief            Put text in given window
@@ -304,8 +359,6 @@ MLX_API void* mlx_bmp_file_to_image(void* mlx, char* filename, int* width, int* 
  * @param y          Y coordinate
  * @param color      Color of the pixel (coded on 4 bytes in an int, 0xAARRGGBB)
  * @param str        Text to put
- *
- * @return (void)
  */
 MLX_API void mlx_string_put(void* mlx, void* win, int x, int y, int color, char* str);
 
@@ -315,8 +368,6 @@ MLX_API void mlx_string_put(void* mlx, void* win, int x, int y, int color, char*
  * @param mlx        Internal MLX application
  * @param win        Internal window
  * @param filepath   Filepath to the font or "default" to reset to the embedded font
- *
- * @return (void)
  */
 MLX_API void mlx_set_font(void* mlx, char* filepath);
 
@@ -327,61 +378,8 @@ MLX_API void mlx_set_font(void* mlx, char* filepath);
  * @param win        Internal window
  * @param filepath   Filepath to the font or "default" to reset to the embedded font
  * @param scale      Scale to apply to the font
- *
- * @return (void)
  */
 MLX_API void mlx_set_font_scale(void* mlx, char* filepath, float scale);
-
-/**
- * @brief            Clears the given window (resets all rendered data)
- *
- * @param mlx        Internal MLX application
- * @param win        Internal window
- *
- * @return (void)
- */
-MLX_API void mlx_clear_window(void* mlx, void* win, int color);
-
-/**
- * @brief            Destroys internal window
- *
- * @param mlx        Internal MLX application
- * @param win        Internal window
- *
- * @return (void)
- */
-MLX_API void mlx_destroy_window(void* mlx, void* win);
-
-/**
- * @brief            Destroy internal MLX application
- *
- * @param mlx        Internal MLX application
- *
- * @return (void)
- */
-MLX_API void mlx_destroy_display(void* mlx);
-
-/**
- * @brief            Get the size of the screen the given window is on
- *
- * @param mlx        Internal MLX application
- * @param win        Internal window
- * @param w          Get width size
- * @param h          Get height size
- *
- * @return (void)
- */
-MLX_API void mlx_get_screens_size(void* mlx, void* win, int* w, int* h);
-
-/**
- * @brief            Caps the FPS
- *
- * @param mlx        Internal MLX application
- * @param fps        The FPS cap
- *
- * @return (void)
- */
-MLX_API void mlx_set_fps_goal(void* mlx, int fps);
 
 #ifdef __cplusplus
 }
