@@ -1,6 +1,7 @@
 #ifndef __MLX_WINDOW__
 #define __MLX_WINDOW__
 
+#include <mlx.h>
 #include <Maths/Vec2.h>
 #include <Core/SDLManager.h>
 
@@ -9,7 +10,7 @@ namespace mlx
 	class Window
 	{
 		public:
-			Window(std::size_t w, std::size_t h, const std::string& title, bool is_resizable, bool hidden = false);
+			Window(const mlx_window_create_info* info, bool hidden = false);
 
 			inline Handle GetWindowHandle() const noexcept { return p_window; }
 			inline int GetWidth() const noexcept { return m_width; }

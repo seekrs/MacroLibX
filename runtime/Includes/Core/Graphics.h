@@ -1,6 +1,7 @@
 #ifndef __MLX_GRAPHICS__
 #define __MLX_GRAPHICS__
 
+#include <mlx.h>
 #include <Platform/Window.h>
 #include <Renderer/Renderer.h>
 #include <Graphics/Scene.h>
@@ -14,8 +15,7 @@ namespace mlx
 	class GraphicsSupport : public NonCopyable
 	{
 		public:
-			GraphicsSupport(std::size_t w, std::size_t h, NonOwningPtr<Texture> render_target, int id);
-			GraphicsSupport(std::size_t w, std::size_t h, std::string title, int id, bool is_resizable);
+			GraphicsSupport(const mlx_window_create_info* info, int id);
 
 			[[nodiscard]] MLX_FORCEINLINE int& GetID() noexcept { return m_id; }
 			[[nodiscard]] inline std::shared_ptr<Window> GetWindow() { return p_window; }
@@ -24,8 +24,8 @@ namespace mlx
 
 			inline void ResetRenderData(int color) noexcept;
 
-			inline void PixelPut(int x, int y, std::uint32_t color) noexcept;
-			inline void StringPut(int x, int y, std::uint32_t color, std::string str);
+			inline void PixelPut(int x, int y, int color) noexcept;
+			inline void StringPut(int x, int y, int, std::string str);
 			inline void TexturePut(NonOwningPtr<class Texture> texture, int x, int y, float scale, float angle);
 
 			inline void TryEraseSpritesInScene(NonOwningPtr<Texture> texture) noexcept;

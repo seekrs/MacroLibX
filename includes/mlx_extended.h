@@ -6,7 +6,7 @@
 /*   By: maldavid <contact@kbz8.me>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 16:17:10 by maldavid          #+#    #+#             */
-/*   Updated: 2024/12/14 16:37:49 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/12/14 17:42:06 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,15 @@
 #ifndef MACROLIB_X_EXTENDED_H
 #define MACROLIB_X_EXTENDED_H
 
-#include "mlx_profile.h"
+#include "mlx.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+
+        /* Window related functions */
+
 
 typedef struct mlx_window_create_info_extension
 {
@@ -32,11 +36,6 @@ typedef struct mlx_window_create_info_extension
 	int min_height;
 } mlx_window_create_info_extension;
 
-
-
-        /* Window related functions */
-
-
 /**
  * @brief            Sets maximum window size
  *
@@ -45,7 +44,7 @@ typedef struct mlx_window_create_info_extension
  * @param x          New x maximum size
  * @param y          New y maximum size
  */
-MLX_API void mlx_set_window_max_size(void *mlx, void *win, int x, int y);
+MLX_API void mlx_set_window_max_size(mlx_context mlx, mlx_window win, int x, int y);
 
 /**
  * @brief            Sets minimum window size
@@ -55,7 +54,7 @@ MLX_API void mlx_set_window_max_size(void *mlx, void *win, int x, int y);
  * @param x          New x minimum size
  * @param y          New y minimum size
  */
-MLX_API void mlx_set_window_min_size(void *mlx, void *win, int x, int y);
+MLX_API void mlx_set_window_min_size(mlx_context mlx, mlx_window win, int x, int y);
 
 /**
  * @brief            Maximizes a window
@@ -63,7 +62,7 @@ MLX_API void mlx_set_window_min_size(void *mlx, void *win, int x, int y);
  * @param mlx        Internal MLX application
  * @param win        Internal window to move
  */
-MLX_API void mlx_maximise_window(void *mlx, void *win);
+MLX_API void mlx_maximise_window(mlx_context mlx, mlx_window win);
 
 /**
  * @brief            Minimizes a window
@@ -71,7 +70,7 @@ MLX_API void mlx_maximise_window(void *mlx, void *win);
  * @param mlx        Internal MLX application
  * @param win        Internal window to move
  */
-MLX_API void mlx_minimize_window(void *mlx, void *win);
+MLX_API void mlx_minimize_window(mlx_context mlx, mlx_window win);
 
 /**
  * @brief            Restore window to formal size
@@ -79,7 +78,7 @@ MLX_API void mlx_minimize_window(void *mlx, void *win);
  * @param mlx        Internal MLX application
  * @param win        Internal window to move
  */
-MLX_API void mlx_restore_window(void *mlx, void *win);
+MLX_API void mlx_restore_window(mlx_context mlx, mlx_window win);
 
 
 
@@ -95,7 +94,7 @@ MLX_API void mlx_restore_window(void *mlx, void *win);
  * @param y          Y coordinate
  * @param pixels     Array of pixels (coded on 4 bytes in an int, 0xRRGGBBAA)
  */
-MLX_API void mlx_pixel_put_array(void* mlx, void* win, int x, int y, int* pixels);
+MLX_API void mlx_pixel_put_array(mlx_context mlx, mlx_window win, int x, int y, int* pixels);
 
 
 
@@ -124,7 +123,7 @@ MLX_API void mlx_pixel_put_array(void* mlx, void* win, int x, int y, int* pixels
  *     ~ make IMAGES_OPTIMIZED=false
  * ```
  */
-MLX_API void mlx_get_image_region(void* mlx, void* img, int x, int y, int w, int h, int* dst);
+MLX_API void mlx_get_image_region(mlx_context mlx, mlx_image image, int x, int y, int w, int h, int* dst);
 
 /**
  * @brief            Set image region
@@ -148,7 +147,7 @@ MLX_API void mlx_get_image_region(void* mlx, void* img, int x, int y, int w, int
  *     ~ make IMAGES_OPTIMIZED=false
  * ```
  */
-MLX_API void mlx_set_image_region(void* mlx, void* img, int x, int y, int w, int h, int* pixels);
+MLX_API void mlx_set_image_region(mlx_context mlx, mlx_image image, int x, int y, int w, int h, int* pixels);
 
 /**
  * @brief            Transform and put image to the given window
@@ -162,7 +161,7 @@ MLX_API void mlx_set_image_region(void* mlx, void* img, int x, int y, int w, int
  * @param scale_y    Scale y of the image
  * @param angle      Rotation angle of the image (clockwise)
  */
-MLX_API void mlx_put_transformed_image_to_window(void* mlx, void* win, void* img, int x, int y, float scale_x, float scale_y, float angle);
+MLX_API void mlx_put_transformed_image_to_window(mlx_context mlx, mlx_window win, mlx_image image, int x, int y, float scale_x, float scale_y, float angle);
 
 #ifdef __cplusplus
 }

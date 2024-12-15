@@ -11,35 +11,25 @@
 
 namespace mlx
 {
-	// TODO : FIX THIS DAMN GOD CLASS !!!!!!!!!!!!!!!!
 	class Application
 	{
 		public:
 			Application();
 
 			inline void GetMousePos(int* x, int* y) noexcept;
-			inline void MouseMove(Handle win, int x, int y) noexcept;
-
-			inline void OnEvent(Handle win, int event, int (*funct_ptr)(int, void*), void* param) noexcept;
-
-			inline void GetScreenSize(Handle win, int* w, int* h) noexcept;
-
+			inline void GetScreenSize(mlx_window win, int* w, int* h) noexcept;
 			inline void SetFPSCap(std::uint32_t fps) noexcept;
 
-			inline Handle NewGraphicsSuport(std::size_t w, std::size_t h, const char* title, bool is_resizable);
-			inline void ClearGraphicsSupport(Handle win, int color);
-			inline void DestroyGraphicsSupport(Handle win);
-			inline void SetGraphicsSupportPosition(Handle win, int x, int y);
+			inline void OnEvent(mlx_window win, int event, int (*funct_ptr)(int, void*), void* param) noexcept;
 
-			inline void PixelPut(Handle win, int x, int y, std::uint32_t color) const noexcept;
-			inline void StringPut(Handle win, int x, int y, std::uint32_t color, char* str);
+			inline mlx_window NewGraphicsSuport(const mlx_window_create_info* info);
+			inline NonOwningPtr<GraphicsSupport> GetGraphicsSupport(mlx_window win);
+			inline void DestroyGraphicsSupport(mlx_window win);
 
-			Handle NewTexture(int w, int h);
-			Handle NewStbTexture(char* file, int* w, int* h); // stb textures are image files (png, jpg, bpm, ...)
-			inline void TexturePut(Handle win, Handle img, int x, int y, float scale, float angle);
-			inline int GetTexturePixel(Handle img, int x, int y);
-			inline void SetTexturePixel(Handle img, int x, int y, std::uint32_t color);
-			void DestroyTexture(Handle ptr);
+			mlx_image NewTexture(int w, int h);
+			mlx_image NewStbTexture(char* file, int* w, int* h); // stb textures are image files (png, jpg, bpm, ...)
+			inline NonOwningPtr<Texture> GetTexture(mlx_image image);
+			void DestroyTexture(mlx_image img);
 
 			inline void LoopHook(int (*f)(void*), void* param);
 			inline void LoopEnd() noexcept;

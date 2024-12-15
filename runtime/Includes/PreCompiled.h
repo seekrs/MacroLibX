@@ -44,6 +44,7 @@
 #include <iterator>
 #include <stb_truetype.h>
 #include <variant>
+#include <bit>
 #include <type_traits>
 #include <string_view>
 #include <sstream>

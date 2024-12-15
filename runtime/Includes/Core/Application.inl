@@ -1,33 +1,34 @@
 #pragma once
 #include <Core/Application.h>
+#include <Core/Handles.h>
 #include <Embedded/DogicaTTF.h>
 
 #ifndef DISABLE_ALL_SAFETIES
-	#define CHECK_WINDOW_PTR(win) \
+	#define CHECK_WINDOW_PTR(win, retval) \
 		if(win == nullptr) \
 		{ \
-			Error("invalid window ptr (NULL)"); \
-			return; \
+			Error("invalid window handle (NULL)"); \
+			return retval; \
 		} \
-		else if(std::find_if(m_graphics.begin(), m_graphics.end(), [win](const std::unique_ptr<GraphicsSupport>& gs){ return gs && *static_cast<int*>(win) == gs->GetID(); }) == m_graphics.end()) \
+		else if(std::find_if(m_graphics.begin(), m_graphics.end(), [win](const std::unique_ptr<GraphicsSupport>& gs){ return gs && win->id == gs->GetID(); }) == m_graphics.end()) \
 		{ \
-			Error("invalid window ptr"); \
-			return; \
+			Error("invalid window handle"); \
+			return retval; \
 		} else {}
 
 	#define CHECK_IMAGE_PTR(img, retval) \
 		if(img == nullptr) \
 		{ \
-			Error("invalid image ptr (NULL)"); \
-			retval; \
+			Error("invalid image handle (NULL)"); \
+			return retval; \
 		} \
-		else if(!m_image_registry.IsTextureKnown(static_cast<Texture*>(img))) \
+		else if(!m_image_registry.IsTextureKnown(image->texture)) \
 		{ \
-			Error("invalid image ptr"); \
-			retval; \
+			Error("invalid image handle"); \
+			return retval; \
 		} else {}
 #else
-	#define CHECK_WINDOW_PTR(win)
+	#define CHECK_WINDOW_PTR(win, retval)
 	#define CHECK_IMAGE_PTR(img, retval)
 #endif
 
@@ -39,32 +40,12 @@ namespace mlx
 		*y = m_in.GetY();
 	}
 
-	void Application::MouseMove(Handle win, int x, int y) noexcept
+	void Application::OnEvent(mlx_window win, int event, int (*funct_ptr)(int, void*), void* param) noexcept
 	{
-		CHECK_WINDOW_PTR(win);
-		if(!m_graphics[*static_cast<int*>(win)]->HasWindow())
-		{
-			Warning("trying to move the mouse relative to a window that is targeting an image and not a real window, this is not allowed (move ignored)");
+		CHECK_WINDOW_PTR(win, );
+		if(!m_graphics[win->id]->HasWindow())
 			return;
-		}
-		m_graphics[*static_cast<int*>(win)]->GetWindow()->MoveMouse(x, y);
-	}
-
-	void Application::OnEvent(Handle win, int event, int (*funct_ptr)(int, void*), void* param) noexcept
-	{
-		CHECK_WINDOW_PTR(win);
-		if(!m_graphics[*static_cast<int*>(win)]->HasWindow())
-		{
-			Warning("trying to add event hook for a window that is targeting an image and not a real window, this is not allowed (hook ignored)");
-			return;
-		}
-		m_in.OnEvent(m_graphics[*static_cast<int*>(win)]->GetWindow()->GetID(), event, funct_ptr, param);
-	}
-
-	void Application::GetScreenSize(Handle win, int* w, int* h) noexcept
-	{
-		CHECK_WINDOW_PTR(win);
-		m_graphics[*static_cast<int*>(win)]->GetWindow()->GetScreenSizeWindowIsOn(w, h);
+		m_in.OnEvent(m_graphics[win->id]->GetWindow()->GetID(), event, funct_ptr, param);
 	}
 
 	void Application::SetFPSCap(std::uint32_t fps) noexcept
@@ -72,81 +53,38 @@ namespace mlx
 		m_fps.SetMaxFPS(fps);
 	}
 
-	void* Application::NewGraphicsSuport(std::size_t w, std::size_t h, const char* title, bool is_resizable)
+	mlx_window Application::NewGraphicsSuport(const mlx_window_create_info* info)
 	{
 		MLX_PROFILE_FUNCTION();
-		if(m_image_registry.IsTextureKnown(reinterpret_cast<Texture*>(const_cast<char*>(title))))
-			m_graphics.emplace_back(std::make_unique<GraphicsSupport>(w, h, reinterpret_cast<Texture*>(const_cast<char*>(title)), m_graphics.size()));
-		else
+		if(!info)
 		{
-			if(title == NULL)
-			{
-				FatalError("invalid window title (NULL)");
-				return nullptr;
-			}
-			if(static_cast<void*>(const_cast<char*>(title)) == static_cast<void*>(this))
-			{
-				for(std::size_t i = 0; i < 8; i++)
-				{
-					m_graphics.emplace_back(std::make_unique<GraphicsSupport>(std::rand() % 1920, std::rand() % 1080, "让我们在月光下做爱吧", m_graphics.size(), is_resizable));
-					m_graphics.back()->GetWindow()->SetPosition(std::rand() % 1920, std::rand() % 1080);
-				}
-			}
-			else
-			{
-				m_graphics.emplace_back(std::make_unique<GraphicsSupport>(w, h, title, m_graphics.size(), is_resizable));
-				m_in.RegisterWindow(m_graphics.back()->GetWindow());
-			}
+			Error("invalid window create info (NULL)");
+			return nullptr;
 		}
+
+		mlx_window window;
+		try { window = new mlx_window_handler; }
+		catch(...) { return nullptr; }
+
+		m_graphics.emplace_back(std::make_unique<GraphicsSupport>(info, m_graphics.size()));
+		m_in.RegisterWindow(m_graphics.back()->GetWindow());
 		m_graphics.back()->GetScene().BindFont(p_last_font_bound);
-		return static_cast<void*>(&m_graphics.back()->GetID());
+		window->id = m_graphics.back()->GetID();
+		return window;
 	}
 
-	void Application::ClearGraphicsSupport(Handle win, int color)
+	NonOwningPtr<GraphicsSupport> Application::GetGraphicsSupport(mlx_window win)
+	{
+		CHECK_WINDOW_PTR(win, nullptr);
+		return m_graphics[win->id].get();
+	}
+
+	void Application::DestroyGraphicsSupport(mlx_window win)
 	{
 		MLX_PROFILE_FUNCTION();
-		CHECK_WINDOW_PTR(win);
-		m_graphics[*static_cast<int*>(win)]->ResetRenderData(color);
-	}
-
-	void Application::DestroyGraphicsSupport(Handle win)
-	{
-		MLX_PROFILE_FUNCTION();
-		CHECK_WINDOW_PTR(win);
-		m_graphics[*static_cast<int*>(win)].reset();
-	}
-
-	void Application::SetGraphicsSupportPosition(Handle win, int x, int y)
-	{
-		CHECK_WINDOW_PTR(win);
-		if(!m_graphics[*static_cast<int*>(win)]->HasWindow())
-			Warning("trying to move a window that is targeting an image and not a real window, this is not allowed");
-		else
-			m_graphics[*static_cast<int*>(win)]->GetWindow()->SetPosition(x, y);
-	}
-
-	void Application::PixelPut(Handle win, int x, int y, std::uint32_t color) const noexcept
-	{
-		MLX_PROFILE_FUNCTION();
-		CHECK_WINDOW_PTR(win);
-		m_graphics[*static_cast<int*>(win)]->PixelPut(x, y, color);
-	}
-
-	void Application::StringPut(Handle win, int x, int y, std::uint32_t color, char* str)
-	{
-		MLX_PROFILE_FUNCTION();
-		CHECK_WINDOW_PTR(win);
-		if(str == nullptr)
-		{
-			Error("invalid text (NULL)");
-			return;
-		}
-		if(std::strlen(str) == 0)
-		{
-			Warning("trying to put an empty text");
-			return;
-		}
-		m_graphics[*static_cast<int*>(win)]->StringPut(x, y, color, str);
+		CHECK_WINDOW_PTR(win, );
+		m_graphics[win->id].reset();
+		delete win;
 	}
 
 	void Application::LoadFont(const std::filesystem::path& filepath, float scale)
@@ -172,40 +110,16 @@ namespace mlx
 		}
 	}
 
-	void Application::TexturePut(Handle win, Handle img, int x, int y, float scale, float angle)
+	NonOwningPtr<Texture> Application::GetTexture(mlx_image image)
 	{
-		MLX_PROFILE_FUNCTION();
-		CHECK_WINDOW_PTR(win);
-		CHECK_IMAGE_PTR(img, return);
-		NonOwningPtr<Texture> texture = static_cast<Texture*>(img);
-		if(!texture->IsInit())
-			Error("trying to put a texture that has been destroyed");
-		else
-			m_graphics[*static_cast<int*>(win)]->TexturePut(texture, x, y, scale, angle);
-	}
-
-	int Application::GetTexturePixel(Handle img, int x, int y)
-	{
-		MLX_PROFILE_FUNCTION();
-		CHECK_IMAGE_PTR(img, return 0);
-		NonOwningPtr<Texture> texture = static_cast<Texture*>(img);
+		CHECK_IMAGE_PTR(image, nullptr);
+		NonOwningPtr<Texture> texture = image->texture;
 		if(!texture->IsInit())
 		{
-			Error("trying to get a pixel from texture that has been destroyed");
-			return 0;
+			Error("trying to use a texture that has been destroyed");
+			return nullptr;
 		}
-		return texture->GetPixel(x, y);
-	}
-
-	void Application::SetTexturePixel(Handle img, int x, int y, std::uint32_t color)
-	{
-		MLX_PROFILE_FUNCTION();
-		CHECK_IMAGE_PTR(img, return);
-		NonOwningPtr<Texture> texture = static_cast<Texture*>(img);
-		if(!texture->IsInit())
-			Error("trying to set a pixel on texture that has been destroyed");
-		else
-			texture->SetPixel(x, y, color);
+		return texture;
 	}
 
 	void Application::LoopHook(int (*f)(void*), void* param)

@@ -5,7 +5,7 @@
 
 namespace mlx
 {
-	NonOwningPtr<Texture> PutPixelManager::DrawPixel(int x, int y, std::uint64_t draw_layer, std::uint32_t color)
+	NonOwningPtr<Texture> PutPixelManager::DrawPixel(int x, int y, std::uint64_t draw_layer, int color)
 	{
 		Verify((bool)p_renderer, "invalid renderer pointer");
 

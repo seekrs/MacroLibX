@@ -26,6 +26,7 @@
 	#include <kvf.h>
 #endif
 
+#include <mlx.h>
 #include <Renderer/Vulkan/VulkanLoader.h>
 #include <Core/SDLManager.h>
 #include <Platform/Window.h>
@@ -86,7 +87,11 @@ namespace mlx
 		kvfSetValidationErrorCallback(&ValidationErrorCallback);
 		kvfSetValidationWarningCallback(&WarningCallback);
 
-		Window window(1, 1, "", true);
+		mlx_window_create_info info{};
+		info.title = "";
+		info.width = 1;
+		info.height = 1;
+		Window window(&info, true);
 		std::vector<const char*> instance_extensions = window.GetRequiredVulkanInstanceExtentions();
 		#ifdef MLX_PLAT_MACOS
 			instance_extensions.push_back(VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME);

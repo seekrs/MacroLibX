@@ -1,6 +1,7 @@
 #ifndef __MLX_SDL_MANAGER__
 #define __MLX_SDL_MANAGER__
 
+#include <mlx.h>
 #include <Maths/Vec2.h>
 
 namespace mlx
@@ -10,7 +11,7 @@ namespace mlx
 		public:
 			SDLManager();
 
-			Handle CreateWindow(const std::string& title, std::size_t w, std::size_t h, bool hidden, std::int32_t& id, bool is_resizable);
+			Handle CreateWindow(const mlx_window_create_info* info, std::int32_t& id, bool hidden);
 			void DestroyWindow(Handle window) noexcept;
 
 			void InputsFetcher(func::function<void(mlx_event_type, int, int)> functor);
