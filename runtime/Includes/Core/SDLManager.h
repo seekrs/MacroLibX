@@ -22,6 +22,11 @@ namespace mlx
 			void MoveMouseOnWindow(Handle window, int x, int y) const noexcept;
 			void GetScreenSizeWindowIsOn(Handle window, int* x, int* y) const noexcept;
 			void SetWindowPosition(Handle window, int x, int y) const noexcept;
+			void SetWindowSize(Handle window, int x, int y) const noexcept;
+			void SetWindowTitle(Handle window, std::string_view title) const noexcept;
+			void SetWindowFullscreen(Handle window, bool enable) const noexcept;
+			void GetWindowPosition(Handle window, int* x, int* y) const noexcept;
+			void GetWindowSize(Handle window, int* x, int* y) const noexcept;
 
 			static void HideCursor() noexcept;
 			static void ShowCursor() noexcept;

@@ -133,6 +133,31 @@ namespace mlx
 		SDL_SetWindowPosition(static_cast<Internal::WindowInfos*>(window)->window, x, y);
 	}
 
+	void SDLManager::SetWindowSize(Handle window, int x, int y) const noexcept
+	{
+		SDL_SetWindowSize(static_cast<Internal::WindowInfos*>(window)->window, x, y);
+	}
+
+	void SDLManager::SetWindowTitle(Handle window, std::string_view title) const noexcept
+	{
+		SDL_SetWindowTitle(static_cast<Internal::WindowInfos*>(window)->window, title.data());
+	}
+
+	void SDLManager::SetWindowFullscreen(Handle window, bool enable) const noexcept
+	{
+		SDL_SetWindowFullscreen(static_cast<Internal::WindowInfos*>(window)->window, (enable ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0));
+	}
+
+	void SDLManager::GetWindowPosition(Handle window, int* x, int* y) const noexcept
+	{
+		SDL_GetWindowPosition(static_cast<Internal::WindowInfos*>(window)->window, x, y);
+	}
+
+	void SDLManager::GetWindowSize(Handle window, int* x, int* y) const noexcept
+	{
+		SDL_GetWindowSize(static_cast<Internal::WindowInfos*>(window)->window, x, y);
+	}
+
 	void SDLManager::HideCursor() noexcept
 	{
 		SDL_ShowCursor(SDL_DISABLE);

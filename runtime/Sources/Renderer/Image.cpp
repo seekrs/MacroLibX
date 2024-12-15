@@ -214,6 +214,7 @@ namespace mlx
 			return;
 		if(!m_staging_buffer.has_value())
 			OpenCPUBuffer();
+		// Needs to reverse bytes order because why not
 		unsigned char bytes[4];
 		bytes[0] = (color >> 24) & 0xFF;
 		bytes[1] = (color >> 16) & 0xFF;

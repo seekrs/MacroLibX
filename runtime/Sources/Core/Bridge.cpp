@@ -80,6 +80,51 @@ extern "C"
 		gs->GetWindow()->SetPosition(x, y);
 	}
 
+	void mlx_set_window_size(mlx_context mlx, mlx_window win, int width, int height)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::GraphicsSupport> gs = mlx->app->GetGraphicsSupport(win);
+		if(!gs && !gs->HasWindow())
+			return;
+		gs->GetWindow()->SetSize(width, height);
+	}
+
+	void mlx_set_window_title(mlx_context mlx, mlx_window win, const char* title)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::GraphicsSupport> gs = mlx->app->GetGraphicsSupport(win);
+		if(!gs && !gs->HasWindow())
+			return;
+		gs->GetWindow()->SetTitle(title);
+	}
+
+	void mlx_set_window_fullscreen(mlx_context mlx, mlx_window win, bool enable)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::GraphicsSupport> gs = mlx->app->GetGraphicsSupport(win);
+		if(!gs && !gs->HasWindow())
+			return;
+		gs->GetWindow()->SetFullscreen(enable);
+	}
+
+	void mlx_get_window_position(mlx_context mlx, mlx_window win, int* x, int* y)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::GraphicsSupport> gs = mlx->app->GetGraphicsSupport(win);
+		if(!gs && !gs->HasWindow())
+			return;
+		gs->GetWindow()->GetPosition(x, y);
+	}
+
+	void mlx_get_window_size(mlx_context mlx, mlx_window win, int* x, int* y)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::GraphicsSupport> gs = mlx->app->GetGraphicsSupport(win);
+		if(!gs && !gs->HasWindow())
+			return;
+		gs->GetWindow()->GetSize(x, y);
+	}
+
 	void mlx_clear_window(mlx_context mlx, mlx_window win, int color)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
