@@ -5,9 +5,9 @@
 
 namespace mlx
 {
-	Window::Window(std::size_t w, std::size_t h, const std::string& title, bool is_resizable, bool hidden) : m_name(title), m_width(w), m_height(h)
+	Window::Window(const mlx_window_create_info* info, bool hidden) : m_name(info->title), m_width(info->width), m_height(info->height)
 	{
-		p_window = SDLManager::Get().CreateWindow(title, w, h, hidden, m_id, is_resizable);
+		p_window = SDLManager::Get().CreateWindow(info, m_id, hidden);
 	}
 
 	void Window::Destroy() noexcept

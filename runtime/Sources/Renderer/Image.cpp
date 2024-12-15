@@ -30,6 +30,14 @@
 
 namespace mlx
 {
+	unsigned char reverse(unsigned char b)
+	{
+	   b = (b & 0xF0) >> 4 | (b & 0x0F) << 4;
+	   b = (b & 0xCC) >> 2 | (b & 0x33) << 2;
+	   b = (b & 0xAA) >> 1 | (b & 0x55) << 1;
+	   return b;
+	}
+
 	void Image::Init(ImageType type, std::uint32_t width, std::uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, bool is_multisampled, [[maybe_unused]] std::string_view debug_name)
 	{
 		MLX_PROFILE_FUNCTION();
@@ -199,14 +207,19 @@ namespace mlx
 		Image::Destroy();
 	}
 
-	void Texture::SetPixel(int x, int y, std::uint32_t color) noexcept
+	void Texture::SetPixel(int x, int y, int color) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
 		if(x < 0 || y < 0 || static_cast<std::uint32_t>(x) > m_width || static_cast<std::uint32_t>(y) > m_height)
 			return;
 		if(!m_staging_buffer.has_value())
 			OpenCPUBuffer();
-		m_cpu_buffer[(y * m_width) + x] = color;
+		unsigned char bytes[4];
+		bytes[0] = (color >> 24) & 0xFF;
+		bytes[1] = (color >> 16) & 0xFF;
+		bytes[2] = (color >>  8) & 0xFF;
+		bytes[3] =  color        & 0xFF;
+		m_cpu_buffer[(y * m_width) + x] = *reinterpret_cast<int*>(bytes);
 		m_has_been_modified = true;
 	}
 
@@ -217,12 +230,7 @@ namespace mlx
 			return 0;
 		if(!m_staging_buffer.has_value())
 			OpenCPUBuffer();
-		std::uint32_t color = m_cpu_buffer[(y * m_width) + x];
-		std::uint8_t* bytes = reinterpret_cast<std::uint8_t*>(&color);
-		std::uint8_t tmp = bytes[0];
-		bytes[0] = bytes[2];
-		bytes[2] = tmp;
-		return *reinterpret_cast<int*>(bytes);
+		return m_cpu_buffer[(y * m_width) + x];
 	}
 
 	void Texture::Update(VkCommandBuffer cmd)

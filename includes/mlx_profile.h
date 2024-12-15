@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 08:49:17 by maldavid          #+#    #+#             */
-/*   Updated: 2024/04/23 18:28:12 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/12/14 17:58:37 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,8 +156,10 @@
 #define MLX_VERSION_MINOR(version) (((uint32_t)(version) >> 12U) & 0x3FFU)
 #define MLX_VERSION_PATCH(version) ((uint32_t)(version) & 0xFFFU)
 
+#define MLX_DEFINE_HANDLE(object) typedef struct object##_handler* object
+
 #define MLX_VERSION MLX_MAKE_VERSION(2, 0, 0)
-#define MLX_TARGET_VULKAN_API_VERSION MLX_MAKE_VERSION(1, 2, 0)
+#define MLX_TARGET_VULKAN_API_VERSION MLX_MAKE_VERSION(1, 0, 0)
 
 // Checking common assumptions
 #ifdef __cplusplus

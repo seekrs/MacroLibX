@@ -7,10 +7,10 @@ namespace mlx
 	{
 		MLX_PROFILE_FUNCTION();
 		Vec4f vec_color = {
-			static_cast<float>((color & 0x000000FF))       / 255.0f,
-			static_cast<float>((color & 0x0000FF00) >> 8)  / 255.0f,
+			static_cast<float>((color & 0xFF000000) >> 24) / 255.0f,
 			static_cast<float>((color & 0x00FF0000) >> 16) / 255.0f,
-			static_cast<float>((color & 0xFF000000) >> 24) / 255.0f
+			static_cast<float>((color & 0x0000FF00) >> 8)  / 255.0f,
+			static_cast<float>((color & 0x000000FF))       / 255.0f,
 		};
 		p_scene->ResetScene(std::move(vec_color));
 		m_put_pixel_manager.ResetRenderData();
@@ -18,7 +18,7 @@ namespace mlx
 		m_pixelput_called = false;
 	}
 
-	void GraphicsSupport::PixelPut(int x, int y, std::uint32_t color) noexcept
+	void GraphicsSupport::PixelPut(int x, int y, int color) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
 		NonOwningPtr<Texture> texture = m_put_pixel_manager.DrawPixel(x, y, m_draw_layer, color);
@@ -30,17 +30,17 @@ namespace mlx
 		}
 	}
 
-	void GraphicsSupport::StringPut(int x, int y, std::uint32_t color, std::string str)
+	void GraphicsSupport::StringPut(int x, int y, int color, std::string str)
 	{
 		MLX_PROFILE_FUNCTION();
 		if(str.empty())
 			return;
 
 		Vec4f vec_color = {
-			static_cast<float>((color & 0x000000FF))       / 255.0f,
-			static_cast<float>((color & 0x0000FF00) >> 8)  / 255.0f,
+			static_cast<float>((color & 0xFF000000) >> 24) / 255.0f,
 			static_cast<float>((color & 0x00FF0000) >> 16) / 255.0f,
-			static_cast<float>((color & 0xFF000000) >> 24) / 255.0f
+			static_cast<float>((color & 0x0000FF00) >> 8)  / 255.0f,
+			static_cast<float>((color & 0x000000FF))       / 255.0f,
 		};
 
 		NonOwningPtr<Text> text = p_scene->GetTextFromPositionAndColor(str, Vec2f{ static_cast<float>(x), static_cast<float>(y) }, vec_color);

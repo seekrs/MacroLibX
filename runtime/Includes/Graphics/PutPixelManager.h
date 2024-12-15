@@ -11,7 +11,7 @@ namespace mlx
 			PutPixelManager(NonOwningPtr<class Renderer> renderer) : p_renderer(renderer) {}
 
 			// Return a valid pointer when a new texture has been created
-			NonOwningPtr<Texture> DrawPixel(int x, int y, std::uint64_t draw_layer, std::uint32_t color);
+			NonOwningPtr<Texture> DrawPixel(int x, int y, std::uint64_t draw_layer, int color);
 			void ResetRenderData();
 
 			~PutPixelManager();

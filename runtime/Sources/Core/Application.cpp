@@ -50,37 +50,49 @@ namespace mlx
 		RenderCore::Get().WaitDeviceIdle();
 	}
 
-	void* Application::NewTexture(int w, int h)
+	mlx_image Application::NewTexture(int w, int h)
 	{
 		MLX_PROFILE_FUNCTION();
+
+		mlx_image image;
+		try { image = new mlx_image_handler; }
+		catch(...) { return nullptr; }
+
 		Texture* texture;
 		try { texture = new Texture({}, w, h, VK_FORMAT_R8G8B8A8_SRGB, false, "mlx_user_image"); }
 		catch(...) { return nullptr; }
 		m_image_registry.RegisterTexture(texture);
-		return texture;
+		image->texture = texture;
+		return image;
 	}
 
-	void* Application::NewStbTexture(char* file, int* w, int* h)
+	mlx_image Application::NewStbTexture(char* file, int* w, int* h)
 	{
 		MLX_PROFILE_FUNCTION();
+
+		mlx_image image;
+		try { image = new mlx_image_handler; }
+		catch(...) { return nullptr; }
+
 		Texture* texture = StbTextureLoad(file, w, h);
 		if(texture == nullptr)
 			return nullptr;
 		m_image_registry.RegisterTexture(texture);
-		return texture;
+		image->texture = texture;
+		return image;
 	}
 
-	void Application::DestroyTexture(void* ptr)
+	void Application::DestroyTexture(mlx_image image)
 	{
 		MLX_PROFILE_FUNCTION();
 		RenderCore::Get().WaitDeviceIdle();
-		if(!m_image_registry.IsTextureKnown(static_cast<Texture*>(ptr)))
+		if(!m_image_registry.IsTextureKnown(image->texture))
 		{
-			Error("invalid image ptr");
+			Error("invalid image handle");
 			return;
 		}
 
-		Texture* texture = static_cast<Texture*>(ptr);
+		Texture* texture = image->texture.Get();
 		if(!texture->IsInit())
 			Error("trying to destroy a texture that has already been destroyed");
 		else
@@ -92,6 +104,7 @@ namespace mlx
 				gs->TryEraseSpritesInScene(texture);
 		}
 		delete texture;
+		delete image;
 	}
 
 	Application::~Application()

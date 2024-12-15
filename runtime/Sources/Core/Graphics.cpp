@@ -3,25 +3,15 @@
 
 namespace mlx
 {
-	GraphicsSupport::GraphicsSupport([[maybe_unused]] std::size_t w, [[maybe_unused]] std::size_t h, NonOwningPtr<Texture> render_target, int id) :
+	GraphicsSupport::GraphicsSupport(const mlx_window_create_info* info, int id) :
 		m_put_pixel_manager(&m_renderer),
-		p_window(nullptr),
-		m_id(id),
-		m_has_window(false)
+		m_id(id)
 	{
 		MLX_PROFILE_FUNCTION();
-		m_renderer.Init(render_target);
-		m_scene_renderer.Init(render_target);
-		p_scene = std::make_unique<Scene>();
-	}
 
-	GraphicsSupport::GraphicsSupport(std::size_t w, std::size_t h, std::string title, int id, bool is_resizable) :
-		m_put_pixel_manager(&m_renderer),
-		p_window(std::make_shared<Window>(w, h, title, is_resizable)),
-		m_id(id),
-		m_has_window(true)
-	{
-		MLX_PROFILE_FUNCTION();
+		p_window = std::make_shared<Window>(info);
+		m_has_window = true;
+
 		m_renderer.Init(p_window.get());
 		m_scene_renderer.Init(nullptr);
 		p_scene = std::make_unique<Scene>();
