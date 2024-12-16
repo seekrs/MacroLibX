@@ -59,6 +59,8 @@ namespace mlx
 			flags |= SDL_WINDOW_SHOWN;
 		if(info->is_resizable)
 			flags |= SDL_WINDOW_RESIZABLE;
+		if(info->is_fullscreen)
+			flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 
 		infos->window = SDL_CreateWindow(info->title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, info->width, info->height, flags);
 		if(!infos->window)
@@ -146,6 +148,31 @@ namespace mlx
 	void SDLManager::SetWindowFullscreen(Handle window, bool enable) const noexcept
 	{
 		SDL_SetWindowFullscreen(static_cast<Internal::WindowInfos*>(window)->window, (enable ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0));
+	}
+
+	void SDLManager::SetWindowMaxSize(Handle window, int x, int y) const noexcept
+	{
+		SDL_SetWindowMaximumSize(static_cast<Internal::WindowInfos*>(window)->window, x, y);
+	}
+
+	void SDLManager::SetWindowMinSize(Handle window, int x, int y) const noexcept
+	{
+		SDL_SetWindowMinimumSize(static_cast<Internal::WindowInfos*>(window)->window, x, y);
+	}
+
+	void SDLManager::MaximizeWindow(Handle window) const noexcept
+	{
+		SDL_MaximizeWindow(static_cast<Internal::WindowInfos*>(window)->window);
+	}
+
+	void SDLManager::MinimizeWindow(Handle window) const noexcept
+	{
+		SDL_MinimizeWindow(static_cast<Internal::WindowInfos*>(window)->window);
+	}
+
+	void SDLManager::RestoreWindow(Handle window) const noexcept
+	{
+		SDL_RestoreWindow(static_cast<Internal::WindowInfos*>(window)->window);
 	}
 
 	void SDLManager::GetWindowPosition(Handle window, int* x, int* y) const noexcept

@@ -25,6 +25,12 @@ namespace mlx
 			void SetWindowSize(Handle window, int x, int y) const noexcept;
 			void SetWindowTitle(Handle window, std::string_view title) const noexcept;
 			void SetWindowFullscreen(Handle window, bool enable) const noexcept;
+			void SetWindowMaxSize(Handle window, int x, int y) const noexcept;
+			void SetWindowMinSize(Handle window, int x, int y) const noexcept;
+			void MaximizeWindow(Handle window) const noexcept;
+			void MinimizeWindow(Handle window) const noexcept;
+			void RestoreWindow(Handle window) const noexcept;
+
 			void GetWindowPosition(Handle window, int* x, int* y) const noexcept;
 			void GetWindowSize(Handle window, int* x, int* y) const noexcept;
 

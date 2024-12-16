@@ -1,5 +1,7 @@
 #include <stdio.h>
+#include <math.h>
 #include "../includes/mlx.h"
+#include "../includes/mlx_extended.h"
 
 typedef struct
 {
@@ -16,8 +18,11 @@ int update(void* param)
 	static int i = 0;
 	mlx_t* mlx = (mlx_t*)param;
 
-	if(i == 200)
+	if(i > 200)
+	{
 		mlx_clear_window(mlx->mlx, mlx->win, 0x334D4DFF);
+		mlx_put_transformed_image_to_window(mlx->mlx, mlx->win, mlx->logo_bmp, 220, 40, 0.5f, 0.5f, i);
+	}
 
 	if(i >= 250)
 		mlx_set_font_scale(mlx->mlx, "default", 16.f);
@@ -27,7 +32,6 @@ int update(void* param)
 	mlx_string_put(mlx->mlx, mlx->win, 160, 120, 0xFF2066FF, "this text should be hidden");
 
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->logo_png, 100, 100);
-	//mlx_transform_put_image_to_window(mlx->mlx, mlx->win, mlx->logo_bmp, 220, 40, 0.5f, 75.0f);
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 150, 60);
 
 	mlx_set_font(mlx->mlx, "default");
@@ -40,7 +44,10 @@ int update(void* param)
 		color += (color < 255);
 	}
 
-	//mlx_transform_put_image_to_window(mlx->mlx, mlx->win, mlx->logo_jpg, 210, 150, 2.0f, 0.0f);
+	if(i < 200)
+		mlx_put_transformed_image_to_window(mlx->mlx, mlx->win, mlx->logo_jpg, 210, 150, 0.5f, 2.0f, 0.0f);
+	else
+		mlx_put_transformed_image_to_window(mlx->mlx, mlx->win, mlx->logo_jpg, 210, 150, fabs(sin(i / 100.0f)), fabs(cos(i / 100.0f) * 2.0f), 0.0f);
 	mlx_set_font_scale(mlx->mlx, "default", 8.f);
 	mlx_string_put(mlx->mlx, mlx->win, 210, 175, 0xFFAF2BFF, "hidden");
 

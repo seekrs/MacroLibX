@@ -6,7 +6,7 @@
 /*   By: maldavid <contact@kbz8.me>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:56:35 by maldavid          #+#    #+#             */
-/*   Updated: 2024/12/15 01:58:12 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/12/15 13:59:00 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ MLX_API void mlx_destroy_context(mlx_context mlx);
  */
 typedef struct mlx_window_create_info
 {
-	void* mlx_extension;
 	const char* title;
 	int width;
 	int height;

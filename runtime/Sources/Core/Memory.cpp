@@ -68,15 +68,16 @@ namespace mlx
 
 		#ifdef MLX_COMPILER_MSVC
 			void* ptr2 = _aligned_realloc(ptr, alignment, size);
+			if(it != s_blocks.end())
+				s_blocks.erase(it);
 		#else
 			void* ptr2 = AlignedMalloc(alignment, size);
 			if(it != s_blocks.end())
+			{
 				std::memcpy(ptr2, ptr, it->size);
+				Free(ptr);
+			}
 		#endif
-
-		if(it != s_blocks.end())
-			s_blocks.erase(it);
-
 		if(ptr2 != nullptr)
 			s_blocks.emplace_back(ptr, size, true);
 		return ptr2;

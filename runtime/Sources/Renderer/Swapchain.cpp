@@ -79,7 +79,7 @@ namespace mlx
 
 		m_surface = p_window->CreateVulkanSurface(RenderCore::Get().GetInstance());
 		DebugLog("Vulkan: surface created");
-		m_swapchain = kvfCreateSwapchainKHR(RenderCore::Get().GetDevice(), RenderCore::Get().GetPhysicalDevice(), m_surface, extent, VK_NULL_HANDLE, false);
+		m_swapchain = kvfCreateSwapchainKHR(RenderCore::Get().GetDevice(), RenderCore::Get().GetPhysicalDevice(), m_surface, extent, m_swapchain, false);
 
 		m_images_count = kvfGetSwapchainImagesCount(m_swapchain);
 		m_min_images_count = kvfGetSwapchainMinImagesCount(m_swapchain);

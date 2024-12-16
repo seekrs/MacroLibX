@@ -27,16 +27,16 @@ namespace mlx
 		return *sprite;
 	}
 
-	NonOwningPtr<Sprite> Scene::GetSpriteFromTexturePositionScaleRotation(NonOwningPtr<Texture> texture, const Vec2f& position, float scale, float rotation) const
+	NonOwningPtr<Sprite> Scene::GetSpriteFromTexturePositionScaleRotation(NonOwningPtr<Texture> texture, const Vec2f& position, float scale_x, float scale_y, float rotation) const
 	{
 		MLX_PROFILE_FUNCTION();
-		auto it = std::find_if(m_drawables.begin(), m_drawables.end(), [&texture, &position, scale, rotation](std::shared_ptr<Drawable> drawable)
+		auto it = std::find_if(m_drawables.begin(), m_drawables.end(), [&texture, &position, scale_x, scale_y, rotation](std::shared_ptr<Drawable> drawable)
 		{
 			if(!drawable || drawable->GetType() != DrawableType::Sprite)
 				return false;
 			return  static_cast<Sprite*>(drawable.get())->GetTexture() == texture &&
 					drawable->GetPosition() == position &&
-					drawable->GetScale() == Vec2f{ scale, scale } &&
+					drawable->GetScale() == Vec2f{ scale_x, scale_y } &&
 					drawable->GetRotation().ToEulerAngles() == EulerAnglesf{ 0.0f, 0.0f, rotation };
 		});
 		return static_cast<Sprite*>(it != m_drawables.end() ? it->get() : nullptr);

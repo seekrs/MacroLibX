@@ -40,8 +40,13 @@ namespace mlx
 			index_data.emplace_back(index + 0);
 		}
 
-		std::shared_ptr<Mesh> mesh = std::make_shared<Mesh>();
-		mesh->AddSubMesh({ std::move(vertex_data), std::move(index_data) });
+		std::shared_ptr<Mesh> mesh = MeshRegistry::Get().FindMesh({ Mesh::SubMesh{ vertex_data, index_data, Mesh::SubMesh::NoBuild{} } });
+		if(!mesh)
+		{
+			mesh = std::make_shared<Mesh>();
+			mesh->AddSubMesh({ std::move(vertex_data), std::move(index_data) });
+			MeshRegistry::Get().RegisterMesh(mesh);
+		}
 		Init(text, font, mesh);
 	}
 

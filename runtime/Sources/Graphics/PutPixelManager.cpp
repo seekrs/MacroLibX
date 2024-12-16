@@ -17,24 +17,43 @@ namespace mlx
 		else
 			FatalError("a renderer was created without window nor render target attached (wtf)");
 
-		#ifdef DEBUG
-			auto res = m_textures.try_emplace(draw_layer, CPUBuffer{}, extent.width, extent.height, VK_FORMAT_R8G8B8A8_SRGB, false, "mlx_put_pixel_layer_" + std::to_string(draw_layer));
-		#else
-			auto res = m_textures.try_emplace(draw_layer, CPUBuffer{}, extent.width, extent.height, VK_FORMAT_R8G8B8A8_SRGB, false, std::string_view{});
-		#endif
-		if(res.second)
-			res.first->second.Clear(VK_NULL_HANDLE, Vec4f{ 0.0f });
-		res.first->second.SetPixel(x, y, color);
-		return (res.second ? &res.first->second : nullptr);
+		auto it = m_placements.find(draw_layer);
+		if(it != m_placements.end())
+		{
+			it->second->SetPixel(x, y, color);
+			return nullptr;
+		}
+
+		bool adjusment = false;
+		if(m_current_texture_index >= m_textures.size())
+		{
+			#ifdef DEBUG
+				m_textures.push_back(std::make_unique<Texture>(CPUBuffer{}, extent.width, extent.height, VK_FORMAT_R8G8B8A8_SRGB, false, "mlx_put_pixel_layer_" + std::to_string(draw_layer)));
+			#else
+				m_textures.push_back(std::make_unique<Texture>(CPUBuffer{}, extent.width, extent.height, VK_FORMAT_R8G8B8A8_SRGB, false, std::string_view{}));
+			#endif
+			m_current_texture_index++;
+			adjusment = true;
+		}
+		try
+		{
+			m_placements[draw_layer] = m_textures.at(m_current_texture_index - adjusment).get();
+			m_textures.at(m_current_texture_index - adjusment)->Clear(VK_NULL_HANDLE, Vec4f{ 0.0f });
+			m_textures.at(m_current_texture_index - adjusment)->SetPixel(x, y, color);
+			return m_textures.at(m_current_texture_index - adjusment).get();
+		}
+		catch(...)
+		{
+			Error("PutPixelManager: invalid texture index; % is not in range of 0-% (internal mlx issue, please report to devs)", m_current_texture_index - 1, m_textures.size());
+			return nullptr;
+		}
 	}
 
 	void PutPixelManager::ResetRenderData()
 	{
-		m_textures.clear();
-	}
-
-	PutPixelManager::~PutPixelManager()
-	{
-		ResetRenderData();
+		m_placements.clear();
+		for(auto& texture : m_textures)
+			texture->Clear(VK_NULL_HANDLE, Vec4f{ 0.0f });
+		m_current_texture_index = 0;
 	}
 }

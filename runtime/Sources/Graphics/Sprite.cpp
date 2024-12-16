@@ -32,7 +32,10 @@ namespace mlx
 			0,
 		};
 
-		std::shared_ptr<Mesh> mesh = std::make_shared<Mesh>();
+		std::shared_ptr<Mesh> mesh = MeshRegistry::Get().FindMesh({ Mesh::SubMesh{ data, indices, Mesh::SubMesh::NoBuild{} } });
+		if(mesh)
+			return mesh;
+		mesh = std::make_shared<Mesh>();
 		mesh->AddSubMesh({ std::move(data), std::move(indices) });
 		return mesh;
 	}
@@ -42,6 +45,7 @@ namespace mlx
 		MLX_PROFILE_FUNCTION();
 		Verify((bool)texture, "Sprite: invalid texture (internal mlx issue, please report to devs)");
 		p_mesh = CreateQuad(0, 0, texture->GetWidth(), texture->GetHeight());
+		MeshRegistry::Get().RegisterMesh(p_mesh);
 		p_texture = texture;
 	}
 

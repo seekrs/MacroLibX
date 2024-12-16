@@ -12,11 +12,16 @@ namespace mlx
 		public:
 			struct SubMesh
 			{
+				struct NoBuild {};
+
 				VertexBuffer vbo;
 				IndexBuffer ibo;
+				std::vector<Vertex> vertex_data;
+				std::vector<std::uint32_t> index_data;
 				std::size_t triangle_count = 0;
 
 				inline SubMesh(const std::vector<Vertex>& vertices, const std::vector<std::uint32_t>& indices);
+				inline SubMesh(const std::vector<Vertex>& vertices, const std::vector<std::uint32_t>& indices, NoBuild);
 			};
 
 		public:
@@ -34,6 +39,27 @@ namespace mlx
 
 		private:
 			std::vector<SubMesh> m_sub_meshes;
+	};
+
+	// A registry just to avoid destroying meshes when clearing a window
+	class MeshRegistry
+	{
+		public:
+			inline MeshRegistry();
+
+			inline void RegisterMesh(std::shared_ptr<Mesh> mesh);
+			inline std::shared_ptr<Mesh> FindMesh(const std::vector<Mesh::SubMesh>& sub_meshes);
+			inline void UnregisterMesh(std::shared_ptr<Mesh> mesh);
+			inline void Reset();
+
+			inline static bool IsInit() noexcept { return s_instance != nullptr; }
+			inline static MeshRegistry& Get() noexcept { return *s_instance; }
+
+			inline ~MeshRegistry();
+
+		private:
+			inline static MeshRegistry* s_instance = nullptr;
+			std::unordered_set<std::shared_ptr<Mesh>> m_meshes_registry;
 	};
 }
 
