@@ -29,9 +29,10 @@ jobs:
       uses: actions/checkout@v4
 
     # Install system dependencies
-    - name: Install Dependancies
-      run: |
-        brew install SDL2
+    - name: Setup SDL2 frameworks
+      uses: BrettDong/setup-sdl2-frameworks@main
+      with:
+        sdl2: latest
 
     # Build the lib
     - name: Build MacroLibX
