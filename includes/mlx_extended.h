@@ -6,7 +6,7 @@
 /*   By: maldavid <contact@kbz8.me>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 16:17:10 by maldavid          #+#    #+#             */
-/*   Updated: 2024/12/16 15:06:43 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/12/16 20:33:50 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ MLX_API void mlx_restore_window(mlx_context mlx, mlx_window win);
  * @param y          Y coordinate
  * @param pixels     Array of pixels (coded on 4 bytes in an int, 0xRRGGBBAA)
  */
-MLX_API void mlx_pixel_put_array(mlx_context mlx, mlx_window win, int x, int y, int* pixels, size_t pixels_size);
+MLX_API void mlx_pixel_put_array(mlx_context mlx, mlx_window win, int x, int y, mlx_color* pixels, size_t pixels_size);
 
 /**
  * @brief            Put a region of pixels in the window
@@ -101,7 +101,7 @@ MLX_API void mlx_pixel_put_array(mlx_context mlx, mlx_window win, int x, int y, 
  * Note: it is responsability of the user to make sure the size of `pixels` is
  * big enough for the given region.
  */
-MLX_API void mlx_pixel_put_region(mlx_context mlx, mlx_window win, int x, int y, int w, int h, int* pixels);
+MLX_API void mlx_pixel_put_region(mlx_context mlx, mlx_window win, int x, int y, int w, int h, mlx_color* pixels);
 
 
 
@@ -130,7 +130,7 @@ MLX_API void mlx_pixel_put_region(mlx_context mlx, mlx_window win, int x, int y,
  *     ~ make IMAGES_OPTIMIZED=false
  * ```
  */
-MLX_API void mlx_get_image_region(mlx_context mlx, mlx_image image, int x, int y, int w, int h, int* dst);
+MLX_API void mlx_get_image_region(mlx_context mlx, mlx_image image, int x, int y, int w, int h, mlx_color* dst);
 
 /**
  * @brief            Set image region
@@ -154,7 +154,7 @@ MLX_API void mlx_get_image_region(mlx_context mlx, mlx_image image, int x, int y
  *     ~ make IMAGES_OPTIMIZED=false
  * ```
  */
-MLX_API void mlx_set_image_region(mlx_context mlx, mlx_image image, int x, int y, int w, int h, int* pixels);
+MLX_API void mlx_set_image_region(mlx_context mlx, mlx_image image, int x, int y, int w, int h, mlx_color* pixels);
 
 /**
  * @brief            Transform and put image to the given window

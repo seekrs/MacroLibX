@@ -2,21 +2,10 @@
 #include <Core/SDLManager.h>
 #include <Core/Memory.h>
 #include <Embedded/IconMlx.h>
+#include <Utils/Bits.h>
 
 namespace mlx
 {
-	#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-		constexpr const std::uint32_t rmask = 0xff000000;
-		constexpr const std::uint32_t gmask = 0x00ff0000;
-		constexpr const std::uint32_t bmask = 0x0000ff00;
-		constexpr const std::uint32_t amask = 0x000000ff;
-	#else
-		constexpr const std::uint32_t rmask = 0x000000ff;
-		constexpr const std::uint32_t gmask = 0x0000ff00;
-		constexpr const std::uint32_t bmask = 0x00ff0000;
-		constexpr const std::uint32_t amask = 0xff000000;
-	#endif
-
 	namespace Internal
 	{
 		struct WindowInfos
@@ -65,7 +54,7 @@ namespace mlx
 		infos->window = SDL_CreateWindow(info->title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, info->width, info->height, flags);
 		if(!infos->window)
 			FatalError("SDL: unable to open a new window; %", SDL_GetError());
-		infos->icon = SDL_CreateRGBSurfaceFrom(static_cast<void*>(logo_mlx), logo_mlx_width, logo_mlx_height, 32, 4 * logo_mlx_width, rmask, gmask, bmask, amask);
+		infos->icon = SDL_CreateRGBSurfaceFrom(static_cast<void*>(logo_mlx), logo_mlx_width, logo_mlx_height, 32, 4 * logo_mlx_width, Rmask(), Gmask(), Bmask(), Amask());
 		SDL_SetWindowIcon(infos->window, infos->icon);
 
 		m_windows_registry.insert(infos);

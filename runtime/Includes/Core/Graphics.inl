@@ -3,14 +3,14 @@
 
 namespace mlx
 {
-	void GraphicsSupport::ResetRenderData(int color) noexcept
+	void GraphicsSupport::ResetRenderData(mlx_color color) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
 		Vec4f vec_color = {
-			static_cast<float>((color & 0xFF000000) >> 24) / 255.0f,
-			static_cast<float>((color & 0x00FF0000) >> 16) / 255.0f,
-			static_cast<float>((color & 0x0000FF00) >> 8)  / 255.0f,
-			static_cast<float>((color & 0x000000FF))       / 255.0f,
+			static_cast<float>(color.r) / 255.0f,
+			static_cast<float>(color.g) / 255.0f,
+			static_cast<float>(color.b) / 255.0f,
+			static_cast<float>(color.a) / 255.0f
 		};
 		p_scene->ResetScene(std::move(vec_color));
 		m_put_pixel_manager.ResetRenderData();
@@ -18,7 +18,7 @@ namespace mlx
 		m_pixelput_called = false;
 	}
 
-	void GraphicsSupport::PixelPut(int x, int y, int color) noexcept
+	void GraphicsSupport::PixelPut(int x, int y, mlx_color color) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
 		NonOwningPtr<Texture> texture = m_put_pixel_manager.DrawPixel(x, y, m_draw_layer, color);
@@ -30,7 +30,7 @@ namespace mlx
 		}
 	}
 
-	void GraphicsSupport::PixelPutArray(int x, int y, int* pixels, std::size_t pixels_size) noexcept
+	void GraphicsSupport::PixelPutArray(int x, int y, mlx_color* pixels, std::size_t pixels_size) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
 		NonOwningPtr<Texture> texture = m_put_pixel_manager.DrawPixelsArray(x, y, m_draw_layer, pixels, pixels_size);
@@ -42,7 +42,7 @@ namespace mlx
 		}
 	}
 
-	void GraphicsSupport::PixelPutRegion(int x, int y, int w, int h, int* pixels) noexcept
+	void GraphicsSupport::PixelPutRegion(int x, int y, int w, int h, mlx_color* pixels) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
 		NonOwningPtr<Texture> texture = m_put_pixel_manager.DrawPixelsRegion(x, y, w, h, m_draw_layer, pixels);
@@ -54,17 +54,17 @@ namespace mlx
 		}
 	}
 
-	void GraphicsSupport::StringPut(int x, int y, int color, std::string str)
+	void GraphicsSupport::StringPut(int x, int y, mlx_color color, std::string str)
 	{
 		MLX_PROFILE_FUNCTION();
 		if(str.empty())
 			return;
 
 		Vec4f vec_color = {
-			static_cast<float>((color & 0xFF000000) >> 24) / 255.0f,
-			static_cast<float>((color & 0x00FF0000) >> 16) / 255.0f,
-			static_cast<float>((color & 0x0000FF00) >> 8)  / 255.0f,
-			static_cast<float>((color & 0x000000FF))       / 255.0f,
+			static_cast<float>(color.r) / 255.0f,
+			static_cast<float>(color.g) / 255.0f,
+			static_cast<float>(color.b) / 255.0f,
+			static_cast<float>(color.a) / 255.0f,
 		};
 
 		NonOwningPtr<Text> text = p_scene->GetTextFromPositionAndColor(str, Vec2f{ static_cast<float>(x), static_cast<float>(y) }, vec_color);
