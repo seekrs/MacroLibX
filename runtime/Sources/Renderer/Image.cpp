@@ -5,7 +5,6 @@
 #include <Renderer/RenderCore.h>
 #include <Utils/CallOnExit.h>
 #include <Core/Memory.h>
-#include <Utils/Bits.h>
 
 #define STB_IMAGE_IMPLEMENTATION
 
@@ -200,20 +199,21 @@ namespace mlx
 		Image::Destroy();
 	}
 
-	void Texture::SetPixel(int x, int y, int color) noexcept
+	void Texture::SetPixel(int x, int y, mlx_color color) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
 		if(x < 0 || y < 0 || static_cast<std::uint32_t>(x) > m_width || static_cast<std::uint32_t>(y) > m_height)
 			return;
 		if(!m_staging_buffer.has_value())
 			OpenCPUBuffer();
-		// Needs to reverse bytes order because why not
-		color = ByteSwap(color);
-		m_cpu_buffer[(y * m_width) + x] = color;
+		if constexpr(std::endian::native == std::endian::little)
+			m_cpu_buffer[(y * m_width) + x] = mlx_color{ .r = color.a, .g = color.b, .b = color.g, .a = color.r };
+		else
+			m_cpu_buffer[(y * m_width) + x] = color;
 		m_has_been_modified = true;
 	}
 
-	void Texture::SetRegion(int x, int y, int w, int h, int* pixels) noexcept
+	void Texture::SetRegion(int x, int y, int w, int h, mlx_color* pixels) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
 		if(x < 0 || y < 0 || static_cast<std::uint32_t>(x) > m_width || static_cast<std::uint32_t>(y) > m_height)
@@ -231,40 +231,48 @@ namespace mlx
 					break;
 				moving_y++;
 			}
-			// Needs to reverse bytes order because why not
-			int color = ByteSwap(pixels[i]);
-			m_cpu_buffer[(moving_y * m_width) + moving_x] = color;
+			if constexpr(std::endian::native == std::endian::little)
+				m_cpu_buffer[(moving_y * m_width) + moving_x] = mlx_color{ .r = pixels[i].a, .g = pixels[i].b, .b = pixels[i].g, .a = pixels[i].r };
+			else
+				m_cpu_buffer[(moving_y * m_width) + moving_x] = pixels[i];
 		}
 		m_has_been_modified = true;
 	}
 
-	void Texture::SetLinearRegion(int x, int y, std::size_t len, int* pixels) noexcept
+	void Texture::SetLinearRegion(int x, int y, std::size_t len, mlx_color* pixels) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
 		if(x < 0 || y < 0 || static_cast<std::uint32_t>(x) > m_width || static_cast<std::uint32_t>(y) > m_height)
 			return;
 		if(!m_staging_buffer.has_value())
 			OpenCPUBuffer();
-		for(std::size_t i = 0; i < len; i++)
+		if constexpr(std::endian::native == std::endian::little)
+			for(std::size_t i = 0; i < len; i++)
+				m_cpu_buffer[(y * m_width) + x + i] = mlx_color{ .r = pixels[i].a, .g = pixels[i].b, .b = pixels[i].g, .a = pixels[i].r };
+		else
 		{
-			// Needs to reverse bytes order because why not
-			int color = ByteSwap(pixels[i]);
-			m_cpu_buffer[(y * m_width) + x + i] = color;
+			std::memcpy(&m_cpu_buffer[(y * m_width) + x], pixels, len);
 		}
 		m_has_been_modified = true;
 	}
 
-	int Texture::GetPixel(int x, int y) noexcept
+	mlx_color Texture::GetPixel(int x, int y) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
 		if(x < 0 || y < 0 || static_cast<std::uint32_t>(x) > m_width || static_cast<std::uint32_t>(y) > m_height)
-			return 0;
+			return { .rgba = 0x00000000 };
 		if(!m_staging_buffer.has_value())
 			OpenCPUBuffer();
-		return m_cpu_buffer[(y * m_width) + x];
+		if constexpr(std::endian::native == std::endian::little)
+		{
+			mlx_color color = m_cpu_buffer[(y * m_width) + x];
+			return { .r = color.a, .g = color.b, .b = color.g, .a = color.r };
+		}
+		else
+			return m_cpu_buffer[(y * m_width) + x];
 	}
 
-	void Texture::GetRegion(int x, int y, int w, int h, int* dst) noexcept
+	void Texture::GetRegion(int x, int y, int w, int h, mlx_color* dst) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
 		if(x < 0 || y < 0 || static_cast<std::uint32_t>(x) > m_width || static_cast<std::uint32_t>(y) > m_height)
@@ -280,8 +288,13 @@ namespace mlx
 					break;
 				moving_y++;
 			}
-			// Needs to reverse bytes order because why not
-			dst[i] = ByteSwap(m_cpu_buffer[(moving_y * m_width) + moving_x]);
+			if constexpr(std::endian::native == std::endian::little)
+			{
+				mlx_color color = m_cpu_buffer[(moving_y * m_width) + moving_x];
+				dst[i] = mlx_color{ .r = color.a, .g = color.b, .b = color.g, .a = color.r };
+			}
+			else
+				dst[i] = m_cpu_buffer[(moving_y * m_width) + moving_x];
 		}
 	}
 
@@ -291,12 +304,13 @@ namespace mlx
 		Image::Clear(cmd, std::move(color));
 		if(m_staging_buffer.has_value())
 		{
-			std::uint8_t color_bytes[4];
-			color_bytes[0] = static_cast<std::uint8_t>(color.r * 255.f);
-			color_bytes[1] = static_cast<std::uint8_t>(color.g * 255.f);
-			color_bytes[2] = static_cast<std::uint8_t>(color.b * 255.f);
-			color_bytes[3] = static_cast<std::uint8_t>(color.a * 255.f);
-			std::fill(m_cpu_buffer.begin(), m_cpu_buffer.end(), *reinterpret_cast<int*>(color_bytes));
+			mlx_color processed_color{
+				.r = static_cast<std::uint8_t>(color.r * 255.f),
+				.g = static_cast<std::uint8_t>(color.g * 255.f),
+				.b = static_cast<std::uint8_t>(color.b * 255.f),
+				.a = static_cast<std::uint8_t>(color.a * 255.f)
+			};
+			std::fill(m_cpu_buffer.begin(), m_cpu_buffer.end(), processed_color);
 		}
 	}
 

@@ -126,7 +126,7 @@ extern "C"
 		gs->GetWindow()->GetSize(x, y);
 	}
 
-	void mlx_clear_window(mlx_context mlx, mlx_window win, int color)
+	void mlx_clear_window(mlx_context mlx, mlx_window win, mlx_color color)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		mlx::NonOwningPtr<mlx::GraphicsSupport> gs = mlx->app->GetGraphicsSupport(win);
@@ -201,7 +201,7 @@ extern "C"
 		mlx->app->OnEvent(win, static_cast<int>(event), funct_ptr, param);
 	}
 
-	void mlx_pixel_put(mlx_context mlx, mlx_window win, int x, int y, int color)
+	void mlx_pixel_put(mlx_context mlx, mlx_window win, int x, int y, mlx_color color)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		mlx::NonOwningPtr<mlx::GraphicsSupport> gs = mlx->app->GetGraphicsSupport(win);
@@ -248,16 +248,16 @@ extern "C"
 		mlx->app->DestroyTexture(image);
 	}
 
-	int mlx_get_image_pixel(mlx_context mlx, mlx_image image, int x, int y)
+	mlx_color mlx_get_image_pixel(mlx_context mlx, mlx_image image, int x, int y)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		mlx::NonOwningPtr<mlx::Texture> texture = mlx->app->GetTexture(image);
 		if(!texture)
-			return 0;
+			return { .rgba = 0x00000000 };
 		return texture->GetPixel(x, y);
 	}
 
-	void mlx_set_image_pixel(mlx_context mlx, mlx_image image, int x, int y, int color)
+	void mlx_set_image_pixel(mlx_context mlx, mlx_image image, int x, int y, mlx_color color)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		mlx::NonOwningPtr<mlx::Texture> texture = mlx->app->GetTexture(image);
@@ -278,7 +278,7 @@ extern "C"
 		gs->TexturePut(texture, x, y, 1.0f, 1.0f, 0.0f);
 	}
 
-	void mlx_string_put(mlx_context mlx, mlx_window win, int x, int y, int color, char* str)
+	void mlx_string_put(mlx_context mlx, mlx_window win, int x, int y, mlx_color color, char* str)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		mlx::NonOwningPtr<mlx::GraphicsSupport> gs = mlx->app->GetGraphicsSupport(win);
@@ -381,7 +381,7 @@ extern "C"
 		gs->GetWindow()->Restore();
 	}
 
-	void mlx_pixel_put_array(mlx_context mlx, mlx_window win, int x, int y, int* pixels, size_t pixels_size)
+	void mlx_pixel_put_array(mlx_context mlx, mlx_window win, int x, int y, mlx_color* pixels, size_t pixels_size)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		mlx::NonOwningPtr<mlx::GraphicsSupport> gs = mlx->app->GetGraphicsSupport(win);
@@ -390,7 +390,7 @@ extern "C"
 		gs->PixelPutArray(x, y, pixels, pixels_size);
 	}
 
-	void mlx_pixel_put_region(mlx_context mlx, mlx_window win, int x, int y, int w, int h, int* pixels)
+	void mlx_pixel_put_region(mlx_context mlx, mlx_window win, int x, int y, int w, int h, mlx_color* pixels)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		mlx::NonOwningPtr<mlx::GraphicsSupport> gs = mlx->app->GetGraphicsSupport(win);
@@ -399,7 +399,7 @@ extern "C"
 		gs->PixelPutRegion(x, y, w, h, pixels);
 	}
 
-	void mlx_get_image_region(mlx_context mlx, mlx_image image, int x, int y, int w, int h, int* dst)
+	void mlx_get_image_region(mlx_context mlx, mlx_image image, int x, int y, int w, int h, mlx_color* dst)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		mlx::NonOwningPtr<mlx::Texture> texture = mlx->app->GetTexture(image);
@@ -408,7 +408,7 @@ extern "C"
 		texture->GetRegion(x, y, w, h, dst);
 	}
 
-	void mlx_set_image_region(mlx_context mlx, mlx_image image, int x, int y, int w, int h, int* pixels)
+	void mlx_set_image_region(mlx_context mlx, mlx_image image, int x, int y, int w, int h, mlx_color* pixels)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		mlx::NonOwningPtr<mlx::Texture> texture = mlx->app->GetTexture(image);

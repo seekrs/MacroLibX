@@ -6,7 +6,7 @@
 /*   By: maldavid <contact@kbz8.me>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:56:35 by maldavid          #+#    #+#             */
-/*   Updated: 2024/12/15 13:59:00 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/12/16 23:11:59 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,21 @@ MLX_DEFINE_HANDLE(mlx_window);
  * @brief           Opaque handle that represents a MLX image
  */
 MLX_DEFINE_HANDLE(mlx_image);
+
+/**
+ * @brief           Union representing RGBA color with access to each part as bytes
+ */
+typedef union mlx_color
+{
+	struct
+	{
+		uint8_t a;
+		uint8_t b;
+		uint8_t g;
+		uint8_t r;
+	};
+	uint32_t rgba;
+} mlx_color;
 
 
 
@@ -167,7 +182,7 @@ MLX_API void mlx_get_window_size(mlx_context mlx, mlx_window win, int* x, int* y
  * @param mlx        Internal MLX application
  * @param win        Internal window
  */
-MLX_API void mlx_clear_window(mlx_context mlx, mlx_window win, int color);
+MLX_API void mlx_clear_window(mlx_context mlx, mlx_window win, mlx_color color);
 
 /**
  * @brief            Get the size of the screen the given window is on
@@ -283,7 +298,7 @@ MLX_API void mlx_on_event(mlx_context mlx, mlx_window win, mlx_event_type event,
  * @param y          Y coordinate
  * @param color      Color of the pixel (coded on 4 bytes in an int, 0xRRGGBBAA)
  */
-MLX_API void mlx_pixel_put(mlx_context mlx, mlx_window win, int x, int y, int color);
+MLX_API void mlx_pixel_put(mlx_context mlx, mlx_window win, int x, int y, mlx_color color);
 
 
 
@@ -339,7 +354,7 @@ MLX_API void mlx_destroy_image(mlx_context mlx, mlx_image image);
  *     ~ make IMAGES_OPTIMIZED=false
  * ```
  */
-MLX_API int mlx_get_image_pixel(mlx_context mlx, mlx_image image, int x, int y);
+MLX_API mlx_color mlx_get_image_pixel(mlx_context mlx, mlx_image image, int x, int y);
 
 /**
  * @brief            Set image pixel data
@@ -358,7 +373,7 @@ MLX_API int mlx_get_image_pixel(mlx_context mlx, mlx_image image, int x, int y);
  *     ~ make IMAGES_OPTIMIZED=false
  * ```
  */
-MLX_API void mlx_set_image_pixel(mlx_context mlx, mlx_image image, int x, int y, int color);
+MLX_API void mlx_set_image_pixel(mlx_context mlx, mlx_image image, int x, int y, mlx_color color);
 
 /**
  * @brief            Put image to the given window
@@ -386,7 +401,7 @@ MLX_API void mlx_put_image_to_window(mlx_context mlx, mlx_window win, mlx_image 
  * @param color      Color of the pixel (coded on 4 bytes in an int, 0xAARRGGBB)
  * @param str        Text to put
  */
-MLX_API void mlx_string_put(mlx_context mlx, mlx_window win, int x, int y, int color, char* str);
+MLX_API void mlx_string_put(mlx_context mlx, mlx_window win, int x, int y, mlx_color color, char* str);
 
 /**
  * @brief            Loads a font to be used by `mlx_string_put`

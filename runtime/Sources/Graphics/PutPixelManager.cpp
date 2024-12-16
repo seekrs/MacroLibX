@@ -2,10 +2,11 @@
 
 #include <Graphics/PutPixelManager.h>
 #include <Renderer/Renderer.h>
+#include <Utils/Bits.h>
 
 namespace mlx
 {
-	NonOwningPtr<Texture> PutPixelManager::DrawPixel(int x, int y, std::uint64_t draw_layer, int color)
+	NonOwningPtr<Texture> PutPixelManager::DrawPixel(int x, int y, std::uint64_t draw_layer, mlx_color color)
 	{
 		MLX_PROFILE_FUNCTION();
 		bool is_newlayer;
@@ -16,7 +17,7 @@ namespace mlx
 		return (is_newlayer ? layer : nullptr);
 	}
 
-	NonOwningPtr<Texture> PutPixelManager::DrawPixelsArray(int x, int y, std::uint64_t draw_layer, int* pixels, std::size_t pixels_size)
+	NonOwningPtr<Texture> PutPixelManager::DrawPixelsArray(int x, int y, std::uint64_t draw_layer, mlx_color* pixels, std::size_t pixels_size)
 	{
 		MLX_PROFILE_FUNCTION();
 		bool is_newlayer;
@@ -27,7 +28,7 @@ namespace mlx
 		return (is_newlayer ? layer : nullptr);
 	}
 
-	NonOwningPtr<Texture> PutPixelManager::DrawPixelsRegion(int x, int y, int w, int h, std::uint64_t draw_layer, int* pixels)
+	NonOwningPtr<Texture> PutPixelManager::DrawPixelsRegion(int x, int y, int w, int h, std::uint64_t draw_layer, mlx_color* pixels)
 	{
 		MLX_PROFILE_FUNCTION();
 		bool is_newlayer;
@@ -70,7 +71,7 @@ namespace mlx
 		try
 		{
 			m_placements[draw_layer] = m_textures.at(m_current_texture_index).get();
-			m_textures.at(m_current_texture_index)->Clear(VK_NULL_HANDLE, Vec4f{ 0.0f });
+			m_textures.at(m_current_texture_index)->Clear(VK_NULL_HANDLE, Vec4f{ 0.f });
 			NonOwningPtr<Texture> texture = m_textures.at(m_current_texture_index).get();
 			m_current_texture_index++;
 			return texture;

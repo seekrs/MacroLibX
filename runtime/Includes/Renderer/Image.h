@@ -83,11 +83,11 @@ namespace mlx
 			void Init(CPUBuffer pixels, std::uint32_t width, std::uint32_t height, VkFormat format, bool is_multisampled, [[maybe_unused]] std::string_view debug_name);
 			void Destroy() noexcept override;
 
-			void SetPixel(int x, int y, int color) noexcept;
-			void SetRegion(int x, int y, int w, int h, int* pixels) noexcept;
-			void SetLinearRegion(int x, int y, std::size_t len, int* pixels) noexcept;
-			int GetPixel(int x, int y) noexcept;
-			void GetRegion(int x, int y, int w, int h, int* dst) noexcept;
+			void SetPixel(int x, int y, mlx_color color) noexcept;
+			void SetRegion(int x, int y, int w, int h, mlx_color* color) noexcept;
+			void SetLinearRegion(int x, int y, std::size_t len, mlx_color* color) noexcept;
+			mlx_color GetPixel(int x, int y) noexcept;
+			void GetRegion(int x, int y, int w, int h, mlx_color* dst) noexcept;
 			void Clear(VkCommandBuffer cmd, Vec4f color) override;
 
 			void Update(VkCommandBuffer cmd);
@@ -98,7 +98,7 @@ namespace mlx
 			void OpenCPUBuffer();
 
 		private:
-			std::vector<int> m_cpu_buffer;
+			std::vector<mlx_color> m_cpu_buffer;
 			std::optional<GPUBuffer> m_staging_buffer;
 			bool m_has_been_modified = false;
 	};

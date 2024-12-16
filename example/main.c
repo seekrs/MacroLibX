@@ -16,7 +16,7 @@ typedef struct
 #define CIRCLE_RADIUS 50
 #define CIRCLE_DIAMETER (CIRCLE_RADIUS + CIRCLE_RADIUS)
 
-static int pixels_circle[CIRCLE_DIAMETER * CIRCLE_DIAMETER] = { 0 };
+static mlx_color pixels_circle[CIRCLE_DIAMETER * CIRCLE_DIAMETER] = { 0 };
 
 int update(void* param)
 {
@@ -25,7 +25,7 @@ int update(void* param)
 
 	if(i > 200)
 	{
-		mlx_clear_window(mlx->mlx, mlx->win, 0x334D4DFF);
+		mlx_clear_window(mlx->mlx, mlx->win, (mlx_color){ .rgba = 0x334D4DFF });
 		mlx_put_transformed_image_to_window(mlx->mlx, mlx->win, mlx->logo_bmp, 220, 40, 0.5f, 0.5f, i);
 	}
 
@@ -34,18 +34,19 @@ int update(void* param)
 	else
 		mlx_set_font_scale(mlx->mlx, "default", 6.f);
 
-	mlx_string_put(mlx->mlx, mlx->win, 160, 120, 0xFF2066FF, "this text should be hidden");
+	mlx_string_put(mlx->mlx, mlx->win, 160, 120, (mlx_color){ .rgba = 0xFF2066FF }, "this text should be hidden");
 
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->logo_png, 100, 100);
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 150, 60);
 
 	mlx_set_font(mlx->mlx, "default");
-	mlx_string_put(mlx->mlx, mlx->win, 20, 50, 0xFFFFFFFF, "that's a text");
+	mlx_string_put(mlx->mlx, mlx->win, 20, 50, (mlx_color){ .rgba = 0xFFFFFFFF }, "that's a text");
 
-	for(int j = 0, color = 0; j < 400; j++)
+	uint32_t color = 0;
+	for(int j = 0; j < 400; j++)
 	{
-		mlx_pixel_put(mlx->mlx, mlx->win, j, j, 0x0000FFFF + (color << 24));
-		mlx_pixel_put(mlx->mlx, mlx->win, 399 - j, j, 0x0000FFFF);
+		mlx_pixel_put(mlx->mlx, mlx->win, j, j, (mlx_color){ .rgba = 0x0000FFFF + (color << 24) });
+		mlx_pixel_put(mlx->mlx, mlx->win, 399 - j, j, (mlx_color){ .rgba = 0x0000FFFF });
 		color += (color < 255);
 	}
 
@@ -54,7 +55,7 @@ int update(void* param)
 	else
 		mlx_put_transformed_image_to_window(mlx->mlx, mlx->win, mlx->logo_jpg, 210, 150, fabs(sin(i / 100.0f)), fabs(cos(i / 100.0f) * 2.0f), 0.0f);
 	mlx_set_font_scale(mlx->mlx, "default", 8.f);
-	mlx_string_put(mlx->mlx, mlx->win, 210, 175, 0xFFAF2BFF, "hidden");
+	mlx_string_put(mlx->mlx, mlx->win, 210, 175, (mlx_color){ .rgba = 0xFFAF2BFF }, "hidden");
 
 	mlx_pixel_put_region(mlx->mlx, mlx->win, 200, 170, CIRCLE_DIAMETER, CIRCLE_DIAMETER, pixels_circle);
 
@@ -64,7 +65,6 @@ int update(void* param)
 
 mlx_image create_image(mlx_t* mlx)
 {
-	unsigned char pixel[4];
 	mlx_image img = mlx_new_image(mlx->mlx, 100, 100);
 	for(int i = 0, j = 0, k = 0; i < (100 * 100) * 4; i += 4, j++)
 	{
@@ -75,11 +75,13 @@ mlx_image create_image(mlx_t* mlx)
 		}
 		if(i < 10000 || i > 20000)
 		{
-			pixel[0] = 0x99;
-			pixel[1] = i;
-			pixel[2] = j;
-			pixel[3] = k;
-			mlx_set_image_pixel(mlx->mlx, img, j, k, *((int*)pixel));
+			mlx_color pixel = {
+				.r = (uint8_t)k,
+				.g = (uint8_t)j,
+				.b = (uint8_t)i,
+				.a = 0x99
+			};
+			mlx_set_image_pixel(mlx->mlx, img, j, k, pixel);
 		}
 	}
 	return img;
@@ -104,7 +106,7 @@ int key_hook(int key, void* param)
 			mlx_mouse_hide(mlx->mlx);
 		break;
 		case 6 : // (C)lear
-			mlx_clear_window(mlx->mlx, mlx->win, 0x334D4DFF);
+			mlx_clear_window(mlx->mlx, mlx->win, (mlx_color){ .rgba = 0x334D4DFF });
 		break;
 		case 79 : // RIGHT KEY
 			mlx_mouse_move(mlx->mlx, mlx->win, x + 10, y);
@@ -144,7 +146,7 @@ int main(void)
 		for(int k = 0; k < CIRCLE_DIAMETER; k++, i++)
 		{
 			if((CIRCLE_RADIUS - j) * (CIRCLE_RADIUS - j) + (CIRCLE_RADIUS - k) * (CIRCLE_RADIUS - k) < CIRCLE_RADIUS * CIRCLE_RADIUS)
-				pixels_circle[i] = 0xA10000FF + ((j * k * i) << 8);
+				pixels_circle[i] = (mlx_color){ .rgba = 0xA10000FF + ((j * k * i) << 8) };
 		}
 	}
 
@@ -169,13 +171,13 @@ int main(void)
 	mlx.logo_bmp = mlx_new_image_from_file(mlx.mlx, "42_logo.bmp", &dummy, &dummy);
 	mlx.logo_jpg = mlx_new_image_from_file(mlx.mlx, "42_logo.jpg", &dummy, &dummy);
 
-	mlx_pixel_put(mlx.mlx, mlx.win, 200, 10, 0xFF00FFFF);
+	mlx_pixel_put(mlx.mlx, mlx.win, 200, 10, (mlx_color){ .rgba = 0xFF00FFFF });
 	mlx_put_image_to_window(mlx.mlx, mlx.win, mlx.logo_png, 10, 190);
 
 	mlx.img = create_image(&mlx);
 
 	mlx_set_font_scale(mlx.mlx, "font.ttf", 16.f);
-	mlx_string_put(mlx.mlx, mlx.win, 20, 20, 0x0020FFFF, "that text will disappear");
+	mlx_string_put(mlx.mlx, mlx.win, 20, 20, (mlx_color){ .rgba = 0x0020FFFF }, "that text will disappear");
 
 	mlx_loop_hook(mlx.mlx, update, &mlx);
 	mlx_loop(mlx.mlx);
