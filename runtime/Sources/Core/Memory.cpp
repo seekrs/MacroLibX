@@ -106,7 +106,7 @@ namespace mlx
 		for(const Descriptor& desc : s_blocks)
 		{
 			#ifdef MLX_COMPILER_MSVC
-				if(it->aligned)
+				if(desc.aligned)
 					_aligned_free(desc.ptr);
 				else
 					std::free(desc.ptr);
