@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 08:49:17 by maldavid          #+#    #+#             */
-/*   Updated: 2024/12/16 16:16:07 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/12/17 00:14:47 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,10 @@
 		#define MLX_FORCEINLINE inline
 	#endif
 #endif
+
+#define MLX_LITTLE_ENDIAN 0x41424344UL
+#define MLX_BIG_ENDIAN    0x44434241UL
+#define MLX_ENDIAN_ORDER  ('ABCD')
 
 #include <stdint.h>
 

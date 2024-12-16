@@ -6,7 +6,7 @@
 /*   By: maldavid <contact@kbz8.me>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:56:35 by maldavid          #+#    #+#             */
-/*   Updated: 2024/12/16 23:11:59 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/12/17 00:15:34 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,17 @@ typedef union mlx_color
 {
 	struct
 	{
-		uint8_t a;
-		uint8_t b;
-		uint8_t g;
-		uint8_t r;
+		#if MLX_ENDIAN_ORDER == MLX_LITTLE_ENDIAN
+			uint8_t a;
+			uint8_t b;
+			uint8_t g;
+			uint8_t r;
+		#else
+			uint8_t r;
+			uint8_t g;
+			uint8_t b;
+			uint8_t a;
+		#endif
 	};
 	uint32_t rgba;
 } mlx_color;
