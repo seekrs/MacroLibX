@@ -59,26 +59,25 @@ namespace mlx
 		}
 		is_newlayer = true;
 
-		bool adjusment = false;
 		if(m_current_texture_index >= m_textures.size())
 		{
 			#ifdef DEBUG
-				m_textures.push_back(std::make_unique<Texture>(CPUBuffer{}, extent.width, extent.height, VK_FORMAT_R8G8B8A8_SRGB, false, "mlx_put_pixel_layer_" + std::to_string(draw_layer)));
+				m_textures.push_back(std::make_unique<Texture>(CPUBuffer{}, extent.width, extent.height, VK_FORMAT_R8G8B8A8_SRGB, false, "mlx_put_pixel_layer_" + std::to_string(m_current_texture_index)));
 			#else
 				m_textures.push_back(std::make_unique<Texture>(CPUBuffer{}, extent.width, extent.height, VK_FORMAT_R8G8B8A8_SRGB, false, std::string_view{}));
 			#endif
-			m_current_texture_index++;
-			adjusment = true;
 		}
 		try
 		{
-			m_placements[draw_layer] = m_textures.at(m_current_texture_index - adjusment).get();
-			m_textures.at(m_current_texture_index - adjusment)->Clear(VK_NULL_HANDLE, Vec4f{ 0.0f });
-			return m_textures.at(m_current_texture_index - adjusment).get();
+			m_placements[draw_layer] = m_textures.at(m_current_texture_index).get();
+			m_textures.at(m_current_texture_index)->Clear(VK_NULL_HANDLE, Vec4f{ 0.0f });
+			NonOwningPtr<Texture> texture = m_textures.at(m_current_texture_index).get();
+			m_current_texture_index++;
+			return texture;
 		}
 		catch(...)
 		{
-			Error("PutPixelManager: invalid texture index; % is not in range of 0-% (internal mlx issue, please report to devs)", m_current_texture_index - adjusment, m_textures.size());
+			Error("PutPixelManager: invalid texture index; % is not in range of 0-% (internal mlx issue, please report to devs)", m_current_texture_index, m_textures.size());
 			return nullptr;
 		}
 	}
@@ -86,8 +85,6 @@ namespace mlx
 	void PutPixelManager::ResetRenderData()
 	{
 		m_placements.clear();
-		for(auto& texture : m_textures)
-			texture->Clear(VK_NULL_HANDLE, Vec4f{ 0.0f });
 		m_current_texture_index = 0;
 	}
 }

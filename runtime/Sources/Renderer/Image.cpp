@@ -31,14 +31,6 @@
 
 namespace mlx
 {
-	unsigned char reverse(unsigned char b)
-	{
-	   b = (b & 0xF0) >> 4 | (b & 0x0F) << 4;
-	   b = (b & 0xCC) >> 2 | (b & 0x33) << 2;
-	   b = (b & 0xAA) >> 1 | (b & 0x55) << 1;
-	   return b;
-	}
-
 	void Image::Init(ImageType type, std::uint32_t width, std::uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, bool is_multisampled, [[maybe_unused]] std::string_view debug_name)
 	{
 		MLX_PROFILE_FUNCTION();
@@ -290,6 +282,21 @@ namespace mlx
 			}
 			// Needs to reverse bytes order because why not
 			dst[i] = ByteSwap(m_cpu_buffer[(moving_y * m_width) + moving_x]);
+		}
+	}
+
+	void Texture::Clear(VkCommandBuffer cmd, Vec4f color)
+	{
+		MLX_PROFILE_FUNCTION();
+		Image::Clear(cmd, std::move(color));
+		if(m_staging_buffer.has_value())
+		{
+			std::uint8_t color_bytes[4];
+			color_bytes[0] = static_cast<std::uint8_t>(color.r * 255.f);
+			color_bytes[1] = static_cast<std::uint8_t>(color.g * 255.f);
+			color_bytes[2] = static_cast<std::uint8_t>(color.b * 255.f);
+			color_bytes[3] = static_cast<std::uint8_t>(color.a * 255.f);
+			std::fill(m_cpu_buffer.begin(), m_cpu_buffer.end(), *reinterpret_cast<int*>(color_bytes));
 		}
 	}
 

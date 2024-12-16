@@ -30,7 +30,7 @@ namespace mlx
 			void CreateImageView(VkImageViewType type, VkImageAspectFlags aspectFlags, int layer_count = 1) noexcept;
 			void CreateSampler() noexcept;
 			void TransitionLayout(VkImageLayout new_layout, VkCommandBuffer cmd = VK_NULL_HANDLE);
-			void Clear(VkCommandBuffer cmd, Vec4f color);
+			virtual void Clear(VkCommandBuffer cmd, Vec4f color);
 
 			void DestroySampler() noexcept;
 			void DestroyImageView() noexcept;
@@ -88,6 +88,7 @@ namespace mlx
 			void SetLinearRegion(int x, int y, std::size_t len, int* pixels) noexcept;
 			int GetPixel(int x, int y) noexcept;
 			void GetRegion(int x, int y, int w, int h, int* dst) noexcept;
+			void Clear(VkCommandBuffer cmd, Vec4f color) override;
 
 			void Update(VkCommandBuffer cmd);
 
