@@ -6,7 +6,7 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 08:49:17 by maldavid          #+#    #+#             */
-/*   Updated: 2024/12/17 00:14:47 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/12/17 00:35:35 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,14 @@
 	#define MLX_PLAT_MACOS
 #elif defined(unix) || defined(__unix__) || defined(__unix)
 	#define MLX_PLAT_UNIX
+#elif defined(__sun) && defined(__SVR4)
+	#define MLX_PLAT_SOLARIS
+#elif defined(__OpenBSD__)
+	#define MLX_PLAT_OPENBSD
+#elif defined(__FreeBSD__) || defined(__FreeBSD_kernel__) || defined(__DragonFly__)
+	#define MLX_PLAT_FREEBSD
+#elif defined(__NetBSD__)
+	#define MLX_PLAT_NETBSD
 #else
 	#error "Unknown environment (not Windows, not Linux, not MacOS, not Unix)"
 #endif
@@ -142,9 +150,48 @@
 	#endif
 #endif
 
-#define MLX_LITTLE_ENDIAN 0x41424344UL
-#define MLX_BIG_ENDIAN    0x44434241UL
-#define MLX_ENDIAN_ORDER  ('ABCD')
+#define MLX_LITTLE_ENDIAN 1234
+#define MLX_BIG_ENDIAN    4321
+
+#ifndef MLX_BYTEORDER
+	#if defined(MLX_PLAT_LINUX)
+		#include <endian.h>
+		#define MLX_BYTEORDER __BYTE_ORDER
+	#elif defined(MLX_PLAT_SOLARIS)
+		#include <sys/byteorder.h>
+		#if defined(_LITTLE_ENDIAN)
+			#define MLX_BYTEORDER MLX_LITTLE_ENDIAN
+		#elif defined(_BIG_ENDIAN)
+			#define MLX_BYTEORDER MLX_BIG_ENDIAN
+		#else
+			#error Unsupported endianness
+		#endif
+	#elif defined(MLX_PLAT_OPENBSD) || defined(__DragonFly__)
+		#include <endian.h>
+		#define MLX_BYTEORDER BYTE_ORDER
+	#elif defined(MLX_PLAT_FREEBSD) || defined(MLX_PLAT_NETBSD)
+		#include <sys/endian.h>
+		#define MLX_BYTEORDER BYTE_ORDER
+	#elif defined(__ORDER_LITTLE_ENDIAN__) && defined(__ORDER_BIG_ENDIAN__) && defined(__BYTE_ORDER__)
+		#if (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__)
+			#define MLX_BYTEORDER MLX_LITTLE_ENDIAN
+		#elif (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
+			#define MLX_BYTEORDER MLX_BIG_ENDIAN
+		#else
+			#error Unsupported endianness
+		#endif
+	#else
+		#if defined(__hppa__) || \
+			defined(__m68k__) || defined(mc68000) || defined(_M_M68K) || \
+			(defined(__MIPS__) && defined(__MIPSEB__)) || \
+			defined(__ppc__) || defined(__POWERPC__) || defined(__powerpc__) || defined(__PPC__) || \
+			defined(__sparc__) || defined(__sparc)
+			#define MLX_BYTEORDER MLX_BIG_ENDIAN
+		#else
+			#define MLX_BYTEORDER MLX_LITTLE_ENDIAN
+		#endif
+	#endif
+#endif
 
 #include <stdint.h>
 
