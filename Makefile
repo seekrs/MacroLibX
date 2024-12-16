@@ -34,7 +34,7 @@ INCLUDES = -I./includes -I./runtime/Includes -I./runtime/Sources -I./third_party
 CXXPCHFLAGS = -xc++-header
 
 PCH = runtime/Includes/PreCompiled.h
-GCH = 
+GCH =
 
 NZRRC = nzslc
 
