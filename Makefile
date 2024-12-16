@@ -48,8 +48,8 @@ else
 endif
 
 ifeq ($(OS), Darwin)
-	LDFLAGS += -L /opt/homebrew/lib -lSDL2
-	CXXFLAGS += -I /opt/homebrew/include
+	LDFLAGS += -L /opt/homebrew/Cellar/lib -lSDL2
+	CXXFLAGS += -I /opt/homebrew/Cellar/include
 	NAME = libmlx.dylib
 endif
 
