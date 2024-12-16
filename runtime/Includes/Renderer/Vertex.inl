@@ -3,6 +3,11 @@
 
 namespace mlx
 {
+	bool Vertex::operator==(const Vertex& rhs) const noexcept
+	{
+		return position == rhs.position && uv == rhs.uv;
+	}
+
 	VkVertexInputBindingDescription Vertex::GetBindingDescription()
 	{
 		VkVertexInputBindingDescription binding_description{};

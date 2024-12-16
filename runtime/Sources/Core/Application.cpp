@@ -109,12 +109,7 @@ namespace mlx
 
 	Application::~Application()
 	{
-		for(auto& window : m_graphics)
-		{
-			if(window && window->GetWindow()->GetName() == "让我们在月光下做爱吧")
-				window.reset();
-		}
-
+		m_mesh_registry.Reset();
 		m_font_registry.Reset();
 		p_render_core.reset();
 		p_sdl_manager.reset();

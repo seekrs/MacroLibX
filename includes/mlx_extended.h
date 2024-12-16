@@ -6,7 +6,7 @@
 /*   By: maldavid <contact@kbz8.me>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 16:17:10 by maldavid          #+#    #+#             */
-/*   Updated: 2024/12/14 17:42:06 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/12/15 13:58:58 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,6 @@ extern "C" {
 
         /* Window related functions */
 
-
-typedef struct mlx_window_create_info_extension
-{
-	int position_x;
-	int position_y;
-	int max_width;
-	int max_height;
-	int min_width;
-	int min_height;
-} mlx_window_create_info_extension;
 
 /**
  * @brief            Sets maximum window size

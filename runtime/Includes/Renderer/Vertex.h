@@ -12,7 +12,9 @@ namespace mlx
 		alignas(16) Vec2f uv = Vec2f{ 0.0f, 0.0f };
 
 		Vertex() = default;
-		Vertex(Vec4f p, Vec2f u) : position(std::move(p)), uv(std::move(u)) {}
+		inline Vertex(Vec4f p, Vec2f u) : position(std::move(p)), uv(std::move(u)) {}
+
+		[[nodiscard]] inline bool operator==(const Vertex& rhs) const noexcept;
 
 		[[nodiscard]] inline static VkVertexInputBindingDescription GetBindingDescription();
 		[[nodiscard]] inline static std::array<VkVertexInputAttributeDescription, 2> GetAttributeDescriptions();

@@ -8,6 +8,7 @@
 #include <Core/Memory.h>
 #include <Core/Fps.h>
 #include <Graphics/Font.h>
+#include <Graphics/Mesh.h>
 
 namespace mlx
 {
@@ -47,6 +48,7 @@ namespace mlx
 			Inputs m_in;
 			FontRegistry m_font_registry;
 			ImageRegistry m_image_registry;
+			MeshRegistry m_mesh_registry;
 			std::vector<std::unique_ptr<GraphicsSupport>> m_graphics;
 			std::shared_ptr<Font> p_last_font_bound;
 			std::function<int(Handle)> f_loop_hook;

@@ -1,3 +1,4 @@
+#include "mlx_extended.h"
 #include <PreCompiled.h>
 
 #include <Core/Application.h>
@@ -274,7 +275,7 @@ extern "C"
 		mlx::NonOwningPtr<mlx::Texture> texture = mlx->app->GetTexture(image);
 		if(!texture)
 			return;
-		gs->TexturePut(texture, x, y, 1.0f, 0.0f);
+		gs->TexturePut(texture, x, y, 1.0f, 1.0f, 0.0f);
 	}
 
 	void mlx_string_put(mlx_context mlx, mlx_window win, int x, int y, int color, char* str)
@@ -299,7 +300,7 @@ extern "C"
 	void mlx_set_font(mlx_context mlx, char* filepath)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
-		if (filepath == nullptr)
+		if(filepath == nullptr)
 		{
 			mlx::Error("Font loader: filepath is NULL");
 			return;
@@ -319,7 +320,7 @@ extern "C"
 	void mlx_set_font_scale(mlx_context mlx, char* filepath, float scale)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
-		if (filepath == nullptr)
+		if(filepath == nullptr)
 		{
 			mlx::Error("Font loader: filepath is NULL");
 			return;
@@ -331,5 +332,88 @@ extern "C"
 			return;
 		}
 		mlx->app->LoadFont(file, scale);
+	}
+
+	// Extended
+
+	void mlx_set_window_max_size(mlx_context mlx, mlx_window win, int x, int y)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::GraphicsSupport> gs = mlx->app->GetGraphicsSupport(win);
+		if(!gs)
+			return;
+		gs->GetWindow()->SetMaxSize(x, y);
+	}
+
+	void mlx_set_window_min_size(mlx_context mlx, mlx_window win, int x, int y)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::GraphicsSupport> gs = mlx->app->GetGraphicsSupport(win);
+		if(!gs)
+			return;
+		gs->GetWindow()->SetMinSize(x, y);
+	}
+
+	void mlx_maximise_window(mlx_context mlx, mlx_window win)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::GraphicsSupport> gs = mlx->app->GetGraphicsSupport(win);
+		if(!gs)
+			return;
+		gs->GetWindow()->Maximize();
+	}
+
+	void mlx_minimize_window(mlx_context mlx, mlx_window win)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::GraphicsSupport> gs = mlx->app->GetGraphicsSupport(win);
+		if(!gs)
+			return;
+		gs->GetWindow()->Minimize();
+	}
+
+	void mlx_restore_window(mlx_context mlx, mlx_window win)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::GraphicsSupport> gs = mlx->app->GetGraphicsSupport(win);
+		if(!gs)
+			return;
+		gs->GetWindow()->Restore();
+	}
+
+	void mlx_pixel_put_array(mlx_context mlx, mlx_window win, int x, int y, int* pixels)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::GraphicsSupport> gs = mlx->app->GetGraphicsSupport(win);
+		if(!gs)
+			return;
+	}
+
+	void mlx_get_image_region(mlx_context mlx, mlx_image image, int x, int y, int w, int h, int* dst)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::Texture> texture = mlx->app->GetTexture(image);
+		if(!texture)
+			return;
+	}
+
+	void mlx_set_image_region(mlx_context mlx, mlx_image image, int x, int y, int w, int h, int* pixels)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::Texture> texture = mlx->app->GetTexture(image);
+		if(!texture)
+			return;
+	}
+
+	void mlx_put_transformed_image_to_window(mlx_context mlx, mlx_window win, mlx_image image, int x, int y, float scale_x, float scale_y, float angle)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::GraphicsSupport> gs = mlx->app->GetGraphicsSupport(win);
+		if(!gs)
+			return;
+		mlx::NonOwningPtr<mlx::Texture> texture = mlx->app->GetTexture(image);
+		if(!texture)
+			return;
+		gs->TexturePut(texture, x, y, scale_x, scale_y, angle);
 	}
 }
