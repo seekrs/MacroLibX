@@ -30,6 +30,16 @@
 
 namespace mlx
 {
+	mlx_color ReverseColor(mlx_color color)
+	{
+		mlx_color reversed_color;
+		reversed_color.r = color.a;
+		reversed_color.g = color.b;
+		reversed_color.b = color.g;
+		reversed_color.a = color.r;
+		return reversed_color;
+	}
+
 	void Image::Init(ImageType type, std::uint32_t width, std::uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, bool is_multisampled, [[maybe_unused]] std::string_view debug_name)
 	{
 		MLX_PROFILE_FUNCTION();
@@ -207,7 +217,7 @@ namespace mlx
 		if(!m_staging_buffer.has_value())
 			OpenCPUBuffer();
 		if constexpr(std::endian::native == std::endian::little)
-			m_cpu_buffer[(y * m_width) + x] = mlx_color{ .r = color.a, .g = color.b, .b = color.g, .a = color.r };
+			m_cpu_buffer[(y * m_width) + x] = ReverseColor(color);
 		else
 			m_cpu_buffer[(y * m_width) + x] = color;
 		m_has_been_modified = true;
@@ -232,7 +242,7 @@ namespace mlx
 				moving_y++;
 			}
 			if constexpr(std::endian::native == std::endian::little)
-				m_cpu_buffer[(moving_y * m_width) + moving_x] = mlx_color{ .r = pixels[i].a, .g = pixels[i].b, .b = pixels[i].g, .a = pixels[i].r };
+				m_cpu_buffer[(moving_y * m_width) + moving_x] = ReverseColor(pixels[i]);
 			else
 				m_cpu_buffer[(moving_y * m_width) + moving_x] = pixels[i];
 		}
@@ -248,7 +258,7 @@ namespace mlx
 			OpenCPUBuffer();
 		if constexpr(std::endian::native == std::endian::little)
 			for(std::size_t i = 0; i < len; i++)
-				m_cpu_buffer[(y * m_width) + x + i] = mlx_color{ .r = pixels[i].a, .g = pixels[i].b, .b = pixels[i].g, .a = pixels[i].r };
+				m_cpu_buffer[(y * m_width) + x + i] = ReverseColor(pixels[i]);
 		else
 		{
 			std::memcpy(&m_cpu_buffer[(y * m_width) + x], pixels, len);
@@ -264,10 +274,7 @@ namespace mlx
 		if(!m_staging_buffer.has_value())
 			OpenCPUBuffer();
 		if constexpr(std::endian::native == std::endian::little)
-		{
-			mlx_color color = m_cpu_buffer[(y * m_width) + x];
-			return { .r = color.a, .g = color.b, .b = color.g, .a = color.r };
-		}
+			return ReverseColor(m_cpu_buffer[(y * m_width) + x]);
 		else
 			return m_cpu_buffer[(y * m_width) + x];
 	}
@@ -289,10 +296,7 @@ namespace mlx
 				moving_y++;
 			}
 			if constexpr(std::endian::native == std::endian::little)
-			{
-				mlx_color color = m_cpu_buffer[(moving_y * m_width) + moving_x];
-				dst[i] = mlx_color{ .r = color.a, .g = color.b, .b = color.g, .a = color.r };
-			}
+				dst[i] = ReverseColor(m_cpu_buffer[(moving_y * m_width) + moving_x]);
 			else
 				dst[i] = m_cpu_buffer[(moving_y * m_width) + moving_x];
 		}

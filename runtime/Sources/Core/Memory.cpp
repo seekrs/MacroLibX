@@ -53,12 +53,12 @@ namespace mlx
 
 	void* MemManager::Realloc(void* ptr, std::size_t size)
 	{
-		void* ptr2 = std::realloc(ptr, size);
-		if(ptr2 != nullptr)
-			s_blocks.emplace_back(ptr, size, false);
 		auto it = std::find_if(s_blocks.begin(), s_blocks.end(), [=](const Descriptor& rhs){ return ptr == rhs.ptr; });
 		if(it != s_blocks.end())
 			s_blocks.erase(it);
+		void* ptr2 = std::realloc(ptr, size);
+		if(ptr2 != nullptr)
+			s_blocks.emplace_back(ptr2, size, false);
 		return ptr2;
 	}
 
@@ -79,7 +79,7 @@ namespace mlx
 			}
 		#endif
 		if(ptr2 != nullptr)
-			s_blocks.emplace_back(ptr, size, true);
+			s_blocks.emplace_back(ptr2, size, true);
 		return ptr2;
 	}
 
