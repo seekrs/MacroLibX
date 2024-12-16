@@ -84,7 +84,10 @@ namespace mlx
 			void Destroy() noexcept override;
 
 			void SetPixel(int x, int y, int color) noexcept;
+			void SetRegion(int x, int y, int w, int h, int* pixels) noexcept;
+			void SetLinearRegion(int x, int y, std::size_t len, int* pixels) noexcept;
 			int GetPixel(int x, int y) noexcept;
+			void GetRegion(int x, int y, int w, int h, int* dst) noexcept;
 
 			void Update(VkCommandBuffer cmd);
 

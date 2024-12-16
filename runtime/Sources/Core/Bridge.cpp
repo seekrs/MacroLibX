@@ -381,12 +381,22 @@ extern "C"
 		gs->GetWindow()->Restore();
 	}
 
-	void mlx_pixel_put_array(mlx_context mlx, mlx_window win, int x, int y, int* pixels)
+	void mlx_pixel_put_array(mlx_context mlx, mlx_window win, int x, int y, int* pixels, size_t pixels_size)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		mlx::NonOwningPtr<mlx::GraphicsSupport> gs = mlx->app->GetGraphicsSupport(win);
 		if(!gs)
 			return;
+		gs->PixelPutArray(x, y, pixels, pixels_size);
+	}
+
+	void mlx_pixel_put_region(mlx_context mlx, mlx_window win, int x, int y, int w, int h, int* pixels)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::GraphicsSupport> gs = mlx->app->GetGraphicsSupport(win);
+		if(!gs)
+			return;
+		gs->PixelPutRegion(x, y, w, h, pixels);
 	}
 
 	void mlx_get_image_region(mlx_context mlx, mlx_image image, int x, int y, int w, int h, int* dst)
@@ -395,6 +405,7 @@ extern "C"
 		mlx::NonOwningPtr<mlx::Texture> texture = mlx->app->GetTexture(image);
 		if(!texture)
 			return;
+		texture->GetRegion(x, y, w, h, dst);
 	}
 
 	void mlx_set_image_region(mlx_context mlx, mlx_image image, int x, int y, int w, int h, int* pixels)
@@ -403,6 +414,7 @@ extern "C"
 		mlx::NonOwningPtr<mlx::Texture> texture = mlx->app->GetTexture(image);
 		if(!texture)
 			return;
+		texture->SetRegion(x, y, w, h, pixels);
 	}
 
 	void mlx_put_transformed_image_to_window(mlx_context mlx, mlx_window win, mlx_image image, int x, int y, float scale_x, float scale_y, float angle)

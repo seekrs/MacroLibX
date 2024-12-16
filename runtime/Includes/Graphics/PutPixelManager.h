@@ -12,9 +12,14 @@ namespace mlx
 
 			// Returns a valid pointer when a new texture has been created
 			NonOwningPtr<Texture> DrawPixel(int x, int y, std::uint64_t draw_layer, int color);
+			NonOwningPtr<Texture> DrawPixelsArray(int x, int y, std::uint64_t draw_layer, int* pixels, std::size_t pixels_size);
+			NonOwningPtr<Texture> DrawPixelsRegion(int x, int y, int w, int h, std::uint64_t draw_layer, int* pixels);
 			void ResetRenderData();
 
 			~PutPixelManager() = default;
+
+		private:
+			NonOwningPtr<Texture> GetLayer(std::uint64_t draw_layer, bool& is_newlayer);
 
 		private:
 			std::unordered_map<std::uint64_t, NonOwningPtr<Texture>> m_placements;

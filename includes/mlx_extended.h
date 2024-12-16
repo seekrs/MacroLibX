@@ -6,7 +6,7 @@
 /*   By: maldavid <contact@kbz8.me>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 16:17:10 by maldavid          #+#    #+#             */
-/*   Updated: 2024/12/15 13:58:58 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/12/16 15:06:43 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #define MACROLIB_X_EXTENDED_H
 
 #include "mlx.h"
+#include <stddef.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -84,7 +85,23 @@ MLX_API void mlx_restore_window(mlx_context mlx, mlx_window win);
  * @param y          Y coordinate
  * @param pixels     Array of pixels (coded on 4 bytes in an int, 0xRRGGBBAA)
  */
-MLX_API void mlx_pixel_put_array(mlx_context mlx, mlx_window win, int x, int y, int* pixels);
+MLX_API void mlx_pixel_put_array(mlx_context mlx, mlx_window win, int x, int y, int* pixels, size_t pixels_size);
+
+/**
+ * @brief            Put a region of pixels in the window
+ *
+ * @param mlx        Internal MLX application
+ * @param win        Internal window
+ * @param x          X coordinate
+ * @param y          Y coordinate
+ * @param w          Width
+ * @param h          Height
+ * @param pixels     Array of pixels (coded on 4 bytes in an int, 0xRRGGBBAA)
+ *
+ * Note: it is responsability of the user to make sure the size of `pixels` is
+ * big enough for the given region.
+ */
+MLX_API void mlx_pixel_put_region(mlx_context mlx, mlx_window win, int x, int y, int w, int h, int* pixels);
 
 
 

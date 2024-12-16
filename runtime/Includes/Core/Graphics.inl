@@ -30,6 +30,30 @@ namespace mlx
 		}
 	}
 
+	void GraphicsSupport::PixelPutArray(int x, int y, int* pixels, std::size_t pixels_size) noexcept
+	{
+		MLX_PROFILE_FUNCTION();
+		NonOwningPtr<Texture> texture = m_put_pixel_manager.DrawPixelsArray(x, y, m_draw_layer, pixels, pixels_size);
+		if(texture)
+		{
+			m_pixelput_called = true;
+			Sprite& new_sprite = p_scene->CreateSprite(texture);
+			new_sprite.SetPosition(Vec2f{ 0.0f, 0.0f });
+		}
+	}
+
+	void GraphicsSupport::PixelPutRegion(int x, int y, int w, int h, int* pixels) noexcept
+	{
+		MLX_PROFILE_FUNCTION();
+		NonOwningPtr<Texture> texture = m_put_pixel_manager.DrawPixelsRegion(x, y, w, h, m_draw_layer, pixels);
+		if(texture)
+		{
+			m_pixelput_called = true;
+			Sprite& new_sprite = p_scene->CreateSprite(texture);
+			new_sprite.SetPosition(Vec2f{ 0.0f, 0.0f });
+		}
+	}
+
 	void GraphicsSupport::StringPut(int x, int y, int color, std::string str)
 	{
 		MLX_PROFILE_FUNCTION();
