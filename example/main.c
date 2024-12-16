@@ -13,6 +13,11 @@ typedef struct
 	mlx_image img;
 } mlx_t;
 
+#define CIRCLE_RADIUS 50
+#define CIRCLE_DIAMETER (CIRCLE_RADIUS + CIRCLE_RADIUS)
+
+static int pixels_circle[CIRCLE_DIAMETER * CIRCLE_DIAMETER] = { 0 };
+
 int update(void* param)
 {
 	static int i = 0;
@@ -51,11 +56,7 @@ int update(void* param)
 	mlx_set_font_scale(mlx->mlx, "default", 8.f);
 	mlx_string_put(mlx->mlx, mlx->win, 210, 175, 0xFFAF2BFF, "hidden");
 
-	for(int j = 0; j < 20; j++)
-	{
-		for(int k = 0; k < 20; k++)
-			mlx_pixel_put(mlx->mlx, mlx->win, 220 + j, 160 + k, 0xFF0000FF);
-	}
+	mlx_pixel_put_region(mlx->mlx, mlx->win, 200, 170, CIRCLE_DIAMETER, CIRCLE_DIAMETER, pixels_circle);
 
 	i++;
 	return 0;
@@ -136,6 +137,16 @@ int main(void)
 	int w;
 	int h;
 	int dummy;
+
+	int i = 0;
+	for(int j = 0; j < CIRCLE_DIAMETER; j++)
+	{
+		for(int k = 0; k < CIRCLE_DIAMETER; k++, i++)
+		{
+			if((CIRCLE_RADIUS - j) * (CIRCLE_RADIUS - j) + (CIRCLE_RADIUS - k) * (CIRCLE_RADIUS - k) < CIRCLE_RADIUS * CIRCLE_RADIUS)
+				pixels_circle[i] = 0xA10000FF + ((j * k * i) << 8);
+		}
+	}
 
 	mlx.mlx = mlx_init();
 

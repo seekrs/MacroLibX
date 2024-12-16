@@ -25,6 +25,8 @@ namespace mlx
 			inline void ResetRenderData(int color) noexcept;
 
 			inline void PixelPut(int x, int y, int color) noexcept;
+			inline void PixelPutArray(int x, int y, int* pixels, std::size_t pixels_size) noexcept;
+			inline void PixelPutRegion(int x, int y, int w, int h, int* pixels) noexcept;
 			inline void StringPut(int x, int y, int, std::string str);
 			inline void TexturePut(NonOwningPtr<class Texture> texture, int x, int y, float scale_x, float scale_y, float angle);
 

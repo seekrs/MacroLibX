@@ -5,6 +5,7 @@
 #include <Renderer/RenderCore.h>
 #include <Utils/CallOnExit.h>
 #include <Core/Memory.h>
+#include <Utils/Bits.h>
 
 #define STB_IMAGE_IMPLEMENTATION
 
@@ -215,12 +216,49 @@ namespace mlx
 		if(!m_staging_buffer.has_value())
 			OpenCPUBuffer();
 		// Needs to reverse bytes order because why not
-		unsigned char bytes[4];
-		bytes[0] = (color >> 24) & 0xFF;
-		bytes[1] = (color >> 16) & 0xFF;
-		bytes[2] = (color >>  8) & 0xFF;
-		bytes[3] =  color        & 0xFF;
-		m_cpu_buffer[(y * m_width) + x] = *reinterpret_cast<int*>(bytes);
+		color = ByteSwap(color);
+		m_cpu_buffer[(y * m_width) + x] = color;
+		m_has_been_modified = true;
+	}
+
+	void Texture::SetRegion(int x, int y, int w, int h, int* pixels) noexcept
+	{
+		MLX_PROFILE_FUNCTION();
+		if(x < 0 || y < 0 || static_cast<std::uint32_t>(x) > m_width || static_cast<std::uint32_t>(y) > m_height)
+			return;
+		if(w < 0 || h < 0)
+			return;
+		if(!m_staging_buffer.has_value())
+			OpenCPUBuffer();
+		for(std::uint32_t i = 0, moving_x = x, moving_y = y;; i++, moving_x++)
+		{
+			if(moving_x >= static_cast<std::uint32_t>(x + w) || moving_x >= m_width)
+			{
+				moving_x = x;
+				if(moving_y >= static_cast<std::uint32_t>(y + h) || moving_y >= m_height)
+					break;
+				moving_y++;
+			}
+			// Needs to reverse bytes order because why not
+			int color = ByteSwap(pixels[i]);
+			m_cpu_buffer[(moving_y * m_width) + moving_x] = color;
+		}
+		m_has_been_modified = true;
+	}
+
+	void Texture::SetLinearRegion(int x, int y, std::size_t len, int* pixels) noexcept
+	{
+		MLX_PROFILE_FUNCTION();
+		if(x < 0 || y < 0 || static_cast<std::uint32_t>(x) > m_width || static_cast<std::uint32_t>(y) > m_height)
+			return;
+		if(!m_staging_buffer.has_value())
+			OpenCPUBuffer();
+		for(std::size_t i = 0; i < len; i++)
+		{
+			// Needs to reverse bytes order because why not
+			int color = ByteSwap(pixels[i]);
+			m_cpu_buffer[(y * m_width) + x + i] = color;
+		}
 		m_has_been_modified = true;
 	}
 
@@ -232,6 +270,27 @@ namespace mlx
 		if(!m_staging_buffer.has_value())
 			OpenCPUBuffer();
 		return m_cpu_buffer[(y * m_width) + x];
+	}
+
+	void Texture::GetRegion(int x, int y, int w, int h, int* dst) noexcept
+	{
+		MLX_PROFILE_FUNCTION();
+		if(x < 0 || y < 0 || static_cast<std::uint32_t>(x) > m_width || static_cast<std::uint32_t>(y) > m_height)
+			return;
+		if(!m_staging_buffer.has_value())
+			OpenCPUBuffer();
+		for(std::uint32_t i = 0, moving_x = x, moving_y = y;; i++, moving_x++)
+		{
+			if(moving_x >= static_cast<std::uint32_t>(x + w) || moving_x >= m_width)
+			{
+				moving_x = x;
+				if(moving_y >= static_cast<std::uint32_t>(y + h) || moving_y >= m_height)
+					break;
+				moving_y++;
+			}
+			// Needs to reverse bytes order because why not
+			dst[i] = ByteSwap(m_cpu_buffer[(moving_y * m_width) + moving_x]);
+		}
 	}
 
 	void Texture::Update(VkCommandBuffer cmd)

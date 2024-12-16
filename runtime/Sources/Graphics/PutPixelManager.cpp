@@ -7,6 +7,40 @@ namespace mlx
 {
 	NonOwningPtr<Texture> PutPixelManager::DrawPixel(int x, int y, std::uint64_t draw_layer, int color)
 	{
+		MLX_PROFILE_FUNCTION();
+		bool is_newlayer;
+		NonOwningPtr<Texture> layer = GetLayer(draw_layer, is_newlayer);
+		if(!layer)
+			return nullptr;
+		layer->SetPixel(x, y, color);
+		return (is_newlayer ? layer : nullptr);
+	}
+
+	NonOwningPtr<Texture> PutPixelManager::DrawPixelsArray(int x, int y, std::uint64_t draw_layer, int* pixels, std::size_t pixels_size)
+	{
+		MLX_PROFILE_FUNCTION();
+		bool is_newlayer;
+		NonOwningPtr<Texture> layer = GetLayer(draw_layer, is_newlayer);
+		if(!layer)
+			return nullptr;
+		layer->SetLinearRegion(x, y, pixels_size, pixels);
+		return (is_newlayer ? layer : nullptr);
+	}
+
+	NonOwningPtr<Texture> PutPixelManager::DrawPixelsRegion(int x, int y, int w, int h, std::uint64_t draw_layer, int* pixels)
+	{
+		MLX_PROFILE_FUNCTION();
+		bool is_newlayer;
+		NonOwningPtr<Texture> layer = GetLayer(draw_layer, is_newlayer);
+		if(!layer)
+			return nullptr;
+		layer->SetRegion(x, y, w, h, pixels);
+		return (is_newlayer ? layer : nullptr);
+	}
+
+	NonOwningPtr<Texture> PutPixelManager::GetLayer(std::uint64_t draw_layer, bool& is_newlayer)
+	{
+		MLX_PROFILE_FUNCTION();
 		Verify((bool)p_renderer, "invalid renderer pointer");
 
 		VkExtent2D extent;
@@ -20,9 +54,10 @@ namespace mlx
 		auto it = m_placements.find(draw_layer);
 		if(it != m_placements.end())
 		{
-			it->second->SetPixel(x, y, color);
-			return nullptr;
+			is_newlayer = false;
+			return it->second;
 		}
+		is_newlayer = true;
 
 		bool adjusment = false;
 		if(m_current_texture_index >= m_textures.size())
@@ -39,12 +74,11 @@ namespace mlx
 		{
 			m_placements[draw_layer] = m_textures.at(m_current_texture_index - adjusment).get();
 			m_textures.at(m_current_texture_index - adjusment)->Clear(VK_NULL_HANDLE, Vec4f{ 0.0f });
-			m_textures.at(m_current_texture_index - adjusment)->SetPixel(x, y, color);
 			return m_textures.at(m_current_texture_index - adjusment).get();
 		}
 		catch(...)
 		{
-			Error("PutPixelManager: invalid texture index; % is not in range of 0-% (internal mlx issue, please report to devs)", m_current_texture_index - 1, m_textures.size());
+			Error("PutPixelManager: invalid texture index; % is not in range of 0-% (internal mlx issue, please report to devs)", m_current_texture_index - adjusment, m_textures.size());
 			return nullptr;
 		}
 	}
