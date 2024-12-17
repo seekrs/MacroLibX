@@ -6,7 +6,7 @@
 /*   By: maldavid <contact@kbz8.me>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:56:35 by maldavid          #+#    #+#             */
-/*   Updated: 2024/12/17 02:23:40 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/12/17 02:58:07 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,7 +207,7 @@ MLX_API void mlx_get_screen_size(mlx_context mlx, mlx_window win, int* w, int* h
 
 
 /**
- * @brief            Gives a function to be executed at each loop turn
+ * @brief            Gives another function to be executed at each loop turn
  *
  * @param mlx        Internal MLX application
  * @param f          The function
@@ -281,7 +281,7 @@ typedef enum mlx_event_type
 } mlx_event_type;
 
 /**
- * @brief            Gives a function to be executed on event type
+ * @brief            Gives a function to be executed on event type, does not override previous functions
  *
  * @param mlx        Internal MLX application
  * @param win        Internal window
@@ -303,7 +303,7 @@ MLX_API void mlx_on_event(mlx_context mlx, mlx_window win, mlx_event_type event,
  * @param win        Internal window
  * @param x          X coordinate
  * @param y          Y coordinate
- * @param color      Color of the pixel (coded on 4 bytes in an int, 0xRRGGBBAA)
+ * @param color      Color of the pixel
  */
 MLX_API void mlx_pixel_put(mlx_context mlx, mlx_window win, int x, int y, mlx_color color);
 
@@ -405,7 +405,7 @@ MLX_API void mlx_put_image_to_window(mlx_context mlx, mlx_window win, mlx_image 
  * @param win        Internal window
  * @param x          X coordinate
  * @param y          Y coordinate
- * @param color      Color of the pixel (coded on 4 bytes in an int, 0xAARRGGBB)
+ * @param color      Color of the pixel
  * @param str        Text to put
  */
 MLX_API void mlx_string_put(mlx_context mlx, mlx_window win, int x, int y, mlx_color color, char* str);

@@ -6,7 +6,7 @@
 /*   By: maldavid <contact@kbz8.me>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 16:17:10 by maldavid          #+#    #+#             */
-/*   Updated: 2024/12/16 20:33:50 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/12/17 02:59:50 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,8 @@ MLX_API void mlx_restore_window(mlx_context mlx, mlx_window win);
  * @param win        Internal window
  * @param x          X coordinate
  * @param y          Y coordinate
- * @param pixels     Array of pixels (coded on 4 bytes in an int, 0xRRGGBBAA)
+ * @param pixels     Array of pixels
+ * @param pixels_size Size or the array of pixels
  */
 MLX_API void mlx_pixel_put_array(mlx_context mlx, mlx_window win, int x, int y, mlx_color* pixels, size_t pixels_size);
 
@@ -96,7 +97,7 @@ MLX_API void mlx_pixel_put_array(mlx_context mlx, mlx_window win, int x, int y, 
  * @param y          Y coordinate
  * @param w          Width
  * @param h          Height
- * @param pixels     Array of pixels (coded on 4 bytes in an int, 0xRRGGBBAA)
+ * @param pixels     Array of pixels
  *
  * Note: it is responsability of the user to make sure the size of `pixels` is
  * big enough for the given region.
