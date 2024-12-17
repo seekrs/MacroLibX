@@ -12,9 +12,13 @@ namespace mlx
 		{
 			if(!m_windows.contains(window_id))
 				return;
-			if(!m_events_hooks.contains(window_id) || !m_events_hooks[window_id][event].hook)
+			if(!m_events_hooks.contains(window_id) || m_events_hooks[window_id][event].empty())
 				return;
-			m_events_hooks[window_id][event].hook(code, m_events_hooks[window_id][event].param);
+			for(const auto& hook : m_events_hooks[window_id][event])
+			{
+				if(hook.fn)
+					hook.fn(code, hook.param);
+			}
 		});
 	}
 

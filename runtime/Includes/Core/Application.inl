@@ -40,12 +40,12 @@ namespace mlx
 		*y = m_in.GetY();
 	}
 
-	void Application::OnEvent(mlx_window win, int event, int (*funct_ptr)(int, void*), void* param) noexcept
+	void Application::OnEvent(mlx_window win, int event, void(*f)(int, void*), void* param) noexcept
 	{
 		CHECK_WINDOW_PTR(win, );
 		if(!m_graphics[win->id]->HasWindow())
 			return;
-		m_in.OnEvent(m_graphics[win->id]->GetWindow()->GetID(), event, funct_ptr, param);
+		m_in.OnEvent(m_graphics[win->id]->GetWindow()->GetID(), event, f, param);
 	}
 
 	void Application::SetFPSCap(std::uint32_t fps) noexcept
@@ -122,10 +122,9 @@ namespace mlx
 		return texture;
 	}
 
-	void Application::LoopHook(int (*f)(void*), void* param)
+	void Application::AddLoopHook(void(*f)(void*), void* param)
 	{
-		f_loop_hook = f;
-		p_param = param;
+		m_hooks.emplace_back(f, param);
 	}
 	
 	void Application::LoopEnd() noexcept

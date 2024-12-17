@@ -93,7 +93,7 @@ namespace mlx
 		try
 		{
 			std::stringstream ss;
-			ss << Format("Verification failed : %", message, args...);
+			ss << Format("Verification failed: %", message, args...);
 			Logs::Report(LogType::FatalError, line, file, function, ss.str());
 		}
 		catch(const std::exception& e)
@@ -112,7 +112,7 @@ namespace mlx
 			try
 			{
 				std::stringstream ss;
-				ss << Format("Assertion failed : %", message, args...);
+				ss << Format("Assertion failed: %", message, args...);
 				Logs::Report(LogType::FatalError, line, file, function, ss.str());
 			}
 			catch(const std::exception& e)

@@ -33,17 +33,19 @@ INCLUDES = -I./includes -I./runtime/Includes -I./runtime/Sources -I./third_party
 
 CXXPCHFLAGS = -xc++-header
 
-PCH = runtime/Includes/PreCompiled.h
-GCH =
+PCH_SOURCE = runtime/Includes/PreCompiled.h
+GCH = runtime/Includes/PreCompiled.h.gch
+CCH = runtime/Includes/PreCompiled.h.pch
+PCH =
 
-NZRRC = nzslc
+NZRRC ?= nzslc
 
 ifeq ($(TOOLCHAIN), gcc)
 	CXX = g++
-	GCH = runtime/Includes/PreCompiled.h.gch
+	PCH = $(GCH)
 	CXXFLAGS += -Wno-error=cpp
 else
-	GCH = runtime/Includes/PreCompiled.h.pch
+	PCH = $(CCH)
 	CXXFLAGS += -Wno-error=#warning -include-pch $(GCH)
 endif
 
@@ -115,7 +117,7 @@ ifeq ($(OBJS_TOTAL), 0) # To avoid division per 0
 endif
 CURR_OBJ = 0
 
-$(OBJ_DIR)/%.o: %.cpp $(GCH)
+$(OBJ_DIR)/%.o: %.cpp $(PCH)
 	@mkdir -p $(dir $@)
 	@$(eval CURR_OBJ=$(shell echo $$(( $(CURR_OBJ) + 1 ))))
 	@$(eval PERCENT=$(shell echo $$(( $(CURR_OBJ) * 100 / $(OBJS_TOTAL) ))))
@@ -139,9 +141,9 @@ CURR_SPV = 0
 all: _printbuildinfos
 	@$(MAKE) $(NAME)
 
-$(GCH):
+$(PCH):
 	@printf "$(COLOR)($(_BOLD)%3s%%$(_RESET)$(COLOR)) $(_RESET)Compiling $(_BOLD)PreCompiled header$(_RESET)\n" "0"
-	@$(CXX) $(CXXPCHFLAGS) $(INCLUDES) $(PCH) -o $(GCH)
+	@$(CXX) $(CXXPCHFLAGS) $(INCLUDES) $(PCH_SOURCE) -o $(PCH)
 
 $(NAME): $(OBJS)
 	@printf "Linking $(_BOLD)$(NAME)$(_RESET)\n"
@@ -163,7 +165,8 @@ clean:
 	@$(RM) $(OBJ_DIR)
 	@printf "Cleaned $(_BOLD)$(OBJ_DIR)$(_RESET)\n"
 	@$(RM) $(GCH)
-	@printf "Cleaned $(_BOLD)$(GCH)$(_RESET)\n"
+	@$(RM) $(CCH)
+	@printf "Cleaned pre compiled header\n"
 
 fclean: clean
 	@$(RM) $(NAME)

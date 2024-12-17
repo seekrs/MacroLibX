@@ -31,12 +31,13 @@ extern "C"
 
 		mlx::MemManager::Get(); // just to initialize the C garbage collector
 
-		try { __internal_application_ptr = new mlx::Application; }
-		catch(...) { mlx::FatalError("internal application memory allocation failed"); }
+		__internal_application_ptr = new mlx::Application;
+		if(__internal_application_ptr == nullptr)
+			mlx::FatalError("internal application memory allocation failed");
 
-		mlx_context_handler* context;
-		try { context = new mlx_context_handler; }
-		catch(...) { mlx::FatalError("mlx_context memory allocation failed"); }
+		mlx_context_handler* context = new mlx_context_handler;
+		if(context == nullptr)
+			mlx::FatalError("mlx_context memory allocation failed");
 		context->app = __internal_application_ptr;
 		return context;
 	}
@@ -150,10 +151,10 @@ extern "C"
 			gs->GetWindow()->GetScreenSizeWindowIsOn(w, h);
 	}
 
-	void mlx_loop_hook(mlx_context mlx, int (*f)(void*), void* param)
+	void mlx_add_loop_hook(mlx_context mlx, void(*f)(void*), void* param)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
-		mlx->app->LoopHook(f, param);
+		mlx->app->AddLoopHook(f, param);
 	}
 
 	void mlx_loop(mlx_context mlx)
@@ -195,10 +196,10 @@ extern "C"
 		mlx->app->GetMousePos(x, y);
 	}
 
-	void mlx_on_event(mlx_context mlx, mlx_window win, mlx_event_type event, int (*funct_ptr)(int, void*), void* param)
+	void mlx_on_event(mlx_context mlx, mlx_window win, mlx_event_type event, void(*f)(int, void*), void* param)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
-		mlx->app->OnEvent(win, static_cast<int>(event), funct_ptr, param);
+		mlx->app->OnEvent(win, static_cast<int>(event), f, param);
 	}
 
 	void mlx_pixel_put(mlx_context mlx, mlx_window win, int x, int y, mlx_color color)
