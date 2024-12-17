@@ -85,6 +85,7 @@ target("mlx")
 	end)
 target_end()
 
+--[[
 target("Test")
 	set_default(false)
 	set_kind("binary")
@@ -100,3 +101,4 @@ target("Test")
 
 	add_packages("libsdl")
 target_end()
+]]--

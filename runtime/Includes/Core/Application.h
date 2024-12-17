@@ -21,7 +21,7 @@ namespace mlx
 			inline void GetScreenSize(mlx_window win, int* w, int* h) noexcept;
 			inline void SetFPSCap(std::uint32_t fps) noexcept;
 
-			inline void OnEvent(mlx_window win, int event, int (*funct_ptr)(int, void*), void* param) noexcept;
+			inline void OnEvent(mlx_window win, int event, void(*f)(int, void*), void* param) noexcept;
 
 			inline mlx_window NewGraphicsSuport(const mlx_window_create_info* info);
 			inline NonOwningPtr<GraphicsSupport> GetGraphicsSupport(mlx_window win);
@@ -32,7 +32,7 @@ namespace mlx
 			inline NonOwningPtr<Texture> GetTexture(mlx_image image);
 			void DestroyTexture(mlx_image img);
 
-			inline void LoopHook(int (*f)(void*), void* param);
+			inline void AddLoopHook(void(*f)(void*), void* param);
 			inline void LoopEnd() noexcept;
 
 			inline void LoadFont(const std::filesystem::path& filepath, float scale);
@@ -40,6 +40,15 @@ namespace mlx
 			void Run() noexcept;
 
 			~Application();
+
+		private:
+			struct Hook
+			{
+				func::function<void(void*)> fn;
+				void* param;
+
+				Hook(func::function<void(void*)> fn, void* param) : fn(fn), param(param) {}
+			};
 
 		private:
 			std::unique_ptr<MemManager> p_mem_manager; // Putting ptr here to initialise them before inputs, even if it f*cks the padding
@@ -50,13 +59,12 @@ namespace mlx
 			ImageRegistry m_image_registry;
 			MeshRegistry m_mesh_registry;
 			std::vector<std::unique_ptr<GraphicsSupport>> m_graphics;
+			std::vector<Hook> m_hooks;
 			std::shared_ptr<Font> p_last_font_bound;
-			std::function<int(Handle)> f_loop_hook;
 			std::unique_ptr<RenderCore> p_render_core;
 			#ifdef PROFILER
 				std::unique_ptr<Profiler> p_profiler;
 			#endif
-			Handle p_param = nullptr;
 	};
 }
 

@@ -18,7 +18,7 @@ typedef struct
 
 static mlx_color pixels_circle[CIRCLE_DIAMETER * CIRCLE_DIAMETER] = { 0 };
 
-int update(void* param)
+void update(void* param)
 {
 	static int i = 0;
 	mlx_t* mlx = (mlx_t*)param;
@@ -60,7 +60,6 @@ int update(void* param)
 	mlx_pixel_put_region(mlx->mlx, mlx->win, 200, 170, CIRCLE_DIAMETER, CIRCLE_DIAMETER, pixels_circle);
 
 	i++;
-	return 0;
 }
 
 mlx_image create_image(mlx_t* mlx)
@@ -87,7 +86,7 @@ mlx_image create_image(mlx_t* mlx)
 	return img;
 }
 
-int key_hook(int key, void* param)
+void key_hook(int key, void* param)
 {
 	int x;
 	int y;
@@ -123,14 +122,12 @@ int key_hook(int key, void* param)
 
 		default : break;
 	}
-	return 0;
 }
 
-int window_hook(int event, void* param)
+void window_hook(int event, void* param)
 {
 	if(event == 0)
 		mlx_loop_end(((mlx_t*)param)->mlx);
-	return 0;
 }
 
 int main(void)
@@ -179,7 +176,7 @@ int main(void)
 	mlx_set_font_scale(mlx.mlx, "font.ttf", 16.f);
 	mlx_string_put(mlx.mlx, mlx.win, 20, 20, (mlx_color){ .rgba = 0x0020FFFF }, "that text will disappear");
 
-	mlx_loop_hook(mlx.mlx, update, &mlx);
+	mlx_add_loop_hook(mlx.mlx, update, &mlx);
 	mlx_loop(mlx.mlx);
 
 	mlx_destroy_image(mlx.mlx, mlx.logo_png);

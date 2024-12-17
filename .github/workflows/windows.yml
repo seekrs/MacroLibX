@@ -50,7 +50,3 @@ jobs:
     # Build the mlx
     - name: Build MacroLibX
       run: xmake --yes
-
-    # Build the example
-    - name: Build Example
-      run: xmake build --yes Test

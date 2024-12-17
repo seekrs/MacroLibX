@@ -43,6 +43,8 @@ namespace mlx
 	void Image::Init(ImageType type, std::uint32_t width, std::uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, bool is_multisampled, [[maybe_unused]] std::string_view debug_name)
 	{
 		MLX_PROFILE_FUNCTION();
+		Verify(width > 0 && height > 0, "width or height cannot be null");
+
 		m_type = type;
 		m_width = width;
 		m_height = height;
@@ -387,6 +389,11 @@ namespace mlx
 		int channels;
 
 		std::uint8_t* data = stbi_load(filename.c_str(), &size.x, &size.y, &channels, 4);
+		if(data == nullptr)
+		{
+			Error("Image loader: could not load % due to %", file, stbi_failure_reason());
+			return nullptr;
+		}
 		CallOnExit defer([&]() { stbi_image_free(data); });
 
 		CPUBuffer buffer(size.x * size.y * 4);
@@ -396,10 +403,6 @@ namespace mlx
 			*w = size.x;
 		if(h != nullptr)
 			*h = size.y;
-
-		Texture* texture;
-		try { texture = new Texture(std::move(buffer), size.x, size.y, VK_FORMAT_R8G8B8A8_SRGB, false, std::move(filename)); }
-		catch(...) { return nullptr; }
-		return texture;
+		return new Texture(std::move(buffer), size.x, size.y, VK_FORMAT_R8G8B8A8_SRGB, false, std::move(filename));
 	}
 }

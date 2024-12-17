@@ -6,7 +6,7 @@
 /*   By: maldavid <contact@kbz8.me>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:56:35 by maldavid          #+#    #+#             */
-/*   Updated: 2024/12/17 00:27:35 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/12/17 02:23:40 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,7 +213,7 @@ MLX_API void mlx_get_screen_size(mlx_context mlx, mlx_window win, int* w, int* h
  * @param f          The function
  * @param param      Param to give to the function passed
  */
-MLX_API void mlx_loop_hook(mlx_context mlx, int (*f)(void*), void* param);
+MLX_API void mlx_add_loop_hook(mlx_context mlx, void(*f)(void*), void* param);
 
 /**
  * @brief            Starts the internal main loop
@@ -289,7 +289,7 @@ typedef enum mlx_event_type
  * @param f          Function to be executed
  * @param param      Parameter given to the function
  */
-MLX_API void mlx_on_event(mlx_context mlx, mlx_window win, mlx_event_type event, int (*f)(int, void*), void* param);
+MLX_API void mlx_on_event(mlx_context mlx, mlx_window win, mlx_event_type event, void(*f)(int, void*), void* param);
 
 
 

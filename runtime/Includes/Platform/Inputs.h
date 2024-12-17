@@ -12,8 +12,10 @@ namespace mlx
 		public:
 			struct Hook
 			{
-				func::function<int(int, void*)> hook;
+				func::function<void(int, void*)> fn;
 				void* param = nullptr;
+
+				Hook(func::function<void(int, void*)> fn, void* param) : fn(fn), param(param) {}
 			};
 
 		public:
@@ -33,17 +35,16 @@ namespace mlx
 			MLX_FORCEINLINE constexpr void Finish() noexcept { m_run = false; }
 			MLX_FORCEINLINE constexpr void Run() noexcept { m_run = true; }
 
-			inline void OnEvent(std::uint32_t id, int event, int (*funct_ptr)(int, void*), void* param) noexcept
+			inline void OnEvent(std::uint32_t id, int event, void(*f)(int, void*), void* param) noexcept
 			{
-				m_events_hooks[id][event].hook = funct_ptr;
-				m_events_hooks[id][event].param = param;
+				m_events_hooks[id][event].emplace_back(f, param);
 			}
 
 			~Inputs() = default;
 
 		private:
 			std::unordered_map<std::uint32_t, std::shared_ptr<Window>> m_windows;
-			std::unordered_map<std::uint32_t, std::array<Hook, 6>> m_events_hooks;
+			std::unordered_map<std::uint32_t, std::array<std::vector<Hook>, 6>> m_events_hooks;
 			bool m_run = false;
 	};
 }

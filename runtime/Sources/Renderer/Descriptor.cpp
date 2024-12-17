@@ -80,7 +80,7 @@ namespace mlx
 			case ShaderType::Vertex: vulkan_shader_stage = VK_SHADER_STAGE_VERTEX_BIT; break;
 			case ShaderType::Fragment: vulkan_shader_stage = VK_SHADER_STAGE_FRAGMENT_BIT; break;
 
-			default : FatalError("wtf"); break;
+			default: FatalError("wtf"); vulkan_shader_stage = VK_SHADER_STAGE_VERTEX_BIT; /* Just to shut up warnings */ break;
 		}
 
 		std::vector<VkDescriptorSetLayoutBinding> bindings(layout.binds.size());

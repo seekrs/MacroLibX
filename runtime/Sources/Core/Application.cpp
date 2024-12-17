@@ -38,8 +38,11 @@ namespace mlx
 
 			m_in.FetchInputs();
 
-			if(f_loop_hook)
-				f_loop_hook(p_param);
+			for(const auto& hook : m_hooks)
+			{
+				if(hook.fn)
+					hook.fn(hook.param);
+			}
 
 			for(auto& gs : m_graphics)
 			{
