@@ -3,7 +3,7 @@
 add_requires("libsdl", { configs = { sdlmain = false } })
 
 add_rules("mode.debug", "mode.release")
-set_languages("cxx20", "c99")
+set_languages("cxx20", "c11")
 
 set_objectdir("objs/xmake/$(os)_$(arch)")
 set_targetdir("./")
@@ -94,7 +94,7 @@ target("Test")
 
 	add_deps("mlx")
 
-	add_files("example/main.c")
+	add_files("example/main.c", { languages = "c99" })
 
 	add_defines("SDL_MAIN_HANDLED")
 

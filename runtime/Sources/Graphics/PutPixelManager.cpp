@@ -44,14 +44,6 @@ namespace mlx
 		MLX_PROFILE_FUNCTION();
 		Verify((bool)p_renderer, "invalid renderer pointer");
 
-		VkExtent2D extent;
-		if(p_renderer->GetWindow())
-			extent = kvfGetSwapchainImagesSize(p_renderer->GetSwapchain().Get());
-		else if(p_renderer->GetRenderTarget())
-			extent = VkExtent2D{ .width = p_renderer->GetRenderTarget()->GetWidth(), .height = p_renderer->GetRenderTarget()->GetHeight() };
-		else
-			FatalError("a renderer was created without window nor render target attached (wtf)");
-
 		auto it = m_placements.find(draw_layer);
 		if(it != m_placements.end())
 		{
@@ -62,6 +54,13 @@ namespace mlx
 
 		if(m_current_texture_index >= m_textures.size())
 		{
+			VkExtent2D extent;
+			if(p_renderer->GetWindow())
+				extent = kvfGetSwapchainImagesSize(p_renderer->GetSwapchain().Get());
+			else if(p_renderer->GetRenderTarget())
+				extent = VkExtent2D{ .width = p_renderer->GetRenderTarget()->GetWidth(), .height = p_renderer->GetRenderTarget()->GetHeight() };
+			else
+				FatalError("a renderer was created without window nor render target attached (wtf)");
 			#ifdef DEBUG
 				m_textures.push_back(std::make_unique<Texture>(CPUBuffer{}, extent.width, extent.height, VK_FORMAT_R8G8B8A8_SRGB, false, "mlx_put_pixel_layer_" + std::to_string(m_current_texture_index)));
 			#else
