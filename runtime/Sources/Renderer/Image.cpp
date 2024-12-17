@@ -308,12 +308,11 @@ namespace mlx
 		Image::Clear(cmd, std::move(color));
 		if(m_staging_buffer.has_value())
 		{
-			mlx_color processed_color{
-				.r = static_cast<std::uint8_t>(color.r * 255.f),
-				.g = static_cast<std::uint8_t>(color.g * 255.f),
-				.b = static_cast<std::uint8_t>(color.b * 255.f),
-				.a = static_cast<std::uint8_t>(color.a * 255.f)
-			};
+			mlx_color processed_color;
+			processed_color.r = static_cast<std::uint8_t>(color.r * 255.f);
+			processed_color.g = static_cast<std::uint8_t>(color.g * 255.f);
+			processed_color.b = static_cast<std::uint8_t>(color.b * 255.f);
+			processed_color.a = static_cast<std::uint8_t>(color.a * 255.f);
 			std::fill(m_cpu_buffer.begin(), m_cpu_buffer.end(), processed_color);
 		}
 	}
