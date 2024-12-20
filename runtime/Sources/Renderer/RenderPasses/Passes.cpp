@@ -29,9 +29,9 @@ namespace mlx
 			else
 				extent = kvfGetSwapchainImagesSize(renderer.GetSwapchain().Get());
 			#ifdef DEBUG
-				m_main_render_texture.Init({}, extent.width, extent.height, VK_FORMAT_R8G8B8A8_SRGB, false, "mlx_renderpasses_target");
+				m_main_render_texture.Init({}, extent.width, extent.height, VK_FORMAT_R8G8B8A8_UNORM, false, "mlx_renderpasses_target");
 			#else
-				m_main_render_texture.Init({}, extent.width, extent.height, VK_FORMAT_R8G8B8A8_SRGB, false, {});
+				m_main_render_texture.Init({}, extent.width, extent.height, VK_FORMAT_R8G8B8A8_UNORM, false, {});
 			#endif
 			m_main_render_texture.TransitionLayout(VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
 		}

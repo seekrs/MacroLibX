@@ -6,7 +6,7 @@
 /*   By: maldavid <contact@kbz8.me>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:56:35 by maldavid          #+#    #+#             */
-/*   Updated: 2024/12/17 02:58:07 by maldavid         ###   ########.fr       */
+/*   Updated: 2024/12/20 00:42:01 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,18 @@ MLX_API void mlx_destroy_context(mlx_context mlx);
 
 /**
  * @brief           Descriptor structure for window creation
+ *
+ * Note: if a valid mlx_image is passed as render_target, this window will not be a real system window
+ * and will rather act as a gate to use any draw function to draw directly on an image.
+ *
+ * Ex: you could use mlx_string_put or mlx_pixel_put to draw on a given image and then use this image
+ * with mlx_put_image_to_window to render it on a real window.
+ *
+ * See experimental/RenderToTexture/main.c for a concrete example.
  */
 typedef struct mlx_window_create_info
 {
+	mlx_image render_target;
 	const char* title;
 	int width;
 	int height;

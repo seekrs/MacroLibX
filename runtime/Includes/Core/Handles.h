@@ -1,9 +1,6 @@
 #ifndef __MLX_HANDLES__
 #define __MLX_HANDLES__
 
-#include <Core/Application.h>
-#include <Renderer/Image.h>
-
 extern "C"
 {
 	struct mlx_context_handler

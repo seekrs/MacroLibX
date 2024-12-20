@@ -67,7 +67,8 @@ namespace mlx
 		catch(...) { return nullptr; }
 
 		m_graphics.emplace_back(std::make_unique<GraphicsSupport>(info, m_graphics.size()));
-		m_in.RegisterWindow(m_graphics.back()->GetWindow());
+		if(m_graphics.back()->HasWindow())
+			m_in.RegisterWindow(m_graphics.back()->GetWindow());
 		m_graphics.back()->GetScene().BindFont(p_last_font_bound);
 		window->id = m_graphics.back()->GetID();
 		return window;
