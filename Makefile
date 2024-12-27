@@ -38,7 +38,7 @@ GCH = runtime/Includes/PreCompiled.h.gch
 CCH = runtime/Includes/PreCompiled.h.pch
 PCH =
 
-NZRRC ?= nzslc
+NZSLC ?= nzslc
 
 ifeq ($(TOOLCHAIN), gcc)
 	CXX = g++
