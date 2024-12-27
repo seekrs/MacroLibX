@@ -307,7 +307,7 @@ namespace mlx
 	void Texture::Clear(VkCommandBuffer cmd, Vec4f color)
 	{
 		MLX_PROFILE_FUNCTION();
-		Image::Clear(cmd, std::move(color));
+		Image::Clear(cmd, color);
 		if(m_staging_buffer.has_value())
 		{
 			mlx_color processed_color;
@@ -324,7 +324,7 @@ namespace mlx
 		MLX_PROFILE_FUNCTION();
 		if(!m_has_been_modified)
 			return;
-		std::memcpy(m_staging_buffer->GetMap(), m_cpu_buffer.data(), m_cpu_buffer.size() * kvfFormatSize(m_format));
+		std::memcpy(m_staging_buffer->GetMap(), m_cpu_buffer.data(), m_cpu_buffer.size() * sizeof(mlx_color));
 
 		VkImageLayout old_layout = m_layout;
 		TransitionLayout(VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, cmd);
@@ -362,7 +362,7 @@ namespace mlx
 		kvfDestroyFence(RenderCore::Get().GetDevice(), fence);
 
 		m_cpu_buffer.resize(m_width * m_height);
-		std::memcpy(m_cpu_buffer.data(), m_staging_buffer->GetMap(), m_cpu_buffer.size());
+		std::memcpy(m_cpu_buffer.data(), m_staging_buffer->GetMap(), m_cpu_buffer.size() * sizeof(mlx_color));
 	}
 
 	Texture* StbTextureLoad(const std::filesystem::path& file, int* w, int* h)

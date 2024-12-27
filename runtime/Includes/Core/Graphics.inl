@@ -87,6 +87,7 @@ namespace mlx
 	{
 		MLX_PROFILE_FUNCTION();
 		NonOwningPtr<Sprite> sprite = p_scene->GetSpriteFromTexturePositionScaleRotation(texture, Vec2f{ static_cast<float>(x), static_cast<float>(y) }, scale_x, scale_y, angle);
+		std::cout << sprite.Get() << std::endl;
 		if(!sprite)
 		{
 			if(m_pixelput_called)

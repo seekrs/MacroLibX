@@ -169,7 +169,7 @@ int main(void)
 	mlx.logo_jpg = mlx_new_image_from_file(mlx.mlx, "42_logo.jpg", &dummy, &dummy);
 
 	mlx_pixel_put(mlx.mlx, mlx.win, 200, 10, (mlx_color){ .rgba = 0xFF00FFFF });
-	mlx_put_image_to_window(mlx.mlx, mlx.win, mlx.logo_png, 10, 190);
+	mlx_put_image_to_window(mlx.mlx, mlx.win, mlx.logo_png, 0, 0);
 
 	mlx.img = create_image(&mlx);
 
