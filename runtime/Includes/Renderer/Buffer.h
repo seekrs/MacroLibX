@@ -19,7 +19,8 @@ namespace mlx
 
 			void Swap(GPUBuffer& buffer) noexcept;
 
-			[[nodiscard]] MLX_FORCEINLINE void* GetMap() const noexcept { return p_map; }
+			template<typename T = void*>
+			[[nodiscard]] MLX_FORCEINLINE T GetMap() const noexcept { return reinterpret_cast<T>(p_map); }
 			[[nodiscard]] MLX_FORCEINLINE VkBuffer Get() const noexcept { return m_buffer; }
 			[[nodiscard]] MLX_FORCEINLINE VmaAllocation GetAllocation() const noexcept { return m_allocation; }
 			[[nodiscard]] MLX_FORCEINLINE VkDeviceSize GetSize() const noexcept { return m_size; }

@@ -102,6 +102,7 @@ namespace mlx
 		VkFence fence = kvfCreateFence(RenderCore::Get().GetDevice());
 		kvfSubmitSingleTimeCommandBuffer(RenderCore::Get().GetDevice(), cmd, KVF_GRAPHICS_QUEUE, fence);
 		kvfDestroyFence(RenderCore::Get().GetDevice(), fence);
+		kvfDestroyCommandBuffer(RenderCore::Get().GetDevice(), cmd);
 		m_resize = false;
 		DebugLog("Vulkan: swapchain created");
 	}

@@ -1,4 +1,3 @@
-#include "vulkan/vulkan_core.h"
 #include <PreCompiled.h>
 #define VMA_IMPLEMENTATION
 #ifdef MLX_COMPILER_CLANG
