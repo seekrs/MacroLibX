@@ -214,6 +214,7 @@ namespace mlx
 		MLX_LOAD_FUNCTION(vkDestroyShaderModule);
 		MLX_LOAD_FUNCTION(vkDeviceWaitIdle);
 		MLX_LOAD_FUNCTION(vkEndCommandBuffer);
+		MLX_LOAD_FUNCTION(vkFreeCommandBuffers);
 		MLX_LOAD_FUNCTION(vkGetDeviceQueue);
 		MLX_LOAD_FUNCTION(vkGetImageSubresourceLayout);
 		MLX_LOAD_FUNCTION(vkQueueSubmit);

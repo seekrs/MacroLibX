@@ -8,7 +8,7 @@ namespace mlx
 	{
 		MLX_PROFILE_FUNCTION();
 		VmaAllocationCreateInfo alloc_info{};
-		alloc_info.flags = VMA_ALLOCATION_CREATE_HOST_ACCESS_SEQUENTIAL_WRITE_BIT;
+		alloc_info.flags = VMA_ALLOCATION_CREATE_HOST_ACCESS_RANDOM_BIT;
 		alloc_info.usage = VMA_MEMORY_USAGE_AUTO;
 
 		if(type == BufferType::Constant)
@@ -86,6 +86,7 @@ namespace mlx
 		VkFence fence = kvfCreateFence(RenderCore::Get().GetDevice());
 		kvfSubmitSingleTimeCommandBuffer(RenderCore::Get().GetDevice(), cmd, KVF_GRAPHICS_QUEUE, fence);
 		kvfDestroyFence(RenderCore::Get().GetDevice(), fence);
+		kvfDestroyCommandBuffer(RenderCore::Get().GetDevice(), cmd);
 		return true;
 	}
 

@@ -108,6 +108,8 @@ namespace mlx
 		if(is_single_time_cmd_buffer)
 			cmd = kvfCreateCommandBuffer(RenderCore::Get().GetDevice());
 		kvfTransitionImageLayout(RenderCore::Get().GetDevice(), m_image, KVF_IMAGE_COLOR, cmd, m_format, m_layout, new_layout, is_single_time_cmd_buffer);
+		if(is_single_time_cmd_buffer)
+			kvfDestroyCommandBuffer(RenderCore::Get().GetDevice(), cmd);
 		m_layout = new_layout;
 	}
 
@@ -140,6 +142,7 @@ namespace mlx
 			VkFence fence = kvfCreateFence(RenderCore::Get().GetDevice());
 			kvfSubmitSingleTimeCommandBuffer(RenderCore::Get().GetDevice(), cmd, KVF_GRAPHICS_QUEUE, fence);
 			kvfDestroyFence(RenderCore::Get().GetDevice(), fence);
+			kvfDestroyCommandBuffer(RenderCore::Get().GetDevice(), cmd);
 		}
 	}
 
@@ -199,6 +202,7 @@ namespace mlx
 			VkFence fence = kvfCreateFence(RenderCore::Get().GetDevice());
 			kvfSubmitSingleTimeCommandBuffer(RenderCore::Get().GetDevice(), cmd, KVF_GRAPHICS_QUEUE, fence);
 			kvfDestroyFence(RenderCore::Get().GetDevice(), fence);
+			kvfDestroyCommandBuffer(RenderCore::Get().GetDevice(), cmd);
 			staging_buffer.Destroy();
 		}
 		TransitionLayout(VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
@@ -219,9 +223,9 @@ namespace mlx
 		if(!m_staging_buffer.has_value())
 			OpenCPUBuffer();
 		if constexpr(std::endian::native == std::endian::little)
-			m_cpu_buffer[(y * m_width) + x] = ReverseColor(color);
+			m_staging_buffer->GetMap<mlx_color*>()[(y * m_width) + x] = ReverseColor(color);
 		else
-			m_cpu_buffer[(y * m_width) + x] = color;
+			m_staging_buffer->GetMap<mlx_color*>()[(y * m_width) + x] = color;
 		m_has_been_modified = true;
 	}
 
@@ -244,9 +248,9 @@ namespace mlx
 				moving_y++;
 			}
 			if constexpr(std::endian::native == std::endian::little)
-				m_cpu_buffer[(moving_y * m_width) + moving_x] = ReverseColor(pixels[i]);
+				m_staging_buffer->GetMap<mlx_color*>()[(moving_y * m_width) + moving_x] = ReverseColor(pixels[i]);
 			else
-				m_cpu_buffer[(moving_y * m_width) + moving_x] = pixels[i];
+				m_staging_buffer->GetMap<mlx_color*>()[(moving_y * m_width) + moving_x] = pixels[i];
 		}
 		m_has_been_modified = true;
 	}
@@ -259,11 +263,13 @@ namespace mlx
 		if(!m_staging_buffer.has_value())
 			OpenCPUBuffer();
 		if constexpr(std::endian::native == std::endian::little)
+		{
 			for(std::size_t i = 0; i < len; i++)
-				m_cpu_buffer[(y * m_width) + x + i] = ReverseColor(pixels[i]);
+				m_staging_buffer->GetMap<mlx_color*>()[(y * m_width) + x + i] = ReverseColor(pixels[i]);
+		}
 		else
 		{
-			std::memcpy(&m_cpu_buffer[(y * m_width) + x], pixels, len);
+			std::memcpy(&m_staging_buffer->GetMap<mlx_color*>()[(y * m_width) + x], pixels, len);
 		}
 		m_has_been_modified = true;
 	}
@@ -276,9 +282,9 @@ namespace mlx
 		if(!m_staging_buffer.has_value())
 			OpenCPUBuffer();
 		if constexpr(std::endian::native == std::endian::little)
-			return ReverseColor(m_cpu_buffer[(y * m_width) + x]);
+			return ReverseColor(m_staging_buffer->GetMap<mlx_color*>()[(y * m_width) + x]);
 		else
-			return m_cpu_buffer[(y * m_width) + x];
+			return m_staging_buffer->GetMap<mlx_color*>()[(y * m_width) + x];
 	}
 
 	void Texture::GetRegion(int x, int y, int w, int h, mlx_color* dst) noexcept
@@ -298,9 +304,9 @@ namespace mlx
 				moving_y++;
 			}
 			if constexpr(std::endian::native == std::endian::little)
-				dst[i] = ReverseColor(m_cpu_buffer[(moving_y * m_width) + moving_x]);
+				dst[i] = ReverseColor(m_staging_buffer->GetMap<mlx_color*>()[(moving_y * m_width) + moving_x]);
 			else
-				dst[i] = m_cpu_buffer[(moving_y * m_width) + moving_x];
+				dst[i] = m_staging_buffer->GetMap<mlx_color*>()[(moving_y * m_width) + moving_x];
 		}
 	}
 
@@ -315,7 +321,16 @@ namespace mlx
 			processed_color.g = static_cast<std::uint8_t>(color.g * 255.f);
 			processed_color.b = static_cast<std::uint8_t>(color.b * 255.f);
 			processed_color.a = static_cast<std::uint8_t>(color.a * 255.f);
-			std::fill(m_cpu_buffer.begin(), m_cpu_buffer.end(), processed_color);
+			if(processed_color.r == 0 && processed_color.g == 0 && processed_color.b == 0)
+				std::memset(m_staging_buffer->GetMap(), processed_color.a, m_staging_buffer->GetSize());
+			else
+			{
+				for(std::size_t y = 0; y < m_height; y++)
+				{
+					for(std::size_t x = 0; x < m_width; x++)
+						m_staging_buffer->GetMap<mlx_color*>()[y * m_width + x] = processed_color;
+				}
+			}
 		}
 	}
 
@@ -324,8 +339,6 @@ namespace mlx
 		MLX_PROFILE_FUNCTION();
 		if(!m_has_been_modified)
 			return;
-		std::memcpy(m_staging_buffer->GetMap(), m_cpu_buffer.data(), m_cpu_buffer.size() * sizeof(mlx_color));
-
 		VkImageLayout old_layout = m_layout;
 		TransitionLayout(VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, cmd);
 		kvfCopyBufferToImage(cmd, Image::Get(), m_staging_buffer->Get(), m_staging_buffer->GetOffset(), VK_IMAGE_ASPECT_COLOR_BIT, { m_width, m_height, 1 });
@@ -360,9 +373,7 @@ namespace mlx
 		VkFence fence = kvfCreateFence(RenderCore::Get().GetDevice());
 		kvfSubmitSingleTimeCommandBuffer(RenderCore::Get().GetDevice(), cmd, KVF_GRAPHICS_QUEUE, fence);
 		kvfDestroyFence(RenderCore::Get().GetDevice(), fence);
-
-		m_cpu_buffer.resize(m_width * m_height);
-		std::memcpy(m_cpu_buffer.data(), m_staging_buffer->GetMap(), m_cpu_buffer.size() * sizeof(mlx_color));
+		kvfDestroyCommandBuffer(RenderCore::Get().GetDevice(), cmd);
 	}
 
 	Texture* StbTextureLoad(const std::filesystem::path& file, int* w, int* h)

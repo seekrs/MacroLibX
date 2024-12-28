@@ -130,6 +130,8 @@ void window_hook(int event, void* param)
 		mlx_loop_end(((mlx_t*)param)->mlx);
 }
 
+#include <stdlib.h>
+
 int main(void)
 {
 	mlx_t mlx;
@@ -166,7 +168,12 @@ int main(void)
 
 	mlx.logo_png = mlx_new_image_from_file(mlx.mlx, "42_logo.png", &dummy, &dummy);
 	mlx.logo_bmp = mlx_new_image_from_file(mlx.mlx, "42_logo.bmp", &dummy, &dummy);
-	mlx.logo_jpg = mlx_new_image_from_file(mlx.mlx, "42_logo.jpg", &dummy, &dummy);
+	//mlx.logo_jpg = mlx_new_image_from_file(mlx.mlx, "42_logo.jpg", &dummy, &dummy);
+	mlx.logo_jpg = mlx_new_image(mlx.mlx, dummy, dummy);
+
+	mlx_color* data = (mlx_color*)malloc(dummy * dummy * sizeof(mlx_color));
+	mlx_get_image_region(mlx.mlx, mlx.logo_png, 0, 0, dummy, dummy, data);
+	mlx_set_image_region(mlx.mlx, mlx.logo_jpg, 0, 0, dummy, dummy, data);
 
 	mlx_pixel_put(mlx.mlx, mlx.win, 200, 10, (mlx_color){ .rgba = 0xFF00FFFF });
 	mlx_put_image_to_window(mlx.mlx, mlx.win, mlx.logo_png, 0, 0);

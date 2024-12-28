@@ -167,12 +167,13 @@ VkFramebuffer kvfCreateFramebuffer(VkDevice device, VkRenderPass renderpass, VkI
 VkExtent2D kvfGetFramebufferSize(VkFramebuffer buffer);
 void kvfDestroyFramebuffer(VkDevice device, VkFramebuffer framebuffer);
 
-VkCommandBuffer kvfCreateCommandBuffer(VkDevice device);
-VkCommandBuffer kvfCreateCommandBufferLeveled(VkDevice device, VkCommandBufferLevel level);
+VkCommandBuffer kvfCreateCommandBuffer(VkDevice device); // Uses internal command pool, not thread safe
+VkCommandBuffer kvfCreateCommandBufferLeveled(VkDevice device, VkCommandBufferLevel level); // Same
 void kvfBeginCommandBuffer(VkCommandBuffer buffer, VkCommandBufferUsageFlags flags);
 void kvfEndCommandBuffer(VkCommandBuffer buffer);
 void kvfSubmitCommandBuffer(VkDevice device, VkCommandBuffer buffer, KvfQueueType queue, VkSemaphore signal, VkSemaphore wait, VkFence fence, VkPipelineStageFlags* stages);
 void kvfSubmitSingleTimeCommandBuffer(VkDevice device, VkCommandBuffer buffer, KvfQueueType queue, VkFence fence);
+void kvfDestroyCommandBuffer(VkDevice device, VkCommandBuffer buffer);
 
 VkAttachmentDescription kvfBuildAttachmentDescription(KvfImageType type, VkFormat format, VkImageLayout initial, VkImageLayout final, bool clear, VkSampleCountFlagBits samples);
 #ifndef KVF_NO_KHR
@@ -313,6 +314,7 @@ void kvfCheckVk(VkResult result);
 		KVF_DEFINE_VULKAN_FUNCTION_PROTOTYPE(vkDestroyShaderModule);
 		KVF_DEFINE_VULKAN_FUNCTION_PROTOTYPE(vkDeviceWaitIdle);
 		KVF_DEFINE_VULKAN_FUNCTION_PROTOTYPE(vkEndCommandBuffer);
+		KVF_DEFINE_VULKAN_FUNCTION_PROTOTYPE(vkFreeCommandBuffers);
 		KVF_DEFINE_VULKAN_FUNCTION_PROTOTYPE(vkGetDeviceQueue);
 		KVF_DEFINE_VULKAN_FUNCTION_PROTOTYPE(vkGetImageSubresourceLayout);
 		KVF_DEFINE_VULKAN_FUNCTION_PROTOTYPE(vkQueueSubmit);
@@ -2414,6 +2416,29 @@ void kvfSubmitSingleTimeCommandBuffer(VkDevice device, VkCommandBuffer buffer, K
 	__kvfCheckVk(KVF_GET_DEVICE_FUNCTION(vkQueueSubmit)(kvfGetDeviceQueue(device, queue), 1, &submit_info, fence));
 	if(fence != VK_NULL_HANDLE)
 		kvfWaitForFence(device, fence);	
+}
+
+void kvfDestroyCommandBuffer(VkDevice device, VkCommandBuffer buffer)
+{
+	if(buffer == VK_NULL_HANDLE)
+		return;
+	KVF_ASSERT(device != VK_NULL_HANDLE);
+	__KvfDevice* kvf_device = __kvfGetKvfDeviceFromVkDevice(device);
+	KVF_ASSERT(kvf_device != NULL);
+
+	for(size_t i = 0; i < kvf_device->cmd_buffers_size; i++)
+	{
+		if(kvf_device->cmd_buffers[i] == buffer)
+		{
+			KVF_GET_DEVICE_FUNCTION(vkFreeCommandBuffers)(kvf_device->device, kvf_device->cmd_pool, 1, &buffer);
+			// Shift the elements to fill the gap
+			for(size_t j = i; j < kvf_device->cmd_buffers_size - 1; j++)
+				kvf_device->cmd_buffers[j] = kvf_device->cmd_buffers[j + 1];
+			kvf_device->cmd_buffers--;
+			return;
+		}
+    }
+	KVF_ASSERT(false && "could not find command buffer in internal device");
 }
 
 VkAttachmentDescription kvfBuildAttachmentDescription(KvfImageType type, VkFormat format, VkImageLayout initial, VkImageLayout final, bool clear, VkSampleCountFlagBits samples)

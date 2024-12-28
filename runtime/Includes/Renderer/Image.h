@@ -98,7 +98,6 @@ namespace mlx
 			void OpenCPUBuffer();
 
 		private:
-			std::vector<mlx_color> m_cpu_buffer;
 			std::optional<GPUBuffer> m_staging_buffer;
 			bool m_has_been_modified = false;
 	};
