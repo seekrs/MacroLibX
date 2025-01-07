@@ -143,7 +143,7 @@ namespace mlx
 				m_pixelput_called = false;
 			}	
 			Sprite& new_sprite = p_scene->CreateSprite(texture);
-			new_sprite.SetCenter(Vec2f{ texture->GetWidth() / 2.0f, texture->GetHeight() / 2.0f });
+			new_sprite.SetCenter(Vec2f{ texture->GetWidth() * 0.5f, texture->GetHeight() * 0.5f });
 			new_sprite.SetPosition(Vec2f{ static_cast<float>(x), static_cast<float>(y) });
 			new_sprite.SetScale(Vec2f{ scale_x, scale_y });
 			new_sprite.SetRotation(angle);
