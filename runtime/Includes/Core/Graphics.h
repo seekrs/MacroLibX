@@ -22,13 +22,13 @@ namespace mlx
 
 			void Render() noexcept;
 
-			inline void ResetRenderData(mlx_color color) noexcept;
+			void ResetRenderData(mlx_color color) noexcept;
 
-			inline void PixelPut(int x, int y, mlx_color color) noexcept;
-			inline void PixelPutArray(int x, int y, mlx_color* color, std::size_t pixels_size) noexcept;
-			inline void PixelPutRegion(int x, int y, int w, int h, mlx_color* color) noexcept;
-			inline void StringPut(int x, int y, mlx_color color, std::string str);
-			inline void TexturePut(NonOwningPtr<class Texture> texture, int x, int y, float scale_x, float scale_y, float angle);
+			void PixelPut(int x, int y, mlx_color color) noexcept;
+			void PixelPutArray(int x, int y, mlx_color* color, std::size_t pixels_size) noexcept;
+			void PixelPutRegion(int x, int y, int w, int h, mlx_color* color) noexcept;
+			void StringPut(int x, int y, mlx_color color, std::string str);
+			void TexturePut(NonOwningPtr<class Texture> texture, int x, int y, float scale_x, float scale_y, float angle);
 
 			inline void TryEraseSpritesInScene(NonOwningPtr<Texture> texture) noexcept;
 

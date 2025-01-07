@@ -6,12 +6,12 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 08:49:17 by maldavid          #+#    #+#             */
-/*   Updated: 2024/12/17 00:35:35 by maldavid         ###   ########.fr       */
+/*   Updated: 2025/01/07 00:17:45 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef __MLX_PROFILE__
-#define __MLX_PROFILE__
+#ifndef MACROLIBX_PROFILE_H
+#define MACROLIBX_PROFILE_H
 
 // Try to identify the compiler
 #if defined(__BORLANDC__)

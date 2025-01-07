@@ -18,23 +18,25 @@ typedef struct
 
 static mlx_color pixels_circle[CIRCLE_DIAMETER * CIRCLE_DIAMETER] = { 0 };
 
+#define THRESHOLD 200
+
 void update(void* param)
 {
 	static int i = 0;
 	mlx_t* mlx = (mlx_t*)param;
 
-	if(i > 200)
+	if(i > THRESHOLD)
 	{
 		mlx_clear_window(mlx->mlx, mlx->win, (mlx_color){ .rgba = 0x334D4DFF });
 		mlx_put_transformed_image_to_window(mlx->mlx, mlx->win, mlx->logo_bmp, 220, 40, 0.5f, 0.5f, i);
 	}
 
-	if(i >= 250)
+	if(i >= THRESHOLD + THRESHOLD / 4)
 		mlx_set_font_scale(mlx->mlx, "default", 16.f);
 	else
 		mlx_set_font_scale(mlx->mlx, "default", 6.f);
 
-	mlx_string_put(mlx->mlx, mlx->win, 160, 120, (mlx_color){ .rgba = 0xFF2066FF }, "this text should be hidden");
+	mlx_string_put(mlx->mlx, mlx->win, 160, 120, (mlx_color){ .rgba = 0xFF2066FF }, "this text should be behind");
 
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->logo_png, 100, 100);
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 150, 60);
@@ -50,7 +52,7 @@ void update(void* param)
 		color += (color < 255);
 	}
 
-	if(i < 200)
+	if(i < THRESHOLD)
 		mlx_put_transformed_image_to_window(mlx->mlx, mlx->win, mlx->logo_jpg, 210, 150, 0.5f, 2.0f, 0.0f);
 	else
 		mlx_put_transformed_image_to_window(mlx->mlx, mlx->win, mlx->logo_jpg, 210, 150, fabs(sin(i / 100.0f)), fabs(cos(i / 100.0f) * 2.0f), 0.0f);
@@ -59,7 +61,7 @@ void update(void* param)
 
 	mlx_pixel_put_region(mlx->mlx, mlx->win, 200, 170, CIRCLE_DIAMETER, CIRCLE_DIAMETER, pixels_circle);
 
-	i++;
+	i++; // Will overflow and I don't care
 }
 
 mlx_image create_image(mlx_t* mlx)
@@ -166,14 +168,9 @@ int main(void)
 	mlx_on_event(mlx.mlx, mlx.win, MLX_KEYDOWN, key_hook, &mlx);
 	mlx_on_event(mlx.mlx, mlx.win, MLX_WINDOW_EVENT, window_hook, &mlx);
 
-	mlx.logo_png = mlx_new_image_from_file(mlx.mlx, "42_logo.png", &dummy, &dummy);
 	mlx.logo_bmp = mlx_new_image_from_file(mlx.mlx, "42_logo.bmp", &dummy, &dummy);
-	//mlx.logo_jpg = mlx_new_image_from_file(mlx.mlx, "42_logo.jpg", &dummy, &dummy);
-	mlx.logo_jpg = mlx_new_image(mlx.mlx, dummy, dummy);
-
-	mlx_color* data = (mlx_color*)malloc(dummy * dummy * sizeof(mlx_color));
-	mlx_get_image_region(mlx.mlx, mlx.logo_png, 0, 0, dummy, dummy, data);
-	mlx_set_image_region(mlx.mlx, mlx.logo_jpg, 0, 0, dummy, dummy, data);
+	mlx.logo_png = mlx_new_image_from_file(mlx.mlx, "42_logo.png", &dummy, &dummy);
+	mlx.logo_jpg = mlx_new_image_from_file(mlx.mlx, "42_logo.jpg", &dummy, &dummy);
 
 	mlx_pixel_put(mlx.mlx, mlx.win, 200, 10, (mlx_color){ .rgba = 0xFF00FFFF });
 	mlx_put_image_to_window(mlx.mlx, mlx.win, mlx.logo_png, 0, 0);

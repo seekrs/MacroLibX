@@ -50,6 +50,13 @@ namespace mlx
 
 	void Application::SetFPSCap(std::uint32_t fps) noexcept
 	{
+		if(fps == 0)
+		{
+			SDL_DisplayMode mode;
+			if(!SDL_GetCurrentDisplayMode(1, &mode))
+				return;
+			fps = mode.refresh_rate;
+		}
 		m_fps.SetMaxFPS(fps);
 	}
 

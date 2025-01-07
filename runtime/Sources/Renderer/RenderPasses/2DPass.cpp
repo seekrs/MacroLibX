@@ -100,9 +100,9 @@ namespace mlx
 		for(auto& drawable : drawables)
 		{
 			// Check every textures and update modified ones to GPU before starting the render pass
+			drawable->Update(cmd);
 			if(!drawable->IsSetInit())
 				drawable->UpdateDescriptorSet(p_texture_set);
-			drawable->Update(cmd);
 		}
 
 		m_pipeline.BindPipeline(cmd, 0, {});

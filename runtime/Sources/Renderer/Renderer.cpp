@@ -87,6 +87,8 @@ namespace mlx
 			DebugLog("Vulkan: image available semaphore destroyed");
 			kvfDestroySemaphore(RenderCore::Get().GetDevice(), m_render_finished_semaphores[i]);
 			DebugLog("Vulkan: render finished semaphore destroyed");
+			kvfDestroyCommandBuffer(RenderCore::Get().GetDevice(), m_cmd_buffers[i]);
+			DebugLog("Vulkan: command buffer destroyed");
 			kvfDestroyFence(RenderCore::Get().GetDevice(), m_cmd_fences[i]);
 			DebugLog("Vulkan: fence destroyed");
 		}
