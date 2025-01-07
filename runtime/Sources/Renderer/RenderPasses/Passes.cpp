@@ -21,6 +21,7 @@ namespace mlx
 
 	void RenderPasses::Pass(Scene& scene, Renderer& renderer, const Vec4f& clear_color)
 	{
+		bool force_render = false;
 		if(!m_main_render_texture.IsInit())
 		{
 			VkExtent2D extent;
@@ -34,11 +35,15 @@ namespace mlx
 				m_main_render_texture.Init({}, extent.width, extent.height, VK_FORMAT_R8G8B8A8_UNORM, false, {});
 			#endif
 			m_main_render_texture.TransitionLayout(VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
+			force_render = true;
 		}
-		m_main_render_texture.Clear(renderer.GetActiveCommandBuffer(), clear_color);
-
-		m_2Dpass.Pass(scene, renderer, m_main_render_texture);
+		if(scene.HasSceneChanged() || force_render)
+		{
+			m_main_render_texture.Clear(renderer.GetActiveCommandBuffer(), clear_color);
+			m_2Dpass.Pass(scene, renderer, m_main_render_texture);
+		}
 		m_final.Pass(scene, renderer, m_main_render_texture, p_render_target);
+		scene.ResetChangeChecker();
 	}
 
 	void RenderPasses::Destroy()

@@ -29,10 +29,13 @@ namespace mlx
 
 			void BringToDrawLayer(NonOwningPtr<Drawable> drawable, std::uint64_t draw_layer);
 
-			inline void ResetScene(Vec4f clear) { m_drawables.clear(); m_clear_color = std::move(clear); }
+			inline void ResetScene(Vec4f clear) { m_drawables.clear(); m_clear_color = std::move(clear); m_has_scene_changed = true; }
 			inline const Vec4f& GetClearColor() const noexcept { return m_clear_color; }
 
 			[[nodiscard]] MLX_FORCEINLINE const std::vector<std::shared_ptr<Drawable>>& GetDrawables() const noexcept { return m_drawables; }
+
+			inline void ResetChangeChecker() noexcept { m_has_scene_changed = false; }
+			inline bool HasSceneChanged() const noexcept { return m_has_scene_changed; }
 
 			~Scene() = default;
 
@@ -40,6 +43,7 @@ namespace mlx
 			std::vector<std::shared_ptr<Drawable>> m_drawables;
 			std::shared_ptr<Font> p_bound_font;
 			Vec4f m_clear_color = { 0.0f, 0.0f, 0.0f, 1.0f };
+			bool m_has_scene_changed = false;
 	};
 }
 

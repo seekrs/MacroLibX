@@ -66,6 +66,7 @@ namespace mlx
 		catch(...) { return nullptr; }
 		m_image_registry.RegisterTexture(texture);
 		image->texture = texture;
+		texture->Clear(VK_NULL_HANDLE, Vec4f{ 0.0f });
 		return image;
 	}
 

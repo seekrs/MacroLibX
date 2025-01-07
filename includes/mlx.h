@@ -6,7 +6,7 @@
 /*   By: maldavid <contact@kbz8.me>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:56:35 by maldavid          #+#    #+#             */
-/*   Updated: 2024/12/20 00:42:01 by maldavid         ###   ########.fr       */
+/*   Updated: 2025/01/05 22:44:22 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ MLX_API mlx_context mlx_init();
  * @brief            Caps the FPS
  *
  * @param mlx        Internal MLX application
- * @param fps        The FPS cap
+ * @param fps        The FPS cap or 0 for vsync
  */
 MLX_API void mlx_set_fps_goal(mlx_context mlx, int fps);
 

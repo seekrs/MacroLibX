@@ -2,7 +2,7 @@
 
 add_requires("libsdl", { configs = { sdlmain = false } })
 
-add_rules("mode.debug", "mode.release")
+add_rules("mode.debug", "mode.release", "mode.releasedbg")
 set_languages("cxx20", "c11")
 
 set_objectdir("objs/xmake/$(os)_$(arch)")
@@ -85,7 +85,6 @@ target("mlx")
 	end)
 target_end()
 
---[[
 target("Test")
 	set_default(false)
 	set_kind("binary")
@@ -101,4 +100,3 @@ target("Test")
 
 	add_packages("libsdl")
 target_end()
-]]--

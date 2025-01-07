@@ -18,12 +18,14 @@ namespace mlx
 			{
 				std::shared_ptr<Sprite> new_sprite = std::make_shared<Sprite>(drawable->GetMesh(), texture);
 				m_drawables.push_back(new_sprite);
+				m_has_scene_changed = true;
 				return *new_sprite;
 			}
 		}
 
 		std::shared_ptr<Sprite> sprite = std::make_shared<Sprite>(texture);
 		m_drawables.push_back(sprite);
+		m_has_scene_changed = true;
 		return *sprite;
 	}
 
@@ -83,12 +85,14 @@ namespace mlx
 			{
 				std::shared_ptr<Text> new_text = std::make_shared<Text>(text, p_bound_font, drawable->GetMesh());
 				m_drawables.push_back(new_text);
+				m_has_scene_changed = true;
 				return *new_text;
 			}
 		}
 
 		std::shared_ptr<Text> new_text = std::make_shared<Text>(text, p_bound_font);
 		m_drawables.push_back(new_text);
+		m_has_scene_changed = true;
 		return *new_text;
 	}
 
@@ -127,5 +131,6 @@ namespace mlx
 		if(it == m_drawables.end())
 			return;
 		std::swap(*it, *(m_drawables.begin() + draw_layer));
+		m_has_scene_changed = true;
 	}
 }

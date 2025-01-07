@@ -13,6 +13,7 @@
 *.pdb
 *.gch
 *.pch
+*.sym
 *.exe
 *vgcore.*
 *.gdb_history

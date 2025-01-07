@@ -47,8 +47,6 @@ extern "C"
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		if(fps < 0)
 			mlx::Error("You cannot set a negative FPS cap (nice try)");
-		else if(fps == 0)
-			mlx::Error("You cannot set a FPS cap to 0 (nice try)");
 		else
 			mlx->app->SetFPSCap(static_cast<std::uint32_t>(fps));
 	}
