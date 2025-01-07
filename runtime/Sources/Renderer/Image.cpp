@@ -264,12 +264,17 @@ namespace mlx
 			OpenCPUBuffer();
 		if constexpr(std::endian::native == std::endian::little)
 		{
-			for(std::size_t i = 0; i < len; i++)
+			for(std::size_t i = 0; i < len && (y * m_width) + x + i < m_width * m_height; i++)
 				m_staging_buffer->GetMap<mlx_color*>()[(y * m_width) + x + i] = ReverseColor(pixels[i]);
 		}
 		else
 		{
-			std::memcpy(&m_staging_buffer->GetMap<mlx_color*>()[(y * m_width) + x], pixels, len);
+			std::size_t len_guard;
+			if((y * m_width + x + len) < m_width * m_height)
+				len_guard = len;
+			else
+				len_guard = len - (m_width * m_height - (y * m_width + x + len));
+			std::memcpy(&m_staging_buffer->GetMap<mlx_color*>()[(y * m_width) + x], pixels, len_guard);
 		}
 		m_has_been_modified = true;
 	}
