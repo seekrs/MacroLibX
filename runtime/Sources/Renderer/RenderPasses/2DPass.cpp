@@ -100,9 +100,9 @@ namespace mlx
 		for(auto& drawable : drawables)
 		{
 			// Check every textures and update modified ones to GPU before starting the render pass
-			drawable->Update(cmd);
 			if(!drawable->IsSetInit())
 				drawable->UpdateDescriptorSet(p_texture_set);
+			drawable->Update(cmd);
 		}
 
 		m_pipeline.BindPipeline(cmd, 0, {});
@@ -110,11 +110,19 @@ namespace mlx
 		{
 			DrawableData drawable_data;
 			drawable_data.color = drawable->GetColor();
+
+			Mat4f rotation_matrix = Mat4f::Identity();
+			rotation_matrix.ApplyTranslation(Vec3f{ -drawable->GetCenter(), 0.0f });
+			rotation_matrix.ApplyRotation(drawable->GetRotation());
+			rotation_matrix.ApplyTranslation(Vec3f{ drawable->GetCenter(), 0.0f });
+
+			Mat4f translation_matrix = Mat4f::Identity().ApplyTranslation(Vec3f{ drawable->GetPosition(), 0.0f });
+			Mat4f scale_matrix = Mat4f::Identity().ApplyScale(Vec3f{ drawable->GetScale(), 1.0f });
+
 			drawable_data.model_matrix = Mat4f::Identity();
-			drawable_data.model_matrix.ApplyTranslation(Vec3f{ -drawable->GetCenter() / 2.0f, 0.0f });
-			drawable_data.model_matrix.ApplyRotation(drawable->GetRotation());
-			drawable_data.model_matrix.ApplyTranslation(Vec3f{ drawable->GetPosition() + drawable->GetCenter() / 2.0f, 0.0f });
-			drawable_data.model_matrix.ApplyScale(Vec3f{ drawable->GetScale(), 1.0f });
+			drawable_data.model_matrix.ConcatenateTransform(rotation_matrix);
+			drawable_data.model_matrix.ConcatenateTransform(scale_matrix);
+			drawable_data.model_matrix.ConcatenateTransform(translation_matrix);
 
 			drawable->Bind(frame_index, cmd);
 
