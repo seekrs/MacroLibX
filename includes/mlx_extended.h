@@ -6,7 +6,7 @@
 /*   By: maldavid <contact@kbz8.me>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 16:17:10 by maldavid          #+#    #+#             */
-/*   Updated: 2024/12/17 02:59:50 by maldavid         ###   ########.fr       */
+/*   Updated: 2025/01/08 12:37:15 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,9 @@ MLX_API void mlx_restore_window(mlx_context mlx, mlx_window win);
  * @param x          X coordinate
  * @param y          Y coordinate
  * @param pixels     Array of pixels
- * @param pixels_size Size or the array of pixels
+ * @param pixels_number Number of pixels
  */
-MLX_API void mlx_pixel_put_array(mlx_context mlx, mlx_window win, int x, int y, mlx_color* pixels, size_t pixels_size);
+MLX_API void mlx_pixel_put_array(mlx_context mlx, mlx_window win, int x, int y, mlx_color* pixels, size_t pixels_number);
 
 /**
  * @brief            Put a region of pixels in the window
