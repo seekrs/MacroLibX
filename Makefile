@@ -50,8 +50,8 @@ else
 endif
 
 ifeq ($(OS), Darwin)
-	LDFLAGS += -L /opt/homebrew/Cellar/lib -L /usr/local/Cellar -lSDL2
-	INCLUDES += -I /opt/homebrew/Cellar/include -I /usr/local/Cellar/include
+	LDFLAGS += -L /opt/homebrew/Cellar/lib -L /usr/local/Cellar -L /opt/homebrew/lib -lSDL2
+	INCLUDES += -I /opt/homebrew/Cellar/include -I /usr/local/Cellar/include -I -I /opt/homebrew/include
 	NAME = libmlx.dylib
 endif
 
