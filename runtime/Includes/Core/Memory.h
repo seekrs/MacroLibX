@@ -16,8 +16,8 @@ namespace mlx
 			static void* AlignedRealloc(void* ptr, std::size_t alignment, std::size_t size);
 			static void Free(void* ptr);
 
-			inline static bool IsInit() noexcept { return s_instance != nullptr; }
-			inline static MemManager& Get() noexcept { return *s_instance; }
+			static inline bool IsInit() noexcept { return s_instance != nullptr; }
+			static inline MemManager& Get() noexcept { return *s_instance; }
 
 			~MemManager();
 
