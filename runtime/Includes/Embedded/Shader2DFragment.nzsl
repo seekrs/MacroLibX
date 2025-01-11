@@ -1,0 +1,28 @@
+[nzsl_version("1.0")]
+module;
+
+struct VertOut
+{
+	[location(0)] color: vec4[f32],
+	[location(1)] uv: vec2[f32]
+}
+
+struct FragOut
+{
+	[location(0)] color: vec4[f32]
+}
+
+external
+{
+	[set(1), binding(0)] u_texture: sampler2D[f32]
+}
+
+[entry(frag)]
+fn main(input: VertOut) -> FragOut
+{
+	let output: FragOut;
+	output.color = input.color * u_texture.Sample(input.uv);
+	if(output.color.w == 0.0)
+		discard;
+	return output;
+}

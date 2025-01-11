@@ -1,74 +1,72 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/04 17:55:21 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 16:16:07 by maldavid         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include <stdio.h>
+#include <math.h>
 #include "../includes/mlx.h"
+#include "../includes/mlx_extended.h"
 
 typedef struct
 {
-	void* mlx;
-	void* win;
-	void* logo_png;
-	void* logo_jpg;
-	void* logo_bmp;
-	void* img;
+	mlx_context mlx;
+	mlx_window win;
+	mlx_image logo_png;
+	mlx_image logo_jpg;
+	mlx_image logo_bmp;
+	mlx_image img;
 } mlx_t;
 
-//void* img = NULL;
+#define CIRCLE_RADIUS 50
+#define CIRCLE_DIAMETER (CIRCLE_RADIUS + CIRCLE_RADIUS)
 
-int update(void* param)
+static mlx_color pixels_circle[CIRCLE_DIAMETER * CIRCLE_DIAMETER] = { 0 };
+
+#define THRESHOLD 200
+
+void update(void* param)
 {
 	static int i = 0;
 	mlx_t* mlx = (mlx_t*)param;
 
-	if(i == 200)
-		mlx_clear_window(mlx->mlx, mlx->win);
-/*
-	if(img)
-		mlx_destroy_image(mlx->mlx,img);
-	img = mlx_new_image(mlx->mlx, 800, 800);
-	mlx_set_image_pixel(mlx->mlx, img, 4, 4, 0xFF00FF00);
-	mlx_put_image_to_window(mlx->mlx, mlx->win, img, 0, 0);
-*/
-	if(i >= 250)
-		mlx_set_font_scale(mlx->mlx, mlx->win, "default", 16.f);
+	if(i > THRESHOLD)
+	{
+		mlx_clear_window(mlx->mlx, mlx->win, (mlx_color){ .rgba = 0x334D4DFF });
+		mlx_put_transformed_image_to_window(mlx->mlx, mlx->win, mlx->logo_bmp, 220, 40, 0.5f, 0.5f, i);
+	}
+
+	if(i >= THRESHOLD + THRESHOLD / 4)
+		mlx_set_font_scale(mlx->mlx, "default", 16.f);
 	else
-		mlx_set_font_scale(mlx->mlx, mlx->win, "default", 6.f);
-	mlx_string_put(mlx->mlx, mlx->win, 160, 120, 0xFFFF2066, "this text should be hidden");
+		mlx_set_font_scale(mlx->mlx, "default", 6.f);
+
+	mlx_string_put(mlx->mlx, mlx->win, 160, 120, (mlx_color){ .rgba = 0xFF2066FF }, "this text should be behind");
 
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->logo_png, 100, 100);
-	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->logo_jpg, 210, 150);
-	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->logo_bmp, 220, 40);
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 150, 60);
 
-	mlx_set_font(mlx->mlx, mlx->win, "default");
-	mlx_string_put(mlx->mlx, mlx->win, 20, 50, 0xFFFFFFFF, "that's a text");
+	mlx_set_font(mlx->mlx, "default");
+	mlx_string_put(mlx->mlx, mlx->win, 20, 50, (mlx_color){ .rgba = 0xFFFFFFFF }, "that's a text");
 
-	int color = 0;
+	uint32_t color = 0;
 	for(int j = 0; j < 400; j++)
 	{
-		mlx_pixel_put(mlx->mlx, mlx->win, j, j, 0xFFFF0000 + color);
-		mlx_pixel_put(mlx->mlx, mlx->win, 399 - j, j, 0xFF0000FF);
+		mlx_pixel_put(mlx->mlx, mlx->win, j, j, (mlx_color){ .rgba = 0x0000FFFF + (color << 24) });
+		mlx_pixel_put(mlx->mlx, mlx->win, 399 - j, j, (mlx_color){ .rgba = 0x0000FFFF });
 		color += (color < 255);
 	}
 
-	i++;
-	return 0;
+	if(i < THRESHOLD)
+		mlx_put_transformed_image_to_window(mlx->mlx, mlx->win, mlx->logo_jpg, 210, 150, 0.5f, 2.0f, 0.0f);
+	else
+		mlx_put_transformed_image_to_window(mlx->mlx, mlx->win, mlx->logo_jpg, 210, 150, fabs(sin(i / 100.0f)), fabs(cos(i / 100.0f) * 2.0f), 0.0f);
+	mlx_set_font_scale(mlx->mlx, "default", 8.f);
+	mlx_string_put(mlx->mlx, mlx->win, 210, 175, (mlx_color){ .rgba = 0xFFAF2BFF }, "hidden");
+
+	mlx_pixel_put_region(mlx->mlx, mlx->win, 200, 170, CIRCLE_DIAMETER, CIRCLE_DIAMETER, pixels_circle);
+
+	i++; // Will overflow and I don't care
 }
 
-void* create_image(mlx_t* mlx)
+mlx_image create_image(mlx_t* mlx)
 {
-	unsigned char pixel[4];
-	void* img = mlx_new_image(mlx->mlx, 100, 100);
+	mlx_image img = mlx_new_image(mlx->mlx, 100, 100);
 	for(int i = 0, j = 0, k = 0; i < (100 * 100) * 4; i += 4, j++)
 	{
 		if(j >= 100)
@@ -78,17 +76,19 @@ void* create_image(mlx_t* mlx)
 		}
 		if(i < 10000 || i > 20000)
 		{
-			pixel[0] = i;
-			pixel[1] = j;
-			pixel[2] = k;
-			pixel[3] = 0x99;
-			mlx_set_image_pixel(mlx->mlx, img, j, k, *((int *)pixel));
+			mlx_color pixel = {
+				.r = (uint8_t)k,
+				.g = (uint8_t)j,
+				.b = (uint8_t)i,
+				.a = 0x99
+			};
+			mlx_set_image_pixel(mlx->mlx, img, j, k, pixel);
 		}
 	}
 	return img;
 }
 
-int key_hook(int key, void* param)
+void key_hook(int key, void* param)
 {
 	int x;
 	int y;
@@ -101,13 +101,13 @@ int key_hook(int key, void* param)
 			mlx_loop_end(mlx->mlx);
 		break;
 		case 22 : // (S)how
-			mlx_mouse_show();
+			mlx_mouse_show(mlx->mlx);
 		break;
 		case 11 : // (H)ide
-			mlx_mouse_hide();
+			mlx_mouse_hide(mlx->mlx);
 		break;
 		case 6 : // (C)lear
-			mlx_clear_window(mlx->mlx, mlx->win);
+			mlx_clear_window(mlx->mlx, mlx->win, (mlx_color){ .rgba = 0x334D4DFF });
 		break;
 		case 79 : // RIGHT KEY
 			mlx_mouse_move(mlx->mlx, mlx->win, x + 10, y);
@@ -124,15 +124,15 @@ int key_hook(int key, void* param)
 
 		default : break;
 	}
-	return 0;
 }
 
-int window_hook(int event, void* param)
+void window_hook(int event, void* param)
 {
 	if(event == 0)
 		mlx_loop_end(((mlx_t*)param)->mlx);
-	return 0;
 }
+
+#include <stdlib.h>
 
 int main(void)
 {
@@ -141,42 +141,55 @@ int main(void)
 	int h;
 	int dummy;
 
+	int i = 0;
+	for(int j = 0; j < CIRCLE_DIAMETER; j++)
+	{
+		for(int k = 0; k < CIRCLE_DIAMETER; k++, i++)
+		{
+			if((CIRCLE_RADIUS - j) * (CIRCLE_RADIUS - j) + (CIRCLE_RADIUS - k) * (CIRCLE_RADIUS - k) < CIRCLE_RADIUS * CIRCLE_RADIUS)
+				pixels_circle[i] = (mlx_color){ .rgba = 0xA10000FF + ((j * k * i) << 8) };
+		}
+	}
+
 	mlx.mlx = mlx_init();
-	mlx.win = mlx_new_window(mlx.mlx, 400, 400, "My window");
+
+	mlx_window_create_info info = { 0 };
+	info.title = "My window";
+	info.width = 400;
+	info.height = 400;
+	info.is_resizable = true;
+	mlx.win = mlx_new_window(mlx.mlx, &info);
+
+	mlx_get_screen_size(mlx.mlx, mlx.win, &w, &h);
+	printf("screen size : %dx%d\n", w, h);
 
 	mlx_set_fps_goal(mlx.mlx, 60);
 
 	mlx_on_event(mlx.mlx, mlx.win, MLX_KEYDOWN, key_hook, &mlx);
 	mlx_on_event(mlx.mlx, mlx.win, MLX_WINDOW_EVENT, window_hook, &mlx);
 
-	mlx.logo_png = mlx_png_file_to_image(mlx.mlx, "42_logo.png", &dummy, &dummy);
-	mlx.logo_bmp = mlx_bmp_file_to_image(mlx.mlx, "42_logo.bmp", &dummy, &dummy);
-	mlx.logo_jpg = mlx_jpg_file_to_image(mlx.mlx, "42_logo.jpg", &dummy, &dummy);
+	mlx.logo_bmp = mlx_new_image_from_file(mlx.mlx, "42_logo.bmp", &dummy, &dummy);
+	mlx.logo_png = mlx_new_image_from_file(mlx.mlx, "42_logo.png", &dummy, &dummy);
+	mlx.logo_jpg = mlx_new_image_from_file(mlx.mlx, "42_logo.jpg", &dummy, &dummy);
 
-	mlx_pixel_put(mlx.mlx, mlx.win, 200, 10, 0xFFFF00FF);
-	mlx_put_image_to_window(mlx.mlx, mlx.win, mlx.logo_png, 10, 190);
+	mlx_pixel_put(mlx.mlx, mlx.win, 200, 10, (mlx_color){ .rgba = 0xFF00FFFF });
+	mlx_put_image_to_window(mlx.mlx, mlx.win, mlx.logo_png, 0, 0);
 
 	mlx.img = create_image(&mlx);
 
+	mlx_set_font_scale(mlx.mlx, "font.ttf", 16.f);
+	mlx_string_put(mlx.mlx, mlx.win, 20, 20, (mlx_color){ .rgba = 0x0020FFFF }, "that text will disappear");
 
-	mlx_string_put(mlx.mlx, mlx.win, 0, 10, 0xFFFFFF00, "fps:");
-	mlx_string_put(mlx.mlx, mlx.win, 0, 20, 0xFFFFFFFF, "fps:");
-
-	mlx_set_font_scale(mlx.mlx, mlx.win, "font.ttf", 16.f);
-	mlx_string_put(mlx.mlx, mlx.win, 20, 20, 0xFF0020FF, "that text will disappear");
-
-	mlx_loop_hook(mlx.mlx, update, &mlx);
+	mlx_add_loop_hook(mlx.mlx, update, &mlx);
 	mlx_loop(mlx.mlx);
-
-	mlx_get_screens_size(mlx.mlx, mlx.win, &w, &h);
-	printf("screen size : %dx%d\n", w, h);
 
 	mlx_destroy_image(mlx.mlx, mlx.logo_png);
 	mlx_destroy_image(mlx.mlx, mlx.logo_jpg);
 	mlx_destroy_image(mlx.mlx, mlx.logo_bmp);
 	mlx_destroy_image(mlx.mlx, mlx.img);
 	mlx_destroy_window(mlx.mlx, mlx.win);
-	mlx_destroy_display(mlx.mlx);
 	
+	mlx_destroy_context(mlx.mlx);
+
 	return 0;
 }

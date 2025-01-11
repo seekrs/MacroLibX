@@ -1,0 +1,12 @@
+-xc++
+-std=c++20
+-Iruntime/Includes
+-Iruntime/Sources
+-Iincludes
+-Ithird_party
+-DMLX_BUILD
+-DSDL_MAIN_HANDLED
+-DDEBUG
+-DIMAGE_OPTIMIZED
+-D_REENTRANT
+-isystem/usr/include/SDL2
