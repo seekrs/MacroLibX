@@ -5,6 +5,7 @@
 
 #include <mlx_profile.h>
 #include <mlx.h>
+
 #include <cstdio>
 #include <cstdarg>
 #include <iostream>
@@ -12,6 +13,7 @@
 #include <cstdint>
 #include <cstdlib>
 #include <cstring>
+#include <ctime>
 
 #include <vulkan/vulkan.h>
 
