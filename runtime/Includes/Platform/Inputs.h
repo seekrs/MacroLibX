@@ -12,10 +12,10 @@ namespace mlx
 		public:
 			struct Hook
 			{
-				func::function<void(int, void*)> fn;
+				std::function<void(int, void*)> fn;
 				void* param = nullptr;
 
-				Hook(func::function<void(int, void*)> fn, void* param) : fn(fn), param(param) {}
+				Hook(std::function<void(int, void*)> fn, void* param) : fn(fn), param(param) {}
 			};
 
 		public:

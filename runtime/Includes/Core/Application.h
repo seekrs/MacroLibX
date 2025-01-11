@@ -44,10 +44,10 @@ namespace mlx
 		private:
 			struct Hook
 			{
-				func::function<void(void*)> fn;
+				std::function<void(void*)> fn;
 				void* param;
 
-				Hook(func::function<void(void*)> fn, void* param) : fn(fn), param(param) {}
+				Hook(std::function<void(void*)> fn, void* param) : fn(fn), param(param) {}
 			};
 
 		private:

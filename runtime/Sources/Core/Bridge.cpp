@@ -1,4 +1,3 @@
-#include "mlx_extended.h"
 #include <PreCompiled.h>
 
 #include <Core/Application.h>

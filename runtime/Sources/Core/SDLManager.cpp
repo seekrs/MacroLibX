@@ -216,7 +216,7 @@ namespace mlx
 		return y;
 	}
 
-	void SDLManager::InputsFetcher(func::function<void(mlx_event_type, int, int)> functor)
+	void SDLManager::InputsFetcher(std::function<void(mlx_event_type, int, int)> functor)
 	{
 		SDL_Event event;
 		while(SDL_PollEvent(&event))

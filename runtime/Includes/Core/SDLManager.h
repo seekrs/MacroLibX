@@ -14,7 +14,7 @@ namespace mlx
 			Handle CreateWindow(const mlx_window_create_info* info, std::int32_t& id, bool hidden);
 			void DestroyWindow(Handle window) noexcept;
 
-			void InputsFetcher(func::function<void(mlx_event_type, int, int)> functor);
+			void InputsFetcher(std::function<void(mlx_event_type, int, int)> functor);
 
 			VkSurfaceKHR CreateVulkanSurface(Handle window, VkInstance instance) const noexcept;
 			std::vector<const char*> GetRequiredVulkanInstanceExtentions(Handle window) const noexcept;
