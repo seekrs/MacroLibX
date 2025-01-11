@@ -47,9 +47,15 @@ namespace mlx
 			default: break;
 		}
 
+		/*
 		const std::chrono::zoned_time current_time{ std::chrono::current_zone(), std::chrono::floor<std::chrono::milliseconds>(std::chrono::system_clock::now()) };
-
 		std::cout << Ansi::yellow << std::format("[{0:%H:%M:%S}] ", current_time) << Ansi::def << code_infos << message << std::endl;
+		*/
+		std::time_t now = time(0);
+		std::tm tstruct = *localtime(&now);
+		char buffer[80];
+		std::strftime(buffer, sizeof(buffer), "[%X] ", &tstruct);
+		std::cout << Ansi::yellow << buffer << Ansi::def << code_infos << message << std::endl;
 
 		if(type == LogType::FatalError)
 		{
