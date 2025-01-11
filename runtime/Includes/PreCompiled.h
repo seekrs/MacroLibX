@@ -8,6 +8,10 @@
 #include <cstdio>
 #include <cstdarg>
 #include <iostream>
+#include <cstddef>
+#include <cstdint>
+#include <cstdlib>
+#include <cstring>
 
 #include <vulkan/vulkan.h>
 
@@ -29,12 +33,8 @@
 #include <chrono>
 #include <unordered_set>
 #include <array>
-#include <cstdint>
-#include <cstring>
 #include <optional>
 #include <set>
-#include <cstddef>
-#include <cstdlib>
 #include <random>
 #include <concepts>
 #include <algorithm>
