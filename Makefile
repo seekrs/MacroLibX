@@ -31,7 +31,7 @@ CXX = clang++
 CXXFLAGS = -std=c++20 -fPIC -Wall -Wextra -DSDL_MAIN_HANDLED
 INCLUDES = -I./includes -I./runtime/Includes -I./runtime/Sources -I./third_party
 
-CXXPCHFLAGS = -xc++-header
+CXXPCHFLAGS = -xc++-header -std=c++20 -Wall -Wextra 
 
 PCH_SOURCE = runtime/Includes/PreCompiled.h
 GCH = runtime/Includes/PreCompiled.h.gch
