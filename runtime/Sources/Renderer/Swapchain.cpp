@@ -1,3 +1,4 @@
+#include "kvf.h"
 #include <PreCompiled.h>
 
 #include <Platform/Window.h>
@@ -88,6 +89,7 @@ namespace mlx
 		RenderCore::Get().vkGetSwapchainImagesKHR(RenderCore::Get().GetDevice(), m_swapchain, &m_images_count, tmp.data());
 		VkCommandBuffer cmd = kvfCreateCommandBuffer(RenderCore::Get().GetDevice());
 		kvfBeginCommandBuffer(cmd, VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT);
+		extent = kvfGetSwapchainImagesSize(m_swapchain); // fix the extent
 		for(std::size_t i = 0; i < m_images_count; i++)
 		{
 			#ifdef DEBUG
