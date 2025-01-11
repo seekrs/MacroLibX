@@ -6,12 +6,12 @@
 /*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 08:49:17 by maldavid          #+#    #+#             */
-/*   Updated: 2024/01/03 15:33:35 by maldavid         ###   ########.fr       */
+/*   Updated: 2025/01/07 00:17:45 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef __MLX_PROFILE__
-#define __MLX_PROFILE__
+#ifndef MACROLIBX_PROFILE_H
+#define MACROLIBX_PROFILE_H
 
 // Try to identify the compiler
 #if defined(__BORLANDC__)
@@ -49,6 +49,14 @@
 	#define MLX_PLAT_MACOS
 #elif defined(unix) || defined(__unix__) || defined(__unix)
 	#define MLX_PLAT_UNIX
+#elif defined(__sun) && defined(__SVR4)
+	#define MLX_PLAT_SOLARIS
+#elif defined(__OpenBSD__)
+	#define MLX_PLAT_OPENBSD
+#elif defined(__FreeBSD__) || defined(__FreeBSD_kernel__) || defined(__DragonFly__)
+	#define MLX_PLAT_FREEBSD
+#elif defined(__NetBSD__)
+	#define MLX_PLAT_NETBSD
 #else
 	#error "Unknown environment (not Windows, not Linux, not MacOS, not Unix)"
 #endif
@@ -121,27 +129,86 @@
 
 #if defined(MLX_PLAT_WINDOWS)
 	#define VK_USE_PLATFORM_WIN32_KHR
-	#ifdef __cplusplus
-		constexpr const char* VULKAN_LIB_NAME = "vulkan-1.dll";
-	#endif
+	#define VULKAN_LIB_NAME "vulkan-1.dll"
 #elif defined(MLX_PLAT_MACOS)
 	#define VK_USE_PLATFORM_MACOS_MVK
 	#define VK_USE_PLATFORM_METAL_EXT
-	#ifdef __cplusplus
-		constexpr const char* VULKAN_LIB_NAME = "libvulkan.dylib / libvulkan.1.dylib / libMoltenVK.dylib";
-	#endif
+	#define VULKAN_LIB_NAME "libvulkan.dylib / libvulkan.1.dylib / libMoltenVK.dylib"
 #else
 	#define VK_USE_PLATFORM_XLIB_KHR
 	#define VK_USE_PLATFORM_WAYLAND_KHR
-	#ifdef __cplusplus
-		constexpr const char* VULKAN_LIB_NAME = "libvulkan.so / libvulkan.so.1";
+	#define VULKAN_LIB_NAME "libvulkan.so / libvulkan.so.1"
+#endif
+
+#if !defined(MLX_FORCEINLINE)
+	#if defined(MLX_COMPILER_CLANG) || defined(MLX_COMPILER_GCC)
+		#define MLX_FORCEINLINE __attribute__((always_inline)) inline
+	#elif defined(MLX_COMPILER_MSVC)
+		#define MLX_FORCEINLINE __forceinline
+	#else
+		#define MLX_FORCEINLINE inline
 	#endif
 #endif
+
+#define MLX_LITTLE_ENDIAN 1234
+#define MLX_BIG_ENDIAN    4321
+
+#ifndef MLX_BYTEORDER
+	#if defined(MLX_PLAT_LINUX)
+		#include <endian.h>
+		#define MLX_BYTEORDER __BYTE_ORDER
+	#elif defined(MLX_PLAT_SOLARIS)
+		#include <sys/byteorder.h>
+		#if defined(_LITTLE_ENDIAN)
+			#define MLX_BYTEORDER MLX_LITTLE_ENDIAN
+		#elif defined(_BIG_ENDIAN)
+			#define MLX_BYTEORDER MLX_BIG_ENDIAN
+		#else
+			#error Unsupported endianness
+		#endif
+	#elif defined(MLX_PLAT_OPENBSD) || defined(__DragonFly__)
+		#include <endian.h>
+		#define MLX_BYTEORDER BYTE_ORDER
+	#elif defined(MLX_PLAT_FREEBSD) || defined(MLX_PLAT_NETBSD)
+		#include <sys/endian.h>
+		#define MLX_BYTEORDER BYTE_ORDER
+	#elif defined(__ORDER_LITTLE_ENDIAN__) && defined(__ORDER_BIG_ENDIAN__) && defined(__BYTE_ORDER__)
+		#if (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__)
+			#define MLX_BYTEORDER MLX_LITTLE_ENDIAN
+		#elif (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
+			#define MLX_BYTEORDER MLX_BIG_ENDIAN
+		#else
+			#error Unsupported endianness
+		#endif
+	#else
+		#if defined(__hppa__) || \
+			defined(__m68k__) || defined(mc68000) || defined(_M_M68K) || \
+			(defined(__MIPS__) && defined(__MIPSEB__)) || \
+			defined(__ppc__) || defined(__POWERPC__) || defined(__powerpc__) || defined(__PPC__) || \
+			defined(__sparc__) || defined(__sparc)
+			#define MLX_BYTEORDER MLX_BIG_ENDIAN
+		#else
+			#define MLX_BYTEORDER MLX_LITTLE_ENDIAN
+		#endif
+	#endif
+#endif
+
+#include <stdint.h>
+
+#define MLX_MAKE_VERSION(major, minor, patch) ((((uint32_t)(major)) << 22U) | (((uint32_t)(minor)) << 12U) | ((uint32_t)(patch)))
+
+#define MLX_VERSION_MAJOR(version) (((uint32_t)(version) >> 22U) & 0x7FU)
+#define MLX_VERSION_MINOR(version) (((uint32_t)(version) >> 12U) & 0x3FFU)
+#define MLX_VERSION_PATCH(version) ((uint32_t)(version) & 0xFFFU)
+
+#define MLX_DEFINE_HANDLE(object) typedef struct object##_handler* object
+
+#define MLX_VERSION MLX_MAKE_VERSION(2, 0, 0)
+#define MLX_TARGET_VULKAN_API_VERSION MLX_MAKE_VERSION(1, 0, 0)
 
 // Checking common assumptions
 #ifdef __cplusplus
 	#include <climits>
-	#include <cstdint>
 
 	static_assert(CHAR_BIT == 8, "CHAR_BIT is expected to be 8");
 
@@ -159,7 +226,6 @@
 		#include <assert.h>
 	#endif
 	#include <limits.h>
-	#include <stdint.h>
 
 	static_assert(CHAR_BIT == 8, "CHAR_BIT is expected to be 8");
 
@@ -176,7 +242,6 @@
 	#define STATIC_ASSERT(COND, MSG) typedef char static_assertion___##MSG[(COND)?1:-1]
 
 	#include <limits.h>
-	#include <stdint.h>
 
 	STATIC_ASSERT(CHAR_BIT == 8, CHAR_BIT_is_expected_to_be_8);
 

@@ -11,8 +11,11 @@
 *.tmp
 *.ilk
 *.pdb
+*.gch
+*.pch
+*.sym
 *.exe
-*vgcore
+*vgcore.*
 *.gdb_history
 .vs/
 .xmake/

@@ -1,21 +1,9 @@
---------------------------------------------------------------------------------
---                                                                            --
---                                                        :::      ::::::::   --
---   xmake.lua                                          :+:      :+:    :+:   --
---                                                    +:+ +:+         +:+     --
---   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        --
---                                                +#+#+#+#+#+   +#+           --
---   Created: 2023/12/07 15:21:38 by kbz_8             #+#    #+#             --
---   Updated: 2024/01/02 23:40:20 by kbz_8            ###   ########.fr       --
---                                                                            --
---------------------------------------------------------------------------------
-
 -- Global settings
 
-add_requires("libsdl", {configs = { sdlmain = false }})
+add_requires("libsdl", { configs = { sdlmain = false } })
 
-add_rules("mode.debug", "mode.release")
-set_languages("cxx17", "c99")
+add_rules("mode.debug", "mode.release", "mode.releasedbg")
+set_languages("cxx20", "c11")
 
 set_objectdir("objs/xmake/$(os)_$(arch)")
 set_targetdir("./")
@@ -44,6 +32,16 @@ option("profiler")
 	add_defines("PROFILER")
 option_end()
 
+option("force_wayland")
+	set_default(false)
+	add_defines("FORCE_WAYLAND")
+option_end()
+
+option("disable_all_safeties")
+	set_default(false)
+	add_defines("DISABLE_ALL_SAFETIES")
+option_end()
+
 -- Targets
 
 target("mlx")
@@ -53,18 +51,39 @@ target("mlx")
 	add_options("images_optimized")
 	add_options("force_integrated_gpu")
 	add_options("graphics_memory_dump")
-	add_includedirs("includes", "src", "third_party")
+	add_options("profiler")
+	add_options("force_wayland")
+	add_options("disable_all_safeties")
+
+	add_includedirs("runtime/Includes", "runtime/Sources", "includes", "third_party")
+
+	set_pcxxheader("runtime/Includes/PreCompiled.h")
 
 	add_defines("MLX_BUILD", "SDL_MAIN_HANDLED")
 
-	add_files("src/**.cpp")
+	add_files("runtime/Sources/**.cpp")
 
 	add_packages("libsdl")
 
 	if is_mode("debug") then
 		add_defines("DEBUG")
 	end
-target_end() -- optional but I think the code is cleaner with this -- optional but I think the code is cleaner with this
+
+	on_clean(function(target)
+		if target:objectfiles() then
+			for _, file in ipairs(target:objectfiles()) do
+				if os.exists(file) then
+					print("Removing " .. file)
+					os.rm(file)
+				end
+			end
+		end
+		if target:targetfile() and os.exists(target:targetfile()) then
+			print("Removing " .. target:targetfile())
+			os.rm(target:targetfile())
+		end
+	end)
+target_end()
 
 target("Test")
 	set_default(false)
@@ -75,7 +94,7 @@ target("Test")
 
 	add_deps("mlx")
 
-	add_files("example/main.c")
+	add_files("example/main.c", { languages = "c99" })
 
 	add_defines("SDL_MAIN_HANDLED")
 

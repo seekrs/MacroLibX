@@ -10,6 +10,9 @@ Just as the Makfile build system, you can configure how xmake should build the M
 ### 📦 Compile mode
 You can configure xmake to build the mlx in debug mode or in release mode (release mode is enabled by default). To do so you can use `xmake config --mode=debug` or `xmake config --mode=release`.
 
+### 🦺 Safety
+MacroLibX has a strong safety support, mainly by checking every pointer that you pass to it. But this safety has a cost that can be avoided by enabling `xmake config --disable_all_safeties=y` before compiling but don't be afraid to recieve segmentation faults from the mlx.
+
 ### 🛠️ Set the toolchain
 To change the compilation toolchain you can use `xmake config --toolchain=[gcc|clang|...]`
 
