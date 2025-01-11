@@ -46,12 +46,12 @@ ifeq ($(TOOLCHAIN), gcc)
 	CXXFLAGS += -Wno-error=cpp
 else
 	PCH = $(CCH)
-	CXXFLAGS += -Wno-error=#warning -include-pch $(GCH)
+	CXXFLAGS += -Wno-error=#warning -include-pch $(PCH)
 endif
 
 ifeq ($(OS), Darwin)
 	LDFLAGS += -L /opt/homebrew/Cellar/lib -L /usr/local/Cellar -L /opt/homebrew/lib -lSDL2
-	INCLUDES += -I /opt/homebrew/Cellar/include -I /usr/local/Cellar/include -I -I /opt/homebrew/include
+	INCLUDES += -I /opt/homebrew/Cellar/include -I /usr/local/Cellar/include -I /opt/homebrew/include
 	NAME = libmlx.dylib
 endif
 
