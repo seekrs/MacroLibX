@@ -21,9 +21,6 @@ Built on top of Vulkan, the MacroLibX takes advantage of its very low-level natu
 ### 💻 Cross-Platform
 Designed to be totally cross-platform, it can run on any SDL2-supported platform that supports Vulkan (even the Nintendo Switch ! theoretically... ).
 
-### 🗿 Close to the old minilibx
-One of the guidelines of this lib was to get as close as possible to the old minilibx API, and therefore to the educational choices of the old minilibx.
-
 ### 📖 It's all FOSS
 Everything in this repo is entirely free and open source, all available under the MIT license (even the third-party libraries used).
 
