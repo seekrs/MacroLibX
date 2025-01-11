@@ -11,7 +11,7 @@ namespace mlx
 
 		m_2Dpass.Init();
 		m_final.Init();
-		func::function<void(const EventBase&)> functor = [this](const EventBase& event)
+		std::function<void(const EventBase&)> functor = [this](const EventBase& event)
 		{
 			if(event.What() == Event::ResizeEventCode)
 				m_main_render_texture.Destroy();

@@ -9,7 +9,7 @@ namespace mlx
 	{
 		public:
 			EventListener() = delete;
-			EventListener(func::function<void(const EventBase&)> functor, std::string name);
+			EventListener(std::function<void(const EventBase&)> functor, std::string name);
 
 			inline const std::string& GetName() const { return m_name; }
 			inline void Call(const EventBase& event) const noexcept { m_listen_functor(event); }
@@ -17,7 +17,7 @@ namespace mlx
 			~EventListener() = default;
 
 		private:
-			func::function<void(const EventBase&)> m_listen_functor;
+			std::function<void(const EventBase&)> m_listen_functor;
 			std::string m_name;
 	};
 }
