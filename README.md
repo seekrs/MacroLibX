@@ -11,7 +11,7 @@
 </div>
 
 ###### MacroLibX, a rewrite of 42 School's MiniLibX using SDL2 and Vulkan. 
-The goal of this version is to provide a light, fast, and modern graphical tool while keeping the same API.
+The goal of this version is to provide a light, fast, and modern graphical tool.
 
 ## 🌟 Features
 
