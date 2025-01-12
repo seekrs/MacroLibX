@@ -52,15 +52,6 @@
 #include <ostream>
 #include <ranges>
 
-// Experimentals
-#if __has_include(<format>)
-	#include <format>
-#elif __has_include(<experimental/format>)
-	#include <experimental/format>
-#else
-	#error <format> header not present in this STL
-#endif
-
 #ifndef MLX_PLAT_WINDOWS
 	#include <dlfcn.h>
 #endif
