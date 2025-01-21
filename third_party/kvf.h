@@ -1927,7 +1927,7 @@ void kvfDestroySemaphore(VkDevice device, VkSemaphore semaphore)
 				format.format = VK_FORMAT_R8G8B8A8_SRGB;
 			else
 				format.format = VK_FORMAT_R8G8B8A8_UNORM;
-			return format
+			return format;
 			
 		}
 		for(uint32_t i = 0; i < support->formats_count; i++)
