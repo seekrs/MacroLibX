@@ -1921,9 +1921,13 @@ void kvfDestroySemaphore(VkDevice device, VkSemaphore semaphore)
 		if(support->formats_count == 1 && support->formats[0].format == VK_FORMAT_UNDEFINED)
 		{
 			// If the list contains one undefined format, it means any format can be used
+			VkSurfaceFormatKHR format;
+			format.colorSpace = VK_COLOR_SPACE_SRGB_NONLINEAR_KHR;
 			if(srgb)
-				return (VkSurfaceFormatKHR){ .format = VK_FORMAT_R8G8B8A8_SRGB, .colorSpace = VK_COLOR_SPACE_SRGB_NONLINEAR_KHR };
-			return (VkSurfaceFormatKHR){ .format = VK_FORMAT_R8G8B8A8_UNORM, .colorSpace = VK_COLOR_SPACE_SRGB_NONLINEAR_KHR };
+				format.format = VK_FORMAT_R8G8B8A8_SRGB;
+			else
+				format.format = VK_FORMAT_R8G8B8A8_UNORM;
+			return format
 			
 		}
 		for(uint32_t i = 0; i < support->formats_count; i++)
