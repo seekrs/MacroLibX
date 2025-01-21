@@ -141,7 +141,7 @@ VkSemaphore kvfCreateSemaphore(VkDevice device);
 void kvfDestroySemaphore(VkDevice device, VkSemaphore semaphore);
 
 #ifndef KVF_NO_KHR
-	VkSwapchainKHR kvfCreateSwapchainKHR(VkDevice device, VkPhysicalDevice physical, VkSurfaceKHR surface, VkExtent2D extent, VkSwapchainKHR old_swapchain, bool try_vsync);
+	VkSwapchainKHR kvfCreateSwapchainKHR(VkDevice device, VkPhysicalDevice physical, VkSurfaceKHR surface, VkExtent2D extent, VkSwapchainKHR old_swapchain, bool try_vsync, bool srgb);
 	VkFormat kvfGetSwapchainImagesFormat(VkSwapchainKHR swapchain);
 	uint32_t kvfGetSwapchainImagesCount(VkSwapchainKHR swapchain);
 	uint32_t kvfGetSwapchainMinImagesCount(VkSwapchainKHR swapchain);
@@ -1866,6 +1866,7 @@ void kvfDestroySemaphore(VkDevice device, VkSemaphore semaphore)
 	KVF_GET_DEVICE_FUNCTION(vkDestroySemaphore)(device, semaphore, kvf_device->callbacks);
 }
 
+#include <stdio.h>
 #ifndef KVF_NO_KHR
 	__KvfSwapchainSupportInternal __kvfQuerySwapchainSupport(VkPhysicalDevice physical, VkSurfaceKHR surface)
 	{
@@ -1891,12 +1892,52 @@ void kvfDestroySemaphore(VkDevice device, VkSemaphore semaphore)
 		return support;
 	}
 
-	VkSurfaceFormatKHR __kvfChooseSwapSurfaceFormat(__KvfSwapchainSupportInternal* support)
+	bool __kvfIsformatSRGB(VkFormat format)
 	{
+		switch(format)
+		{
+			case VK_FORMAT_R8G8B8A8_SRGB: // fallthrought
+			case VK_FORMAT_B8G8R8A8_SRGB: return true;
+
+			default: return false;
+		}
+		return false;
+	}
+
+	bool __kvfIsformatUNORM(VkFormat format)
+	{
+		switch(format)
+		{
+			case VK_FORMAT_R8G8B8A8_UNORM: // fallthrought
+			case VK_FORMAT_B8G8R8A8_UNORM: return true;
+
+			default: return false;
+		}
+		return false;
+	}
+
+	VkSurfaceFormatKHR __kvfChooseSwapSurfaceFormat(__KvfSwapchainSupportInternal* support, bool srgb)
+	{
+		if(support->formats_count == 1 && support->formats[0].format == VK_FORMAT_UNDEFINED)
+		{
+			// If the list contains one undefined format, it means any format can be used
+			if(srgb)
+				return (VkSurfaceFormatKHR){ .format = VK_FORMAT_R8G8B8A8_SRGB, .colorSpace = VK_COLOR_SPACE_SRGB_NONLINEAR_KHR };
+			return (VkSurfaceFormatKHR){ .format = VK_FORMAT_R8G8B8A8_UNORM, .colorSpace = VK_COLOR_SPACE_SRGB_NONLINEAR_KHR };
+			
+		}
 		for(uint32_t i = 0; i < support->formats_count; i++)
 		{
-			if(support->formats[i].format == VK_FORMAT_R8G8B8A8_SRGB && support->formats[i].colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR)
-				return support->formats[i];
+			if(srgb)
+			{
+				if(__kvfIsformatSRGB(support->formats[i].format) && support->formats[i].colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR)
+					return support->formats[i];
+			}
+			else
+			{
+				if(__kvfIsformatUNORM(support->formats[i].format))
+					return support->formats[i];
+			}
 		}
 		return support->formats[0];
 	}
@@ -1927,13 +1968,13 @@ void kvfDestroySemaphore(VkDevice device, VkSemaphore semaphore)
 		return t > max ? max : t;
 	}
 
-	VkSwapchainKHR kvfCreateSwapchainKHR(VkDevice device, VkPhysicalDevice physical, VkSurfaceKHR surface, VkExtent2D extent, VkSwapchainKHR old_swapchain, bool try_vsync)
+	VkSwapchainKHR kvfCreateSwapchainKHR(VkDevice device, VkPhysicalDevice physical, VkSurfaceKHR surface, VkExtent2D extent, VkSwapchainKHR old_swapchain, bool try_vsync, bool srgb)
 	{
 		KVF_ASSERT(device != VK_NULL_HANDLE);
 		VkSwapchainKHR swapchain;
 		__KvfSwapchainSupportInternal support = __kvfQuerySwapchainSupport(physical, surface);
 
-		VkSurfaceFormatKHR surfaceFormat = __kvfChooseSwapSurfaceFormat(&support);
+		VkSurfaceFormatKHR surfaceFormat = __kvfChooseSwapSurfaceFormat(&support, srgb);
 		VkPresentModeKHR present_mode = __kvfChooseSwapPresentMode(&support, try_vsync);
 
 		uint32_t image_count = support.capabilities.minImageCount + 1;
