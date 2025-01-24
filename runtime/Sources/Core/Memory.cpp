@@ -21,14 +21,14 @@ namespace mlx
 
 	void* MemManager::AlignedMalloc(std::size_t alignment, std::size_t size)
 	{
-		if(alignment < sizeof(void*))
-			alignment = sizeof(void*);
-		if(size % alignment != 0)
-			size += alignment - (size % alignment);
-
 		#ifdef MLX_COMPILER_MSVC
-			void* ptr = _aligned_malloc(alignment, size);
+			void* ptr = _aligned_malloc(size, alignment);
 		#else
+			if(alignment < sizeof(void*))
+				alignment = sizeof(void*);
+			if(size % alignment != 0)
+				size += alignment - (size % alignment);
+
 			void* ptr = std::aligned_alloc(alignment, size);
 		#endif
 		if(ptr != nullptr)
@@ -67,7 +67,7 @@ namespace mlx
 		auto it = std::find_if(s_blocks.begin(), s_blocks.end(), [=](const Descriptor& rhs){ return ptr == rhs.ptr; });
 
 		#ifdef MLX_COMPILER_MSVC
-			void* ptr2 = _aligned_realloc(ptr, alignment, size);
+			void* ptr2 = _aligned_realloc(ptr, size, alignment);
 			if(it != s_blocks.end())
 				s_blocks.erase(it);
 		#else
