@@ -392,12 +392,12 @@ namespace mlx
 
 		if(!std::filesystem::exists(file))
 		{
-			Error("Image: file not found %", file);
+			Error("Image loader: file not found %", file);
 			return nullptr;
 		}
 		if(stbi_is_hdr(filename.c_str()))
 		{
-			Error("Texture: unsupported image format from % (HDR image)", file);
+			Error("Image loader: unsupported image format from % (HDR image)", file);
 			return nullptr;
 		}
 
