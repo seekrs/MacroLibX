@@ -4,6 +4,7 @@
 #include <Core/SDLManager.h>
 #include <Renderer/RenderCore.h>
 #include <mlx.h>
+#include <mlx_extended.h>
 #include <Core/Memory.h>
 #include <Core/Handles.h>
 
@@ -224,17 +225,17 @@ extern "C"
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		if (filename == nullptr)
 		{
-			mlx::Error("PNG loader: filename is NULL");
+			mlx::Error("Image loader: filename is NULL");
 			return nullptr;
 		}
 		std::filesystem::path file(filename);
-		if( file.extension() != ".png" &&
+		if(file.extension() != ".png" &&
 			file.extension() != ".jpg" &&
 			file.extension() != ".jpeg" &&
 			file.extension() != ".bmp" &&
 			file.extension() != ".dib")
 		{
-			mlx::Error("PNG loader: not a valid file format '%'", filename);
+			mlx::Error("Image loader: not a valid file format '%'", filename);
 			return nullptr;
 		}
 		return mlx->app->NewStbTexture(filename, width, height);
