@@ -6,7 +6,7 @@
 /*   By: maldavid <contact@kbz8.me>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:56:35 by maldavid          #+#    #+#             */
-/*   Updated: 2025/01/05 22:44:22 by maldavid         ###   ########.fr       */
+/*   Updated: 2025/03/12 22:26:32 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ typedef union mlx_color
 /**
  * @brief           Initializes the MLX internal application
  *
- * @return (mlx_context) An opaque handler to the internal MLX application or NULL (0x0) in case of error
+ * @return (mlx_context) An opaque handler to the internal MLX application or MLX_NULL_HANDLE (0x0) in case of error
  */
 MLX_API mlx_context mlx_init();
 
@@ -122,7 +122,7 @@ typedef struct mlx_window_create_info
  * @param mlx        Internal MLX application
  * @param info       Pointer to a descriptor structure
  *
- * @return (mlx_widnow) An opaque handler to the internal MLX window or NULL (0x0) in case of error
+ * @return (mlx_window) An opaque handler to the internal MLX window or MLX_NULL_HANDLE (0x0) in case of error
  */
 MLX_API mlx_window mlx_new_window(mlx_context mlx, const mlx_window_create_info* info);
 
@@ -328,7 +328,7 @@ MLX_API void mlx_pixel_put(mlx_context mlx, mlx_window win, int x, int y, mlx_co
  * @param width      Width of the image
  * @param height     Height of the image
  *
- * @return (mlx_image) An opaque handler to the internal image or NULL (0x0) in case of error
+ * @return (mlx_image) An opaque handler to the internal image or MLX_NULL_HANDLE (0x0) in case of error
  */
 MLX_API mlx_image mlx_new_image(mlx_context mlx, int width, int height);
 
@@ -340,7 +340,7 @@ MLX_API mlx_image mlx_new_image(mlx_context mlx, int width, int height);
  * @param width      Get the width of the image
  * @param heigth     Get the height of the image
  *
- * @return (mlx_image) An opaque handler to the internal image or NULL (0x0) in case of error
+ * @return (mlx_image) An opaque handler to the internal image or MLX_NULL_HANDLE (0x0) in case of error
  */
 MLX_API mlx_image mlx_new_image_from_file(mlx_context mlx, char* filename, int* width, int* height);
 

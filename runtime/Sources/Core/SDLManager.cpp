@@ -31,6 +31,8 @@ namespace mlx
 			SDL_SetHint(SDL_HINT_VIDEODRIVER, "wayland,x11");
 		#endif
 
+		//SDL_SetHintWithPriority(SDL_HINT_SHUTDOWN_DBUS_ON_QUIT, "1", SDL_HINT_OVERRIDE);
+
 		if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER) != 0)
 			FatalError("SDL: unable to init all subsystems; %", SDL_GetError());
 		DebugLog("SDL Manager initialized");
@@ -76,6 +78,12 @@ namespace mlx
 
 		m_windows_registry.erase(infos);
 		delete infos;
+	}
+
+	SDL_Window* SDLManager::GetRawWindow(Handle window) noexcept
+	{
+		Internal::WindowInfos* infos = static_cast<Internal::WindowInfos*>(window);
+		return infos->window;
 	}
 
 	VkSurfaceKHR SDLManager::CreateVulkanSurface(Handle window, VkInstance instance) const noexcept
@@ -252,6 +260,7 @@ namespace mlx
 						case SDL_WINDOWEVENT_FOCUS_GAINED: functor(MLX_WINDOW_EVENT, id, 5); break;
 						case SDL_WINDOWEVENT_LEAVE: functor(MLX_WINDOW_EVENT, id, 6); break;
 						case SDL_WINDOWEVENT_FOCUS_LOST: functor(MLX_WINDOW_EVENT, id, 7); break;
+						case SDL_WINDOWEVENT_SIZE_CHANGED: functor(MLX_WINDOW_EVENT, id, 8); break;
 
 						default : break;
 					}

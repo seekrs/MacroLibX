@@ -38,6 +38,8 @@ namespace mlx
 			MLX_FORCEINLINE std::vector<const char*> GetRequiredVulkanInstanceExtentions() const noexcept { return SDLManager::Get().GetRequiredVulkanInstanceExtentions(p_window); }
 			MLX_FORCEINLINE Vec2ui GetVulkanDrawableSize() const noexcept { return SDLManager::Get().GetVulkanDrawableSize(p_window); }
 
+			[[nodiscard]] inline Handle GetRawHandle() const noexcept { return p_window; }
+
 			void Destroy() noexcept;
 
 			~Window() { Destroy(); }

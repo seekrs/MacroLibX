@@ -2,11 +2,11 @@
 
 #include <Core/Application.h>
 #include <Core/SDLManager.h>
-#include <Renderer/RenderCore.h>
 #include <mlx.h>
 #include <mlx_extended.h>
 #include <Core/Memory.h>
 #include <Core/Handles.h>
+#include <Renderer/RenderCore.h>
 
 static mlx::Application* __internal_application_ptr = nullptr;
 
@@ -426,5 +426,64 @@ extern "C"
 		if(!texture)
 			return;
 		gs->TexturePut(texture, x, y, scale_x, scale_y, angle);
+	}
+
+	// Hidden bindings
+
+	VkInstance mlx_get_vk_instance(mlx_context mlx)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		return mlx::RenderCore::Get().GetInstance();
+	}
+
+	VkPhysicalDevice mlx_get_vk_physical_device(mlx_context mlx)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		return mlx::RenderCore::Get().GetPhysicalDevice();
+	}
+
+	VkDevice mlx_get_vk_device(mlx_context mlx)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		return mlx::RenderCore::Get().GetDevice();
+	}
+
+	mlx_function mlx_get_vk_fn(const char* name)
+	{
+		#define MLX_VULKAN_GLOBAL_FUNCTION(fn)   if(std::strcmp(name, #fn) == 0) return reinterpret_cast<mlx_function>(mlx::RenderCore::Get().fn);
+		#define MLX_VULKAN_INSTANCE_FUNCTION(fn) if(std::strcmp(name, #fn) == 0) return reinterpret_cast<mlx_function>(mlx::RenderCore::Get().fn);
+		#define MLX_VULKAN_DEVICE_FUNCTION(fn)   if(std::strcmp(name, #fn) == 0) return reinterpret_cast<mlx_function>(mlx::RenderCore::Get().fn);
+			#include <Renderer/Vulkan/VulkanDefs.h>
+		#undef MLX_VULKAN_GLOBAL_FUNCTION
+		#undef MLX_VULKAN_INSTANCE_FUNCTION
+		#undef MLX_VULKAN_DEVICE_FUNCTION
+
+		return nullptr;
+	}
+
+	void* mlx_get_window_handle(mlx_context mlx, mlx_window win)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::GraphicsSupport> gs = mlx->app->GetGraphicsSupport(win);
+		if(!gs || !gs->HasWindow())
+			return nullptr;
+		return mlx::SDLManager::Get().GetRawWindow(gs->GetWindow()->GetRawHandle());
+	}
+
+	mlx_function mlx_get_proc_addr(mlx_context mlx, const char* name)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		#define MLX_MAKE_ENTRY(fn) { #fn, reinterpret_cast<mlx_function>(fn) }
+		std::unordered_map<std::string, mlx_function> entries = {
+			MLX_MAKE_ENTRY(mlx_get_vk_instance),
+			MLX_MAKE_ENTRY(mlx_get_vk_physical_device),
+			MLX_MAKE_ENTRY(mlx_get_vk_device),
+			MLX_MAKE_ENTRY(mlx_get_vk_fn),
+			MLX_MAKE_ENTRY(mlx_get_window_handle),
+		};
+		auto it = entries.find(std::string{ name });
+		if(it != entries.end())
+			return it->second;
+		return nullptr;
 	}
 }
