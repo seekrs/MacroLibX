@@ -80,6 +80,12 @@ namespace mlx
 		delete infos;
 	}
 
+	SDL_Window* SDLManager::GetRawWindow(Handle window) noexcept
+	{
+		Internal::WindowInfos* infos = static_cast<Internal::WindowInfos*>(window);
+		return infos->window;
+	}
+
 	VkSurfaceKHR SDLManager::CreateVulkanSurface(Handle window, VkInstance instance) const noexcept
 	{
 		VkSurfaceKHR surface;
