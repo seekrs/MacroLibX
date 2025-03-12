@@ -21,10 +21,8 @@ namespace mlx
 	{
 		using namespace std::literals;
 
-		#ifndef DEBUG
-			if(type == LogType::Debug)
-				return;
-		#endif
+		if(type == LogType::Debug && std::getenv("MLX_DEBUG_LOGS") == nullptr)
+			return;
 
 		std::string code_infos;
 		if((type == LogType::Error || type == LogType::FatalError) && !file.empty() && !function.empty())
