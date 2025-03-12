@@ -8,4 +8,9 @@ namespace mlx
 		MLX_PROFILE_FUNCTION();
 		p_scene->TryEraseSpriteFromTexture(texture);
 	}
+
+	void GraphicsSupport::AddPreRenderHook(void(*f)(VkCommandBuffer, void*), void* param)
+	{
+		m_hooks.emplace_back(f, param);
+	}
 }
