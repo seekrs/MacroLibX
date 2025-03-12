@@ -38,6 +38,11 @@ namespace mlx
 		m_renderer.BeginFrame();
 			m_draw_layer = 0;
 			m_scene_renderer.Render(*p_scene, m_renderer);
+			for(const auto& hook : m_hooks)
+			{
+				if(hook.fn)
+					hook.fn(m_renderer.GetActiveCommandBuffer(), hook.param);
+			}
 		m_renderer.EndFrame();
 		#ifdef GRAPHICS_MEMORY_DUMP
 			// Dump memory usage to file every two seconds
