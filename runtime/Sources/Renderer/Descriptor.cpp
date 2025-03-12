@@ -112,10 +112,13 @@ namespace mlx
 		return set;
 	}
 
-	void DescriptorPool::ReturnDescriptorSet(std::shared_ptr<class DescriptorSet> set)
+	void DescriptorPool::ReturnDescriptorSet(std::shared_ptr<DescriptorSet> set)
 	{
-		auto it = std::find_if(m_used_sets.begin(), m_used_sets.end(), [&](std::shared_ptr<DescriptorSet> rhs_set)
+		std::size_t i = 0;
+		auto it = std::find_if(m_used_sets.begin(), m_used_sets.end(), [&](const std::shared_ptr<DescriptorSet>& rhs_set)
 		{
+			i++;
+			std::cout << m_used_sets.size() << " " << i << std::endl;
 			return set == rhs_set;
 		});
 		if(it == m_used_sets.end())
