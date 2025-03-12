@@ -32,6 +32,8 @@ namespace mlx
 
 			inline void TryEraseSpritesInScene(NonOwningPtr<Texture> texture) noexcept;
 
+			inline void AddPreRenderHook(void(*f)(VkCommandBuffer, void*), void* param);
+
 			[[nodiscard]] MLX_FORCEINLINE bool HasWindow() const noexcept  { return m_has_window; }
 			[[nodiscard]] MLX_FORCEINLINE Renderer& GetRenderer() { return m_renderer; }
 			[[nodiscard]] MLX_FORCEINLINE Scene& GetScene() { return *p_scene; }
@@ -39,9 +41,20 @@ namespace mlx
 			~GraphicsSupport();
 
 		private:
+			struct Hook
+			{
+				std::function<void(VkCommandBuffer, void*)> fn;
+				void* param;
+
+				Hook(std::function<void(VkCommandBuffer, void*)> fn, void* param) : fn(fn), param(param) {}
+			};
+
+
+		private:
 			Renderer m_renderer;
 			SceneRenderer m_scene_renderer;
 			PutPixelManager m_put_pixel_manager;
+			std::vector<Hook> m_hooks;
 			std::shared_ptr<Window> p_window;
 			std::unique_ptr<Scene> p_scene;
 
