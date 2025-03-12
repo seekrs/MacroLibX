@@ -15,7 +15,6 @@ namespace mlx
 			Event What() const override { return Event::ResizeEventCode; }
 		};
 	}
-
 	
 	std::string VulkanFormatName(VkFormat format)
 	{
@@ -159,7 +158,16 @@ namespace mlx
 	void Swapchain::Init(NonOwningPtr<Window> window)
 	{
 		p_window = window;
+
+		std::function<void(const EventBase&)> functor = [this](const EventBase& event)
+		{
+			if(event.What() == Event::ResizeEventCode && !m_resize)
+				m_resize = true;
+		};
+		EventBus::RegisterListener({ functor, "mlx_swapchain_" + std::to_string(reinterpret_cast<std::uintptr_t>(this)) });
+
 		CreateSwapchain();
+		m_resize = false;
 	}
 
 	void Swapchain::AquireFrame(VkSemaphore signal)
@@ -170,6 +178,7 @@ namespace mlx
 			Destroy();
 			CreateSwapchain();
 			EventBus::SendBroadcast(Internal::ResizeEventBroadcast{});
+			m_resize = false;
 		}
 
 		VkResult result = RenderCore::Get().vkAcquireNextImageKHR(RenderCore::Get().GetDevice(), m_swapchain, UINT64_MAX, signal, VK_NULL_HANDLE, &m_current_image_index);
@@ -245,7 +254,6 @@ namespace mlx
 		kvfSubmitSingleTimeCommandBuffer(RenderCore::Get().GetDevice(), cmd, KVF_GRAPHICS_QUEUE, fence);
 		kvfDestroyFence(RenderCore::Get().GetDevice(), fence);
 		kvfDestroyCommandBuffer(RenderCore::Get().GetDevice(), cmd);
-		m_resize = false;
 		DebugLog("Vulkan: swapchain created with format %", VulkanFormatName(format));
 	}
 }

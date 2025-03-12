@@ -1,11 +1,19 @@
 #include <PreCompiled.h>
 
-#include <mlx.h>
 #include <Platform/Inputs.h>
 #include <Core/SDLManager.h>
+#include <Core/EventBus.h>
 
 namespace mlx
 {
+	namespace Internal
+	{
+		struct ResizeEventBroadcast : public EventBase
+		{
+			Event What() const override { return Event::ResizeEventCode; }
+		};
+	}
+
 	void Inputs::FetchInputs()
 	{
 		SDLManager::Get().InputsFetcher([this](mlx_event_type event, int window_id, int code)
@@ -14,6 +22,8 @@ namespace mlx
 				return;
 			if(!m_events_hooks.contains(window_id) || m_events_hooks[window_id][event].empty())
 				return;
+			if(event == MLX_WINDOW_EVENT && code == 8)
+				EventBus::SendBroadcast(Internal::ResizeEventBroadcast{});
 			for(const auto& hook : m_events_hooks[window_id][event])
 			{
 				if(hook.fn)
