@@ -6,7 +6,7 @@
 /*   By: maldavid <contact@kbz8.me>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 16:17:10 by maldavid          #+#    #+#             */
-/*   Updated: 2025/01/08 12:37:15 by maldavid         ###   ########.fr       */
+/*   Updated: 2025/03/12 22:03:45 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,6 +170,15 @@ MLX_API void mlx_set_image_region(mlx_context mlx, mlx_image image, int x, int y
  * @param angle      Rotation angle of the image (clockwise)
  */
 MLX_API void mlx_put_transformed_image_to_window(mlx_context mlx, mlx_window win, mlx_image image, int x, int y, float scale_x, float scale_y, float angle);
+
+/**
+ * @brief            Get direct pointers to hidden functions
+ *
+ * @param mlx        Internal MLX application
+ *
+ * @return (mlx_function) A function pointer or NULL (0x0) in case of error
+ */
+MLX_API mlx_function mlx_get_proc_addr(mlx_context mlx, const char* name);
 
 #ifdef __cplusplus
 }

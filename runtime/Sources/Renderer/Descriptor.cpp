@@ -114,11 +114,11 @@ namespace mlx
 
 	void DescriptorPool::ReturnDescriptorSet(std::shared_ptr<DescriptorSet> set)
 	{
-		std::size_t i = 0;
+		//std::size_t i = 0;
 		auto it = std::find_if(m_used_sets.begin(), m_used_sets.end(), [&](const std::shared_ptr<DescriptorSet>& rhs_set)
 		{
-			i++;
-			std::cout << m_used_sets.size() << " " << i << std::endl;
+			//i++;
+			//std::cout << m_used_sets.size() << " " << i << std::endl;
 			return set == rhs_set;
 		});
 		if(it == m_used_sets.end())
