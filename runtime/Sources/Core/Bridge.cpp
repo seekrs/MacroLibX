@@ -448,6 +448,18 @@ extern "C"
 		return mlx::RenderCore::Get().GetDevice();
 	}
 
+	VkQueue mlx_get_vk_graphics_queue(mlx_context mlx)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		return kvfGetDeviceQueue(mlx::RenderCore::Get().GetDevice(), KVF_GRAPHICS_QUEUE);
+	}
+
+	unsigned int mlx_get_vk_graphics_queue_family(mlx_context mlx)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		return kvfGetDeviceQueueFamily(mlx::RenderCore::Get().GetDevice(), KVF_GRAPHICS_QUEUE);
+	}
+
 	mlx_function mlx_get_vk_fn(const char* name)
 	{
 		#define MLX_VULKAN_GLOBAL_FUNCTION(fn)   if(std::strcmp(name, #fn) == 0) return reinterpret_cast<mlx_function>(mlx::RenderCore::Get().fn);
@@ -461,6 +473,60 @@ extern "C"
 		return nullptr;
 	}
 
+	VkSurfaceKHR mlx_get_vk_surface(mlx_context mlx, mlx_window win)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::GraphicsSupport> gs = mlx->app->GetGraphicsSupport(win);
+		if(!gs)
+			return nullptr;
+		return gs->GetRenderer().GetSwapchain().GetSurface();
+	}
+
+	VkImage mlx_get_vk_swapchain_image(mlx_context mlx, mlx_window win, unsigned int index)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::GraphicsSupport> gs = mlx->app->GetGraphicsSupport(win);
+		if(!gs || index > gs->GetRenderer().GetSwapchain().GetImagesCount())
+			return nullptr;
+		return gs->GetRenderer().GetSwapchain().GetSwapchainImages()[index].Get();
+	}
+
+	VkImageView mlx_get_vk_swapchain_image_view(mlx_context mlx, mlx_window win, unsigned int index)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::GraphicsSupport> gs = mlx->app->GetGraphicsSupport(win);
+		if(!gs || index > gs->GetRenderer().GetSwapchain().GetImagesCount())
+			return nullptr;
+		return gs->GetRenderer().GetSwapchain().GetSwapchainImages()[index].GetImageView();
+	}
+
+	unsigned int mlx_get_current_vk_swapchain_image_index(mlx_context mlx, mlx_window win)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::GraphicsSupport> gs = mlx->app->GetGraphicsSupport(win);
+		if(!gs)
+			return -1;
+		return gs->GetRenderer().GetSwapchain().GetImageIndex();
+	}
+
+	VkExtent2D mlx_get_vk_swapchain_extent(mlx_context mlx, mlx_window win)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::GraphicsSupport> gs = mlx->app->GetGraphicsSupport(win);
+		if(!gs)
+			return {};
+		return kvfGetSwapchainImagesSize(gs->GetRenderer().GetSwapchain().Get());
+	}
+
+	VkFormat mlx_get_vk_swapchain_format(mlx_context mlx, mlx_window win)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::GraphicsSupport> gs = mlx->app->GetGraphicsSupport(win);
+		if(!gs)
+			return VK_FORMAT_UNDEFINED;
+		return kvfGetSwapchainImagesFormat(gs->GetRenderer().GetSwapchain().Get());
+	}
+
 	void* mlx_get_window_handle(mlx_context mlx, mlx_window win)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
@@ -470,6 +536,15 @@ extern "C"
 		return mlx::SDLManager::Get().GetRawWindow(gs->GetWindow()->GetRawHandle());
 	}
 
+	void mlx_add_pre_render_hook(mlx_context mlx, mlx_window win, void(*f)(VkCommandBuffer, void*), void* param)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::GraphicsSupport> gs = mlx->app->GetGraphicsSupport(win);
+		if(!gs)
+			return;
+		gs->AddPreRenderHook(f, param);
+	}
+
 	mlx_function mlx_get_proc_addr(mlx_context mlx, const char* name)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
@@ -477,9 +552,17 @@ extern "C"
 		std::unordered_map<std::string, mlx_function> entries = {
 			MLX_MAKE_ENTRY(mlx_get_vk_instance),
 			MLX_MAKE_ENTRY(mlx_get_vk_physical_device),
+			MLX_MAKE_ENTRY(mlx_get_vk_graphics_queue),
+			MLX_MAKE_ENTRY(mlx_get_vk_graphics_queue_family),
 			MLX_MAKE_ENTRY(mlx_get_vk_device),
 			MLX_MAKE_ENTRY(mlx_get_vk_fn),
 			MLX_MAKE_ENTRY(mlx_get_window_handle),
+			MLX_MAKE_ENTRY(mlx_get_vk_swapchain_extent),
+			MLX_MAKE_ENTRY(mlx_get_vk_swapchain_format),
+			MLX_MAKE_ENTRY(mlx_get_vk_swapchain_image),
+			MLX_MAKE_ENTRY(mlx_get_vk_swapchain_image_view),
+			MLX_MAKE_ENTRY(mlx_get_current_vk_swapchain_image_index),
+			MLX_MAKE_ENTRY(mlx_add_pre_render_hook),
 		};
 		auto it = entries.find(std::string{ name });
 		if(it != entries.end())
