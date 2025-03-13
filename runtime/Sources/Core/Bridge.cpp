@@ -460,8 +460,9 @@ extern "C"
 		return kvfGetDeviceQueueFamily(mlx::RenderCore::Get().GetDevice(), KVF_GRAPHICS_QUEUE);
 	}
 
-	mlx_function mlx_get_vk_fn(const char* name)
+	mlx_function mlx_get_vk_fn(mlx_context mlx, const char* name)
 	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
 		#define MLX_VULKAN_GLOBAL_FUNCTION(fn)   if(std::strcmp(name, #fn) == 0) return reinterpret_cast<mlx_function>(mlx::RenderCore::Get().fn);
 		#define MLX_VULKAN_INSTANCE_FUNCTION(fn) if(std::strcmp(name, #fn) == 0) return reinterpret_cast<mlx_function>(mlx::RenderCore::Get().fn);
 		#define MLX_VULKAN_DEVICE_FUNCTION(fn)   if(std::strcmp(name, #fn) == 0) return reinterpret_cast<mlx_function>(mlx::RenderCore::Get().fn);
@@ -489,6 +490,15 @@ extern "C"
 		if(!gs || index > gs->GetRenderer().GetSwapchain().GetImagesCount())
 			return nullptr;
 		return gs->GetRenderer().GetSwapchain().GetSwapchainImages()[index].Get();
+	}
+
+	unsigned int mlx_get_vk_swapchain_image_count(mlx_context mlx, mlx_window win)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::GraphicsSupport> gs = mlx->app->GetGraphicsSupport(win);
+		if(!gs)
+			return 0;
+		return gs->GetRenderer().GetSwapchain().GetImagesCount();
 	}
 
 	VkImageView mlx_get_vk_swapchain_image_view(mlx_context mlx, mlx_window win, unsigned int index)
@@ -536,6 +546,12 @@ extern "C"
 		return mlx::SDLManager::Get().GetRawWindow(gs->GetWindow()->GetRawHandle());
 	}
 
+	void mlx_set_sdl_input_hook(mlx_context mlx, void(*f)(void*))
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::SDLManager::Get().SetInputBinding(f);
+	}
+
 	void mlx_add_pre_render_hook(mlx_context mlx, mlx_window win, void(*f)(VkCommandBuffer, void*), void* param)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
@@ -551,12 +567,15 @@ extern "C"
 		#define MLX_MAKE_ENTRY(fn) { #fn, reinterpret_cast<mlx_function>(fn) }
 		std::unordered_map<std::string, mlx_function> entries = {
 			MLX_MAKE_ENTRY(mlx_get_vk_instance),
+			MLX_MAKE_ENTRY(mlx_get_vk_surface),
+			MLX_MAKE_ENTRY(mlx_set_sdl_input_hook),
 			MLX_MAKE_ENTRY(mlx_get_vk_physical_device),
 			MLX_MAKE_ENTRY(mlx_get_vk_graphics_queue),
 			MLX_MAKE_ENTRY(mlx_get_vk_graphics_queue_family),
 			MLX_MAKE_ENTRY(mlx_get_vk_device),
 			MLX_MAKE_ENTRY(mlx_get_vk_fn),
 			MLX_MAKE_ENTRY(mlx_get_window_handle),
+			MLX_MAKE_ENTRY(mlx_get_vk_swapchain_image_count),
 			MLX_MAKE_ENTRY(mlx_get_vk_swapchain_extent),
 			MLX_MAKE_ENTRY(mlx_get_vk_swapchain_format),
 			MLX_MAKE_ENTRY(mlx_get_vk_swapchain_image),
