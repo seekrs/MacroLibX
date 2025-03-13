@@ -17,6 +17,7 @@ namespace mlx
 			SDL_Window* GetRawWindow(Handle window) noexcept;
 
 			void InputsFetcher(std::function<void(mlx_event_type, int, int)> functor);
+			void SetInputBinding(std::function<void(SDL_Event*)> functor);
 
 			VkSurfaceKHR CreateVulkanSurface(Handle window, VkInstance instance) const noexcept;
 			std::vector<const char*> GetRequiredVulkanInstanceExtentions(Handle window) const noexcept;
@@ -52,6 +53,7 @@ namespace mlx
 		private:
 			static SDLManager* s_instance;
 
+			std::function<void(SDL_Event*)> m_binding_hook;
 			std::unordered_set<Handle> m_windows_registry;
 			bool m_drop_sdl_responsability = false;
 	};
