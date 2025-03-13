@@ -224,6 +224,11 @@ namespace mlx
 		return y;
 	}
 
+	void SDLManager::SetInputBinding(std::function<void(SDL_Event*)> functor)
+	{
+		m_binding_hook = std::move(functor);
+	}
+
 	void SDLManager::InputsFetcher(std::function<void(mlx_event_type, int, int)> functor)
 	{
 		SDL_Event event;
@@ -269,6 +274,8 @@ namespace mlx
 
 				default: break;
 			}
+
+			m_binding_hook(&event);
 		}
 	}
 
