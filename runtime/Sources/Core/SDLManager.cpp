@@ -275,7 +275,8 @@ namespace mlx
 				default: break;
 			}
 
-			m_binding_hook(&event);
+			if(m_binding_hook)
+				m_binding_hook(&event);
 		}
 	}
 
