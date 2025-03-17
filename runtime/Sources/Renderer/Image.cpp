@@ -243,9 +243,9 @@ namespace mlx
 			if(moving_x >= static_cast<std::uint32_t>(x + w) || moving_x >= m_width)
 			{
 				moving_x = x;
+				moving_y++;
 				if(moving_y >= static_cast<std::uint32_t>(y + h) || moving_y >= m_height)
 					break;
-				moving_y++;
 			}
 			if constexpr(std::endian::native == std::endian::little)
 				m_staging_buffer->GetMap<mlx_color*>()[(moving_y * m_width) + moving_x] = ReverseColor(pixels[i]);
@@ -304,9 +304,9 @@ namespace mlx
 			if(moving_x >= static_cast<std::uint32_t>(x + w) || moving_x >= m_width)
 			{
 				moving_x = x;
+				moving_y++;
 				if(moving_y >= static_cast<std::uint32_t>(y + h) || moving_y >= m_height)
 					break;
-				moving_y++;
 			}
 			if constexpr(std::endian::native == std::endian::little)
 				dst[i] = ReverseColor(m_staging_buffer->GetMap<mlx_color*>()[(moving_y * m_width) + moving_x]);
