@@ -158,3 +158,66 @@
    obj:*libdbus-1.so*
    ...
 }
+{
+   vulkan_lvp_leaks
+   Memcheck:Leak
+   fun:*
+   ...
+   obj:*libvulkan_lvp.so*
+   ...
+}
+{
+   vulkan_intel_leaks
+   Memcheck:Leak
+   fun:*
+   ...
+   obj:*libvulkan_intel.so*
+   ...
+}
+{
+   vulkan_base_leaks
+   Memcheck:Leak
+   fun:*
+   ...
+   obj:*libvulkan.so*
+   ...
+}
+{
+   vulkan_mesa_leaks
+   Memcheck:Leak
+   fun:*
+   ...
+   obj:*libVkLayer_MESA_device_select.so*
+   ...
+}
+{
+   vulkan_read_errors
+   Memcheck:Addr1
+   ...
+   obj:*libvulkan*
+   ...
+}
+{
+   vulkan_read_errors_intel
+   Memcheck:Addr1
+   ...
+   obj:*libvulkan_intel.so*
+   ...
+}
+{
+   nvidia_thread_read_errors
+   Memcheck:Addr1
+   ...
+   obj:*libnvidia-glcore.so*
+   ...
+   fun:start_thread
+   ...
+}
+{
+   nvidia_specific_thread_error
+   Memcheck:Addr1
+   obj:*libnvidia-glcore.so.550.120*
+   obj:*libnvidia-glcore.so.550.120*
+   fun:start_thread
+   fun:clone
+}
