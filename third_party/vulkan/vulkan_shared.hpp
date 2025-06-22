@@ -874,6 +874,27 @@ private:
   };
   using SharedMicromapEXT = SharedHandle<MicromapEXT>;
 
+  //=== VK_ARM_tensors ===
+  template <>
+  class SharedHandleTraits<TensorARM>
+  {
+  public:
+    using DestructorType = Device;
+    using deleter        = detail::ObjectDestroyShared<TensorARM>;
+  };
+
+  using SharedTensorARM = SharedHandle<TensorARM>;
+
+  template <>
+  class SharedHandleTraits<TensorViewARM>
+  {
+  public:
+    using DestructorType = Device;
+    using deleter        = detail::ObjectDestroyShared<TensorViewARM>;
+  };
+
+  using SharedTensorViewARM = SharedHandle<TensorViewARM>;
+
   //=== VK_NV_optical_flow ===
   template <>
   class SharedHandleTraits<OpticalFlowSessionNV>
@@ -904,14 +925,26 @@ private:
   };
   using SharedPipelineBinaryKHR = SharedHandle<PipelineBinaryKHR>;
 
+  //=== VK_ARM_data_graph ===
+  template <>
+  class SharedHandleTraits<DataGraphPipelineSessionARM>
+  {
+  public:
+    using DestructorType = Device;
+    using deleter        = detail::ObjectDestroyShared<DataGraphPipelineSessionARM>;
+  };
+
+  using SharedDataGraphPipelineSessionARM = SharedHandle<DataGraphPipelineSessionARM>;
+
   //=== VK_NV_external_compute_queue ===
   template <>
   class SharedHandleTraits<ExternalComputeQueueNV>
   {
   public:
     using DestructorType = Device;
-    using deleter = detail::ObjectDestroyShared<ExternalComputeQueueNV>;
+    using deleter        = detail::ObjectDestroyShared<ExternalComputeQueueNV>;
   };
+
   using SharedExternalComputeQueueNV = SharedHandle<ExternalComputeQueueNV>;
 
   //=== VK_EXT_device_generated_commands ===

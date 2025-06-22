@@ -323,5 +323,4 @@ namespace VULKAN_HPP_NAMESPACE
 #  define VULKAN_HPP_RAII_CREATE_NOEXCEPT
 #endif
 
-
 #endif
