@@ -218,7 +218,7 @@ namespace mlx
 	void Texture::SetPixel(int x, int y, mlx_color color) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
-		if(x < 0 || y < 0 || static_cast<std::uint32_t>(x) > m_width || static_cast<std::uint32_t>(y) > m_height)
+		if(x < 0 || y < 0 || static_cast<std::uint32_t>(x) >= m_width || static_cast<std::uint32_t>(y) >= m_height)
 			return;
 		if(!m_staging_buffer.has_value())
 			OpenCPUBuffer();
@@ -232,7 +232,7 @@ namespace mlx
 	void Texture::SetRegion(int x, int y, int w, int h, mlx_color* pixels) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
-		if(x < 0 || y < 0 || static_cast<std::uint32_t>(x) > m_width || static_cast<std::uint32_t>(y) > m_height)
+		if(x < 0 || y < 0 || static_cast<std::uint32_t>(x) >= m_width || static_cast<std::uint32_t>(y) >= m_height)
 			return;
 		if(w < 0 || h < 0)
 			return;
@@ -258,7 +258,7 @@ namespace mlx
 	void Texture::SetLinearRegion(int x, int y, std::size_t len, mlx_color* pixels) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
-		if(x < 0 || y < 0 || static_cast<std::uint32_t>(x) > m_width || static_cast<std::uint32_t>(y) > m_height)
+		if(x < 0 || y < 0 || static_cast<std::uint32_t>(x) >= m_width || static_cast<std::uint32_t>(y) >= m_height)
 			return;
 		if(!m_staging_buffer.has_value())
 			OpenCPUBuffer();
@@ -282,7 +282,7 @@ namespace mlx
 	mlx_color Texture::GetPixel(int x, int y) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
-		if(x < 0 || y < 0 || static_cast<std::uint32_t>(x) > m_width || static_cast<std::uint32_t>(y) > m_height)
+		if(x < 0 || y < 0 || static_cast<std::uint32_t>(x) >= m_width || static_cast<std::uint32_t>(y) >= m_height)
 			return { .rgba = 0x00000000 };
 		if(!m_staging_buffer.has_value())
 			OpenCPUBuffer();
@@ -295,7 +295,7 @@ namespace mlx
 	void Texture::GetRegion(int x, int y, int w, int h, mlx_color* dst) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
-		if(x < 0 || y < 0 || static_cast<std::uint32_t>(x) > m_width || static_cast<std::uint32_t>(y) > m_height)
+		if(x < 0 || y < 0 || static_cast<std::uint32_t>(x) >= m_width || static_cast<std::uint32_t>(y) >= m_height)
 			return;
 		if(!m_staging_buffer.has_value())
 			OpenCPUBuffer();
