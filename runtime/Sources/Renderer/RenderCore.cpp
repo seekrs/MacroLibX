@@ -87,15 +87,24 @@ namespace mlx
 		kvfSetValidationErrorCallback(&ValidationErrorCallback);
 		kvfSetValidationWarningCallback(&WarningCallback);
 
-		mlx_window_create_info info{};
-		info.title = "";
-		info.width = 1;
-		info.height = 1;
-		Window window(&info, true);
-		std::vector<const char*> instance_extensions = window.GetRequiredVulkanInstanceExtentions();
-		#ifdef MLX_PLAT_MACOS
-			instance_extensions.push_back(VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME);
-		#endif
+		std::vector<const char*> instance_extensions;
+		VkSurfaceKHR surface = VK_NULL_HANDLE;
+		std::unique_ptr<Window> window;
+
+		bool is_headless = std::getenv("MLX_HEADLESS_MODE") != nullptr;
+
+		if(!is_headless)
+		{
+			mlx_window_create_info info{};
+			info.title = "";
+			info.width = 1;
+			info.height = 1;
+			window = std::make_unique<Window>(&info, true);
+			instance_extensions = window->GetRequiredVulkanInstanceExtentions();
+			#ifdef MLX_PLAT_MACOS
+				instance_extensions.push_back(VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME);
+			#endif
+		}
 
 		m_instance = kvfCreateInstance(instance_extensions.data(), instance_extensions.size());
 		DebugLog("Vulkan: instance created");
@@ -103,9 +112,13 @@ namespace mlx
 		loader->LoadInstance(m_instance);
 		LoadKVFInstanceVulkanFunctionPointers();
 
-		VkSurfaceKHR surface = window.CreateVulkanSurface(m_instance);
-
-		m_physical_device = kvfPickGoodDefaultPhysicalDevice(m_instance, surface);
+		if(!is_headless)
+		{
+			surface = window->CreateVulkanSurface(m_instance);
+			m_physical_device = kvfPickGoodDefaultPhysicalDevice(m_instance, surface);
+		}
+		else
+			m_physical_device = kvfPickGoodPhysicalDevice(m_instance, VK_NULL_HANDLE, nullptr, 0);
 
 		// just for style
 		VkPhysicalDeviceProperties props;
@@ -121,7 +134,8 @@ namespace mlx
 		loader->LoadDevice(m_device);
 		LoadKVFDeviceVulkanFunctionPointers();
 
-		vkDestroySurfaceKHR(m_instance, surface, nullptr);
+		if(surface != VK_NULL_HANDLE)
+			vkDestroySurfaceKHR(m_instance, surface, nullptr);
 
 		VkAllocationCallbacks callbacks;
 		callbacks.pUserData = nullptr;
