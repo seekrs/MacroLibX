@@ -51,7 +51,7 @@
 #ifndef KBZ_8_VULKAN_FRAMEWORK_H
 #define KBZ_8_VULKAN_FRAMEWORK_H
 
-#ifdef KVF_IMPL_VK_NO_PROTOTYPES
+#if defined(KVF_IMPL_VK_NO_PROTOTYPES) && !defined(VK_NO_PROTOTYPES)
 	#define VK_NO_PROTOTYPES
 #endif
 
@@ -159,7 +159,7 @@ VkSampler kvfCreateSampler(VkDevice device, VkFilter filters, VkSamplerAddressMo
 void kvfDestroySampler(VkDevice device, VkSampler sampler);
 
 VkBuffer kvfCreateBuffer(VkDevice device, VkBufferUsageFlags usage, VkDeviceSize size);
-void kvfCopyBufferToBuffer(VkCommandBuffer cmd, VkBuffer dst, VkBuffer src, size_t size);
+void kvfCopyBufferToBuffer(VkCommandBuffer cmd, VkBuffer dst, VkBuffer src, size_t size, size_t src_offset, size_t dst_offset);
 void kvfCopyBufferToImage(VkCommandBuffer cmd, VkImage dst, VkBuffer src, size_t buffer_offset, VkImageAspectFlagBits aspect, VkExtent3D extent);
 void kvfDestroyBuffer(VkDevice device, VkBuffer buffer);
 
@@ -374,12 +374,12 @@ void kvfCheckVk(VkResult result);
 #ifdef KVF_DESCRIPTOR_POOL_CAPACITY
 	#undef KVF_DESCRIPTOR_POOL_CAPACITY
 #endif
-#define KVF_DESCRIPTOR_POOL_CAPACITY 512
+#define KVF_DESCRIPTOR_POOL_CAPACITY 1024
 
 #ifdef KVF_COMMAND_POOL_CAPACITY
 	#undef KVF_COMMAND_POOL_CAPACITY
 #endif
-#define KVF_COMMAND_POOL_CAPACITY 512
+#define KVF_COMMAND_POOL_CAPACITY 1024
 
 typedef struct
 {
@@ -560,6 +560,7 @@ void __kvfCompleteDevice(VkPhysicalDevice physical, VkDevice device)
 
 	kvf_device->device = device;
 	kvf_device->cmd_pool = pool;
+	kvf_device->callbacks = NULL;
 	kvf_device->sets_pools = NULL;
 	kvf_device->sets_pools_size = 0;
 	kvf_device->cmd_buffers_size = 0;
@@ -2277,7 +2278,7 @@ VkBuffer kvfCreateBuffer(VkDevice device, VkBufferUsageFlags usage, VkDeviceSize
 	return buffer;
 }
 
-void kvfCopyBufferToBuffer(VkCommandBuffer cmd, VkBuffer dst, VkBuffer src, size_t size)
+void kvfCopyBufferToBuffer(VkCommandBuffer cmd, VkBuffer dst, VkBuffer src, size_t size, size_t src_offset, size_t dst_offset)
 {
 	KVF_ASSERT(cmd != VK_NULL_HANDLE);
 	KVF_ASSERT(dst != VK_NULL_HANDLE);
@@ -2288,6 +2289,8 @@ void kvfCopyBufferToBuffer(VkCommandBuffer cmd, VkBuffer dst, VkBuffer src, size
 	#endif
 	VkBufferCopy copy_region = {};
 	copy_region.size = size;
+	copy_region.srcOffset = src_offset;
+	copy_region.dstOffset = dst_offset;
 	KVF_GET_DEVICE_FUNCTION(vkCmdCopyBuffer)(cmd, src, dst, 1, &copy_region);
 }
 
@@ -2543,7 +2546,7 @@ VkAttachmentDescription kvfBuildAttachmentDescription(KvfImageType type, VkForma
 		__KvfSwapchain* kvf_swapchain = __kvfGetKvfSwapchainFromVkSwapchainKHR(swapchain);
 		KVF_ASSERT(kvf_swapchain != NULL);
 		KVF_ASSERT(kvf_swapchain->images_count != 0);
-		return kvfBuildAttachmentDescription(KVF_IMAGE_COLOR, kvf_swapchain->images_format, VK_IMAGE_LAYOUT_UNDEFINED,VK_IMAGE_LAYOUT_PRESENT_SRC_KHR, clear, VK_SAMPLE_COUNT_1_BIT);
+		return kvfBuildAttachmentDescription(KVF_IMAGE_COLOR, kvf_swapchain->images_format, VK_IMAGE_LAYOUT_PRESENT_SRC_KHR, VK_IMAGE_LAYOUT_PRESENT_SRC_KHR, clear, VK_SAMPLE_COUNT_1_BIT);
 	}
 #endif
 
