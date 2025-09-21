@@ -42,10 +42,8 @@ export namespace VULKAN_HPP_NAMESPACE
   {
     using VULKAN_HPP_NAMESPACE::detail::DispatchLoaderBase;
     using VULKAN_HPP_NAMESPACE::detail::DispatchLoaderDynamic;
-#if !defined( VULKAN_HPP_DEFAULT_DISPATCHER )
-# if VULKAN_HPP_DISPATCH_LOADER_DYNAMIC == 1
+#if VULKAN_HPP_DISPATCH_LOADER_DYNAMIC == 1
     using VULKAN_HPP_NAMESPACE::detail::defaultDispatchLoaderDynamic;
-# endif
 #endif
 #if !defined( VK_NO_PROTOTYPES )
     using VULKAN_HPP_NAMESPACE::detail::DispatchLoaderStatic;
@@ -717,12 +715,6 @@ using VULKAN_HPP_DEFAULT_DISPATCHER_TYPE;
   //=== VK_KHR_pipeline_executable_properties ===
   using VULKAN_HPP_NAMESPACE::PipelineExecutableStatisticFormatKHR;
 
-  //=== VK_EXT_surface_maintenance1 ===
-  using VULKAN_HPP_NAMESPACE::PresentScalingFlagBitsEXT;
-  using VULKAN_HPP_NAMESPACE::PresentScalingFlagsEXT;
-  using VULKAN_HPP_NAMESPACE::PresentGravityFlagBitsEXT;
-  using VULKAN_HPP_NAMESPACE::PresentGravityFlagsEXT;
-
   //=== VK_NV_device_generated_commands ===
   using VULKAN_HPP_NAMESPACE::IndirectStateFlagBitsNV;
   using VULKAN_HPP_NAMESPACE::IndirectStateFlagsNV;
@@ -823,6 +815,14 @@ using VULKAN_HPP_DEFAULT_DISPATCHER_TYPE;
   using VULKAN_HPP_NAMESPACE::ScreenSurfaceCreateFlagsQNX;
 #endif /*VK_USE_PLATFORM_SCREEN_QNX*/
 
+  //=== VK_VALVE_video_encode_rgb_conversion ===
+  using VULKAN_HPP_NAMESPACE::VideoEncodeRgbChromaOffsetFlagBitsVALVE;
+  using VULKAN_HPP_NAMESPACE::VideoEncodeRgbChromaOffsetFlagsVALVE;
+  using VULKAN_HPP_NAMESPACE::VideoEncodeRgbModelConversionFlagBitsVALVE;
+  using VULKAN_HPP_NAMESPACE::VideoEncodeRgbModelConversionFlagsVALVE;
+  using VULKAN_HPP_NAMESPACE::VideoEncodeRgbRangeCompressionFlagBitsVALVE;
+  using VULKAN_HPP_NAMESPACE::VideoEncodeRgbRangeCompressionFlagsVALVE;
+
   //=== VK_EXT_opacity_micromap ===
   using VULKAN_HPP_NAMESPACE::MicromapTypeEXT;
   using VULKAN_HPP_NAMESPACE::BuildMicromapFlagBitsEXT;
@@ -884,10 +884,25 @@ using VULKAN_HPP_DEFAULT_DISPATCHER_TYPE;
   using VULKAN_HPP_NAMESPACE::AntiLagModeAMD;
   using VULKAN_HPP_NAMESPACE::AntiLagStageAMD;
 
+#if defined( VK_ENABLE_BETA_EXTENSIONS )
+  //=== VK_AMDX_dense_geometry_format ===
+  using VULKAN_HPP_NAMESPACE::CompressedTriangleFormatAMDX;
+#endif /*VK_ENABLE_BETA_EXTENSIONS*/
+
   //=== VK_EXT_shader_object ===
   using VULKAN_HPP_NAMESPACE::ShaderCreateFlagBitsEXT;
   using VULKAN_HPP_NAMESPACE::ShaderCreateFlagsEXT;
   using VULKAN_HPP_NAMESPACE::ShaderCodeTypeEXT;
+
+  //=== VK_KHR_surface_maintenance1 ===
+  using VULKAN_HPP_NAMESPACE::PresentGravityFlagBitsEXT;
+  using VULKAN_HPP_NAMESPACE::PresentGravityFlagBitsKHR;
+  using VULKAN_HPP_NAMESPACE::PresentGravityFlagsEXT;
+  using VULKAN_HPP_NAMESPACE::PresentGravityFlagsKHR;
+  using VULKAN_HPP_NAMESPACE::PresentScalingFlagBitsEXT;
+  using VULKAN_HPP_NAMESPACE::PresentScalingFlagBitsKHR;
+  using VULKAN_HPP_NAMESPACE::PresentScalingFlagsEXT;
+  using VULKAN_HPP_NAMESPACE::PresentScalingFlagsKHR;
 
   //=== VK_NV_ray_tracing_invocation_reorder ===
   using VULKAN_HPP_NAMESPACE::RayTracingInvocationReorderModeNV;
@@ -946,6 +961,10 @@ using VULKAN_HPP_DEFAULT_DISPATCHER_TYPE;
 
   //=== VK_NV_display_stereo ===
   using VULKAN_HPP_NAMESPACE::DisplaySurfaceStereoTypeNV;
+
+  //=== VK_KHR_video_encode_intra_refresh ===
+  using VULKAN_HPP_NAMESPACE::VideoEncodeIntraRefreshModeFlagBitsKHR;
+  using VULKAN_HPP_NAMESPACE::VideoEncodeIntraRefreshModeFlagsKHR;
 
   //=== VK_KHR_maintenance7 ===
   using VULKAN_HPP_NAMESPACE::PhysicalDeviceLayeredApiKHR;
@@ -1030,18 +1049,7 @@ using VULKAN_HPP_DEFAULT_DISPATCHER_TYPE;
   using VULKAN_HPP_NAMESPACE::FormatNotSupportedError;
   using VULKAN_HPP_NAMESPACE::FragmentedPoolError;
   using VULKAN_HPP_NAMESPACE::UnknownError;
-  using VULKAN_HPP_NAMESPACE::OutOfPoolMemoryError;
-  using VULKAN_HPP_NAMESPACE::InvalidExternalHandleError;
-  using VULKAN_HPP_NAMESPACE::FragmentationError;
-  using VULKAN_HPP_NAMESPACE::InvalidOpaqueCaptureAddressError;
-  using VULKAN_HPP_NAMESPACE::NotPermittedError;
-  using VULKAN_HPP_NAMESPACE::SurfaceLostKHRError;
-  using VULKAN_HPP_NAMESPACE::NativeWindowInUseKHRError;
-  using VULKAN_HPP_NAMESPACE::OutOfDateKHRError;
-  using VULKAN_HPP_NAMESPACE::IncompatibleDisplayKHRError;
-  using VULKAN_HPP_NAMESPACE::ValidationFailedEXTError;
-  using VULKAN_HPP_NAMESPACE::InvalidShaderNVError;
-  using VULKAN_HPP_NAMESPACE::ImageUsageNotSupportedKHRError;
+  using VULKAN_HPP_NAMESPACE::ValidationFailedError;
   using VULKAN_HPP_NAMESPACE::VideoPictureLayoutNotSupportedKHRError;
   using VULKAN_HPP_NAMESPACE::VideoProfileOperationNotSupportedKHRError;
   using VULKAN_HPP_NAMESPACE::VideoProfileFormatNotSupportedKHRError;
@@ -2343,10 +2351,18 @@ using VULKAN_HPP_DEFAULT_DISPATCHER_TYPE;
   using VULKAN_HPP_NAMESPACE::KHRRayTracingMaintenance1ExtensionName;
   using VULKAN_HPP_NAMESPACE::KHRRayTracingMaintenance1SpecVersion;
 
+  //=== VK_KHR_shader_untyped_pointers ===
+  using VULKAN_HPP_NAMESPACE::KHRShaderUntypedPointersExtensionName;
+  using VULKAN_HPP_NAMESPACE::KHRShaderUntypedPointersSpecVersion;
+
   //=== VK_EXT_global_priority_query ===
   using VULKAN_HPP_NAMESPACE::MaxGlobalPrioritySizeEXT;
   using VULKAN_HPP_NAMESPACE::EXTGlobalPriorityQueryExtensionName;
   using VULKAN_HPP_NAMESPACE::EXTGlobalPriorityQuerySpecVersion;
+
+  //=== VK_VALVE_video_encode_rgb_conversion ===
+  using VULKAN_HPP_NAMESPACE::VALVEVideoEncodeRgbConversionExtensionName;
+  using VULKAN_HPP_NAMESPACE::VALVEVideoEncodeRgbConversionSpecVersion;
 
   //=== VK_EXT_image_view_min_lod ===
   using VULKAN_HPP_NAMESPACE::EXTImageViewMinLodExtensionName;
@@ -2530,6 +2546,14 @@ using VULKAN_HPP_DEFAULT_DISPATCHER_TYPE;
   using VULKAN_HPP_NAMESPACE::AMDAntiLagExtensionName;
   using VULKAN_HPP_NAMESPACE::AMDAntiLagSpecVersion;
 
+#if defined( VK_ENABLE_BETA_EXTENSIONS )
+  //=== VK_AMDX_dense_geometry_format ===
+  using VULKAN_HPP_NAMESPACE::AMDXDenseGeometryFormatExtensionName;
+  using VULKAN_HPP_NAMESPACE::AMDXDenseGeometryFormatSpecVersion;
+  using VULKAN_HPP_NAMESPACE::CompressedTriangleFormatDgf1ByteAlignmentAMDX;
+  using VULKAN_HPP_NAMESPACE::CompressedTriangleFormatDgf1ByteStrideAMDX;
+#endif /*VK_ENABLE_BETA_EXTENSIONS*/
+
   //=== VK_KHR_present_id2 ===
   using VULKAN_HPP_NAMESPACE::KHRPresentId2ExtensionName;
   using VULKAN_HPP_NAMESPACE::KHRPresentId2SpecVersion;
@@ -2558,6 +2582,14 @@ using VULKAN_HPP_DEFAULT_DISPATCHER_TYPE;
   //=== VK_SEC_amigo_profiling ===
   using VULKAN_HPP_NAMESPACE::SECAmigoProfilingExtensionName;
   using VULKAN_HPP_NAMESPACE::SECAmigoProfilingSpecVersion;
+
+  //=== VK_KHR_surface_maintenance1 ===
+  using VULKAN_HPP_NAMESPACE::KHRSurfaceMaintenance1ExtensionName;
+  using VULKAN_HPP_NAMESPACE::KHRSurfaceMaintenance1SpecVersion;
+
+  //=== VK_KHR_swapchain_maintenance1 ===
+  using VULKAN_HPP_NAMESPACE::KHRSwapchainMaintenance1ExtensionName;
+  using VULKAN_HPP_NAMESPACE::KHRSwapchainMaintenance1SpecVersion;
 
   //=== VK_QCOM_multiview_per_view_viewports ===
   using VULKAN_HPP_NAMESPACE::QCOMMultiviewPerViewViewportsExtensionName;
@@ -2720,6 +2752,10 @@ using VULKAN_HPP_DEFAULT_DISPATCHER_TYPE;
   using VULKAN_HPP_NAMESPACE::NVDisplayStereoExtensionName;
   using VULKAN_HPP_NAMESPACE::NVDisplayStereoSpecVersion;
 
+  //=== VK_KHR_video_encode_intra_refresh ===
+  using VULKAN_HPP_NAMESPACE::KHRVideoEncodeIntraRefreshExtensionName;
+  using VULKAN_HPP_NAMESPACE::KHRVideoEncodeIntraRefreshSpecVersion;
+
   //=== VK_KHR_video_encode_quantization_map ===
   using VULKAN_HPP_NAMESPACE::KHRVideoEncodeQuantizationMapExtensionName;
   using VULKAN_HPP_NAMESPACE::KHRVideoEncodeQuantizationMapSpecVersion;
@@ -2850,6 +2886,14 @@ using VULKAN_HPP_DEFAULT_DISPATCHER_TYPE;
   //=== VK_EXT_zero_initialize_device_memory ===
   using VULKAN_HPP_NAMESPACE::EXTZeroInitializeDeviceMemoryExtensionName;
   using VULKAN_HPP_NAMESPACE::EXTZeroInitializeDeviceMemorySpecVersion;
+
+  //=== VK_KHR_present_mode_fifo_latest_ready ===
+  using VULKAN_HPP_NAMESPACE::KHRPresentModeFifoLatestReadyExtensionName;
+  using VULKAN_HPP_NAMESPACE::KHRPresentModeFifoLatestReadySpecVersion;
+
+  //=== VK_SEC_pipeline_cache_incremental_mode ===
+  using VULKAN_HPP_NAMESPACE::SECPipelineCacheIncrementalModeExtensionName;
+  using VULKAN_HPP_NAMESPACE::SECPipelineCacheIncrementalModeSpecVersion;
 
   //========================
   //=== CONSTEXPR VALUEs ===
@@ -4146,19 +4190,6 @@ using VULKAN_HPP_DEFAULT_DISPATCHER_TYPE;
   //=== VK_EXT_shader_atomic_float2 ===
   using VULKAN_HPP_NAMESPACE::PhysicalDeviceShaderAtomicFloat2FeaturesEXT;
 
-  //=== VK_EXT_surface_maintenance1 ===
-  using VULKAN_HPP_NAMESPACE::SurfacePresentModeEXT;
-  using VULKAN_HPP_NAMESPACE::SurfacePresentScalingCapabilitiesEXT;
-  using VULKAN_HPP_NAMESPACE::SurfacePresentModeCompatibilityEXT;
-
-  //=== VK_EXT_swapchain_maintenance1 ===
-  using VULKAN_HPP_NAMESPACE::PhysicalDeviceSwapchainMaintenance1FeaturesEXT;
-  using VULKAN_HPP_NAMESPACE::SwapchainPresentFenceInfoEXT;
-  using VULKAN_HPP_NAMESPACE::SwapchainPresentModesCreateInfoEXT;
-  using VULKAN_HPP_NAMESPACE::SwapchainPresentModeInfoEXT;
-  using VULKAN_HPP_NAMESPACE::SwapchainPresentScalingCreateInfoEXT;
-  using VULKAN_HPP_NAMESPACE::ReleaseSwapchainImagesInfoEXT;
-
   //=== VK_NV_device_generated_commands ===
   using VULKAN_HPP_NAMESPACE::PhysicalDeviceDeviceGeneratedCommandsPropertiesNV;
   using VULKAN_HPP_NAMESPACE::PhysicalDeviceDeviceGeneratedCommandsFeaturesNV;
@@ -4376,9 +4407,6 @@ using VULKAN_HPP_DEFAULT_DISPATCHER_TYPE;
   //=== VK_EXT_primitive_topology_list_restart ===
   using VULKAN_HPP_NAMESPACE::PhysicalDevicePrimitiveTopologyListRestartFeaturesEXT;
 
-  //=== VK_EXT_present_mode_fifo_latest_ready ===
-  using VULKAN_HPP_NAMESPACE::PhysicalDevicePresentModeFifoLatestReadyFeaturesEXT;
-
 #if defined( VK_USE_PLATFORM_FUCHSIA )
   //=== VK_FUCHSIA_external_memory ===
   using VULKAN_HPP_NAMESPACE::ImportMemoryZirconHandleInfoFUCHSIA;
@@ -4449,6 +4477,15 @@ using VULKAN_HPP_DEFAULT_DISPATCHER_TYPE;
   //=== VK_KHR_ray_tracing_maintenance1 ===
   using VULKAN_HPP_NAMESPACE::PhysicalDeviceRayTracingMaintenance1FeaturesKHR;
   using VULKAN_HPP_NAMESPACE::TraceRaysIndirectCommand2KHR;
+
+  //=== VK_KHR_shader_untyped_pointers ===
+  using VULKAN_HPP_NAMESPACE::PhysicalDeviceShaderUntypedPointersFeaturesKHR;
+
+  //=== VK_VALVE_video_encode_rgb_conversion ===
+  using VULKAN_HPP_NAMESPACE::PhysicalDeviceVideoEncodeRgbConversionFeaturesVALVE;
+  using VULKAN_HPP_NAMESPACE::VideoEncodeProfileRgbConversionInfoVALVE;
+  using VULKAN_HPP_NAMESPACE::VideoEncodeRgbConversionCapabilitiesVALVE;
+  using VULKAN_HPP_NAMESPACE::VideoEncodeSessionRgbConversionCreateInfoVALVE;
 
   //=== VK_EXT_image_view_min_lod ===
   using VULKAN_HPP_NAMESPACE::PhysicalDeviceImageViewMinLodFeaturesEXT;
@@ -4648,6 +4685,12 @@ using VULKAN_HPP_DEFAULT_DISPATCHER_TYPE;
   using VULKAN_HPP_NAMESPACE::AntiLagDataAMD;
   using VULKAN_HPP_NAMESPACE::AntiLagPresentationInfoAMD;
 
+#if defined( VK_ENABLE_BETA_EXTENSIONS )
+  //=== VK_AMDX_dense_geometry_format ===
+  using VULKAN_HPP_NAMESPACE::AccelerationStructureDenseGeometryFormatTrianglesDataAMDX;
+  using VULKAN_HPP_NAMESPACE::PhysicalDeviceDenseGeometryFormatFeaturesAMDX;
+#endif /*VK_ENABLE_BETA_EXTENSIONS*/
+
   //=== VK_KHR_present_id2 ===
   using VULKAN_HPP_NAMESPACE::SurfaceCapabilitiesPresentId2KHR;
   using VULKAN_HPP_NAMESPACE::PresentId2KHR;
@@ -4687,6 +4730,28 @@ using VULKAN_HPP_DEFAULT_DISPATCHER_TYPE;
   //=== VK_SEC_amigo_profiling ===
   using VULKAN_HPP_NAMESPACE::PhysicalDeviceAmigoProfilingFeaturesSEC;
   using VULKAN_HPP_NAMESPACE::AmigoProfilingSubmitInfoSEC;
+
+  //=== VK_KHR_surface_maintenance1 ===
+  using VULKAN_HPP_NAMESPACE::SurfacePresentModeCompatibilityEXT;
+  using VULKAN_HPP_NAMESPACE::SurfacePresentModeCompatibilityKHR;
+  using VULKAN_HPP_NAMESPACE::SurfacePresentModeEXT;
+  using VULKAN_HPP_NAMESPACE::SurfacePresentModeKHR;
+  using VULKAN_HPP_NAMESPACE::SurfacePresentScalingCapabilitiesEXT;
+  using VULKAN_HPP_NAMESPACE::SurfacePresentScalingCapabilitiesKHR;
+
+  //=== VK_KHR_swapchain_maintenance1 ===
+  using VULKAN_HPP_NAMESPACE::PhysicalDeviceSwapchainMaintenance1FeaturesEXT;
+  using VULKAN_HPP_NAMESPACE::PhysicalDeviceSwapchainMaintenance1FeaturesKHR;
+  using VULKAN_HPP_NAMESPACE::ReleaseSwapchainImagesInfoEXT;
+  using VULKAN_HPP_NAMESPACE::ReleaseSwapchainImagesInfoKHR;
+  using VULKAN_HPP_NAMESPACE::SwapchainPresentFenceInfoEXT;
+  using VULKAN_HPP_NAMESPACE::SwapchainPresentFenceInfoKHR;
+  using VULKAN_HPP_NAMESPACE::SwapchainPresentModeInfoEXT;
+  using VULKAN_HPP_NAMESPACE::SwapchainPresentModeInfoKHR;
+  using VULKAN_HPP_NAMESPACE::SwapchainPresentModesCreateInfoEXT;
+  using VULKAN_HPP_NAMESPACE::SwapchainPresentModesCreateInfoKHR;
+  using VULKAN_HPP_NAMESPACE::SwapchainPresentScalingCreateInfoEXT;
+  using VULKAN_HPP_NAMESPACE::SwapchainPresentScalingCreateInfoKHR;
 
   //=== VK_QCOM_multiview_per_view_viewports ===
   using VULKAN_HPP_NAMESPACE::PhysicalDeviceMultiviewPerViewViewportsFeaturesQCOM;
@@ -4873,6 +4938,13 @@ using VULKAN_HPP_DEFAULT_DISPATCHER_TYPE;
   using VULKAN_HPP_NAMESPACE::DisplaySurfaceStereoCreateInfoNV;
   using VULKAN_HPP_NAMESPACE::DisplayModeStereoPropertiesNV;
 
+  //=== VK_KHR_video_encode_intra_refresh ===
+  using VULKAN_HPP_NAMESPACE::PhysicalDeviceVideoEncodeIntraRefreshFeaturesKHR;
+  using VULKAN_HPP_NAMESPACE::VideoEncodeIntraRefreshCapabilitiesKHR;
+  using VULKAN_HPP_NAMESPACE::VideoEncodeIntraRefreshInfoKHR;
+  using VULKAN_HPP_NAMESPACE::VideoEncodeSessionIntraRefreshCreateInfoKHR;
+  using VULKAN_HPP_NAMESPACE::VideoReferenceIntraRefreshInfoKHR;
+
   //=== VK_KHR_video_encode_quantization_map ===
   using VULKAN_HPP_NAMESPACE::VideoEncodeQuantizationMapCapabilitiesKHR;
   using VULKAN_HPP_NAMESPACE::VideoFormatQuantizationMapPropertiesKHR;
@@ -5002,7 +5074,6 @@ using VULKAN_HPP_DEFAULT_DISPATCHER_TYPE;
 
 #if defined( VK_USE_PLATFORM_OHOS )
   //=== VK_OHOS_surface ===
-  using VULKAN_HPP_NAMESPACE::OHSurfaceCreateInfoOHOS;
   using VULKAN_HPP_NAMESPACE::SurfaceCreateInfoOHOS;
 #endif /*VK_USE_PLATFORM_OHOS*/
 
@@ -5063,6 +5134,13 @@ using VULKAN_HPP_DEFAULT_DISPATCHER_TYPE;
 
   //=== VK_EXT_zero_initialize_device_memory ===
   using VULKAN_HPP_NAMESPACE::PhysicalDeviceZeroInitializeDeviceMemoryFeaturesEXT;
+
+  //=== VK_KHR_present_mode_fifo_latest_ready ===
+  using VULKAN_HPP_NAMESPACE::PhysicalDevicePresentModeFifoLatestReadyFeaturesEXT;
+  using VULKAN_HPP_NAMESPACE::PhysicalDevicePresentModeFifoLatestReadyFeaturesKHR;
+
+  //=== VK_SEC_pipeline_cache_incremental_mode ===
+  using VULKAN_HPP_NAMESPACE::PhysicalDevicePipelineCacheIncrementalModeFeaturesSEC;
 
   //===============
   //=== HANDLEs ===
@@ -5420,7 +5498,9 @@ using VULKAN_HPP_DEFAULT_DISPATCHER_TYPE;
   //=== VK_EXT_device_generated_commands ===
   using VULKAN_HPP_NAMESPACE::SharedIndirectCommandsLayoutEXT;
   using VULKAN_HPP_NAMESPACE::SharedIndirectExecutionSetEXT;
-  using VULKAN_HPP_NAMESPACE::SharedHandleTraits;
+
+  //=== VK_KHR_swapchain enum ===
+  using VULKAN_HPP_NAMESPACE::SwapchainOwns;
 #endif /*VULKAN_HPP_NO_SMART_HANDLE*/
 
 
@@ -6783,19 +6863,6 @@ export namespace std
   //=== VK_EXT_shader_atomic_float2 ===
   template <> struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceShaderAtomicFloat2FeaturesEXT>;
 
-  //=== VK_EXT_surface_maintenance1 ===
-  template <> struct hash<VULKAN_HPP_NAMESPACE::SurfacePresentModeEXT>;
-  template <> struct hash<VULKAN_HPP_NAMESPACE::SurfacePresentScalingCapabilitiesEXT>;
-  template <> struct hash<VULKAN_HPP_NAMESPACE::SurfacePresentModeCompatibilityEXT>;
-
-  //=== VK_EXT_swapchain_maintenance1 ===
-  template <> struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceSwapchainMaintenance1FeaturesEXT>;
-  template <> struct hash<VULKAN_HPP_NAMESPACE::SwapchainPresentFenceInfoEXT>;
-  template <> struct hash<VULKAN_HPP_NAMESPACE::SwapchainPresentModesCreateInfoEXT>;
-  template <> struct hash<VULKAN_HPP_NAMESPACE::SwapchainPresentModeInfoEXT>;
-  template <> struct hash<VULKAN_HPP_NAMESPACE::SwapchainPresentScalingCreateInfoEXT>;
-  template <> struct hash<VULKAN_HPP_NAMESPACE::ReleaseSwapchainImagesInfoEXT>;
-
   //=== VK_NV_device_generated_commands ===
   template <> struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceDeviceGeneratedCommandsPropertiesNV>;
   template <> struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceDeviceGeneratedCommandsFeaturesNV>;
@@ -7012,9 +7079,6 @@ export namespace std
   //=== VK_EXT_primitive_topology_list_restart ===
   template <> struct hash<VULKAN_HPP_NAMESPACE::PhysicalDevicePrimitiveTopologyListRestartFeaturesEXT>;
 
-  //=== VK_EXT_present_mode_fifo_latest_ready ===
-  template <> struct hash<VULKAN_HPP_NAMESPACE::PhysicalDevicePresentModeFifoLatestReadyFeaturesEXT>;
-
 #if defined( VK_USE_PLATFORM_FUCHSIA )
   //=== VK_FUCHSIA_external_memory ===
   template <> struct hash<VULKAN_HPP_NAMESPACE::ImportMemoryZirconHandleInfoFUCHSIA>;
@@ -7085,6 +7149,20 @@ export namespace std
   //=== VK_KHR_ray_tracing_maintenance1 ===
   template <> struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceRayTracingMaintenance1FeaturesKHR>;
   template <> struct hash<VULKAN_HPP_NAMESPACE::TraceRaysIndirectCommand2KHR>;
+
+  //=== VK_KHR_shader_untyped_pointers ===
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceShaderUntypedPointersFeaturesKHR>;
+
+  //=== VK_VALVE_video_encode_rgb_conversion ===
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceVideoEncodeRgbConversionFeaturesVALVE>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::VideoEncodeRgbConversionCapabilitiesVALVE>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::VideoEncodeProfileRgbConversionInfoVALVE>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::VideoEncodeSessionRgbConversionCreateInfoVALVE>;
 
   //=== VK_EXT_image_view_min_lod ===
   template <> struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceImageViewMinLodFeaturesEXT>;
@@ -7283,6 +7361,14 @@ export namespace std
   template <> struct hash<VULKAN_HPP_NAMESPACE::AntiLagDataAMD>;
   template <> struct hash<VULKAN_HPP_NAMESPACE::AntiLagPresentationInfoAMD>;
 
+#if defined( VK_ENABLE_BETA_EXTENSIONS )
+  //=== VK_AMDX_dense_geometry_format ===
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceDenseGeometryFormatFeaturesAMDX>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::AccelerationStructureDenseGeometryFormatTrianglesDataAMDX>;
+#endif /*VK_ENABLE_BETA_EXTENSIONS*/
+
   //=== VK_KHR_present_id2 ===
   template <> struct hash<VULKAN_HPP_NAMESPACE::SurfaceCapabilitiesPresentId2KHR>;
   template <> struct hash<VULKAN_HPP_NAMESPACE::PresentId2KHR>;
@@ -7326,6 +7412,28 @@ export namespace std
   //=== VK_SEC_amigo_profiling ===
   template <> struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceAmigoProfilingFeaturesSEC>;
   template <> struct hash<VULKAN_HPP_NAMESPACE::AmigoProfilingSubmitInfoSEC>;
+
+  //=== VK_KHR_surface_maintenance1 ===
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::SurfacePresentModeKHR>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::SurfacePresentScalingCapabilitiesKHR>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::SurfacePresentModeCompatibilityKHR>;
+
+  //=== VK_KHR_swapchain_maintenance1 ===
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceSwapchainMaintenance1FeaturesKHR>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::SwapchainPresentFenceInfoKHR>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::SwapchainPresentModesCreateInfoKHR>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::SwapchainPresentModeInfoKHR>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::SwapchainPresentScalingCreateInfoKHR>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::ReleaseSwapchainImagesInfoKHR>;
 
   //=== VK_QCOM_multiview_per_view_viewports ===
   template <> struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceMultiviewPerViewViewportsFeaturesQCOM>;
@@ -7509,6 +7617,18 @@ export namespace std
   template <> struct hash<VULKAN_HPP_NAMESPACE::DisplaySurfaceStereoCreateInfoNV>;
   template <> struct hash<VULKAN_HPP_NAMESPACE::DisplayModeStereoPropertiesNV>;
 
+  //=== VK_KHR_video_encode_intra_refresh ===
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::VideoEncodeIntraRefreshCapabilitiesKHR>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::VideoEncodeSessionIntraRefreshCreateInfoKHR>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::VideoEncodeIntraRefreshInfoKHR>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::VideoReferenceIntraRefreshInfoKHR>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceVideoEncodeIntraRefreshFeaturesKHR>;
+
   //=== VK_KHR_video_encode_quantization_map ===
   template <> struct hash<VULKAN_HPP_NAMESPACE::VideoEncodeQuantizationMapCapabilitiesKHR>;
   template <> struct hash<VULKAN_HPP_NAMESPACE::VideoFormatQuantizationMapPropertiesKHR>;
@@ -7612,8 +7732,10 @@ export namespace std
   template <> struct hash<VULKAN_HPP_NAMESPACE::WriteIndirectExecutionSetShaderEXT>;
 
   //=== VK_KHR_maintenance8 ===
-  template <> struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceMaintenance8FeaturesKHR>;
-  template <> struct hash<VULKAN_HPP_NAMESPACE::MemoryBarrierAccessFlags3KHR>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::MemoryBarrierAccessFlags3KHR>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceMaintenance8FeaturesKHR>;
 
   //=== VK_MESA_image_alignment_control ===
   template <> struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceImageAlignmentControlFeaturesMESA>;
@@ -7638,7 +7760,8 @@ export namespace std
 
 #if defined( VK_USE_PLATFORM_OHOS )
   //=== VK_OHOS_surface ===
-  template <> struct hash<VULKAN_HPP_NAMESPACE::OHSurfaceCreateInfoOHOS>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::SurfaceCreateInfoOHOS>;
 #endif /*VK_USE_PLATFORM_OHOS*/
 
   //=== VK_HUAWEI_hdr_vivid ===
@@ -7695,6 +7818,14 @@ export namespace std
 
 
 
+
+  //=== VK_KHR_present_mode_fifo_latest_ready ===
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::PhysicalDevicePresentModeFifoLatestReadyFeaturesKHR>;
+
+  //=== VK_SEC_pipeline_cache_incremental_mode ===
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::PhysicalDevicePipelineCacheIncrementalModeFeaturesSEC>;
 
   //=================================================================
   //=== Required exports for VULKAN_HPP_NAMESPACE::StructureChain ===
@@ -8774,7 +8905,10 @@ export using ::PFN_vkReleaseCapturedPipelineDataKHR;
 export using ::PFN_vkGetFramebufferTilePropertiesQCOM;
 export using ::PFN_vkGetDynamicRenderingTilePropertiesQCOM;
 
-  //=== VK_NV_cooperative_vector ===
+//=== VK_KHR_swapchain_maintenance1 ===
+export using ::PFN_vkReleaseSwapchainImagesKHR;
+
+//=== VK_NV_cooperative_vector ===
 export using ::PFN_vkGetPhysicalDeviceCooperativeVectorPropertiesNV;
 export using ::PFN_vkConvertCooperativeVectorMatrixNV;
 export using ::PFN_vkCmdConvertCooperativeVectorMatrixNV;
