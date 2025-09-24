@@ -120,6 +120,8 @@ namespace mlx
 		else
 			m_physical_device = kvfPickGoodPhysicalDevice(m_instance, VK_NULL_HANDLE, nullptr, 0);
 
+		Verify(m_physical_device != VK_NULL_HANDLE, "Could not find a suitable physical device");
+
 		// just for style
 		VkPhysicalDeviceProperties props;
 		vkGetPhysicalDeviceProperties(m_physical_device, &props);
