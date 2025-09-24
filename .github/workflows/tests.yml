@@ -60,7 +60,7 @@ jobs:
     - name: Configure xmake and install dependencies
       run: |
         cd MacroUnitTest
-        xmake -P . config --ccache=n --yes
+        xmake config -P . --ccache=n --yes
 
     # Save dependencies
     - name: Save cached xmake dependencies
