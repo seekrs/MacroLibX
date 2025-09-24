@@ -81,7 +81,7 @@ namespace mlx
 
 		VkCommandBuffer cmd = kvfCreateCommandBuffer(RenderCore::Get().GetDevice());
 		kvfBeginCommandBuffer(cmd, VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT);
-		kvfCopyBufferToBuffer(cmd, m_buffer, buffer.Get(), m_size);
+		kvfCopyBufferToBuffer(cmd, m_buffer, buffer.Get(), m_size, 0, 0);
 		kvfEndCommandBuffer(cmd);
 		VkFence fence = kvfCreateFence(RenderCore::Get().GetDevice());
 		kvfSubmitSingleTimeCommandBuffer(RenderCore::Get().GetDevice(), cmd, KVF_GRAPHICS_QUEUE, fence);
