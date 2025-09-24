@@ -60,7 +60,7 @@ jobs:
     - name: Configure xmake and install dependencies
       run: |
         cd MacroUnitTest
-        xmake config --ccache=n --yes
+        xmake -P . config --ccache=n --yes
 
     # Save dependencies
     - name: Save cached xmake dependencies
@@ -73,4 +73,4 @@ jobs:
     - name: Build and run unit tester
       run: |
         cd MacroUnitTest
-        xmake run MacroUnitTest --headless --path=" ${GITHUB_WORKSPACE}/libmlx.so"
+        xmake run -P . MacroUnitTest --headless --path="{{ runner.workspace }}/libmlx.so"
