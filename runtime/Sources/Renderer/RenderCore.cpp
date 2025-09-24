@@ -125,10 +125,12 @@ namespace mlx
 		vkGetPhysicalDeviceProperties(m_physical_device, &props);
 		DebugLog("Vulkan: physical device picked '%'", props.deviceName);
 
-		const char* device_extensions[] = { VK_KHR_SWAPCHAIN_EXTENSION_NAME };
+		std::vector<const char*> device_extensions;
+		if(!is_headless)
+			device_extensions.push_back(VK_KHR_SWAPCHAIN_EXTENSION_NAME);
 		VkPhysicalDeviceFeatures features{};
 		vkGetPhysicalDeviceFeatures(m_physical_device, &features);
-		m_device = kvfCreateDevice(m_physical_device, device_extensions, sizeof(device_extensions) / sizeof(device_extensions[0]), &features);
+		m_device = kvfCreateDevice(m_physical_device, device_extensions.data(), device_extensions.size(), &features);
 		DebugLog("Vulkan: logical device created");
 
 		loader->LoadDevice(m_device);
