@@ -28,6 +28,10 @@ namespace mlx
 	{
 		static inline PFN_vkVoidFunction vkGetInstanceProcAddrStub(Handle context, const char* name)
 		{
+			bool is_headless = std::getenv("MLX_HEADLESS_MODE") != nullptr;
+			if(is_headless && std::string_view(name).find("KHR") != std::string_view::npos)
+				return nullptr;
+
 			PFN_vkVoidFunction function = RenderCore::Get().vkGetInstanceProcAddr(static_cast<VkInstance>(context), name);
 			if(!function)
 				FatalError("Vulkan Loader: could not load '%'", name);
@@ -37,6 +41,10 @@ namespace mlx
 
 		static inline PFN_vkVoidFunction vkGetDeviceProcAddrStub(Handle context, const char* name)
 		{
+			bool is_headless = std::getenv("MLX_HEADLESS_MODE") != nullptr;
+			if(is_headless && std::string_view(name).find("KHR") != std::string_view::npos)
+				return nullptr;
+
 			PFN_vkVoidFunction function = RenderCore::Get().vkGetDeviceProcAddr(static_cast<VkDevice>(context), name);
 			if(!function)
 				FatalError("Vulkan Loader: could not load '%'", name);
