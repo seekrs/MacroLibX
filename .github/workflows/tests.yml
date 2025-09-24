@@ -28,7 +28,7 @@ jobs:
     - name: Install system dependencies
       run: |
         sudo apt-get update
-        sudo apt-get -y install mesa-common-dev libsdl2-2.0-0 libsdl2-dev build-essential libvulkan-dev
+        sudo apt-get -y install mesa-common-dev clang libsdl2-2.0-0 libsdl2-dev build-essential libvulkan-dev
 
     # Build the lib
     - name: Build MacroLibX
@@ -62,7 +62,7 @@ jobs:
     - name: Configure xmake and install dependencies
       run: |
         cd MacroUnitTest
-        xmake config -P . --ccache=n --yes
+        xmake config -P . --toolchain=clang --ccache=n --yes
 
     # Save dependencies
     - name: Save cached xmake dependencies
