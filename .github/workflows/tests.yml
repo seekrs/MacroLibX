@@ -56,12 +56,12 @@ jobs:
       run: echo "hash=$(xmake l utils.ci.packageskey)" >> $GITHUB_OUTPUT
 
     - name: Install unit tester
-      run: git clone https://github.com/seekrs/MacroUnitTest.git
+      run: git clone https://github.com/seekrs/MacroUnitTest.git ../MacroUnitTest
 
     # Setup compilation mode and install project dependencies
     - name: Configure xmake and install dependencies
       run: |
-        cd MacroUnitTest
+        cd ../MacroUnitTest
         xmake config -P . --toolchain=clang --ccache=n --yes
 
     # Save dependencies
@@ -74,5 +74,5 @@ jobs:
 
     - name: Build and run unit tester
       run: |
-        cd MacroUnitTest
+        cd ../MacroUnitTest
         xmake run -P . -vD MacroUnitTest --headless --path="{{ runner.workspace }}/libmlx.so"
