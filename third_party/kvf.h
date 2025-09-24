@@ -1474,9 +1474,6 @@ int32_t __kvfScorePhysicalDevice(VkPhysicalDevice device, VkSurfaceKHR surface, 
 	if(device_props.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU)
 		score += 1000;
 
-	if(!device_features.geometryShader)
-		return -1;
-
 	score += device_props.limits.maxImageDimension2D;
 	score += device_props.limits.maxBoundDescriptorSets;
 
