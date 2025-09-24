@@ -8,6 +8,9 @@
     <div align="center">
         <a href="https://github.com/seekrs/MacroLibX/actions/workflows/windows.yml"><img src="https://github.com/seekrs/MacroLibX/actions/workflows/windows.yml/badge.svg"></a>
     </div>
+    <div align="center">
+        <a href="https://github.com/seekrs/MacroLibX/actions/workflows/tests.yml"><img src="https://github.com/seekrs/MacroLibX/actions/workflows/tests.yml/badge.svg"></a>
+    </div>
 </div>
 
 ###### MacroLibX, a rewrite of 42 School's MiniLibX using SDL2 and Vulkan. 

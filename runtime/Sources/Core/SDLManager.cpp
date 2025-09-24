@@ -22,7 +22,7 @@ namespace mlx
 		MLX_PROFILE_FUNCTION();
 		s_instance = this;
 
-		m_drop_sdl_responsability = SDL_WasInit(SDL_INIT_VIDEO);
+		m_drop_sdl_responsability = SDL_WasInit(SDL_INIT_VIDEO) || std::getenv("MLX_HEADLESS_MODE") != nullptr;
 		if(m_drop_sdl_responsability) // is case the mlx is running in a sandbox like MacroUnitTester where SDL is already init
 			return;
 		SDL_SetMemoryFunctions(MemManager::Get().Malloc, MemManager::Get().Calloc, MemManager::Get().Realloc, MemManager::Get().Free);
