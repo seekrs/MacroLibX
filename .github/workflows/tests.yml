@@ -25,6 +25,11 @@ jobs:
 
     - uses: NcStudios/VulkanCI@v1.0
 
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get -y install mesa-common-dev build-essential libvulkan-dev
+
     # Build the lib
     - name: Build MacroLibX
       run: make -j DEBUG=true
