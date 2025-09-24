@@ -23,10 +23,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Install system dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get -y install mesa-common-dev clang libsdl2-2.0-0 libsdl2-dev build-essential libvulkan-dev
+    - uses: NcStudios/VulkanCI@v1.0
 
     # Build the lib
     - name: Build MacroLibX
