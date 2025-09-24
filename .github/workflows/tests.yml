@@ -1,0 +1,75 @@
+name: Unit tests
+
+on:
+  pull_request:
+  push:
+    paths-ignore:
+      - '.gitignore'
+      - 'LICENSE'
+      - 'README.md'
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04]
+        arch: [x86_64]
+
+    runs-on: ${{ matrix.os }}
+    if: "!contains(github.event.head_commit.message, 'ci skip')"
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get -y install mesa-common-dev clang libsdl2-2.0-0 libsdl2-dev build-essential libvulkan-dev
+
+    # Build the lib
+    - name: Build MacroLibX
+      run: make -j DEBUG=true
+
+    # Force xmake to a specific folder (for cache)
+    - name: Set xmake env
+      run: echo "XMAKE_GLOBALDIR=${{ runner.workspace }}/xmake-global" >> $GITHUB_ENV
+
+    # Install xmake
+    - name: Setup xmake
+      if: ${{ matrix.confs.plat != 'mingw' }}
+      uses: xmake-io/github-action-setup-xmake@v1
+      with:
+        xmake-version: latest
+        actions-cache-folder: .xmake-cache-W${{ steps.cache_key.outputs.key }}
+
+    # Update xmake repository (in order to have the file that will be cached)
+    - name: Update xmake repository
+      run: xmake repo --update
+
+    # Fetch xmake dephash
+    - name: Retrieve dependencies hash
+      id: dep_hash
+      run: echo "hash=$(xmake l utils.ci.packageskey)" >> $GITHUB_OUTPUT
+
+    # Setup compilation mode and install project dependencies
+    - name: Configure xmake and install dependencies
+      run: xmake config --ccache=n --yes
+
+    # Save dependencies
+    - name: Save cached xmake dependencies
+      if: ${{ !steps.restore-depcache.outputs.cache-hit }}
+      uses: actions/cache/save@v4
+      with:
+        path: ${{ env.XMAKE_GLOBALDIR }}/.xmake/packages
+        key: ${{ steps.restore-depcache.outputs.cache-primary-key }}
+
+    - name: Install unit tester
+      run: git clone https://github.com/seekrs/MacroUnitTest.git
+
+    - name: Build unit tester
+      run: cd MacroUnitTest && xmake
+
+    - name: Run unit tests
+      run: cd MacroUnitTest && xmake run MacroUnitTest --headless --path="$PWD/../libmlx.so"
