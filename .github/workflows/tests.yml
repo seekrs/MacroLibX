@@ -75,4 +75,4 @@ jobs:
     - name: Build and run unit tester
       run: |
         cd ../MacroUnitTest
-        xmake run MacroUnitTest --headless --path="${{ runner.workspace }}/libmlx.so"
+        xmake run MacroUnitTest --headless --path="${{ runner.workspace }}/MacroLibX/libmlx.so"
