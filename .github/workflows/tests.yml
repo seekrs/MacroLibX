@@ -53,9 +53,14 @@ jobs:
       id: dep_hash
       run: echo "hash=$(xmake l utils.ci.packageskey)" >> $GITHUB_OUTPUT
 
+    - name: Install unit tester
+      run: git clone https://github.com/seekrs/MacroUnitTest.git
+
     # Setup compilation mode and install project dependencies
     - name: Configure xmake and install dependencies
-      run: xmake config --ccache=n --yes
+      run: |
+        cd MacroUnitTest
+        xmake config --ccache=n --yes
 
     # Save dependencies
     - name: Save cached xmake dependencies
@@ -65,11 +70,7 @@ jobs:
         path: ${{ env.XMAKE_GLOBALDIR }}/.xmake/packages
         key: ${{ steps.restore-depcache.outputs.cache-primary-key }}
 
-    - name: Install unit tester
-      run: git clone https://github.com/seekrs/MacroUnitTest.git
-
-    - name: Build unit tester
-      run: cd MacroUnitTest && xmake
-
-    - name: Run unit tests
-      run: cd MacroUnitTest && xmake run MacroUnitTest --headless --path="$PWD/../libmlx.so"
+    - name: Build and run unit tester
+      run: |
+        cd MacroUnitTest
+        xmake run MacroUnitTest --headless --path=" ${GITHUB_WORKSPACE}/libmlx.so"
