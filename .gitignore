@@ -23,3 +23,5 @@
 objs/
 build/
 example/Test
+macrolibpy/__pycache__
+example/__pycache__
