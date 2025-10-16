@@ -187,9 +187,11 @@ class Context:
         resizable: bool = True,
         fullscreen: bool = False,
     ) -> "Window":
+        ffi_title = ffi.new("char[]", title.encode('ascii', 'replace'))
+
         info = ffi.new("mlx_window_create_info*")
         info.render_target = ffi.NULL
-        info.title = ffi.from_buffer(title.encode("utf-8"))
+        info.title = ffi_title
         info.width = int(width)
         info.height = int(height)
         info.is_fullscreen = bool(fullscreen)
@@ -230,7 +232,8 @@ class Window:
         self._win = win
 
     def set_title(self, title: str) -> None:
-        lib.mlx_set_window_title(self._ctx._ctx, self._win, ffi.from_buffer(title.encode("utf-8")))
+        ffi_title = ffi.new("char[]", title.encode('ascii', 'replace'))
+        lib.mlx_set_window_title(self._ctx._ctx, self._win, ffi_title)
 
     def clear(self, rgba: int) -> None:
         lib.mlx_clear_window(self._ctx._ctx, self._win, _rgbaToColor(rgba))
