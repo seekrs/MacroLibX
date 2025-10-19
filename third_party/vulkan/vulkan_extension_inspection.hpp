@@ -9,9 +9,7 @@
 #ifndef VULKAN_EXTENSION_INSPECTION_HPP
 #define VULKAN_EXTENSION_INSPECTION_HPP
 
-#if defined( VULKAN_HPP_ENABLE_STD_MODULE ) && defined( VULKAN_HPP_STD_MODULE )
-import VULKAN_HPP_STD_MODULE;
-#else
+#if !defined( VULKAN_HPP_CXX_MODULE )
 #  include <map>
 #  include <set>
 #  include <string>
@@ -358,22 +356,24 @@ namespace VULKAN_HPP_NAMESPACE
 "VK_FUCHSIA_external_semaphore", 
 "VK_FUCHSIA_buffer_collection", 
 #endif /*VK_USE_PLATFORM_FUCHSIA*/
-"VK_HUAWEI_subpass_shading", 
-"VK_HUAWEI_invocation_mask", 
-"VK_NV_external_memory_rdma", 
-"VK_EXT_pipeline_properties", 
-"VK_EXT_frame_boundary", 
-"VK_EXT_multisampled_render_to_single_sampled", 
-"VK_EXT_extended_dynamic_state2", 
-"VK_EXT_color_write_enable", 
-"VK_EXT_primitives_generated_query", 
-"VK_KHR_ray_tracing_maintenance1", 
-"VK_EXT_global_priority_query", 
-"VK_EXT_image_view_min_lod", 
-"VK_EXT_multi_draw", 
-"VK_EXT_image_2d_view_of_3d", 
-"VK_EXT_shader_tile_image", 
-"VK_EXT_opacity_micromap", 
+                                                            "VK_HUAWEI_subpass_shading",
+                                                            "VK_HUAWEI_invocation_mask",
+                                                            "VK_NV_external_memory_rdma",
+                                                            "VK_EXT_pipeline_properties",
+                                                            "VK_EXT_frame_boundary",
+                                                            "VK_EXT_multisampled_render_to_single_sampled",
+                                                            "VK_EXT_extended_dynamic_state2",
+                                                            "VK_EXT_color_write_enable",
+                                                            "VK_EXT_primitives_generated_query",
+                                                            "VK_KHR_ray_tracing_maintenance1",
+                                                            "VK_KHR_shader_untyped_pointers",
+                                                            "VK_EXT_global_priority_query",
+                                                            "VK_VALVE_video_encode_rgb_conversion",
+                                                            "VK_EXT_image_view_min_lod",
+                                                            "VK_EXT_multi_draw",
+                                                            "VK_EXT_image_2d_view_of_3d",
+                                                            "VK_EXT_shader_tile_image",
+                                                            "VK_EXT_opacity_micromap",
 #if defined( VK_ENABLE_BETA_EXTENSIONS )
 "VK_NV_displacement_micromap", 
 #endif /*VK_ENABLE_BETA_EXTENSIONS*/
@@ -412,75 +412,82 @@ namespace VULKAN_HPP_NAMESPACE
 #if defined( VK_USE_PLATFORM_ANDROID_KHR )
 "VK_ANDROID_external_format_resolve", 
 #endif /*VK_USE_PLATFORM_ANDROID_KHR*/
-"VK_KHR_maintenance5", 
-"VK_AMD_anti_lag", 
-"VK_KHR_present_id2", 
-"VK_KHR_present_wait2", 
-"VK_KHR_ray_tracing_position_fetch", 
-"VK_EXT_shader_object", 
-"VK_KHR_pipeline_binary", 
-"VK_QCOM_tile_properties", 
-"VK_SEC_amigo_profiling", 
-"VK_QCOM_multiview_per_view_viewports", 
-"VK_NV_ray_tracing_invocation_reorder", 
-"VK_NV_cooperative_vector", 
-"VK_NV_extended_sparse_address_space", 
-"VK_EXT_mutable_descriptor_type", 
-"VK_EXT_legacy_vertex_attributes", 
-"VK_ARM_shader_core_builtins", 
-"VK_EXT_pipeline_library_group_handles", 
-"VK_EXT_dynamic_rendering_unused_attachments", 
-"VK_NV_low_latency2", 
-"VK_KHR_cooperative_matrix", 
-"VK_ARM_data_graph", 
-"VK_QCOM_multiview_per_view_render_areas", 
-"VK_KHR_compute_shader_derivatives", 
-"VK_KHR_video_decode_av1", 
-"VK_KHR_video_encode_av1", 
-"VK_KHR_video_decode_vp9", 
-"VK_KHR_video_maintenance1", 
-"VK_NV_per_stage_descriptor_set", 
-"VK_QCOM_image_processing2", 
-"VK_QCOM_filter_cubic_weights", 
-"VK_QCOM_ycbcr_degamma", 
-"VK_QCOM_filter_cubic_clamp", 
-"VK_EXT_attachment_feedback_loop_dynamic_state", 
-"VK_KHR_vertex_attribute_divisor", 
-"VK_KHR_load_store_op_none", 
-"VK_KHR_unified_image_layouts", 
-"VK_KHR_shader_float_controls2", 
+                                                            "VK_KHR_maintenance5",
+                                                            "VK_AMD_anti_lag",
+#if defined( VK_ENABLE_BETA_EXTENSIONS )
+                                                            "VK_AMDX_dense_geometry_format",
+#endif /*VK_ENABLE_BETA_EXTENSIONS*/
+                                                            "VK_KHR_present_id2",
+                                                            "VK_KHR_present_wait2",
+                                                            "VK_KHR_ray_tracing_position_fetch",
+                                                            "VK_EXT_shader_object",
+                                                            "VK_KHR_pipeline_binary",
+                                                            "VK_QCOM_tile_properties",
+                                                            "VK_SEC_amigo_profiling",
+                                                            "VK_KHR_swapchain_maintenance1",
+                                                            "VK_QCOM_multiview_per_view_viewports",
+                                                            "VK_NV_ray_tracing_invocation_reorder",
+                                                            "VK_NV_cooperative_vector",
+                                                            "VK_NV_extended_sparse_address_space",
+                                                            "VK_EXT_mutable_descriptor_type",
+                                                            "VK_EXT_legacy_vertex_attributes",
+                                                            "VK_ARM_shader_core_builtins",
+                                                            "VK_EXT_pipeline_library_group_handles",
+                                                            "VK_EXT_dynamic_rendering_unused_attachments",
+                                                            "VK_NV_low_latency2",
+                                                            "VK_KHR_cooperative_matrix",
+                                                            "VK_ARM_data_graph",
+                                                            "VK_QCOM_multiview_per_view_render_areas",
+                                                            "VK_KHR_compute_shader_derivatives",
+                                                            "VK_KHR_video_decode_av1",
+                                                            "VK_KHR_video_encode_av1",
+                                                            "VK_KHR_video_decode_vp9",
+                                                            "VK_KHR_video_maintenance1",
+                                                            "VK_NV_per_stage_descriptor_set",
+                                                            "VK_QCOM_image_processing2",
+                                                            "VK_QCOM_filter_cubic_weights",
+                                                            "VK_QCOM_ycbcr_degamma",
+                                                            "VK_QCOM_filter_cubic_clamp",
+                                                            "VK_EXT_attachment_feedback_loop_dynamic_state",
+                                                            "VK_KHR_vertex_attribute_divisor",
+                                                            "VK_KHR_load_store_op_none",
+                                                            "VK_KHR_unified_image_layouts",
+                                                            "VK_KHR_shader_float_controls2",
 #if defined( VK_USE_PLATFORM_SCREEN_QNX )
 "VK_QNX_external_memory_screen_buffer", 
 #endif /*VK_USE_PLATFORM_SCREEN_QNX*/
-"VK_MSFT_layered_driver", 
-"VK_KHR_index_type_uint8", 
-"VK_KHR_line_rasterization", 
-"VK_KHR_calibrated_timestamps", 
-"VK_KHR_shader_expect_assume", 
-"VK_KHR_maintenance6", 
-"VK_NV_descriptor_pool_overallocation", 
-"VK_QCOM_tile_memory_heap", 
-"VK_KHR_video_encode_quantization_map", 
-"VK_NV_raw_access_chains", 
-"VK_NV_external_compute_queue", 
-"VK_KHR_shader_relaxed_extended_instruction", 
-"VK_NV_command_buffer_inheritance", 
-"VK_KHR_maintenance7", 
-"VK_NV_shader_atomic_float16_vector", 
-"VK_EXT_shader_replicated_composites", 
-"VK_EXT_shader_float8", 
-"VK_NV_ray_tracing_validation", 
-"VK_NV_cluster_acceleration_structure", 
-"VK_NV_partitioned_acceleration_structure", 
-"VK_EXT_device_generated_commands", 
-"VK_KHR_maintenance8", 
-"VK_MESA_image_alignment_control", 
-"VK_EXT_depth_clamp_control", 
-"VK_KHR_maintenance9", 
-"VK_KHR_video_maintenance2", 
-"VK_HUAWEI_hdr_vivid", 
-"VK_NV_cooperative_matrix2", 
-"VK_ARM_pipeline_opacity_micromap", 
+                                                            "VK_MSFT_layered_driver",
+                                                            "VK_KHR_index_type_uint8",
+                                                            "VK_KHR_line_rasterization",
+                                                            "VK_KHR_calibrated_timestamps",
+                                                            "VK_KHR_shader_expect_assume",
+                                                            "VK_KHR_maintenance6",
+                                                            "VK_NV_descriptor_pool_overallocation",
+                                                            "VK_QCOM_tile_memory_heap",
+                                                            "VK_KHR_copy_memory_indirect",
+                                                            "VK_KHR_video_encode_intra_refresh",
+                                                            "VK_KHR_video_encode_quantization_map",
+                                                            "VK_NV_raw_access_chains",
+                                                            "VK_NV_external_compute_queue",
+                                                            "VK_KHR_shader_relaxed_extended_instruction",
+                                                            "VK_NV_command_buffer_inheritance",
+                                                            "VK_KHR_maintenance7",
+                                                            "VK_NV_shader_atomic_float16_vector",
+                                                            "VK_EXT_shader_replicated_composites",
+                                                            "VK_EXT_shader_float8",
+                                                            "VK_NV_ray_tracing_validation",
+                                                            "VK_NV_cluster_acceleration_structure",
+                                                            "VK_NV_partitioned_acceleration_structure",
+                                                            "VK_EXT_device_generated_commands",
+                                                            "VK_KHR_maintenance8",
+                                                            "VK_MESA_image_alignment_control",
+                                                            "VK_KHR_shader_fma",
+                                                            "VK_EXT_depth_clamp_control",
+                                                            "VK_KHR_maintenance9",
+                                                            "VK_KHR_video_maintenance2",
+                                                            "VK_HUAWEI_hdr_vivid",
+                                                            "VK_NV_cooperative_matrix2",
+                                                            "VK_ARM_pipeline_opacity_micromap",
 #if defined( VK_USE_PLATFORM_METAL_EXT )
 "VK_EXT_external_memory_metal", 
 #endif /*VK_USE_PLATFORM_METAL_EXT*/
@@ -492,8 +499,10 @@ namespace VULKAN_HPP_NAMESPACE
 #if defined( VK_ENABLE_BETA_EXTENSIONS )
 "VK_NV_present_metering", 
 #endif /*VK_ENABLE_BETA_EXTENSIONS*/
-"VK_EXT_fragment_density_map_offset", 
-"VK_EXT_zero_initialize_device_memory" };
+                                                            "VK_EXT_fragment_density_map_offset",
+                                                            "VK_EXT_zero_initialize_device_memory",
+                                                            "VK_KHR_present_mode_fifo_latest_ready",
+                                                            "VK_SEC_pipeline_cache_incremental_mode" };
     return deviceExtensions;
   }
 
@@ -563,11 +572,12 @@ namespace VULKAN_HPP_NAMESPACE
 #if defined( VK_USE_PLATFORM_SCREEN_QNX )
 "VK_QNX_screen_surface", 
 #endif /*VK_USE_PLATFORM_SCREEN_QNX*/
-"VK_KHR_portability_enumeration", 
-"VK_GOOGLE_surfaceless_query", 
-"VK_LUNARG_direct_driver_loading", 
-"VK_EXT_layer_settings", 
-"VK_NV_display_stereo", 
+                                                              "VK_KHR_portability_enumeration",
+                                                              "VK_GOOGLE_surfaceless_query",
+                                                              "VK_LUNARG_direct_driver_loading",
+                                                              "VK_KHR_surface_maintenance1",
+                                                              "VK_EXT_layer_settings",
+                                                              "VK_NV_display_stereo",
 #if defined( VK_USE_PLATFORM_OHOS )
 "VK_OHOS_surface"
 #endif /*VK_USE_PLATFORM_OHOS*/
@@ -846,15 +856,77 @@ namespace VULKAN_HPP_NAMESPACE
 #if defined( VK_USE_PLATFORM_SCREEN_QNX )
 { "VK_QNX_screen_surface", { { "VK_VERSION_1_0", { { "VK_KHR_surface",  } } } } }, 
 #endif /*VK_USE_PLATFORM_SCREEN_QNX*/
-{ "VK_EXT_color_write_enable", { { "VK_VERSION_1_0", { { "VK_KHR_get_physical_device_properties2",  } } }, { "VK_VERSION_1_1", { {  } } } } }, 
-{ "VK_EXT_primitives_generated_query", { { "VK_VERSION_1_0", { { "VK_EXT_transform_feedback",  } } } } }, 
-{ "VK_KHR_ray_tracing_maintenance1", { { "VK_VERSION_1_0", { { "VK_KHR_acceleration_structure",  } } } } }, 
-{ "VK_EXT_global_priority_query", { { "VK_VERSION_1_0", { { "VK_EXT_global_priority", "VK_KHR_get_physical_device_properties2",  } } }, { "VK_VERSION_1_1", { { "VK_EXT_global_priority",  } } } } }, 
-{ "VK_EXT_image_view_min_lod", { { "VK_VERSION_1_0", { { "VK_KHR_get_physical_device_properties2",  } } }, { "VK_VERSION_1_1", { {  } } } } }, 
-{ "VK_EXT_multi_draw", { { "VK_VERSION_1_0", { { "VK_KHR_get_physical_device_properties2",  } } }, { "VK_VERSION_1_1", { {  } } } } }, 
-{ "VK_EXT_image_2d_view_of_3d", { { "VK_VERSION_1_0", { { "VK_KHR_get_physical_device_properties2", "VK_KHR_maintenance1",  } } }, { "VK_VERSION_1_1", { {  } } } } }, 
-{ "VK_EXT_shader_tile_image", { { "VK_VERSION_1_3", { {  } } } } }, 
-{ "VK_EXT_opacity_micromap", { { "VK_VERSION_1_0", { { "VK_KHR_acceleration_structure", "VK_KHR_synchronization2",  } } }, { "VK_VERSION_1_3", { { "VK_KHR_acceleration_structure",  } } } } }, 
+      { "VK_EXT_color_write_enable",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_get_physical_device_properties2",
+            } } },
+          { "VK_VERSION_1_1", { {} } } } },
+      { "VK_EXT_primitives_generated_query",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_EXT_transform_feedback",
+            } } } } },
+      { "VK_KHR_ray_tracing_maintenance1",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_acceleration_structure",
+            } } } } },
+      { "VK_KHR_shader_untyped_pointers",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_get_physical_device_properties2",
+            } } } } },
+      { "VK_EXT_global_priority_query",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_EXT_global_priority",
+              "VK_KHR_get_physical_device_properties2",
+            } } },
+          { "VK_VERSION_1_1",
+            { {
+              "VK_EXT_global_priority",
+            } } } } },
+      { "VK_VALVE_video_encode_rgb_conversion",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_sampler_ycbcr_conversion",
+              "VK_KHR_video_encode_queue",
+            } } },
+          { "VK_VERSION_1_1",
+            { {
+              "VK_KHR_video_encode_queue",
+            } } } } },
+      { "VK_EXT_image_view_min_lod",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_get_physical_device_properties2",
+            } } },
+          { "VK_VERSION_1_1", { {} } } } },
+      { "VK_EXT_multi_draw",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_get_physical_device_properties2",
+            } } },
+          { "VK_VERSION_1_1", { {} } } } },
+      { "VK_EXT_image_2d_view_of_3d",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_get_physical_device_properties2",
+              "VK_KHR_maintenance1",
+            } } },
+          { "VK_VERSION_1_1", { {} } } } },
+      { "VK_EXT_shader_tile_image", { { "VK_VERSION_1_3", { {} } } } },
+      { "VK_EXT_opacity_micromap",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_acceleration_structure",
+              "VK_KHR_synchronization2",
+            } } },
+          { "VK_VERSION_1_3",
+            { {
+              "VK_KHR_acceleration_structure",
+            } } } } },
 #if defined( VK_ENABLE_BETA_EXTENSIONS )
 { "VK_NV_displacement_micromap", { { "VK_VERSION_1_0", { { "VK_EXT_opacity_micromap",  } } } } }, 
 #endif /*VK_ENABLE_BETA_EXTENSIONS*/
@@ -892,58 +964,355 @@ namespace VULKAN_HPP_NAMESPACE
 #if defined( VK_USE_PLATFORM_ANDROID_KHR )
 { "VK_ANDROID_external_format_resolve", { { "VK_VERSION_1_0", { { "VK_ANDROID_external_memory_android_hardware_buffer",  } } } } }, 
 #endif /*VK_USE_PLATFORM_ANDROID_KHR*/
-{ "VK_KHR_maintenance5", { { "VK_VERSION_1_1", { { "VK_KHR_dynamic_rendering",  } } }, { "VK_VERSION_1_3", { {  } } } } }, 
-{ "VK_KHR_present_id2", { { "VK_VERSION_1_0", { { "VK_KHR_get_surface_capabilities2", "VK_KHR_surface", "VK_KHR_swapchain",  } } } } }, 
-{ "VK_KHR_present_wait2", { { "VK_VERSION_1_0", { { "VK_KHR_get_surface_capabilities2", "VK_KHR_present_id2", "VK_KHR_surface", "VK_KHR_swapchain",  } } } } }, 
-{ "VK_KHR_ray_tracing_position_fetch", { { "VK_VERSION_1_0", { { "VK_KHR_acceleration_structure",  } } } } }, 
-{ "VK_EXT_shader_object", { { "VK_VERSION_1_0", { { "VK_KHR_dynamic_rendering", "VK_KHR_get_physical_device_properties2",  } } }, { "VK_VERSION_1_1", { { "VK_KHR_dynamic_rendering",  } } }, { "VK_VERSION_1_3", { {  } } } } }, 
-{ "VK_KHR_pipeline_binary", { { "VK_VERSION_1_0", { { "VK_KHR_maintenance5",  } } }, { "VK_VERSION_1_4", { {  } } } } }, 
-{ "VK_QCOM_tile_properties", { { "VK_VERSION_1_0", { { "VK_KHR_get_physical_device_properties2",  } } }, { "VK_VERSION_1_1", { {  } } } } }, 
-{ "VK_SEC_amigo_profiling", { { "VK_VERSION_1_0", { { "VK_KHR_get_physical_device_properties2",  } } }, { "VK_VERSION_1_1", { {  } } } } }, 
-{ "VK_QCOM_multiview_per_view_viewports", { { "VK_VERSION_1_0", { { "VK_KHR_get_physical_device_properties2",  } } }, { "VK_VERSION_1_1", { {  } } } } }, 
-{ "VK_NV_ray_tracing_invocation_reorder", { { "VK_VERSION_1_0", { { "VK_KHR_ray_tracing_pipeline",  } } } } }, 
-{ "VK_EXT_mutable_descriptor_type", { { "VK_VERSION_1_0", { { "VK_KHR_maintenance3",  } } }, { "VK_VERSION_1_1", { {  } } } } }, 
-{ "VK_EXT_legacy_vertex_attributes", { { "VK_VERSION_1_0", { { "VK_EXT_vertex_input_dynamic_state",  } } } } }, 
-{ "VK_ARM_shader_core_builtins", { { "VK_VERSION_1_0", { { "VK_KHR_get_physical_device_properties2",  } } }, { "VK_VERSION_1_1", { {  } } } } }, 
-{ "VK_EXT_pipeline_library_group_handles", { { "VK_VERSION_1_0", { { "VK_KHR_pipeline_library", "VK_KHR_ray_tracing_pipeline",  } } } } }, 
-{ "VK_EXT_dynamic_rendering_unused_attachments", { { "VK_VERSION_1_0", { { "VK_KHR_dynamic_rendering", "VK_KHR_get_physical_device_properties2",  } } }, { "VK_VERSION_1_1", { { "VK_KHR_dynamic_rendering",  } } }, { "VK_VERSION_1_3", { {  } } } } }, 
-{ "VK_NV_low_latency2", { { "VK_VERSION_1_0", { { "VK_KHR_present_id", "VK_KHR_timeline_semaphore",  }, { "VK_KHR_present_id2", "VK_KHR_timeline_semaphore",  } } }, { "VK_VERSION_1_2", { { "VK_KHR_present_id",  }, { "VK_KHR_present_id2",  } } } } }, 
-{ "VK_KHR_cooperative_matrix", { { "VK_VERSION_1_0", { { "VK_KHR_get_physical_device_properties2",  } } }, { "VK_VERSION_1_1", { {  } } } } }, 
-{ "VK_ARM_data_graph", { { "VK_VERSION_1_3", { { "VK_KHR_deferred_host_operations", "VK_KHR_maintenance5",  } } } } }, 
-{ "VK_KHR_compute_shader_derivatives", { { "VK_VERSION_1_0", { { "VK_KHR_get_physical_device_properties2",  } } }, { "VK_VERSION_1_1", { {  } } } } }, 
-{ "VK_KHR_video_decode_av1", { { "VK_VERSION_1_0", { { "VK_KHR_video_decode_queue",  } } } } }, 
-{ "VK_KHR_video_encode_av1", { { "VK_VERSION_1_0", { { "VK_KHR_video_encode_queue",  } } } } }, 
-{ "VK_KHR_video_decode_vp9", { { "VK_VERSION_1_0", { { "VK_KHR_video_decode_queue",  } } } } }, 
-{ "VK_KHR_video_maintenance1", { { "VK_VERSION_1_0", { { "VK_KHR_video_queue",  } } } } }, 
-{ "VK_NV_per_stage_descriptor_set", { { "VK_VERSION_1_0", { { "VK_KHR_maintenance6",  } } }, { "VK_VERSION_1_4", { {  } } } } }, 
-{ "VK_QCOM_image_processing2", { { "VK_VERSION_1_0", { { "VK_QCOM_image_processing",  } } } } }, 
-{ "VK_QCOM_filter_cubic_weights", { { "VK_VERSION_1_0", { { "VK_EXT_filter_cubic",  } } } } }, 
-{ "VK_QCOM_filter_cubic_clamp", { { "VK_VERSION_1_0", { { "VK_EXT_filter_cubic", "VK_EXT_sampler_filter_minmax",  } } }, { "VK_VERSION_1_2", { { "VK_EXT_filter_cubic",  } } } } }, 
-{ "VK_EXT_attachment_feedback_loop_dynamic_state", { { "VK_VERSION_1_0", { { "VK_EXT_attachment_feedback_loop_layout", "VK_KHR_get_physical_device_properties2",  } } }, { "VK_VERSION_1_1", { { "VK_EXT_attachment_feedback_loop_layout",  } } } } }, 
-{ "VK_KHR_vertex_attribute_divisor", { { "VK_VERSION_1_0", { { "VK_KHR_get_physical_device_properties2",  } } }, { "VK_VERSION_1_1", { {  } } } } }, 
-{ "VK_KHR_shader_float_controls2", { { "VK_VERSION_1_1", { { "VK_KHR_shader_float_controls",  } } } } }, 
+      { "VK_KHR_maintenance5",
+        { { "VK_VERSION_1_1",
+            { {
+              "VK_KHR_dynamic_rendering",
+            } } },
+          { "VK_VERSION_1_3", { {} } } } },
+#if defined( VK_ENABLE_BETA_EXTENSIONS )
+      { "VK_AMDX_dense_geometry_format",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_acceleration_structure",
+              "VK_KHR_maintenance5",
+            } } },
+          { "VK_VERSION_1_4",
+            { {
+              "VK_KHR_acceleration_structure",
+            } } } } },
+#endif /*VK_ENABLE_BETA_EXTENSIONS*/
+      { "VK_KHR_present_id2",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_get_surface_capabilities2",
+              "VK_KHR_surface",
+              "VK_KHR_swapchain",
+            } } } } },
+      { "VK_KHR_present_wait2",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_get_surface_capabilities2",
+              "VK_KHR_present_id2",
+              "VK_KHR_surface",
+              "VK_KHR_swapchain",
+            } } } } },
+      { "VK_KHR_ray_tracing_position_fetch",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_acceleration_structure",
+            } } } } },
+      { "VK_EXT_shader_object",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_dynamic_rendering",
+              "VK_KHR_get_physical_device_properties2",
+            } } },
+          { "VK_VERSION_1_1",
+            { {
+              "VK_KHR_dynamic_rendering",
+            } } },
+          { "VK_VERSION_1_3", { {} } } } },
+      { "VK_KHR_pipeline_binary",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_maintenance5",
+            } } },
+          { "VK_VERSION_1_4", { {} } } } },
+      { "VK_QCOM_tile_properties",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_get_physical_device_properties2",
+            } } },
+          { "VK_VERSION_1_1", { {} } } } },
+      { "VK_SEC_amigo_profiling",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_get_physical_device_properties2",
+            } } },
+          { "VK_VERSION_1_1", { {} } } } },
+      { "VK_KHR_surface_maintenance1",
+        { { "VK_VERSION_1_0",
+            { {
+                "VK_KHR_surface",
+              },
+              {
+                "VK_KHR_get_surface_capabilities2",
+              } } } } },
+      { "VK_KHR_swapchain_maintenance1",
+        { { "VK_VERSION_1_0",
+            { {
+                "VK_KHR_swapchain",
+              },
+              {
+                "VK_KHR_surface_maintenance1",
+              },
+              {
+                "VK_KHR_get_physical_device_properties2",
+              } } } } },
+      { "VK_QCOM_multiview_per_view_viewports",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_get_physical_device_properties2",
+            } } },
+          { "VK_VERSION_1_1", { {} } } } },
+      { "VK_NV_ray_tracing_invocation_reorder",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_ray_tracing_pipeline",
+            } } } } },
+      { "VK_EXT_mutable_descriptor_type",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_maintenance3",
+            } } },
+          { "VK_VERSION_1_1", { {} } } } },
+      { "VK_EXT_legacy_vertex_attributes",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_EXT_vertex_input_dynamic_state",
+            } } } } },
+      { "VK_ARM_shader_core_builtins",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_get_physical_device_properties2",
+            } } },
+          { "VK_VERSION_1_1", { {} } } } },
+      { "VK_EXT_pipeline_library_group_handles",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_pipeline_library",
+              "VK_KHR_ray_tracing_pipeline",
+            } } } } },
+      { "VK_EXT_dynamic_rendering_unused_attachments",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_dynamic_rendering",
+              "VK_KHR_get_physical_device_properties2",
+            } } },
+          { "VK_VERSION_1_1",
+            { {
+              "VK_KHR_dynamic_rendering",
+            } } },
+          { "VK_VERSION_1_3", { {} } } } },
+      { "VK_NV_low_latency2",
+        { { "VK_VERSION_1_0",
+            { {
+                "VK_KHR_present_id",
+                "VK_KHR_timeline_semaphore",
+              },
+              {
+                "VK_KHR_present_id2",
+                "VK_KHR_timeline_semaphore",
+              } } },
+          { "VK_VERSION_1_2",
+            { {
+                "VK_KHR_present_id",
+              },
+              {
+                "VK_KHR_present_id2",
+              } } } } },
+      { "VK_KHR_cooperative_matrix",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_get_physical_device_properties2",
+            } } },
+          { "VK_VERSION_1_1", { {} } } } },
+      { "VK_ARM_data_graph",
+        { { "VK_VERSION_1_3",
+            { {
+              "VK_KHR_deferred_host_operations",
+              "VK_KHR_maintenance5",
+            } } } } },
+      { "VK_KHR_compute_shader_derivatives",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_get_physical_device_properties2",
+            } } },
+          { "VK_VERSION_1_1", { {} } } } },
+      { "VK_KHR_video_decode_av1",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_video_decode_queue",
+            } } } } },
+      { "VK_KHR_video_encode_av1",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_video_encode_queue",
+            } } } } },
+      { "VK_KHR_video_decode_vp9",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_video_decode_queue",
+            } } } } },
+      { "VK_KHR_video_maintenance1",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_video_queue",
+            } } } } },
+      { "VK_NV_per_stage_descriptor_set",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_maintenance6",
+            } } },
+          { "VK_VERSION_1_4", { {} } } } },
+      { "VK_QCOM_image_processing2",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_QCOM_image_processing",
+            } } } } },
+      { "VK_QCOM_filter_cubic_weights",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_EXT_filter_cubic",
+            } } } } },
+      { "VK_QCOM_filter_cubic_clamp",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_EXT_filter_cubic",
+              "VK_EXT_sampler_filter_minmax",
+            } } },
+          { "VK_VERSION_1_2",
+            { {
+              "VK_EXT_filter_cubic",
+            } } } } },
+      { "VK_EXT_attachment_feedback_loop_dynamic_state",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_EXT_attachment_feedback_loop_layout",
+              "VK_KHR_get_physical_device_properties2",
+            } } },
+          { "VK_VERSION_1_1",
+            { {
+              "VK_EXT_attachment_feedback_loop_layout",
+            } } } } },
+      { "VK_KHR_vertex_attribute_divisor",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_get_physical_device_properties2",
+            } } },
+          { "VK_VERSION_1_1", { {} } } } },
+      { "VK_KHR_shader_float_controls2",
+        { { "VK_VERSION_1_1",
+            { {
+              "VK_KHR_shader_float_controls",
+            } } } } },
 #if defined( VK_USE_PLATFORM_SCREEN_QNX )
 { "VK_QNX_external_memory_screen_buffer", { { "VK_VERSION_1_0", { { "VK_EXT_queue_family_foreign", "VK_KHR_dedicated_allocation", "VK_KHR_external_memory", "VK_KHR_sampler_ycbcr_conversion",  } } }, { "VK_VERSION_1_1", { { "VK_EXT_queue_family_foreign",  } } } } }, 
 #endif /*VK_USE_PLATFORM_SCREEN_QNX*/
-{ "VK_MSFT_layered_driver", { { "VK_VERSION_1_0", { { "VK_KHR_get_physical_device_properties2",  } } }, { "VK_VERSION_1_1", { {  } } } } }, 
-{ "VK_KHR_index_type_uint8", { { "VK_VERSION_1_0", { { "VK_KHR_get_physical_device_properties2",  } } }, { "VK_VERSION_1_1", { {  } } } } }, 
-{ "VK_KHR_line_rasterization", { { "VK_VERSION_1_0", { { "VK_KHR_get_physical_device_properties2",  } } }, { "VK_VERSION_1_1", { {  } } } } }, 
-{ "VK_KHR_calibrated_timestamps", { { "VK_VERSION_1_0", { { "VK_KHR_get_physical_device_properties2",  } } }, { "VK_VERSION_1_1", { {  } } } } }, 
-{ "VK_KHR_shader_expect_assume", { { "VK_VERSION_1_0", { { "VK_KHR_get_physical_device_properties2",  } } }, { "VK_VERSION_1_1", { {  } } } } }, 
-{ "VK_KHR_maintenance6", { { "VK_VERSION_1_1", { {  } } } } }, 
-{ "VK_NV_descriptor_pool_overallocation", { { "VK_VERSION_1_1", { {  } } } } }, 
-{ "VK_QCOM_tile_memory_heap", { { "VK_VERSION_1_0", { { "VK_KHR_get_memory_requirements2", "VK_KHR_get_physical_device_properties2",  } } }, { "VK_VERSION_1_1", { {  } } } } }, 
-{ "VK_NV_display_stereo", { { "VK_VERSION_1_0", { { "VK_KHR_display", "VK_KHR_get_display_properties2",  } } } } }, 
-{ "VK_KHR_video_encode_quantization_map", { { "VK_VERSION_1_0", { { "VK_KHR_format_feature_flags2", "VK_KHR_video_encode_queue",  } } }, { "VK_VERSION_1_3", { { "VK_KHR_video_encode_queue",  } } } } }, 
-{ "VK_KHR_maintenance7", { { "VK_VERSION_1_1", { {  } } } } }, 
-{ "VK_NV_cluster_acceleration_structure", { { "VK_VERSION_1_0", { { "VK_KHR_acceleration_structure",  } } } } }, 
-{ "VK_NV_partitioned_acceleration_structure", { { "VK_VERSION_1_0", { { "VK_KHR_acceleration_structure",  } } } } }, 
-{ "VK_EXT_device_generated_commands", { { "VK_VERSION_1_0", { { "VK_KHR_buffer_device_address", "VK_KHR_maintenance5",  } } }, { "VK_VERSION_1_2", { { "VK_KHR_maintenance5",  } } }, { "VK_VERSION_1_3", { {  } } } } }, 
-{ "VK_KHR_maintenance8", { { "VK_VERSION_1_1", { {  } } } } }, 
-{ "VK_MESA_image_alignment_control", { { "VK_VERSION_1_0", { { "VK_KHR_get_physical_device_properties2",  } } }, { "VK_VERSION_1_1", { {  } } } } }, 
-{ "VK_EXT_depth_clamp_control", { { "VK_VERSION_1_0", { { "VK_KHR_get_physical_device_properties2",  } } }, { "VK_VERSION_1_1", { {  } } } } }, 
-{ "VK_KHR_maintenance9", { { "VK_VERSION_1_0", { { "VK_KHR_get_physical_device_properties2",  } } }, { "VK_VERSION_1_1", { {  } } } } }, 
-{ "VK_KHR_video_maintenance2", { { "VK_VERSION_1_0", { { "VK_KHR_video_queue",  } } } } }, 
+      { "VK_MSFT_layered_driver",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_get_physical_device_properties2",
+            } } },
+          { "VK_VERSION_1_1", { {} } } } },
+      { "VK_KHR_index_type_uint8",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_get_physical_device_properties2",
+            } } },
+          { "VK_VERSION_1_1", { {} } } } },
+      { "VK_KHR_line_rasterization",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_get_physical_device_properties2",
+            } } },
+          { "VK_VERSION_1_1", { {} } } } },
+      { "VK_KHR_calibrated_timestamps",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_get_physical_device_properties2",
+            } } },
+          { "VK_VERSION_1_1", { {} } } } },
+      { "VK_KHR_shader_expect_assume",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_get_physical_device_properties2",
+            } } },
+          { "VK_VERSION_1_1", { {} } } } },
+      { "VK_KHR_maintenance6", { { "VK_VERSION_1_1", { {} } } } },
+      { "VK_NV_descriptor_pool_overallocation", { { "VK_VERSION_1_1", { {} } } } },
+      { "VK_QCOM_tile_memory_heap",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_get_memory_requirements2",
+              "VK_KHR_get_physical_device_properties2",
+            } } },
+          { "VK_VERSION_1_1", { {} } } } },
+      { "VK_KHR_copy_memory_indirect",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_buffer_device_address",
+              "VK_KHR_get_physical_device_properties2",
+            } } },
+          { "VK_VERSION_1_2", { {} } } } },
+      { "VK_NV_display_stereo",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_display",
+              "VK_KHR_get_display_properties2",
+            } } } } },
+      { "VK_KHR_video_encode_intra_refresh",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_video_encode_queue",
+            } } } } },
+      { "VK_KHR_video_encode_quantization_map",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_format_feature_flags2",
+              "VK_KHR_video_encode_queue",
+            } } },
+          { "VK_VERSION_1_3",
+            { {
+              "VK_KHR_video_encode_queue",
+            } } } } },
+      { "VK_KHR_maintenance7", { { "VK_VERSION_1_1", { {} } } } },
+      { "VK_NV_cluster_acceleration_structure",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_acceleration_structure",
+            } } } } },
+      { "VK_NV_partitioned_acceleration_structure",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_acceleration_structure",
+            } } } } },
+      { "VK_EXT_device_generated_commands",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_buffer_device_address",
+              "VK_KHR_maintenance5",
+            } } },
+          { "VK_VERSION_1_2",
+            { {
+              "VK_KHR_maintenance5",
+            } } },
+          { "VK_VERSION_1_3", { {} } } } },
+      { "VK_KHR_maintenance8", { { "VK_VERSION_1_1", { {} } } } },
+      { "VK_MESA_image_alignment_control",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_get_physical_device_properties2",
+            } } },
+          { "VK_VERSION_1_1", { {} } } } },
+      { "VK_EXT_depth_clamp_control",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_get_physical_device_properties2",
+            } } },
+          { "VK_VERSION_1_1", { {} } } } },
+      { "VK_KHR_maintenance9",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_get_physical_device_properties2",
+            } } },
+          { "VK_VERSION_1_1", { {} } } } },
+      { "VK_KHR_video_maintenance2",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_video_queue",
+            } } } } },
 #if defined( VK_USE_PLATFORM_OHOS )
 { "VK_OHOS_surface", { { "VK_VERSION_1_0", { { "VK_KHR_surface",  } } } } }, 
 #endif /*VK_USE_PLATFORM_OHOS*/
@@ -953,13 +1322,70 @@ namespace VULKAN_HPP_NAMESPACE
 #if defined( VK_USE_PLATFORM_METAL_EXT )
 { "VK_EXT_external_memory_metal", { { "VK_VERSION_1_0", { { "VK_KHR_external_memory",  } } }, { "VK_VERSION_1_1", { {  } } } } }, 
 #endif /*VK_USE_PLATFORM_METAL_EXT*/
-{ "VK_KHR_depth_clamp_zero_one", { { "VK_VERSION_1_0", { { "VK_KHR_get_physical_device_properties2",  } } }, { "VK_VERSION_1_1", { {  } } } } }, 
-{ "VK_EXT_vertex_attribute_robustness", { { "VK_VERSION_1_0", { { "VK_KHR_get_physical_device_properties2",  } } }, { "VK_VERSION_1_1", { {  } } } } }, 
-{ "VK_VALVE_fragment_density_map_layered", { { "VK_VERSION_1_0", { { "VK_EXT_fragment_density_map", "VK_KHR_maintenance5",  } } }, { "VK_VERSION_1_4", { { "VK_EXT_fragment_density_map",  } } } } }, 
-{ "VK_KHR_robustness2", { { "VK_VERSION_1_0", { { "VK_KHR_get_physical_device_properties2",  } } }, { "VK_VERSION_1_1", { {  } } } } }, 
-{ "VK_EXT_fragment_density_map_offset", { { "VK_VERSION_1_0", { { "VK_EXT_fragment_density_map", "VK_KHR_create_renderpass2", "VK_KHR_dynamic_rendering", "VK_KHR_get_physical_device_properties2",  } } }, { "VK_VERSION_1_1", { { "VK_EXT_fragment_density_map", "VK_KHR_create_renderpass2", "VK_KHR_dynamic_rendering",  } } }, { "VK_VERSION_1_2", { { "VK_EXT_fragment_density_map", "VK_KHR_dynamic_rendering",  } } }, { "VK_VERSION_1_3", { { "VK_EXT_fragment_density_map",  } } } } }, 
-{ "VK_EXT_zero_initialize_device_memory", { { "VK_VERSION_1_0", { { "VK_KHR_get_physical_device_properties2",  } } }, { "VK_VERSION_1_1", { {  } } } } } };
-    auto                                                                                             depIt        = dependencies.find( extension );
+      { "VK_KHR_depth_clamp_zero_one",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_get_physical_device_properties2",
+            } } },
+          { "VK_VERSION_1_1", { {} } } } },
+      { "VK_EXT_vertex_attribute_robustness",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_get_physical_device_properties2",
+            } } },
+          { "VK_VERSION_1_1", { {} } } } },
+      { "VK_VALVE_fragment_density_map_layered",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_EXT_fragment_density_map",
+              "VK_KHR_maintenance5",
+            } } },
+          { "VK_VERSION_1_4",
+            { {
+              "VK_EXT_fragment_density_map",
+            } } } } },
+      { "VK_KHR_robustness2",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_get_physical_device_properties2",
+            } } },
+          { "VK_VERSION_1_1", { {} } } } },
+      { "VK_EXT_fragment_density_map_offset",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_EXT_fragment_density_map",
+              "VK_KHR_create_renderpass2",
+              "VK_KHR_dynamic_rendering",
+              "VK_KHR_get_physical_device_properties2",
+            } } },
+          { "VK_VERSION_1_1",
+            { {
+              "VK_EXT_fragment_density_map",
+              "VK_KHR_create_renderpass2",
+              "VK_KHR_dynamic_rendering",
+            } } },
+          { "VK_VERSION_1_2",
+            { {
+              "VK_EXT_fragment_density_map",
+              "VK_KHR_dynamic_rendering",
+            } } },
+          { "VK_VERSION_1_3",
+            { {
+              "VK_EXT_fragment_density_map",
+            } } } } },
+      { "VK_EXT_zero_initialize_device_memory",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_get_physical_device_properties2",
+            } } },
+          { "VK_VERSION_1_1", { {} } } } },
+      { "VK_KHR_present_mode_fifo_latest_ready",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_swapchain",
+            } } } } }
+    };
+    auto depIt = dependencies.find( extension );
     return ( depIt != dependencies.end() ) ? depIt->second : noDependencies;
   }
 
@@ -1010,104 +1436,109 @@ namespace VULKAN_HPP_NAMESPACE
 #if defined( VK_USE_PLATFORM_WIN32_KHR )
 { "VK_NV_win32_keyed_mutex", "VK_KHR_win32_keyed_mutex"}, 
 #endif /*VK_USE_PLATFORM_WIN32_KHR*/
-{ "VK_KHR_get_physical_device_properties2", "VK_VERSION_1_1"}, 
-{ "VK_KHR_device_group", "VK_VERSION_1_1"}, 
-{ "VK_KHR_shader_draw_parameters", "VK_VERSION_1_1"}, 
-{ "VK_EXT_texture_compression_astc_hdr", "VK_VERSION_1_3"}, 
-{ "VK_EXT_pipeline_robustness", "VK_VERSION_1_4"}, 
-{ "VK_KHR_maintenance1", "VK_VERSION_1_1"}, 
-{ "VK_KHR_device_group_creation", "VK_VERSION_1_1"}, 
-{ "VK_KHR_external_memory_capabilities", "VK_VERSION_1_1"}, 
-{ "VK_KHR_external_memory", "VK_VERSION_1_1"}, 
-{ "VK_KHR_external_semaphore_capabilities", "VK_VERSION_1_1"}, 
-{ "VK_KHR_external_semaphore", "VK_VERSION_1_1"}, 
-{ "VK_KHR_push_descriptor", "VK_VERSION_1_4"}, 
-{ "VK_KHR_shader_float16_int8", "VK_VERSION_1_2"}, 
-{ "VK_KHR_16bit_storage", "VK_VERSION_1_1"}, 
-{ "VK_KHR_descriptor_update_template", "VK_VERSION_1_1"}, 
-{ "VK_KHR_imageless_framebuffer", "VK_VERSION_1_2"}, 
-{ "VK_KHR_create_renderpass2", "VK_VERSION_1_2"}, 
-{ "VK_KHR_external_fence_capabilities", "VK_VERSION_1_1"}, 
-{ "VK_KHR_external_fence", "VK_VERSION_1_1"}, 
-{ "VK_KHR_maintenance2", "VK_VERSION_1_1"}, 
-{ "VK_KHR_variable_pointers", "VK_VERSION_1_1"}, 
-{ "VK_KHR_dedicated_allocation", "VK_VERSION_1_1"}, 
-{ "VK_EXT_sampler_filter_minmax", "VK_VERSION_1_2"}, 
-{ "VK_KHR_storage_buffer_storage_class", "VK_VERSION_1_1"}, 
-{ "VK_EXT_inline_uniform_block", "VK_VERSION_1_3"}, 
-{ "VK_KHR_relaxed_block_layout", "VK_VERSION_1_1"}, 
-{ "VK_KHR_get_memory_requirements2", "VK_VERSION_1_1"}, 
-{ "VK_KHR_image_format_list", "VK_VERSION_1_2"}, 
-{ "VK_KHR_sampler_ycbcr_conversion", "VK_VERSION_1_1"}, 
-{ "VK_KHR_bind_memory2", "VK_VERSION_1_1"}, 
-{ "VK_EXT_descriptor_indexing", "VK_VERSION_1_2"}, 
-{ "VK_EXT_shader_viewport_index_layer", "VK_VERSION_1_2"}, 
-{ "VK_KHR_maintenance3", "VK_VERSION_1_1"}, 
-{ "VK_KHR_draw_indirect_count", "VK_VERSION_1_2"}, 
-{ "VK_EXT_global_priority", "VK_KHR_global_priority"}, 
-{ "VK_KHR_shader_subgroup_extended_types", "VK_VERSION_1_2"}, 
-{ "VK_KHR_8bit_storage", "VK_VERSION_1_2"}, 
-{ "VK_KHR_shader_atomic_int64", "VK_VERSION_1_2"}, 
-{ "VK_EXT_calibrated_timestamps", "VK_KHR_calibrated_timestamps"}, 
-{ "VK_KHR_global_priority", "VK_VERSION_1_4"}, 
-{ "VK_EXT_vertex_attribute_divisor", "VK_KHR_vertex_attribute_divisor"}, 
-{ "VK_EXT_pipeline_creation_feedback", "VK_VERSION_1_3"}, 
-{ "VK_KHR_driver_properties", "VK_VERSION_1_2"}, 
-{ "VK_KHR_shader_float_controls", "VK_VERSION_1_2"}, 
-{ "VK_KHR_depth_stencil_resolve", "VK_VERSION_1_2"}, 
-{ "VK_NV_compute_shader_derivatives", "VK_KHR_compute_shader_derivatives"}, 
-{ "VK_NV_fragment_shader_barycentric", "VK_KHR_fragment_shader_barycentric"}, 
-{ "VK_KHR_timeline_semaphore", "VK_VERSION_1_2"}, 
-{ "VK_KHR_vulkan_memory_model", "VK_VERSION_1_2"}, 
-{ "VK_KHR_shader_terminate_invocation", "VK_VERSION_1_3"}, 
-{ "VK_EXT_scalar_block_layout", "VK_VERSION_1_2"}, 
-{ "VK_EXT_subgroup_size_control", "VK_VERSION_1_3"}, 
-{ "VK_KHR_dynamic_rendering_local_read", "VK_VERSION_1_4"}, 
-{ "VK_KHR_spirv_1_4", "VK_VERSION_1_2"}, 
-{ "VK_KHR_separate_depth_stencil_layouts", "VK_VERSION_1_2"}, 
-{ "VK_EXT_tooling_info", "VK_VERSION_1_3"}, 
-{ "VK_EXT_separate_stencil_usage", "VK_VERSION_1_2"}, 
-{ "VK_KHR_uniform_buffer_standard_layout", "VK_VERSION_1_2"}, 
-{ "VK_KHR_buffer_device_address", "VK_VERSION_1_2"}, 
-{ "VK_EXT_line_rasterization", "VK_KHR_line_rasterization"}, 
-{ "VK_EXT_host_query_reset", "VK_VERSION_1_2"}, 
-{ "VK_EXT_index_type_uint8", "VK_KHR_index_type_uint8"}, 
-{ "VK_EXT_extended_dynamic_state", "VK_VERSION_1_3"}, 
-{ "VK_EXT_host_image_copy", "VK_VERSION_1_4"}, 
-{ "VK_KHR_map_memory2", "VK_VERSION_1_4"}, 
-{ "VK_EXT_shader_demote_to_helper_invocation", "VK_VERSION_1_3"}, 
-{ "VK_KHR_shader_integer_dot_product", "VK_VERSION_1_3"}, 
-{ "VK_EXT_texel_buffer_alignment", "VK_VERSION_1_3"}, 
-{ "VK_EXT_robustness2", "VK_KHR_robustness2"}, 
-{ "VK_KHR_shader_non_semantic_info", "VK_VERSION_1_3"}, 
-{ "VK_EXT_private_data", "VK_VERSION_1_3"}, 
-{ "VK_EXT_pipeline_creation_cache_control", "VK_VERSION_1_3"}, 
-{ "VK_KHR_synchronization2", "VK_VERSION_1_3"}, 
-{ "VK_KHR_zero_initialize_workgroup_memory", "VK_VERSION_1_3"}, 
-{ "VK_EXT_ycbcr_2plane_444_formats", "VK_VERSION_1_3"}, 
-{ "VK_EXT_image_robustness", "VK_VERSION_1_3"}, 
-{ "VK_KHR_copy_commands2", "VK_VERSION_1_3"}, 
-{ "VK_EXT_4444_formats", "VK_VERSION_1_3"}, 
-{ "VK_ARM_rasterization_order_attachment_access", "VK_EXT_rasterization_order_attachment_access"}, 
-{ "VK_VALVE_mutable_descriptor_type", "VK_EXT_mutable_descriptor_type"}, 
-{ "VK_KHR_format_feature_flags2", "VK_VERSION_1_3"}, 
-{ "VK_EXT_extended_dynamic_state2", "VK_VERSION_1_3"}, 
-{ "VK_EXT_global_priority_query", "VK_KHR_global_priority"}, 
-{ "VK_EXT_load_store_op_none", "VK_KHR_load_store_op_none"}, 
-{ "VK_KHR_maintenance4", "VK_VERSION_1_3"}, 
-{ "VK_KHR_shader_subgroup_rotate", "VK_VERSION_1_4"}, 
-{ "VK_EXT_depth_clamp_zero_one", "VK_KHR_depth_clamp_zero_one"}, 
-{ "VK_QCOM_fragment_density_map_offset", "VK_EXT_fragment_density_map_offset"}, 
-{ "VK_EXT_pipeline_protected_access", "VK_VERSION_1_4"}, 
-{ "VK_KHR_maintenance5", "VK_VERSION_1_4"}, 
-{ "VK_KHR_vertex_attribute_divisor", "VK_VERSION_1_4"}, 
-{ "VK_KHR_load_store_op_none", "VK_VERSION_1_4"}, 
-{ "VK_KHR_shader_float_controls2", "VK_VERSION_1_4"}, 
-{ "VK_KHR_index_type_uint8", "VK_VERSION_1_4"}, 
-{ "VK_KHR_line_rasterization", "VK_VERSION_1_4"}, 
-{ "VK_KHR_shader_expect_assume", "VK_VERSION_1_4"}, 
-{ "VK_KHR_maintenance6", "VK_VERSION_1_4"}, 
-{ "VK_EXT_vertex_attribute_robustness", "VK_KHR_maintenance9"} };
+                                                                           { "VK_KHR_get_physical_device_properties2", "VK_VERSION_1_1" },
+                                                                           { "VK_KHR_device_group", "VK_VERSION_1_1" },
+                                                                           { "VK_KHR_shader_draw_parameters", "VK_VERSION_1_1" },
+                                                                           { "VK_EXT_texture_compression_astc_hdr", "VK_VERSION_1_3" },
+                                                                           { "VK_EXT_pipeline_robustness", "VK_VERSION_1_4" },
+                                                                           { "VK_KHR_maintenance1", "VK_VERSION_1_1" },
+                                                                           { "VK_KHR_device_group_creation", "VK_VERSION_1_1" },
+                                                                           { "VK_KHR_external_memory_capabilities", "VK_VERSION_1_1" },
+                                                                           { "VK_KHR_external_memory", "VK_VERSION_1_1" },
+                                                                           { "VK_KHR_external_semaphore_capabilities", "VK_VERSION_1_1" },
+                                                                           { "VK_KHR_external_semaphore", "VK_VERSION_1_1" },
+                                                                           { "VK_KHR_push_descriptor", "VK_VERSION_1_4" },
+                                                                           { "VK_KHR_shader_float16_int8", "VK_VERSION_1_2" },
+                                                                           { "VK_KHR_16bit_storage", "VK_VERSION_1_1" },
+                                                                           { "VK_KHR_descriptor_update_template", "VK_VERSION_1_1" },
+                                                                           { "VK_KHR_imageless_framebuffer", "VK_VERSION_1_2" },
+                                                                           { "VK_KHR_create_renderpass2", "VK_VERSION_1_2" },
+                                                                           { "VK_KHR_external_fence_capabilities", "VK_VERSION_1_1" },
+                                                                           { "VK_KHR_external_fence", "VK_VERSION_1_1" },
+                                                                           { "VK_KHR_maintenance2", "VK_VERSION_1_1" },
+                                                                           { "VK_KHR_variable_pointers", "VK_VERSION_1_1" },
+                                                                           { "VK_KHR_dedicated_allocation", "VK_VERSION_1_1" },
+                                                                           { "VK_EXT_sampler_filter_minmax", "VK_VERSION_1_2" },
+                                                                           { "VK_KHR_storage_buffer_storage_class", "VK_VERSION_1_1" },
+                                                                           { "VK_EXT_inline_uniform_block", "VK_VERSION_1_3" },
+                                                                           { "VK_KHR_relaxed_block_layout", "VK_VERSION_1_1" },
+                                                                           { "VK_KHR_get_memory_requirements2", "VK_VERSION_1_1" },
+                                                                           { "VK_KHR_image_format_list", "VK_VERSION_1_2" },
+                                                                           { "VK_KHR_sampler_ycbcr_conversion", "VK_VERSION_1_1" },
+                                                                           { "VK_KHR_bind_memory2", "VK_VERSION_1_1" },
+                                                                           { "VK_EXT_descriptor_indexing", "VK_VERSION_1_2" },
+                                                                           { "VK_EXT_shader_viewport_index_layer", "VK_VERSION_1_2" },
+                                                                           { "VK_KHR_maintenance3", "VK_VERSION_1_1" },
+                                                                           { "VK_KHR_draw_indirect_count", "VK_VERSION_1_2" },
+                                                                           { "VK_EXT_global_priority", "VK_KHR_global_priority" },
+                                                                           { "VK_KHR_shader_subgroup_extended_types", "VK_VERSION_1_2" },
+                                                                           { "VK_KHR_8bit_storage", "VK_VERSION_1_2" },
+                                                                           { "VK_KHR_shader_atomic_int64", "VK_VERSION_1_2" },
+                                                                           { "VK_EXT_calibrated_timestamps", "VK_KHR_calibrated_timestamps" },
+                                                                           { "VK_KHR_global_priority", "VK_VERSION_1_4" },
+                                                                           { "VK_EXT_vertex_attribute_divisor", "VK_KHR_vertex_attribute_divisor" },
+                                                                           { "VK_EXT_pipeline_creation_feedback", "VK_VERSION_1_3" },
+                                                                           { "VK_KHR_driver_properties", "VK_VERSION_1_2" },
+                                                                           { "VK_KHR_shader_float_controls", "VK_VERSION_1_2" },
+                                                                           { "VK_KHR_depth_stencil_resolve", "VK_VERSION_1_2" },
+                                                                           { "VK_NV_compute_shader_derivatives", "VK_KHR_compute_shader_derivatives" },
+                                                                           { "VK_NV_fragment_shader_barycentric", "VK_KHR_fragment_shader_barycentric" },
+                                                                           { "VK_KHR_timeline_semaphore", "VK_VERSION_1_2" },
+                                                                           { "VK_KHR_vulkan_memory_model", "VK_VERSION_1_2" },
+                                                                           { "VK_KHR_shader_terminate_invocation", "VK_VERSION_1_3" },
+                                                                           { "VK_EXT_scalar_block_layout", "VK_VERSION_1_2" },
+                                                                           { "VK_EXT_subgroup_size_control", "VK_VERSION_1_3" },
+                                                                           { "VK_KHR_dynamic_rendering_local_read", "VK_VERSION_1_4" },
+                                                                           { "VK_KHR_spirv_1_4", "VK_VERSION_1_2" },
+                                                                           { "VK_KHR_separate_depth_stencil_layouts", "VK_VERSION_1_2" },
+                                                                           { "VK_EXT_tooling_info", "VK_VERSION_1_3" },
+                                                                           { "VK_EXT_separate_stencil_usage", "VK_VERSION_1_2" },
+                                                                           { "VK_KHR_uniform_buffer_standard_layout", "VK_VERSION_1_2" },
+                                                                           { "VK_KHR_buffer_device_address", "VK_VERSION_1_2" },
+                                                                           { "VK_EXT_line_rasterization", "VK_KHR_line_rasterization" },
+                                                                           { "VK_EXT_host_query_reset", "VK_VERSION_1_2" },
+                                                                           { "VK_EXT_index_type_uint8", "VK_KHR_index_type_uint8" },
+                                                                           { "VK_EXT_extended_dynamic_state", "VK_VERSION_1_3" },
+                                                                           { "VK_EXT_host_image_copy", "VK_VERSION_1_4" },
+                                                                           { "VK_KHR_map_memory2", "VK_VERSION_1_4" },
+                                                                           { "VK_EXT_surface_maintenance1", "VK_KHR_surface_maintenance1" },
+                                                                           { "VK_EXT_swapchain_maintenance1", "VK_KHR_swapchain_maintenance1" },
+                                                                           { "VK_EXT_shader_demote_to_helper_invocation", "VK_VERSION_1_3" },
+                                                                           { "VK_KHR_shader_integer_dot_product", "VK_VERSION_1_3" },
+                                                                           { "VK_EXT_texel_buffer_alignment", "VK_VERSION_1_3" },
+                                                                           { "VK_EXT_robustness2", "VK_KHR_robustness2" },
+                                                                           { "VK_KHR_shader_non_semantic_info", "VK_VERSION_1_3" },
+                                                                           { "VK_EXT_private_data", "VK_VERSION_1_3" },
+                                                                           { "VK_EXT_pipeline_creation_cache_control", "VK_VERSION_1_3" },
+                                                                           { "VK_KHR_synchronization2", "VK_VERSION_1_3" },
+                                                                           { "VK_KHR_zero_initialize_workgroup_memory", "VK_VERSION_1_3" },
+                                                                           { "VK_EXT_ycbcr_2plane_444_formats", "VK_VERSION_1_3" },
+                                                                           { "VK_EXT_image_robustness", "VK_VERSION_1_3" },
+                                                                           { "VK_KHR_copy_commands2", "VK_VERSION_1_3" },
+                                                                           { "VK_EXT_4444_formats", "VK_VERSION_1_3" },
+                                                                           { "VK_ARM_rasterization_order_attachment_access",
+                                                                             "VK_EXT_rasterization_order_attachment_access" },
+                                                                           { "VK_VALVE_mutable_descriptor_type", "VK_EXT_mutable_descriptor_type" },
+                                                                           { "VK_KHR_format_feature_flags2", "VK_VERSION_1_3" },
+                                                                           { "VK_EXT_present_mode_fifo_latest_ready", "VK_KHR_present_mode_fifo_latest_ready" },
+                                                                           { "VK_EXT_extended_dynamic_state2", "VK_VERSION_1_3" },
+                                                                           { "VK_EXT_global_priority_query", "VK_KHR_global_priority" },
+                                                                           { "VK_EXT_load_store_op_none", "VK_KHR_load_store_op_none" },
+                                                                           { "VK_KHR_maintenance4", "VK_VERSION_1_3" },
+                                                                           { "VK_KHR_shader_subgroup_rotate", "VK_VERSION_1_4" },
+                                                                           { "VK_EXT_depth_clamp_zero_one", "VK_KHR_depth_clamp_zero_one" },
+                                                                           { "VK_QCOM_fragment_density_map_offset", "VK_EXT_fragment_density_map_offset" },
+                                                                           { "VK_NV_copy_memory_indirect", "VK_KHR_copy_memory_indirect" },
+                                                                           { "VK_EXT_pipeline_protected_access", "VK_VERSION_1_4" },
+                                                                           { "VK_KHR_maintenance5", "VK_VERSION_1_4" },
+                                                                           { "VK_KHR_vertex_attribute_divisor", "VK_VERSION_1_4" },
+                                                                           { "VK_KHR_load_store_op_none", "VK_VERSION_1_4" },
+                                                                           { "VK_KHR_shader_float_controls2", "VK_VERSION_1_4" },
+                                                                           { "VK_KHR_index_type_uint8", "VK_VERSION_1_4" },
+                                                                           { "VK_KHR_line_rasterization", "VK_VERSION_1_4" },
+                                                                           { "VK_KHR_shader_expect_assume", "VK_VERSION_1_4" },
+                                                                           { "VK_KHR_maintenance6", "VK_VERSION_1_4" },
+                                                                           { "VK_EXT_vertex_attribute_robustness", "VK_KHR_maintenance9" } };
     return promotedExtensions;
   }
 
@@ -1164,105 +1595,415 @@ namespace VULKAN_HPP_NAMESPACE
 #if defined( VK_USE_PLATFORM_WIN32_KHR )
   if ( extension == "VK_NV_win32_keyed_mutex" ) { return "VK_KHR_win32_keyed_mutex"; }
 #endif /*VK_USE_PLATFORM_WIN32_KHR*/
-  if ( extension == "VK_KHR_get_physical_device_properties2" ) { return "VK_VERSION_1_1"; }
-  if ( extension == "VK_KHR_device_group" ) { return "VK_VERSION_1_1"; }
-  if ( extension == "VK_KHR_shader_draw_parameters" ) { return "VK_VERSION_1_1"; }
-  if ( extension == "VK_EXT_texture_compression_astc_hdr" ) { return "VK_VERSION_1_3"; }
-  if ( extension == "VK_EXT_pipeline_robustness" ) { return "VK_VERSION_1_4"; }
-  if ( extension == "VK_KHR_maintenance1" ) { return "VK_VERSION_1_1"; }
-  if ( extension == "VK_KHR_device_group_creation" ) { return "VK_VERSION_1_1"; }
-  if ( extension == "VK_KHR_external_memory_capabilities" ) { return "VK_VERSION_1_1"; }
-  if ( extension == "VK_KHR_external_memory" ) { return "VK_VERSION_1_1"; }
-  if ( extension == "VK_KHR_external_semaphore_capabilities" ) { return "VK_VERSION_1_1"; }
-  if ( extension == "VK_KHR_external_semaphore" ) { return "VK_VERSION_1_1"; }
-  if ( extension == "VK_KHR_push_descriptor" ) { return "VK_VERSION_1_4"; }
-  if ( extension == "VK_KHR_shader_float16_int8" ) { return "VK_VERSION_1_2"; }
-  if ( extension == "VK_KHR_16bit_storage" ) { return "VK_VERSION_1_1"; }
-  if ( extension == "VK_KHR_descriptor_update_template" ) { return "VK_VERSION_1_1"; }
-  if ( extension == "VK_KHR_imageless_framebuffer" ) { return "VK_VERSION_1_2"; }
-  if ( extension == "VK_KHR_create_renderpass2" ) { return "VK_VERSION_1_2"; }
-  if ( extension == "VK_KHR_external_fence_capabilities" ) { return "VK_VERSION_1_1"; }
-  if ( extension == "VK_KHR_external_fence" ) { return "VK_VERSION_1_1"; }
-  if ( extension == "VK_KHR_maintenance2" ) { return "VK_VERSION_1_1"; }
-  if ( extension == "VK_KHR_variable_pointers" ) { return "VK_VERSION_1_1"; }
-  if ( extension == "VK_KHR_dedicated_allocation" ) { return "VK_VERSION_1_1"; }
-  if ( extension == "VK_EXT_sampler_filter_minmax" ) { return "VK_VERSION_1_2"; }
-  if ( extension == "VK_KHR_storage_buffer_storage_class" ) { return "VK_VERSION_1_1"; }
-  if ( extension == "VK_EXT_inline_uniform_block" ) { return "VK_VERSION_1_3"; }
-  if ( extension == "VK_KHR_relaxed_block_layout" ) { return "VK_VERSION_1_1"; }
-  if ( extension == "VK_KHR_get_memory_requirements2" ) { return "VK_VERSION_1_1"; }
-  if ( extension == "VK_KHR_image_format_list" ) { return "VK_VERSION_1_2"; }
-  if ( extension == "VK_KHR_sampler_ycbcr_conversion" ) { return "VK_VERSION_1_1"; }
-  if ( extension == "VK_KHR_bind_memory2" ) { return "VK_VERSION_1_1"; }
-  if ( extension == "VK_EXT_descriptor_indexing" ) { return "VK_VERSION_1_2"; }
-  if ( extension == "VK_EXT_shader_viewport_index_layer" ) { return "VK_VERSION_1_2"; }
-  if ( extension == "VK_KHR_maintenance3" ) { return "VK_VERSION_1_1"; }
-  if ( extension == "VK_KHR_draw_indirect_count" ) { return "VK_VERSION_1_2"; }
-  if ( extension == "VK_EXT_global_priority" ) { return "VK_KHR_global_priority"; }
-  if ( extension == "VK_KHR_shader_subgroup_extended_types" ) { return "VK_VERSION_1_2"; }
-  if ( extension == "VK_KHR_8bit_storage" ) { return "VK_VERSION_1_2"; }
-  if ( extension == "VK_KHR_shader_atomic_int64" ) { return "VK_VERSION_1_2"; }
-  if ( extension == "VK_EXT_calibrated_timestamps" ) { return "VK_KHR_calibrated_timestamps"; }
-  if ( extension == "VK_KHR_global_priority" ) { return "VK_VERSION_1_4"; }
-  if ( extension == "VK_EXT_vertex_attribute_divisor" ) { return "VK_KHR_vertex_attribute_divisor"; }
-  if ( extension == "VK_EXT_pipeline_creation_feedback" ) { return "VK_VERSION_1_3"; }
-  if ( extension == "VK_KHR_driver_properties" ) { return "VK_VERSION_1_2"; }
-  if ( extension == "VK_KHR_shader_float_controls" ) { return "VK_VERSION_1_2"; }
-  if ( extension == "VK_KHR_depth_stencil_resolve" ) { return "VK_VERSION_1_2"; }
-  if ( extension == "VK_NV_compute_shader_derivatives" ) { return "VK_KHR_compute_shader_derivatives"; }
-  if ( extension == "VK_NV_fragment_shader_barycentric" ) { return "VK_KHR_fragment_shader_barycentric"; }
-  if ( extension == "VK_KHR_timeline_semaphore" ) { return "VK_VERSION_1_2"; }
-  if ( extension == "VK_KHR_vulkan_memory_model" ) { return "VK_VERSION_1_2"; }
-  if ( extension == "VK_KHR_shader_terminate_invocation" ) { return "VK_VERSION_1_3"; }
-  if ( extension == "VK_EXT_scalar_block_layout" ) { return "VK_VERSION_1_2"; }
-  if ( extension == "VK_EXT_subgroup_size_control" ) { return "VK_VERSION_1_3"; }
-  if ( extension == "VK_KHR_dynamic_rendering_local_read" ) { return "VK_VERSION_1_4"; }
-  if ( extension == "VK_KHR_spirv_1_4" ) { return "VK_VERSION_1_2"; }
-  if ( extension == "VK_KHR_separate_depth_stencil_layouts" ) { return "VK_VERSION_1_2"; }
-  if ( extension == "VK_EXT_tooling_info" ) { return "VK_VERSION_1_3"; }
-  if ( extension == "VK_EXT_separate_stencil_usage" ) { return "VK_VERSION_1_2"; }
-  if ( extension == "VK_KHR_uniform_buffer_standard_layout" ) { return "VK_VERSION_1_2"; }
-  if ( extension == "VK_KHR_buffer_device_address" ) { return "VK_VERSION_1_2"; }
-  if ( extension == "VK_EXT_line_rasterization" ) { return "VK_KHR_line_rasterization"; }
-  if ( extension == "VK_EXT_host_query_reset" ) { return "VK_VERSION_1_2"; }
-  if ( extension == "VK_EXT_index_type_uint8" ) { return "VK_KHR_index_type_uint8"; }
-  if ( extension == "VK_EXT_extended_dynamic_state" ) { return "VK_VERSION_1_3"; }
-  if ( extension == "VK_EXT_host_image_copy" ) { return "VK_VERSION_1_4"; }
-  if ( extension == "VK_KHR_map_memory2" ) { return "VK_VERSION_1_4"; }
-  if ( extension == "VK_EXT_shader_demote_to_helper_invocation" ) { return "VK_VERSION_1_3"; }
-  if ( extension == "VK_KHR_shader_integer_dot_product" ) { return "VK_VERSION_1_3"; }
-  if ( extension == "VK_EXT_texel_buffer_alignment" ) { return "VK_VERSION_1_3"; }
-  if ( extension == "VK_EXT_robustness2" ) { return "VK_KHR_robustness2"; }
-  if ( extension == "VK_KHR_shader_non_semantic_info" ) { return "VK_VERSION_1_3"; }
-  if ( extension == "VK_EXT_private_data" ) { return "VK_VERSION_1_3"; }
-  if ( extension == "VK_EXT_pipeline_creation_cache_control" ) { return "VK_VERSION_1_3"; }
-  if ( extension == "VK_KHR_synchronization2" ) { return "VK_VERSION_1_3"; }
-  if ( extension == "VK_KHR_zero_initialize_workgroup_memory" ) { return "VK_VERSION_1_3"; }
-  if ( extension == "VK_EXT_ycbcr_2plane_444_formats" ) { return "VK_VERSION_1_3"; }
-  if ( extension == "VK_EXT_image_robustness" ) { return "VK_VERSION_1_3"; }
-  if ( extension == "VK_KHR_copy_commands2" ) { return "VK_VERSION_1_3"; }
-  if ( extension == "VK_EXT_4444_formats" ) { return "VK_VERSION_1_3"; }
-  if ( extension == "VK_ARM_rasterization_order_attachment_access" ) { return "VK_EXT_rasterization_order_attachment_access"; }
-  if ( extension == "VK_VALVE_mutable_descriptor_type" ) { return "VK_EXT_mutable_descriptor_type"; }
-  if ( extension == "VK_KHR_format_feature_flags2" ) { return "VK_VERSION_1_3"; }
-  if ( extension == "VK_EXT_extended_dynamic_state2" ) { return "VK_VERSION_1_3"; }
-  if ( extension == "VK_EXT_global_priority_query" ) { return "VK_KHR_global_priority"; }
-  if ( extension == "VK_EXT_load_store_op_none" ) { return "VK_KHR_load_store_op_none"; }
-  if ( extension == "VK_KHR_maintenance4" ) { return "VK_VERSION_1_3"; }
-  if ( extension == "VK_KHR_shader_subgroup_rotate" ) { return "VK_VERSION_1_4"; }
-  if ( extension == "VK_EXT_depth_clamp_zero_one" ) { return "VK_KHR_depth_clamp_zero_one"; }
-  if ( extension == "VK_QCOM_fragment_density_map_offset" ) { return "VK_EXT_fragment_density_map_offset"; }
-  if ( extension == "VK_EXT_pipeline_protected_access" ) { return "VK_VERSION_1_4"; }
-  if ( extension == "VK_KHR_maintenance5" ) { return "VK_VERSION_1_4"; }
-  if ( extension == "VK_KHR_vertex_attribute_divisor" ) { return "VK_VERSION_1_4"; }
-  if ( extension == "VK_KHR_load_store_op_none" ) { return "VK_VERSION_1_4"; }
-  if ( extension == "VK_KHR_shader_float_controls2" ) { return "VK_VERSION_1_4"; }
-  if ( extension == "VK_KHR_index_type_uint8" ) { return "VK_VERSION_1_4"; }
-  if ( extension == "VK_KHR_line_rasterization" ) { return "VK_VERSION_1_4"; }
-  if ( extension == "VK_KHR_shader_expect_assume" ) { return "VK_VERSION_1_4"; }
-  if ( extension == "VK_KHR_maintenance6" ) { return "VK_VERSION_1_4"; }
-  if ( extension == "VK_EXT_vertex_attribute_robustness" ) { return "VK_KHR_maintenance9"; }
-  return "";
+    if ( extension == "VK_KHR_get_physical_device_properties2" )
+    {
+      return "VK_VERSION_1_1";
+    }
+    if ( extension == "VK_KHR_device_group" )
+    {
+      return "VK_VERSION_1_1";
+    }
+    if ( extension == "VK_KHR_shader_draw_parameters" )
+    {
+      return "VK_VERSION_1_1";
+    }
+    if ( extension == "VK_EXT_texture_compression_astc_hdr" )
+    {
+      return "VK_VERSION_1_3";
+    }
+    if ( extension == "VK_EXT_pipeline_robustness" )
+    {
+      return "VK_VERSION_1_4";
+    }
+    if ( extension == "VK_KHR_maintenance1" )
+    {
+      return "VK_VERSION_1_1";
+    }
+    if ( extension == "VK_KHR_device_group_creation" )
+    {
+      return "VK_VERSION_1_1";
+    }
+    if ( extension == "VK_KHR_external_memory_capabilities" )
+    {
+      return "VK_VERSION_1_1";
+    }
+    if ( extension == "VK_KHR_external_memory" )
+    {
+      return "VK_VERSION_1_1";
+    }
+    if ( extension == "VK_KHR_external_semaphore_capabilities" )
+    {
+      return "VK_VERSION_1_1";
+    }
+    if ( extension == "VK_KHR_external_semaphore" )
+    {
+      return "VK_VERSION_1_1";
+    }
+    if ( extension == "VK_KHR_push_descriptor" )
+    {
+      return "VK_VERSION_1_4";
+    }
+    if ( extension == "VK_KHR_shader_float16_int8" )
+    {
+      return "VK_VERSION_1_2";
+    }
+    if ( extension == "VK_KHR_16bit_storage" )
+    {
+      return "VK_VERSION_1_1";
+    }
+    if ( extension == "VK_KHR_descriptor_update_template" )
+    {
+      return "VK_VERSION_1_1";
+    }
+    if ( extension == "VK_KHR_imageless_framebuffer" )
+    {
+      return "VK_VERSION_1_2";
+    }
+    if ( extension == "VK_KHR_create_renderpass2" )
+    {
+      return "VK_VERSION_1_2";
+    }
+    if ( extension == "VK_KHR_external_fence_capabilities" )
+    {
+      return "VK_VERSION_1_1";
+    }
+    if ( extension == "VK_KHR_external_fence" )
+    {
+      return "VK_VERSION_1_1";
+    }
+    if ( extension == "VK_KHR_maintenance2" )
+    {
+      return "VK_VERSION_1_1";
+    }
+    if ( extension == "VK_KHR_variable_pointers" )
+    {
+      return "VK_VERSION_1_1";
+    }
+    if ( extension == "VK_KHR_dedicated_allocation" )
+    {
+      return "VK_VERSION_1_1";
+    }
+    if ( extension == "VK_EXT_sampler_filter_minmax" )
+    {
+      return "VK_VERSION_1_2";
+    }
+    if ( extension == "VK_KHR_storage_buffer_storage_class" )
+    {
+      return "VK_VERSION_1_1";
+    }
+    if ( extension == "VK_EXT_inline_uniform_block" )
+    {
+      return "VK_VERSION_1_3";
+    }
+    if ( extension == "VK_KHR_relaxed_block_layout" )
+    {
+      return "VK_VERSION_1_1";
+    }
+    if ( extension == "VK_KHR_get_memory_requirements2" )
+    {
+      return "VK_VERSION_1_1";
+    }
+    if ( extension == "VK_KHR_image_format_list" )
+    {
+      return "VK_VERSION_1_2";
+    }
+    if ( extension == "VK_KHR_sampler_ycbcr_conversion" )
+    {
+      return "VK_VERSION_1_1";
+    }
+    if ( extension == "VK_KHR_bind_memory2" )
+    {
+      return "VK_VERSION_1_1";
+    }
+    if ( extension == "VK_EXT_descriptor_indexing" )
+    {
+      return "VK_VERSION_1_2";
+    }
+    if ( extension == "VK_EXT_shader_viewport_index_layer" )
+    {
+      return "VK_VERSION_1_2";
+    }
+    if ( extension == "VK_KHR_maintenance3" )
+    {
+      return "VK_VERSION_1_1";
+    }
+    if ( extension == "VK_KHR_draw_indirect_count" )
+    {
+      return "VK_VERSION_1_2";
+    }
+    if ( extension == "VK_EXT_global_priority" )
+    {
+      return "VK_KHR_global_priority";
+    }
+    if ( extension == "VK_KHR_shader_subgroup_extended_types" )
+    {
+      return "VK_VERSION_1_2";
+    }
+    if ( extension == "VK_KHR_8bit_storage" )
+    {
+      return "VK_VERSION_1_2";
+    }
+    if ( extension == "VK_KHR_shader_atomic_int64" )
+    {
+      return "VK_VERSION_1_2";
+    }
+    if ( extension == "VK_EXT_calibrated_timestamps" )
+    {
+      return "VK_KHR_calibrated_timestamps";
+    }
+    if ( extension == "VK_KHR_global_priority" )
+    {
+      return "VK_VERSION_1_4";
+    }
+    if ( extension == "VK_EXT_vertex_attribute_divisor" )
+    {
+      return "VK_KHR_vertex_attribute_divisor";
+    }
+    if ( extension == "VK_EXT_pipeline_creation_feedback" )
+    {
+      return "VK_VERSION_1_3";
+    }
+    if ( extension == "VK_KHR_driver_properties" )
+    {
+      return "VK_VERSION_1_2";
+    }
+    if ( extension == "VK_KHR_shader_float_controls" )
+    {
+      return "VK_VERSION_1_2";
+    }
+    if ( extension == "VK_KHR_depth_stencil_resolve" )
+    {
+      return "VK_VERSION_1_2";
+    }
+    if ( extension == "VK_NV_compute_shader_derivatives" )
+    {
+      return "VK_KHR_compute_shader_derivatives";
+    }
+    if ( extension == "VK_NV_fragment_shader_barycentric" )
+    {
+      return "VK_KHR_fragment_shader_barycentric";
+    }
+    if ( extension == "VK_KHR_timeline_semaphore" )
+    {
+      return "VK_VERSION_1_2";
+    }
+    if ( extension == "VK_KHR_vulkan_memory_model" )
+    {
+      return "VK_VERSION_1_2";
+    }
+    if ( extension == "VK_KHR_shader_terminate_invocation" )
+    {
+      return "VK_VERSION_1_3";
+    }
+    if ( extension == "VK_EXT_scalar_block_layout" )
+    {
+      return "VK_VERSION_1_2";
+    }
+    if ( extension == "VK_EXT_subgroup_size_control" )
+    {
+      return "VK_VERSION_1_3";
+    }
+    if ( extension == "VK_KHR_dynamic_rendering_local_read" )
+    {
+      return "VK_VERSION_1_4";
+    }
+    if ( extension == "VK_KHR_spirv_1_4" )
+    {
+      return "VK_VERSION_1_2";
+    }
+    if ( extension == "VK_KHR_separate_depth_stencil_layouts" )
+    {
+      return "VK_VERSION_1_2";
+    }
+    if ( extension == "VK_EXT_tooling_info" )
+    {
+      return "VK_VERSION_1_3";
+    }
+    if ( extension == "VK_EXT_separate_stencil_usage" )
+    {
+      return "VK_VERSION_1_2";
+    }
+    if ( extension == "VK_KHR_uniform_buffer_standard_layout" )
+    {
+      return "VK_VERSION_1_2";
+    }
+    if ( extension == "VK_KHR_buffer_device_address" )
+    {
+      return "VK_VERSION_1_2";
+    }
+    if ( extension == "VK_EXT_line_rasterization" )
+    {
+      return "VK_KHR_line_rasterization";
+    }
+    if ( extension == "VK_EXT_host_query_reset" )
+    {
+      return "VK_VERSION_1_2";
+    }
+    if ( extension == "VK_EXT_index_type_uint8" )
+    {
+      return "VK_KHR_index_type_uint8";
+    }
+    if ( extension == "VK_EXT_extended_dynamic_state" )
+    {
+      return "VK_VERSION_1_3";
+    }
+    if ( extension == "VK_EXT_host_image_copy" )
+    {
+      return "VK_VERSION_1_4";
+    }
+    if ( extension == "VK_KHR_map_memory2" )
+    {
+      return "VK_VERSION_1_4";
+    }
+    if ( extension == "VK_EXT_surface_maintenance1" )
+    {
+      return "VK_KHR_surface_maintenance1";
+    }
+    if ( extension == "VK_EXT_swapchain_maintenance1" )
+    {
+      return "VK_KHR_swapchain_maintenance1";
+    }
+    if ( extension == "VK_EXT_shader_demote_to_helper_invocation" )
+    {
+      return "VK_VERSION_1_3";
+    }
+    if ( extension == "VK_KHR_shader_integer_dot_product" )
+    {
+      return "VK_VERSION_1_3";
+    }
+    if ( extension == "VK_EXT_texel_buffer_alignment" )
+    {
+      return "VK_VERSION_1_3";
+    }
+    if ( extension == "VK_EXT_robustness2" )
+    {
+      return "VK_KHR_robustness2";
+    }
+    if ( extension == "VK_KHR_shader_non_semantic_info" )
+    {
+      return "VK_VERSION_1_3";
+    }
+    if ( extension == "VK_EXT_private_data" )
+    {
+      return "VK_VERSION_1_3";
+    }
+    if ( extension == "VK_EXT_pipeline_creation_cache_control" )
+    {
+      return "VK_VERSION_1_3";
+    }
+    if ( extension == "VK_KHR_synchronization2" )
+    {
+      return "VK_VERSION_1_3";
+    }
+    if ( extension == "VK_KHR_zero_initialize_workgroup_memory" )
+    {
+      return "VK_VERSION_1_3";
+    }
+    if ( extension == "VK_EXT_ycbcr_2plane_444_formats" )
+    {
+      return "VK_VERSION_1_3";
+    }
+    if ( extension == "VK_EXT_image_robustness" )
+    {
+      return "VK_VERSION_1_3";
+    }
+    if ( extension == "VK_KHR_copy_commands2" )
+    {
+      return "VK_VERSION_1_3";
+    }
+    if ( extension == "VK_EXT_4444_formats" )
+    {
+      return "VK_VERSION_1_3";
+    }
+    if ( extension == "VK_ARM_rasterization_order_attachment_access" )
+    {
+      return "VK_EXT_rasterization_order_attachment_access";
+    }
+    if ( extension == "VK_VALVE_mutable_descriptor_type" )
+    {
+      return "VK_EXT_mutable_descriptor_type";
+    }
+    if ( extension == "VK_KHR_format_feature_flags2" )
+    {
+      return "VK_VERSION_1_3";
+    }
+    if ( extension == "VK_EXT_present_mode_fifo_latest_ready" )
+    {
+      return "VK_KHR_present_mode_fifo_latest_ready";
+    }
+    if ( extension == "VK_EXT_extended_dynamic_state2" )
+    {
+      return "VK_VERSION_1_3";
+    }
+    if ( extension == "VK_EXT_global_priority_query" )
+    {
+      return "VK_KHR_global_priority";
+    }
+    if ( extension == "VK_EXT_load_store_op_none" )
+    {
+      return "VK_KHR_load_store_op_none";
+    }
+    if ( extension == "VK_KHR_maintenance4" )
+    {
+      return "VK_VERSION_1_3";
+    }
+    if ( extension == "VK_KHR_shader_subgroup_rotate" )
+    {
+      return "VK_VERSION_1_4";
+    }
+    if ( extension == "VK_EXT_depth_clamp_zero_one" )
+    {
+      return "VK_KHR_depth_clamp_zero_one";
+    }
+    if ( extension == "VK_QCOM_fragment_density_map_offset" )
+    {
+      return "VK_EXT_fragment_density_map_offset";
+    }
+    if ( extension == "VK_NV_copy_memory_indirect" )
+    {
+      return "VK_KHR_copy_memory_indirect";
+    }
+    if ( extension == "VK_EXT_pipeline_protected_access" )
+    {
+      return "VK_VERSION_1_4";
+    }
+    if ( extension == "VK_KHR_maintenance5" )
+    {
+      return "VK_VERSION_1_4";
+    }
+    if ( extension == "VK_KHR_vertex_attribute_divisor" )
+    {
+      return "VK_VERSION_1_4";
+    }
+    if ( extension == "VK_KHR_load_store_op_none" )
+    {
+      return "VK_VERSION_1_4";
+    }
+    if ( extension == "VK_KHR_shader_float_controls2" )
+    {
+      return "VK_VERSION_1_4";
+    }
+    if ( extension == "VK_KHR_index_type_uint8" )
+    {
+      return "VK_VERSION_1_4";
+    }
+    if ( extension == "VK_KHR_line_rasterization" )
+    {
+      return "VK_VERSION_1_4";
+    }
+    if ( extension == "VK_KHR_shader_expect_assume" )
+    {
+      return "VK_VERSION_1_4";
+    }
+    if ( extension == "VK_KHR_maintenance6" )
+    {
+      return "VK_VERSION_1_4";
+    }
+    if ( extension == "VK_EXT_vertex_attribute_robustness" )
+    {
+      return "VK_KHR_maintenance9";
+    }
+    return "";
   }
 
   VULKAN_HPP_INLINE VULKAN_HPP_CONSTEXPR_20 bool isDeprecatedExtension( std::string const & extension )
@@ -1578,22 +2319,14 @@ false;
  || ( extension == "VK_FUCHSIA_external_semaphore" )
  || ( extension == "VK_FUCHSIA_buffer_collection" )
 #endif /*VK_USE_PLATFORM_FUCHSIA*/
- || ( extension == "VK_HUAWEI_subpass_shading" )
- || ( extension == "VK_HUAWEI_invocation_mask" )
- || ( extension == "VK_NV_external_memory_rdma" )
- || ( extension == "VK_EXT_pipeline_properties" )
- || ( extension == "VK_EXT_frame_boundary" )
- || ( extension == "VK_EXT_multisampled_render_to_single_sampled" )
- || ( extension == "VK_EXT_extended_dynamic_state2" )
- || ( extension == "VK_EXT_color_write_enable" )
- || ( extension == "VK_EXT_primitives_generated_query" )
- || ( extension == "VK_KHR_ray_tracing_maintenance1" )
- || ( extension == "VK_EXT_global_priority_query" )
- || ( extension == "VK_EXT_image_view_min_lod" )
- || ( extension == "VK_EXT_multi_draw" )
- || ( extension == "VK_EXT_image_2d_view_of_3d" )
- || ( extension == "VK_EXT_shader_tile_image" )
- || ( extension == "VK_EXT_opacity_micromap" )
+        || ( extension == "VK_HUAWEI_subpass_shading" ) || ( extension == "VK_HUAWEI_invocation_mask" ) || ( extension == "VK_NV_external_memory_rdma" ) ||
+           ( extension == "VK_EXT_pipeline_properties" ) || ( extension == "VK_EXT_frame_boundary" ) ||
+           ( extension == "VK_EXT_multisampled_render_to_single_sampled" ) || ( extension == "VK_EXT_extended_dynamic_state2" ) ||
+           ( extension == "VK_EXT_color_write_enable" ) || ( extension == "VK_EXT_primitives_generated_query" ) ||
+           ( extension == "VK_KHR_ray_tracing_maintenance1" ) || ( extension == "VK_KHR_shader_untyped_pointers" ) ||
+           ( extension == "VK_EXT_global_priority_query" ) || ( extension == "VK_VALVE_video_encode_rgb_conversion" ) ||
+           ( extension == "VK_EXT_image_view_min_lod" ) || ( extension == "VK_EXT_multi_draw" ) || ( extension == "VK_EXT_image_2d_view_of_3d" ) ||
+           ( extension == "VK_EXT_shader_tile_image" ) || ( extension == "VK_EXT_opacity_micromap" )
 #if defined( VK_ENABLE_BETA_EXTENSIONS )
  || ( extension == "VK_NV_displacement_micromap" )
 #endif /*VK_ENABLE_BETA_EXTENSIONS*/
@@ -1632,75 +2365,42 @@ false;
 #if defined( VK_USE_PLATFORM_ANDROID_KHR )
  || ( extension == "VK_ANDROID_external_format_resolve" )
 #endif /*VK_USE_PLATFORM_ANDROID_KHR*/
- || ( extension == "VK_KHR_maintenance5" )
- || ( extension == "VK_AMD_anti_lag" )
- || ( extension == "VK_KHR_present_id2" )
- || ( extension == "VK_KHR_present_wait2" )
- || ( extension == "VK_KHR_ray_tracing_position_fetch" )
- || ( extension == "VK_EXT_shader_object" )
- || ( extension == "VK_KHR_pipeline_binary" )
- || ( extension == "VK_QCOM_tile_properties" )
- || ( extension == "VK_SEC_amigo_profiling" )
- || ( extension == "VK_QCOM_multiview_per_view_viewports" )
- || ( extension == "VK_NV_ray_tracing_invocation_reorder" )
- || ( extension == "VK_NV_cooperative_vector" )
- || ( extension == "VK_NV_extended_sparse_address_space" )
- || ( extension == "VK_EXT_mutable_descriptor_type" )
- || ( extension == "VK_EXT_legacy_vertex_attributes" )
- || ( extension == "VK_ARM_shader_core_builtins" )
- || ( extension == "VK_EXT_pipeline_library_group_handles" )
- || ( extension == "VK_EXT_dynamic_rendering_unused_attachments" )
- || ( extension == "VK_NV_low_latency2" )
- || ( extension == "VK_KHR_cooperative_matrix" )
- || ( extension == "VK_ARM_data_graph" )
- || ( extension == "VK_QCOM_multiview_per_view_render_areas" )
- || ( extension == "VK_KHR_compute_shader_derivatives" )
- || ( extension == "VK_KHR_video_decode_av1" )
- || ( extension == "VK_KHR_video_encode_av1" )
- || ( extension == "VK_KHR_video_decode_vp9" )
- || ( extension == "VK_KHR_video_maintenance1" )
- || ( extension == "VK_NV_per_stage_descriptor_set" )
- || ( extension == "VK_QCOM_image_processing2" )
- || ( extension == "VK_QCOM_filter_cubic_weights" )
- || ( extension == "VK_QCOM_ycbcr_degamma" )
- || ( extension == "VK_QCOM_filter_cubic_clamp" )
- || ( extension == "VK_EXT_attachment_feedback_loop_dynamic_state" )
- || ( extension == "VK_KHR_vertex_attribute_divisor" )
- || ( extension == "VK_KHR_load_store_op_none" )
- || ( extension == "VK_KHR_unified_image_layouts" )
- || ( extension == "VK_KHR_shader_float_controls2" )
+        || ( extension == "VK_KHR_maintenance5" ) || ( extension == "VK_AMD_anti_lag" )
+#if defined( VK_ENABLE_BETA_EXTENSIONS )
+        || ( extension == "VK_AMDX_dense_geometry_format" )
+#endif /*VK_ENABLE_BETA_EXTENSIONS*/
+        || ( extension == "VK_KHR_present_id2" ) || ( extension == "VK_KHR_present_wait2" ) || ( extension == "VK_KHR_ray_tracing_position_fetch" ) ||
+           ( extension == "VK_EXT_shader_object" ) || ( extension == "VK_KHR_pipeline_binary" ) || ( extension == "VK_QCOM_tile_properties" ) ||
+           ( extension == "VK_SEC_amigo_profiling" ) || ( extension == "VK_KHR_swapchain_maintenance1" ) ||
+           ( extension == "VK_QCOM_multiview_per_view_viewports" ) || ( extension == "VK_NV_ray_tracing_invocation_reorder" ) ||
+           ( extension == "VK_NV_cooperative_vector" ) || ( extension == "VK_NV_extended_sparse_address_space" ) ||
+           ( extension == "VK_EXT_mutable_descriptor_type" ) || ( extension == "VK_EXT_legacy_vertex_attributes" ) ||
+           ( extension == "VK_ARM_shader_core_builtins" ) || ( extension == "VK_EXT_pipeline_library_group_handles" ) ||
+           ( extension == "VK_EXT_dynamic_rendering_unused_attachments" ) || ( extension == "VK_NV_low_latency2" ) ||
+           ( extension == "VK_KHR_cooperative_matrix" ) || ( extension == "VK_ARM_data_graph" ) || ( extension == "VK_QCOM_multiview_per_view_render_areas" ) ||
+           ( extension == "VK_KHR_compute_shader_derivatives" ) || ( extension == "VK_KHR_video_decode_av1" ) || ( extension == "VK_KHR_video_encode_av1" ) ||
+           ( extension == "VK_KHR_video_decode_vp9" ) || ( extension == "VK_KHR_video_maintenance1" ) || ( extension == "VK_NV_per_stage_descriptor_set" ) ||
+           ( extension == "VK_QCOM_image_processing2" ) || ( extension == "VK_QCOM_filter_cubic_weights" ) || ( extension == "VK_QCOM_ycbcr_degamma" ) ||
+           ( extension == "VK_QCOM_filter_cubic_clamp" ) || ( extension == "VK_EXT_attachment_feedback_loop_dynamic_state" ) ||
+           ( extension == "VK_KHR_vertex_attribute_divisor" ) || ( extension == "VK_KHR_load_store_op_none" ) ||
+           ( extension == "VK_KHR_unified_image_layouts" ) || ( extension == "VK_KHR_shader_float_controls2" )
 #if defined( VK_USE_PLATFORM_SCREEN_QNX )
  || ( extension == "VK_QNX_external_memory_screen_buffer" )
 #endif /*VK_USE_PLATFORM_SCREEN_QNX*/
- || ( extension == "VK_MSFT_layered_driver" )
- || ( extension == "VK_KHR_index_type_uint8" )
- || ( extension == "VK_KHR_line_rasterization" )
- || ( extension == "VK_KHR_calibrated_timestamps" )
- || ( extension == "VK_KHR_shader_expect_assume" )
- || ( extension == "VK_KHR_maintenance6" )
- || ( extension == "VK_NV_descriptor_pool_overallocation" )
- || ( extension == "VK_QCOM_tile_memory_heap" )
- || ( extension == "VK_KHR_video_encode_quantization_map" )
- || ( extension == "VK_NV_raw_access_chains" )
- || ( extension == "VK_NV_external_compute_queue" )
- || ( extension == "VK_KHR_shader_relaxed_extended_instruction" )
- || ( extension == "VK_NV_command_buffer_inheritance" )
- || ( extension == "VK_KHR_maintenance7" )
- || ( extension == "VK_NV_shader_atomic_float16_vector" )
- || ( extension == "VK_EXT_shader_replicated_composites" )
- || ( extension == "VK_EXT_shader_float8" )
- || ( extension == "VK_NV_ray_tracing_validation" )
- || ( extension == "VK_NV_cluster_acceleration_structure" )
- || ( extension == "VK_NV_partitioned_acceleration_structure" )
- || ( extension == "VK_EXT_device_generated_commands" )
- || ( extension == "VK_KHR_maintenance8" )
- || ( extension == "VK_MESA_image_alignment_control" )
- || ( extension == "VK_EXT_depth_clamp_control" )
- || ( extension == "VK_KHR_maintenance9" )
- || ( extension == "VK_KHR_video_maintenance2" )
- || ( extension == "VK_HUAWEI_hdr_vivid" )
- || ( extension == "VK_NV_cooperative_matrix2" )
- || ( extension == "VK_ARM_pipeline_opacity_micromap" )
+        || ( extension == "VK_MSFT_layered_driver" ) || ( extension == "VK_KHR_index_type_uint8" ) || ( extension == "VK_KHR_line_rasterization" ) ||
+           ( extension == "VK_KHR_calibrated_timestamps" ) || ( extension == "VK_KHR_shader_expect_assume" ) || ( extension == "VK_KHR_maintenance6" ) ||
+           ( extension == "VK_NV_descriptor_pool_overallocation" ) || ( extension == "VK_QCOM_tile_memory_heap" ) ||
+           ( extension == "VK_KHR_copy_memory_indirect" ) || ( extension == "VK_KHR_video_encode_intra_refresh" ) ||
+           ( extension == "VK_KHR_video_encode_quantization_map" ) || ( extension == "VK_NV_raw_access_chains" ) ||
+           ( extension == "VK_NV_external_compute_queue" ) || ( extension == "VK_KHR_shader_relaxed_extended_instruction" ) ||
+           ( extension == "VK_NV_command_buffer_inheritance" ) || ( extension == "VK_KHR_maintenance7" ) ||
+           ( extension == "VK_NV_shader_atomic_float16_vector" ) || ( extension == "VK_EXT_shader_replicated_composites" ) ||
+           ( extension == "VK_EXT_shader_float8" ) || ( extension == "VK_NV_ray_tracing_validation" ) ||
+           ( extension == "VK_NV_cluster_acceleration_structure" ) || ( extension == "VK_NV_partitioned_acceleration_structure" ) ||
+           ( extension == "VK_EXT_device_generated_commands" ) || ( extension == "VK_KHR_maintenance8" ) ||
+           ( extension == "VK_MESA_image_alignment_control" ) || ( extension == "VK_KHR_shader_fma" ) || ( extension == "VK_EXT_depth_clamp_control" ) ||
+           ( extension == "VK_KHR_maintenance9" ) || ( extension == "VK_KHR_video_maintenance2" ) || ( extension == "VK_HUAWEI_hdr_vivid" ) ||
+           ( extension == "VK_NV_cooperative_matrix2" ) || ( extension == "VK_ARM_pipeline_opacity_micromap" )
 #if defined( VK_USE_PLATFORM_METAL_EXT )
  || ( extension == "VK_EXT_external_memory_metal" )
 #endif /*VK_USE_PLATFORM_METAL_EXT*/
@@ -1712,8 +2412,8 @@ false;
 #if defined( VK_ENABLE_BETA_EXTENSIONS )
  || ( extension == "VK_NV_present_metering" )
 #endif /*VK_ENABLE_BETA_EXTENSIONS*/
- || ( extension == "VK_EXT_fragment_density_map_offset" )
- || ( extension == "VK_EXT_zero_initialize_device_memory" );
+        || ( extension == "VK_EXT_fragment_density_map_offset" ) || ( extension == "VK_EXT_zero_initialize_device_memory" ) ||
+           ( extension == "VK_KHR_present_mode_fifo_latest_ready" ) || ( extension == "VK_SEC_pipeline_cache_incremental_mode" );
   }
 
   VULKAN_HPP_INLINE VULKAN_HPP_CONSTEXPR_20 bool isInstanceExtension( std::string const & extension )
@@ -1782,11 +2482,9 @@ false;
 #if defined( VK_USE_PLATFORM_SCREEN_QNX )
  || ( extension == "VK_QNX_screen_surface" )
 #endif /*VK_USE_PLATFORM_SCREEN_QNX*/
- || ( extension == "VK_KHR_portability_enumeration" )
- || ( extension == "VK_GOOGLE_surfaceless_query" )
- || ( extension == "VK_LUNARG_direct_driver_loading" )
- || ( extension == "VK_EXT_layer_settings" )
- || ( extension == "VK_NV_display_stereo" )
+        || ( extension == "VK_KHR_portability_enumeration" ) || ( extension == "VK_GOOGLE_surfaceless_query" ) ||
+           ( extension == "VK_LUNARG_direct_driver_loading" ) || ( extension == "VK_KHR_surface_maintenance1" ) || ( extension == "VK_EXT_layer_settings" ) ||
+           ( extension == "VK_NV_display_stereo" )
 #if defined( VK_USE_PLATFORM_OHOS )
  || ( extension == "VK_OHOS_surface" )
 #endif /*VK_USE_PLATFORM_OHOS*/
@@ -1811,104 +2509,47 @@ false;
 #if defined( VK_USE_PLATFORM_WIN32_KHR )
 ( extension == "VK_NV_win32_keyed_mutex" ) || 
 #endif /*VK_USE_PLATFORM_WIN32_KHR*/
-( extension == "VK_KHR_get_physical_device_properties2" ) || 
-( extension == "VK_KHR_device_group" ) || 
-( extension == "VK_KHR_shader_draw_parameters" ) || 
-( extension == "VK_EXT_texture_compression_astc_hdr" ) || 
-( extension == "VK_EXT_pipeline_robustness" ) || 
-( extension == "VK_KHR_maintenance1" ) || 
-( extension == "VK_KHR_device_group_creation" ) || 
-( extension == "VK_KHR_external_memory_capabilities" ) || 
-( extension == "VK_KHR_external_memory" ) || 
-( extension == "VK_KHR_external_semaphore_capabilities" ) || 
-( extension == "VK_KHR_external_semaphore" ) || 
-( extension == "VK_KHR_push_descriptor" ) || 
-( extension == "VK_KHR_shader_float16_int8" ) || 
-( extension == "VK_KHR_16bit_storage" ) || 
-( extension == "VK_KHR_descriptor_update_template" ) || 
-( extension == "VK_KHR_imageless_framebuffer" ) || 
-( extension == "VK_KHR_create_renderpass2" ) || 
-( extension == "VK_KHR_external_fence_capabilities" ) || 
-( extension == "VK_KHR_external_fence" ) || 
-( extension == "VK_KHR_maintenance2" ) || 
-( extension == "VK_KHR_variable_pointers" ) || 
-( extension == "VK_KHR_dedicated_allocation" ) || 
-( extension == "VK_EXT_sampler_filter_minmax" ) || 
-( extension == "VK_KHR_storage_buffer_storage_class" ) || 
-( extension == "VK_EXT_inline_uniform_block" ) || 
-( extension == "VK_KHR_relaxed_block_layout" ) || 
-( extension == "VK_KHR_get_memory_requirements2" ) || 
-( extension == "VK_KHR_image_format_list" ) || 
-( extension == "VK_KHR_sampler_ycbcr_conversion" ) || 
-( extension == "VK_KHR_bind_memory2" ) || 
-( extension == "VK_EXT_descriptor_indexing" ) || 
-( extension == "VK_EXT_shader_viewport_index_layer" ) || 
-( extension == "VK_KHR_maintenance3" ) || 
-( extension == "VK_KHR_draw_indirect_count" ) || 
-( extension == "VK_EXT_global_priority" ) || 
-( extension == "VK_KHR_shader_subgroup_extended_types" ) || 
-( extension == "VK_KHR_8bit_storage" ) || 
-( extension == "VK_KHR_shader_atomic_int64" ) || 
-( extension == "VK_EXT_calibrated_timestamps" ) || 
-( extension == "VK_KHR_global_priority" ) || 
-( extension == "VK_EXT_vertex_attribute_divisor" ) || 
-( extension == "VK_EXT_pipeline_creation_feedback" ) || 
-( extension == "VK_KHR_driver_properties" ) || 
-( extension == "VK_KHR_shader_float_controls" ) || 
-( extension == "VK_KHR_depth_stencil_resolve" ) || 
-( extension == "VK_NV_compute_shader_derivatives" ) || 
-( extension == "VK_NV_fragment_shader_barycentric" ) || 
-( extension == "VK_KHR_timeline_semaphore" ) || 
-( extension == "VK_KHR_vulkan_memory_model" ) || 
-( extension == "VK_KHR_shader_terminate_invocation" ) || 
-( extension == "VK_EXT_scalar_block_layout" ) || 
-( extension == "VK_EXT_subgroup_size_control" ) || 
-( extension == "VK_KHR_dynamic_rendering_local_read" ) || 
-( extension == "VK_KHR_spirv_1_4" ) || 
-( extension == "VK_KHR_separate_depth_stencil_layouts" ) || 
-( extension == "VK_EXT_tooling_info" ) || 
-( extension == "VK_EXT_separate_stencil_usage" ) || 
-( extension == "VK_KHR_uniform_buffer_standard_layout" ) || 
-( extension == "VK_KHR_buffer_device_address" ) || 
-( extension == "VK_EXT_line_rasterization" ) || 
-( extension == "VK_EXT_host_query_reset" ) || 
-( extension == "VK_EXT_index_type_uint8" ) || 
-( extension == "VK_EXT_extended_dynamic_state" ) || 
-( extension == "VK_EXT_host_image_copy" ) || 
-( extension == "VK_KHR_map_memory2" ) || 
-( extension == "VK_EXT_shader_demote_to_helper_invocation" ) || 
-( extension == "VK_KHR_shader_integer_dot_product" ) || 
-( extension == "VK_EXT_texel_buffer_alignment" ) || 
-( extension == "VK_EXT_robustness2" ) || 
-( extension == "VK_KHR_shader_non_semantic_info" ) || 
-( extension == "VK_EXT_private_data" ) || 
-( extension == "VK_EXT_pipeline_creation_cache_control" ) || 
-( extension == "VK_KHR_synchronization2" ) || 
-( extension == "VK_KHR_zero_initialize_workgroup_memory" ) || 
-( extension == "VK_EXT_ycbcr_2plane_444_formats" ) || 
-( extension == "VK_EXT_image_robustness" ) || 
-( extension == "VK_KHR_copy_commands2" ) || 
-( extension == "VK_EXT_4444_formats" ) || 
-( extension == "VK_ARM_rasterization_order_attachment_access" ) || 
-( extension == "VK_VALVE_mutable_descriptor_type" ) || 
-( extension == "VK_KHR_format_feature_flags2" ) || 
-( extension == "VK_EXT_extended_dynamic_state2" ) || 
-( extension == "VK_EXT_global_priority_query" ) || 
-( extension == "VK_EXT_load_store_op_none" ) || 
-( extension == "VK_KHR_maintenance4" ) || 
-( extension == "VK_KHR_shader_subgroup_rotate" ) || 
-( extension == "VK_EXT_depth_clamp_zero_one" ) || 
-( extension == "VK_QCOM_fragment_density_map_offset" ) || 
-( extension == "VK_EXT_pipeline_protected_access" ) || 
-( extension == "VK_KHR_maintenance5" ) || 
-( extension == "VK_KHR_vertex_attribute_divisor" ) || 
-( extension == "VK_KHR_load_store_op_none" ) || 
-( extension == "VK_KHR_shader_float_controls2" ) || 
-( extension == "VK_KHR_index_type_uint8" ) || 
-( extension == "VK_KHR_line_rasterization" ) || 
-( extension == "VK_KHR_shader_expect_assume" ) || 
-( extension == "VK_KHR_maintenance6" ) || 
-( extension == "VK_EXT_vertex_attribute_robustness" );
+           ( extension == "VK_KHR_get_physical_device_properties2" ) || ( extension == "VK_KHR_device_group" ) ||
+           ( extension == "VK_KHR_shader_draw_parameters" ) || ( extension == "VK_EXT_texture_compression_astc_hdr" ) ||
+           ( extension == "VK_EXT_pipeline_robustness" ) || ( extension == "VK_KHR_maintenance1" ) || ( extension == "VK_KHR_device_group_creation" ) ||
+           ( extension == "VK_KHR_external_memory_capabilities" ) || ( extension == "VK_KHR_external_memory" ) ||
+           ( extension == "VK_KHR_external_semaphore_capabilities" ) || ( extension == "VK_KHR_external_semaphore" ) ||
+           ( extension == "VK_KHR_push_descriptor" ) || ( extension == "VK_KHR_shader_float16_int8" ) || ( extension == "VK_KHR_16bit_storage" ) ||
+           ( extension == "VK_KHR_descriptor_update_template" ) || ( extension == "VK_KHR_imageless_framebuffer" ) ||
+           ( extension == "VK_KHR_create_renderpass2" ) || ( extension == "VK_KHR_external_fence_capabilities" ) || ( extension == "VK_KHR_external_fence" ) ||
+           ( extension == "VK_KHR_maintenance2" ) || ( extension == "VK_KHR_variable_pointers" ) || ( extension == "VK_KHR_dedicated_allocation" ) ||
+           ( extension == "VK_EXT_sampler_filter_minmax" ) || ( extension == "VK_KHR_storage_buffer_storage_class" ) ||
+           ( extension == "VK_EXT_inline_uniform_block" ) || ( extension == "VK_KHR_relaxed_block_layout" ) ||
+           ( extension == "VK_KHR_get_memory_requirements2" ) || ( extension == "VK_KHR_image_format_list" ) ||
+           ( extension == "VK_KHR_sampler_ycbcr_conversion" ) || ( extension == "VK_KHR_bind_memory2" ) || ( extension == "VK_EXT_descriptor_indexing" ) ||
+           ( extension == "VK_EXT_shader_viewport_index_layer" ) || ( extension == "VK_KHR_maintenance3" ) || ( extension == "VK_KHR_draw_indirect_count" ) ||
+           ( extension == "VK_EXT_global_priority" ) || ( extension == "VK_KHR_shader_subgroup_extended_types" ) || ( extension == "VK_KHR_8bit_storage" ) ||
+           ( extension == "VK_KHR_shader_atomic_int64" ) || ( extension == "VK_EXT_calibrated_timestamps" ) || ( extension == "VK_KHR_global_priority" ) ||
+           ( extension == "VK_EXT_vertex_attribute_divisor" ) || ( extension == "VK_EXT_pipeline_creation_feedback" ) ||
+           ( extension == "VK_KHR_driver_properties" ) || ( extension == "VK_KHR_shader_float_controls" ) || ( extension == "VK_KHR_depth_stencil_resolve" ) ||
+           ( extension == "VK_NV_compute_shader_derivatives" ) || ( extension == "VK_NV_fragment_shader_barycentric" ) ||
+           ( extension == "VK_KHR_timeline_semaphore" ) || ( extension == "VK_KHR_vulkan_memory_model" ) ||
+           ( extension == "VK_KHR_shader_terminate_invocation" ) || ( extension == "VK_EXT_scalar_block_layout" ) ||
+           ( extension == "VK_EXT_subgroup_size_control" ) || ( extension == "VK_KHR_dynamic_rendering_local_read" ) || ( extension == "VK_KHR_spirv_1_4" ) ||
+           ( extension == "VK_KHR_separate_depth_stencil_layouts" ) || ( extension == "VK_EXT_tooling_info" ) ||
+           ( extension == "VK_EXT_separate_stencil_usage" ) || ( extension == "VK_KHR_uniform_buffer_standard_layout" ) ||
+           ( extension == "VK_KHR_buffer_device_address" ) || ( extension == "VK_EXT_line_rasterization" ) || ( extension == "VK_EXT_host_query_reset" ) ||
+           ( extension == "VK_EXT_index_type_uint8" ) || ( extension == "VK_EXT_extended_dynamic_state" ) || ( extension == "VK_EXT_host_image_copy" ) ||
+           ( extension == "VK_KHR_map_memory2" ) || ( extension == "VK_EXT_surface_maintenance1" ) || ( extension == "VK_EXT_swapchain_maintenance1" ) ||
+           ( extension == "VK_EXT_shader_demote_to_helper_invocation" ) || ( extension == "VK_KHR_shader_integer_dot_product" ) ||
+           ( extension == "VK_EXT_texel_buffer_alignment" ) || ( extension == "VK_EXT_robustness2" ) || ( extension == "VK_KHR_shader_non_semantic_info" ) ||
+           ( extension == "VK_EXT_private_data" ) || ( extension == "VK_EXT_pipeline_creation_cache_control" ) || ( extension == "VK_KHR_synchronization2" ) ||
+           ( extension == "VK_KHR_zero_initialize_workgroup_memory" ) || ( extension == "VK_EXT_ycbcr_2plane_444_formats" ) ||
+           ( extension == "VK_EXT_image_robustness" ) || ( extension == "VK_KHR_copy_commands2" ) || ( extension == "VK_EXT_4444_formats" ) ||
+           ( extension == "VK_ARM_rasterization_order_attachment_access" ) || ( extension == "VK_VALVE_mutable_descriptor_type" ) ||
+           ( extension == "VK_KHR_format_feature_flags2" ) || ( extension == "VK_EXT_present_mode_fifo_latest_ready" ) ||
+           ( extension == "VK_EXT_extended_dynamic_state2" ) || ( extension == "VK_EXT_global_priority_query" ) ||
+           ( extension == "VK_EXT_load_store_op_none" ) || ( extension == "VK_KHR_maintenance4" ) || ( extension == "VK_KHR_shader_subgroup_rotate" ) ||
+           ( extension == "VK_EXT_depth_clamp_zero_one" ) || ( extension == "VK_QCOM_fragment_density_map_offset" ) ||
+           ( extension == "VK_NV_copy_memory_indirect" ) || ( extension == "VK_EXT_pipeline_protected_access" ) || ( extension == "VK_KHR_maintenance5" ) ||
+           ( extension == "VK_KHR_vertex_attribute_divisor" ) || ( extension == "VK_KHR_load_store_op_none" ) ||
+           ( extension == "VK_KHR_shader_float_controls2" ) || ( extension == "VK_KHR_index_type_uint8" ) || ( extension == "VK_KHR_line_rasterization" ) ||
+           ( extension == "VK_KHR_shader_expect_assume" ) || ( extension == "VK_KHR_maintenance6" ) || ( extension == "VK_EXT_vertex_attribute_robustness" );
   }
 }  // namespace VULKAN_HPP_NAMESPACE
 

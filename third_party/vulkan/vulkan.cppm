@@ -5,16 +5,24 @@
 
 // This header is generated from the Khronos Vulkan XML API Registry.
 
-
-// Note: This module is still in an experimental state.
-// Any feedback is welcome on https://github.com/KhronosGroup/Vulkan-Hpp/issues.
-
 module;
+
+#define VULKAN_HPP_CXX_MODULE 1
 
 #include <vulkan/vulkan_hpp_macros.hpp>
 
-#if defined( __cpp_lib_modules ) && !defined( VULKAN_HPP_ENABLE_STD_MODULE )
-#define VULKAN_HPP_ENABLE_STD_MODULE
+#if !defined( VULKAN_HPP_CXX_MODULE_EXPERIMENTAL_WARNING )
+#  define VULKAN_HPP_CXX_MODULE_EXPERIMENTAL_WARNING \
+    "The Vulkan-Hpp C++ named module is experimental. " \
+  "It is subject to change without prior notice.\n" \
+  "To silence this warning, define the VULKAN_HPP_CXX_MODULE_EXPERIMENTAL_WARNING macro.\n\n" \
+  "For feedback, go to: https://github.com/KhronosGroup/Vulkan-Hpp/issues"
+
+#  if defined( __clang__ ) || defined( __GNUC__ ) || defined( __GNUG__ )
+_Pragma( VULKAN_HPP_STRINGIFY( GCC warning VULKAN_HPP_CXX_MODULE_EXPERIMENTAL_WARNING ) )
+#  elif defined( _MSC_VER )
+_Pragma( VULKAN_HPP_STRINGIFY( message( __FILE__ "(" VULKAN_HPP_STRINGIFY( __LINE__ ) "): warning: " VULKAN_HPP_CXX_MODULE_EXPERIMENTAL_WARNING ) ) )
+#  endif
 #endif
 
 #include <vulkan/vulkan.hpp>
@@ -23,11 +31,9 @@ module;
 #include <vulkan/vulkan_hash.hpp>
 #include <vulkan/vulkan_raii.hpp>
 #include <vulkan/vulkan_shared.hpp>
-#ifndef VULKAN_HPP_NO_TO_STRING
-#include <vulkan/vulkan_to_string.hpp>
-#endif
 
-export module vulkan_hpp;
+  export module vulkan_hpp;
+export import VULKAN_HPP_STD_MODULE;
 
 export namespace VULKAN_HPP_NAMESPACE
 {
@@ -42,16 +48,17 @@ export namespace VULKAN_HPP_NAMESPACE
   {
     using VULKAN_HPP_NAMESPACE::detail::DispatchLoaderBase;
     using VULKAN_HPP_NAMESPACE::detail::DispatchLoaderDynamic;
-#if !defined( VULKAN_HPP_DEFAULT_DISPATCHER )
-# if VULKAN_HPP_DISPATCH_LOADER_DYNAMIC == 1
+#if VULKAN_HPP_DISPATCH_LOADER_DYNAMIC == 1
     using VULKAN_HPP_NAMESPACE::detail::defaultDispatchLoaderDynamic;
-# endif
 #endif
 #if !defined( VK_NO_PROTOTYPES )
     using VULKAN_HPP_NAMESPACE::detail::DispatchLoaderStatic;
     using VULKAN_HPP_NAMESPACE::detail::getDispatchLoaderStatic;
 #endif /*VK_NO_PROTOTYPES*/
-  }
+    using VULKAN_HPP_NAMESPACE::detail::createResultValueType;
+    using VULKAN_HPP_NAMESPACE::detail::resultCheck;
+  }  // namespace detail
+
   using VULKAN_HPP_NAMESPACE::operator&;
   using VULKAN_HPP_NAMESPACE::operator|;
   using VULKAN_HPP_NAMESPACE::operator^;
@@ -717,12 +724,6 @@ using VULKAN_HPP_DEFAULT_DISPATCHER_TYPE;
   //=== VK_KHR_pipeline_executable_properties ===
   using VULKAN_HPP_NAMESPACE::PipelineExecutableStatisticFormatKHR;
 
-  //=== VK_EXT_surface_maintenance1 ===
-  using VULKAN_HPP_NAMESPACE::PresentScalingFlagBitsEXT;
-  using VULKAN_HPP_NAMESPACE::PresentScalingFlagsEXT;
-  using VULKAN_HPP_NAMESPACE::PresentGravityFlagBitsEXT;
-  using VULKAN_HPP_NAMESPACE::PresentGravityFlagsEXT;
-
   //=== VK_NV_device_generated_commands ===
   using VULKAN_HPP_NAMESPACE::IndirectStateFlagBitsNV;
   using VULKAN_HPP_NAMESPACE::IndirectStateFlagsNV;
@@ -823,6 +824,14 @@ using VULKAN_HPP_DEFAULT_DISPATCHER_TYPE;
   using VULKAN_HPP_NAMESPACE::ScreenSurfaceCreateFlagsQNX;
 #endif /*VK_USE_PLATFORM_SCREEN_QNX*/
 
+  //=== VK_VALVE_video_encode_rgb_conversion ===
+  using VULKAN_HPP_NAMESPACE::VideoEncodeRgbChromaOffsetFlagBitsVALVE;
+  using VULKAN_HPP_NAMESPACE::VideoEncodeRgbChromaOffsetFlagsVALVE;
+  using VULKAN_HPP_NAMESPACE::VideoEncodeRgbModelConversionFlagBitsVALVE;
+  using VULKAN_HPP_NAMESPACE::VideoEncodeRgbModelConversionFlagsVALVE;
+  using VULKAN_HPP_NAMESPACE::VideoEncodeRgbRangeCompressionFlagBitsVALVE;
+  using VULKAN_HPP_NAMESPACE::VideoEncodeRgbRangeCompressionFlagsVALVE;
+
   //=== VK_EXT_opacity_micromap ===
   using VULKAN_HPP_NAMESPACE::MicromapTypeEXT;
   using VULKAN_HPP_NAMESPACE::BuildMicromapFlagBitsEXT;
@@ -884,10 +893,25 @@ using VULKAN_HPP_DEFAULT_DISPATCHER_TYPE;
   using VULKAN_HPP_NAMESPACE::AntiLagModeAMD;
   using VULKAN_HPP_NAMESPACE::AntiLagStageAMD;
 
+#if defined( VK_ENABLE_BETA_EXTENSIONS )
+  //=== VK_AMDX_dense_geometry_format ===
+  using VULKAN_HPP_NAMESPACE::CompressedTriangleFormatAMDX;
+#endif /*VK_ENABLE_BETA_EXTENSIONS*/
+
   //=== VK_EXT_shader_object ===
   using VULKAN_HPP_NAMESPACE::ShaderCreateFlagBitsEXT;
   using VULKAN_HPP_NAMESPACE::ShaderCreateFlagsEXT;
   using VULKAN_HPP_NAMESPACE::ShaderCodeTypeEXT;
+
+  //=== VK_KHR_surface_maintenance1 ===
+  using VULKAN_HPP_NAMESPACE::PresentGravityFlagBitsEXT;
+  using VULKAN_HPP_NAMESPACE::PresentGravityFlagBitsKHR;
+  using VULKAN_HPP_NAMESPACE::PresentGravityFlagsEXT;
+  using VULKAN_HPP_NAMESPACE::PresentGravityFlagsKHR;
+  using VULKAN_HPP_NAMESPACE::PresentScalingFlagBitsEXT;
+  using VULKAN_HPP_NAMESPACE::PresentScalingFlagBitsKHR;
+  using VULKAN_HPP_NAMESPACE::PresentScalingFlagsEXT;
+  using VULKAN_HPP_NAMESPACE::PresentScalingFlagsKHR;
 
   //=== VK_NV_ray_tracing_invocation_reorder ===
   using VULKAN_HPP_NAMESPACE::RayTracingInvocationReorderModeNV;
@@ -944,8 +968,16 @@ using VULKAN_HPP_DEFAULT_DISPATCHER_TYPE;
   using VULKAN_HPP_NAMESPACE::TimeDomainKHR;
   using VULKAN_HPP_NAMESPACE::TimeDomainEXT;
 
+  //=== VK_KHR_copy_memory_indirect ===
+  using VULKAN_HPP_NAMESPACE::AddressCopyFlagBitsKHR;
+  using VULKAN_HPP_NAMESPACE::AddressCopyFlagsKHR;
+
   //=== VK_NV_display_stereo ===
   using VULKAN_HPP_NAMESPACE::DisplaySurfaceStereoTypeNV;
+
+  //=== VK_KHR_video_encode_intra_refresh ===
+  using VULKAN_HPP_NAMESPACE::VideoEncodeIntraRefreshModeFlagBitsKHR;
+  using VULKAN_HPP_NAMESPACE::VideoEncodeIntraRefreshModeFlagsKHR;
 
   //=== VK_KHR_maintenance7 ===
   using VULKAN_HPP_NAMESPACE::PhysicalDeviceLayeredApiKHR;
@@ -1030,18 +1062,7 @@ using VULKAN_HPP_DEFAULT_DISPATCHER_TYPE;
   using VULKAN_HPP_NAMESPACE::FormatNotSupportedError;
   using VULKAN_HPP_NAMESPACE::FragmentedPoolError;
   using VULKAN_HPP_NAMESPACE::UnknownError;
-  using VULKAN_HPP_NAMESPACE::OutOfPoolMemoryError;
-  using VULKAN_HPP_NAMESPACE::InvalidExternalHandleError;
-  using VULKAN_HPP_NAMESPACE::FragmentationError;
-  using VULKAN_HPP_NAMESPACE::InvalidOpaqueCaptureAddressError;
-  using VULKAN_HPP_NAMESPACE::NotPermittedError;
-  using VULKAN_HPP_NAMESPACE::SurfaceLostKHRError;
-  using VULKAN_HPP_NAMESPACE::NativeWindowInUseKHRError;
-  using VULKAN_HPP_NAMESPACE::OutOfDateKHRError;
-  using VULKAN_HPP_NAMESPACE::IncompatibleDisplayKHRError;
-  using VULKAN_HPP_NAMESPACE::ValidationFailedEXTError;
-  using VULKAN_HPP_NAMESPACE::InvalidShaderNVError;
-  using VULKAN_HPP_NAMESPACE::ImageUsageNotSupportedKHRError;
+  using VULKAN_HPP_NAMESPACE::ValidationFailedError;
   using VULKAN_HPP_NAMESPACE::VideoPictureLayoutNotSupportedKHRError;
   using VULKAN_HPP_NAMESPACE::VideoProfileOperationNotSupportedKHRError;
   using VULKAN_HPP_NAMESPACE::VideoProfileFormatNotSupportedKHRError;
@@ -2343,10 +2364,18 @@ using VULKAN_HPP_DEFAULT_DISPATCHER_TYPE;
   using VULKAN_HPP_NAMESPACE::KHRRayTracingMaintenance1ExtensionName;
   using VULKAN_HPP_NAMESPACE::KHRRayTracingMaintenance1SpecVersion;
 
+  //=== VK_KHR_shader_untyped_pointers ===
+  using VULKAN_HPP_NAMESPACE::KHRShaderUntypedPointersExtensionName;
+  using VULKAN_HPP_NAMESPACE::KHRShaderUntypedPointersSpecVersion;
+
   //=== VK_EXT_global_priority_query ===
   using VULKAN_HPP_NAMESPACE::MaxGlobalPrioritySizeEXT;
   using VULKAN_HPP_NAMESPACE::EXTGlobalPriorityQueryExtensionName;
   using VULKAN_HPP_NAMESPACE::EXTGlobalPriorityQuerySpecVersion;
+
+  //=== VK_VALVE_video_encode_rgb_conversion ===
+  using VULKAN_HPP_NAMESPACE::VALVEVideoEncodeRgbConversionExtensionName;
+  using VULKAN_HPP_NAMESPACE::VALVEVideoEncodeRgbConversionSpecVersion;
 
   //=== VK_EXT_image_view_min_lod ===
   using VULKAN_HPP_NAMESPACE::EXTImageViewMinLodExtensionName;
@@ -2530,6 +2559,14 @@ using VULKAN_HPP_DEFAULT_DISPATCHER_TYPE;
   using VULKAN_HPP_NAMESPACE::AMDAntiLagExtensionName;
   using VULKAN_HPP_NAMESPACE::AMDAntiLagSpecVersion;
 
+#if defined( VK_ENABLE_BETA_EXTENSIONS )
+  //=== VK_AMDX_dense_geometry_format ===
+  using VULKAN_HPP_NAMESPACE::AMDXDenseGeometryFormatExtensionName;
+  using VULKAN_HPP_NAMESPACE::AMDXDenseGeometryFormatSpecVersion;
+  using VULKAN_HPP_NAMESPACE::CompressedTriangleFormatDgf1ByteAlignmentAMDX;
+  using VULKAN_HPP_NAMESPACE::CompressedTriangleFormatDgf1ByteStrideAMDX;
+#endif /*VK_ENABLE_BETA_EXTENSIONS*/
+
   //=== VK_KHR_present_id2 ===
   using VULKAN_HPP_NAMESPACE::KHRPresentId2ExtensionName;
   using VULKAN_HPP_NAMESPACE::KHRPresentId2SpecVersion;
@@ -2558,6 +2595,14 @@ using VULKAN_HPP_DEFAULT_DISPATCHER_TYPE;
   //=== VK_SEC_amigo_profiling ===
   using VULKAN_HPP_NAMESPACE::SECAmigoProfilingExtensionName;
   using VULKAN_HPP_NAMESPACE::SECAmigoProfilingSpecVersion;
+
+  //=== VK_KHR_surface_maintenance1 ===
+  using VULKAN_HPP_NAMESPACE::KHRSurfaceMaintenance1ExtensionName;
+  using VULKAN_HPP_NAMESPACE::KHRSurfaceMaintenance1SpecVersion;
+
+  //=== VK_KHR_swapchain_maintenance1 ===
+  using VULKAN_HPP_NAMESPACE::KHRSwapchainMaintenance1ExtensionName;
+  using VULKAN_HPP_NAMESPACE::KHRSwapchainMaintenance1SpecVersion;
 
   //=== VK_QCOM_multiview_per_view_viewports ===
   using VULKAN_HPP_NAMESPACE::QCOMMultiviewPerViewViewportsExtensionName;
@@ -2716,9 +2761,17 @@ using VULKAN_HPP_DEFAULT_DISPATCHER_TYPE;
   using VULKAN_HPP_NAMESPACE::QCOMTileMemoryHeapExtensionName;
   using VULKAN_HPP_NAMESPACE::QCOMTileMemoryHeapSpecVersion;
 
+  //=== VK_KHR_copy_memory_indirect ===
+  using VULKAN_HPP_NAMESPACE::KHRCopyMemoryIndirectExtensionName;
+  using VULKAN_HPP_NAMESPACE::KHRCopyMemoryIndirectSpecVersion;
+
   //=== VK_NV_display_stereo ===
   using VULKAN_HPP_NAMESPACE::NVDisplayStereoExtensionName;
   using VULKAN_HPP_NAMESPACE::NVDisplayStereoSpecVersion;
+
+  //=== VK_KHR_video_encode_intra_refresh ===
+  using VULKAN_HPP_NAMESPACE::KHRVideoEncodeIntraRefreshExtensionName;
+  using VULKAN_HPP_NAMESPACE::KHRVideoEncodeIntraRefreshSpecVersion;
 
   //=== VK_KHR_video_encode_quantization_map ===
   using VULKAN_HPP_NAMESPACE::KHRVideoEncodeQuantizationMapExtensionName;
@@ -2780,6 +2833,10 @@ using VULKAN_HPP_DEFAULT_DISPATCHER_TYPE;
   //=== VK_MESA_image_alignment_control ===
   using VULKAN_HPP_NAMESPACE::MESAImageAlignmentControlExtensionName;
   using VULKAN_HPP_NAMESPACE::MESAImageAlignmentControlSpecVersion;
+
+  //=== VK_KHR_shader_fma ===
+  using VULKAN_HPP_NAMESPACE::KHRShaderFmaExtensionName;
+  using VULKAN_HPP_NAMESPACE::KHRShaderFmaSpecVersion;
 
   //=== VK_EXT_depth_clamp_control ===
   using VULKAN_HPP_NAMESPACE::EXTDepthClampControlExtensionName;
@@ -2850,6 +2907,14 @@ using VULKAN_HPP_DEFAULT_DISPATCHER_TYPE;
   //=== VK_EXT_zero_initialize_device_memory ===
   using VULKAN_HPP_NAMESPACE::EXTZeroInitializeDeviceMemoryExtensionName;
   using VULKAN_HPP_NAMESPACE::EXTZeroInitializeDeviceMemorySpecVersion;
+
+  //=== VK_KHR_present_mode_fifo_latest_ready ===
+  using VULKAN_HPP_NAMESPACE::KHRPresentModeFifoLatestReadyExtensionName;
+  using VULKAN_HPP_NAMESPACE::KHRPresentModeFifoLatestReadySpecVersion;
+
+  //=== VK_SEC_pipeline_cache_incremental_mode ===
+  using VULKAN_HPP_NAMESPACE::SECPipelineCacheIncrementalModeExtensionName;
+  using VULKAN_HPP_NAMESPACE::SECPipelineCacheIncrementalModeSpecVersion;
 
   //========================
   //=== CONSTEXPR VALUEs ===
@@ -4146,19 +4211,6 @@ using VULKAN_HPP_DEFAULT_DISPATCHER_TYPE;
   //=== VK_EXT_shader_atomic_float2 ===
   using VULKAN_HPP_NAMESPACE::PhysicalDeviceShaderAtomicFloat2FeaturesEXT;
 
-  //=== VK_EXT_surface_maintenance1 ===
-  using VULKAN_HPP_NAMESPACE::SurfacePresentModeEXT;
-  using VULKAN_HPP_NAMESPACE::SurfacePresentScalingCapabilitiesEXT;
-  using VULKAN_HPP_NAMESPACE::SurfacePresentModeCompatibilityEXT;
-
-  //=== VK_EXT_swapchain_maintenance1 ===
-  using VULKAN_HPP_NAMESPACE::PhysicalDeviceSwapchainMaintenance1FeaturesEXT;
-  using VULKAN_HPP_NAMESPACE::SwapchainPresentFenceInfoEXT;
-  using VULKAN_HPP_NAMESPACE::SwapchainPresentModesCreateInfoEXT;
-  using VULKAN_HPP_NAMESPACE::SwapchainPresentModeInfoEXT;
-  using VULKAN_HPP_NAMESPACE::SwapchainPresentScalingCreateInfoEXT;
-  using VULKAN_HPP_NAMESPACE::ReleaseSwapchainImagesInfoEXT;
-
   //=== VK_NV_device_generated_commands ===
   using VULKAN_HPP_NAMESPACE::PhysicalDeviceDeviceGeneratedCommandsPropertiesNV;
   using VULKAN_HPP_NAMESPACE::PhysicalDeviceDeviceGeneratedCommandsFeaturesNV;
@@ -4376,9 +4428,6 @@ using VULKAN_HPP_DEFAULT_DISPATCHER_TYPE;
   //=== VK_EXT_primitive_topology_list_restart ===
   using VULKAN_HPP_NAMESPACE::PhysicalDevicePrimitiveTopologyListRestartFeaturesEXT;
 
-  //=== VK_EXT_present_mode_fifo_latest_ready ===
-  using VULKAN_HPP_NAMESPACE::PhysicalDevicePresentModeFifoLatestReadyFeaturesEXT;
-
 #if defined( VK_USE_PLATFORM_FUCHSIA )
   //=== VK_FUCHSIA_external_memory ===
   using VULKAN_HPP_NAMESPACE::ImportMemoryZirconHandleInfoFUCHSIA;
@@ -4449,6 +4498,15 @@ using VULKAN_HPP_DEFAULT_DISPATCHER_TYPE;
   //=== VK_KHR_ray_tracing_maintenance1 ===
   using VULKAN_HPP_NAMESPACE::PhysicalDeviceRayTracingMaintenance1FeaturesKHR;
   using VULKAN_HPP_NAMESPACE::TraceRaysIndirectCommand2KHR;
+
+  //=== VK_KHR_shader_untyped_pointers ===
+  using VULKAN_HPP_NAMESPACE::PhysicalDeviceShaderUntypedPointersFeaturesKHR;
+
+  //=== VK_VALVE_video_encode_rgb_conversion ===
+  using VULKAN_HPP_NAMESPACE::PhysicalDeviceVideoEncodeRgbConversionFeaturesVALVE;
+  using VULKAN_HPP_NAMESPACE::VideoEncodeProfileRgbConversionInfoVALVE;
+  using VULKAN_HPP_NAMESPACE::VideoEncodeRgbConversionCapabilitiesVALVE;
+  using VULKAN_HPP_NAMESPACE::VideoEncodeSessionRgbConversionCreateInfoVALVE;
 
   //=== VK_EXT_image_view_min_lod ===
   using VULKAN_HPP_NAMESPACE::PhysicalDeviceImageViewMinLodFeaturesEXT;
@@ -4528,10 +4586,7 @@ using VULKAN_HPP_DEFAULT_DISPATCHER_TYPE;
   using VULKAN_HPP_NAMESPACE::RenderPassStripeSubmitInfoARM;
 
   //=== VK_NV_copy_memory_indirect ===
-  using VULKAN_HPP_NAMESPACE::CopyMemoryIndirectCommandNV;
-  using VULKAN_HPP_NAMESPACE::CopyMemoryToImageIndirectCommandNV;
   using VULKAN_HPP_NAMESPACE::PhysicalDeviceCopyMemoryIndirectFeaturesNV;
-  using VULKAN_HPP_NAMESPACE::PhysicalDeviceCopyMemoryIndirectPropertiesNV;
 
   //=== VK_NV_memory_decompression ===
   using VULKAN_HPP_NAMESPACE::DecompressMemoryRegionNV;
@@ -4648,6 +4703,12 @@ using VULKAN_HPP_DEFAULT_DISPATCHER_TYPE;
   using VULKAN_HPP_NAMESPACE::AntiLagDataAMD;
   using VULKAN_HPP_NAMESPACE::AntiLagPresentationInfoAMD;
 
+#if defined( VK_ENABLE_BETA_EXTENSIONS )
+  //=== VK_AMDX_dense_geometry_format ===
+  using VULKAN_HPP_NAMESPACE::AccelerationStructureDenseGeometryFormatTrianglesDataAMDX;
+  using VULKAN_HPP_NAMESPACE::PhysicalDeviceDenseGeometryFormatFeaturesAMDX;
+#endif /*VK_ENABLE_BETA_EXTENSIONS*/
+
   //=== VK_KHR_present_id2 ===
   using VULKAN_HPP_NAMESPACE::SurfaceCapabilitiesPresentId2KHR;
   using VULKAN_HPP_NAMESPACE::PresentId2KHR;
@@ -4687,6 +4748,28 @@ using VULKAN_HPP_DEFAULT_DISPATCHER_TYPE;
   //=== VK_SEC_amigo_profiling ===
   using VULKAN_HPP_NAMESPACE::PhysicalDeviceAmigoProfilingFeaturesSEC;
   using VULKAN_HPP_NAMESPACE::AmigoProfilingSubmitInfoSEC;
+
+  //=== VK_KHR_surface_maintenance1 ===
+  using VULKAN_HPP_NAMESPACE::SurfacePresentModeCompatibilityEXT;
+  using VULKAN_HPP_NAMESPACE::SurfacePresentModeCompatibilityKHR;
+  using VULKAN_HPP_NAMESPACE::SurfacePresentModeEXT;
+  using VULKAN_HPP_NAMESPACE::SurfacePresentModeKHR;
+  using VULKAN_HPP_NAMESPACE::SurfacePresentScalingCapabilitiesEXT;
+  using VULKAN_HPP_NAMESPACE::SurfacePresentScalingCapabilitiesKHR;
+
+  //=== VK_KHR_swapchain_maintenance1 ===
+  using VULKAN_HPP_NAMESPACE::PhysicalDeviceSwapchainMaintenance1FeaturesEXT;
+  using VULKAN_HPP_NAMESPACE::PhysicalDeviceSwapchainMaintenance1FeaturesKHR;
+  using VULKAN_HPP_NAMESPACE::ReleaseSwapchainImagesInfoEXT;
+  using VULKAN_HPP_NAMESPACE::ReleaseSwapchainImagesInfoKHR;
+  using VULKAN_HPP_NAMESPACE::SwapchainPresentFenceInfoEXT;
+  using VULKAN_HPP_NAMESPACE::SwapchainPresentFenceInfoKHR;
+  using VULKAN_HPP_NAMESPACE::SwapchainPresentModeInfoEXT;
+  using VULKAN_HPP_NAMESPACE::SwapchainPresentModeInfoKHR;
+  using VULKAN_HPP_NAMESPACE::SwapchainPresentModesCreateInfoEXT;
+  using VULKAN_HPP_NAMESPACE::SwapchainPresentModesCreateInfoKHR;
+  using VULKAN_HPP_NAMESPACE::SwapchainPresentScalingCreateInfoEXT;
+  using VULKAN_HPP_NAMESPACE::SwapchainPresentScalingCreateInfoKHR;
 
   //=== VK_QCOM_multiview_per_view_viewports ===
   using VULKAN_HPP_NAMESPACE::PhysicalDeviceMultiviewPerViewViewportsFeaturesQCOM;
@@ -4869,9 +4952,28 @@ using VULKAN_HPP_DEFAULT_DISPATCHER_TYPE;
   using VULKAN_HPP_NAMESPACE::TileMemoryBindInfoQCOM;
   using VULKAN_HPP_NAMESPACE::TileMemorySizeInfoQCOM;
 
+  //=== VK_KHR_copy_memory_indirect ===
+  using VULKAN_HPP_NAMESPACE::CopyMemoryIndirectCommandKHR;
+  using VULKAN_HPP_NAMESPACE::CopyMemoryIndirectCommandNV;
+  using VULKAN_HPP_NAMESPACE::CopyMemoryIndirectInfoKHR;
+  using VULKAN_HPP_NAMESPACE::CopyMemoryToImageIndirectCommandKHR;
+  using VULKAN_HPP_NAMESPACE::CopyMemoryToImageIndirectCommandNV;
+  using VULKAN_HPP_NAMESPACE::CopyMemoryToImageIndirectInfoKHR;
+  using VULKAN_HPP_NAMESPACE::PhysicalDeviceCopyMemoryIndirectFeaturesKHR;
+  using VULKAN_HPP_NAMESPACE::PhysicalDeviceCopyMemoryIndirectPropertiesKHR;
+  using VULKAN_HPP_NAMESPACE::PhysicalDeviceCopyMemoryIndirectPropertiesNV;
+  using VULKAN_HPP_NAMESPACE::StridedDeviceAddressRangeKHR;
+
   //=== VK_NV_display_stereo ===
   using VULKAN_HPP_NAMESPACE::DisplaySurfaceStereoCreateInfoNV;
   using VULKAN_HPP_NAMESPACE::DisplayModeStereoPropertiesNV;
+
+  //=== VK_KHR_video_encode_intra_refresh ===
+  using VULKAN_HPP_NAMESPACE::PhysicalDeviceVideoEncodeIntraRefreshFeaturesKHR;
+  using VULKAN_HPP_NAMESPACE::VideoEncodeIntraRefreshCapabilitiesKHR;
+  using VULKAN_HPP_NAMESPACE::VideoEncodeIntraRefreshInfoKHR;
+  using VULKAN_HPP_NAMESPACE::VideoEncodeSessionIntraRefreshCreateInfoKHR;
+  using VULKAN_HPP_NAMESPACE::VideoReferenceIntraRefreshInfoKHR;
 
   //=== VK_KHR_video_encode_quantization_map ===
   using VULKAN_HPP_NAMESPACE::VideoEncodeQuantizationMapCapabilitiesKHR;
@@ -4984,6 +5086,9 @@ using VULKAN_HPP_DEFAULT_DISPATCHER_TYPE;
   using VULKAN_HPP_NAMESPACE::PhysicalDeviceImageAlignmentControlPropertiesMESA;
   using VULKAN_HPP_NAMESPACE::ImageAlignmentControlCreateInfoMESA;
 
+  //=== VK_KHR_shader_fma ===
+  using VULKAN_HPP_NAMESPACE::PhysicalDeviceShaderFmaFeaturesKHR;
+
   //=== VK_EXT_depth_clamp_control ===
   using VULKAN_HPP_NAMESPACE::PhysicalDeviceDepthClampControlFeaturesEXT;
   using VULKAN_HPP_NAMESPACE::PipelineViewportDepthClampControlCreateInfoEXT;
@@ -5002,7 +5107,6 @@ using VULKAN_HPP_DEFAULT_DISPATCHER_TYPE;
 
 #if defined( VK_USE_PLATFORM_OHOS )
   //=== VK_OHOS_surface ===
-  using VULKAN_HPP_NAMESPACE::OHSurfaceCreateInfoOHOS;
   using VULKAN_HPP_NAMESPACE::SurfaceCreateInfoOHOS;
 #endif /*VK_USE_PLATFORM_OHOS*/
 
@@ -5063,6 +5167,13 @@ using VULKAN_HPP_DEFAULT_DISPATCHER_TYPE;
 
   //=== VK_EXT_zero_initialize_device_memory ===
   using VULKAN_HPP_NAMESPACE::PhysicalDeviceZeroInitializeDeviceMemoryFeaturesEXT;
+
+  //=== VK_KHR_present_mode_fifo_latest_ready ===
+  using VULKAN_HPP_NAMESPACE::PhysicalDevicePresentModeFifoLatestReadyFeaturesEXT;
+  using VULKAN_HPP_NAMESPACE::PhysicalDevicePresentModeFifoLatestReadyFeaturesKHR;
+
+  //=== VK_SEC_pipeline_cache_incremental_mode ===
+  using VULKAN_HPP_NAMESPACE::PhysicalDevicePipelineCacheIncrementalModeFeaturesSEC;
 
   //===============
   //=== HANDLEs ===
@@ -5420,7 +5531,9 @@ using VULKAN_HPP_DEFAULT_DISPATCHER_TYPE;
   //=== VK_EXT_device_generated_commands ===
   using VULKAN_HPP_NAMESPACE::SharedIndirectCommandsLayoutEXT;
   using VULKAN_HPP_NAMESPACE::SharedIndirectExecutionSetEXT;
-  using VULKAN_HPP_NAMESPACE::SharedHandleTraits;
+
+  //=== VK_KHR_swapchain enum ===
+  using VULKAN_HPP_NAMESPACE::SwapchainOwns;
 #endif /*VULKAN_HPP_NO_SMART_HANDLE*/
 
 
@@ -6783,19 +6896,6 @@ export namespace std
   //=== VK_EXT_shader_atomic_float2 ===
   template <> struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceShaderAtomicFloat2FeaturesEXT>;
 
-  //=== VK_EXT_surface_maintenance1 ===
-  template <> struct hash<VULKAN_HPP_NAMESPACE::SurfacePresentModeEXT>;
-  template <> struct hash<VULKAN_HPP_NAMESPACE::SurfacePresentScalingCapabilitiesEXT>;
-  template <> struct hash<VULKAN_HPP_NAMESPACE::SurfacePresentModeCompatibilityEXT>;
-
-  //=== VK_EXT_swapchain_maintenance1 ===
-  template <> struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceSwapchainMaintenance1FeaturesEXT>;
-  template <> struct hash<VULKAN_HPP_NAMESPACE::SwapchainPresentFenceInfoEXT>;
-  template <> struct hash<VULKAN_HPP_NAMESPACE::SwapchainPresentModesCreateInfoEXT>;
-  template <> struct hash<VULKAN_HPP_NAMESPACE::SwapchainPresentModeInfoEXT>;
-  template <> struct hash<VULKAN_HPP_NAMESPACE::SwapchainPresentScalingCreateInfoEXT>;
-  template <> struct hash<VULKAN_HPP_NAMESPACE::ReleaseSwapchainImagesInfoEXT>;
-
   //=== VK_NV_device_generated_commands ===
   template <> struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceDeviceGeneratedCommandsPropertiesNV>;
   template <> struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceDeviceGeneratedCommandsFeaturesNV>;
@@ -7012,9 +7112,6 @@ export namespace std
   //=== VK_EXT_primitive_topology_list_restart ===
   template <> struct hash<VULKAN_HPP_NAMESPACE::PhysicalDevicePrimitiveTopologyListRestartFeaturesEXT>;
 
-  //=== VK_EXT_present_mode_fifo_latest_ready ===
-  template <> struct hash<VULKAN_HPP_NAMESPACE::PhysicalDevicePresentModeFifoLatestReadyFeaturesEXT>;
-
 #if defined( VK_USE_PLATFORM_FUCHSIA )
   //=== VK_FUCHSIA_external_memory ===
   template <> struct hash<VULKAN_HPP_NAMESPACE::ImportMemoryZirconHandleInfoFUCHSIA>;
@@ -7085,6 +7182,20 @@ export namespace std
   //=== VK_KHR_ray_tracing_maintenance1 ===
   template <> struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceRayTracingMaintenance1FeaturesKHR>;
   template <> struct hash<VULKAN_HPP_NAMESPACE::TraceRaysIndirectCommand2KHR>;
+
+  //=== VK_KHR_shader_untyped_pointers ===
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceShaderUntypedPointersFeaturesKHR>;
+
+  //=== VK_VALVE_video_encode_rgb_conversion ===
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceVideoEncodeRgbConversionFeaturesVALVE>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::VideoEncodeRgbConversionCapabilitiesVALVE>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::VideoEncodeProfileRgbConversionInfoVALVE>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::VideoEncodeSessionRgbConversionCreateInfoVALVE>;
 
   //=== VK_EXT_image_view_min_lod ===
   template <> struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceImageViewMinLodFeaturesEXT>;
@@ -7164,10 +7275,8 @@ export namespace std
   template <> struct hash<VULKAN_HPP_NAMESPACE::RenderPassStripeSubmitInfoARM>;
 
   //=== VK_NV_copy_memory_indirect ===
-  template <> struct hash<VULKAN_HPP_NAMESPACE::CopyMemoryIndirectCommandNV>;
-  template <> struct hash<VULKAN_HPP_NAMESPACE::CopyMemoryToImageIndirectCommandNV>;
-  template <> struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceCopyMemoryIndirectFeaturesNV>;
-  template <> struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceCopyMemoryIndirectPropertiesNV>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceCopyMemoryIndirectFeaturesNV>;
 
   //=== VK_NV_memory_decompression ===
   template <> struct hash<VULKAN_HPP_NAMESPACE::DecompressMemoryRegionNV>;
@@ -7283,6 +7392,14 @@ export namespace std
   template <> struct hash<VULKAN_HPP_NAMESPACE::AntiLagDataAMD>;
   template <> struct hash<VULKAN_HPP_NAMESPACE::AntiLagPresentationInfoAMD>;
 
+#if defined( VK_ENABLE_BETA_EXTENSIONS )
+  //=== VK_AMDX_dense_geometry_format ===
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceDenseGeometryFormatFeaturesAMDX>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::AccelerationStructureDenseGeometryFormatTrianglesDataAMDX>;
+#endif /*VK_ENABLE_BETA_EXTENSIONS*/
+
   //=== VK_KHR_present_id2 ===
   template <> struct hash<VULKAN_HPP_NAMESPACE::SurfaceCapabilitiesPresentId2KHR>;
   template <> struct hash<VULKAN_HPP_NAMESPACE::PresentId2KHR>;
@@ -7326,6 +7443,28 @@ export namespace std
   //=== VK_SEC_amigo_profiling ===
   template <> struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceAmigoProfilingFeaturesSEC>;
   template <> struct hash<VULKAN_HPP_NAMESPACE::AmigoProfilingSubmitInfoSEC>;
+
+  //=== VK_KHR_surface_maintenance1 ===
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::SurfacePresentModeKHR>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::SurfacePresentScalingCapabilitiesKHR>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::SurfacePresentModeCompatibilityKHR>;
+
+  //=== VK_KHR_swapchain_maintenance1 ===
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceSwapchainMaintenance1FeaturesKHR>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::SwapchainPresentFenceInfoKHR>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::SwapchainPresentModesCreateInfoKHR>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::SwapchainPresentModeInfoKHR>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::SwapchainPresentScalingCreateInfoKHR>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::ReleaseSwapchainImagesInfoKHR>;
 
   //=== VK_QCOM_multiview_per_view_viewports ===
   template <> struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceMultiviewPerViewViewportsFeaturesQCOM>;
@@ -7505,9 +7644,37 @@ export namespace std
   template <> struct hash<VULKAN_HPP_NAMESPACE::TileMemoryBindInfoQCOM>;
   template <> struct hash<VULKAN_HPP_NAMESPACE::TileMemorySizeInfoQCOM>;
 
+  //=== VK_KHR_copy_memory_indirect ===
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::StridedDeviceAddressRangeKHR>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::CopyMemoryIndirectCommandKHR>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::CopyMemoryIndirectInfoKHR>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::CopyMemoryToImageIndirectCommandKHR>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::CopyMemoryToImageIndirectInfoKHR>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceCopyMemoryIndirectFeaturesKHR>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceCopyMemoryIndirectPropertiesKHR>;
+
   //=== VK_NV_display_stereo ===
   template <> struct hash<VULKAN_HPP_NAMESPACE::DisplaySurfaceStereoCreateInfoNV>;
   template <> struct hash<VULKAN_HPP_NAMESPACE::DisplayModeStereoPropertiesNV>;
+
+  //=== VK_KHR_video_encode_intra_refresh ===
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::VideoEncodeIntraRefreshCapabilitiesKHR>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::VideoEncodeSessionIntraRefreshCreateInfoKHR>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::VideoEncodeIntraRefreshInfoKHR>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::VideoReferenceIntraRefreshInfoKHR>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceVideoEncodeIntraRefreshFeaturesKHR>;
 
   //=== VK_KHR_video_encode_quantization_map ===
   template <> struct hash<VULKAN_HPP_NAMESPACE::VideoEncodeQuantizationMapCapabilitiesKHR>;
@@ -7612,13 +7779,19 @@ export namespace std
   template <> struct hash<VULKAN_HPP_NAMESPACE::WriteIndirectExecutionSetShaderEXT>;
 
   //=== VK_KHR_maintenance8 ===
-  template <> struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceMaintenance8FeaturesKHR>;
-  template <> struct hash<VULKAN_HPP_NAMESPACE::MemoryBarrierAccessFlags3KHR>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::MemoryBarrierAccessFlags3KHR>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceMaintenance8FeaturesKHR>;
 
   //=== VK_MESA_image_alignment_control ===
   template <> struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceImageAlignmentControlFeaturesMESA>;
   template <> struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceImageAlignmentControlPropertiesMESA>;
   template <> struct hash<VULKAN_HPP_NAMESPACE::ImageAlignmentControlCreateInfoMESA>;
+
+  //=== VK_KHR_shader_fma ===
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceShaderFmaFeaturesKHR>;
 
   //=== VK_EXT_depth_clamp_control ===
   template <> struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceDepthClampControlFeaturesEXT>;
@@ -7638,7 +7811,8 @@ export namespace std
 
 #if defined( VK_USE_PLATFORM_OHOS )
   //=== VK_OHOS_surface ===
-  template <> struct hash<VULKAN_HPP_NAMESPACE::OHSurfaceCreateInfoOHOS>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::SurfaceCreateInfoOHOS>;
 #endif /*VK_USE_PLATFORM_OHOS*/
 
   //=== VK_HUAWEI_hdr_vivid ===
@@ -7696,6 +7870,14 @@ export namespace std
 
 
 
+  //=== VK_KHR_present_mode_fifo_latest_ready ===
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::PhysicalDevicePresentModeFifoLatestReadyFeaturesKHR>;
+
+  //=== VK_SEC_pipeline_cache_incremental_mode ===
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::PhysicalDevicePipelineCacheIncrementalModeFeaturesSEC>;
+
   //=================================================================
   //=== Required exports for VULKAN_HPP_NAMESPACE::StructureChain ===
   //=================================================================
@@ -7706,1165 +7888,1174 @@ export namespace std
 #endif
 }
 
-// This VkFlags type is used as part of a bitfield in some structure.
-// As it can't be mimicked by vk-data types, we need to export just that!!
-export using ::VkGeometryInstanceFlagsKHR;
-
+export
+{
+  // This VkFlags type is used as part of a bitfield in some structures.
+  // As it can't be mimicked by vk-data types, we need to export just that.
+  using ::VkGeometryInstanceFlagsKHR;
 
   //==================
   //=== PFN TYPEs ===
   //==================
 
   //=== VK_VERSION_1_0 ===
-export using ::PFN_vkCreateInstance;
-export using ::PFN_vkDestroyInstance;
-export using ::PFN_vkEnumeratePhysicalDevices;
-export using ::PFN_vkGetPhysicalDeviceFeatures;
-export using ::PFN_vkGetPhysicalDeviceFormatProperties;
-export using ::PFN_vkGetPhysicalDeviceImageFormatProperties;
-export using ::PFN_vkGetPhysicalDeviceProperties;
-export using ::PFN_vkGetPhysicalDeviceQueueFamilyProperties;
-export using ::PFN_vkGetPhysicalDeviceMemoryProperties;
-export using ::PFN_vkGetInstanceProcAddr;
-export using ::PFN_vkGetDeviceProcAddr;
-export using ::PFN_vkCreateDevice;
-export using ::PFN_vkDestroyDevice;
-export using ::PFN_vkEnumerateInstanceExtensionProperties;
-export using ::PFN_vkEnumerateDeviceExtensionProperties;
-export using ::PFN_vkEnumerateInstanceLayerProperties;
-export using ::PFN_vkEnumerateDeviceLayerProperties;
-export using ::PFN_vkGetDeviceQueue;
-export using ::PFN_vkQueueSubmit;
-export using ::PFN_vkQueueWaitIdle;
-export using ::PFN_vkDeviceWaitIdle;
-export using ::PFN_vkAllocateMemory;
-export using ::PFN_vkFreeMemory;
-export using ::PFN_vkMapMemory;
-export using ::PFN_vkUnmapMemory;
-export using ::PFN_vkFlushMappedMemoryRanges;
-export using ::PFN_vkInvalidateMappedMemoryRanges;
-export using ::PFN_vkGetDeviceMemoryCommitment;
-export using ::PFN_vkBindBufferMemory;
-export using ::PFN_vkBindImageMemory;
-export using ::PFN_vkGetBufferMemoryRequirements;
-export using ::PFN_vkGetImageMemoryRequirements;
-export using ::PFN_vkGetImageSparseMemoryRequirements;
-export using ::PFN_vkGetPhysicalDeviceSparseImageFormatProperties;
-export using ::PFN_vkQueueBindSparse;
-export using ::PFN_vkCreateFence;
-export using ::PFN_vkDestroyFence;
-export using ::PFN_vkResetFences;
-export using ::PFN_vkGetFenceStatus;
-export using ::PFN_vkWaitForFences;
-export using ::PFN_vkCreateSemaphore;
-export using ::PFN_vkDestroySemaphore;
-export using ::PFN_vkCreateEvent;
-export using ::PFN_vkDestroyEvent;
-export using ::PFN_vkGetEventStatus;
-export using ::PFN_vkSetEvent;
-export using ::PFN_vkResetEvent;
-export using ::PFN_vkCreateQueryPool;
-export using ::PFN_vkDestroyQueryPool;
-export using ::PFN_vkGetQueryPoolResults;
-export using ::PFN_vkCreateBuffer;
-export using ::PFN_vkDestroyBuffer;
-export using ::PFN_vkCreateBufferView;
-export using ::PFN_vkDestroyBufferView;
-export using ::PFN_vkCreateImage;
-export using ::PFN_vkDestroyImage;
-export using ::PFN_vkGetImageSubresourceLayout;
-export using ::PFN_vkCreateImageView;
-export using ::PFN_vkDestroyImageView;
-export using ::PFN_vkCreateShaderModule;
-export using ::PFN_vkDestroyShaderModule;
-export using ::PFN_vkCreatePipelineCache;
-export using ::PFN_vkDestroyPipelineCache;
-export using ::PFN_vkGetPipelineCacheData;
-export using ::PFN_vkMergePipelineCaches;
-export using ::PFN_vkCreateGraphicsPipelines;
-export using ::PFN_vkCreateComputePipelines;
-export using ::PFN_vkDestroyPipeline;
-export using ::PFN_vkCreatePipelineLayout;
-export using ::PFN_vkDestroyPipelineLayout;
-export using ::PFN_vkCreateSampler;
-export using ::PFN_vkDestroySampler;
-export using ::PFN_vkCreateDescriptorSetLayout;
-export using ::PFN_vkDestroyDescriptorSetLayout;
-export using ::PFN_vkCreateDescriptorPool;
-export using ::PFN_vkDestroyDescriptorPool;
-export using ::PFN_vkResetDescriptorPool;
-export using ::PFN_vkAllocateDescriptorSets;
-export using ::PFN_vkFreeDescriptorSets;
-export using ::PFN_vkUpdateDescriptorSets;
-export using ::PFN_vkCreateFramebuffer;
-export using ::PFN_vkDestroyFramebuffer;
-export using ::PFN_vkCreateRenderPass;
-export using ::PFN_vkDestroyRenderPass;
-export using ::PFN_vkGetRenderAreaGranularity;
-export using ::PFN_vkCreateCommandPool;
-export using ::PFN_vkDestroyCommandPool;
-export using ::PFN_vkResetCommandPool;
-export using ::PFN_vkAllocateCommandBuffers;
-export using ::PFN_vkFreeCommandBuffers;
-export using ::PFN_vkBeginCommandBuffer;
-export using ::PFN_vkEndCommandBuffer;
-export using ::PFN_vkResetCommandBuffer;
-export using ::PFN_vkCmdBindPipeline;
-export using ::PFN_vkCmdSetViewport;
-export using ::PFN_vkCmdSetScissor;
-export using ::PFN_vkCmdSetLineWidth;
-export using ::PFN_vkCmdSetDepthBias;
-export using ::PFN_vkCmdSetBlendConstants;
-export using ::PFN_vkCmdSetDepthBounds;
-export using ::PFN_vkCmdSetStencilCompareMask;
-export using ::PFN_vkCmdSetStencilWriteMask;
-export using ::PFN_vkCmdSetStencilReference;
-export using ::PFN_vkCmdBindDescriptorSets;
-export using ::PFN_vkCmdBindIndexBuffer;
-export using ::PFN_vkCmdBindVertexBuffers;
-export using ::PFN_vkCmdDraw;
-export using ::PFN_vkCmdDrawIndexed;
-export using ::PFN_vkCmdDrawIndirect;
-export using ::PFN_vkCmdDrawIndexedIndirect;
-export using ::PFN_vkCmdDispatch;
-export using ::PFN_vkCmdDispatchIndirect;
-export using ::PFN_vkCmdCopyBuffer;
-export using ::PFN_vkCmdCopyImage;
-export using ::PFN_vkCmdBlitImage;
-export using ::PFN_vkCmdCopyBufferToImage;
-export using ::PFN_vkCmdCopyImageToBuffer;
-export using ::PFN_vkCmdUpdateBuffer;
-export using ::PFN_vkCmdFillBuffer;
-export using ::PFN_vkCmdClearColorImage;
-export using ::PFN_vkCmdClearDepthStencilImage;
-export using ::PFN_vkCmdClearAttachments;
-export using ::PFN_vkCmdResolveImage;
-export using ::PFN_vkCmdSetEvent;
-export using ::PFN_vkCmdResetEvent;
-export using ::PFN_vkCmdWaitEvents;
-export using ::PFN_vkCmdPipelineBarrier;
-export using ::PFN_vkCmdBeginQuery;
-export using ::PFN_vkCmdEndQuery;
-export using ::PFN_vkCmdResetQueryPool;
-export using ::PFN_vkCmdWriteTimestamp;
-export using ::PFN_vkCmdCopyQueryPoolResults;
-export using ::PFN_vkCmdPushConstants;
-export using ::PFN_vkCmdBeginRenderPass;
-export using ::PFN_vkCmdNextSubpass;
-export using ::PFN_vkCmdEndRenderPass;
-export using ::PFN_vkCmdExecuteCommands;
+  using ::PFN_vkAllocateCommandBuffers;
+  using ::PFN_vkAllocateDescriptorSets;
+  using ::PFN_vkAllocateMemory;
+  using ::PFN_vkBeginCommandBuffer;
+  using ::PFN_vkBindBufferMemory;
+  using ::PFN_vkBindImageMemory;
+  using ::PFN_vkCmdBeginQuery;
+  using ::PFN_vkCmdBeginRenderPass;
+  using ::PFN_vkCmdBindDescriptorSets;
+  using ::PFN_vkCmdBindIndexBuffer;
+  using ::PFN_vkCmdBindPipeline;
+  using ::PFN_vkCmdBindVertexBuffers;
+  using ::PFN_vkCmdBlitImage;
+  using ::PFN_vkCmdClearAttachments;
+  using ::PFN_vkCmdClearColorImage;
+  using ::PFN_vkCmdClearDepthStencilImage;
+  using ::PFN_vkCmdCopyBuffer;
+  using ::PFN_vkCmdCopyBufferToImage;
+  using ::PFN_vkCmdCopyImage;
+  using ::PFN_vkCmdCopyImageToBuffer;
+  using ::PFN_vkCmdCopyQueryPoolResults;
+  using ::PFN_vkCmdDispatch;
+  using ::PFN_vkCmdDispatchIndirect;
+  using ::PFN_vkCmdDraw;
+  using ::PFN_vkCmdDrawIndexed;
+  using ::PFN_vkCmdDrawIndexedIndirect;
+  using ::PFN_vkCmdDrawIndirect;
+  using ::PFN_vkCmdEndQuery;
+  using ::PFN_vkCmdEndRenderPass;
+  using ::PFN_vkCmdExecuteCommands;
+  using ::PFN_vkCmdFillBuffer;
+  using ::PFN_vkCmdNextSubpass;
+  using ::PFN_vkCmdPipelineBarrier;
+  using ::PFN_vkCmdPushConstants;
+  using ::PFN_vkCmdResetEvent;
+  using ::PFN_vkCmdResetQueryPool;
+  using ::PFN_vkCmdResolveImage;
+  using ::PFN_vkCmdSetBlendConstants;
+  using ::PFN_vkCmdSetDepthBias;
+  using ::PFN_vkCmdSetDepthBounds;
+  using ::PFN_vkCmdSetEvent;
+  using ::PFN_vkCmdSetLineWidth;
+  using ::PFN_vkCmdSetScissor;
+  using ::PFN_vkCmdSetStencilCompareMask;
+  using ::PFN_vkCmdSetStencilReference;
+  using ::PFN_vkCmdSetStencilWriteMask;
+  using ::PFN_vkCmdSetViewport;
+  using ::PFN_vkCmdUpdateBuffer;
+  using ::PFN_vkCmdWaitEvents;
+  using ::PFN_vkCmdWriteTimestamp;
+  using ::PFN_vkCreateBuffer;
+  using ::PFN_vkCreateBufferView;
+  using ::PFN_vkCreateCommandPool;
+  using ::PFN_vkCreateComputePipelines;
+  using ::PFN_vkCreateDescriptorPool;
+  using ::PFN_vkCreateDescriptorSetLayout;
+  using ::PFN_vkCreateDevice;
+  using ::PFN_vkCreateEvent;
+  using ::PFN_vkCreateFence;
+  using ::PFN_vkCreateFramebuffer;
+  using ::PFN_vkCreateGraphicsPipelines;
+  using ::PFN_vkCreateImage;
+  using ::PFN_vkCreateImageView;
+  using ::PFN_vkCreateInstance;
+  using ::PFN_vkCreatePipelineCache;
+  using ::PFN_vkCreatePipelineLayout;
+  using ::PFN_vkCreateQueryPool;
+  using ::PFN_vkCreateRenderPass;
+  using ::PFN_vkCreateSampler;
+  using ::PFN_vkCreateSemaphore;
+  using ::PFN_vkCreateShaderModule;
+  using ::PFN_vkDestroyBuffer;
+  using ::PFN_vkDestroyBufferView;
+  using ::PFN_vkDestroyCommandPool;
+  using ::PFN_vkDestroyDescriptorPool;
+  using ::PFN_vkDestroyDescriptorSetLayout;
+  using ::PFN_vkDestroyDevice;
+  using ::PFN_vkDestroyEvent;
+  using ::PFN_vkDestroyFence;
+  using ::PFN_vkDestroyFramebuffer;
+  using ::PFN_vkDestroyImage;
+  using ::PFN_vkDestroyImageView;
+  using ::PFN_vkDestroyInstance;
+  using ::PFN_vkDestroyPipeline;
+  using ::PFN_vkDestroyPipelineCache;
+  using ::PFN_vkDestroyPipelineLayout;
+  using ::PFN_vkDestroyQueryPool;
+  using ::PFN_vkDestroyRenderPass;
+  using ::PFN_vkDestroySampler;
+  using ::PFN_vkDestroySemaphore;
+  using ::PFN_vkDestroyShaderModule;
+  using ::PFN_vkDeviceWaitIdle;
+  using ::PFN_vkEndCommandBuffer;
+  using ::PFN_vkEnumerateDeviceExtensionProperties;
+  using ::PFN_vkEnumerateDeviceLayerProperties;
+  using ::PFN_vkEnumerateInstanceExtensionProperties;
+  using ::PFN_vkEnumerateInstanceLayerProperties;
+  using ::PFN_vkEnumeratePhysicalDevices;
+  using ::PFN_vkFlushMappedMemoryRanges;
+  using ::PFN_vkFreeCommandBuffers;
+  using ::PFN_vkFreeDescriptorSets;
+  using ::PFN_vkFreeMemory;
+  using ::PFN_vkGetBufferMemoryRequirements;
+  using ::PFN_vkGetDeviceMemoryCommitment;
+  using ::PFN_vkGetDeviceProcAddr;
+  using ::PFN_vkGetDeviceQueue;
+  using ::PFN_vkGetEventStatus;
+  using ::PFN_vkGetFenceStatus;
+  using ::PFN_vkGetImageMemoryRequirements;
+  using ::PFN_vkGetImageSparseMemoryRequirements;
+  using ::PFN_vkGetImageSubresourceLayout;
+  using ::PFN_vkGetInstanceProcAddr;
+  using ::PFN_vkGetPhysicalDeviceFeatures;
+  using ::PFN_vkGetPhysicalDeviceFormatProperties;
+  using ::PFN_vkGetPhysicalDeviceImageFormatProperties;
+  using ::PFN_vkGetPhysicalDeviceMemoryProperties;
+  using ::PFN_vkGetPhysicalDeviceProperties;
+  using ::PFN_vkGetPhysicalDeviceQueueFamilyProperties;
+  using ::PFN_vkGetPhysicalDeviceSparseImageFormatProperties;
+  using ::PFN_vkGetPipelineCacheData;
+  using ::PFN_vkGetQueryPoolResults;
+  using ::PFN_vkGetRenderAreaGranularity;
+  using ::PFN_vkInvalidateMappedMemoryRanges;
+  using ::PFN_vkMapMemory;
+  using ::PFN_vkMergePipelineCaches;
+  using ::PFN_vkQueueBindSparse;
+  using ::PFN_vkQueueSubmit;
+  using ::PFN_vkQueueWaitIdle;
+  using ::PFN_vkResetCommandBuffer;
+  using ::PFN_vkResetCommandPool;
+  using ::PFN_vkResetDescriptorPool;
+  using ::PFN_vkResetEvent;
+  using ::PFN_vkResetFences;
+  using ::PFN_vkSetEvent;
+  using ::PFN_vkUnmapMemory;
+  using ::PFN_vkUpdateDescriptorSets;
+  using ::PFN_vkWaitForFences;
 
   //=== VK_VERSION_1_1 ===
-export using ::PFN_vkEnumerateInstanceVersion;
-export using ::PFN_vkBindBufferMemory2;
-export using ::PFN_vkBindImageMemory2;
-export using ::PFN_vkGetDeviceGroupPeerMemoryFeatures;
-export using ::PFN_vkCmdSetDeviceMask;
-export using ::PFN_vkCmdDispatchBase;
-export using ::PFN_vkEnumeratePhysicalDeviceGroups;
-export using ::PFN_vkGetImageMemoryRequirements2;
-export using ::PFN_vkGetBufferMemoryRequirements2;
-export using ::PFN_vkGetImageSparseMemoryRequirements2;
-export using ::PFN_vkGetPhysicalDeviceFeatures2;
-export using ::PFN_vkGetPhysicalDeviceProperties2;
-export using ::PFN_vkGetPhysicalDeviceFormatProperties2;
-export using ::PFN_vkGetPhysicalDeviceImageFormatProperties2;
-export using ::PFN_vkGetPhysicalDeviceQueueFamilyProperties2;
-export using ::PFN_vkGetPhysicalDeviceMemoryProperties2;
-export using ::PFN_vkGetPhysicalDeviceSparseImageFormatProperties2;
-export using ::PFN_vkTrimCommandPool;
-export using ::PFN_vkGetDeviceQueue2;
-export using ::PFN_vkCreateSamplerYcbcrConversion;
-export using ::PFN_vkDestroySamplerYcbcrConversion;
-export using ::PFN_vkCreateDescriptorUpdateTemplate;
-export using ::PFN_vkDestroyDescriptorUpdateTemplate;
-export using ::PFN_vkUpdateDescriptorSetWithTemplate;
-export using ::PFN_vkGetPhysicalDeviceExternalBufferProperties;
-export using ::PFN_vkGetPhysicalDeviceExternalFenceProperties;
-export using ::PFN_vkGetPhysicalDeviceExternalSemaphoreProperties;
-export using ::PFN_vkGetDescriptorSetLayoutSupport;
+  using ::PFN_vkBindBufferMemory2;
+  using ::PFN_vkBindImageMemory2;
+  using ::PFN_vkCmdDispatchBase;
+  using ::PFN_vkCmdSetDeviceMask;
+  using ::PFN_vkCreateDescriptorUpdateTemplate;
+  using ::PFN_vkCreateSamplerYcbcrConversion;
+  using ::PFN_vkDestroyDescriptorUpdateTemplate;
+  using ::PFN_vkDestroySamplerYcbcrConversion;
+  using ::PFN_vkEnumerateInstanceVersion;
+  using ::PFN_vkEnumeratePhysicalDeviceGroups;
+  using ::PFN_vkGetBufferMemoryRequirements2;
+  using ::PFN_vkGetDescriptorSetLayoutSupport;
+  using ::PFN_vkGetDeviceGroupPeerMemoryFeatures;
+  using ::PFN_vkGetDeviceQueue2;
+  using ::PFN_vkGetImageMemoryRequirements2;
+  using ::PFN_vkGetImageSparseMemoryRequirements2;
+  using ::PFN_vkGetPhysicalDeviceExternalBufferProperties;
+  using ::PFN_vkGetPhysicalDeviceExternalFenceProperties;
+  using ::PFN_vkGetPhysicalDeviceExternalSemaphoreProperties;
+  using ::PFN_vkGetPhysicalDeviceFeatures2;
+  using ::PFN_vkGetPhysicalDeviceFormatProperties2;
+  using ::PFN_vkGetPhysicalDeviceImageFormatProperties2;
+  using ::PFN_vkGetPhysicalDeviceMemoryProperties2;
+  using ::PFN_vkGetPhysicalDeviceProperties2;
+  using ::PFN_vkGetPhysicalDeviceQueueFamilyProperties2;
+  using ::PFN_vkGetPhysicalDeviceSparseImageFormatProperties2;
+  using ::PFN_vkTrimCommandPool;
+  using ::PFN_vkUpdateDescriptorSetWithTemplate;
 
   //=== VK_VERSION_1_2 ===
-export using ::PFN_vkCmdDrawIndirectCount;
-export using ::PFN_vkCmdDrawIndexedIndirectCount;
-export using ::PFN_vkCreateRenderPass2;
-export using ::PFN_vkCmdBeginRenderPass2;
-export using ::PFN_vkCmdNextSubpass2;
-export using ::PFN_vkCmdEndRenderPass2;
-export using ::PFN_vkResetQueryPool;
-export using ::PFN_vkGetSemaphoreCounterValue;
-export using ::PFN_vkWaitSemaphores;
-export using ::PFN_vkSignalSemaphore;
-export using ::PFN_vkGetBufferDeviceAddress;
-export using ::PFN_vkGetBufferOpaqueCaptureAddress;
-export using ::PFN_vkGetDeviceMemoryOpaqueCaptureAddress;
+  using ::PFN_vkCmdBeginRenderPass2;
+  using ::PFN_vkCmdDrawIndexedIndirectCount;
+  using ::PFN_vkCmdDrawIndirectCount;
+  using ::PFN_vkCmdEndRenderPass2;
+  using ::PFN_vkCmdNextSubpass2;
+  using ::PFN_vkCreateRenderPass2;
+  using ::PFN_vkGetBufferDeviceAddress;
+  using ::PFN_vkGetBufferOpaqueCaptureAddress;
+  using ::PFN_vkGetDeviceMemoryOpaqueCaptureAddress;
+  using ::PFN_vkGetSemaphoreCounterValue;
+  using ::PFN_vkResetQueryPool;
+  using ::PFN_vkSignalSemaphore;
+  using ::PFN_vkWaitSemaphores;
 
   //=== VK_VERSION_1_3 ===
-export using ::PFN_vkGetPhysicalDeviceToolProperties;
-export using ::PFN_vkCreatePrivateDataSlot;
-export using ::PFN_vkDestroyPrivateDataSlot;
-export using ::PFN_vkSetPrivateData;
-export using ::PFN_vkGetPrivateData;
-export using ::PFN_vkCmdSetEvent2;
-export using ::PFN_vkCmdResetEvent2;
-export using ::PFN_vkCmdWaitEvents2;
-export using ::PFN_vkCmdPipelineBarrier2;
-export using ::PFN_vkCmdWriteTimestamp2;
-export using ::PFN_vkQueueSubmit2;
-export using ::PFN_vkCmdCopyBuffer2;
-export using ::PFN_vkCmdCopyImage2;
-export using ::PFN_vkCmdCopyBufferToImage2;
-export using ::PFN_vkCmdCopyImageToBuffer2;
-export using ::PFN_vkCmdBlitImage2;
-export using ::PFN_vkCmdResolveImage2;
-export using ::PFN_vkCmdBeginRendering;
-export using ::PFN_vkCmdEndRendering;
-export using ::PFN_vkCmdSetCullMode;
-export using ::PFN_vkCmdSetFrontFace;
-export using ::PFN_vkCmdSetPrimitiveTopology;
-export using ::PFN_vkCmdSetViewportWithCount;
-export using ::PFN_vkCmdSetScissorWithCount;
-export using ::PFN_vkCmdBindVertexBuffers2;
-export using ::PFN_vkCmdSetDepthTestEnable;
-export using ::PFN_vkCmdSetDepthWriteEnable;
-export using ::PFN_vkCmdSetDepthCompareOp;
-export using ::PFN_vkCmdSetDepthBoundsTestEnable;
-export using ::PFN_vkCmdSetStencilTestEnable;
-export using ::PFN_vkCmdSetStencilOp;
-export using ::PFN_vkCmdSetRasterizerDiscardEnable;
-export using ::PFN_vkCmdSetDepthBiasEnable;
-export using ::PFN_vkCmdSetPrimitiveRestartEnable;
-export using ::PFN_vkGetDeviceBufferMemoryRequirements;
-export using ::PFN_vkGetDeviceImageMemoryRequirements;
-export using ::PFN_vkGetDeviceImageSparseMemoryRequirements;
+  using ::PFN_vkCmdBeginRendering;
+  using ::PFN_vkCmdBindVertexBuffers2;
+  using ::PFN_vkCmdBlitImage2;
+  using ::PFN_vkCmdCopyBuffer2;
+  using ::PFN_vkCmdCopyBufferToImage2;
+  using ::PFN_vkCmdCopyImage2;
+  using ::PFN_vkCmdCopyImageToBuffer2;
+  using ::PFN_vkCmdEndRendering;
+  using ::PFN_vkCmdPipelineBarrier2;
+  using ::PFN_vkCmdResetEvent2;
+  using ::PFN_vkCmdResolveImage2;
+  using ::PFN_vkCmdSetCullMode;
+  using ::PFN_vkCmdSetDepthBiasEnable;
+  using ::PFN_vkCmdSetDepthBoundsTestEnable;
+  using ::PFN_vkCmdSetDepthCompareOp;
+  using ::PFN_vkCmdSetDepthTestEnable;
+  using ::PFN_vkCmdSetDepthWriteEnable;
+  using ::PFN_vkCmdSetEvent2;
+  using ::PFN_vkCmdSetFrontFace;
+  using ::PFN_vkCmdSetPrimitiveRestartEnable;
+  using ::PFN_vkCmdSetPrimitiveTopology;
+  using ::PFN_vkCmdSetRasterizerDiscardEnable;
+  using ::PFN_vkCmdSetScissorWithCount;
+  using ::PFN_vkCmdSetStencilOp;
+  using ::PFN_vkCmdSetStencilTestEnable;
+  using ::PFN_vkCmdSetViewportWithCount;
+  using ::PFN_vkCmdWaitEvents2;
+  using ::PFN_vkCmdWriteTimestamp2;
+  using ::PFN_vkCreatePrivateDataSlot;
+  using ::PFN_vkDestroyPrivateDataSlot;
+  using ::PFN_vkGetDeviceBufferMemoryRequirements;
+  using ::PFN_vkGetDeviceImageMemoryRequirements;
+  using ::PFN_vkGetDeviceImageSparseMemoryRequirements;
+  using ::PFN_vkGetPhysicalDeviceToolProperties;
+  using ::PFN_vkGetPrivateData;
+  using ::PFN_vkQueueSubmit2;
+  using ::PFN_vkSetPrivateData;
 
   //=== VK_VERSION_1_4 ===
-export using ::PFN_vkCmdSetLineStipple;
-export using ::PFN_vkMapMemory2;
-export using ::PFN_vkUnmapMemory2;
-export using ::PFN_vkCmdBindIndexBuffer2;
-export using ::PFN_vkGetRenderingAreaGranularity;
-export using ::PFN_vkGetDeviceImageSubresourceLayout;
-export using ::PFN_vkGetImageSubresourceLayout2;
-export using ::PFN_vkCmdPushDescriptorSet;
-export using ::PFN_vkCmdPushDescriptorSetWithTemplate;
-export using ::PFN_vkCmdSetRenderingAttachmentLocations;
-export using ::PFN_vkCmdSetRenderingInputAttachmentIndices;
-export using ::PFN_vkCmdBindDescriptorSets2;
-export using ::PFN_vkCmdPushConstants2;
-export using ::PFN_vkCmdPushDescriptorSet2;
-export using ::PFN_vkCmdPushDescriptorSetWithTemplate2;
-export using ::PFN_vkCopyMemoryToImage;
-export using ::PFN_vkCopyImageToMemory;
-export using ::PFN_vkCopyImageToImage;
-export using ::PFN_vkTransitionImageLayout;
+  using ::PFN_vkCmdBindDescriptorSets2;
+  using ::PFN_vkCmdBindIndexBuffer2;
+  using ::PFN_vkCmdPushConstants2;
+  using ::PFN_vkCmdPushDescriptorSet;
+  using ::PFN_vkCmdPushDescriptorSet2;
+  using ::PFN_vkCmdPushDescriptorSetWithTemplate;
+  using ::PFN_vkCmdPushDescriptorSetWithTemplate2;
+  using ::PFN_vkCmdSetLineStipple;
+  using ::PFN_vkCmdSetRenderingAttachmentLocations;
+  using ::PFN_vkCmdSetRenderingInputAttachmentIndices;
+  using ::PFN_vkCopyImageToImage;
+  using ::PFN_vkCopyImageToMemory;
+  using ::PFN_vkCopyMemoryToImage;
+  using ::PFN_vkGetDeviceImageSubresourceLayout;
+  using ::PFN_vkGetImageSubresourceLayout2;
+  using ::PFN_vkGetRenderingAreaGranularity;
+  using ::PFN_vkMapMemory2;
+  using ::PFN_vkTransitionImageLayout;
+  using ::PFN_vkUnmapMemory2;
 
   //=== VK_KHR_surface ===
-export using ::PFN_vkDestroySurfaceKHR;
-export using ::PFN_vkGetPhysicalDeviceSurfaceSupportKHR;
-export using ::PFN_vkGetPhysicalDeviceSurfaceCapabilitiesKHR;
-export using ::PFN_vkGetPhysicalDeviceSurfaceFormatsKHR;
-export using ::PFN_vkGetPhysicalDeviceSurfacePresentModesKHR;
+  using ::PFN_vkDestroySurfaceKHR;
+  using ::PFN_vkGetPhysicalDeviceSurfaceCapabilitiesKHR;
+  using ::PFN_vkGetPhysicalDeviceSurfaceFormatsKHR;
+  using ::PFN_vkGetPhysicalDeviceSurfacePresentModesKHR;
+  using ::PFN_vkGetPhysicalDeviceSurfaceSupportKHR;
 
   //=== VK_KHR_swapchain ===
-export using ::PFN_vkCreateSwapchainKHR;
-export using ::PFN_vkDestroySwapchainKHR;
-export using ::PFN_vkGetSwapchainImagesKHR;
-export using ::PFN_vkAcquireNextImageKHR;
-export using ::PFN_vkQueuePresentKHR;
-export using ::PFN_vkGetDeviceGroupPresentCapabilitiesKHR;
-export using ::PFN_vkGetDeviceGroupSurfacePresentModesKHR;
-export using ::PFN_vkGetPhysicalDevicePresentRectanglesKHR;
-export using ::PFN_vkAcquireNextImage2KHR;
+  using ::PFN_vkAcquireNextImage2KHR;
+  using ::PFN_vkAcquireNextImageKHR;
+  using ::PFN_vkCreateSwapchainKHR;
+  using ::PFN_vkDestroySwapchainKHR;
+  using ::PFN_vkGetDeviceGroupPresentCapabilitiesKHR;
+  using ::PFN_vkGetDeviceGroupSurfacePresentModesKHR;
+  using ::PFN_vkGetPhysicalDevicePresentRectanglesKHR;
+  using ::PFN_vkGetSwapchainImagesKHR;
+  using ::PFN_vkQueuePresentKHR;
 
   //=== VK_KHR_display ===
-export using ::PFN_vkGetPhysicalDeviceDisplayPropertiesKHR;
-export using ::PFN_vkGetPhysicalDeviceDisplayPlanePropertiesKHR;
-export using ::PFN_vkGetDisplayPlaneSupportedDisplaysKHR;
-export using ::PFN_vkGetDisplayModePropertiesKHR;
-export using ::PFN_vkCreateDisplayModeKHR;
-export using ::PFN_vkGetDisplayPlaneCapabilitiesKHR;
-export using ::PFN_vkCreateDisplayPlaneSurfaceKHR;
+  using ::PFN_vkCreateDisplayModeKHR;
+  using ::PFN_vkCreateDisplayPlaneSurfaceKHR;
+  using ::PFN_vkGetDisplayModePropertiesKHR;
+  using ::PFN_vkGetDisplayPlaneCapabilitiesKHR;
+  using ::PFN_vkGetDisplayPlaneSupportedDisplaysKHR;
+  using ::PFN_vkGetPhysicalDeviceDisplayPlanePropertiesKHR;
+  using ::PFN_vkGetPhysicalDeviceDisplayPropertiesKHR;
 
   //=== VK_KHR_display_swapchain ===
-export using ::PFN_vkCreateSharedSwapchainsKHR;
+  using ::PFN_vkCreateSharedSwapchainsKHR;
 
 #if defined( VK_USE_PLATFORM_XLIB_KHR )
   //=== VK_KHR_xlib_surface ===
-export using ::PFN_vkCreateXlibSurfaceKHR;
-export using ::PFN_vkGetPhysicalDeviceXlibPresentationSupportKHR;
+  using ::PFN_vkCreateXlibSurfaceKHR;
+  using ::PFN_vkGetPhysicalDeviceXlibPresentationSupportKHR;
 #endif /*VK_USE_PLATFORM_XLIB_KHR*/
 
 #if defined( VK_USE_PLATFORM_XCB_KHR )
   //=== VK_KHR_xcb_surface ===
-export using ::PFN_vkCreateXcbSurfaceKHR;
-export using ::PFN_vkGetPhysicalDeviceXcbPresentationSupportKHR;
+  using ::PFN_vkCreateXcbSurfaceKHR;
+  using ::PFN_vkGetPhysicalDeviceXcbPresentationSupportKHR;
 #endif /*VK_USE_PLATFORM_XCB_KHR*/
 
 #if defined( VK_USE_PLATFORM_WAYLAND_KHR )
   //=== VK_KHR_wayland_surface ===
-export using ::PFN_vkCreateWaylandSurfaceKHR;
-export using ::PFN_vkGetPhysicalDeviceWaylandPresentationSupportKHR;
+  using ::PFN_vkCreateWaylandSurfaceKHR;
+  using ::PFN_vkGetPhysicalDeviceWaylandPresentationSupportKHR;
 #endif /*VK_USE_PLATFORM_WAYLAND_KHR*/
 
 #if defined( VK_USE_PLATFORM_ANDROID_KHR )
   //=== VK_KHR_android_surface ===
-export using ::PFN_vkCreateAndroidSurfaceKHR;
+  using ::PFN_vkCreateAndroidSurfaceKHR;
 #endif /*VK_USE_PLATFORM_ANDROID_KHR*/
 
 #if defined( VK_USE_PLATFORM_WIN32_KHR )
   //=== VK_KHR_win32_surface ===
-export using ::PFN_vkCreateWin32SurfaceKHR;
-export using ::PFN_vkGetPhysicalDeviceWin32PresentationSupportKHR;
+  using ::PFN_vkCreateWin32SurfaceKHR;
+  using ::PFN_vkGetPhysicalDeviceWin32PresentationSupportKHR;
 #endif /*VK_USE_PLATFORM_WIN32_KHR*/
 
   //=== VK_EXT_debug_report ===
-export using ::PFN_vkCreateDebugReportCallbackEXT;
-export using ::PFN_vkDestroyDebugReportCallbackEXT;
-export using ::PFN_vkDebugReportMessageEXT;
+  using ::PFN_vkCreateDebugReportCallbackEXT;
+  using ::PFN_vkDebugReportMessageEXT;
+  using ::PFN_vkDestroyDebugReportCallbackEXT;
 
   //=== VK_EXT_debug_marker ===
-export using ::PFN_vkDebugMarkerSetObjectTagEXT;
-export using ::PFN_vkDebugMarkerSetObjectNameEXT;
-export using ::PFN_vkCmdDebugMarkerBeginEXT;
-export using ::PFN_vkCmdDebugMarkerEndEXT;
-export using ::PFN_vkCmdDebugMarkerInsertEXT;
+  using ::PFN_vkCmdDebugMarkerBeginEXT;
+  using ::PFN_vkCmdDebugMarkerEndEXT;
+  using ::PFN_vkCmdDebugMarkerInsertEXT;
+  using ::PFN_vkDebugMarkerSetObjectNameEXT;
+  using ::PFN_vkDebugMarkerSetObjectTagEXT;
 
   //=== VK_KHR_video_queue ===
-export using ::PFN_vkGetPhysicalDeviceVideoCapabilitiesKHR;
-export using ::PFN_vkGetPhysicalDeviceVideoFormatPropertiesKHR;
-export using ::PFN_vkCreateVideoSessionKHR;
-export using ::PFN_vkDestroyVideoSessionKHR;
-export using ::PFN_vkGetVideoSessionMemoryRequirementsKHR;
-export using ::PFN_vkBindVideoSessionMemoryKHR;
-export using ::PFN_vkCreateVideoSessionParametersKHR;
-export using ::PFN_vkUpdateVideoSessionParametersKHR;
-export using ::PFN_vkDestroyVideoSessionParametersKHR;
-export using ::PFN_vkCmdBeginVideoCodingKHR;
-export using ::PFN_vkCmdEndVideoCodingKHR;
-export using ::PFN_vkCmdControlVideoCodingKHR;
+  using ::PFN_vkBindVideoSessionMemoryKHR;
+  using ::PFN_vkCmdBeginVideoCodingKHR;
+  using ::PFN_vkCmdControlVideoCodingKHR;
+  using ::PFN_vkCmdEndVideoCodingKHR;
+  using ::PFN_vkCreateVideoSessionKHR;
+  using ::PFN_vkCreateVideoSessionParametersKHR;
+  using ::PFN_vkDestroyVideoSessionKHR;
+  using ::PFN_vkDestroyVideoSessionParametersKHR;
+  using ::PFN_vkGetPhysicalDeviceVideoCapabilitiesKHR;
+  using ::PFN_vkGetPhysicalDeviceVideoFormatPropertiesKHR;
+  using ::PFN_vkGetVideoSessionMemoryRequirementsKHR;
+  using ::PFN_vkUpdateVideoSessionParametersKHR;
 
   //=== VK_KHR_video_decode_queue ===
-export using ::PFN_vkCmdDecodeVideoKHR;
+  using ::PFN_vkCmdDecodeVideoKHR;
 
   //=== VK_EXT_transform_feedback ===
-export using ::PFN_vkCmdBindTransformFeedbackBuffersEXT;
-export using ::PFN_vkCmdBeginTransformFeedbackEXT;
-export using ::PFN_vkCmdEndTransformFeedbackEXT;
-export using ::PFN_vkCmdBeginQueryIndexedEXT;
-export using ::PFN_vkCmdEndQueryIndexedEXT;
-export using ::PFN_vkCmdDrawIndirectByteCountEXT;
+  using ::PFN_vkCmdBeginQueryIndexedEXT;
+  using ::PFN_vkCmdBeginTransformFeedbackEXT;
+  using ::PFN_vkCmdBindTransformFeedbackBuffersEXT;
+  using ::PFN_vkCmdDrawIndirectByteCountEXT;
+  using ::PFN_vkCmdEndQueryIndexedEXT;
+  using ::PFN_vkCmdEndTransformFeedbackEXT;
 
   //=== VK_NVX_binary_import ===
-export using ::PFN_vkCreateCuModuleNVX;
-export using ::PFN_vkCreateCuFunctionNVX;
-export using ::PFN_vkDestroyCuModuleNVX;
-export using ::PFN_vkDestroyCuFunctionNVX;
-export using ::PFN_vkCmdCuLaunchKernelNVX;
+  using ::PFN_vkCmdCuLaunchKernelNVX;
+  using ::PFN_vkCreateCuFunctionNVX;
+  using ::PFN_vkCreateCuModuleNVX;
+  using ::PFN_vkDestroyCuFunctionNVX;
+  using ::PFN_vkDestroyCuModuleNVX;
 
   //=== VK_NVX_image_view_handle ===
-export using ::PFN_vkGetImageViewHandleNVX;
-export using ::PFN_vkGetImageViewHandle64NVX;
-export using ::PFN_vkGetImageViewAddressNVX;
+  using ::PFN_vkGetImageViewAddressNVX;
+  using ::PFN_vkGetImageViewHandle64NVX;
+  using ::PFN_vkGetImageViewHandleNVX;
 
   //=== VK_AMD_draw_indirect_count ===
-export using ::PFN_vkCmdDrawIndirectCountAMD;
-export using ::PFN_vkCmdDrawIndexedIndirectCountAMD;
+  using ::PFN_vkCmdDrawIndexedIndirectCountAMD;
+  using ::PFN_vkCmdDrawIndirectCountAMD;
 
   //=== VK_AMD_shader_info ===
-export using ::PFN_vkGetShaderInfoAMD;
+  using ::PFN_vkGetShaderInfoAMD;
 
   //=== VK_KHR_dynamic_rendering ===
-export using ::PFN_vkCmdBeginRenderingKHR;
-export using ::PFN_vkCmdEndRenderingKHR;
+  using ::PFN_vkCmdBeginRenderingKHR;
+  using ::PFN_vkCmdEndRenderingKHR;
 
 #if defined( VK_USE_PLATFORM_GGP )
   //=== VK_GGP_stream_descriptor_surface ===
-export using ::PFN_vkCreateStreamDescriptorSurfaceGGP;
+  using ::PFN_vkCreateStreamDescriptorSurfaceGGP;
 #endif /*VK_USE_PLATFORM_GGP*/
 
   //=== VK_NV_external_memory_capabilities ===
-export using ::PFN_vkGetPhysicalDeviceExternalImageFormatPropertiesNV;
+  using ::PFN_vkGetPhysicalDeviceExternalImageFormatPropertiesNV;
 
 #if defined( VK_USE_PLATFORM_WIN32_KHR )
   //=== VK_NV_external_memory_win32 ===
-export using ::PFN_vkGetMemoryWin32HandleNV;
+  using ::PFN_vkGetMemoryWin32HandleNV;
 #endif /*VK_USE_PLATFORM_WIN32_KHR*/
 
   //=== VK_KHR_get_physical_device_properties2 ===
-export using ::PFN_vkGetPhysicalDeviceFeatures2KHR;
-export using ::PFN_vkGetPhysicalDeviceProperties2KHR;
-export using ::PFN_vkGetPhysicalDeviceFormatProperties2KHR;
-export using ::PFN_vkGetPhysicalDeviceImageFormatProperties2KHR;
-export using ::PFN_vkGetPhysicalDeviceQueueFamilyProperties2KHR;
-export using ::PFN_vkGetPhysicalDeviceMemoryProperties2KHR;
-export using ::PFN_vkGetPhysicalDeviceSparseImageFormatProperties2KHR;
+  using ::PFN_vkGetPhysicalDeviceFeatures2KHR;
+  using ::PFN_vkGetPhysicalDeviceFormatProperties2KHR;
+  using ::PFN_vkGetPhysicalDeviceImageFormatProperties2KHR;
+  using ::PFN_vkGetPhysicalDeviceMemoryProperties2KHR;
+  using ::PFN_vkGetPhysicalDeviceProperties2KHR;
+  using ::PFN_vkGetPhysicalDeviceQueueFamilyProperties2KHR;
+  using ::PFN_vkGetPhysicalDeviceSparseImageFormatProperties2KHR;
 
   //=== VK_KHR_device_group ===
-export using ::PFN_vkGetDeviceGroupPeerMemoryFeaturesKHR;
-export using ::PFN_vkCmdSetDeviceMaskKHR;
-export using ::PFN_vkCmdDispatchBaseKHR;
+  using ::PFN_vkCmdDispatchBaseKHR;
+  using ::PFN_vkCmdSetDeviceMaskKHR;
+  using ::PFN_vkGetDeviceGroupPeerMemoryFeaturesKHR;
 
 #if defined( VK_USE_PLATFORM_VI_NN )
   //=== VK_NN_vi_surface ===
-export using ::PFN_vkCreateViSurfaceNN;
+  using ::PFN_vkCreateViSurfaceNN;
 #endif /*VK_USE_PLATFORM_VI_NN*/
 
   //=== VK_KHR_maintenance1 ===
-export using ::PFN_vkTrimCommandPoolKHR;
+  using ::PFN_vkTrimCommandPoolKHR;
 
   //=== VK_KHR_device_group_creation ===
-export using ::PFN_vkEnumeratePhysicalDeviceGroupsKHR;
+  using ::PFN_vkEnumeratePhysicalDeviceGroupsKHR;
 
   //=== VK_KHR_external_memory_capabilities ===
-export using ::PFN_vkGetPhysicalDeviceExternalBufferPropertiesKHR;
+  using ::PFN_vkGetPhysicalDeviceExternalBufferPropertiesKHR;
 
 #if defined( VK_USE_PLATFORM_WIN32_KHR )
   //=== VK_KHR_external_memory_win32 ===
-export using ::PFN_vkGetMemoryWin32HandleKHR;
-export using ::PFN_vkGetMemoryWin32HandlePropertiesKHR;
+  using ::PFN_vkGetMemoryWin32HandleKHR;
+  using ::PFN_vkGetMemoryWin32HandlePropertiesKHR;
 #endif /*VK_USE_PLATFORM_WIN32_KHR*/
 
   //=== VK_KHR_external_memory_fd ===
-export using ::PFN_vkGetMemoryFdKHR;
-export using ::PFN_vkGetMemoryFdPropertiesKHR;
+  using ::PFN_vkGetMemoryFdKHR;
+  using ::PFN_vkGetMemoryFdPropertiesKHR;
 
   //=== VK_KHR_external_semaphore_capabilities ===
-export using ::PFN_vkGetPhysicalDeviceExternalSemaphorePropertiesKHR;
+  using ::PFN_vkGetPhysicalDeviceExternalSemaphorePropertiesKHR;
 
 #if defined( VK_USE_PLATFORM_WIN32_KHR )
   //=== VK_KHR_external_semaphore_win32 ===
-export using ::PFN_vkImportSemaphoreWin32HandleKHR;
-export using ::PFN_vkGetSemaphoreWin32HandleKHR;
+  using ::PFN_vkGetSemaphoreWin32HandleKHR;
+  using ::PFN_vkImportSemaphoreWin32HandleKHR;
 #endif /*VK_USE_PLATFORM_WIN32_KHR*/
 
   //=== VK_KHR_external_semaphore_fd ===
-export using ::PFN_vkImportSemaphoreFdKHR;
-export using ::PFN_vkGetSemaphoreFdKHR;
+  using ::PFN_vkGetSemaphoreFdKHR;
+  using ::PFN_vkImportSemaphoreFdKHR;
 
   //=== VK_KHR_push_descriptor ===
-export using ::PFN_vkCmdPushDescriptorSetKHR;
-export using ::PFN_vkCmdPushDescriptorSetWithTemplateKHR;
+  using ::PFN_vkCmdPushDescriptorSetKHR;
+  using ::PFN_vkCmdPushDescriptorSetWithTemplateKHR;
 
   //=== VK_EXT_conditional_rendering ===
-export using ::PFN_vkCmdBeginConditionalRenderingEXT;
-export using ::PFN_vkCmdEndConditionalRenderingEXT;
+  using ::PFN_vkCmdBeginConditionalRenderingEXT;
+  using ::PFN_vkCmdEndConditionalRenderingEXT;
 
   //=== VK_KHR_descriptor_update_template ===
-export using ::PFN_vkCreateDescriptorUpdateTemplateKHR;
-export using ::PFN_vkDestroyDescriptorUpdateTemplateKHR;
-export using ::PFN_vkUpdateDescriptorSetWithTemplateKHR;
+  using ::PFN_vkCreateDescriptorUpdateTemplateKHR;
+  using ::PFN_vkDestroyDescriptorUpdateTemplateKHR;
+  using ::PFN_vkUpdateDescriptorSetWithTemplateKHR;
 
   //=== VK_NV_clip_space_w_scaling ===
-export using ::PFN_vkCmdSetViewportWScalingNV;
+  using ::PFN_vkCmdSetViewportWScalingNV;
 
   //=== VK_EXT_direct_mode_display ===
-export using ::PFN_vkReleaseDisplayEXT;
+  using ::PFN_vkReleaseDisplayEXT;
 
 #if defined( VK_USE_PLATFORM_XLIB_XRANDR_EXT )
   //=== VK_EXT_acquire_xlib_display ===
-export using ::PFN_vkAcquireXlibDisplayEXT;
-export using ::PFN_vkGetRandROutputDisplayEXT;
+  using ::PFN_vkAcquireXlibDisplayEXT;
+  using ::PFN_vkGetRandROutputDisplayEXT;
 #endif /*VK_USE_PLATFORM_XLIB_XRANDR_EXT*/
 
   //=== VK_EXT_display_surface_counter ===
-export using ::PFN_vkGetPhysicalDeviceSurfaceCapabilities2EXT;
+  using ::PFN_vkGetPhysicalDeviceSurfaceCapabilities2EXT;
 
   //=== VK_EXT_display_control ===
-export using ::PFN_vkDisplayPowerControlEXT;
-export using ::PFN_vkRegisterDeviceEventEXT;
-export using ::PFN_vkRegisterDisplayEventEXT;
-export using ::PFN_vkGetSwapchainCounterEXT;
+  using ::PFN_vkDisplayPowerControlEXT;
+  using ::PFN_vkGetSwapchainCounterEXT;
+  using ::PFN_vkRegisterDeviceEventEXT;
+  using ::PFN_vkRegisterDisplayEventEXT;
 
   //=== VK_GOOGLE_display_timing ===
-export using ::PFN_vkGetRefreshCycleDurationGOOGLE;
-export using ::PFN_vkGetPastPresentationTimingGOOGLE;
+  using ::PFN_vkGetPastPresentationTimingGOOGLE;
+  using ::PFN_vkGetRefreshCycleDurationGOOGLE;
 
   //=== VK_EXT_discard_rectangles ===
-export using ::PFN_vkCmdSetDiscardRectangleEXT;
-export using ::PFN_vkCmdSetDiscardRectangleEnableEXT;
-export using ::PFN_vkCmdSetDiscardRectangleModeEXT;
+  using ::PFN_vkCmdSetDiscardRectangleEnableEXT;
+  using ::PFN_vkCmdSetDiscardRectangleEXT;
+  using ::PFN_vkCmdSetDiscardRectangleModeEXT;
 
   //=== VK_EXT_hdr_metadata ===
-export using ::PFN_vkSetHdrMetadataEXT;
+  using ::PFN_vkSetHdrMetadataEXT;
 
   //=== VK_KHR_create_renderpass2 ===
-export using ::PFN_vkCreateRenderPass2KHR;
-export using ::PFN_vkCmdBeginRenderPass2KHR;
-export using ::PFN_vkCmdNextSubpass2KHR;
-export using ::PFN_vkCmdEndRenderPass2KHR;
+  using ::PFN_vkCmdBeginRenderPass2KHR;
+  using ::PFN_vkCmdEndRenderPass2KHR;
+  using ::PFN_vkCmdNextSubpass2KHR;
+  using ::PFN_vkCreateRenderPass2KHR;
 
   //=== VK_KHR_shared_presentable_image ===
-export using ::PFN_vkGetSwapchainStatusKHR;
+  using ::PFN_vkGetSwapchainStatusKHR;
 
   //=== VK_KHR_external_fence_capabilities ===
-export using ::PFN_vkGetPhysicalDeviceExternalFencePropertiesKHR;
+  using ::PFN_vkGetPhysicalDeviceExternalFencePropertiesKHR;
 
 #if defined( VK_USE_PLATFORM_WIN32_KHR )
   //=== VK_KHR_external_fence_win32 ===
-export using ::PFN_vkImportFenceWin32HandleKHR;
-export using ::PFN_vkGetFenceWin32HandleKHR;
+  using ::PFN_vkGetFenceWin32HandleKHR;
+  using ::PFN_vkImportFenceWin32HandleKHR;
 #endif /*VK_USE_PLATFORM_WIN32_KHR*/
 
   //=== VK_KHR_external_fence_fd ===
-export using ::PFN_vkImportFenceFdKHR;
-export using ::PFN_vkGetFenceFdKHR;
+  using ::PFN_vkGetFenceFdKHR;
+  using ::PFN_vkImportFenceFdKHR;
 
   //=== VK_KHR_performance_query ===
-export using ::PFN_vkEnumeratePhysicalDeviceQueueFamilyPerformanceQueryCountersKHR;
-export using ::PFN_vkGetPhysicalDeviceQueueFamilyPerformanceQueryPassesKHR;
-export using ::PFN_vkAcquireProfilingLockKHR;
-export using ::PFN_vkReleaseProfilingLockKHR;
+  using ::PFN_vkAcquireProfilingLockKHR;
+  using ::PFN_vkEnumeratePhysicalDeviceQueueFamilyPerformanceQueryCountersKHR;
+  using ::PFN_vkGetPhysicalDeviceQueueFamilyPerformanceQueryPassesKHR;
+  using ::PFN_vkReleaseProfilingLockKHR;
 
   //=== VK_KHR_get_surface_capabilities2 ===
-export using ::PFN_vkGetPhysicalDeviceSurfaceCapabilities2KHR;
-export using ::PFN_vkGetPhysicalDeviceSurfaceFormats2KHR;
+  using ::PFN_vkGetPhysicalDeviceSurfaceCapabilities2KHR;
+  using ::PFN_vkGetPhysicalDeviceSurfaceFormats2KHR;
 
   //=== VK_KHR_get_display_properties2 ===
-export using ::PFN_vkGetPhysicalDeviceDisplayProperties2KHR;
-export using ::PFN_vkGetPhysicalDeviceDisplayPlaneProperties2KHR;
-export using ::PFN_vkGetDisplayModeProperties2KHR;
-export using ::PFN_vkGetDisplayPlaneCapabilities2KHR;
+  using ::PFN_vkGetDisplayModeProperties2KHR;
+  using ::PFN_vkGetDisplayPlaneCapabilities2KHR;
+  using ::PFN_vkGetPhysicalDeviceDisplayPlaneProperties2KHR;
+  using ::PFN_vkGetPhysicalDeviceDisplayProperties2KHR;
 
 #if defined( VK_USE_PLATFORM_IOS_MVK )
   //=== VK_MVK_ios_surface ===
-export using ::PFN_vkCreateIOSSurfaceMVK;
+  using ::PFN_vkCreateIOSSurfaceMVK;
 #endif /*VK_USE_PLATFORM_IOS_MVK*/
 
 #if defined( VK_USE_PLATFORM_MACOS_MVK )
   //=== VK_MVK_macos_surface ===
-export using ::PFN_vkCreateMacOSSurfaceMVK;
+  using ::PFN_vkCreateMacOSSurfaceMVK;
 #endif /*VK_USE_PLATFORM_MACOS_MVK*/
 
   //=== VK_EXT_debug_utils ===
-export using ::PFN_vkSetDebugUtilsObjectNameEXT;
-export using ::PFN_vkSetDebugUtilsObjectTagEXT;
-export using ::PFN_vkQueueBeginDebugUtilsLabelEXT;
-export using ::PFN_vkQueueEndDebugUtilsLabelEXT;
-export using ::PFN_vkQueueInsertDebugUtilsLabelEXT;
-export using ::PFN_vkCmdBeginDebugUtilsLabelEXT;
-export using ::PFN_vkCmdEndDebugUtilsLabelEXT;
-export using ::PFN_vkCmdInsertDebugUtilsLabelEXT;
-export using ::PFN_vkCreateDebugUtilsMessengerEXT;
-export using ::PFN_vkDestroyDebugUtilsMessengerEXT;
-export using ::PFN_vkSubmitDebugUtilsMessageEXT;
+  using ::PFN_vkCmdBeginDebugUtilsLabelEXT;
+  using ::PFN_vkCmdEndDebugUtilsLabelEXT;
+  using ::PFN_vkCmdInsertDebugUtilsLabelEXT;
+  using ::PFN_vkCreateDebugUtilsMessengerEXT;
+  using ::PFN_vkDestroyDebugUtilsMessengerEXT;
+  using ::PFN_vkQueueBeginDebugUtilsLabelEXT;
+  using ::PFN_vkQueueEndDebugUtilsLabelEXT;
+  using ::PFN_vkQueueInsertDebugUtilsLabelEXT;
+  using ::PFN_vkSetDebugUtilsObjectNameEXT;
+  using ::PFN_vkSetDebugUtilsObjectTagEXT;
+  using ::PFN_vkSubmitDebugUtilsMessageEXT;
 
 #if defined( VK_USE_PLATFORM_ANDROID_KHR )
   //=== VK_ANDROID_external_memory_android_hardware_buffer ===
-export using ::PFN_vkGetAndroidHardwareBufferPropertiesANDROID;
-export using ::PFN_vkGetMemoryAndroidHardwareBufferANDROID;
+  using ::PFN_vkGetAndroidHardwareBufferPropertiesANDROID;
+  using ::PFN_vkGetMemoryAndroidHardwareBufferANDROID;
 #endif /*VK_USE_PLATFORM_ANDROID_KHR*/
 
 #if defined( VK_ENABLE_BETA_EXTENSIONS )
   //=== VK_AMDX_shader_enqueue ===
-export using ::PFN_vkCreateExecutionGraphPipelinesAMDX;
-export using ::PFN_vkGetExecutionGraphPipelineScratchSizeAMDX;
-export using ::PFN_vkGetExecutionGraphPipelineNodeIndexAMDX;
-export using ::PFN_vkCmdInitializeGraphScratchMemoryAMDX;
-export using ::PFN_vkCmdDispatchGraphAMDX;
-export using ::PFN_vkCmdDispatchGraphIndirectAMDX;
-export using ::PFN_vkCmdDispatchGraphIndirectCountAMDX;
+  using ::PFN_vkCmdDispatchGraphAMDX;
+  using ::PFN_vkCmdDispatchGraphIndirectAMDX;
+  using ::PFN_vkCmdDispatchGraphIndirectCountAMDX;
+  using ::PFN_vkCmdInitializeGraphScratchMemoryAMDX;
+  using ::PFN_vkCreateExecutionGraphPipelinesAMDX;
+  using ::PFN_vkGetExecutionGraphPipelineNodeIndexAMDX;
+  using ::PFN_vkGetExecutionGraphPipelineScratchSizeAMDX;
 #endif /*VK_ENABLE_BETA_EXTENSIONS*/
 
   //=== VK_EXT_sample_locations ===
-export using ::PFN_vkCmdSetSampleLocationsEXT;
-export using ::PFN_vkGetPhysicalDeviceMultisamplePropertiesEXT;
+  using ::PFN_vkCmdSetSampleLocationsEXT;
+  using ::PFN_vkGetPhysicalDeviceMultisamplePropertiesEXT;
 
   //=== VK_KHR_get_memory_requirements2 ===
-export using ::PFN_vkGetImageMemoryRequirements2KHR;
-export using ::PFN_vkGetBufferMemoryRequirements2KHR;
-export using ::PFN_vkGetImageSparseMemoryRequirements2KHR;
+  using ::PFN_vkGetBufferMemoryRequirements2KHR;
+  using ::PFN_vkGetImageMemoryRequirements2KHR;
+  using ::PFN_vkGetImageSparseMemoryRequirements2KHR;
 
   //=== VK_KHR_acceleration_structure ===
-export using ::PFN_vkCreateAccelerationStructureKHR;
-export using ::PFN_vkDestroyAccelerationStructureKHR;
-export using ::PFN_vkCmdBuildAccelerationStructuresKHR;
-export using ::PFN_vkCmdBuildAccelerationStructuresIndirectKHR;
-export using ::PFN_vkBuildAccelerationStructuresKHR;
-export using ::PFN_vkCopyAccelerationStructureKHR;
-export using ::PFN_vkCopyAccelerationStructureToMemoryKHR;
-export using ::PFN_vkCopyMemoryToAccelerationStructureKHR;
-export using ::PFN_vkWriteAccelerationStructuresPropertiesKHR;
-export using ::PFN_vkCmdCopyAccelerationStructureKHR;
-export using ::PFN_vkCmdCopyAccelerationStructureToMemoryKHR;
-export using ::PFN_vkCmdCopyMemoryToAccelerationStructureKHR;
-export using ::PFN_vkGetAccelerationStructureDeviceAddressKHR;
-export using ::PFN_vkCmdWriteAccelerationStructuresPropertiesKHR;
-export using ::PFN_vkGetDeviceAccelerationStructureCompatibilityKHR;
-export using ::PFN_vkGetAccelerationStructureBuildSizesKHR;
+  using ::PFN_vkBuildAccelerationStructuresKHR;
+  using ::PFN_vkCmdBuildAccelerationStructuresIndirectKHR;
+  using ::PFN_vkCmdBuildAccelerationStructuresKHR;
+  using ::PFN_vkCmdCopyAccelerationStructureKHR;
+  using ::PFN_vkCmdCopyAccelerationStructureToMemoryKHR;
+  using ::PFN_vkCmdCopyMemoryToAccelerationStructureKHR;
+  using ::PFN_vkCmdWriteAccelerationStructuresPropertiesKHR;
+  using ::PFN_vkCopyAccelerationStructureKHR;
+  using ::PFN_vkCopyAccelerationStructureToMemoryKHR;
+  using ::PFN_vkCopyMemoryToAccelerationStructureKHR;
+  using ::PFN_vkCreateAccelerationStructureKHR;
+  using ::PFN_vkDestroyAccelerationStructureKHR;
+  using ::PFN_vkGetAccelerationStructureBuildSizesKHR;
+  using ::PFN_vkGetAccelerationStructureDeviceAddressKHR;
+  using ::PFN_vkGetDeviceAccelerationStructureCompatibilityKHR;
+  using ::PFN_vkWriteAccelerationStructuresPropertiesKHR;
 
   //=== VK_KHR_ray_tracing_pipeline ===
-export using ::PFN_vkCmdTraceRaysKHR;
-export using ::PFN_vkCreateRayTracingPipelinesKHR;
-export using ::PFN_vkGetRayTracingShaderGroupHandlesKHR;
-export using ::PFN_vkGetRayTracingCaptureReplayShaderGroupHandlesKHR;
-export using ::PFN_vkCmdTraceRaysIndirectKHR;
-export using ::PFN_vkGetRayTracingShaderGroupStackSizeKHR;
-export using ::PFN_vkCmdSetRayTracingPipelineStackSizeKHR;
+  using ::PFN_vkCmdSetRayTracingPipelineStackSizeKHR;
+  using ::PFN_vkCmdTraceRaysIndirectKHR;
+  using ::PFN_vkCmdTraceRaysKHR;
+  using ::PFN_vkCreateRayTracingPipelinesKHR;
+  using ::PFN_vkGetRayTracingCaptureReplayShaderGroupHandlesKHR;
+  using ::PFN_vkGetRayTracingShaderGroupHandlesKHR;
+  using ::PFN_vkGetRayTracingShaderGroupStackSizeKHR;
 
   //=== VK_KHR_sampler_ycbcr_conversion ===
-export using ::PFN_vkCreateSamplerYcbcrConversionKHR;
-export using ::PFN_vkDestroySamplerYcbcrConversionKHR;
+  using ::PFN_vkCreateSamplerYcbcrConversionKHR;
+  using ::PFN_vkDestroySamplerYcbcrConversionKHR;
 
   //=== VK_KHR_bind_memory2 ===
-export using ::PFN_vkBindBufferMemory2KHR;
-export using ::PFN_vkBindImageMemory2KHR;
+  using ::PFN_vkBindBufferMemory2KHR;
+  using ::PFN_vkBindImageMemory2KHR;
 
   //=== VK_EXT_image_drm_format_modifier ===
-export using ::PFN_vkGetImageDrmFormatModifierPropertiesEXT;
+  using ::PFN_vkGetImageDrmFormatModifierPropertiesEXT;
 
   //=== VK_EXT_validation_cache ===
-export using ::PFN_vkCreateValidationCacheEXT;
-export using ::PFN_vkDestroyValidationCacheEXT;
-export using ::PFN_vkMergeValidationCachesEXT;
-export using ::PFN_vkGetValidationCacheDataEXT;
+  using ::PFN_vkCreateValidationCacheEXT;
+  using ::PFN_vkDestroyValidationCacheEXT;
+  using ::PFN_vkGetValidationCacheDataEXT;
+  using ::PFN_vkMergeValidationCachesEXT;
 
   //=== VK_NV_shading_rate_image ===
-export using ::PFN_vkCmdBindShadingRateImageNV;
-export using ::PFN_vkCmdSetViewportShadingRatePaletteNV;
-export using ::PFN_vkCmdSetCoarseSampleOrderNV;
+  using ::PFN_vkCmdBindShadingRateImageNV;
+  using ::PFN_vkCmdSetCoarseSampleOrderNV;
+  using ::PFN_vkCmdSetViewportShadingRatePaletteNV;
 
   //=== VK_NV_ray_tracing ===
-export using ::PFN_vkCreateAccelerationStructureNV;
-export using ::PFN_vkDestroyAccelerationStructureNV;
-export using ::PFN_vkGetAccelerationStructureMemoryRequirementsNV;
-export using ::PFN_vkBindAccelerationStructureMemoryNV;
-export using ::PFN_vkCmdBuildAccelerationStructureNV;
-export using ::PFN_vkCmdCopyAccelerationStructureNV;
-export using ::PFN_vkCmdTraceRaysNV;
-export using ::PFN_vkCreateRayTracingPipelinesNV;
-export using ::PFN_vkGetRayTracingShaderGroupHandlesNV;
-export using ::PFN_vkGetAccelerationStructureHandleNV;
-export using ::PFN_vkCmdWriteAccelerationStructuresPropertiesNV;
-export using ::PFN_vkCompileDeferredNV;
+  using ::PFN_vkBindAccelerationStructureMemoryNV;
+  using ::PFN_vkCmdBuildAccelerationStructureNV;
+  using ::PFN_vkCmdCopyAccelerationStructureNV;
+  using ::PFN_vkCmdTraceRaysNV;
+  using ::PFN_vkCmdWriteAccelerationStructuresPropertiesNV;
+  using ::PFN_vkCompileDeferredNV;
+  using ::PFN_vkCreateAccelerationStructureNV;
+  using ::PFN_vkCreateRayTracingPipelinesNV;
+  using ::PFN_vkDestroyAccelerationStructureNV;
+  using ::PFN_vkGetAccelerationStructureHandleNV;
+  using ::PFN_vkGetAccelerationStructureMemoryRequirementsNV;
+  using ::PFN_vkGetRayTracingShaderGroupHandlesNV;
 
   //=== VK_KHR_maintenance3 ===
-export using ::PFN_vkGetDescriptorSetLayoutSupportKHR;
+  using ::PFN_vkGetDescriptorSetLayoutSupportKHR;
 
   //=== VK_KHR_draw_indirect_count ===
-export using ::PFN_vkCmdDrawIndirectCountKHR;
-export using ::PFN_vkCmdDrawIndexedIndirectCountKHR;
+  using ::PFN_vkCmdDrawIndexedIndirectCountKHR;
+  using ::PFN_vkCmdDrawIndirectCountKHR;
 
   //=== VK_EXT_external_memory_host ===
-export using ::PFN_vkGetMemoryHostPointerPropertiesEXT;
+  using ::PFN_vkGetMemoryHostPointerPropertiesEXT;
 
   //=== VK_AMD_buffer_marker ===
-export using ::PFN_vkCmdWriteBufferMarkerAMD;
-export using ::PFN_vkCmdWriteBufferMarker2AMD;
+  using ::PFN_vkCmdWriteBufferMarker2AMD;
+  using ::PFN_vkCmdWriteBufferMarkerAMD;
 
   //=== VK_EXT_calibrated_timestamps ===
-export using ::PFN_vkGetPhysicalDeviceCalibrateableTimeDomainsEXT;
-export using ::PFN_vkGetCalibratedTimestampsEXT;
+  using ::PFN_vkGetCalibratedTimestampsEXT;
+  using ::PFN_vkGetPhysicalDeviceCalibrateableTimeDomainsEXT;
 
   //=== VK_NV_mesh_shader ===
-export using ::PFN_vkCmdDrawMeshTasksNV;
-export using ::PFN_vkCmdDrawMeshTasksIndirectNV;
-export using ::PFN_vkCmdDrawMeshTasksIndirectCountNV;
+  using ::PFN_vkCmdDrawMeshTasksIndirectCountNV;
+  using ::PFN_vkCmdDrawMeshTasksIndirectNV;
+  using ::PFN_vkCmdDrawMeshTasksNV;
 
   //=== VK_NV_scissor_exclusive ===
-export using ::PFN_vkCmdSetExclusiveScissorEnableNV;
-export using ::PFN_vkCmdSetExclusiveScissorNV;
+  using ::PFN_vkCmdSetExclusiveScissorEnableNV;
+  using ::PFN_vkCmdSetExclusiveScissorNV;
 
   //=== VK_NV_device_diagnostic_checkpoints ===
-export using ::PFN_vkCmdSetCheckpointNV;
-export using ::PFN_vkGetQueueCheckpointDataNV;
-export using ::PFN_vkGetQueueCheckpointData2NV;
+  using ::PFN_vkCmdSetCheckpointNV;
+  using ::PFN_vkGetQueueCheckpointData2NV;
+  using ::PFN_vkGetQueueCheckpointDataNV;
 
   //=== VK_KHR_timeline_semaphore ===
-export using ::PFN_vkGetSemaphoreCounterValueKHR;
-export using ::PFN_vkWaitSemaphoresKHR;
-export using ::PFN_vkSignalSemaphoreKHR;
+  using ::PFN_vkGetSemaphoreCounterValueKHR;
+  using ::PFN_vkSignalSemaphoreKHR;
+  using ::PFN_vkWaitSemaphoresKHR;
 
   //=== VK_INTEL_performance_query ===
-export using ::PFN_vkInitializePerformanceApiINTEL;
-export using ::PFN_vkUninitializePerformanceApiINTEL;
-export using ::PFN_vkCmdSetPerformanceMarkerINTEL;
-export using ::PFN_vkCmdSetPerformanceStreamMarkerINTEL;
-export using ::PFN_vkCmdSetPerformanceOverrideINTEL;
-export using ::PFN_vkAcquirePerformanceConfigurationINTEL;
-export using ::PFN_vkReleasePerformanceConfigurationINTEL;
-export using ::PFN_vkQueueSetPerformanceConfigurationINTEL;
-export using ::PFN_vkGetPerformanceParameterINTEL;
+  using ::PFN_vkAcquirePerformanceConfigurationINTEL;
+  using ::PFN_vkCmdSetPerformanceMarkerINTEL;
+  using ::PFN_vkCmdSetPerformanceOverrideINTEL;
+  using ::PFN_vkCmdSetPerformanceStreamMarkerINTEL;
+  using ::PFN_vkGetPerformanceParameterINTEL;
+  using ::PFN_vkInitializePerformanceApiINTEL;
+  using ::PFN_vkQueueSetPerformanceConfigurationINTEL;
+  using ::PFN_vkReleasePerformanceConfigurationINTEL;
+  using ::PFN_vkUninitializePerformanceApiINTEL;
 
   //=== VK_AMD_display_native_hdr ===
-export using ::PFN_vkSetLocalDimmingAMD;
+  using ::PFN_vkSetLocalDimmingAMD;
 
 #if defined( VK_USE_PLATFORM_FUCHSIA )
   //=== VK_FUCHSIA_imagepipe_surface ===
-export using ::PFN_vkCreateImagePipeSurfaceFUCHSIA;
+  using ::PFN_vkCreateImagePipeSurfaceFUCHSIA;
 #endif /*VK_USE_PLATFORM_FUCHSIA*/
 
 #if defined( VK_USE_PLATFORM_METAL_EXT )
   //=== VK_EXT_metal_surface ===
-export using ::PFN_vkCreateMetalSurfaceEXT;
+  using ::PFN_vkCreateMetalSurfaceEXT;
 #endif /*VK_USE_PLATFORM_METAL_EXT*/
 
   //=== VK_KHR_fragment_shading_rate ===
-export using ::PFN_vkGetPhysicalDeviceFragmentShadingRatesKHR;
-export using ::PFN_vkCmdSetFragmentShadingRateKHR;
+  using ::PFN_vkCmdSetFragmentShadingRateKHR;
+  using ::PFN_vkGetPhysicalDeviceFragmentShadingRatesKHR;
 
   //=== VK_KHR_dynamic_rendering_local_read ===
-export using ::PFN_vkCmdSetRenderingAttachmentLocationsKHR;
-export using ::PFN_vkCmdSetRenderingInputAttachmentIndicesKHR;
+  using ::PFN_vkCmdSetRenderingAttachmentLocationsKHR;
+  using ::PFN_vkCmdSetRenderingInputAttachmentIndicesKHR;
 
   //=== VK_EXT_buffer_device_address ===
-export using ::PFN_vkGetBufferDeviceAddressEXT;
+  using ::PFN_vkGetBufferDeviceAddressEXT;
 
   //=== VK_EXT_tooling_info ===
-export using ::PFN_vkGetPhysicalDeviceToolPropertiesEXT;
+  using ::PFN_vkGetPhysicalDeviceToolPropertiesEXT;
 
   //=== VK_KHR_present_wait ===
-export using ::PFN_vkWaitForPresentKHR;
+  using ::PFN_vkWaitForPresentKHR;
 
   //=== VK_NV_cooperative_matrix ===
-export using ::PFN_vkGetPhysicalDeviceCooperativeMatrixPropertiesNV;
+  using ::PFN_vkGetPhysicalDeviceCooperativeMatrixPropertiesNV;
 
   //=== VK_NV_coverage_reduction_mode ===
-export using ::PFN_vkGetPhysicalDeviceSupportedFramebufferMixedSamplesCombinationsNV;
+  using ::PFN_vkGetPhysicalDeviceSupportedFramebufferMixedSamplesCombinationsNV;
 
 #if defined( VK_USE_PLATFORM_WIN32_KHR )
   //=== VK_EXT_full_screen_exclusive ===
-export using ::PFN_vkGetPhysicalDeviceSurfacePresentModes2EXT;
-export using ::PFN_vkAcquireFullScreenExclusiveModeEXT;
-export using ::PFN_vkReleaseFullScreenExclusiveModeEXT;
-export using ::PFN_vkGetDeviceGroupSurfacePresentModes2EXT;
+  using ::PFN_vkAcquireFullScreenExclusiveModeEXT;
+  using ::PFN_vkGetDeviceGroupSurfacePresentModes2EXT;
+  using ::PFN_vkGetPhysicalDeviceSurfacePresentModes2EXT;
+  using ::PFN_vkReleaseFullScreenExclusiveModeEXT;
 #endif /*VK_USE_PLATFORM_WIN32_KHR*/
 
   //=== VK_EXT_headless_surface ===
-export using ::PFN_vkCreateHeadlessSurfaceEXT;
+  using ::PFN_vkCreateHeadlessSurfaceEXT;
 
   //=== VK_KHR_buffer_device_address ===
-export using ::PFN_vkGetBufferDeviceAddressKHR;
-export using ::PFN_vkGetBufferOpaqueCaptureAddressKHR;
-export using ::PFN_vkGetDeviceMemoryOpaqueCaptureAddressKHR;
+  using ::PFN_vkGetBufferDeviceAddressKHR;
+  using ::PFN_vkGetBufferOpaqueCaptureAddressKHR;
+  using ::PFN_vkGetDeviceMemoryOpaqueCaptureAddressKHR;
 
   //=== VK_EXT_line_rasterization ===
-export using ::PFN_vkCmdSetLineStippleEXT;
+  using ::PFN_vkCmdSetLineStippleEXT;
 
   //=== VK_EXT_host_query_reset ===
-export using ::PFN_vkResetQueryPoolEXT;
+  using ::PFN_vkResetQueryPoolEXT;
 
   //=== VK_EXT_extended_dynamic_state ===
-export using ::PFN_vkCmdSetCullModeEXT;
-export using ::PFN_vkCmdSetFrontFaceEXT;
-export using ::PFN_vkCmdSetPrimitiveTopologyEXT;
-export using ::PFN_vkCmdSetViewportWithCountEXT;
-export using ::PFN_vkCmdSetScissorWithCountEXT;
-export using ::PFN_vkCmdBindVertexBuffers2EXT;
-export using ::PFN_vkCmdSetDepthTestEnableEXT;
-export using ::PFN_vkCmdSetDepthWriteEnableEXT;
-export using ::PFN_vkCmdSetDepthCompareOpEXT;
-export using ::PFN_vkCmdSetDepthBoundsTestEnableEXT;
-export using ::PFN_vkCmdSetStencilTestEnableEXT;
-export using ::PFN_vkCmdSetStencilOpEXT;
+  using ::PFN_vkCmdBindVertexBuffers2EXT;
+  using ::PFN_vkCmdSetCullModeEXT;
+  using ::PFN_vkCmdSetDepthBoundsTestEnableEXT;
+  using ::PFN_vkCmdSetDepthCompareOpEXT;
+  using ::PFN_vkCmdSetDepthTestEnableEXT;
+  using ::PFN_vkCmdSetDepthWriteEnableEXT;
+  using ::PFN_vkCmdSetFrontFaceEXT;
+  using ::PFN_vkCmdSetPrimitiveTopologyEXT;
+  using ::PFN_vkCmdSetScissorWithCountEXT;
+  using ::PFN_vkCmdSetStencilOpEXT;
+  using ::PFN_vkCmdSetStencilTestEnableEXT;
+  using ::PFN_vkCmdSetViewportWithCountEXT;
 
   //=== VK_KHR_deferred_host_operations ===
-export using ::PFN_vkCreateDeferredOperationKHR;
-export using ::PFN_vkDestroyDeferredOperationKHR;
-export using ::PFN_vkGetDeferredOperationMaxConcurrencyKHR;
-export using ::PFN_vkGetDeferredOperationResultKHR;
-export using ::PFN_vkDeferredOperationJoinKHR;
+  using ::PFN_vkCreateDeferredOperationKHR;
+  using ::PFN_vkDeferredOperationJoinKHR;
+  using ::PFN_vkDestroyDeferredOperationKHR;
+  using ::PFN_vkGetDeferredOperationMaxConcurrencyKHR;
+  using ::PFN_vkGetDeferredOperationResultKHR;
 
   //=== VK_KHR_pipeline_executable_properties ===
-export using ::PFN_vkGetPipelineExecutablePropertiesKHR;
-export using ::PFN_vkGetPipelineExecutableStatisticsKHR;
-export using ::PFN_vkGetPipelineExecutableInternalRepresentationsKHR;
+  using ::PFN_vkGetPipelineExecutableInternalRepresentationsKHR;
+  using ::PFN_vkGetPipelineExecutablePropertiesKHR;
+  using ::PFN_vkGetPipelineExecutableStatisticsKHR;
 
   //=== VK_EXT_host_image_copy ===
-export using ::PFN_vkCopyMemoryToImageEXT;
-export using ::PFN_vkCopyImageToMemoryEXT;
-export using ::PFN_vkCopyImageToImageEXT;
-export using ::PFN_vkTransitionImageLayoutEXT;
-export using ::PFN_vkGetImageSubresourceLayout2EXT;
+  using ::PFN_vkCopyImageToImageEXT;
+  using ::PFN_vkCopyImageToMemoryEXT;
+  using ::PFN_vkCopyMemoryToImageEXT;
+  using ::PFN_vkGetImageSubresourceLayout2EXT;
+  using ::PFN_vkTransitionImageLayoutEXT;
 
   //=== VK_KHR_map_memory2 ===
-export using ::PFN_vkMapMemory2KHR;
-export using ::PFN_vkUnmapMemory2KHR;
+  using ::PFN_vkMapMemory2KHR;
+  using ::PFN_vkUnmapMemory2KHR;
 
   //=== VK_EXT_swapchain_maintenance1 ===
-export using ::PFN_vkReleaseSwapchainImagesEXT;
+  using ::PFN_vkReleaseSwapchainImagesEXT;
 
   //=== VK_NV_device_generated_commands ===
-export using ::PFN_vkGetGeneratedCommandsMemoryRequirementsNV;
-export using ::PFN_vkCmdPreprocessGeneratedCommandsNV;
-export using ::PFN_vkCmdExecuteGeneratedCommandsNV;
-export using ::PFN_vkCmdBindPipelineShaderGroupNV;
-export using ::PFN_vkCreateIndirectCommandsLayoutNV;
-export using ::PFN_vkDestroyIndirectCommandsLayoutNV;
+  using ::PFN_vkCmdBindPipelineShaderGroupNV;
+  using ::PFN_vkCmdExecuteGeneratedCommandsNV;
+  using ::PFN_vkCmdPreprocessGeneratedCommandsNV;
+  using ::PFN_vkCreateIndirectCommandsLayoutNV;
+  using ::PFN_vkDestroyIndirectCommandsLayoutNV;
+  using ::PFN_vkGetGeneratedCommandsMemoryRequirementsNV;
 
   //=== VK_EXT_depth_bias_control ===
-export using ::PFN_vkCmdSetDepthBias2EXT;
+  using ::PFN_vkCmdSetDepthBias2EXT;
 
   //=== VK_EXT_acquire_drm_display ===
-export using ::PFN_vkAcquireDrmDisplayEXT;
-export using ::PFN_vkGetDrmDisplayEXT;
+  using ::PFN_vkAcquireDrmDisplayEXT;
+  using ::PFN_vkGetDrmDisplayEXT;
 
   //=== VK_EXT_private_data ===
-export using ::PFN_vkCreatePrivateDataSlotEXT;
-export using ::PFN_vkDestroyPrivateDataSlotEXT;
-export using ::PFN_vkSetPrivateDataEXT;
-export using ::PFN_vkGetPrivateDataEXT;
+  using ::PFN_vkCreatePrivateDataSlotEXT;
+  using ::PFN_vkDestroyPrivateDataSlotEXT;
+  using ::PFN_vkGetPrivateDataEXT;
+  using ::PFN_vkSetPrivateDataEXT;
 
   //=== VK_KHR_video_encode_queue ===
-export using ::PFN_vkGetPhysicalDeviceVideoEncodeQualityLevelPropertiesKHR;
-export using ::PFN_vkGetEncodedVideoSessionParametersKHR;
-export using ::PFN_vkCmdEncodeVideoKHR;
+  using ::PFN_vkCmdEncodeVideoKHR;
+  using ::PFN_vkGetEncodedVideoSessionParametersKHR;
+  using ::PFN_vkGetPhysicalDeviceVideoEncodeQualityLevelPropertiesKHR;
 
 #if defined( VK_ENABLE_BETA_EXTENSIONS )
   //=== VK_NV_cuda_kernel_launch ===
-export using ::PFN_vkCreateCudaModuleNV;
-export using ::PFN_vkGetCudaModuleCacheNV;
-export using ::PFN_vkCreateCudaFunctionNV;
-export using ::PFN_vkDestroyCudaModuleNV;
-export using ::PFN_vkDestroyCudaFunctionNV;
-export using ::PFN_vkCmdCudaLaunchKernelNV;
+  using ::PFN_vkCmdCudaLaunchKernelNV;
+  using ::PFN_vkCreateCudaFunctionNV;
+  using ::PFN_vkCreateCudaModuleNV;
+  using ::PFN_vkDestroyCudaFunctionNV;
+  using ::PFN_vkDestroyCudaModuleNV;
+  using ::PFN_vkGetCudaModuleCacheNV;
 #endif /*VK_ENABLE_BETA_EXTENSIONS*/
 
   //=== VK_QCOM_tile_shading ===
-export using ::PFN_vkCmdDispatchTileQCOM;
-export using ::PFN_vkCmdBeginPerTileExecutionQCOM;
-export using ::PFN_vkCmdEndPerTileExecutionQCOM;
+  using ::PFN_vkCmdBeginPerTileExecutionQCOM;
+  using ::PFN_vkCmdDispatchTileQCOM;
+  using ::PFN_vkCmdEndPerTileExecutionQCOM;
 
 #if defined( VK_USE_PLATFORM_METAL_EXT )
   //=== VK_EXT_metal_objects ===
-export using ::PFN_vkExportMetalObjectsEXT;
+  using ::PFN_vkExportMetalObjectsEXT;
 #endif /*VK_USE_PLATFORM_METAL_EXT*/
 
   //=== VK_KHR_synchronization2 ===
-export using ::PFN_vkCmdSetEvent2KHR;
-export using ::PFN_vkCmdResetEvent2KHR;
-export using ::PFN_vkCmdWaitEvents2KHR;
-export using ::PFN_vkCmdPipelineBarrier2KHR;
-export using ::PFN_vkCmdWriteTimestamp2KHR;
-export using ::PFN_vkQueueSubmit2KHR;
+  using ::PFN_vkCmdPipelineBarrier2KHR;
+  using ::PFN_vkCmdResetEvent2KHR;
+  using ::PFN_vkCmdSetEvent2KHR;
+  using ::PFN_vkCmdWaitEvents2KHR;
+  using ::PFN_vkCmdWriteTimestamp2KHR;
+  using ::PFN_vkQueueSubmit2KHR;
 
   //=== VK_EXT_descriptor_buffer ===
-export using ::PFN_vkGetDescriptorSetLayoutSizeEXT;
-export using ::PFN_vkGetDescriptorSetLayoutBindingOffsetEXT;
-export using ::PFN_vkGetDescriptorEXT;
-export using ::PFN_vkCmdBindDescriptorBuffersEXT;
-export using ::PFN_vkCmdSetDescriptorBufferOffsetsEXT;
-export using ::PFN_vkCmdBindDescriptorBufferEmbeddedSamplersEXT;
-export using ::PFN_vkGetBufferOpaqueCaptureDescriptorDataEXT;
-export using ::PFN_vkGetImageOpaqueCaptureDescriptorDataEXT;
-export using ::PFN_vkGetImageViewOpaqueCaptureDescriptorDataEXT;
-export using ::PFN_vkGetSamplerOpaqueCaptureDescriptorDataEXT;
-export using ::PFN_vkGetAccelerationStructureOpaqueCaptureDescriptorDataEXT;
+  using ::PFN_vkCmdBindDescriptorBufferEmbeddedSamplersEXT;
+  using ::PFN_vkCmdBindDescriptorBuffersEXT;
+  using ::PFN_vkCmdSetDescriptorBufferOffsetsEXT;
+  using ::PFN_vkGetAccelerationStructureOpaqueCaptureDescriptorDataEXT;
+  using ::PFN_vkGetBufferOpaqueCaptureDescriptorDataEXT;
+  using ::PFN_vkGetDescriptorEXT;
+  using ::PFN_vkGetDescriptorSetLayoutBindingOffsetEXT;
+  using ::PFN_vkGetDescriptorSetLayoutSizeEXT;
+  using ::PFN_vkGetImageOpaqueCaptureDescriptorDataEXT;
+  using ::PFN_vkGetImageViewOpaqueCaptureDescriptorDataEXT;
+  using ::PFN_vkGetSamplerOpaqueCaptureDescriptorDataEXT;
 
   //=== VK_NV_fragment_shading_rate_enums ===
-export using ::PFN_vkCmdSetFragmentShadingRateEnumNV;
+  using ::PFN_vkCmdSetFragmentShadingRateEnumNV;
 
   //=== VK_EXT_mesh_shader ===
-export using ::PFN_vkCmdDrawMeshTasksEXT;
-export using ::PFN_vkCmdDrawMeshTasksIndirectEXT;
-export using ::PFN_vkCmdDrawMeshTasksIndirectCountEXT;
+  using ::PFN_vkCmdDrawMeshTasksEXT;
+  using ::PFN_vkCmdDrawMeshTasksIndirectCountEXT;
+  using ::PFN_vkCmdDrawMeshTasksIndirectEXT;
 
   //=== VK_KHR_copy_commands2 ===
-export using ::PFN_vkCmdCopyBuffer2KHR;
-export using ::PFN_vkCmdCopyImage2KHR;
-export using ::PFN_vkCmdCopyBufferToImage2KHR;
-export using ::PFN_vkCmdCopyImageToBuffer2KHR;
-export using ::PFN_vkCmdBlitImage2KHR;
-export using ::PFN_vkCmdResolveImage2KHR;
+  using ::PFN_vkCmdBlitImage2KHR;
+  using ::PFN_vkCmdCopyBuffer2KHR;
+  using ::PFN_vkCmdCopyBufferToImage2KHR;
+  using ::PFN_vkCmdCopyImage2KHR;
+  using ::PFN_vkCmdCopyImageToBuffer2KHR;
+  using ::PFN_vkCmdResolveImage2KHR;
 
   //=== VK_EXT_device_fault ===
-export using ::PFN_vkGetDeviceFaultInfoEXT;
+  using ::PFN_vkGetDeviceFaultInfoEXT;
 
 #if defined( VK_USE_PLATFORM_WIN32_KHR )
   //=== VK_NV_acquire_winrt_display ===
-export using ::PFN_vkAcquireWinrtDisplayNV;
-export using ::PFN_vkGetWinrtDisplayNV;
+  using ::PFN_vkAcquireWinrtDisplayNV;
+  using ::PFN_vkGetWinrtDisplayNV;
 #endif /*VK_USE_PLATFORM_WIN32_KHR*/
 
 #if defined( VK_USE_PLATFORM_DIRECTFB_EXT )
   //=== VK_EXT_directfb_surface ===
-export using ::PFN_vkCreateDirectFBSurfaceEXT;
-export using ::PFN_vkGetPhysicalDeviceDirectFBPresentationSupportEXT;
+  using ::PFN_vkCreateDirectFBSurfaceEXT;
+  using ::PFN_vkGetPhysicalDeviceDirectFBPresentationSupportEXT;
 #endif /*VK_USE_PLATFORM_DIRECTFB_EXT*/
 
   //=== VK_EXT_vertex_input_dynamic_state ===
-export using ::PFN_vkCmdSetVertexInputEXT;
+  using ::PFN_vkCmdSetVertexInputEXT;
 
 #if defined( VK_USE_PLATFORM_FUCHSIA )
   //=== VK_FUCHSIA_external_memory ===
-export using ::PFN_vkGetMemoryZirconHandleFUCHSIA;
-export using ::PFN_vkGetMemoryZirconHandlePropertiesFUCHSIA;
+  using ::PFN_vkGetMemoryZirconHandleFUCHSIA;
+  using ::PFN_vkGetMemoryZirconHandlePropertiesFUCHSIA;
 #endif /*VK_USE_PLATFORM_FUCHSIA*/
 
 #if defined( VK_USE_PLATFORM_FUCHSIA )
   //=== VK_FUCHSIA_external_semaphore ===
-export using ::PFN_vkImportSemaphoreZirconHandleFUCHSIA;
-export using ::PFN_vkGetSemaphoreZirconHandleFUCHSIA;
+  using ::PFN_vkGetSemaphoreZirconHandleFUCHSIA;
+  using ::PFN_vkImportSemaphoreZirconHandleFUCHSIA;
 #endif /*VK_USE_PLATFORM_FUCHSIA*/
 
 #if defined( VK_USE_PLATFORM_FUCHSIA )
   //=== VK_FUCHSIA_buffer_collection ===
-export using ::PFN_vkCreateBufferCollectionFUCHSIA;
-export using ::PFN_vkSetBufferCollectionImageConstraintsFUCHSIA;
-export using ::PFN_vkSetBufferCollectionBufferConstraintsFUCHSIA;
-export using ::PFN_vkDestroyBufferCollectionFUCHSIA;
-export using ::PFN_vkGetBufferCollectionPropertiesFUCHSIA;
+  using ::PFN_vkCreateBufferCollectionFUCHSIA;
+  using ::PFN_vkDestroyBufferCollectionFUCHSIA;
+  using ::PFN_vkGetBufferCollectionPropertiesFUCHSIA;
+  using ::PFN_vkSetBufferCollectionBufferConstraintsFUCHSIA;
+  using ::PFN_vkSetBufferCollectionImageConstraintsFUCHSIA;
 #endif /*VK_USE_PLATFORM_FUCHSIA*/
 
   //=== VK_HUAWEI_subpass_shading ===
-export using ::PFN_vkGetDeviceSubpassShadingMaxWorkgroupSizeHUAWEI;
-export using ::PFN_vkCmdSubpassShadingHUAWEI;
+  using ::PFN_vkCmdSubpassShadingHUAWEI;
+  using ::PFN_vkGetDeviceSubpassShadingMaxWorkgroupSizeHUAWEI;
 
   //=== VK_HUAWEI_invocation_mask ===
-export using ::PFN_vkCmdBindInvocationMaskHUAWEI;
+  using ::PFN_vkCmdBindInvocationMaskHUAWEI;
 
   //=== VK_NV_external_memory_rdma ===
-export using ::PFN_vkGetMemoryRemoteAddressNV;
+  using ::PFN_vkGetMemoryRemoteAddressNV;
 
   //=== VK_EXT_pipeline_properties ===
-export using ::PFN_vkGetPipelinePropertiesEXT;
+  using ::PFN_vkGetPipelinePropertiesEXT;
 
   //=== VK_EXT_extended_dynamic_state2 ===
-export using ::PFN_vkCmdSetPatchControlPointsEXT;
-export using ::PFN_vkCmdSetRasterizerDiscardEnableEXT;
-export using ::PFN_vkCmdSetDepthBiasEnableEXT;
-export using ::PFN_vkCmdSetLogicOpEXT;
-export using ::PFN_vkCmdSetPrimitiveRestartEnableEXT;
+  using ::PFN_vkCmdSetDepthBiasEnableEXT;
+  using ::PFN_vkCmdSetLogicOpEXT;
+  using ::PFN_vkCmdSetPatchControlPointsEXT;
+  using ::PFN_vkCmdSetPrimitiveRestartEnableEXT;
+  using ::PFN_vkCmdSetRasterizerDiscardEnableEXT;
 
 #if defined( VK_USE_PLATFORM_SCREEN_QNX )
   //=== VK_QNX_screen_surface ===
-export using ::PFN_vkCreateScreenSurfaceQNX;
-export using ::PFN_vkGetPhysicalDeviceScreenPresentationSupportQNX;
+  using ::PFN_vkCreateScreenSurfaceQNX;
+  using ::PFN_vkGetPhysicalDeviceScreenPresentationSupportQNX;
 #endif /*VK_USE_PLATFORM_SCREEN_QNX*/
 
   //=== VK_EXT_color_write_enable ===
-export using ::PFN_vkCmdSetColorWriteEnableEXT;
+  using ::PFN_vkCmdSetColorWriteEnableEXT;
 
   //=== VK_KHR_ray_tracing_maintenance1 ===
-export using ::PFN_vkCmdTraceRaysIndirect2KHR;
+  using ::PFN_vkCmdTraceRaysIndirect2KHR;
 
   //=== VK_EXT_multi_draw ===
-export using ::PFN_vkCmdDrawMultiEXT;
-export using ::PFN_vkCmdDrawMultiIndexedEXT;
+  using ::PFN_vkCmdDrawMultiEXT;
+  using ::PFN_vkCmdDrawMultiIndexedEXT;
 
   //=== VK_EXT_opacity_micromap ===
-export using ::PFN_vkCreateMicromapEXT;
-export using ::PFN_vkDestroyMicromapEXT;
-export using ::PFN_vkCmdBuildMicromapsEXT;
-export using ::PFN_vkBuildMicromapsEXT;
-export using ::PFN_vkCopyMicromapEXT;
-export using ::PFN_vkCopyMicromapToMemoryEXT;
-export using ::PFN_vkCopyMemoryToMicromapEXT;
-export using ::PFN_vkWriteMicromapsPropertiesEXT;
-export using ::PFN_vkCmdCopyMicromapEXT;
-export using ::PFN_vkCmdCopyMicromapToMemoryEXT;
-export using ::PFN_vkCmdCopyMemoryToMicromapEXT;
-export using ::PFN_vkCmdWriteMicromapsPropertiesEXT;
-export using ::PFN_vkGetDeviceMicromapCompatibilityEXT;
-export using ::PFN_vkGetMicromapBuildSizesEXT;
+  using ::PFN_vkBuildMicromapsEXT;
+  using ::PFN_vkCmdBuildMicromapsEXT;
+  using ::PFN_vkCmdCopyMemoryToMicromapEXT;
+  using ::PFN_vkCmdCopyMicromapEXT;
+  using ::PFN_vkCmdCopyMicromapToMemoryEXT;
+  using ::PFN_vkCmdWriteMicromapsPropertiesEXT;
+  using ::PFN_vkCopyMemoryToMicromapEXT;
+  using ::PFN_vkCopyMicromapEXT;
+  using ::PFN_vkCopyMicromapToMemoryEXT;
+  using ::PFN_vkCreateMicromapEXT;
+  using ::PFN_vkDestroyMicromapEXT;
+  using ::PFN_vkGetDeviceMicromapCompatibilityEXT;
+  using ::PFN_vkGetMicromapBuildSizesEXT;
+  using ::PFN_vkWriteMicromapsPropertiesEXT;
 
   //=== VK_HUAWEI_cluster_culling_shader ===
-export using ::PFN_vkCmdDrawClusterHUAWEI;
-export using ::PFN_vkCmdDrawClusterIndirectHUAWEI;
+  using ::PFN_vkCmdDrawClusterHUAWEI;
+  using ::PFN_vkCmdDrawClusterIndirectHUAWEI;
 
   //=== VK_EXT_pageable_device_local_memory ===
-export using ::PFN_vkSetDeviceMemoryPriorityEXT;
+  using ::PFN_vkSetDeviceMemoryPriorityEXT;
 
   //=== VK_KHR_maintenance4 ===
-export using ::PFN_vkGetDeviceBufferMemoryRequirementsKHR;
-export using ::PFN_vkGetDeviceImageMemoryRequirementsKHR;
-export using ::PFN_vkGetDeviceImageSparseMemoryRequirementsKHR;
+  using ::PFN_vkGetDeviceBufferMemoryRequirementsKHR;
+  using ::PFN_vkGetDeviceImageMemoryRequirementsKHR;
+  using ::PFN_vkGetDeviceImageSparseMemoryRequirementsKHR;
 
   //=== VK_VALVE_descriptor_set_host_mapping ===
-export using ::PFN_vkGetDescriptorSetLayoutHostMappingInfoVALVE;
-export using ::PFN_vkGetDescriptorSetHostMappingVALVE;
+  using ::PFN_vkGetDescriptorSetHostMappingVALVE;
+  using ::PFN_vkGetDescriptorSetLayoutHostMappingInfoVALVE;
 
   //=== VK_NV_copy_memory_indirect ===
-export using ::PFN_vkCmdCopyMemoryIndirectNV;
-export using ::PFN_vkCmdCopyMemoryToImageIndirectNV;
+  using ::PFN_vkCmdCopyMemoryIndirectNV;
+  using ::PFN_vkCmdCopyMemoryToImageIndirectNV;
 
   //=== VK_NV_memory_decompression ===
-export using ::PFN_vkCmdDecompressMemoryNV;
-export using ::PFN_vkCmdDecompressMemoryIndirectCountNV;
+  using ::PFN_vkCmdDecompressMemoryIndirectCountNV;
+  using ::PFN_vkCmdDecompressMemoryNV;
 
   //=== VK_NV_device_generated_commands_compute ===
-export using ::PFN_vkGetPipelineIndirectMemoryRequirementsNV;
-export using ::PFN_vkCmdUpdatePipelineIndirectBufferNV;
-export using ::PFN_vkGetPipelineIndirectDeviceAddressNV;
+  using ::PFN_vkCmdUpdatePipelineIndirectBufferNV;
+  using ::PFN_vkGetPipelineIndirectDeviceAddressNV;
+  using ::PFN_vkGetPipelineIndirectMemoryRequirementsNV;
 
   //=== VK_EXT_extended_dynamic_state3 ===
-export using ::PFN_vkCmdSetDepthClampEnableEXT;
-export using ::PFN_vkCmdSetPolygonModeEXT;
-export using ::PFN_vkCmdSetRasterizationSamplesEXT;
-export using ::PFN_vkCmdSetSampleMaskEXT;
-export using ::PFN_vkCmdSetAlphaToCoverageEnableEXT;
-export using ::PFN_vkCmdSetAlphaToOneEnableEXT;
-export using ::PFN_vkCmdSetLogicOpEnableEXT;
-export using ::PFN_vkCmdSetColorBlendEnableEXT;
-export using ::PFN_vkCmdSetColorBlendEquationEXT;
-export using ::PFN_vkCmdSetColorWriteMaskEXT;
-export using ::PFN_vkCmdSetTessellationDomainOriginEXT;
-export using ::PFN_vkCmdSetRasterizationStreamEXT;
-export using ::PFN_vkCmdSetConservativeRasterizationModeEXT;
-export using ::PFN_vkCmdSetExtraPrimitiveOverestimationSizeEXT;
-export using ::PFN_vkCmdSetDepthClipEnableEXT;
-export using ::PFN_vkCmdSetSampleLocationsEnableEXT;
-export using ::PFN_vkCmdSetColorBlendAdvancedEXT;
-export using ::PFN_vkCmdSetProvokingVertexModeEXT;
-export using ::PFN_vkCmdSetLineRasterizationModeEXT;
-export using ::PFN_vkCmdSetLineStippleEnableEXT;
-export using ::PFN_vkCmdSetDepthClipNegativeOneToOneEXT;
-export using ::PFN_vkCmdSetViewportWScalingEnableNV;
-export using ::PFN_vkCmdSetViewportSwizzleNV;
-export using ::PFN_vkCmdSetCoverageToColorEnableNV;
-export using ::PFN_vkCmdSetCoverageToColorLocationNV;
-export using ::PFN_vkCmdSetCoverageModulationModeNV;
-export using ::PFN_vkCmdSetCoverageModulationTableEnableNV;
-export using ::PFN_vkCmdSetCoverageModulationTableNV;
-export using ::PFN_vkCmdSetShadingRateImageEnableNV;
-export using ::PFN_vkCmdSetRepresentativeFragmentTestEnableNV;
-export using ::PFN_vkCmdSetCoverageReductionModeNV;
+  using ::PFN_vkCmdSetAlphaToCoverageEnableEXT;
+  using ::PFN_vkCmdSetAlphaToOneEnableEXT;
+  using ::PFN_vkCmdSetColorBlendAdvancedEXT;
+  using ::PFN_vkCmdSetColorBlendEnableEXT;
+  using ::PFN_vkCmdSetColorBlendEquationEXT;
+  using ::PFN_vkCmdSetColorWriteMaskEXT;
+  using ::PFN_vkCmdSetConservativeRasterizationModeEXT;
+  using ::PFN_vkCmdSetCoverageModulationModeNV;
+  using ::PFN_vkCmdSetCoverageModulationTableEnableNV;
+  using ::PFN_vkCmdSetCoverageModulationTableNV;
+  using ::PFN_vkCmdSetCoverageReductionModeNV;
+  using ::PFN_vkCmdSetCoverageToColorEnableNV;
+  using ::PFN_vkCmdSetCoverageToColorLocationNV;
+  using ::PFN_vkCmdSetDepthClampEnableEXT;
+  using ::PFN_vkCmdSetDepthClipEnableEXT;
+  using ::PFN_vkCmdSetDepthClipNegativeOneToOneEXT;
+  using ::PFN_vkCmdSetExtraPrimitiveOverestimationSizeEXT;
+  using ::PFN_vkCmdSetLineRasterizationModeEXT;
+  using ::PFN_vkCmdSetLineStippleEnableEXT;
+  using ::PFN_vkCmdSetLogicOpEnableEXT;
+  using ::PFN_vkCmdSetPolygonModeEXT;
+  using ::PFN_vkCmdSetProvokingVertexModeEXT;
+  using ::PFN_vkCmdSetRasterizationSamplesEXT;
+  using ::PFN_vkCmdSetRasterizationStreamEXT;
+  using ::PFN_vkCmdSetRepresentativeFragmentTestEnableNV;
+  using ::PFN_vkCmdSetSampleLocationsEnableEXT;
+  using ::PFN_vkCmdSetSampleMaskEXT;
+  using ::PFN_vkCmdSetShadingRateImageEnableNV;
+  using ::PFN_vkCmdSetTessellationDomainOriginEXT;
+  using ::PFN_vkCmdSetViewportSwizzleNV;
+  using ::PFN_vkCmdSetViewportWScalingEnableNV;
 
   //=== VK_ARM_tensors ===
-export using ::PFN_vkCreateTensorARM;
-export using ::PFN_vkDestroyTensorARM;
-export using ::PFN_vkCreateTensorViewARM;
-export using ::PFN_vkDestroyTensorViewARM;
-export using ::PFN_vkGetTensorMemoryRequirementsARM;
-export using ::PFN_vkBindTensorMemoryARM;
-export using ::PFN_vkGetDeviceTensorMemoryRequirementsARM;
-export using ::PFN_vkCmdCopyTensorARM;
-export using ::PFN_vkGetPhysicalDeviceExternalTensorPropertiesARM;
-export using ::PFN_vkGetTensorOpaqueCaptureDescriptorDataARM;
-export using ::PFN_vkGetTensorViewOpaqueCaptureDescriptorDataARM;
+  using ::PFN_vkBindTensorMemoryARM;
+  using ::PFN_vkCmdCopyTensorARM;
+  using ::PFN_vkCreateTensorARM;
+  using ::PFN_vkCreateTensorViewARM;
+  using ::PFN_vkDestroyTensorARM;
+  using ::PFN_vkDestroyTensorViewARM;
+  using ::PFN_vkGetDeviceTensorMemoryRequirementsARM;
+  using ::PFN_vkGetPhysicalDeviceExternalTensorPropertiesARM;
+  using ::PFN_vkGetTensorMemoryRequirementsARM;
+  using ::PFN_vkGetTensorOpaqueCaptureDescriptorDataARM;
+  using ::PFN_vkGetTensorViewOpaqueCaptureDescriptorDataARM;
 
   //=== VK_EXT_shader_module_identifier ===
-export using ::PFN_vkGetShaderModuleIdentifierEXT;
-export using ::PFN_vkGetShaderModuleCreateInfoIdentifierEXT;
+  using ::PFN_vkGetShaderModuleCreateInfoIdentifierEXT;
+  using ::PFN_vkGetShaderModuleIdentifierEXT;
 
   //=== VK_NV_optical_flow ===
-export using ::PFN_vkGetPhysicalDeviceOpticalFlowImageFormatsNV;
-export using ::PFN_vkCreateOpticalFlowSessionNV;
-export using ::PFN_vkDestroyOpticalFlowSessionNV;
-export using ::PFN_vkBindOpticalFlowSessionImageNV;
-export using ::PFN_vkCmdOpticalFlowExecuteNV;
+  using ::PFN_vkBindOpticalFlowSessionImageNV;
+  using ::PFN_vkCmdOpticalFlowExecuteNV;
+  using ::PFN_vkCreateOpticalFlowSessionNV;
+  using ::PFN_vkDestroyOpticalFlowSessionNV;
+  using ::PFN_vkGetPhysicalDeviceOpticalFlowImageFormatsNV;
 
   //=== VK_KHR_maintenance5 ===
-export using ::PFN_vkCmdBindIndexBuffer2KHR;
-export using ::PFN_vkGetRenderingAreaGranularityKHR;
-export using ::PFN_vkGetDeviceImageSubresourceLayoutKHR;
-export using ::PFN_vkGetImageSubresourceLayout2KHR;
+  using ::PFN_vkCmdBindIndexBuffer2KHR;
+  using ::PFN_vkGetDeviceImageSubresourceLayoutKHR;
+  using ::PFN_vkGetImageSubresourceLayout2KHR;
+  using ::PFN_vkGetRenderingAreaGranularityKHR;
 
   //=== VK_AMD_anti_lag ===
-export using ::PFN_vkAntiLagUpdateAMD;
+  using ::PFN_vkAntiLagUpdateAMD;
 
   //=== VK_KHR_present_wait2 ===
-export using ::PFN_vkWaitForPresent2KHR;
+  using ::PFN_vkWaitForPresent2KHR;
 
   //=== VK_EXT_shader_object ===
-export using ::PFN_vkCreateShadersEXT;
-export using ::PFN_vkDestroyShaderEXT;
-export using ::PFN_vkGetShaderBinaryDataEXT;
-export using ::PFN_vkCmdBindShadersEXT;
-export using ::PFN_vkCmdSetDepthClampRangeEXT;
+  using ::PFN_vkCmdBindShadersEXT;
+  using ::PFN_vkCmdSetDepthClampRangeEXT;
+  using ::PFN_vkCreateShadersEXT;
+  using ::PFN_vkDestroyShaderEXT;
+  using ::PFN_vkGetShaderBinaryDataEXT;
 
   //=== VK_KHR_pipeline_binary ===
-export using ::PFN_vkCreatePipelineBinariesKHR;
-export using ::PFN_vkDestroyPipelineBinaryKHR;
-export using ::PFN_vkGetPipelineKeyKHR;
-export using ::PFN_vkGetPipelineBinaryDataKHR;
-export using ::PFN_vkReleaseCapturedPipelineDataKHR;
+  using ::PFN_vkCreatePipelineBinariesKHR;
+  using ::PFN_vkDestroyPipelineBinaryKHR;
+  using ::PFN_vkGetPipelineBinaryDataKHR;
+  using ::PFN_vkGetPipelineKeyKHR;
+  using ::PFN_vkReleaseCapturedPipelineDataKHR;
 
   //=== VK_QCOM_tile_properties ===
-export using ::PFN_vkGetFramebufferTilePropertiesQCOM;
-export using ::PFN_vkGetDynamicRenderingTilePropertiesQCOM;
+  using ::PFN_vkGetDynamicRenderingTilePropertiesQCOM;
+  using ::PFN_vkGetFramebufferTilePropertiesQCOM;
+
+  //=== VK_KHR_swapchain_maintenance1 ===
+  using ::PFN_vkReleaseSwapchainImagesKHR;
 
   //=== VK_NV_cooperative_vector ===
-export using ::PFN_vkGetPhysicalDeviceCooperativeVectorPropertiesNV;
-export using ::PFN_vkConvertCooperativeVectorMatrixNV;
-export using ::PFN_vkCmdConvertCooperativeVectorMatrixNV;
+  using ::PFN_vkCmdConvertCooperativeVectorMatrixNV;
+  using ::PFN_vkConvertCooperativeVectorMatrixNV;
+  using ::PFN_vkGetPhysicalDeviceCooperativeVectorPropertiesNV;
 
   //=== VK_NV_low_latency2 ===
-export using ::PFN_vkSetLatencySleepModeNV;
-export using ::PFN_vkLatencySleepNV;
-export using ::PFN_vkSetLatencyMarkerNV;
-export using ::PFN_vkGetLatencyTimingsNV;
-export using ::PFN_vkQueueNotifyOutOfBandNV;
+  using ::PFN_vkGetLatencyTimingsNV;
+  using ::PFN_vkLatencySleepNV;
+  using ::PFN_vkQueueNotifyOutOfBandNV;
+  using ::PFN_vkSetLatencyMarkerNV;
+  using ::PFN_vkSetLatencySleepModeNV;
 
   //=== VK_KHR_cooperative_matrix ===
-export using ::PFN_vkGetPhysicalDeviceCooperativeMatrixPropertiesKHR;
+  using ::PFN_vkGetPhysicalDeviceCooperativeMatrixPropertiesKHR;
 
   //=== VK_ARM_data_graph ===
-export using ::PFN_vkCreateDataGraphPipelinesARM;
-export using ::PFN_vkCreateDataGraphPipelineSessionARM;
-export using ::PFN_vkGetDataGraphPipelineSessionBindPointRequirementsARM;
-export using ::PFN_vkGetDataGraphPipelineSessionMemoryRequirementsARM;
-export using ::PFN_vkBindDataGraphPipelineSessionMemoryARM;
-export using ::PFN_vkDestroyDataGraphPipelineSessionARM;
-export using ::PFN_vkCmdDispatchDataGraphARM;
-export using ::PFN_vkGetDataGraphPipelineAvailablePropertiesARM;
-export using ::PFN_vkGetDataGraphPipelinePropertiesARM;
-export using ::PFN_vkGetPhysicalDeviceQueueFamilyDataGraphPropertiesARM;
-export using ::PFN_vkGetPhysicalDeviceQueueFamilyDataGraphProcessingEnginePropertiesARM;
+  using ::PFN_vkBindDataGraphPipelineSessionMemoryARM;
+  using ::PFN_vkCmdDispatchDataGraphARM;
+  using ::PFN_vkCreateDataGraphPipelinesARM;
+  using ::PFN_vkCreateDataGraphPipelineSessionARM;
+  using ::PFN_vkDestroyDataGraphPipelineSessionARM;
+  using ::PFN_vkGetDataGraphPipelineAvailablePropertiesARM;
+  using ::PFN_vkGetDataGraphPipelinePropertiesARM;
+  using ::PFN_vkGetDataGraphPipelineSessionBindPointRequirementsARM;
+  using ::PFN_vkGetDataGraphPipelineSessionMemoryRequirementsARM;
+  using ::PFN_vkGetPhysicalDeviceQueueFamilyDataGraphProcessingEnginePropertiesARM;
+  using ::PFN_vkGetPhysicalDeviceQueueFamilyDataGraphPropertiesARM;
 
   //=== VK_EXT_attachment_feedback_loop_dynamic_state ===
-export using ::PFN_vkCmdSetAttachmentFeedbackLoopEnableEXT;
+  using ::PFN_vkCmdSetAttachmentFeedbackLoopEnableEXT;
 
 #if defined( VK_USE_PLATFORM_SCREEN_QNX )
   //=== VK_QNX_external_memory_screen_buffer ===
-export using ::PFN_vkGetScreenBufferPropertiesQNX;
+  using ::PFN_vkGetScreenBufferPropertiesQNX;
 #endif /*VK_USE_PLATFORM_SCREEN_QNX*/
 
   //=== VK_KHR_line_rasterization ===
-export using ::PFN_vkCmdSetLineStippleKHR;
+  using ::PFN_vkCmdSetLineStippleKHR;
 
   //=== VK_KHR_calibrated_timestamps ===
-export using ::PFN_vkGetPhysicalDeviceCalibrateableTimeDomainsKHR;
-export using ::PFN_vkGetCalibratedTimestampsKHR;
+  using ::PFN_vkGetCalibratedTimestampsKHR;
+  using ::PFN_vkGetPhysicalDeviceCalibrateableTimeDomainsKHR;
 
   //=== VK_KHR_maintenance6 ===
-export using ::PFN_vkCmdBindDescriptorSets2KHR;
-export using ::PFN_vkCmdPushConstants2KHR;
-export using ::PFN_vkCmdPushDescriptorSet2KHR;
-export using ::PFN_vkCmdPushDescriptorSetWithTemplate2KHR;
-export using ::PFN_vkCmdSetDescriptorBufferOffsets2EXT;
-export using ::PFN_vkCmdBindDescriptorBufferEmbeddedSamplers2EXT;
+  using ::PFN_vkCmdBindDescriptorBufferEmbeddedSamplers2EXT;
+  using ::PFN_vkCmdBindDescriptorSets2KHR;
+  using ::PFN_vkCmdPushConstants2KHR;
+  using ::PFN_vkCmdPushDescriptorSet2KHR;
+  using ::PFN_vkCmdPushDescriptorSetWithTemplate2KHR;
+  using ::PFN_vkCmdSetDescriptorBufferOffsets2EXT;
 
   //=== VK_QCOM_tile_memory_heap ===
-export using ::PFN_vkCmdBindTileMemoryQCOM;
+  using ::PFN_vkCmdBindTileMemoryQCOM;
+
+  //=== VK_KHR_copy_memory_indirect ===
+  using ::PFN_vkCmdCopyMemoryIndirectKHR;
+  using ::PFN_vkCmdCopyMemoryToImageIndirectKHR;
 
   //=== VK_NV_external_compute_queue ===
-export using ::PFN_vkCreateExternalComputeQueueNV;
-export using ::PFN_vkDestroyExternalComputeQueueNV;
-export using ::PFN_vkGetExternalComputeQueueDataNV;
+  using ::PFN_vkCreateExternalComputeQueueNV;
+  using ::PFN_vkDestroyExternalComputeQueueNV;
+  using ::PFN_vkGetExternalComputeQueueDataNV;
 
   //=== VK_NV_cluster_acceleration_structure ===
-export using ::PFN_vkGetClusterAccelerationStructureBuildSizesNV;
-export using ::PFN_vkCmdBuildClusterAccelerationStructureIndirectNV;
+  using ::PFN_vkCmdBuildClusterAccelerationStructureIndirectNV;
+  using ::PFN_vkGetClusterAccelerationStructureBuildSizesNV;
 
   //=== VK_NV_partitioned_acceleration_structure ===
-export using ::PFN_vkGetPartitionedAccelerationStructuresBuildSizesNV;
-export using ::PFN_vkCmdBuildPartitionedAccelerationStructuresNV;
+  using ::PFN_vkCmdBuildPartitionedAccelerationStructuresNV;
+  using ::PFN_vkGetPartitionedAccelerationStructuresBuildSizesNV;
 
   //=== VK_EXT_device_generated_commands ===
-export using ::PFN_vkGetGeneratedCommandsMemoryRequirementsEXT;
-export using ::PFN_vkCmdPreprocessGeneratedCommandsEXT;
-export using ::PFN_vkCmdExecuteGeneratedCommandsEXT;
-export using ::PFN_vkCreateIndirectCommandsLayoutEXT;
-export using ::PFN_vkDestroyIndirectCommandsLayoutEXT;
-export using ::PFN_vkCreateIndirectExecutionSetEXT;
-export using ::PFN_vkDestroyIndirectExecutionSetEXT;
-export using ::PFN_vkUpdateIndirectExecutionSetPipelineEXT;
-export using ::PFN_vkUpdateIndirectExecutionSetShaderEXT;
+  using ::PFN_vkCmdExecuteGeneratedCommandsEXT;
+  using ::PFN_vkCmdPreprocessGeneratedCommandsEXT;
+  using ::PFN_vkCreateIndirectCommandsLayoutEXT;
+  using ::PFN_vkCreateIndirectExecutionSetEXT;
+  using ::PFN_vkDestroyIndirectCommandsLayoutEXT;
+  using ::PFN_vkDestroyIndirectExecutionSetEXT;
+  using ::PFN_vkGetGeneratedCommandsMemoryRequirementsEXT;
+  using ::PFN_vkUpdateIndirectExecutionSetPipelineEXT;
+  using ::PFN_vkUpdateIndirectExecutionSetShaderEXT;
 
 #if defined( VK_USE_PLATFORM_OHOS )
   //=== VK_OHOS_surface ===
-export using ::PFN_vkCreateSurfaceOHOS;
+  using ::PFN_vkCreateSurfaceOHOS;
 #endif /*VK_USE_PLATFORM_OHOS*/
 
   //=== VK_NV_cooperative_matrix2 ===
-export using ::PFN_vkGetPhysicalDeviceCooperativeMatrixFlexibleDimensionsPropertiesNV;
+  using ::PFN_vkGetPhysicalDeviceCooperativeMatrixFlexibleDimensionsPropertiesNV;
 
 #if defined( VK_USE_PLATFORM_METAL_EXT )
   //=== VK_EXT_external_memory_metal ===
-export using ::PFN_vkGetMemoryMetalHandleEXT;
-export using ::PFN_vkGetMemoryMetalHandlePropertiesEXT;
+  using ::PFN_vkGetMemoryMetalHandleEXT;
+  using ::PFN_vkGetMemoryMetalHandlePropertiesEXT;
 #endif /*VK_USE_PLATFORM_METAL_EXT*/
 
   //=== VK_EXT_fragment_density_map_offset ===
-export using ::PFN_vkCmdEndRendering2EXT;
+  using ::PFN_vkCmdEndRendering2EXT;
+}

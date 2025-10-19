@@ -88,7 +88,7 @@
 #  define VULKAN_HPP_SUPPORT_SPAN
 #endif
 
-#if defined( __cpp_lib_modules ) && !defined( VULKAN_HPP_STD_MODULE ) && defined( VULKAN_HPP_ENABLE_STD_MODULE )
+#if !defined( VULKAN_HPP_STD_MODULE ) && defined( __cpp_modules ) && defined( __cpp_lib_modules )
 #  define VULKAN_HPP_STD_MODULE std.compat
 #endif
 
@@ -157,6 +157,11 @@
 #    define VULKAN_HPP_CONSTEXPR_14 constexpr
 #  else
 #    define VULKAN_HPP_CONSTEXPR_14
+#  endif
+#  if 201603 <= __cpp_constexpr
+#    define VULKAN_HPP_CONSTEXPR_17 constexpr
+#  else
+#    define VULKAN_HPP_CONSTEXPR_17
 #  endif
 #  if ( 201907 <= __cpp_constexpr ) && ( !defined( __GNUC__ ) || ( 110400 < GCC_VERSION ) )
 #    define VULKAN_HPP_CONSTEXPR_20 constexpr
@@ -269,6 +274,21 @@ namespace VULKAN_HPP_NAMESPACE
   }  // namespace detail
 }  // namespace VULKAN_HPP_NAMESPACE
 
+#if !defined( VULKAN_HPP_DISPATCH_LOADER_DYNAMIC_TYPE )
+#  define VULKAN_HPP_DISPATCH_LOADER_DYNAMIC_TYPE VULKAN_HPP_NAMESPACE::detail::DispatchLoaderDynamic
+#endif
+#if !defined( VULKAN_HPP_DISPATCH_LOADER_STATIC_TYPE )
+#  define VULKAN_HPP_DISPATCH_LOADER_STATIC_TYPE VULKAN_HPP_NAMESPACE::detail::DispatchLoaderStatic
+#endif
+
+#if !defined( VULKAN_HPP_DEFAULT_DISPATCHER_TYPE )
+#  if VULKAN_HPP_DISPATCH_LOADER_DYNAMIC == 1
+#    define VULKAN_HPP_DEFAULT_DISPATCHER_TYPE VULKAN_HPP_DISPATCH_LOADER_DYNAMIC_TYPE
+#  else
+#    define VULKAN_HPP_DEFAULT_DISPATCHER_TYPE VULKAN_HPP_DISPATCH_LOADER_STATIC_TYPE
+#  endif
+#endif
+
 #if !defined( VULKAN_HPP_DEFAULT_DISPATCHER )
 #  if VULKAN_HPP_DISPATCH_LOADER_DYNAMIC == 1
 #    define VULKAN_HPP_DEFAULT_DISPATCHER ::VULKAN_HPP_NAMESPACE::detail::defaultDispatchLoaderDynamic
@@ -286,41 +306,21 @@ namespace VULKAN_HPP_NAMESPACE
 #  endif
 #endif
 
-#if !defined( VULKAN_HPP_DEFAULT_DISPATCHER_TYPE )
-#  if VULKAN_HPP_DISPATCH_LOADER_DYNAMIC == 1
-#    define VULKAN_HPP_DEFAULT_DISPATCHER_TYPE ::VULKAN_HPP_NAMESPACE::detail::DispatchLoaderDynamic
-#  else
-#    define VULKAN_HPP_DEFAULT_DISPATCHER_TYPE ::VULKAN_HPP_NAMESPACE::detail::DispatchLoaderStatic
-#  endif
-#endif
-
 #if defined( VULKAN_HPP_NO_DEFAULT_DISPATCHER )
 #  define VULKAN_HPP_DEFAULT_ARGUMENT_ASSIGNMENT
 #  define VULKAN_HPP_DEFAULT_ARGUMENT_NULLPTR_ASSIGNMENT
 #  define VULKAN_HPP_DEFAULT_DISPATCHER_ASSIGNMENT
+#  define VULKAN_HPP_DEFAULT_ASSIGNMENT( assignment )
 #else
 #  define VULKAN_HPP_DEFAULT_ARGUMENT_ASSIGNMENT         = {}
 #  define VULKAN_HPP_DEFAULT_ARGUMENT_NULLPTR_ASSIGNMENT = nullptr
 #  define VULKAN_HPP_DEFAULT_DISPATCHER_ASSIGNMENT       = VULKAN_HPP_DEFAULT_DISPATCHER
-#endif
-
-#if !defined( VULKAN_HPP_EXPECTED ) && ( 23 <= VULKAN_HPP_CPP_VERSION ) && defined( __cpp_lib_expected )
-#  if !( defined( VULKAN_HPP_ENABLE_STD_MODULE ) && defined( VULKAN_HPP_STD_MODULE ) )
-#    include <expected>
-#  endif
-#  define VULKAN_HPP_EXPECTED   std::expected
-#  define VULKAN_HPP_UNEXPECTED std::unexpected
+#  define VULKAN_HPP_DEFAULT_ASSIGNMENT( assignment )    = assignment
 #endif
 
 #if !defined( VULKAN_HPP_RAII_NAMESPACE )
-#  define VULKAN_HPP_RAII_NAMESPACE raii
-#endif
-
-#if defined( VULKAN_HPP_NO_EXCEPTIONS ) && defined( VULKAN_HPP_EXPECTED )
-#  define VULKAN_HPP_RAII_NO_EXCEPTIONS
-#  define VULKAN_HPP_RAII_CREATE_NOEXCEPT noexcept
-#else
-#  define VULKAN_HPP_RAII_CREATE_NOEXCEPT
+#  define VULKAN_HPP_RAII_NAMESPACE        raii
+#  define VULKAN_HPP_RAII_NAMESPACE_STRING VULKAN_HPP_STRINGIFY( VULKAN_HPP_NAMESPACE::VULKAN_HPP_RAII_NAMESPACE )
 #endif
 
 
