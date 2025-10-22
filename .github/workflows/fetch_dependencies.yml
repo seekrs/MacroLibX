@@ -24,7 +24,7 @@ jobs:
         title: update dependencies
         commit-message: "[BOT] update dependencies"
         committer: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
-        author: ${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>
+        author: kbJeff-8 <kbJeff-8@users.noreply.github.com>
         signoff: false
         base: indev
         assignees: Kbz-8
