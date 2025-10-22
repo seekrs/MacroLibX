@@ -50,7 +50,7 @@ namespace mlx
 			~DescriptorPoolManager() = default;
 
 		private:
-			std::vector<DescriptorPool> m_pools;
+			std::vector<std::unique_ptr<DescriptorPool>> m_pools;
 	};
 
 	class DescriptorSet : public std::enable_shared_from_this<DescriptorSet>

@@ -38,6 +38,9 @@ GCH = runtime/Includes/PreCompiled.h.gch
 CCH = runtime/Includes/PreCompiled.h.pch
 PCH =
 
+# Personal path, should be overriden with env var
+UNIT_TESTS_PATH = ../UnitTester/build/Bin/linux_x86_64/MacroUnitTest
+
 NZSLC ?= nzslc
 
 ifeq ($(TOOLCHAIN), gcc)
@@ -160,6 +163,9 @@ clean-shaders:
 	@$(RM) $(SPVS)
 
 shaders: clean-shaders $(SPVS)
+
+tests: debug
+	@$(UNIT_TESTS_PATH) --headless --path="./$(NAME)"
 
 clean:
 	@$(RM) $(OBJ_DIR)
