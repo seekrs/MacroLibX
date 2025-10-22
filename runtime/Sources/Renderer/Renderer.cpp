@@ -20,29 +20,42 @@ namespace mlx
 		MLX_PROFILE_FUNCTION();
 		p_window = window;
 		m_swapchain.Init(p_window);
-		for(std::size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
-		{
-			m_image_available_semaphores[i] = kvfCreateSemaphore(RenderCore::Get().GetDevice());
-			DebugLog("Vulkan: image available semaphore created");
-			m_render_finished_semaphores[i] = kvfCreateSemaphore(RenderCore::Get().GetDevice());
-			DebugLog("Vulkan: render finished semaphore created");
-			m_cmd_buffers[i] = kvfCreateCommandBuffer(RenderCore::Get().GetDevice());
-			DebugLog("Vulkan: command buffer created");
-			m_cmd_fences[i] = kvfCreateFence(RenderCore::Get().GetDevice());
-			DebugLog("Vulkan: fence created");
-		}
+		Init(NonOwningPtr<Texture>{ nullptr });
 	}
 
 	void Renderer::Init(NonOwningPtr<Texture> render_target)
 	{
 		MLX_PROFILE_FUNCTION();
-		p_render_target = render_target;
+		std::function<void(const EventBase&)> functor = [this](const EventBase& event)
+		{
+			if(event.What() == Event::ResizeEventCode)
+			{
+				for(std::size_t i = 0; i < m_render_finished_semaphores.size(); i++)
+				{
+					kvfDestroySemaphore(RenderCore::Get().GetDevice(), m_render_finished_semaphores[i]);
+					DebugLog("Vulkan: render finished semaphore destroyed");
+				}
+				m_render_finished_semaphores.clear();
+				for(std::size_t i = 0; i < (p_window ? m_swapchain.GetImagesCount() : 1); i++)
+				{
+					m_render_finished_semaphores.push_back(kvfCreateSemaphore(RenderCore::Get().GetDevice()));
+					DebugLog("Vulkan: render finished semaphore created");
+				}
+			}
+		};
+		EventBus::RegisterListener({ functor, "mlx_renderer_" + std::to_string(reinterpret_cast<std::uintptr_t>(this)) });
+
+		if(render_target)
+			p_render_target = render_target;
+		for(std::size_t i = 0; i < (p_window ? m_swapchain.GetImagesCount() : 1); i++)
+		{
+			m_render_finished_semaphores.push_back(kvfCreateSemaphore(RenderCore::Get().GetDevice()));
+			DebugLog("Vulkan: render finished semaphore created");
+		}
 		for(std::size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
 		{
 			m_image_available_semaphores[i] = kvfCreateSemaphore(RenderCore::Get().GetDevice());
 			DebugLog("Vulkan: image available semaphore created");
-			m_render_finished_semaphores[i] = kvfCreateSemaphore(RenderCore::Get().GetDevice());
-			DebugLog("Vulkan: render finished semaphore created");
 			m_cmd_buffers[i] = kvfCreateCommandBuffer(RenderCore::Get().GetDevice());
 			DebugLog("Vulkan: command buffer created");
 			m_cmd_fences[i] = kvfCreateFence(RenderCore::Get().GetDevice());
@@ -66,14 +79,15 @@ namespace mlx
 	void Renderer::EndFrame()
 	{
 		MLX_PROFILE_FUNCTION();
+		std::size_t render_finished_index = (p_window ? m_swapchain.GetImageIndex() : 0);
 		VkPipelineStageFlags wait_stages[] = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
 		kvfEndCommandBuffer(m_cmd_buffers[m_current_frame_index]);
 		if(p_window)
-			kvfSubmitCommandBuffer(RenderCore::Get().GetDevice(), m_cmd_buffers[m_current_frame_index], KVF_GRAPHICS_QUEUE, m_render_finished_semaphores[m_current_frame_index], m_image_available_semaphores[m_current_frame_index], m_cmd_fences[m_current_frame_index], wait_stages);
+			kvfSubmitCommandBuffer(RenderCore::Get().GetDevice(), m_cmd_buffers[m_current_frame_index], KVF_GRAPHICS_QUEUE, m_render_finished_semaphores[render_finished_index], m_image_available_semaphores[m_current_frame_index], m_cmd_fences[m_current_frame_index], wait_stages);
 		else
 			kvfSubmitCommandBuffer(RenderCore::Get().GetDevice(), m_cmd_buffers[m_current_frame_index], KVF_GRAPHICS_QUEUE, VK_NULL_HANDLE, VK_NULL_HANDLE, m_cmd_fences[m_current_frame_index], wait_stages);
 		if(p_window)
-			m_swapchain.Present(m_render_finished_semaphores[m_current_frame_index]);
+			m_swapchain.Present(m_render_finished_semaphores[render_finished_index]);
 		m_current_frame_index = (m_current_frame_index + 1) % MAX_FRAMES_IN_FLIGHT;
 	}
 
@@ -81,12 +95,16 @@ namespace mlx
 	{
 		MLX_PROFILE_FUNCTION();
 		RenderCore::Get().WaitDeviceIdle();
+		for(std::size_t i = 0; i < m_render_finished_semaphores.size(); i++)
+		{
+			kvfDestroySemaphore(RenderCore::Get().GetDevice(), m_render_finished_semaphores[i]);
+			DebugLog("Vulkan: render finished semaphore destroyed");
+		}
+		m_render_finished_semaphores.clear();
 		for(std::size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
 		{
 			kvfDestroySemaphore(RenderCore::Get().GetDevice(), m_image_available_semaphores[i]);
 			DebugLog("Vulkan: image available semaphore destroyed");
-			kvfDestroySemaphore(RenderCore::Get().GetDevice(), m_render_finished_semaphores[i]);
-			DebugLog("Vulkan: render finished semaphore destroyed");
 			kvfDestroyCommandBuffer(RenderCore::Get().GetDevice(), m_cmd_buffers[i]);
 			DebugLog("Vulkan: command buffer destroyed");
 			kvfDestroyFence(RenderCore::Get().GetDevice(), m_cmd_fences[i]);
