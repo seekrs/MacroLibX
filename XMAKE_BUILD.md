@@ -23,7 +23,7 @@ You can force the mlx to use your integrated GPU using `xmake config --force_int
 The mlx can dump it's graphics memory use to json files every two seconds by enabling this option `xmake config --graphics_memory_dump=y`.
 
 ### 🪛 A possible build configuration
-As a configuration example here's how the command can look like `xmake config --mode=debug --toolchain=clang --graphics_memory_dump=y --images_optimized=n`
+As a configuration example here's how the command can look like `xmake config --mode=debug --toolchain=clang --graphics_memory_dump=y`
 
 ## 🚧 Build the lib
 
