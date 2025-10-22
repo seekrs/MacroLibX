@@ -80,6 +80,17 @@ ffi.cdef(
     void mlx_string_put(mlx_context mlx, mlx_window win, int x, int y, mlx_color color, char* str);
     void mlx_set_font(mlx_context mlx, char* filepath);
     void mlx_set_font_scale(mlx_context mlx, char* filepath, float scale);
+
+    void mlx_set_window_max_size(mlx_context mlx, mlx_window win, int x, int y);
+    void mlx_set_window_min_size(mlx_context mlx, mlx_window win, int x, int y);
+    void mlx_maximise_window(mlx_context mlx, mlx_window win);
+    void mlx_minimize_window(mlx_context mlx, mlx_window win);
+    void mlx_restore_window(mlx_context mlx, mlx_window win);
+    void mlx_pixel_put_array(mlx_context mlx, mlx_window win, int x, int y, mlx_color* pixels, size_t pixels_number);
+    void mlx_pixel_put_region(mlx_context mlx, mlx_window win, int x, int y, int w, int h, mlx_color* pixels);
+    void mlx_get_image_region(mlx_context mlx, mlx_image image, int x, int y, int w, int h, mlx_color* dst);
+    void mlx_set_image_region(mlx_context mlx, mlx_image image, int x, int y, int w, int h, mlx_color* pixels);
+    void mlx_put_transformed_image_to_window(mlx_context mlx, mlx_window win, mlx_image image, int x, int y, float scale_x, float scale_y, float angle);
     """
 )
 
@@ -207,6 +218,15 @@ class Context:
             raise MlxError("mlx_new_image failed")
         return Image(self, img)
 
+    def new_image_from_file(self, path: str) -> Tuple["Image", int, int]:
+        w = ffi.new("int[]", 1);
+        h = ffi.new("int[]", 1);
+        ffi_path = ffi.new("char[]", path.encode('ascii'))
+        img = lib.mlx_new_image_from_file(self._ctx, ffi_path, w, h)
+        if img == ffi.NULL:
+            raise MlxError("mlx_new_image failed")
+        return (Image(self, img), w, h)
+
     def loop(self) -> None:
         lib.mlx_loop(self._ctx)
 
@@ -217,6 +237,29 @@ class Context:
         if getattr(self, "_ctx", None):
             lib.mlx_destroy_context(self._ctx)
             self._ctx = ffi.NULL
+
+    def mouse_show(self) -> None:
+        lib.mlx_mouse_show(self._ctx)
+
+    def mouse_hide(self) -> None:
+        lib.mlx_mouse_hide(self._ctx)
+
+    def mouse_move(self, x: int, y: int) -> None:
+        lib.mlx_mouse_move(self._ctx, int(x), int(y))
+
+    def get_mouse_position(self) -> Tuple[int, int]:
+        x = ffi.new("int[]", 1);
+        y = ffi.new("int[]", 1);
+        lib.mlx_mouse_get_pos(self._ctx, x, y)
+        return (x[0], y[0])
+
+    def set_font(self, path: str) -> None:
+        ffi_path = ffi.new("char[]", path.encode('ascii'))
+        lib.mlx_set_font(self._ctx, ffi_path)
+
+    def set_font_scale(self, path: str, scale: float) -> None:
+        ffi_path = ffi.new("char[]", path.encode('ascii'))
+        lib.mlx_set_font_scale(self._ctx, ffi_path, float(scale))
 
     def __del__(self):
         try:
@@ -235,14 +278,56 @@ class Window:
         ffi_title = ffi.new("char[]", title.encode('ascii', 'replace'))
         lib.mlx_set_window_title(self._ctx._ctx, self._win, ffi_title)
 
-    def clear(self, rgba: int) -> None:
+    def set_position(self, x: int, y: int) -> None:
+        lib.mlx_set_window_position(self._ctx._ctx, self._win, int(x), int(y))
+
+    def set_size(self, w: int, h: int) -> None:
+        lib.mlx_set_window_size(self._ctx._ctx, self._win, int(w), int(h))
+
+    def set_fullscreen(self, enable: bool) -> None:
+        lib.mlx_set_window_fullscreen(self._ctx._ctx, self._win, bool(enable))
+
+    def get_position(self) -> Tuple[int, int]:
+        x = ffi.new("int[]", 1);
+        y = ffi.new("int[]", 1);
+        lib.mlx_get_window_position(self._ctx._ctx, self._win, x, y)
+        return (x[0], y[0])
+
+    def get_size(self) -> Tuple[int, int]:
+        w = ffi.new("int[]", 1);
+        h = ffi.new("int[]", 1);
+        lib.mlx_get_window_size(self._ctx._ctx, self._win, w, h)
+        return (w[0], h[0])
+
+    def get_screen_size(self) -> Tuple[int, int]:
+        w = ffi.new("int[]", 1);
+        h = ffi.new("int[]", 1);
+        lib.mlx_get_screen_size(self._ctx._ctx, self._win, w, h)
+        return (w[0], h[0])
+
+    def clear(self, rgba: int = 0) -> None:
         lib.mlx_clear_window(self._ctx._ctx, self._win, _rgbaToColor(rgba))
 
     def pixel_put(self, x: int, y: int, rgba: int) -> None:
         lib.mlx_pixel_put(self._ctx._ctx, self._win, int(x), int(y), _rgbaToColor(rgba))
 
-    def put_image(self, image: "Image", x: int = 0, y: int = 0) -> None:
+    def pixel_put_array(self, x: int, y: int, rgba: list[int]) -> None:
+        ffi_pixels = ffi.new("mlx_color[]", [_rgbaToColor(pixel) for pixel in rgba])
+        lib.mlx_pixel_put_array(self._ctx._ctx, self._win, int(x), int(y), ffi_pixels, int(rgba.len()))
+
+    def pixel_put_region(self, x: int, y: int, w: int, h: int, rgba: list[int]) -> None:
+        ffi_pixels = ffi.new("mlx_color[]", [_rgbaToColor(pixel) for pixel in rgba])
+        lib.mlx_pixel_put_region(self._ctx._ctx, self._win, int(x), int(y), int(w), int(h), ffi_pixels)
+
+    def put_image(self, image: "Image", x: int, y: int) -> None:
         lib.mlx_put_image_to_window(self._ctx._ctx, self._win, image._img, int(x), int(y))
+
+    def put_transformed_image(self, image: "Image", x: int, y: int, scale_x: float, scale_y: float, angle: float) -> None:
+        lib.mlx_put_transformed_image_to_window(self._ctx._ctx, self._win, image._img, int(x), int(y), float(scale_x), float(scale_y), float(angle))
+
+    def string_put(self, x: int, y: int, rgba: int, text: str) -> None:
+        ffi_text = ffi.new("char[]", text.encode('ascii', 'replace'))
+        lib.mlx_string_put(self._ctx._ctx, self._win, int(x), int(y), _rgbaToColor(rgba), ffi_text)
 
     def on_event(self, event_type: EventType | int, fn: Callable[[int], None]) -> None:
         lib.mlx_on_event(self._ctx._ctx, self._win, int(event_type), _makeEventCallback(fn), ffi.NULL)
@@ -264,6 +349,12 @@ class Image:
     def __init__(self, ctx: Context, img) -> None:
         self._ctx = ctx
         self._img = img
+
+    def set_pixel(self, x: int, y: int, rgba: int) -> None:
+        lib.mlx_set_image_pixel(self._ctx._ctx, self._img, int(x), int(y), _rgbaToColor(rgba))
+
+    def get_pixel(self, x: int, y: int) -> int:
+        return lib.mlx_get_image_pixel(self._ctx._ctx, self._img, int(x), int(y))
 
     def destroy(self) -> None:
         if getattr(self, "_img", None):
