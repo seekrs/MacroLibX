@@ -4,7 +4,6 @@ MAKE = make --no-print-directory
 OS ?= $(shell uname -s)
 DEBUG ?= false
 TOOLCHAIN ?= clang
-IMAGES_OPTIMIZED ?= true
 FORCE_INTEGRATED_GPU ?= false
 GRAPHICS_MEMORY_DUMP ?= false
 PROFILER ?= false
@@ -67,10 +66,6 @@ endif
 
 ifeq ($(FORCE_INTEGRATED_GPU), true)
 	_ENABLEDFLAGS += FORCE_INTEGRATED_GPU
-endif
-
-ifeq ($(IMAGES_OPTIMIZED), true)
-	_ENABLEDFLAGS += IMAGE_OPTIMIZED
 endif
 
 ifeq ($(GRAPHICS_MEMORY_DUMP), true)

@@ -16,9 +16,6 @@ MacroLibX has a strong safety support, mainly by checking every pointer that you
 ### 🛠️ Set the toolchain
 To change the compilation toolchain you can use `xmake config --toolchain=[gcc|clang|...]`
 
-### ⚠️⚠️⚠️ 🖼️ Image optimisations ⚠️⚠️⚠️
-If you run into glitches when writing or reading pixels from images you can turn off images optimisations by using `xmake config --images_optimized=n`.
-
 ### 🖥️ Force the integrated GPU (not recommended)
 You can force the mlx to use your integrated GPU using `xmake config --force_integrated_gpu=y`. Note that there are a lot of chances that your application crashes by using that.
 
