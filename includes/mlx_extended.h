@@ -6,7 +6,7 @@
 /*   By: maldavid <contact@kbz8.me>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 16:17:10 by maldavid          #+#    #+#             */
-/*   Updated: 2025/03/12 22:03:45 by maldavid         ###   ########.fr       */
+/*   Updated: 2025/10/22 16:59:38 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,14 +122,6 @@ MLX_API void mlx_pixel_put_region(mlx_context mlx, mlx_window win, int x, int y,
  *
  * Note: it is responsability of the user to make sure the size of `dst` is
  * big enough for the given region.
- *
- * /!\ If you run into glitches when writing or reading pixels from images /!\
- * You need to add IMAGES_OPTIMIZED=false to your make mlx command
- * ```
- *     ~ git clone https://github.com/seekrs/MacroLibX.git
- *     ~ cd MacroLibX
- *     ~ make IMAGES_OPTIMIZED=false
- * ```
  */
 MLX_API void mlx_get_image_region(mlx_context mlx, mlx_image image, int x, int y, int w, int h, mlx_color* dst);
 
@@ -146,14 +138,6 @@ MLX_API void mlx_get_image_region(mlx_context mlx, mlx_image image, int x, int y
  *
  * Note: it is responsability of the user to make sure the size of `pixels` is
  * big enough for the given region.
- *
- * /!\ If you run into glitches when writing or reading pixels from images /!\
- * You need to add IMAGES_OPTIMIZED=false to your make mlx command
- * ```
- *     ~ git clone https://github.com/seekrs/MacroLibX.git
- *     ~ cd MacroLibX
- *     ~ make IMAGES_OPTIMIZED=false
- * ```
  */
 MLX_API void mlx_set_image_region(mlx_context mlx, mlx_image image, int x, int y, int w, int h, mlx_color* pixels);
 
