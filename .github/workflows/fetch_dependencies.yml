@@ -28,7 +28,6 @@ jobs:
         signoff: false
         base: indev
         assignees: Kbz-8
-        reviewers: Kbz-8
         branch: auto_deps_updates
         labels: |
           automated
