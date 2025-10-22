@@ -6,6 +6,7 @@ on:
     - cron: '0 0 * * 0' # Runs weekly
 
 jobs:
+  workflow_dispatch:
   update-dependencies:
     runs-on: ubuntu-latest
 
