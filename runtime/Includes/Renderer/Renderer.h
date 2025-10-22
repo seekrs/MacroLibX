@@ -38,8 +38,8 @@ namespace mlx
 
 		private:
 			Swapchain m_swapchain;
+			std::vector<VkSemaphore> m_render_finished_semaphores;
 			std::array<VkSemaphore, MAX_FRAMES_IN_FLIGHT> m_image_available_semaphores;
-			std::array<VkSemaphore, MAX_FRAMES_IN_FLIGHT> m_render_finished_semaphores;
 			std::array<VkCommandBuffer, MAX_FRAMES_IN_FLIGHT> m_cmd_buffers;
 			std::array<VkFence, MAX_FRAMES_IN_FLIGHT> m_cmd_fences;
 			NonOwningPtr<Window> p_window;
