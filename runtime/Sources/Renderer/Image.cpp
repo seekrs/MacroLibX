@@ -22,12 +22,6 @@
 	#include <stb_image.h>
 #endif
 
-#ifdef IMAGE_OPTIMIZED
-	#define TILING VK_IMAGE_TILING_OPTIMAL
-#else
-	#define TILING VK_IMAGE_TILING_LINEAR
-#endif
-
 namespace mlx
 {
 	mlx_color ReverseColor(mlx_color color)
@@ -186,7 +180,7 @@ namespace mlx
 	void Texture::Init(CPUBuffer pixels, std::uint32_t width, std::uint32_t height, VkFormat format, bool is_multisampled, [[maybe_unused]] std::string_view debug_name)
 	{
 		MLX_PROFILE_FUNCTION();
-		Image::Init(ImageType::Color, width, height, format, TILING, VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT | VK_IMAGE_USAGE_SAMPLED_BIT | VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT, is_multisampled, std::move(debug_name));
+		Image::Init(ImageType::Color, width, height, format, VK_IMAGE_TILING_OPTIMAL, VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT | VK_IMAGE_USAGE_SAMPLED_BIT | VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT, is_multisampled, std::move(debug_name));
 		Image::CreateImageView(VK_IMAGE_VIEW_TYPE_2D, VK_IMAGE_ASPECT_COLOR_BIT);
 		Image::CreateSampler();
 		if(pixels)

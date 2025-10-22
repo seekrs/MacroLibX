@@ -11,12 +11,6 @@ set_targetdir("./")
 set_optimize("fastest")
 
 -- Options
-
-option("images_optimized")
-	set_default(true)
-	add_defines("IMAGE_OPTIMIZED")
-option_end()
-
 option("force_integrated_gpu")
 	set_default(false)
 	add_defines("FORCE_INTEGRATED_GPU")
@@ -48,7 +42,6 @@ target("mlx")
 	set_default(true)
 	set_license("MIT")
 	set_kind("shared")
-	add_options("images_optimized")
 	add_options("force_integrated_gpu")
 	add_options("graphics_memory_dump")
 	add_options("profiler")

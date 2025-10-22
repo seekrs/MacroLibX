@@ -6,7 +6,7 @@
 /*   By: maldavid <contact@kbz8.me>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:56:35 by maldavid          #+#    #+#             */
-/*   Updated: 2025/03/12 22:26:32 by maldavid         ###   ########.fr       */
+/*   Updated: 2025/10/22 16:59:21 by maldavid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -361,14 +361,6 @@ MLX_API void mlx_destroy_image(mlx_context mlx, mlx_image image);
  * @param y          Y coordinate in the image
  *
  * @return (int)     Return the pixel data
- *
- * /!\ If you run into glitches when writing or reading pixels from images /!\
- * You need to add IMAGES_OPTIMIZED=false to your make mlx command
- * ```
- *     ~ git clone https://github.com/seekrs/MacroLibX.git
- *     ~ cd MacroLibX
- *     ~ make IMAGES_OPTIMIZED=false
- * ```
  */
 MLX_API mlx_color mlx_get_image_pixel(mlx_context mlx, mlx_image image, int x, int y);
 
@@ -380,14 +372,6 @@ MLX_API mlx_color mlx_get_image_pixel(mlx_context mlx, mlx_image image, int x, i
  * @param x          X coordinate in the image
  * @param y          Y coordinate in the image
  * @param color      Color of the pixel to set
- *
- * /!\ If you run into glitches when writing or reading pixels from images /!\
- * You need to add IMAGES_OPTIMIZED=false to your make mlx command
- * ```
- *     ~ git clone https://github.com/seekrs/MacroLibX.git
- *     ~ cd MacroLibX
- *     ~ make IMAGES_OPTIMIZED=false
- * ```
  */
 MLX_API void mlx_set_image_pixel(mlx_context mlx, mlx_image image, int x, int y, mlx_color color);
 
