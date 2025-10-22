@@ -1,6 +1,8 @@
 name: Unit tests
 
 on:
+  repository_dispatch:
+    types: [create-pull-request]
   pull_request:
   push:
     paths-ignore:
