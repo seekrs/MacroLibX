@@ -1,6 +1,6 @@
 -- Global settings
 
-add_requires("libsdl", { configs = { sdlmain = false } })
+add_requires("libsdl2", { configs = { sdlmain = false } })
 
 add_rules("mode.debug", "mode.release", "mode.releasedbg")
 set_languages("cxx20", "c11")
@@ -63,7 +63,7 @@ target("mlx")
 
 	add_files("runtime/Sources/**.cpp")
 
-	add_packages("libsdl")
+	add_packages("libsdl2")
 
 	if is_mode("debug") then
 		add_defines("DEBUG")
@@ -98,5 +98,5 @@ target("Test")
 
 	add_defines("SDL_MAIN_HANDLED")
 
-	add_packages("libsdl")
+	add_packages("libsdl2")
 target_end()

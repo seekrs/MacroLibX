@@ -114,11 +114,8 @@ namespace mlx
 
 	void DescriptorPool::ReturnDescriptorSet(std::shared_ptr<DescriptorSet> set)
 	{
-		//std::size_t i = 0;
 		auto it = std::find_if(m_used_sets.begin(), m_used_sets.end(), [&](const std::shared_ptr<DescriptorSet>& rhs_set)
 		{
-			//i++;
-			//std::cout << m_used_sets.size() << " " << i << std::endl;
 			return set == rhs_set;
 		});
 		if(it == m_used_sets.end())
@@ -132,18 +129,18 @@ namespace mlx
 		MLX_PROFILE_FUNCTION();
 		for(auto& pool : m_pools)
 		{
-			if(pool.GetNumberOfSetsAllocated() < MAX_SETS_PER_POOL)
-				return pool;
+			if(pool->GetNumberOfSetsAllocated() < MAX_SETS_PER_POOL)
+				return *pool;
 		}
-		m_pools.emplace_back().Init();
-		return m_pools.back();
+		m_pools.emplace_back(std::make_unique<DescriptorPool>())->Init();
+		return *m_pools.back();
 	}
 
 	void DescriptorPoolManager::Destroy()
 	{
 		MLX_PROFILE_FUNCTION();
 		for(auto& pool : m_pools)
-			pool.Destroy();
+			pool->Destroy();
 		m_pools.clear();
 	}
 
