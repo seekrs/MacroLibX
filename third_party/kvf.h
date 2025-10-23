@@ -1,7 +1,7 @@
 /***
  *                              MIT License
  *
- *                      Copyright (c) 2023-2024 kbz_8
+ *                      Copyright (c) 2023-2025 kbz_8
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -1474,9 +1474,6 @@ int32_t __kvfScorePhysicalDevice(VkPhysicalDevice device, VkSurfaceKHR surface, 
 	int32_t score = -1;
 	if(device_props.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU)
 		score += 1000;
-
-	if(!device_features.geometryShader)
-		return -1;
 
 	score += device_props.limits.maxImageDimension2D;
 	score += device_props.limits.maxBoundDescriptorSets;
