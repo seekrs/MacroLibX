@@ -38,7 +38,7 @@ namespace mlx
 		};
 		EventBus::RegisterListener({ functor, "mlx_final_pass_" + std::to_string(reinterpret_cast<std::uintptr_t>(this)) });
 
-		p_set = RenderCore::Get().GetDescriptorPoolManager().GetAvailablePool().RequestDescriptorSet(p_fragment_shader->GetShaderLayout().set_layouts[0].second, ShaderType::Fragment);
+		p_set = RenderCore::Get().GetDescriptorPoolManager().GetAvailablePool(p_fragment_shader->GetShaderLayout().set_layouts[0].second, ShaderType::Fragment).RequestDescriptorSet(p_fragment_shader->GetShaderLayout().set_layouts[0].second, ShaderType::Fragment);
 	}
 
 	void FinalPass::Pass([[maybe_unused]] Scene& scene, Renderer& renderer, Texture& render_target, NonOwningPtr<class Texture> final_target)

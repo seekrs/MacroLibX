@@ -52,8 +52,8 @@ namespace mlx
 		};
 		EventBus::RegisterListener({ functor, "mlx_2d_render_pass_" + std::to_string(reinterpret_cast<std::uintptr_t>(this)) });
 
-		p_viewer_data_set = RenderCore::Get().GetDescriptorPoolManager().GetAvailablePool().RequestDescriptorSet(p_vertex_shader->GetShaderLayout().set_layouts[0].second, ShaderType::Vertex);
-		p_texture_set = RenderCore::Get().GetDescriptorPoolManager().GetAvailablePool().RequestDescriptorSet(p_fragment_shader->GetShaderLayout().set_layouts[0].second, ShaderType::Fragment);
+		p_viewer_data_set = RenderCore::Get().GetDescriptorPoolManager().GetAvailablePool(p_vertex_shader->GetShaderLayout().set_layouts[0].second, ShaderType::Vertex).RequestDescriptorSet(p_vertex_shader->GetShaderLayout().set_layouts[0].second, ShaderType::Vertex);
+		p_texture_set = RenderCore::Get().GetDescriptorPoolManager().GetAvailablePool(p_fragment_shader->GetShaderLayout().set_layouts[0].second, ShaderType::Fragment).RequestDescriptorSet(p_fragment_shader->GetShaderLayout().set_layouts[0].second, ShaderType::Fragment);
 
 		p_viewer_data_buffer = std::make_shared<UniformBuffer>();
 		p_viewer_data_buffer->Init(sizeof(ViewerData), "mlx_2d_pass_viewer_data");
