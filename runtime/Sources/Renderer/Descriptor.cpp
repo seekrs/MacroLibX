@@ -9,7 +9,7 @@
 
 namespace mlx
 {
-	constexpr std::size_t MAX_SETS_PER_POOL = MAX_FRAMES_IN_FLIGHT * 1024;
+	constexpr std::size_t MAX_SETS_PER_POOL = 1024;
 
 	void TransitionImageToCorrectLayout(Image& image, VkCommandBuffer cmd)
 	{
@@ -26,19 +26,19 @@ namespace mlx
 	{
 		MLX_PROFILE_FUNCTION();
 		VkDescriptorPoolSize pool_sizes[] = {
-			{ VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, MAX_SETS_PER_POOL },
-			{ VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, MAX_SETS_PER_POOL },
-			{ VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, MAX_SETS_PER_POOL }
+			{ VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, MAX_FRAMES_IN_FLIGHT * MAX_SETS_PER_POOL },
+			{ VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, MAX_FRAMES_IN_FLIGHT * MAX_SETS_PER_POOL },
+			{ VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, MAX_FRAMES_IN_FLIGHT * MAX_SETS_PER_POOL }
 		};
 
 		VkDescriptorPoolCreateInfo pool_info{};
 		pool_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
 		pool_info.poolSizeCount = sizeof(pool_sizes) / sizeof(pool_sizes[0]);
 		pool_info.pPoolSizes = pool_sizes;
-		pool_info.maxSets = MAX_SETS_PER_POOL;
+		pool_info.maxSets = MAX_FRAMES_IN_FLIGHT * MAX_SETS_PER_POOL;
 		pool_info.flags = 0;
 		kvfCheckVk(RenderCore::Get().vkCreateDescriptorPool(RenderCore::Get().GetDevice(), &pool_info, nullptr, &m_pool));
-		m_allocation_count = 0;
+		DebugLog("Vulkan: created new descriptor pool");
 	}
 
 	void DescriptorPool::Destroy() noexcept
@@ -52,7 +52,6 @@ namespace mlx
 			kvfDestroyDescriptorSetLayout(RenderCore::Get().GetDevice(), set->m_set_layout);
 		RenderCore::Get().vkDestroyDescriptorPool(RenderCore::Get().GetDevice(), m_pool, nullptr);
 		m_pool = VK_NULL_HANDLE;
-		m_allocation_count = 0;
 		m_free_sets.clear();
 		m_used_sets.clear();
 	}
@@ -103,7 +102,6 @@ namespace mlx
 			alloc_info.pSetLayouts = &vulkan_layout;
 			VkDescriptorSet vulkan_set;
 			kvfCheckVk(RenderCore::Get().vkAllocateDescriptorSets(RenderCore::Get().GetDevice(), &alloc_info, &vulkan_set));
-			m_allocation_count++;
 			vulkan_sets[i] = vulkan_set;
 		}
 
@@ -124,12 +122,23 @@ namespace mlx
 		m_free_sets.push_back(set);
 	}
 
-	DescriptorPool& DescriptorPoolManager::GetAvailablePool()
+	bool DescriptorPool::CanAllocate(const ShaderSetLayout& layout, ShaderType shader_type) const
+	{
+		auto it = std::find_if(m_free_sets.begin(), m_free_sets.end(), [&](std::shared_ptr<DescriptorSet> set)
+		{
+			return shader_type == set->GetShaderType() && layout == set->GetShaderLayout();
+		});
+		if(it != m_free_sets.end())
+			return true;
+		return m_used_sets.size() + m_free_sets.size() < MAX_SETS_PER_POOL;
+	}
+
+	DescriptorPool& DescriptorPoolManager::GetAvailablePool(const ShaderSetLayout& layout, ShaderType shader_type)
 	{
 		MLX_PROFILE_FUNCTION();
 		for(auto& pool : m_pools)
 		{
-			if(pool->GetNumberOfSetsAllocated() < MAX_SETS_PER_POOL)
+			if(pool->CanAllocate(layout, shader_type))
 				return *pool;
 		}
 		m_pools.emplace_back(std::make_unique<DescriptorPool>())->Init();
