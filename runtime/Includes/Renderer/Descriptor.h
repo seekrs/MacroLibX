@@ -26,9 +26,9 @@ namespace mlx
 
 			std::shared_ptr<class DescriptorSet> RequestDescriptorSet(const ShaderSetLayout& layout, ShaderType shader_type);
 			void ReturnDescriptorSet(std::shared_ptr<class DescriptorSet> set);
+			bool CanAllocate(const ShaderSetLayout& layout, ShaderType shader_type) const;
 
 			[[nodiscard]] inline VkDescriptorPool Get() const noexcept { return m_pool; }
-			[[nodiscard]] MLX_FORCEINLINE std::size_t GetNumberOfSetsAllocated() const noexcept { return m_allocation_count; }
 
 			~DescriptorPool() = default;
 
@@ -36,7 +36,6 @@ namespace mlx
 			std::vector<std::shared_ptr<class DescriptorSet>> m_free_sets;
 			std::vector<std::shared_ptr<class DescriptorSet>> m_used_sets;
 			VkDescriptorPool m_pool;
-			std::size_t m_allocation_count = 0;
 	};
 
 	class DescriptorPoolManager
@@ -44,7 +43,7 @@ namespace mlx
 		public:
 			DescriptorPoolManager() = default;
 
-			DescriptorPool& GetAvailablePool();
+			DescriptorPool& GetAvailablePool(const ShaderSetLayout& layout, ShaderType shader_type);
 			void Destroy();
 
 			~DescriptorPoolManager() = default;

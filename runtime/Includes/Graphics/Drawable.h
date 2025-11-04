@@ -38,7 +38,7 @@ namespace mlx
 
 			inline void UpdateDescriptorSet(std::shared_ptr<DescriptorSet> set)
 			{
-				p_set = RenderCore::Get().GetDescriptorPoolManager().GetAvailablePool().RequestDescriptorSet(set->GetShaderLayout(), set->GetShaderType());
+				p_set = RenderCore::Get().GetDescriptorPoolManager().GetAvailablePool(set->GetShaderLayout(), set->GetShaderType()).RequestDescriptorSet(set->GetShaderLayout(), set->GetShaderType());
 			}
 
 			virtual void Bind(std::size_t frame_index, VkCommandBuffer cmd) = 0;
