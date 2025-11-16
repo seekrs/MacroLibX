@@ -18,11 +18,7 @@ module;
   "To silence this warning, define the VULKAN_HPP_CXX_MODULE_EXPERIMENTAL_WARNING macro.\n\n" \
   "For feedback, go to: https://github.com/KhronosGroup/Vulkan-Hpp/issues"
 
-#  if defined( __clang__ ) || defined( __GNUC__ ) || defined( __GNUG__ )
-_Pragma( VULKAN_HPP_STRINGIFY( GCC warning VULKAN_HPP_CXX_MODULE_EXPERIMENTAL_WARNING ) )
-#  elif defined( _MSC_VER )
-_Pragma( VULKAN_HPP_STRINGIFY( message( __FILE__ "(" VULKAN_HPP_STRINGIFY( __LINE__ ) "): warning: " VULKAN_HPP_CXX_MODULE_EXPERIMENTAL_WARNING ) ) )
-#  endif
+VULKAN_HPP_COMPILE_WARNING( VULKAN_HPP_CXX_MODULE_EXPERIMENTAL_WARNING )
 #endif
 
 #include <vulkan/vulkan.hpp>
@@ -32,8 +28,8 @@ _Pragma( VULKAN_HPP_STRINGIFY( message( __FILE__ "(" VULKAN_HPP_STRINGIFY( __LIN
 #include <vulkan/vulkan_raii.hpp>
 #include <vulkan/vulkan_shared.hpp>
 
-  export module vulkan_hpp;
-export import VULKAN_HPP_STD_MODULE;
+export module vulkan_hpp;
+export import std;
 
 export namespace VULKAN_HPP_NAMESPACE
 {
@@ -56,6 +52,7 @@ export namespace VULKAN_HPP_NAMESPACE
     using VULKAN_HPP_NAMESPACE::detail::DispatchLoaderStatic;
     using VULKAN_HPP_NAMESPACE::detail::getDispatchLoaderStatic;
 #endif /*VK_NO_PROTOTYPES*/
+    using VULKAN_HPP_NAMESAPCE::detail::isDispatchLoader;
     using VULKAN_HPP_NAMESPACE::detail::createResultValueType;
     using VULKAN_HPP_NAMESPACE::detail::resultCheck;
   }  // namespace detail
@@ -925,9 +922,6 @@ export namespace VULKAN_HPP_NAMESPACE
   using VULKAN_HPP_NAMESPACE::PresentScalingFlagsEXT;
   using VULKAN_HPP_NAMESPACE::PresentScalingFlagsKHR;
 
-  //=== VK_NV_ray_tracing_invocation_reorder ===
-  using VULKAN_HPP_NAMESPACE::RayTracingInvocationReorderModeNV;
-
   //=== VK_NV_cooperative_vector ===
   using VULKAN_HPP_NAMESPACE::ComponentTypeKHR;
   using VULKAN_HPP_NAMESPACE::ComponentTypeNV;
@@ -1030,6 +1024,10 @@ export namespace VULKAN_HPP_NAMESPACE
   using VULKAN_HPP_NAMESPACE::AccessFlagBits3KHR;
   using VULKAN_HPP_NAMESPACE::AccessFlags3KHR;
 
+  //=== VK_EXT_ray_tracing_invocation_reorder ===
+  using VULKAN_HPP_NAMESPACE::RayTracingInvocationReorderModeEXT;
+  using VULKAN_HPP_NAMESPACE::RayTracingInvocationReorderModeNV;
+
   //=== VK_EXT_depth_clamp_control ===
   using VULKAN_HPP_NAMESPACE::DepthClampModeEXT;
 
@@ -1051,6 +1049,9 @@ export namespace VULKAN_HPP_NAMESPACE
   //=== VK_ARM_performance_counters_by_region ===
   using VULKAN_HPP_NAMESPACE::PerformanceCounterDescriptionFlagBitsARM;
   using VULKAN_HPP_NAMESPACE::PerformanceCounterDescriptionFlagsARM;
+
+  //=== VK_QCOM_data_graph_model ===
+  using VULKAN_HPP_NAMESPACE::DataGraphModelCacheTypeQCOM;
 
   //=== VK_KHR_maintenance10 ===
   using VULKAN_HPP_NAMESPACE::RenderingAttachmentFlagBitsKHR;
@@ -2891,6 +2892,10 @@ export namespace VULKAN_HPP_NAMESPACE
   using VULKAN_HPP_NAMESPACE::KHRShaderFmaExtensionName;
   using VULKAN_HPP_NAMESPACE::KHRShaderFmaSpecVersion;
 
+  //=== VK_EXT_ray_tracing_invocation_reorder ===
+  using VULKAN_HPP_NAMESPACE::EXTRayTracingInvocationReorderExtensionName;
+  using VULKAN_HPP_NAMESPACE::EXTRayTracingInvocationReorderSpecVersion;
+
   //=== VK_EXT_depth_clamp_control ===
   using VULKAN_HPP_NAMESPACE::EXTDepthClampControlExtensionName;
   using VULKAN_HPP_NAMESPACE::EXTDepthClampControlSpecVersion;
@@ -2978,6 +2983,15 @@ export namespace VULKAN_HPP_NAMESPACE
   //=== VK_EXT_shader_64bit_indexing ===
   using VULKAN_HPP_NAMESPACE::EXTShader64BitIndexingExtensionName;
   using VULKAN_HPP_NAMESPACE::EXTShader64BitIndexingSpecVersion;
+
+  //=== VK_EXT_custom_resolve ===
+  using VULKAN_HPP_NAMESPACE::EXTCustomResolveExtensionName;
+  using VULKAN_HPP_NAMESPACE::EXTCustomResolveSpecVersion;
+
+  //=== VK_QCOM_data_graph_model ===
+  using VULKAN_HPP_NAMESPACE::DataGraphModelToolchainVersionLengthQCOM;
+  using VULKAN_HPP_NAMESPACE::QCOMDataGraphModelExtensionName;
+  using VULKAN_HPP_NAMESPACE::QCOMDataGraphModelSpecVersion;
 
   //=== VK_KHR_maintenance10 ===
   using VULKAN_HPP_NAMESPACE::KHRMaintenance10ExtensionName;
@@ -4857,7 +4871,6 @@ export namespace VULKAN_HPP_NAMESPACE
   using VULKAN_HPP_NAMESPACE::PhysicalDeviceMultiviewPerViewViewportsFeaturesQCOM;
 
   //=== VK_NV_ray_tracing_invocation_reorder ===
-  using VULKAN_HPP_NAMESPACE::PhysicalDeviceRayTracingInvocationReorderFeaturesNV;
   using VULKAN_HPP_NAMESPACE::PhysicalDeviceRayTracingInvocationReorderPropertiesNV;
 
   //=== VK_NV_cooperative_vector ===
@@ -5179,6 +5192,11 @@ export namespace VULKAN_HPP_NAMESPACE
   //=== VK_KHR_shader_fma ===
   using VULKAN_HPP_NAMESPACE::PhysicalDeviceShaderFmaFeaturesKHR;
 
+  //=== VK_EXT_ray_tracing_invocation_reorder ===
+  using VULKAN_HPP_NAMESPACE::PhysicalDeviceRayTracingInvocationReorderFeaturesEXT;
+  using VULKAN_HPP_NAMESPACE::PhysicalDeviceRayTracingInvocationReorderFeaturesNV;
+  using VULKAN_HPP_NAMESPACE::PhysicalDeviceRayTracingInvocationReorderPropertiesEXT;
+
   //=== VK_EXT_depth_clamp_control ===
   using VULKAN_HPP_NAMESPACE::DepthClampRangeEXT;
   using VULKAN_HPP_NAMESPACE::PhysicalDeviceDepthClampControlFeaturesEXT;
@@ -5277,6 +5295,16 @@ export namespace VULKAN_HPP_NAMESPACE
 
   //=== VK_EXT_shader_64bit_indexing ===
   using VULKAN_HPP_NAMESPACE::PhysicalDeviceShader64BitIndexingFeaturesEXT;
+
+  //=== VK_EXT_custom_resolve ===
+  using VULKAN_HPP_NAMESPACE::BeginCustomResolveInfoEXT;
+  using VULKAN_HPP_NAMESPACE::CustomResolveCreateInfoEXT;
+  using VULKAN_HPP_NAMESPACE::PhysicalDeviceCustomResolveFeaturesEXT;
+
+  //=== VK_QCOM_data_graph_model ===
+  using VULKAN_HPP_NAMESPACE::DataGraphPipelineBuiltinModelCreateInfoQCOM;
+  using VULKAN_HPP_NAMESPACE::PhysicalDeviceDataGraphModelFeaturesQCOM;
+  using VULKAN_HPP_NAMESPACE::PipelineCacheHeaderVersionDataGraphQCOM;
 
   //=== VK_KHR_maintenance10 ===
   using VULKAN_HPP_NAMESPACE::PhysicalDeviceMaintenance10FeaturesKHR;
@@ -5728,6 +5756,7 @@ export namespace VULKAN_HPP_NAMESPACE
     //======================
 
     using VULKAN_HPP_RAII_NAMESPACE::Context;
+    using VULKAN_HPP_RAII_NAMESPACE::isVulkanRAIIHandleType;
 
     namespace detail
     {
@@ -8680,8 +8709,6 @@ export namespace std
   //=== VK_NV_ray_tracing_invocation_reorder ===
   template <>
   struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceRayTracingInvocationReorderPropertiesNV>;
-  template <>
-  struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceRayTracingInvocationReorderFeaturesNV>;
 
   //=== VK_NV_cooperative_vector ===
   template <>
@@ -9203,6 +9230,12 @@ export namespace std
   template <>
   struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceShaderFmaFeaturesKHR>;
 
+  //=== VK_EXT_ray_tracing_invocation_reorder ===
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceRayTracingInvocationReorderPropertiesEXT>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceRayTracingInvocationReorderFeaturesEXT>;
+
   //=== VK_EXT_depth_clamp_control ===
   template <>
   struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceDepthClampControlFeaturesEXT>;
@@ -9338,6 +9371,22 @@ export namespace std
   //=== VK_EXT_shader_64bit_indexing ===
   template <>
   struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceShader64BitIndexingFeaturesEXT>;
+
+  //=== VK_EXT_custom_resolve ===
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceCustomResolveFeaturesEXT>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::BeginCustomResolveInfoEXT>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::CustomResolveCreateInfoEXT>;
+
+  //=== VK_QCOM_data_graph_model ===
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::PipelineCacheHeaderVersionDataGraphQCOM>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::DataGraphPipelineBuiltinModelCreateInfoQCOM>;
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceDataGraphModelFeaturesQCOM>;
 
   //=== VK_KHR_maintenance10 ===
   template <>
@@ -10559,6 +10608,9 @@ export
 
   //=== VK_EXT_fragment_density_map_offset ===
   using ::PFN_vkCmdEndRendering2EXT;
+
+  //=== VK_EXT_custom_resolve ===
+  using ::PFN_vkCmdBeginCustomResolveEXT;
 
   //=== VK_KHR_maintenance10 ===
   using ::PFN_vkCmdEndRendering2KHR;
