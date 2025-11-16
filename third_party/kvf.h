@@ -104,6 +104,7 @@ void kvfSetValidationWarningCallback(KvfErrorCallback callback);
 void kvfAddLayer(const char* layer);
 
 VkInstance kvfCreateInstance(const char** extensions_enabled, uint32_t extensions_count);
+VkInstance kvfCreateInstanceNext(const char** extensions_enabled, uint32_t extensions_count, void* p_next);
 void kvfDestroyInstance(VkInstance instance);
 
 // If surfaces given to theses functions are VK_NULL_HANDLE no present queues will be searched and thus kvfQueuePresentKHR will not work
@@ -1296,6 +1297,11 @@ void kvfAddLayer(const char* layer)
 
 VkInstance kvfCreateInstance(const char** extensions_enabled, uint32_t extensions_count)
 {
+	return kvfCreateInstanceNext(extensions_enabled, extensions_count, NULL);
+}
+
+VkInstance kvfCreateInstanceNext(const char** extensions_enabled, uint32_t extensions_count, void* p_next)
+{
 	VkInstance instance = VK_NULL_HANDLE;
 
 	VkInstanceCreateInfo create_info = {};
@@ -1305,7 +1311,7 @@ VkInstance kvfCreateInstance(const char** extensions_enabled, uint32_t extension
 	create_info.ppEnabledExtensionNames = extensions_enabled;
 	create_info.enabledLayerCount = 0;
 	create_info.ppEnabledLayerNames = NULL;
-	create_info.pNext = NULL;
+	create_info.pNext = p_next;
 	#if defined(VK_USE_PLATFORM_MACOS_MVK) || defined(VK_USE_PLATFORM_METAL_EXT)
 		create_info.flags = VK_INSTANCE_CREATE_ENUMERATE_PORTABILITY_BIT_KHR;
 	#else
@@ -1323,6 +1329,8 @@ VkInstance kvfCreateInstance(const char** extensions_enabled, uint32_t extension
 		KVF_ASSERT(new_extension_set != NULL && "allocation failed :(");
 		memcpy(new_extension_set, extensions_enabled, sizeof(char*) * extensions_count);
 		new_extension_set[extensions_count] = VK_EXT_DEBUG_UTILS_EXTENSION_NAME;
+
+		debug_create_info.pNext = p_next;
 
 		create_info.enabledExtensionCount = extensions_count + 1;
 		create_info.ppEnabledExtensionNames = new_extension_set;
