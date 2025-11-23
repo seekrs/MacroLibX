@@ -236,6 +236,7 @@ VkPipeline kvfCreateGraphicsPipeline(VkDevice device, VkPipelineCache cache, VkP
 void kvfDestroyPipeline(VkDevice device, VkPipeline pipeline);
 
 void kvfCheckVk(VkResult result);
+int32_t kvfFindMemoryType(VkPhysicalDevice physical_device, uint32_t type_filter, VkMemoryPropertyFlags properties);
 
 #ifdef KVF_IMPL_VK_NO_PROTOTYPES
 	#ifdef KVF_DEFINE_VULKAN_FUNCTION_PROTOTYPE
@@ -518,6 +519,19 @@ void __kvfCheckVk(VkResult result, const char* function)
 void kvfCheckVk(VkResult result)
 {
 	__kvfCheckVk(result);
+}
+
+int32_t kvfFindMemoryType(VkPhysicalDevice physical_device, uint32_t type_filter, VkMemoryPropertyFlags properties)
+{
+	VkPhysicalDeviceMemoryProperties mem_properties;
+	KVF_GET_INSTANCE_FUNCTION(vkGetPhysicalDeviceMemoryProperties)(physical_device, &mem_properties);
+
+	for(int32_t i = 0; i < mem_properties.memoryTypeCount; i++)
+	{
+		if((type_filter & (1 << i)) && (mem_properties.memoryTypes[i].propertyFlags & properties) == properties)
+			return i;
+	}
+	return -1;
 }
 
 void __kvfAddDeviceToArray(VkPhysicalDevice device, int32_t graphics_queue, int32_t present_queue, int32_t compute_queue)
@@ -1152,7 +1166,7 @@ const char* kvfVerbaliseVkResult(VkResult result)
 		case VK_ERROR_OUT_OF_DATE_KHR: return "A surface has changed in such a way that it is no longer compatible with the swapchain";
 		case VK_ERROR_INCOMPATIBLE_DISPLAY_KHR: return "The display used by a swapchain does not use the same presentable image layout";
 		case VK_ERROR_NATIVE_WINDOW_IN_USE_KHR: return "The requested window is already connected to a VkSurfaceKHR, or to some other non-Vulkan API";
-		case VK_ERROR_VALIDATION_FAILED_EXT: return "A validation layer found an error";
+		case VK_ERROR_VALIDATION_FAILED: return "A command failed because invalid usage was detected by the implementation or a validation layer.";
 
 		default: return "Unknown Vulkan error";
 	}
@@ -2324,7 +2338,7 @@ void kvfCopyBufferToImage(VkCommandBuffer cmd, VkImage dst, VkBuffer src, size_t
 
 void kvfDestroyBuffer(VkDevice device, VkBuffer buffer)
 {
-	if(buffer != VK_NULL_HANDLE)
+	if(buffer == VK_NULL_HANDLE)
 		return;
 	KVF_ASSERT(device != VK_NULL_HANDLE);
 	__KvfDevice* kvf_device = __kvfGetKvfDeviceFromVkDevice(device);
