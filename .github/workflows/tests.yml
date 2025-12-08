@@ -25,7 +25,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v6
 
-    - uses: NcStudios/VulkanCI@v1.2
+    - uses: NcStudios/VulkanCI@v1.3
 
     - name: Install system dependencies
       run: |
