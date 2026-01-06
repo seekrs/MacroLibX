@@ -21,7 +21,11 @@ VULKAN_HPP_COMPILE_WARNING( VULKAN_HPP_CXX_MODULE_EXPERIMENTAL_WARNING )
 
 #include <vulkan/vulkan_video.hpp>
 
+<<<<<<< HEAD
 export module vulkan:video;
+=======
+export module vulkan_hpp:video;
+>>>>>>> master
 
 export namespace VULKAN_HPP_NAMESPACE::VULKAN_HPP_VIDEO_NAMESPACE
 {

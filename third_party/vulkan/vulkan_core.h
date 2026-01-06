@@ -66,7 +66,11 @@ extern "C" {
 //#define VK_API_VERSION VK_MAKE_API_VERSION(0, 1, 0, 0) // Patch version should always be set to 0
 
 // Version of this file
+<<<<<<< HEAD
 #define VK_HEADER_VERSION 337
+=======
+#define VK_HEADER_VERSION 335
+>>>>>>> master
 
 // Complete version of this file
 #define VK_HEADER_VERSION_COMPLETE VK_MAKE_API_VERSION(0, 1, 4, VK_HEADER_VERSION)
@@ -16862,6 +16866,10 @@ VKAPI_ATTR void VKAPI_CALL vkGetQueueCheckpointData2NV(
 #define VK_EXT_present_timing 1
 #define VK_EXT_PRESENT_TIMING_SPEC_VERSION 3
 #define VK_EXT_PRESENT_TIMING_EXTENSION_NAME "VK_EXT_present_timing"
+<<<<<<< HEAD
+=======
+typedef VkFlags VkPresentStageFlagsEXT;
+>>>>>>> master
 
 typedef enum VkPresentStageFlagBitsEXT {
     VK_PRESENT_STAGE_QUEUE_OPERATIONS_END_BIT_EXT = 0x00000001,
@@ -16870,21 +16878,32 @@ typedef enum VkPresentStageFlagBitsEXT {
     VK_PRESENT_STAGE_IMAGE_FIRST_PIXEL_VISIBLE_BIT_EXT = 0x00000008,
     VK_PRESENT_STAGE_FLAG_BITS_MAX_ENUM_EXT = 0x7FFFFFFF
 } VkPresentStageFlagBitsEXT;
+<<<<<<< HEAD
 typedef VkFlags VkPresentStageFlagsEXT;
+=======
+typedef VkFlags VkPastPresentationTimingFlagsEXT;
+>>>>>>> master
 
 typedef enum VkPastPresentationTimingFlagBitsEXT {
     VK_PAST_PRESENTATION_TIMING_ALLOW_PARTIAL_RESULTS_BIT_EXT = 0x00000001,
     VK_PAST_PRESENTATION_TIMING_ALLOW_OUT_OF_ORDER_RESULTS_BIT_EXT = 0x00000002,
     VK_PAST_PRESENTATION_TIMING_FLAG_BITS_MAX_ENUM_EXT = 0x7FFFFFFF
 } VkPastPresentationTimingFlagBitsEXT;
+<<<<<<< HEAD
 typedef VkFlags VkPastPresentationTimingFlagsEXT;
+=======
+typedef VkFlags VkPresentTimingInfoFlagsEXT;
+>>>>>>> master
 
 typedef enum VkPresentTimingInfoFlagBitsEXT {
     VK_PRESENT_TIMING_INFO_PRESENT_AT_RELATIVE_TIME_BIT_EXT = 0x00000001,
     VK_PRESENT_TIMING_INFO_PRESENT_AT_NEAREST_REFRESH_CYCLE_BIT_EXT = 0x00000002,
     VK_PRESENT_TIMING_INFO_FLAG_BITS_MAX_ENUM_EXT = 0x7FFFFFFF
 } VkPresentTimingInfoFlagBitsEXT;
+<<<<<<< HEAD
 typedef VkFlags VkPresentTimingInfoFlagsEXT;
+=======
+>>>>>>> master
 typedef struct VkPhysicalDevicePresentTimingFeaturesEXT {
     VkStructureType    sType;
     void*              pNext;

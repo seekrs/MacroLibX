@@ -57,7 +57,11 @@ extern "C" __declspec( dllimport ) FARPROC __stdcall GetProcAddress( HINSTANCE h
 #  endif
 #endif
 
+<<<<<<< HEAD
 VULKAN_HPP_STATIC_ASSERT( VK_HEADER_VERSION == 337, "Wrong VK_HEADER_VERSION!" );
+=======
+VULKAN_HPP_STATIC_ASSERT( VK_HEADER_VERSION == 335, "Wrong VK_HEADER_VERSION!" );
+>>>>>>> master
 
 // <tuple> includes <sys/sysmacros.h> through some other header
 // this results in major(x) being resolved to gnu_dev_major(x)
@@ -8554,6 +8558,10 @@ namespace VULKAN_HPP_NAMESPACE
   //=== VK_EXT_present_timing ===
   VULKAN_HPP_CONSTEXPR_INLINE auto EXTPresentTimingSpecVersion   = VK_EXT_PRESENT_TIMING_SPEC_VERSION;
   VULKAN_HPP_CONSTEXPR_INLINE auto EXTPresentTimingExtensionName = VK_EXT_PRESENT_TIMING_EXTENSION_NAME;
+
+  //=== VK_EXT_present_timing ===
+  VULKAN_HPP_CONSTEXPR_INLINE auto EXTPresentTimingExtensionName = VK_EXT_PRESENT_TIMING_EXTENSION_NAME;
+  VULKAN_HPP_CONSTEXPR_INLINE auto EXTPresentTimingSpecVersion   = VK_EXT_PRESENT_TIMING_SPEC_VERSION;
 
   //=== VK_INTEL_shader_integer_functions2 ===
   VULKAN_HPP_CONSTEXPR_INLINE auto INTELShaderIntegerFunctions2SpecVersion   = VK_INTEL_SHADER_INTEGER_FUNCTIONS_2_SPEC_VERSION;
