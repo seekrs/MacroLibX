@@ -1,0 +1,43 @@
+name: Linux (meson)
+
+on:
+  repository_dispatch:
+    types: [create-pull-request]
+  pull_request:
+  push:
+    paths-ignore:
+      - '.gitignore'
+      - 'LICENSE'
+      - 'README.md'
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04]
+        arch: [x86_64]
+
+    runs-on: ${{ matrix.os }}
+    if: "!contains(github.event.head_commit.message, 'ci skip')"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install mesa-common-dev clang libsdl2-2.0-0 libsdl2-dev build-essential libvulkan-dev 
+
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Meson with pip
+        run: sudo pip3 install meson
+
+      - name: Build with meson
+        run: | 
+          meson build --prefix=$PWD/ --bindir='' --libdir=''
+          ninja install -C build

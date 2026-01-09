@@ -1,0 +1,42 @@
+name: macOS (meson)
+
+on:
+  repository_dispatch:
+    types: [create-pull-request]
+  pull_request:
+  push:
+    paths-ignore:
+      - '.gitignore'
+      - 'LICENSE'
+      - 'README.md'
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macOS-latest]
+        arch: [x86_64, arm]
+
+    runs-on: ${{ matrix.os }}
+    if: "!contains(github.event.head_commit.message, 'ci skip')"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Install system dependencies
+        run: |
+            brew install SDL2
+
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Meson with pip
+        run: sudo pip3 install meson
+
+      - name: Build with meson
+        run: | 
+          meson build --prefix=$PWD/ --bindir='' --libdir=''
+          ninja install -C build
