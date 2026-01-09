@@ -1,4 +1,4 @@
-name: MacOS Meson
+name: macOS (meson)
 
 on:
   repository_dispatch:
