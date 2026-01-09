@@ -1,4 +1,4 @@
-name: macOS_meson_arm
+name: MacOS Meson
 
 on:
   repository_dispatch:
@@ -15,21 +15,27 @@ jobs:
       fail-fast: false
       matrix:
         os: [macOS-latest]
-        arch: [arm]
+        arch: [x86_64, arm]
+
     runs-on: ${{ matrix.os }}
     if: "!contains(github.event.head_commit.message, 'ci skip')"
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
+
       - name: Install system dependencies
         run: |
             brew install SDL2
+
       - name: Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+
       - name: Install Meson with pip
         run: sudo pip3 install meson
+
       - name: Build with meson
         run: | 
           meson build --prefix=$PWD/ --bindir='' --libdir=''
