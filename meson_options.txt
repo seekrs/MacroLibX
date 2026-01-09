@@ -1,0 +1,29 @@
+option('force_integrated_gpu',
+  type : 'boolean',
+  value : false,
+  description : 'Force the application to use the integrated GPU if available.'
+)
+
+option('graphics_memory_dump',
+  type : 'boolean',
+  value : false,
+  description : 'Enable graphics memory dump for debugging purposes.'
+)
+
+option('profiler',
+  type : 'boolean',
+  value : false,
+  description : 'Enable profiler for performance analysis.'
+)
+
+option('force_wayland',
+  type : 'boolean',
+  value : false,
+  description : 'Force the application to use Wayland display server.'
+)
+
+option('disable_all_safeties',
+  type : 'boolean',
+  value : false,
+  description : 'Disable all safety checks in the application.'
+)
