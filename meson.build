@@ -36,7 +36,43 @@ includes_directories = [
   include_directories('third_party'),
 ]
 
-subdir('runtime/Sources')
+sources = [
+  files(
+    'runtime/Sources/Core/Application.cpp',
+    'runtime/Sources/Core/Bridge.cpp',
+    'runtime/Sources/Core/EventBus.cpp',
+    'runtime/Sources/Core/EventListener.cpp',
+    'runtime/Sources/Core/Fps.cpp',
+    'runtime/Sources/Core/Graphics.cpp',
+    'runtime/Sources/Core/Logs.cpp',
+    'runtime/Sources/Core/Memory.cpp',
+    'runtime/Sources/Core/Profiler.cpp',
+    'runtime/Sources/Core/SDLManager.cpp',
+    'runtime/Sources/Core/UUID.cpp',
+    'runtime/Sources/Graphics/Font.cpp',
+    'runtime/Sources/Graphics/Mesh.cpp',
+    'runtime/Sources/Graphics/PutPixelManager.cpp',
+    'runtime/Sources/Graphics/Scene.cpp',
+    'runtime/Sources/Graphics/Sprite.cpp',
+    'runtime/Sources/Graphics/Text.cpp',
+    'runtime/Sources/Platform/Inputs.cpp',
+    'runtime/Sources/Platform/Window.cpp',
+    'runtime/Sources/Renderer/Pipelines/Graphics.cpp',
+    'runtime/Sources/Renderer/Pipelines/Shader.cpp',
+    'runtime/Sources/Renderer/RenderPasses/2DPass.cpp',
+    'runtime/Sources/Renderer/RenderPasses/FinalPass.cpp',
+    'runtime/Sources/Renderer/RenderPasses/Passes.cpp',
+    'runtime/Sources/Renderer/Vulkan/VulkanLoader.cpp',
+    'runtime/Sources/Renderer/Buffer.cpp',
+    'runtime/Sources/Renderer/Descriptor.cpp',
+    'runtime/Sources/Renderer/Image.cpp',
+    'runtime/Sources/Renderer/Memory.cpp',
+    'runtime/Sources/Renderer/RenderCore.cpp',
+    'runtime/Sources/Renderer/Renderer.cpp',
+    'runtime/Sources/Renderer/SceneRenderer.cpp',
+    'runtime/Sources/Renderer/Swapchain.cpp'
+  )
+]
 
 mlx_headers = [
   'includes/mlx.h',

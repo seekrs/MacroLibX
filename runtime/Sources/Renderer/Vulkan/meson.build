@@ -1,5 +1,0 @@
-sources += [
-  files(
-    'VulkanLoader.cpp'
-  )
-]
