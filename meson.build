@@ -97,6 +97,8 @@ libmlx_dep = declare_dependency(
   dependencies : deps,
   link_with : libmlx)
 
+meson.override_dependency('mlx', libmlx_dep)
+
 # PKG CONFIG GENERATION
 pkg_mod = import('pkgconfig')
 
