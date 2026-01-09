@@ -3,7 +3,7 @@
     <div align="center">
         <a href="https://github.com/seekrs/MacroLibX/actions/workflows/linux_clang.yml"><img src="https://github.com/seekrs/MacroLibX/actions/workflows/linux_clang.yml/badge.svg"></a>
         <a href="https://github.com/seekrs/MacroLibX/actions/workflows/linux_gcc.yml"><img src="https://github.com/seekrs/MacroLibX/actions/workflows/linux_gcc.yml/badge.svg"></a>
-        <a href="https://github.com/seekrs/MacroLibX/actions/workflows/macos_x86.yml"><img src="https://github.com/seekrs/MacroLibX/actions/workflows/macos_x86.yml/badge.svg"></a>
+        <a href="https://github.com/seekrs/MacroLibX/actions/workflows/macos.yml"><img src="https://github.com/seekrs/MacroLibX/actions/workflows/macos.yml/badge.svg"></a>
     </div>
     <div align="center">
         <a href="https://github.com/seekrs/MacroLibX/actions/workflows/windows.yml"><img src="https://github.com/seekrs/MacroLibX/actions/workflows/windows.yml/badge.svg"></a>
