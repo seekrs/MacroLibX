@@ -1,9 +1,3 @@
-option('force_integrated_gpu',
-  type : 'boolean',
-  value : false,
-  description : 'Force the application to use the integrated GPU if available.'
-)
-
 option('graphics_memory_dump',
   type : 'boolean',
   value : false,

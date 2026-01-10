@@ -206,7 +206,7 @@
 
 typedef void (*mlx_function)(void);
 
-#define MLX_VERSION MLX_MAKE_VERSION(2, 2, 0)
+#define MLX_VERSION MLX_MAKE_VERSION(2, 2, 3)
 #define MLX_TARGET_VULKAN_API_VERSION MLX_MAKE_VERSION(1, 0, 0)
 
 // Checking common assumptions

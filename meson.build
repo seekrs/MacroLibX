@@ -1,6 +1,6 @@
 project('MacroLibX',
   ['c', 'cpp'],
-  version : '2.2.2',
+  version : '2.2.3',
   license : 'MIT',
    meson_version : '>= 1.9.0',
   default_options : ['warning_level=2', 'optimization=3', 'cpp_std=c++20'])
@@ -8,10 +8,6 @@ project('MacroLibX',
 add_project_arguments('-Wno-error=', language : 'c')
 add_project_arguments('-fPIC', language : 'c')
 add_project_arguments('-DSDL_MAIN_HANDLED', language : 'c')
-
-if get_option('force_integrated_gpu')
-  add_project_arguments('-DFORCE_INTEGRATED_GPU', language : 'c')
-endif
 
 if get_option('graphics_memory_dump')
   add_project_arguments('-DGRAPHICS_MEMORY_DUMP', language : 'c')

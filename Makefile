@@ -4,7 +4,6 @@ MAKE = make --no-print-directory
 OS ?= $(shell uname -s)
 DEBUG ?= false
 TOOLCHAIN ?= clang
-FORCE_INTEGRATED_GPU ?= false
 GRAPHICS_MEMORY_DUMP ?= false
 PROFILER ?= false
 FORCE_WAYLAND ?= false
@@ -62,10 +61,6 @@ ifeq ($(DEBUG), true)
 	LDFLAGS += -rdynamic
 else
 	CXXFLAGS += -O3
-endif
-
-ifeq ($(FORCE_INTEGRATED_GPU), true)
-	_ENABLEDFLAGS += FORCE_INTEGRATED_GPU
 endif
 
 ifeq ($(GRAPHICS_MEMORY_DUMP), true)
