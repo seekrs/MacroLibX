@@ -103,9 +103,6 @@ MacroLibX has a strong safety support, mainly by checking every pointer that you
 ### 🛠️ Set the toolchain
 If you want to use `GCC` to build the mlx you can use `make TOOLCHAIN=gcc`
 
-### 🖥️ Force the integrated GPU (not recommended)
-You can force the mlx to use your integrated GPU by using `make FORCE_INTEGRATED_GPU=true`. Note that there are a lot of chances that your application crashes by using that.
-
 ### 💽 Dump the graphics memory
 The mlx can dump it's graphics memory use to json files every two seconds by enabling this option `make GRAPHICS_MEMORY_DUMP=true`.
 

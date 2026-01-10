@@ -21,6 +21,6 @@ rm vulkan-headers.zip
 
 # Update KVF
 rm -f ../third_party/kvf.h
-git clone https://github.com/Kbz-8/KVF.git ../third_party/KVF/
+git clone https://git.kbz8.me/kbz_8/KVF.git ../third_party/KVF/
 mv ../third_party/KVF/kvf.h ../third_party/kvf.h
 rm -rf ../third_party/KVF
