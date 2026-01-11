@@ -21,7 +21,7 @@ namespace mlx
 
 	void* MemManager::AlignedMalloc(std::size_t alignment, std::size_t size)
 	{
-		#ifdef MLX_COMPILER_MSVC
+		#ifdef MLX_PLAT_WINDOWS
 			void* ptr = _aligned_malloc(size, alignment);
 		#else
 			if(alignment < sizeof(void*))
@@ -66,7 +66,7 @@ namespace mlx
 	{
 		auto it = std::find_if(s_blocks.begin(), s_blocks.end(), [=](const Descriptor& rhs){ return ptr == rhs.ptr; });
 
-		#ifdef MLX_COMPILER_MSVC
+		#ifdef MLX_PLAT_WINDOWS
 			void* ptr2 = _aligned_realloc(ptr, size, alignment);
 			if(it != s_blocks.end())
 				s_blocks.erase(it);
@@ -90,7 +90,7 @@ namespace mlx
 		auto it = std::find_if(s_blocks.begin(), s_blocks.end(), [=](const Descriptor& rhs){ return ptr == rhs.ptr; });
 		if(it == s_blocks.end())
 			return;
-		#ifdef MLX_COMPILER_MSVC
+		#ifdef MLX_PLAT_WINDOWS
 			if(it->aligned)
 				_aligned_free(it->ptr);
 			else
@@ -105,7 +105,7 @@ namespace mlx
 	{
 		for(const Descriptor& desc : s_blocks)
 		{
-			#ifdef MLX_COMPILER_MSVC
+			#ifdef MLX_PLAT_WINDOWS
 				if(desc.aligned)
 					_aligned_free(desc.ptr);
 				else

@@ -479,7 +479,7 @@ extern "C"
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		mlx::NonOwningPtr<mlx::GraphicsSupport> gs = mlx->app->GetGraphicsSupport(win);
 		if(!gs)
-			return nullptr;
+			return VK_NULL_HANDLE;
 		return gs->GetRenderer().GetSwapchain().GetSurface();
 	}
 
@@ -488,7 +488,7 @@ extern "C"
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		mlx::NonOwningPtr<mlx::GraphicsSupport> gs = mlx->app->GetGraphicsSupport(win);
 		if(!gs || index > gs->GetRenderer().GetSwapchain().GetImagesCount())
-			return nullptr;
+			return VK_NULL_HANDLE;
 		return gs->GetRenderer().GetSwapchain().GetSwapchainImages()[index].Get();
 	}
 
@@ -506,7 +506,7 @@ extern "C"
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		mlx::NonOwningPtr<mlx::GraphicsSupport> gs = mlx->app->GetGraphicsSupport(win);
 		if(!gs || index > gs->GetRenderer().GetSwapchain().GetImagesCount())
-			return nullptr;
+			return VK_NULL_HANDLE;
 		return gs->GetRenderer().GetSwapchain().GetSwapchainImages()[index].GetImageView();
 	}
 

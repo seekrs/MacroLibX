@@ -1,6 +1,6 @@
 project('MacroLibX',
   ['c', 'cpp'],
-  version : '2.2.3',
+  version : '2.2.4',
   license : 'MIT',
    meson_version : '>= 1.9.0',
   default_options : ['warning_level=2', 'optimization=3', 'cpp_std=c++20'])
