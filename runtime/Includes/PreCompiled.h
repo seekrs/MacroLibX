@@ -17,8 +17,21 @@
 
 #include <vulkan/vulkan.h>
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_vulkan.h>
+#if __has_include(<SDL2/SDL.h>)
+	#include <SDL2/SDL.h>
+#elif __has_include(<SDL.h>)
+	#include <SDL.h>
+#else
+	#error Failed to find SDL2 headers
+#endif
+
+#if __has_include(<SDL2/SDL_vulkan.h>)
+	#include <SDL2/SDL_vulkan.h>
+#elif __has_include(<SDL_vulkan.h>)
+	#include <SDL_vulkan.h>
+#else
+	#error Failed to find SDL2 Vulkan headers
+#endif
 
 #include <functional>
 #include <memory>
