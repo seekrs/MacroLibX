@@ -338,7 +338,7 @@ MLX_API mlx_image mlx_new_image(mlx_context mlx, int width, int height);
  * @param mlx        Internal MLX application
  * @param filename   Path to the png file
  * @param width      Get the width of the image
- * @param heigth     Get the height of the image
+ * @param height     Get the height of the image
  *
  * @return (mlx_image) An opaque handler to the internal image or MLX_NULL_HANDLE (0x0) in case of error
  */
@@ -407,7 +407,6 @@ MLX_API void mlx_string_put(mlx_context mlx, mlx_window win, int x, int y, mlx_c
  * @brief            Loads a font to be used by `mlx_string_put`
  *
  * @param mlx        Internal MLX application
- * @param win        Internal window
  * @param filepath   Filepath to the font or "default" to reset to the embedded font
  */
 MLX_API void mlx_set_font(mlx_context mlx, char* filepath);
@@ -416,7 +415,6 @@ MLX_API void mlx_set_font(mlx_context mlx, char* filepath);
  * @brief            Loads a font to be used by `mlx_string_put` and scales it
  *
  * @param mlx        Internal MLX application
- * @param win        Internal window
  * @param filepath   Filepath to the font or "default" to reset to the embedded font
  * @param scale      Scale to apply to the font
  */
