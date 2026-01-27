@@ -23,3 +23,5 @@
 objs/
 build/
 example/Test
+subprojects/*/
+subprojects/.wraplock
