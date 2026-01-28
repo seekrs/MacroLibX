@@ -1,0 +1,109 @@
+name : Windows (Meson)
+
+on:
+  repository_dispatch:
+    types: [create-pull-request]
+  pull_request:
+  push:
+    paths-ignore:
+      - '.gitignore'
+      - 'LICENSE'
+      - 'README.md'
+
+jobs:
+  VisualStudio:
+    if: "!contains(github.event.head_commit.message, 'ci skip')"
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: ['x64', 'x86']
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      # Install a 32-bit Python so building related stuff work.
+      - name: Setup x86 Python
+        if: matrix.platform == 'x86'
+        uses: actions/setup-python@v6
+        with:
+          architecture: 'x86'
+          python-version: '3.12'
+
+      - name: Install Meson & Ninja
+        run: |
+          python -m pip install meson ninja
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: ${{matrix.platform}}
+
+      - name: Compile mlx
+        run: |
+          meson setup builddir
+          meson compile -C builddir
+
+  VisualStudio-clang-cl:
+    if: "!contains(github.event.head_commit.message, 'ci skip')"
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+    env:
+      CC: clang-cl
+      CXX: clang-cl
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Install Meson & Ninja
+        run: |
+          python -m pip install meson ninja
+
+      - uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Compile mlx
+        run: |
+          meson setup builddir
+          meson compile -C builddir
+          
+  MSYS2:
+    if: "!contains(github.event.head_commit.message, 'ci skip')"
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: ['UCRT64', 'CLANG64']
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: ${{matrix.platform}}
+          install: >-
+            bison
+            dos2unix
+            flex
+            git
+          pacboy: >-
+            cc:p
+            cmake:p
+            ninja:p
+            pkgconf:p
+            python-certifi:p
+            python-pip:p
+          # Make sure Python is updated to >=3.11 (fix https://github.com/msys2/MINGW-packages/issues/17415).
+          update: true
+
+      - name: Install Meson
+        shell: msys2 {0}
+        run: |
+          python -m pip install meson 
+
+      - name: Compile mlx
+        shell: msys2 {0}
+        run: |
+          meson setup builddir
+          meson compile -C builddir

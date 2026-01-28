@@ -55,17 +55,17 @@ namespace mlx
 		std::cout << std::endl;
 	}
 
-	void* VulkanAllocationFunction(void*, std::size_t size, std::size_t alignment, VkSystemAllocationScope)
+	void* VKAPI_PTR VulkanAllocationFunction(void*, std::size_t size, std::size_t alignment, VkSystemAllocationScope)
 	{
 		return MemManager::AlignedMalloc(alignment, size);
 	}
 
-	void* VulkanReallocationFunction(void*, void* ptr, std::size_t size, std::size_t alignment, VkSystemAllocationScope)
+	void* VKAPI_PTR VulkanReallocationFunction(void*, void* ptr, std::size_t size, std::size_t alignment, VkSystemAllocationScope)
 	{
 		return MemManager::AlignedRealloc(ptr, alignment, size);
 	}
 
-	void VulkanFreeFunction(void*, void* ptr)
+	void VKAPI_PTR VulkanFreeFunction(void*, void* ptr)
 	{
 		MemManager::Free(ptr);
 	}
