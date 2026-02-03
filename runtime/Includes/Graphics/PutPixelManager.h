@@ -8,7 +8,7 @@ namespace mlx
 	class PutPixelManager
 	{
 		public:
-			PutPixelManager(NonOwningPtr<class Renderer> renderer) : p_renderer(renderer) {}
+			PutPixelManager(NonOwningPtr<class Renderer> renderer);
 
 			// Returns a valid pointer when a new texture has been created
 			NonOwningPtr<Texture> DrawPixel(int x, int y, std::uint64_t draw_layer, mlx_color color);
@@ -20,6 +20,7 @@ namespace mlx
 
 		private:
 			NonOwningPtr<Texture> GetLayer(std::uint64_t draw_layer, bool& is_newlayer);
+			std::unique_ptr<Texture> NewTexture();
 
 		private:
 			std::unordered_map<std::uint64_t, NonOwningPtr<Texture>> m_placements;

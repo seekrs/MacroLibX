@@ -24,7 +24,7 @@
 
 namespace mlx
 {
-	mlx_color ReverseColor(mlx_color color)
+	MLX_FORCEINLINE mlx_color ReverseColor(mlx_color color)
 	{
 		mlx_color reversed_color;
 		reversed_color.r = color.a;
@@ -362,8 +362,16 @@ namespace mlx
 			m_staging_buffer->Init(BufferType::Staging, size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT, {}, {});
 		#endif
 
+		SyncCPUBuffer();
+	}
+
+	void Texture::SyncCPUBuffer(VkCommandBuffer cmd)
+	{
+		if(!m_staging_buffer.has_value())
+			return;
 		VkImageLayout old_layout = m_layout;
-		VkCommandBuffer cmd = kvfCreateCommandBuffer(RenderCore::Get().GetDevice());
+		if(cmd == VK_NULL_HANDLE)
+			cmd = kvfCreateCommandBuffer(RenderCore::Get().GetDevice());
 		kvfBeginCommandBuffer(cmd, VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT);
 		TransitionLayout(VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, cmd);
 		kvfCopyImageToBuffer(cmd, m_staging_buffer->Get(), m_image, m_staging_buffer->GetOffset(), VK_IMAGE_ASPECT_COLOR_BIT, { m_width, m_height, 1 });
@@ -373,6 +381,98 @@ namespace mlx
 		kvfSubmitSingleTimeCommandBuffer(RenderCore::Get().GetDevice(), cmd, KVF_GRAPHICS_QUEUE, fence);
 		kvfDestroyFence(RenderCore::Get().GetDevice(), fence);
 		kvfDestroyCommandBuffer(RenderCore::Get().GetDevice(), cmd);
+	}
+
+	void Texture::CopyTo(Texture& other)
+	{
+		VkImageLayout old_layout = m_layout;
+		VkImageLayout other_old_layout = other.GetLayout();
+
+		VkImageSubresourceLayers subresource{};
+		subresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+		subresource.mipLevel = 0;
+		subresource.layerCount = 1;
+		subresource.baseArrayLayer = 0;
+
+		VkExtent3D extent{};
+		extent.width = m_width;
+		extent.height = m_height;
+		extent.depth = 1;
+
+		VkOffset3D offset{};
+		offset.x = 0;
+		offset.y = 0;
+		offset.z = 0;
+
+		VkImageCopy region{};
+		region.srcSubresource = subresource;
+		region.dstSubresource = subresource;
+		region.extent = extent;
+		region.srcOffset = offset;
+		region.dstOffset = offset;
+
+		VkCommandBuffer cmd = kvfCreateCommandBuffer(RenderCore::Get().GetDevice());
+		kvfBeginCommandBuffer(cmd, VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT);
+
+		TransitionLayout(VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, cmd);
+		other.TransitionLayout(VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, cmd);
+
+		kvfCopyImageToImage(cmd, m_image, m_layout, other.Get(), other.GetLayout(), 1, &region);
+
+		TransitionLayout(old_layout, cmd);
+		other.TransitionLayout(other_old_layout, cmd);
+
+		kvfEndCommandBuffer(cmd);
+
+		SyncCPUBuffer(cmd);
+	}
+
+	void Texture::Resize(std::uint32_t width, std::uint32_t height)
+	{
+		#ifdef DEBUG
+			Texture new_texture = Texture(CPUBuffer{}, width, height, m_format, m_is_multisampled, m_debug_name);
+		#else
+			Texture new_texture = Texture(CPUBuffer{}, width, height, m_format, m_is_multisampled, std::string_view{});
+		#endif
+
+		if(m_staging_buffer.has_value())
+			new_texture.OpenCPUBuffer();
+
+		// Suboptimal operations, should bake all of them in a single command buffer
+		new_texture.Clear(VK_NULL_HANDLE, Vec4f{ 0.f });
+		CopyTo(new_texture);
+
+		Swap(new_texture);
+	}
+
+	void Texture::Swap(Texture& texture) noexcept
+	{
+		MLX_PROFILE_FUNCTION();
+
+		#ifdef DEBUG
+			std::swap(m_debug_name, texture.m_debug_name);
+		#endif
+		std::swap(m_allocation, texture.m_allocation);
+		std::swap(m_image, texture.m_image);
+		std::swap(m_image_view, texture.m_image_view);
+		std::swap(m_sampler, texture.m_sampler);
+		std::swap(m_format, texture.m_format);
+		std::swap(m_tiling, texture.m_tiling);
+		std::swap(m_layout, texture.m_layout);
+		std::swap(m_type, texture.m_type);
+		std::swap(m_width, texture.m_width);
+		std::swap(m_height, texture.m_height);
+		std::swap(m_is_multisampled, texture.m_is_multisampled);
+
+		if(m_staging_buffer.has_value() && texture.m_staging_buffer.has_value())
+			m_staging_buffer->Swap(*texture.m_staging_buffer);
+		else if(m_staging_buffer.has_value())
+			m_staging_buffer.reset();
+		else if(texture.m_staging_buffer.has_value())
+			texture.m_staging_buffer.reset();
+
+		m_has_been_modified = true;
+		texture.m_has_been_modified = true;
 	}
 
 	Texture* StbTextureLoad(const std::filesystem::path& file, int* w, int* h)

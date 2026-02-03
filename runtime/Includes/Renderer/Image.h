@@ -89,7 +89,13 @@ namespace mlx
 			mlx_color GetPixel(int x, int y) noexcept;
 			void GetRegion(int x, int y, int w, int h, mlx_color* dst) noexcept;
 			void Clear(VkCommandBuffer cmd, Vec4f color) override;
+			void CopyTo(Texture& other);
+			void Resize(std::uint32_t width, std::uint32_t height);
 
+			void Swap(Texture& texture) noexcept;
+
+			// If a valid cmd buffer is passed, this function takes ownership and makes it invalid after
+			void SyncCPUBuffer(VkCommandBuffer cmd = VK_NULL_HANDLE);
 			void Update(VkCommandBuffer cmd);
 
 			~Texture() override { Destroy(); }
