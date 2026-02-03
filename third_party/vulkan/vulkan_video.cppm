@@ -1,4 +1,4 @@
-// Copyright 2021-2025 The Khronos Group Inc.
+// Copyright 2021-2026 The Khronos Group Inc.
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 //
 
@@ -25,7 +25,6 @@ export module vulkan:video;
 
 export namespace VULKAN_HPP_NAMESPACE::VULKAN_HPP_VIDEO_NAMESPACE
 {
-
   //=================
   //=== CONSTANTs ===
   //=================
@@ -320,5 +319,4 @@ export namespace VULKAN_HPP_NAMESPACE::VULKAN_HPP_VIDEO_NAMESPACE
   using VULKAN_HPP_NAMESPACE::VULKAN_HPP_VIDEO_NAMESPACE::EncodeAV1ReferenceInfo;
   using VULKAN_HPP_NAMESPACE::VULKAN_HPP_VIDEO_NAMESPACE::EncodeAV1ReferenceInfoFlags;
 #endif
-
 }  // namespace VULKAN_HPP_NAMESPACE::VULKAN_HPP_VIDEO_NAMESPACE

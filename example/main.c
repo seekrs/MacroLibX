@@ -44,11 +44,16 @@ void update(void* param)
 	mlx_set_font(mlx->mlx, "default");
 	mlx_string_put(mlx->mlx, mlx->win, 20, 50, (mlx_color){ .rgba = 0xFFFFFFFF }, "that's a text");
 
+	int win_width;
+	int win_height;
+
+	mlx_get_window_size(mlx->mlx, mlx->win, &win_width, &win_height);
+
 	uint32_t color = 0;
-	for(int j = 0; j < 400; j++)
+	for(int j = 0; j < win_height; j++)
 	{
 		mlx_pixel_put(mlx->mlx, mlx->win, j, j, (mlx_color){ .rgba = 0x0000FFFF + (color << 24) });
-		mlx_pixel_put(mlx->mlx, mlx->win, 399 - j, j, (mlx_color){ .rgba = 0x0000FFFF });
+		mlx_pixel_put(mlx->mlx, mlx->win, win_width - j, j, (mlx_color){ .rgba = 0x0000FFFF });
 		color += (color < 255);
 	}
 

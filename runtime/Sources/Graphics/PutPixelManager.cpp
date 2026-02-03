@@ -6,6 +6,29 @@
 
 namespace mlx
 {
+	PutPixelManager::PutPixelManager(NonOwningPtr<class Renderer> renderer) : p_renderer(renderer)
+	{
+		MLX_PROFILE_FUNCTION();
+		std::function<void(const EventBase&)> functor = [this](const EventBase& event)
+		{
+			// Suboptimal for multi-windows applications
+			if(event.What() == Event::ResizeEventCode)
+			{
+				VkExtent2D extent{ .width = 0, .height = 0 };
+				if(p_renderer->GetWindow())
+					extent = kvfGetSwapchainImagesSize(p_renderer->GetSwapchain().Get());
+				else if(p_renderer->GetRenderTarget())
+					extent = VkExtent2D{ .width = p_renderer->GetRenderTarget()->GetWidth(), .height = p_renderer->GetRenderTarget()->GetHeight() };
+				else
+					FatalError("a renderer was created without window nor render target attached (wtf!?)");
+
+				for(auto& texture : m_textures)
+					texture->Resize(extent.width, extent.height);
+			}
+		};
+		EventBus::RegisterListener({ functor, "mlx_put_pixel_manager_" + std::to_string(reinterpret_cast<std::uintptr_t>(this)) });
+	}
+
 	NonOwningPtr<Texture> PutPixelManager::DrawPixel(int x, int y, std::uint64_t draw_layer, mlx_color color)
 	{
 		MLX_PROFILE_FUNCTION();
@@ -53,21 +76,8 @@ namespace mlx
 		is_newlayer = true;
 
 		if(m_current_texture_index >= m_textures.size())
-		{
-			VkExtent2D extent{ .width = 0, .height = 0 };
-			if(p_renderer->GetWindow())
-				extent = kvfGetSwapchainImagesSize(p_renderer->GetSwapchain().Get());
-			else if(p_renderer->GetRenderTarget())
-				extent = VkExtent2D{ .width = p_renderer->GetRenderTarget()->GetWidth(), .height = p_renderer->GetRenderTarget()->GetHeight() };
-			else
-				FatalError("a renderer was created without window nor render target attached (wtf)");
+			m_textures.push_back(NewTexture());
 
-			#ifdef DEBUG
-				m_textures.push_back(std::make_unique<Texture>(CPUBuffer{}, extent.width, extent.height, VK_FORMAT_R8G8B8A8_SRGB, false, "mlx_put_pixel_layer_" + std::to_string(m_current_texture_index)));
-			#else
-				m_textures.push_back(std::make_unique<Texture>(CPUBuffer{}, extent.width, extent.height, VK_FORMAT_R8G8B8A8_SRGB, false, std::string_view{}));
-			#endif
-		}
 		try
 		{
 			m_placements[draw_layer] = m_textures.at(m_current_texture_index).get();
@@ -81,6 +91,23 @@ namespace mlx
 			Error("PutPixelManager: invalid texture index; % is not in range of 0-% (internal mlx issue, please report to devs)", m_current_texture_index, m_textures.size());
 			return nullptr;
 		}
+	}
+
+	std::unique_ptr<Texture> PutPixelManager::NewTexture()
+	{
+		VkExtent2D extent{ .width = 0, .height = 0 };
+		if(p_renderer->GetWindow())
+			extent = kvfGetSwapchainImagesSize(p_renderer->GetSwapchain().Get());
+		else if(p_renderer->GetRenderTarget())
+			extent = VkExtent2D{ .width = p_renderer->GetRenderTarget()->GetWidth(), .height = p_renderer->GetRenderTarget()->GetHeight() };
+		else
+			FatalError("a renderer was created without window nor render target attached (wtf!?)");
+
+		#ifdef DEBUG
+			return std::make_unique<Texture>(CPUBuffer{}, extent.width, extent.height, VK_FORMAT_R8G8B8A8_SRGB, false, "mlx_put_pixel_layer_" + std::to_string(m_current_texture_index));
+		#else
+			return std::make_unique<Texture>(CPUBuffer{}, extent.width, extent.height, VK_FORMAT_R8G8B8A8_SRGB, false, std::string_view{});
+		#endif
 	}
 
 	void PutPixelManager::ResetRenderData()

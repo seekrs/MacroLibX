@@ -30,7 +30,7 @@ jobs:
           sudo apt-get -y install mesa-common-dev clang libsdl2-2.0-0 libsdl2-dev build-essential libvulkan-dev 
 
       - name: Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.11'
 

@@ -152,6 +152,8 @@ void kvfDestroySemaphore(VkDevice device, VkSemaphore semaphore);
 
 VkImage kvfCreateImage(VkDevice device, uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, KvfImageType type);
 void kvfCopyImageToBuffer(VkCommandBuffer cmd, VkBuffer dst, VkImage src, size_t buffer_offset, VkImageAspectFlagBits aspect, VkExtent3D extent);
+void kvfCopyImageToImage(VkCommandBuffer cmd, VkImage src, VkImageLayout src_layout, VkImage dst, VkImageLayout dst_layout, uint32_t count, const VkImageCopy* regions);
+
 void kvfDestroyImage(VkDevice device, VkImage image);
 VkImageView kvfCreateImageView(VkDevice device, VkImage image, VkFormat format, VkImageViewType type, VkImageAspectFlags aspect, int layer_count);
 void kvfDestroyImageView(VkDevice device, VkImageView image_view);
@@ -2145,6 +2147,18 @@ void kvfCopyImageToBuffer(VkCommandBuffer cmd, VkBuffer dst, VkImage src, size_t
 	region.imageOffset = offset;
 	region.imageExtent = extent;
 	KVF_GET_DEVICE_FUNCTION(vkCmdCopyImageToBuffer)(cmd, src, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, dst, 1, &region);
+}
+
+void kvfCopyImageToImage(VkCommandBuffer cmd, VkImage src, VkImageLayout src_layout, VkImage dst, VkImageLayout dst_layout, uint32_t count, const VkImageCopy* regions)
+{
+	KVF_ASSERT(cmd != VK_NULL_HANDLE);
+	KVF_ASSERT(dst != VK_NULL_HANDLE);
+	KVF_ASSERT(src != VK_NULL_HANDLE);
+	#ifdef KVF_IMPL_VK_NO_PROTOTYPES
+		__KvfDevice* kvf_device = __kvfGetKvfDeviceFromVkCommandBuffer(cmd);
+		KVF_ASSERT(kvf_device != NULL && "could not find VkDevice in registered devices");
+	#endif
+	KVF_GET_DEVICE_FUNCTION(vkCmdCopyImage)(cmd, src, src_layout, dst, dst_layout, count, regions);
 }
 
 void kvfDestroyImage(VkDevice device, VkImage image)
