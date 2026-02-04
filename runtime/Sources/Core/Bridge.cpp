@@ -304,12 +304,14 @@ extern "C"
 			mlx::Error("Font loader: filepath is NULL");
 			return;
 		}
-		if (!std::filesystem::exists(filepath))
+		
+		std::filesystem::path file(filepath);
+		if (std::strcmp(filepath, "default") != 0 && filepath !std::filesystem::exists(file))
 		{
 			mlx::Error("TTF loader: unable to find file '%'", filepath);
 			return;
 		}
-		std::filesystem::path file(filepath);
+		
 		if(std::strcmp(filepath, "default") != 0 && file.extension() != ".ttf" && file.extension() != ".tte")
 		{
 			mlx::Error("TTF loader: not a truetype font file '%'", filepath);
@@ -329,12 +331,14 @@ extern "C"
 			mlx::Error("Font loader: filepath is NULL");
 			return;
 		}
-		if (!std::filesystem::exists(filepath))
+		
+		std::filesystem::path file(filepath);
+		if (std::strcmp(filepath, "default") != 0 && filepath !std::filesystem::exists(file))
 		{
 			mlx::Error("TTF loader: unable to find file '%'", filepath);
 			return;
 		}
-		std::filesystem::path file(filepath);
+
 		if(std::strcmp(filepath, "default") != 0 && file.extension() != ".ttf" && file.extension() != ".tte")
 		{
 			mlx::Error("TTF loader: not a truetype font file '%'", filepath);
