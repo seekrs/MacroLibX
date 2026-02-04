@@ -306,7 +306,7 @@ extern "C"
 		}
 		
 		std::filesystem::path file(filepath);
-		if (std::strcmp(filepath, "default") != 0 && filepath !std::filesystem::exists(file))
+		if (std::strcmp(filepath, "default") != 0 && !std::filesystem::exists(file))
 		{
 			mlx::Error("TTF loader: unable to find file '%'", filepath);
 			return;
@@ -333,7 +333,7 @@ extern "C"
 		}
 		
 		std::filesystem::path file(filepath);
-		if (std::strcmp(filepath, "default") != 0 && filepath !std::filesystem::exists(file))
+		if (std::strcmp(filepath, "default") != 0 && !std::filesystem::exists(file))
 		{
 			mlx::Error("TTF loader: unable to find file '%'", filepath);
 			return;
