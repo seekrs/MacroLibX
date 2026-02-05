@@ -436,13 +436,20 @@ namespace mlx
 		#endif
 
 		if(m_staging_buffer.has_value())
+		{
 			new_texture.OpenCPUBuffer();
+			new_texture.m_staging_buffer->CopyFrom(*m_staging_buffer);
+		}
 
 		// Suboptimal operations, should bake all of them in a single command buffer
 		new_texture.Clear(VK_NULL_HANDLE, Vec4f{ 0.f });
 		CopyTo(new_texture);
 
 		Swap(new_texture);
+
+		#ifdef DEBUG
+			DebugLog("Texture: resized '%'", m_debug_name);
+		#endif
 	}
 
 	void Texture::Swap(Texture& texture) noexcept
