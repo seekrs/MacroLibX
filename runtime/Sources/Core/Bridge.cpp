@@ -238,6 +238,15 @@ extern "C"
 			mlx::Error("Image loader: not a valid file format '%'", filename);
 			return nullptr;
 		}
+
+		{
+			std::ifstream stream(file, std::ios::binary);
+			if(!stream.is_open())
+			{
+				mlx::Error("Image loader: failed to open file '%'", filename);
+				return nullptr;
+			}
+		}
 		return mlx->app->NewStbTexture(filename, width, height);
 	}
 
@@ -312,11 +321,21 @@ extern "C"
 			return;
 		}
 		
-		if(std::strcmp(filepath, "default") != 0 && file.extension() != ".ttf" && file.extension() != ".tte")
+		if(std::strcmp(filepath, "default") != 0)
 		{
-			mlx::Error("TTF loader: not a truetype font file '%'", filepath);
-			return;
+			if(file.extension() != ".ttf" && file.extension() != ".tte")
+			{
+				mlx::Error("TTF loader: not a truetype font file '%'", filepath);
+				return;
+			}
+			std::ifstream stream(file, std::ios::binary);
+			if(!stream.is_open())
+			{
+				mlx::Error("TTF loader: failed to open font file '%'", filepath);
+				return;
+			}
 		}
+
 		if(std::strcmp(filepath, "default") == 0)
 			mlx->app->LoadFont(file, 6.f);
 		else
@@ -339,11 +358,21 @@ extern "C"
 			return;
 		}
 
-		if(std::strcmp(filepath, "default") != 0 && file.extension() != ".ttf" && file.extension() != ".tte")
+		if(std::strcmp(filepath, "default") != 0)
 		{
-			mlx::Error("TTF loader: not a truetype font file '%'", filepath);
-			return;
+			if(file.extension() != ".ttf" && file.extension() != ".tte")
+			{
+				mlx::Error("TTF loader: not a truetype font file '%'", filepath);
+				return;
+			}
+			std::ifstream stream(file, std::ios::binary);
+			if(!stream.is_open())
+			{
+				mlx::Error("TTF loader: failed to open font file '%'", filepath);
+				return;
+			}
 		}
+
 		mlx->app->LoadFont(file, scale);
 	}
 
