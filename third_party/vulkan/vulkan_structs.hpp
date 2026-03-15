@@ -1686,6 +1686,295 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
     using Type = AccelerationStructureCaptureDescriptorDataInfoEXT;
   };
 
+  // wrapper struct for struct VkDeviceAddressRangeKHR, see https://registry.khronos.org/vulkan/specs/latest/man/html/VkDeviceAddressRangeKHR.html
+  struct DeviceAddressRangeKHR
+  {
+    using NativeType = VkDeviceAddressRangeKHR;
+
+#if !defined( VULKAN_HPP_NO_CONSTRUCTORS ) && !defined( VULKAN_HPP_NO_STRUCT_CONSTRUCTORS )
+    VULKAN_HPP_CONSTEXPR DeviceAddressRangeKHR( DeviceAddress address_ = {}, DeviceSize size_ = {} ) VULKAN_HPP_NOEXCEPT
+      : address{ address_ }
+      , size{ size_ }
+    {
+    }
+
+    VULKAN_HPP_CONSTEXPR DeviceAddressRangeKHR( DeviceAddressRangeKHR const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+
+    DeviceAddressRangeKHR( VkDeviceAddressRangeKHR const & rhs ) VULKAN_HPP_NOEXCEPT
+      : DeviceAddressRangeKHR( *reinterpret_cast<DeviceAddressRangeKHR const *>( &rhs ) )
+    {
+    }
+
+    DeviceAddressRangeKHR & operator=( DeviceAddressRangeKHR const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+#endif /*VULKAN_HPP_NO_CONSTRUCTORS*/
+
+    DeviceAddressRangeKHR & operator=( VkDeviceAddressRangeKHR const & rhs ) VULKAN_HPP_NOEXCEPT
+    {
+      *this = *reinterpret_cast<DeviceAddressRangeKHR const *>( &rhs );
+      return *this;
+    }
+
+#if !defined( VULKAN_HPP_NO_SETTERS ) && !defined( VULKAN_HPP_NO_STRUCT_SETTERS )
+    VULKAN_HPP_CONSTEXPR_14 DeviceAddressRangeKHR & setAddress( DeviceAddress address_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      address = address_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DeviceAddressRangeKHR && setAddress( DeviceAddress address_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      address = address_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DeviceAddressRangeKHR & setSize( DeviceSize size_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      size = size_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DeviceAddressRangeKHR && setSize( DeviceSize size_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      size = size_;
+      return std::move( *this );
+    }
+#endif /*VULKAN_HPP_NO_SETTERS*/
+
+    operator VkDeviceAddressRangeKHR const &() const VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkDeviceAddressRangeKHR const *>( this );
+    }
+
+    operator VkDeviceAddressRangeKHR &() VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkDeviceAddressRangeKHR *>( this );
+    }
+
+    operator VkDeviceAddressRangeKHR const *() const VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkDeviceAddressRangeKHR const *>( this );
+    }
+
+    operator VkDeviceAddressRangeKHR *() VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkDeviceAddressRangeKHR *>( this );
+    }
+
+#if defined( VULKAN_HPP_USE_REFLECT )
+    std::tuple<DeviceAddress const &, DeviceSize const &> reflect() const VULKAN_HPP_NOEXCEPT
+    {
+      return std::tie( address, size );
+    }
+#endif
+
+#if defined( VULKAN_HPP_HAS_SPACESHIP_OPERATOR )
+    auto operator<=>( DeviceAddressRangeKHR const & ) const = default;
+#else
+    bool operator==( DeviceAddressRangeKHR const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+#  if defined( VULKAN_HPP_USE_REFLECT )
+      return this->reflect() == rhs.reflect();
+#  else
+      return ( address == rhs.address ) && ( size == rhs.size );
+#  endif
+    }
+
+    bool operator!=( DeviceAddressRangeKHR const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+      return !operator==( rhs );
+    }
+#endif
+
+  public:
+    DeviceAddress address = {};
+    DeviceSize    size    = {};
+  };
+
+#if 20 <= VULKAN_HPP_CPP_VERSION
+  template <>
+  struct CppType<VkDeviceAddressRangeKHR>
+  {
+    using Type = DeviceAddressRangeKHR;
+  };
+#endif
+  using DeviceAddressRangeEXT = DeviceAddressRangeKHR;
+
+  // wrapper struct for struct VkAccelerationStructureCreateInfo2KHR, see
+  // https://registry.khronos.org/vulkan/specs/latest/man/html/VkAccelerationStructureCreateInfo2KHR.html
+  struct AccelerationStructureCreateInfo2KHR
+  {
+    using NativeType = VkAccelerationStructureCreateInfo2KHR;
+
+    static bool const                                  allowDuplicate = false;
+    static VULKAN_HPP_CONST_OR_CONSTEXPR StructureType structureType  = StructureType::eAccelerationStructureCreateInfo2KHR;
+
+#if !defined( VULKAN_HPP_NO_CONSTRUCTORS ) && !defined( VULKAN_HPP_NO_STRUCT_CONSTRUCTORS )
+    VULKAN_HPP_CONSTEXPR AccelerationStructureCreateInfo2KHR( AccelerationStructureCreateFlagsKHR createFlags_  = {},
+                                                              DeviceAddressRangeKHR               addressRange_ = {},
+                                                              AddressCommandFlagsKHR              addressFlags_ = {},
+                                                              AccelerationStructureTypeKHR        type_         = AccelerationStructureTypeKHR::eTopLevel,
+                                                              void const *                        pNext_        = nullptr ) VULKAN_HPP_NOEXCEPT
+      : pNext{ pNext_ }
+      , createFlags{ createFlags_ }
+      , addressRange{ addressRange_ }
+      , addressFlags{ addressFlags_ }
+      , type{ type_ }
+    {
+    }
+
+    VULKAN_HPP_CONSTEXPR AccelerationStructureCreateInfo2KHR( AccelerationStructureCreateInfo2KHR const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+
+    AccelerationStructureCreateInfo2KHR( VkAccelerationStructureCreateInfo2KHR const & rhs ) VULKAN_HPP_NOEXCEPT
+      : AccelerationStructureCreateInfo2KHR( *reinterpret_cast<AccelerationStructureCreateInfo2KHR const *>( &rhs ) )
+    {
+    }
+
+    AccelerationStructureCreateInfo2KHR & operator=( AccelerationStructureCreateInfo2KHR const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+#endif /*VULKAN_HPP_NO_CONSTRUCTORS*/
+
+    AccelerationStructureCreateInfo2KHR & operator=( VkAccelerationStructureCreateInfo2KHR const & rhs ) VULKAN_HPP_NOEXCEPT
+    {
+      *this = *reinterpret_cast<AccelerationStructureCreateInfo2KHR const *>( &rhs );
+      return *this;
+    }
+
+#if !defined( VULKAN_HPP_NO_SETTERS ) && !defined( VULKAN_HPP_NO_STRUCT_SETTERS )
+    VULKAN_HPP_CONSTEXPR_14 AccelerationStructureCreateInfo2KHR & setPNext( void const * pNext_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 AccelerationStructureCreateInfo2KHR && setPNext( void const * pNext_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 AccelerationStructureCreateInfo2KHR & setCreateFlags( AccelerationStructureCreateFlagsKHR createFlags_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      createFlags = createFlags_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 AccelerationStructureCreateInfo2KHR && setCreateFlags( AccelerationStructureCreateFlagsKHR createFlags_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      createFlags = createFlags_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 AccelerationStructureCreateInfo2KHR & setAddressRange( DeviceAddressRangeKHR const & addressRange_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      addressRange = addressRange_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 AccelerationStructureCreateInfo2KHR && setAddressRange( DeviceAddressRangeKHR const & addressRange_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      addressRange = addressRange_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 AccelerationStructureCreateInfo2KHR & setAddressFlags( AddressCommandFlagsKHR addressFlags_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      addressFlags = addressFlags_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 AccelerationStructureCreateInfo2KHR && setAddressFlags( AddressCommandFlagsKHR addressFlags_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      addressFlags = addressFlags_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 AccelerationStructureCreateInfo2KHR & setType( AccelerationStructureTypeKHR type_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      type = type_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 AccelerationStructureCreateInfo2KHR && setType( AccelerationStructureTypeKHR type_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      type = type_;
+      return std::move( *this );
+    }
+#endif /*VULKAN_HPP_NO_SETTERS*/
+
+    operator VkAccelerationStructureCreateInfo2KHR const &() const VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkAccelerationStructureCreateInfo2KHR const *>( this );
+    }
+
+    operator VkAccelerationStructureCreateInfo2KHR &() VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkAccelerationStructureCreateInfo2KHR *>( this );
+    }
+
+    operator VkAccelerationStructureCreateInfo2KHR const *() const VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkAccelerationStructureCreateInfo2KHR const *>( this );
+    }
+
+    operator VkAccelerationStructureCreateInfo2KHR *() VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkAccelerationStructureCreateInfo2KHR *>( this );
+    }
+
+#if defined( VULKAN_HPP_USE_REFLECT )
+    std::tuple<StructureType const &,
+               void const * const &,
+               AccelerationStructureCreateFlagsKHR const &,
+               DeviceAddressRangeKHR const &,
+               AddressCommandFlagsKHR const &,
+               AccelerationStructureTypeKHR const &>
+      reflect() const VULKAN_HPP_NOEXCEPT
+    {
+      return std::tie( sType, pNext, createFlags, addressRange, addressFlags, type );
+    }
+#endif
+
+#if defined( VULKAN_HPP_HAS_SPACESHIP_OPERATOR )
+    auto operator<=>( AccelerationStructureCreateInfo2KHR const & ) const = default;
+#else
+    bool operator==( AccelerationStructureCreateInfo2KHR const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+#  if defined( VULKAN_HPP_USE_REFLECT )
+      return this->reflect() == rhs.reflect();
+#  else
+      return ( sType == rhs.sType ) && ( pNext == rhs.pNext ) && ( createFlags == rhs.createFlags ) && ( addressRange == rhs.addressRange ) &&
+             ( addressFlags == rhs.addressFlags ) && ( type == rhs.type );
+#  endif
+    }
+
+    bool operator!=( AccelerationStructureCreateInfo2KHR const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+      return !operator==( rhs );
+    }
+#endif
+
+  public:
+    StructureType                       sType        = StructureType::eAccelerationStructureCreateInfo2KHR;
+    void const *                        pNext        = {};
+    AccelerationStructureCreateFlagsKHR createFlags  = {};
+    DeviceAddressRangeKHR               addressRange = {};
+    AddressCommandFlagsKHR              addressFlags = {};
+    AccelerationStructureTypeKHR        type         = AccelerationStructureTypeKHR::eTopLevel;
+  };
+
+#if 20 <= VULKAN_HPP_CPP_VERSION
+  template <>
+  struct CppType<VkAccelerationStructureCreateInfo2KHR>
+  {
+    using Type = AccelerationStructureCreateInfo2KHR;
+  };
+#endif
+
+  template <>
+  struct CppType<StructureType, StructureType::eAccelerationStructureCreateInfo2KHR>
+  {
+    using Type = AccelerationStructureCreateInfo2KHR;
+  };
+
   // wrapper struct for struct VkAccelerationStructureCreateInfoKHR, see
   // https://registry.khronos.org/vulkan/specs/latest/man/html/VkAccelerationStructureCreateInfoKHR.html
   struct AccelerationStructureCreateInfoKHR
@@ -11836,118 +12125,6 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
 
   using BindDescriptorSetsInfoKHR = BindDescriptorSetsInfo;
 
-  // wrapper struct for struct VkDeviceAddressRangeEXT, see https://registry.khronos.org/vulkan/specs/latest/man/html/VkDeviceAddressRangeEXT.html
-  struct DeviceAddressRangeEXT
-  {
-    using NativeType = VkDeviceAddressRangeEXT;
-
-#if !defined( VULKAN_HPP_NO_CONSTRUCTORS ) && !defined( VULKAN_HPP_NO_STRUCT_CONSTRUCTORS )
-    VULKAN_HPP_CONSTEXPR DeviceAddressRangeEXT( DeviceAddress address_ = {}, DeviceSize size_ = {} ) VULKAN_HPP_NOEXCEPT
-      : address{ address_ }
-      , size{ size_ }
-    {
-    }
-
-    VULKAN_HPP_CONSTEXPR DeviceAddressRangeEXT( DeviceAddressRangeEXT const & rhs ) VULKAN_HPP_NOEXCEPT = default;
-
-    DeviceAddressRangeEXT( VkDeviceAddressRangeEXT const & rhs ) VULKAN_HPP_NOEXCEPT
-      : DeviceAddressRangeEXT( *reinterpret_cast<DeviceAddressRangeEXT const *>( &rhs ) )
-    {
-    }
-
-    DeviceAddressRangeEXT & operator=( DeviceAddressRangeEXT const & rhs ) VULKAN_HPP_NOEXCEPT = default;
-#endif /*VULKAN_HPP_NO_CONSTRUCTORS*/
-
-    DeviceAddressRangeEXT & operator=( VkDeviceAddressRangeEXT const & rhs ) VULKAN_HPP_NOEXCEPT
-    {
-      *this = *reinterpret_cast<DeviceAddressRangeEXT const *>( &rhs );
-      return *this;
-    }
-
-#if !defined( VULKAN_HPP_NO_SETTERS ) && !defined( VULKAN_HPP_NO_STRUCT_SETTERS )
-    VULKAN_HPP_CONSTEXPR_14 DeviceAddressRangeEXT & setAddress( DeviceAddress address_ ) & VULKAN_HPP_NOEXCEPT
-    {
-      address = address_;
-      return *this;
-    }
-
-    VULKAN_HPP_CONSTEXPR_14 DeviceAddressRangeEXT && setAddress( DeviceAddress address_ ) && VULKAN_HPP_NOEXCEPT
-    {
-      address = address_;
-      return std::move( *this );
-    }
-
-    VULKAN_HPP_CONSTEXPR_14 DeviceAddressRangeEXT & setSize( DeviceSize size_ ) & VULKAN_HPP_NOEXCEPT
-    {
-      size = size_;
-      return *this;
-    }
-
-    VULKAN_HPP_CONSTEXPR_14 DeviceAddressRangeEXT && setSize( DeviceSize size_ ) && VULKAN_HPP_NOEXCEPT
-    {
-      size = size_;
-      return std::move( *this );
-    }
-#endif /*VULKAN_HPP_NO_SETTERS*/
-
-    operator VkDeviceAddressRangeEXT const &() const VULKAN_HPP_NOEXCEPT
-    {
-      return *reinterpret_cast<VkDeviceAddressRangeEXT const *>( this );
-    }
-
-    operator VkDeviceAddressRangeEXT &() VULKAN_HPP_NOEXCEPT
-    {
-      return *reinterpret_cast<VkDeviceAddressRangeEXT *>( this );
-    }
-
-    operator VkDeviceAddressRangeEXT const *() const VULKAN_HPP_NOEXCEPT
-    {
-      return reinterpret_cast<VkDeviceAddressRangeEXT const *>( this );
-    }
-
-    operator VkDeviceAddressRangeEXT *() VULKAN_HPP_NOEXCEPT
-    {
-      return reinterpret_cast<VkDeviceAddressRangeEXT *>( this );
-    }
-
-#if defined( VULKAN_HPP_USE_REFLECT )
-    std::tuple<DeviceAddress const &, DeviceSize const &> reflect() const VULKAN_HPP_NOEXCEPT
-    {
-      return std::tie( address, size );
-    }
-#endif
-
-#if defined( VULKAN_HPP_HAS_SPACESHIP_OPERATOR )
-    auto operator<=>( DeviceAddressRangeEXT const & ) const = default;
-#else
-    bool operator==( DeviceAddressRangeEXT const & rhs ) const VULKAN_HPP_NOEXCEPT
-    {
-#  if defined( VULKAN_HPP_USE_REFLECT )
-      return this->reflect() == rhs.reflect();
-#  else
-      return ( address == rhs.address ) && ( size == rhs.size );
-#  endif
-    }
-
-    bool operator!=( DeviceAddressRangeEXT const & rhs ) const VULKAN_HPP_NOEXCEPT
-    {
-      return !operator==( rhs );
-    }
-#endif
-
-  public:
-    DeviceAddress address = {};
-    DeviceSize    size    = {};
-  };
-
-#if 20 <= VULKAN_HPP_CPP_VERSION
-  template <>
-  struct CppType<VkDeviceAddressRangeEXT>
-  {
-    using Type = DeviceAddressRangeEXT;
-  };
-#endif
-
   // wrapper struct for struct VkBindHeapInfoEXT, see https://registry.khronos.org/vulkan/specs/latest/man/html/VkBindHeapInfoEXT.html
   struct BindHeapInfoEXT
   {
@@ -11994,13 +12171,13 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
       return std::move( *this );
     }
 
-    VULKAN_HPP_CONSTEXPR_14 BindHeapInfoEXT & setHeapRange( DeviceAddressRangeEXT const & heapRange_ ) & VULKAN_HPP_NOEXCEPT
+    VULKAN_HPP_CONSTEXPR_14 BindHeapInfoEXT & setHeapRange( DeviceAddressRangeEXT heapRange_ ) & VULKAN_HPP_NOEXCEPT
     {
       heapRange = heapRange_;
       return *this;
     }
 
-    VULKAN_HPP_CONSTEXPR_14 BindHeapInfoEXT && setHeapRange( DeviceAddressRangeEXT const & heapRange_ ) && VULKAN_HPP_NOEXCEPT
+    VULKAN_HPP_CONSTEXPR_14 BindHeapInfoEXT && setHeapRange( DeviceAddressRangeEXT heapRange_ ) && VULKAN_HPP_NOEXCEPT
     {
       heapRange = heapRange_;
       return std::move( *this );
@@ -12936,6 +13113,161 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
   };
 
   using BindImagePlaneMemoryInfoKHR = BindImagePlaneMemoryInfo;
+
+  // wrapper struct for struct VkBindIndexBuffer3InfoKHR, see https://registry.khronos.org/vulkan/specs/latest/man/html/VkBindIndexBuffer3InfoKHR.html
+  struct BindIndexBuffer3InfoKHR
+  {
+    using NativeType = VkBindIndexBuffer3InfoKHR;
+
+    static bool const                                  allowDuplicate = false;
+    static VULKAN_HPP_CONST_OR_CONSTEXPR StructureType structureType  = StructureType::eBindIndexBuffer3InfoKHR;
+
+#if !defined( VULKAN_HPP_NO_CONSTRUCTORS ) && !defined( VULKAN_HPP_NO_STRUCT_CONSTRUCTORS )
+    VULKAN_HPP_CONSTEXPR BindIndexBuffer3InfoKHR( DeviceAddressRangeKHR  addressRange_ = {},
+                                                  AddressCommandFlagsKHR addressFlags_ = {},
+                                                  IndexType              indexType_    = IndexType::eUint16,
+                                                  void const *           pNext_        = nullptr ) VULKAN_HPP_NOEXCEPT
+      : pNext{ pNext_ }
+      , addressRange{ addressRange_ }
+      , addressFlags{ addressFlags_ }
+      , indexType{ indexType_ }
+    {
+    }
+
+    VULKAN_HPP_CONSTEXPR BindIndexBuffer3InfoKHR( BindIndexBuffer3InfoKHR const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+
+    BindIndexBuffer3InfoKHR( VkBindIndexBuffer3InfoKHR const & rhs ) VULKAN_HPP_NOEXCEPT
+      : BindIndexBuffer3InfoKHR( *reinterpret_cast<BindIndexBuffer3InfoKHR const *>( &rhs ) )
+    {
+    }
+
+    BindIndexBuffer3InfoKHR & operator=( BindIndexBuffer3InfoKHR const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+#endif /*VULKAN_HPP_NO_CONSTRUCTORS*/
+
+    BindIndexBuffer3InfoKHR & operator=( VkBindIndexBuffer3InfoKHR const & rhs ) VULKAN_HPP_NOEXCEPT
+    {
+      *this = *reinterpret_cast<BindIndexBuffer3InfoKHR const *>( &rhs );
+      return *this;
+    }
+
+#if !defined( VULKAN_HPP_NO_SETTERS ) && !defined( VULKAN_HPP_NO_STRUCT_SETTERS )
+    VULKAN_HPP_CONSTEXPR_14 BindIndexBuffer3InfoKHR & setPNext( void const * pNext_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 BindIndexBuffer3InfoKHR && setPNext( void const * pNext_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 BindIndexBuffer3InfoKHR & setAddressRange( DeviceAddressRangeKHR const & addressRange_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      addressRange = addressRange_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 BindIndexBuffer3InfoKHR && setAddressRange( DeviceAddressRangeKHR const & addressRange_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      addressRange = addressRange_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 BindIndexBuffer3InfoKHR & setAddressFlags( AddressCommandFlagsKHR addressFlags_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      addressFlags = addressFlags_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 BindIndexBuffer3InfoKHR && setAddressFlags( AddressCommandFlagsKHR addressFlags_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      addressFlags = addressFlags_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 BindIndexBuffer3InfoKHR & setIndexType( IndexType indexType_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      indexType = indexType_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 BindIndexBuffer3InfoKHR && setIndexType( IndexType indexType_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      indexType = indexType_;
+      return std::move( *this );
+    }
+#endif /*VULKAN_HPP_NO_SETTERS*/
+
+    operator VkBindIndexBuffer3InfoKHR const &() const VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkBindIndexBuffer3InfoKHR const *>( this );
+    }
+
+    operator VkBindIndexBuffer3InfoKHR &() VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkBindIndexBuffer3InfoKHR *>( this );
+    }
+
+    operator VkBindIndexBuffer3InfoKHR const *() const VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkBindIndexBuffer3InfoKHR const *>( this );
+    }
+
+    operator VkBindIndexBuffer3InfoKHR *() VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkBindIndexBuffer3InfoKHR *>( this );
+    }
+
+#if defined( VULKAN_HPP_USE_REFLECT )
+    std::tuple<StructureType const &, void const * const &, DeviceAddressRangeKHR const &, AddressCommandFlagsKHR const &, IndexType const &>
+      reflect() const VULKAN_HPP_NOEXCEPT
+    {
+      return std::tie( sType, pNext, addressRange, addressFlags, indexType );
+    }
+#endif
+
+#if defined( VULKAN_HPP_HAS_SPACESHIP_OPERATOR )
+    auto operator<=>( BindIndexBuffer3InfoKHR const & ) const = default;
+#else
+    bool operator==( BindIndexBuffer3InfoKHR const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+#  if defined( VULKAN_HPP_USE_REFLECT )
+      return this->reflect() == rhs.reflect();
+#  else
+      return ( sType == rhs.sType ) && ( pNext == rhs.pNext ) && ( addressRange == rhs.addressRange ) && ( addressFlags == rhs.addressFlags ) &&
+             ( indexType == rhs.indexType );
+#  endif
+    }
+
+    bool operator!=( BindIndexBuffer3InfoKHR const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+      return !operator==( rhs );
+    }
+#endif
+
+  public:
+    StructureType          sType        = StructureType::eBindIndexBuffer3InfoKHR;
+    void const *           pNext        = {};
+    DeviceAddressRangeKHR  addressRange = {};
+    AddressCommandFlagsKHR addressFlags = {};
+    IndexType              indexType    = IndexType::eUint16;
+  };
+
+#if 20 <= VULKAN_HPP_CPP_VERSION
+  template <>
+  struct CppType<VkBindIndexBuffer3InfoKHR>
+  {
+    using Type = BindIndexBuffer3InfoKHR;
+  };
+#endif
+
+  template <>
+  struct CppType<StructureType, StructureType::eBindIndexBuffer3InfoKHR>
+  {
+    using Type = BindIndexBuffer3InfoKHR;
+  };
 
   // wrapper struct for struct VkBindIndexBufferIndirectCommandEXT, see
   // https://registry.khronos.org/vulkan/specs/latest/man/html/VkBindIndexBufferIndirectCommandEXT.html
@@ -15140,6 +15472,426 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
   struct CppType<StructureType, StructureType::eBindTensorMemoryInfoARM>
   {
     using Type = BindTensorMemoryInfoARM;
+  };
+
+  // wrapper struct for struct VkBindTransformFeedbackBuffer2InfoEXT, see
+  // https://registry.khronos.org/vulkan/specs/latest/man/html/VkBindTransformFeedbackBuffer2InfoEXT.html
+  struct BindTransformFeedbackBuffer2InfoEXT
+  {
+    using NativeType = VkBindTransformFeedbackBuffer2InfoEXT;
+
+    static bool const                                  allowDuplicate = false;
+    static VULKAN_HPP_CONST_OR_CONSTEXPR StructureType structureType  = StructureType::eBindTransformFeedbackBuffer2InfoEXT;
+
+#if !defined( VULKAN_HPP_NO_CONSTRUCTORS ) && !defined( VULKAN_HPP_NO_STRUCT_CONSTRUCTORS )
+    VULKAN_HPP_CONSTEXPR BindTransformFeedbackBuffer2InfoEXT( DeviceAddressRangeKHR  addressRange_ = {},
+                                                              AddressCommandFlagsKHR addressFlags_ = {},
+                                                              void const *           pNext_        = nullptr ) VULKAN_HPP_NOEXCEPT
+      : pNext{ pNext_ }
+      , addressRange{ addressRange_ }
+      , addressFlags{ addressFlags_ }
+    {
+    }
+
+    VULKAN_HPP_CONSTEXPR BindTransformFeedbackBuffer2InfoEXT( BindTransformFeedbackBuffer2InfoEXT const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+
+    BindTransformFeedbackBuffer2InfoEXT( VkBindTransformFeedbackBuffer2InfoEXT const & rhs ) VULKAN_HPP_NOEXCEPT
+      : BindTransformFeedbackBuffer2InfoEXT( *reinterpret_cast<BindTransformFeedbackBuffer2InfoEXT const *>( &rhs ) )
+    {
+    }
+
+    BindTransformFeedbackBuffer2InfoEXT & operator=( BindTransformFeedbackBuffer2InfoEXT const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+#endif /*VULKAN_HPP_NO_CONSTRUCTORS*/
+
+    BindTransformFeedbackBuffer2InfoEXT & operator=( VkBindTransformFeedbackBuffer2InfoEXT const & rhs ) VULKAN_HPP_NOEXCEPT
+    {
+      *this = *reinterpret_cast<BindTransformFeedbackBuffer2InfoEXT const *>( &rhs );
+      return *this;
+    }
+
+#if !defined( VULKAN_HPP_NO_SETTERS ) && !defined( VULKAN_HPP_NO_STRUCT_SETTERS )
+    VULKAN_HPP_CONSTEXPR_14 BindTransformFeedbackBuffer2InfoEXT & setPNext( void const * pNext_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 BindTransformFeedbackBuffer2InfoEXT && setPNext( void const * pNext_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 BindTransformFeedbackBuffer2InfoEXT & setAddressRange( DeviceAddressRangeKHR const & addressRange_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      addressRange = addressRange_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 BindTransformFeedbackBuffer2InfoEXT && setAddressRange( DeviceAddressRangeKHR const & addressRange_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      addressRange = addressRange_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 BindTransformFeedbackBuffer2InfoEXT & setAddressFlags( AddressCommandFlagsKHR addressFlags_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      addressFlags = addressFlags_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 BindTransformFeedbackBuffer2InfoEXT && setAddressFlags( AddressCommandFlagsKHR addressFlags_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      addressFlags = addressFlags_;
+      return std::move( *this );
+    }
+#endif /*VULKAN_HPP_NO_SETTERS*/
+
+    operator VkBindTransformFeedbackBuffer2InfoEXT const &() const VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkBindTransformFeedbackBuffer2InfoEXT const *>( this );
+    }
+
+    operator VkBindTransformFeedbackBuffer2InfoEXT &() VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkBindTransformFeedbackBuffer2InfoEXT *>( this );
+    }
+
+    operator VkBindTransformFeedbackBuffer2InfoEXT const *() const VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkBindTransformFeedbackBuffer2InfoEXT const *>( this );
+    }
+
+    operator VkBindTransformFeedbackBuffer2InfoEXT *() VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkBindTransformFeedbackBuffer2InfoEXT *>( this );
+    }
+
+#if defined( VULKAN_HPP_USE_REFLECT )
+    std::tuple<StructureType const &, void const * const &, DeviceAddressRangeKHR const &, AddressCommandFlagsKHR const &> reflect() const VULKAN_HPP_NOEXCEPT
+    {
+      return std::tie( sType, pNext, addressRange, addressFlags );
+    }
+#endif
+
+#if defined( VULKAN_HPP_HAS_SPACESHIP_OPERATOR )
+    auto operator<=>( BindTransformFeedbackBuffer2InfoEXT const & ) const = default;
+#else
+    bool operator==( BindTransformFeedbackBuffer2InfoEXT const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+#  if defined( VULKAN_HPP_USE_REFLECT )
+      return this->reflect() == rhs.reflect();
+#  else
+      return ( sType == rhs.sType ) && ( pNext == rhs.pNext ) && ( addressRange == rhs.addressRange ) && ( addressFlags == rhs.addressFlags );
+#  endif
+    }
+
+    bool operator!=( BindTransformFeedbackBuffer2InfoEXT const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+      return !operator==( rhs );
+    }
+#endif
+
+  public:
+    StructureType          sType        = StructureType::eBindTransformFeedbackBuffer2InfoEXT;
+    void const *           pNext        = {};
+    DeviceAddressRangeKHR  addressRange = {};
+    AddressCommandFlagsKHR addressFlags = {};
+  };
+
+#if 20 <= VULKAN_HPP_CPP_VERSION
+  template <>
+  struct CppType<VkBindTransformFeedbackBuffer2InfoEXT>
+  {
+    using Type = BindTransformFeedbackBuffer2InfoEXT;
+  };
+#endif
+
+  template <>
+  struct CppType<StructureType, StructureType::eBindTransformFeedbackBuffer2InfoEXT>
+  {
+    using Type = BindTransformFeedbackBuffer2InfoEXT;
+  };
+
+  // wrapper struct for struct VkStridedDeviceAddressRangeKHR, see https://registry.khronos.org/vulkan/specs/latest/man/html/VkStridedDeviceAddressRangeKHR.html
+  struct StridedDeviceAddressRangeKHR
+  {
+    using NativeType = VkStridedDeviceAddressRangeKHR;
+
+#if !defined( VULKAN_HPP_NO_CONSTRUCTORS ) && !defined( VULKAN_HPP_NO_STRUCT_CONSTRUCTORS )
+    VULKAN_HPP_CONSTEXPR StridedDeviceAddressRangeKHR( DeviceAddress address_ = {}, DeviceSize size_ = {}, DeviceSize stride_ = {} ) VULKAN_HPP_NOEXCEPT
+      : address{ address_ }
+      , size{ size_ }
+      , stride{ stride_ }
+    {
+    }
+
+    VULKAN_HPP_CONSTEXPR StridedDeviceAddressRangeKHR( StridedDeviceAddressRangeKHR const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+
+    StridedDeviceAddressRangeKHR( VkStridedDeviceAddressRangeKHR const & rhs ) VULKAN_HPP_NOEXCEPT
+      : StridedDeviceAddressRangeKHR( *reinterpret_cast<StridedDeviceAddressRangeKHR const *>( &rhs ) )
+    {
+    }
+
+    StridedDeviceAddressRangeKHR & operator=( StridedDeviceAddressRangeKHR const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+#endif /*VULKAN_HPP_NO_CONSTRUCTORS*/
+
+    StridedDeviceAddressRangeKHR & operator=( VkStridedDeviceAddressRangeKHR const & rhs ) VULKAN_HPP_NOEXCEPT
+    {
+      *this = *reinterpret_cast<StridedDeviceAddressRangeKHR const *>( &rhs );
+      return *this;
+    }
+
+#if !defined( VULKAN_HPP_NO_SETTERS ) && !defined( VULKAN_HPP_NO_STRUCT_SETTERS )
+    VULKAN_HPP_CONSTEXPR_14 StridedDeviceAddressRangeKHR & setAddress( DeviceAddress address_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      address = address_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 StridedDeviceAddressRangeKHR && setAddress( DeviceAddress address_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      address = address_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 StridedDeviceAddressRangeKHR & setSize( DeviceSize size_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      size = size_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 StridedDeviceAddressRangeKHR && setSize( DeviceSize size_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      size = size_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 StridedDeviceAddressRangeKHR & setStride( DeviceSize stride_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      stride = stride_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 StridedDeviceAddressRangeKHR && setStride( DeviceSize stride_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      stride = stride_;
+      return std::move( *this );
+    }
+#endif /*VULKAN_HPP_NO_SETTERS*/
+
+    operator VkStridedDeviceAddressRangeKHR const &() const VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkStridedDeviceAddressRangeKHR const *>( this );
+    }
+
+    operator VkStridedDeviceAddressRangeKHR &() VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkStridedDeviceAddressRangeKHR *>( this );
+    }
+
+    operator VkStridedDeviceAddressRangeKHR const *() const VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkStridedDeviceAddressRangeKHR const *>( this );
+    }
+
+    operator VkStridedDeviceAddressRangeKHR *() VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkStridedDeviceAddressRangeKHR *>( this );
+    }
+
+#if defined( VULKAN_HPP_USE_REFLECT )
+    std::tuple<DeviceAddress const &, DeviceSize const &, DeviceSize const &> reflect() const VULKAN_HPP_NOEXCEPT
+    {
+      return std::tie( address, size, stride );
+    }
+#endif
+
+#if defined( VULKAN_HPP_HAS_SPACESHIP_OPERATOR )
+    auto operator<=>( StridedDeviceAddressRangeKHR const & ) const = default;
+#else
+    bool operator==( StridedDeviceAddressRangeKHR const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+#  if defined( VULKAN_HPP_USE_REFLECT )
+      return this->reflect() == rhs.reflect();
+#  else
+      return ( address == rhs.address ) && ( size == rhs.size ) && ( stride == rhs.stride );
+#  endif
+    }
+
+    bool operator!=( StridedDeviceAddressRangeKHR const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+      return !operator==( rhs );
+    }
+#endif
+
+  public:
+    DeviceAddress address = {};
+    DeviceSize    size    = {};
+    DeviceSize    stride  = {};
+  };
+
+#if 20 <= VULKAN_HPP_CPP_VERSION
+  template <>
+  struct CppType<VkStridedDeviceAddressRangeKHR>
+  {
+    using Type = StridedDeviceAddressRangeKHR;
+  };
+#endif
+
+  // wrapper struct for struct VkBindVertexBuffer3InfoKHR, see https://registry.khronos.org/vulkan/specs/latest/man/html/VkBindVertexBuffer3InfoKHR.html
+  struct BindVertexBuffer3InfoKHR
+  {
+    using NativeType = VkBindVertexBuffer3InfoKHR;
+
+    static bool const                                  allowDuplicate = false;
+    static VULKAN_HPP_CONST_OR_CONSTEXPR StructureType structureType  = StructureType::eBindVertexBuffer3InfoKHR;
+
+#if !defined( VULKAN_HPP_NO_CONSTRUCTORS ) && !defined( VULKAN_HPP_NO_STRUCT_CONSTRUCTORS )
+    VULKAN_HPP_CONSTEXPR BindVertexBuffer3InfoKHR( Bool32                       setStride_    = {},
+                                                   StridedDeviceAddressRangeKHR addressRange_ = {},
+                                                   AddressCommandFlagsKHR       addressFlags_ = {},
+                                                   void const *                 pNext_        = nullptr ) VULKAN_HPP_NOEXCEPT
+      : pNext{ pNext_ }
+      , setStride{ setStride_ }
+      , addressRange{ addressRange_ }
+      , addressFlags{ addressFlags_ }
+    {
+    }
+
+    VULKAN_HPP_CONSTEXPR BindVertexBuffer3InfoKHR( BindVertexBuffer3InfoKHR const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+
+    BindVertexBuffer3InfoKHR( VkBindVertexBuffer3InfoKHR const & rhs ) VULKAN_HPP_NOEXCEPT
+      : BindVertexBuffer3InfoKHR( *reinterpret_cast<BindVertexBuffer3InfoKHR const *>( &rhs ) )
+    {
+    }
+
+    BindVertexBuffer3InfoKHR & operator=( BindVertexBuffer3InfoKHR const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+#endif /*VULKAN_HPP_NO_CONSTRUCTORS*/
+
+    BindVertexBuffer3InfoKHR & operator=( VkBindVertexBuffer3InfoKHR const & rhs ) VULKAN_HPP_NOEXCEPT
+    {
+      *this = *reinterpret_cast<BindVertexBuffer3InfoKHR const *>( &rhs );
+      return *this;
+    }
+
+#if !defined( VULKAN_HPP_NO_SETTERS ) && !defined( VULKAN_HPP_NO_STRUCT_SETTERS )
+    VULKAN_HPP_CONSTEXPR_14 BindVertexBuffer3InfoKHR & setPNext( void const * pNext_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 BindVertexBuffer3InfoKHR && setPNext( void const * pNext_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 BindVertexBuffer3InfoKHR & setSetStride( Bool32 setStride_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      setStride = setStride_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 BindVertexBuffer3InfoKHR && setSetStride( Bool32 setStride_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      setStride = setStride_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 BindVertexBuffer3InfoKHR & setAddressRange( StridedDeviceAddressRangeKHR const & addressRange_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      addressRange = addressRange_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 BindVertexBuffer3InfoKHR && setAddressRange( StridedDeviceAddressRangeKHR const & addressRange_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      addressRange = addressRange_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 BindVertexBuffer3InfoKHR & setAddressFlags( AddressCommandFlagsKHR addressFlags_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      addressFlags = addressFlags_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 BindVertexBuffer3InfoKHR && setAddressFlags( AddressCommandFlagsKHR addressFlags_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      addressFlags = addressFlags_;
+      return std::move( *this );
+    }
+#endif /*VULKAN_HPP_NO_SETTERS*/
+
+    operator VkBindVertexBuffer3InfoKHR const &() const VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkBindVertexBuffer3InfoKHR const *>( this );
+    }
+
+    operator VkBindVertexBuffer3InfoKHR &() VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkBindVertexBuffer3InfoKHR *>( this );
+    }
+
+    operator VkBindVertexBuffer3InfoKHR const *() const VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkBindVertexBuffer3InfoKHR const *>( this );
+    }
+
+    operator VkBindVertexBuffer3InfoKHR *() VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkBindVertexBuffer3InfoKHR *>( this );
+    }
+
+#if defined( VULKAN_HPP_USE_REFLECT )
+    std::tuple<StructureType const &, void const * const &, Bool32 const &, StridedDeviceAddressRangeKHR const &, AddressCommandFlagsKHR const &>
+      reflect() const VULKAN_HPP_NOEXCEPT
+    {
+      return std::tie( sType, pNext, setStride, addressRange, addressFlags );
+    }
+#endif
+
+#if defined( VULKAN_HPP_HAS_SPACESHIP_OPERATOR )
+    auto operator<=>( BindVertexBuffer3InfoKHR const & ) const = default;
+#else
+    bool operator==( BindVertexBuffer3InfoKHR const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+#  if defined( VULKAN_HPP_USE_REFLECT )
+      return this->reflect() == rhs.reflect();
+#  else
+      return ( sType == rhs.sType ) && ( pNext == rhs.pNext ) && ( setStride == rhs.setStride ) && ( addressRange == rhs.addressRange ) &&
+             ( addressFlags == rhs.addressFlags );
+#  endif
+    }
+
+    bool operator!=( BindVertexBuffer3InfoKHR const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+      return !operator==( rhs );
+    }
+#endif
+
+  public:
+    StructureType                sType        = StructureType::eBindVertexBuffer3InfoKHR;
+    void const *                 pNext        = {};
+    Bool32                       setStride    = {};
+    StridedDeviceAddressRangeKHR addressRange = {};
+    AddressCommandFlagsKHR       addressFlags = {};
+  };
+
+#if 20 <= VULKAN_HPP_CPP_VERSION
+  template <>
+  struct CppType<VkBindVertexBuffer3InfoKHR>
+  {
+    using Type = BindVertexBuffer3InfoKHR;
+  };
+#endif
+
+  template <>
+  struct CppType<StructureType, StructureType::eBindVertexBuffer3InfoKHR>
+  {
+    using Type = BindVertexBuffer3InfoKHR;
   };
 
   // wrapper struct for struct VkBindVertexBufferIndirectCommandEXT, see
@@ -27208,6 +27960,162 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
     using Type = ComputePipelineIndirectBufferInfoNV;
   };
 
+  // wrapper struct for struct VkConditionalRenderingBeginInfo2EXT, see
+  // https://registry.khronos.org/vulkan/specs/latest/man/html/VkConditionalRenderingBeginInfo2EXT.html
+  struct ConditionalRenderingBeginInfo2EXT
+  {
+    using NativeType = VkConditionalRenderingBeginInfo2EXT;
+
+    static bool const                                  allowDuplicate = false;
+    static VULKAN_HPP_CONST_OR_CONSTEXPR StructureType structureType  = StructureType::eConditionalRenderingBeginInfo2EXT;
+
+#if !defined( VULKAN_HPP_NO_CONSTRUCTORS ) && !defined( VULKAN_HPP_NO_STRUCT_CONSTRUCTORS )
+    VULKAN_HPP_CONSTEXPR ConditionalRenderingBeginInfo2EXT( DeviceAddressRangeKHR        addressRange_ = {},
+                                                            AddressCommandFlagsKHR       addressFlags_ = {},
+                                                            ConditionalRenderingFlagsEXT flags_        = {},
+                                                            void const *                 pNext_        = nullptr ) VULKAN_HPP_NOEXCEPT
+      : pNext{ pNext_ }
+      , addressRange{ addressRange_ }
+      , addressFlags{ addressFlags_ }
+      , flags{ flags_ }
+    {
+    }
+
+    VULKAN_HPP_CONSTEXPR ConditionalRenderingBeginInfo2EXT( ConditionalRenderingBeginInfo2EXT const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+
+    ConditionalRenderingBeginInfo2EXT( VkConditionalRenderingBeginInfo2EXT const & rhs ) VULKAN_HPP_NOEXCEPT
+      : ConditionalRenderingBeginInfo2EXT( *reinterpret_cast<ConditionalRenderingBeginInfo2EXT const *>( &rhs ) )
+    {
+    }
+
+    ConditionalRenderingBeginInfo2EXT & operator=( ConditionalRenderingBeginInfo2EXT const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+#endif /*VULKAN_HPP_NO_CONSTRUCTORS*/
+
+    ConditionalRenderingBeginInfo2EXT & operator=( VkConditionalRenderingBeginInfo2EXT const & rhs ) VULKAN_HPP_NOEXCEPT
+    {
+      *this = *reinterpret_cast<ConditionalRenderingBeginInfo2EXT const *>( &rhs );
+      return *this;
+    }
+
+#if !defined( VULKAN_HPP_NO_SETTERS ) && !defined( VULKAN_HPP_NO_STRUCT_SETTERS )
+    VULKAN_HPP_CONSTEXPR_14 ConditionalRenderingBeginInfo2EXT & setPNext( void const * pNext_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 ConditionalRenderingBeginInfo2EXT && setPNext( void const * pNext_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 ConditionalRenderingBeginInfo2EXT & setAddressRange( DeviceAddressRangeKHR const & addressRange_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      addressRange = addressRange_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 ConditionalRenderingBeginInfo2EXT && setAddressRange( DeviceAddressRangeKHR const & addressRange_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      addressRange = addressRange_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 ConditionalRenderingBeginInfo2EXT & setAddressFlags( AddressCommandFlagsKHR addressFlags_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      addressFlags = addressFlags_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 ConditionalRenderingBeginInfo2EXT && setAddressFlags( AddressCommandFlagsKHR addressFlags_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      addressFlags = addressFlags_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 ConditionalRenderingBeginInfo2EXT & setFlags( ConditionalRenderingFlagsEXT flags_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      flags = flags_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 ConditionalRenderingBeginInfo2EXT && setFlags( ConditionalRenderingFlagsEXT flags_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      flags = flags_;
+      return std::move( *this );
+    }
+#endif /*VULKAN_HPP_NO_SETTERS*/
+
+    operator VkConditionalRenderingBeginInfo2EXT const &() const VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkConditionalRenderingBeginInfo2EXT const *>( this );
+    }
+
+    operator VkConditionalRenderingBeginInfo2EXT &() VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkConditionalRenderingBeginInfo2EXT *>( this );
+    }
+
+    operator VkConditionalRenderingBeginInfo2EXT const *() const VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkConditionalRenderingBeginInfo2EXT const *>( this );
+    }
+
+    operator VkConditionalRenderingBeginInfo2EXT *() VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkConditionalRenderingBeginInfo2EXT *>( this );
+    }
+
+#if defined( VULKAN_HPP_USE_REFLECT )
+    std::tuple<StructureType const &, void const * const &, DeviceAddressRangeKHR const &, AddressCommandFlagsKHR const &, ConditionalRenderingFlagsEXT const &>
+      reflect() const VULKAN_HPP_NOEXCEPT
+    {
+      return std::tie( sType, pNext, addressRange, addressFlags, flags );
+    }
+#endif
+
+#if defined( VULKAN_HPP_HAS_SPACESHIP_OPERATOR )
+    auto operator<=>( ConditionalRenderingBeginInfo2EXT const & ) const = default;
+#else
+    bool operator==( ConditionalRenderingBeginInfo2EXT const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+#  if defined( VULKAN_HPP_USE_REFLECT )
+      return this->reflect() == rhs.reflect();
+#  else
+      return ( sType == rhs.sType ) && ( pNext == rhs.pNext ) && ( addressRange == rhs.addressRange ) && ( addressFlags == rhs.addressFlags ) &&
+             ( flags == rhs.flags );
+#  endif
+    }
+
+    bool operator!=( ConditionalRenderingBeginInfo2EXT const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+      return !operator==( rhs );
+    }
+#endif
+
+  public:
+    StructureType                sType        = StructureType::eConditionalRenderingBeginInfo2EXT;
+    void const *                 pNext        = {};
+    DeviceAddressRangeKHR        addressRange = {};
+    AddressCommandFlagsKHR       addressFlags = {};
+    ConditionalRenderingFlagsEXT flags        = {};
+  };
+
+#if 20 <= VULKAN_HPP_CPP_VERSION
+  template <>
+  struct CppType<VkConditionalRenderingBeginInfo2EXT>
+  {
+    using Type = ConditionalRenderingBeginInfo2EXT;
+  };
+#endif
+
+  template <>
+  struct CppType<StructureType, StructureType::eConditionalRenderingBeginInfo2EXT>
+  {
+    using Type = ConditionalRenderingBeginInfo2EXT;
+  };
+
   // wrapper struct for struct VkConditionalRenderingBeginInfoEXT, see
   // https://registry.khronos.org/vulkan/specs/latest/man/html/VkConditionalRenderingBeginInfoEXT.html
   struct ConditionalRenderingBeginInfoEXT
@@ -29457,6 +30365,744 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
     using Type = CopyDescriptorSet;
   };
 
+  // wrapper struct for struct VkDeviceMemoryImageCopyKHR, see https://registry.khronos.org/vulkan/specs/latest/man/html/VkDeviceMemoryImageCopyKHR.html
+  struct DeviceMemoryImageCopyKHR
+  {
+    using NativeType = VkDeviceMemoryImageCopyKHR;
+
+    static bool const                                  allowDuplicate = false;
+    static VULKAN_HPP_CONST_OR_CONSTEXPR StructureType structureType  = StructureType::eDeviceMemoryImageCopyKHR;
+
+#if !defined( VULKAN_HPP_NO_CONSTRUCTORS ) && !defined( VULKAN_HPP_NO_STRUCT_CONSTRUCTORS )
+    VULKAN_HPP_CONSTEXPR DeviceMemoryImageCopyKHR( DeviceAddressRangeKHR  addressRange_       = {},
+                                                   AddressCommandFlagsKHR addressFlags_       = {},
+                                                   uint32_t               addressRowLength_   = {},
+                                                   uint32_t               addressImageHeight_ = {},
+                                                   ImageSubresourceLayers imageSubresource_   = {},
+                                                   ImageLayout            imageLayout_        = ImageLayout::eUndefined,
+                                                   Offset3D               imageOffset_        = {},
+                                                   Extent3D               imageExtent_        = {},
+                                                   void const *           pNext_              = nullptr ) VULKAN_HPP_NOEXCEPT
+      : pNext{ pNext_ }
+      , addressRange{ addressRange_ }
+      , addressFlags{ addressFlags_ }
+      , addressRowLength{ addressRowLength_ }
+      , addressImageHeight{ addressImageHeight_ }
+      , imageSubresource{ imageSubresource_ }
+      , imageLayout{ imageLayout_ }
+      , imageOffset{ imageOffset_ }
+      , imageExtent{ imageExtent_ }
+    {
+    }
+
+    VULKAN_HPP_CONSTEXPR DeviceMemoryImageCopyKHR( DeviceMemoryImageCopyKHR const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+
+    DeviceMemoryImageCopyKHR( VkDeviceMemoryImageCopyKHR const & rhs ) VULKAN_HPP_NOEXCEPT
+      : DeviceMemoryImageCopyKHR( *reinterpret_cast<DeviceMemoryImageCopyKHR const *>( &rhs ) )
+    {
+    }
+
+    DeviceMemoryImageCopyKHR & operator=( DeviceMemoryImageCopyKHR const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+#endif /*VULKAN_HPP_NO_CONSTRUCTORS*/
+
+    DeviceMemoryImageCopyKHR & operator=( VkDeviceMemoryImageCopyKHR const & rhs ) VULKAN_HPP_NOEXCEPT
+    {
+      *this = *reinterpret_cast<DeviceMemoryImageCopyKHR const *>( &rhs );
+      return *this;
+    }
+
+#if !defined( VULKAN_HPP_NO_SETTERS ) && !defined( VULKAN_HPP_NO_STRUCT_SETTERS )
+    VULKAN_HPP_CONSTEXPR_14 DeviceMemoryImageCopyKHR & setPNext( void const * pNext_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DeviceMemoryImageCopyKHR && setPNext( void const * pNext_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DeviceMemoryImageCopyKHR & setAddressRange( DeviceAddressRangeKHR const & addressRange_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      addressRange = addressRange_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DeviceMemoryImageCopyKHR && setAddressRange( DeviceAddressRangeKHR const & addressRange_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      addressRange = addressRange_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DeviceMemoryImageCopyKHR & setAddressFlags( AddressCommandFlagsKHR addressFlags_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      addressFlags = addressFlags_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DeviceMemoryImageCopyKHR && setAddressFlags( AddressCommandFlagsKHR addressFlags_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      addressFlags = addressFlags_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DeviceMemoryImageCopyKHR & setAddressRowLength( uint32_t addressRowLength_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      addressRowLength = addressRowLength_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DeviceMemoryImageCopyKHR && setAddressRowLength( uint32_t addressRowLength_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      addressRowLength = addressRowLength_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DeviceMemoryImageCopyKHR & setAddressImageHeight( uint32_t addressImageHeight_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      addressImageHeight = addressImageHeight_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DeviceMemoryImageCopyKHR && setAddressImageHeight( uint32_t addressImageHeight_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      addressImageHeight = addressImageHeight_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DeviceMemoryImageCopyKHR & setImageSubresource( ImageSubresourceLayers const & imageSubresource_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      imageSubresource = imageSubresource_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DeviceMemoryImageCopyKHR && setImageSubresource( ImageSubresourceLayers const & imageSubresource_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      imageSubresource = imageSubresource_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DeviceMemoryImageCopyKHR & setImageLayout( ImageLayout imageLayout_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      imageLayout = imageLayout_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DeviceMemoryImageCopyKHR && setImageLayout( ImageLayout imageLayout_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      imageLayout = imageLayout_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DeviceMemoryImageCopyKHR & setImageOffset( Offset3D const & imageOffset_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      imageOffset = imageOffset_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DeviceMemoryImageCopyKHR && setImageOffset( Offset3D const & imageOffset_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      imageOffset = imageOffset_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DeviceMemoryImageCopyKHR & setImageExtent( Extent3D const & imageExtent_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      imageExtent = imageExtent_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DeviceMemoryImageCopyKHR && setImageExtent( Extent3D const & imageExtent_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      imageExtent = imageExtent_;
+      return std::move( *this );
+    }
+#endif /*VULKAN_HPP_NO_SETTERS*/
+
+    operator VkDeviceMemoryImageCopyKHR const &() const VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkDeviceMemoryImageCopyKHR const *>( this );
+    }
+
+    operator VkDeviceMemoryImageCopyKHR &() VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkDeviceMemoryImageCopyKHR *>( this );
+    }
+
+    operator VkDeviceMemoryImageCopyKHR const *() const VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkDeviceMemoryImageCopyKHR const *>( this );
+    }
+
+    operator VkDeviceMemoryImageCopyKHR *() VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkDeviceMemoryImageCopyKHR *>( this );
+    }
+
+#if defined( VULKAN_HPP_USE_REFLECT )
+    std::tuple<StructureType const &,
+               void const * const &,
+               DeviceAddressRangeKHR const &,
+               AddressCommandFlagsKHR const &,
+               uint32_t const &,
+               uint32_t const &,
+               ImageSubresourceLayers const &,
+               ImageLayout const &,
+               Offset3D const &,
+               Extent3D const &>
+      reflect() const VULKAN_HPP_NOEXCEPT
+    {
+      return std::tie(
+        sType, pNext, addressRange, addressFlags, addressRowLength, addressImageHeight, imageSubresource, imageLayout, imageOffset, imageExtent );
+    }
+#endif
+
+#if defined( VULKAN_HPP_HAS_SPACESHIP_OPERATOR )
+    auto operator<=>( DeviceMemoryImageCopyKHR const & ) const = default;
+#else
+    bool operator==( DeviceMemoryImageCopyKHR const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+#  if defined( VULKAN_HPP_USE_REFLECT )
+      return this->reflect() == rhs.reflect();
+#  else
+      return ( sType == rhs.sType ) && ( pNext == rhs.pNext ) && ( addressRange == rhs.addressRange ) && ( addressFlags == rhs.addressFlags ) &&
+             ( addressRowLength == rhs.addressRowLength ) && ( addressImageHeight == rhs.addressImageHeight ) && ( imageSubresource == rhs.imageSubresource ) &&
+             ( imageLayout == rhs.imageLayout ) && ( imageOffset == rhs.imageOffset ) && ( imageExtent == rhs.imageExtent );
+#  endif
+    }
+
+    bool operator!=( DeviceMemoryImageCopyKHR const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+      return !operator==( rhs );
+    }
+#endif
+
+  public:
+    StructureType          sType              = StructureType::eDeviceMemoryImageCopyKHR;
+    void const *           pNext              = {};
+    DeviceAddressRangeKHR  addressRange       = {};
+    AddressCommandFlagsKHR addressFlags       = {};
+    uint32_t               addressRowLength   = {};
+    uint32_t               addressImageHeight = {};
+    ImageSubresourceLayers imageSubresource   = {};
+    ImageLayout            imageLayout        = ImageLayout::eUndefined;
+    Offset3D               imageOffset        = {};
+    Extent3D               imageExtent        = {};
+  };
+
+#if 20 <= VULKAN_HPP_CPP_VERSION
+  template <>
+  struct CppType<VkDeviceMemoryImageCopyKHR>
+  {
+    using Type = DeviceMemoryImageCopyKHR;
+  };
+#endif
+
+  template <>
+  struct CppType<StructureType, StructureType::eDeviceMemoryImageCopyKHR>
+  {
+    using Type = DeviceMemoryImageCopyKHR;
+  };
+
+  // wrapper struct for struct VkCopyDeviceMemoryImageInfoKHR, see https://registry.khronos.org/vulkan/specs/latest/man/html/VkCopyDeviceMemoryImageInfoKHR.html
+  struct CopyDeviceMemoryImageInfoKHR
+  {
+    using NativeType = VkCopyDeviceMemoryImageInfoKHR;
+
+    static bool const                                  allowDuplicate = false;
+    static VULKAN_HPP_CONST_OR_CONSTEXPR StructureType structureType  = StructureType::eCopyDeviceMemoryImageInfoKHR;
+
+#if !defined( VULKAN_HPP_NO_CONSTRUCTORS ) && !defined( VULKAN_HPP_NO_STRUCT_CONSTRUCTORS )
+    VULKAN_HPP_CONSTEXPR CopyDeviceMemoryImageInfoKHR( Image                            image_       = {},
+                                                       uint32_t                         regionCount_ = {},
+                                                       DeviceMemoryImageCopyKHR const * pRegions_    = {},
+                                                       void const *                     pNext_       = nullptr ) VULKAN_HPP_NOEXCEPT
+      : pNext{ pNext_ }
+      , image{ image_ }
+      , regionCount{ regionCount_ }
+      , pRegions{ pRegions_ }
+    {
+    }
+
+    VULKAN_HPP_CONSTEXPR CopyDeviceMemoryImageInfoKHR( CopyDeviceMemoryImageInfoKHR const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+
+    CopyDeviceMemoryImageInfoKHR( VkCopyDeviceMemoryImageInfoKHR const & rhs ) VULKAN_HPP_NOEXCEPT
+      : CopyDeviceMemoryImageInfoKHR( *reinterpret_cast<CopyDeviceMemoryImageInfoKHR const *>( &rhs ) )
+    {
+    }
+
+#  if !defined( VULKAN_HPP_DISABLE_ENHANCED_MODE )
+    CopyDeviceMemoryImageInfoKHR( Image image_, ArrayProxyNoTemporaries<DeviceMemoryImageCopyKHR const> const & regions_, void const * pNext_ = nullptr )
+      : pNext( pNext_ ), image( image_ ), regionCount( static_cast<uint32_t>( regions_.size() ) ), pRegions( regions_.data() )
+    {
+    }
+#  endif /*VULKAN_HPP_DISABLE_ENHANCED_MODE*/
+
+    CopyDeviceMemoryImageInfoKHR & operator=( CopyDeviceMemoryImageInfoKHR const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+#endif /*VULKAN_HPP_NO_CONSTRUCTORS*/
+
+    CopyDeviceMemoryImageInfoKHR & operator=( VkCopyDeviceMemoryImageInfoKHR const & rhs ) VULKAN_HPP_NOEXCEPT
+    {
+      *this = *reinterpret_cast<CopyDeviceMemoryImageInfoKHR const *>( &rhs );
+      return *this;
+    }
+
+#if !defined( VULKAN_HPP_NO_SETTERS ) && !defined( VULKAN_HPP_NO_STRUCT_SETTERS )
+    VULKAN_HPP_CONSTEXPR_14 CopyDeviceMemoryImageInfoKHR & setPNext( void const * pNext_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 CopyDeviceMemoryImageInfoKHR && setPNext( void const * pNext_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 CopyDeviceMemoryImageInfoKHR & setImage( Image image_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      image = image_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 CopyDeviceMemoryImageInfoKHR && setImage( Image image_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      image = image_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 CopyDeviceMemoryImageInfoKHR & setRegionCount( uint32_t regionCount_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      regionCount = regionCount_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 CopyDeviceMemoryImageInfoKHR && setRegionCount( uint32_t regionCount_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      regionCount = regionCount_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 CopyDeviceMemoryImageInfoKHR & setPRegions( DeviceMemoryImageCopyKHR const * pRegions_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      pRegions = pRegions_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 CopyDeviceMemoryImageInfoKHR && setPRegions( DeviceMemoryImageCopyKHR const * pRegions_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      pRegions = pRegions_;
+      return std::move( *this );
+    }
+
+#  if !defined( VULKAN_HPP_DISABLE_ENHANCED_MODE )
+    CopyDeviceMemoryImageInfoKHR & setRegions( ArrayProxyNoTemporaries<DeviceMemoryImageCopyKHR const> const & regions_ ) VULKAN_HPP_NOEXCEPT
+    {
+      regionCount = static_cast<uint32_t>( regions_.size() );
+      pRegions    = regions_.data();
+      return *this;
+    }
+#  endif /*VULKAN_HPP_DISABLE_ENHANCED_MODE*/
+#endif   /*VULKAN_HPP_NO_SETTERS*/
+
+    operator VkCopyDeviceMemoryImageInfoKHR const &() const VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkCopyDeviceMemoryImageInfoKHR const *>( this );
+    }
+
+    operator VkCopyDeviceMemoryImageInfoKHR &() VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkCopyDeviceMemoryImageInfoKHR *>( this );
+    }
+
+    operator VkCopyDeviceMemoryImageInfoKHR const *() const VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkCopyDeviceMemoryImageInfoKHR const *>( this );
+    }
+
+    operator VkCopyDeviceMemoryImageInfoKHR *() VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkCopyDeviceMemoryImageInfoKHR *>( this );
+    }
+
+#if defined( VULKAN_HPP_USE_REFLECT )
+    std::tuple<StructureType const &, void const * const &, Image const &, uint32_t const &, DeviceMemoryImageCopyKHR const * const &>
+      reflect() const VULKAN_HPP_NOEXCEPT
+    {
+      return std::tie( sType, pNext, image, regionCount, pRegions );
+    }
+#endif
+
+#if defined( VULKAN_HPP_HAS_SPACESHIP_OPERATOR )
+    auto operator<=>( CopyDeviceMemoryImageInfoKHR const & ) const = default;
+#else
+    bool operator==( CopyDeviceMemoryImageInfoKHR const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+#  if defined( VULKAN_HPP_USE_REFLECT )
+      return this->reflect() == rhs.reflect();
+#  else
+      return ( sType == rhs.sType ) && ( pNext == rhs.pNext ) && ( image == rhs.image ) && ( regionCount == rhs.regionCount ) && ( pRegions == rhs.pRegions );
+#  endif
+    }
+
+    bool operator!=( CopyDeviceMemoryImageInfoKHR const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+      return !operator==( rhs );
+    }
+#endif
+
+  public:
+    StructureType                    sType       = StructureType::eCopyDeviceMemoryImageInfoKHR;
+    void const *                     pNext       = {};
+    Image                            image       = {};
+    uint32_t                         regionCount = {};
+    DeviceMemoryImageCopyKHR const * pRegions    = {};
+  };
+
+#if 20 <= VULKAN_HPP_CPP_VERSION
+  template <>
+  struct CppType<VkCopyDeviceMemoryImageInfoKHR>
+  {
+    using Type = CopyDeviceMemoryImageInfoKHR;
+  };
+#endif
+
+  template <>
+  struct CppType<StructureType, StructureType::eCopyDeviceMemoryImageInfoKHR>
+  {
+    using Type = CopyDeviceMemoryImageInfoKHR;
+  };
+
+  // wrapper struct for struct VkDeviceMemoryCopyKHR, see https://registry.khronos.org/vulkan/specs/latest/man/html/VkDeviceMemoryCopyKHR.html
+  struct DeviceMemoryCopyKHR
+  {
+    using NativeType = VkDeviceMemoryCopyKHR;
+
+    static bool const                                  allowDuplicate = false;
+    static VULKAN_HPP_CONST_OR_CONSTEXPR StructureType structureType  = StructureType::eDeviceMemoryCopyKHR;
+
+#if !defined( VULKAN_HPP_NO_CONSTRUCTORS ) && !defined( VULKAN_HPP_NO_STRUCT_CONSTRUCTORS )
+    VULKAN_HPP_CONSTEXPR DeviceMemoryCopyKHR( DeviceAddressRangeKHR  srcRange_ = {},
+                                              AddressCommandFlagsKHR srcFlags_ = {},
+                                              DeviceAddressRangeKHR  dstRange_ = {},
+                                              AddressCommandFlagsKHR dstFlags_ = {},
+                                              void const *           pNext_    = nullptr ) VULKAN_HPP_NOEXCEPT
+      : pNext{ pNext_ }
+      , srcRange{ srcRange_ }
+      , srcFlags{ srcFlags_ }
+      , dstRange{ dstRange_ }
+      , dstFlags{ dstFlags_ }
+    {
+    }
+
+    VULKAN_HPP_CONSTEXPR DeviceMemoryCopyKHR( DeviceMemoryCopyKHR const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+
+    DeviceMemoryCopyKHR( VkDeviceMemoryCopyKHR const & rhs ) VULKAN_HPP_NOEXCEPT : DeviceMemoryCopyKHR( *reinterpret_cast<DeviceMemoryCopyKHR const *>( &rhs ) )
+    {
+    }
+
+    DeviceMemoryCopyKHR & operator=( DeviceMemoryCopyKHR const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+#endif /*VULKAN_HPP_NO_CONSTRUCTORS*/
+
+    DeviceMemoryCopyKHR & operator=( VkDeviceMemoryCopyKHR const & rhs ) VULKAN_HPP_NOEXCEPT
+    {
+      *this = *reinterpret_cast<DeviceMemoryCopyKHR const *>( &rhs );
+      return *this;
+    }
+
+#if !defined( VULKAN_HPP_NO_SETTERS ) && !defined( VULKAN_HPP_NO_STRUCT_SETTERS )
+    VULKAN_HPP_CONSTEXPR_14 DeviceMemoryCopyKHR & setPNext( void const * pNext_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DeviceMemoryCopyKHR && setPNext( void const * pNext_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DeviceMemoryCopyKHR & setSrcRange( DeviceAddressRangeKHR const & srcRange_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      srcRange = srcRange_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DeviceMemoryCopyKHR && setSrcRange( DeviceAddressRangeKHR const & srcRange_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      srcRange = srcRange_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DeviceMemoryCopyKHR & setSrcFlags( AddressCommandFlagsKHR srcFlags_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      srcFlags = srcFlags_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DeviceMemoryCopyKHR && setSrcFlags( AddressCommandFlagsKHR srcFlags_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      srcFlags = srcFlags_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DeviceMemoryCopyKHR & setDstRange( DeviceAddressRangeKHR const & dstRange_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      dstRange = dstRange_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DeviceMemoryCopyKHR && setDstRange( DeviceAddressRangeKHR const & dstRange_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      dstRange = dstRange_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DeviceMemoryCopyKHR & setDstFlags( AddressCommandFlagsKHR dstFlags_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      dstFlags = dstFlags_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DeviceMemoryCopyKHR && setDstFlags( AddressCommandFlagsKHR dstFlags_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      dstFlags = dstFlags_;
+      return std::move( *this );
+    }
+#endif /*VULKAN_HPP_NO_SETTERS*/
+
+    operator VkDeviceMemoryCopyKHR const &() const VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkDeviceMemoryCopyKHR const *>( this );
+    }
+
+    operator VkDeviceMemoryCopyKHR &() VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkDeviceMemoryCopyKHR *>( this );
+    }
+
+    operator VkDeviceMemoryCopyKHR const *() const VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkDeviceMemoryCopyKHR const *>( this );
+    }
+
+    operator VkDeviceMemoryCopyKHR *() VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkDeviceMemoryCopyKHR *>( this );
+    }
+
+#if defined( VULKAN_HPP_USE_REFLECT )
+    std::tuple<StructureType const &,
+               void const * const &,
+               DeviceAddressRangeKHR const &,
+               AddressCommandFlagsKHR const &,
+               DeviceAddressRangeKHR const &,
+               AddressCommandFlagsKHR const &>
+      reflect() const VULKAN_HPP_NOEXCEPT
+    {
+      return std::tie( sType, pNext, srcRange, srcFlags, dstRange, dstFlags );
+    }
+#endif
+
+#if defined( VULKAN_HPP_HAS_SPACESHIP_OPERATOR )
+    auto operator<=>( DeviceMemoryCopyKHR const & ) const = default;
+#else
+    bool operator==( DeviceMemoryCopyKHR const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+#  if defined( VULKAN_HPP_USE_REFLECT )
+      return this->reflect() == rhs.reflect();
+#  else
+      return ( sType == rhs.sType ) && ( pNext == rhs.pNext ) && ( srcRange == rhs.srcRange ) && ( srcFlags == rhs.srcFlags ) && ( dstRange == rhs.dstRange ) &&
+             ( dstFlags == rhs.dstFlags );
+#  endif
+    }
+
+    bool operator!=( DeviceMemoryCopyKHR const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+      return !operator==( rhs );
+    }
+#endif
+
+  public:
+    StructureType          sType    = StructureType::eDeviceMemoryCopyKHR;
+    void const *           pNext    = {};
+    DeviceAddressRangeKHR  srcRange = {};
+    AddressCommandFlagsKHR srcFlags = {};
+    DeviceAddressRangeKHR  dstRange = {};
+    AddressCommandFlagsKHR dstFlags = {};
+  };
+
+#if 20 <= VULKAN_HPP_CPP_VERSION
+  template <>
+  struct CppType<VkDeviceMemoryCopyKHR>
+  {
+    using Type = DeviceMemoryCopyKHR;
+  };
+#endif
+
+  template <>
+  struct CppType<StructureType, StructureType::eDeviceMemoryCopyKHR>
+  {
+    using Type = DeviceMemoryCopyKHR;
+  };
+
+  // wrapper struct for struct VkCopyDeviceMemoryInfoKHR, see https://registry.khronos.org/vulkan/specs/latest/man/html/VkCopyDeviceMemoryInfoKHR.html
+  struct CopyDeviceMemoryInfoKHR
+  {
+    using NativeType = VkCopyDeviceMemoryInfoKHR;
+
+    static bool const                                  allowDuplicate = false;
+    static VULKAN_HPP_CONST_OR_CONSTEXPR StructureType structureType  = StructureType::eCopyDeviceMemoryInfoKHR;
+
+#if !defined( VULKAN_HPP_NO_CONSTRUCTORS ) && !defined( VULKAN_HPP_NO_STRUCT_CONSTRUCTORS )
+    VULKAN_HPP_CONSTEXPR
+      CopyDeviceMemoryInfoKHR( uint32_t regionCount_ = {}, DeviceMemoryCopyKHR const * pRegions_ = {}, void const * pNext_ = nullptr ) VULKAN_HPP_NOEXCEPT
+      : pNext{ pNext_ }
+      , regionCount{ regionCount_ }
+      , pRegions{ pRegions_ }
+    {
+    }
+
+    VULKAN_HPP_CONSTEXPR CopyDeviceMemoryInfoKHR( CopyDeviceMemoryInfoKHR const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+
+    CopyDeviceMemoryInfoKHR( VkCopyDeviceMemoryInfoKHR const & rhs ) VULKAN_HPP_NOEXCEPT
+      : CopyDeviceMemoryInfoKHR( *reinterpret_cast<CopyDeviceMemoryInfoKHR const *>( &rhs ) )
+    {
+    }
+
+#  if !defined( VULKAN_HPP_DISABLE_ENHANCED_MODE )
+    CopyDeviceMemoryInfoKHR( ArrayProxyNoTemporaries<DeviceMemoryCopyKHR const> const & regions_, void const * pNext_ = nullptr )
+      : pNext( pNext_ ), regionCount( static_cast<uint32_t>( regions_.size() ) ), pRegions( regions_.data() )
+    {
+    }
+#  endif /*VULKAN_HPP_DISABLE_ENHANCED_MODE*/
+
+    CopyDeviceMemoryInfoKHR & operator=( CopyDeviceMemoryInfoKHR const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+#endif /*VULKAN_HPP_NO_CONSTRUCTORS*/
+
+    CopyDeviceMemoryInfoKHR & operator=( VkCopyDeviceMemoryInfoKHR const & rhs ) VULKAN_HPP_NOEXCEPT
+    {
+      *this = *reinterpret_cast<CopyDeviceMemoryInfoKHR const *>( &rhs );
+      return *this;
+    }
+
+#if !defined( VULKAN_HPP_NO_SETTERS ) && !defined( VULKAN_HPP_NO_STRUCT_SETTERS )
+    VULKAN_HPP_CONSTEXPR_14 CopyDeviceMemoryInfoKHR & setPNext( void const * pNext_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 CopyDeviceMemoryInfoKHR && setPNext( void const * pNext_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 CopyDeviceMemoryInfoKHR & setRegionCount( uint32_t regionCount_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      regionCount = regionCount_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 CopyDeviceMemoryInfoKHR && setRegionCount( uint32_t regionCount_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      regionCount = regionCount_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 CopyDeviceMemoryInfoKHR & setPRegions( DeviceMemoryCopyKHR const * pRegions_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      pRegions = pRegions_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 CopyDeviceMemoryInfoKHR && setPRegions( DeviceMemoryCopyKHR const * pRegions_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      pRegions = pRegions_;
+      return std::move( *this );
+    }
+
+#  if !defined( VULKAN_HPP_DISABLE_ENHANCED_MODE )
+    CopyDeviceMemoryInfoKHR & setRegions( ArrayProxyNoTemporaries<DeviceMemoryCopyKHR const> const & regions_ ) VULKAN_HPP_NOEXCEPT
+    {
+      regionCount = static_cast<uint32_t>( regions_.size() );
+      pRegions    = regions_.data();
+      return *this;
+    }
+#  endif /*VULKAN_HPP_DISABLE_ENHANCED_MODE*/
+#endif   /*VULKAN_HPP_NO_SETTERS*/
+
+    operator VkCopyDeviceMemoryInfoKHR const &() const VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkCopyDeviceMemoryInfoKHR const *>( this );
+    }
+
+    operator VkCopyDeviceMemoryInfoKHR &() VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkCopyDeviceMemoryInfoKHR *>( this );
+    }
+
+    operator VkCopyDeviceMemoryInfoKHR const *() const VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkCopyDeviceMemoryInfoKHR const *>( this );
+    }
+
+    operator VkCopyDeviceMemoryInfoKHR *() VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkCopyDeviceMemoryInfoKHR *>( this );
+    }
+
+#if defined( VULKAN_HPP_USE_REFLECT )
+    std::tuple<StructureType const &, void const * const &, uint32_t const &, DeviceMemoryCopyKHR const * const &> reflect() const VULKAN_HPP_NOEXCEPT
+    {
+      return std::tie( sType, pNext, regionCount, pRegions );
+    }
+#endif
+
+#if defined( VULKAN_HPP_HAS_SPACESHIP_OPERATOR )
+    auto operator<=>( CopyDeviceMemoryInfoKHR const & ) const = default;
+#else
+    bool operator==( CopyDeviceMemoryInfoKHR const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+#  if defined( VULKAN_HPP_USE_REFLECT )
+      return this->reflect() == rhs.reflect();
+#  else
+      return ( sType == rhs.sType ) && ( pNext == rhs.pNext ) && ( regionCount == rhs.regionCount ) && ( pRegions == rhs.pRegions );
+#  endif
+    }
+
+    bool operator!=( CopyDeviceMemoryInfoKHR const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+      return !operator==( rhs );
+    }
+#endif
+
+  public:
+    StructureType               sType       = StructureType::eCopyDeviceMemoryInfoKHR;
+    void const *                pNext       = {};
+    uint32_t                    regionCount = {};
+    DeviceMemoryCopyKHR const * pRegions    = {};
+  };
+
+#if 20 <= VULKAN_HPP_CPP_VERSION
+  template <>
+  struct CppType<VkCopyDeviceMemoryInfoKHR>
+  {
+    using Type = CopyDeviceMemoryInfoKHR;
+  };
+#endif
+
+  template <>
+  struct CppType<StructureType, StructureType::eCopyDeviceMemoryInfoKHR>
+  {
+    using Type = CopyDeviceMemoryInfoKHR;
+  };
+
   // wrapper struct for struct VkImageCopy2, see https://registry.khronos.org/vulkan/specs/latest/man/html/VkImageCopy2.html
   struct ImageCopy2
   {
@@ -30900,132 +32546,6 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
   };
 #endif
   using CopyMemoryIndirectCommandNV = CopyMemoryIndirectCommandKHR;
-
-  // wrapper struct for struct VkStridedDeviceAddressRangeKHR, see https://registry.khronos.org/vulkan/specs/latest/man/html/VkStridedDeviceAddressRangeKHR.html
-  struct StridedDeviceAddressRangeKHR
-  {
-    using NativeType = VkStridedDeviceAddressRangeKHR;
-
-#if !defined( VULKAN_HPP_NO_CONSTRUCTORS ) && !defined( VULKAN_HPP_NO_STRUCT_CONSTRUCTORS )
-    VULKAN_HPP_CONSTEXPR StridedDeviceAddressRangeKHR( DeviceAddress address_ = {}, DeviceSize size_ = {}, DeviceSize stride_ = {} ) VULKAN_HPP_NOEXCEPT
-      : address{ address_ }
-      , size{ size_ }
-      , stride{ stride_ }
-    {
-    }
-
-    VULKAN_HPP_CONSTEXPR StridedDeviceAddressRangeKHR( StridedDeviceAddressRangeKHR const & rhs ) VULKAN_HPP_NOEXCEPT = default;
-
-    StridedDeviceAddressRangeKHR( VkStridedDeviceAddressRangeKHR const & rhs ) VULKAN_HPP_NOEXCEPT
-      : StridedDeviceAddressRangeKHR( *reinterpret_cast<StridedDeviceAddressRangeKHR const *>( &rhs ) )
-    {
-    }
-
-    StridedDeviceAddressRangeKHR & operator=( StridedDeviceAddressRangeKHR const & rhs ) VULKAN_HPP_NOEXCEPT = default;
-#endif /*VULKAN_HPP_NO_CONSTRUCTORS*/
-
-    StridedDeviceAddressRangeKHR & operator=( VkStridedDeviceAddressRangeKHR const & rhs ) VULKAN_HPP_NOEXCEPT
-    {
-      *this = *reinterpret_cast<StridedDeviceAddressRangeKHR const *>( &rhs );
-      return *this;
-    }
-
-#if !defined( VULKAN_HPP_NO_SETTERS ) && !defined( VULKAN_HPP_NO_STRUCT_SETTERS )
-    VULKAN_HPP_CONSTEXPR_14 StridedDeviceAddressRangeKHR & setAddress( DeviceAddress address_ ) & VULKAN_HPP_NOEXCEPT
-    {
-      address = address_;
-      return *this;
-    }
-
-    VULKAN_HPP_CONSTEXPR_14 StridedDeviceAddressRangeKHR && setAddress( DeviceAddress address_ ) && VULKAN_HPP_NOEXCEPT
-    {
-      address = address_;
-      return std::move( *this );
-    }
-
-    VULKAN_HPP_CONSTEXPR_14 StridedDeviceAddressRangeKHR & setSize( DeviceSize size_ ) & VULKAN_HPP_NOEXCEPT
-    {
-      size = size_;
-      return *this;
-    }
-
-    VULKAN_HPP_CONSTEXPR_14 StridedDeviceAddressRangeKHR && setSize( DeviceSize size_ ) && VULKAN_HPP_NOEXCEPT
-    {
-      size = size_;
-      return std::move( *this );
-    }
-
-    VULKAN_HPP_CONSTEXPR_14 StridedDeviceAddressRangeKHR & setStride( DeviceSize stride_ ) & VULKAN_HPP_NOEXCEPT
-    {
-      stride = stride_;
-      return *this;
-    }
-
-    VULKAN_HPP_CONSTEXPR_14 StridedDeviceAddressRangeKHR && setStride( DeviceSize stride_ ) && VULKAN_HPP_NOEXCEPT
-    {
-      stride = stride_;
-      return std::move( *this );
-    }
-#endif /*VULKAN_HPP_NO_SETTERS*/
-
-    operator VkStridedDeviceAddressRangeKHR const &() const VULKAN_HPP_NOEXCEPT
-    {
-      return *reinterpret_cast<VkStridedDeviceAddressRangeKHR const *>( this );
-    }
-
-    operator VkStridedDeviceAddressRangeKHR &() VULKAN_HPP_NOEXCEPT
-    {
-      return *reinterpret_cast<VkStridedDeviceAddressRangeKHR *>( this );
-    }
-
-    operator VkStridedDeviceAddressRangeKHR const *() const VULKAN_HPP_NOEXCEPT
-    {
-      return reinterpret_cast<VkStridedDeviceAddressRangeKHR const *>( this );
-    }
-
-    operator VkStridedDeviceAddressRangeKHR *() VULKAN_HPP_NOEXCEPT
-    {
-      return reinterpret_cast<VkStridedDeviceAddressRangeKHR *>( this );
-    }
-
-#if defined( VULKAN_HPP_USE_REFLECT )
-    std::tuple<DeviceAddress const &, DeviceSize const &, DeviceSize const &> reflect() const VULKAN_HPP_NOEXCEPT
-    {
-      return std::tie( address, size, stride );
-    }
-#endif
-
-#if defined( VULKAN_HPP_HAS_SPACESHIP_OPERATOR )
-    auto operator<=>( StridedDeviceAddressRangeKHR const & ) const = default;
-#else
-    bool operator==( StridedDeviceAddressRangeKHR const & rhs ) const VULKAN_HPP_NOEXCEPT
-    {
-#  if defined( VULKAN_HPP_USE_REFLECT )
-      return this->reflect() == rhs.reflect();
-#  else
-      return ( address == rhs.address ) && ( size == rhs.size ) && ( stride == rhs.stride );
-#  endif
-    }
-
-    bool operator!=( StridedDeviceAddressRangeKHR const & rhs ) const VULKAN_HPP_NOEXCEPT
-    {
-      return !operator==( rhs );
-    }
-#endif
-
-  public:
-    DeviceAddress address = {};
-    DeviceSize    size    = {};
-    DeviceSize    stride  = {};
-  };
-
-#if 20 <= VULKAN_HPP_CPP_VERSION
-  template <>
-  struct CppType<VkStridedDeviceAddressRangeKHR>
-  {
-    using Type = StridedDeviceAddressRangeKHR;
-  };
-#endif
 
   // wrapper struct for struct VkCopyMemoryIndirectInfoKHR, see https://registry.khronos.org/vulkan/specs/latest/man/html/VkCopyMemoryIndirectInfoKHR.html
   struct CopyMemoryIndirectInfoKHR
@@ -49620,44 +51140,6 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
       return *this;
     }
 
-#if !defined( VULKAN_HPP_NO_SETTERS ) && !defined( VULKAN_HPP_NO_STRUCT_SETTERS )
-    VULKAN_HPP_CONSTEXPR_14 DeviceFaultAddressInfoEXT & setAddressType( DeviceFaultAddressTypeEXT addressType_ ) & VULKAN_HPP_NOEXCEPT
-    {
-      addressType = addressType_;
-      return *this;
-    }
-
-    VULKAN_HPP_CONSTEXPR_14 DeviceFaultAddressInfoEXT && setAddressType( DeviceFaultAddressTypeEXT addressType_ ) && VULKAN_HPP_NOEXCEPT
-    {
-      addressType = addressType_;
-      return std::move( *this );
-    }
-
-    VULKAN_HPP_CONSTEXPR_14 DeviceFaultAddressInfoEXT & setReportedAddress( DeviceAddress reportedAddress_ ) & VULKAN_HPP_NOEXCEPT
-    {
-      reportedAddress = reportedAddress_;
-      return *this;
-    }
-
-    VULKAN_HPP_CONSTEXPR_14 DeviceFaultAddressInfoEXT && setReportedAddress( DeviceAddress reportedAddress_ ) && VULKAN_HPP_NOEXCEPT
-    {
-      reportedAddress = reportedAddress_;
-      return std::move( *this );
-    }
-
-    VULKAN_HPP_CONSTEXPR_14 DeviceFaultAddressInfoEXT & setAddressPrecision( DeviceSize addressPrecision_ ) & VULKAN_HPP_NOEXCEPT
-    {
-      addressPrecision = addressPrecision_;
-      return *this;
-    }
-
-    VULKAN_HPP_CONSTEXPR_14 DeviceFaultAddressInfoEXT && setAddressPrecision( DeviceSize addressPrecision_ ) && VULKAN_HPP_NOEXCEPT
-    {
-      addressPrecision = addressPrecision_;
-      return std::move( *this );
-    }
-#endif /*VULKAN_HPP_NO_SETTERS*/
-
     operator VkDeviceFaultAddressInfoEXT const &() const VULKAN_HPP_NOEXCEPT
     {
       return *reinterpret_cast<VkDeviceFaultAddressInfoEXT const *>( this );
@@ -49893,19 +51375,6 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
     {
     }
 
-#  if !defined( VULKAN_HPP_DISABLE_ENHANCED_MODE )
-    DeviceFaultVendorInfoEXT( std::string const & description_, uint64_t vendorFaultCode_ = {}, uint64_t vendorFaultData_ = {} )
-      : vendorFaultCode( vendorFaultCode_ ), vendorFaultData( vendorFaultData_ )
-    {
-      VULKAN_HPP_ASSERT( description_.size() < VK_MAX_DESCRIPTION_SIZE );
-#    if defined( _WIN32 )
-      strncpy_s( description, VK_MAX_DESCRIPTION_SIZE, description_.data(), description_.size() );
-#    else
-      strncpy( description, description_.data(), std::min<size_t>( VK_MAX_DESCRIPTION_SIZE, description_.size() ) );
-#    endif
-    }
-#  endif /*VULKAN_HPP_DISABLE_ENHANCED_MODE*/
-
     DeviceFaultVendorInfoEXT & operator=( DeviceFaultVendorInfoEXT const & rhs ) VULKAN_HPP_NOEXCEPT = default;
 #endif /*VULKAN_HPP_NO_CONSTRUCTORS*/
 
@@ -49914,57 +51383,6 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
       *this = *reinterpret_cast<DeviceFaultVendorInfoEXT const *>( &rhs );
       return *this;
     }
-
-#if !defined( VULKAN_HPP_NO_SETTERS ) && !defined( VULKAN_HPP_NO_STRUCT_SETTERS )
-    VULKAN_HPP_CONSTEXPR_14 DeviceFaultVendorInfoEXT & setDescription( std::array<char, VK_MAX_DESCRIPTION_SIZE> description_ ) & VULKAN_HPP_NOEXCEPT
-    {
-      description = description_;
-      return *this;
-    }
-
-    VULKAN_HPP_CONSTEXPR_14 DeviceFaultVendorInfoEXT && setDescription( std::array<char, VK_MAX_DESCRIPTION_SIZE> description_ ) && VULKAN_HPP_NOEXCEPT
-    {
-      description = description_;
-      return std::move( *this );
-    }
-
-#  if !defined( VULKAN_HPP_DISABLE_ENHANCED_MODE )
-    DeviceFaultVendorInfoEXT & setDescription( std::string const & description_ ) VULKAN_HPP_NOEXCEPT
-    {
-      VULKAN_HPP_ASSERT( description_.size() < VK_MAX_DESCRIPTION_SIZE );
-#    if defined( _WIN32 )
-      strncpy_s( description, VK_MAX_DESCRIPTION_SIZE, description_.data(), description_.size() );
-#    else
-      strncpy( description, description_.data(), std::min<size_t>( VK_MAX_DESCRIPTION_SIZE, description_.size() ) );
-#    endif
-      return *this;
-    }
-#  endif /*VULKAN_HPP_DISABLE_ENHANCED_MODE*/
-
-    VULKAN_HPP_CONSTEXPR_14 DeviceFaultVendorInfoEXT & setVendorFaultCode( uint64_t vendorFaultCode_ ) & VULKAN_HPP_NOEXCEPT
-    {
-      vendorFaultCode = vendorFaultCode_;
-      return *this;
-    }
-
-    VULKAN_HPP_CONSTEXPR_14 DeviceFaultVendorInfoEXT && setVendorFaultCode( uint64_t vendorFaultCode_ ) && VULKAN_HPP_NOEXCEPT
-    {
-      vendorFaultCode = vendorFaultCode_;
-      return std::move( *this );
-    }
-
-    VULKAN_HPP_CONSTEXPR_14 DeviceFaultVendorInfoEXT & setVendorFaultData( uint64_t vendorFaultData_ ) & VULKAN_HPP_NOEXCEPT
-    {
-      vendorFaultData = vendorFaultData_;
-      return *this;
-    }
-
-    VULKAN_HPP_CONSTEXPR_14 DeviceFaultVendorInfoEXT && setVendorFaultData( uint64_t vendorFaultData_ ) && VULKAN_HPP_NOEXCEPT
-    {
-      vendorFaultData = vendorFaultData_;
-      return std::move( *this );
-    }
-#endif /*VULKAN_HPP_NO_SETTERS*/
 
     operator VkDeviceFaultVendorInfoEXT const &() const VULKAN_HPP_NOEXCEPT
     {
@@ -54726,6 +56144,144 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
 #  endif
 #endif /*VK_ENABLE_BETA_EXTENSIONS*/
 
+  // wrapper struct for struct VkDispatchIndirect2InfoKHR, see https://registry.khronos.org/vulkan/specs/latest/man/html/VkDispatchIndirect2InfoKHR.html
+  struct DispatchIndirect2InfoKHR
+  {
+    using NativeType = VkDispatchIndirect2InfoKHR;
+
+    static bool const                                  allowDuplicate = false;
+    static VULKAN_HPP_CONST_OR_CONSTEXPR StructureType structureType  = StructureType::eDispatchIndirect2InfoKHR;
+
+#if !defined( VULKAN_HPP_NO_CONSTRUCTORS ) && !defined( VULKAN_HPP_NO_STRUCT_CONSTRUCTORS )
+    VULKAN_HPP_CONSTEXPR DispatchIndirect2InfoKHR( DeviceAddressRangeKHR  addressRange_ = {},
+                                                   AddressCommandFlagsKHR addressFlags_ = {},
+                                                   void const *           pNext_        = nullptr ) VULKAN_HPP_NOEXCEPT
+      : pNext{ pNext_ }
+      , addressRange{ addressRange_ }
+      , addressFlags{ addressFlags_ }
+    {
+    }
+
+    VULKAN_HPP_CONSTEXPR DispatchIndirect2InfoKHR( DispatchIndirect2InfoKHR const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+
+    DispatchIndirect2InfoKHR( VkDispatchIndirect2InfoKHR const & rhs ) VULKAN_HPP_NOEXCEPT
+      : DispatchIndirect2InfoKHR( *reinterpret_cast<DispatchIndirect2InfoKHR const *>( &rhs ) )
+    {
+    }
+
+    DispatchIndirect2InfoKHR & operator=( DispatchIndirect2InfoKHR const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+#endif /*VULKAN_HPP_NO_CONSTRUCTORS*/
+
+    DispatchIndirect2InfoKHR & operator=( VkDispatchIndirect2InfoKHR const & rhs ) VULKAN_HPP_NOEXCEPT
+    {
+      *this = *reinterpret_cast<DispatchIndirect2InfoKHR const *>( &rhs );
+      return *this;
+    }
+
+#if !defined( VULKAN_HPP_NO_SETTERS ) && !defined( VULKAN_HPP_NO_STRUCT_SETTERS )
+    VULKAN_HPP_CONSTEXPR_14 DispatchIndirect2InfoKHR & setPNext( void const * pNext_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DispatchIndirect2InfoKHR && setPNext( void const * pNext_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DispatchIndirect2InfoKHR & setAddressRange( DeviceAddressRangeKHR const & addressRange_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      addressRange = addressRange_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DispatchIndirect2InfoKHR && setAddressRange( DeviceAddressRangeKHR const & addressRange_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      addressRange = addressRange_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DispatchIndirect2InfoKHR & setAddressFlags( AddressCommandFlagsKHR addressFlags_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      addressFlags = addressFlags_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DispatchIndirect2InfoKHR && setAddressFlags( AddressCommandFlagsKHR addressFlags_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      addressFlags = addressFlags_;
+      return std::move( *this );
+    }
+#endif /*VULKAN_HPP_NO_SETTERS*/
+
+    operator VkDispatchIndirect2InfoKHR const &() const VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkDispatchIndirect2InfoKHR const *>( this );
+    }
+
+    operator VkDispatchIndirect2InfoKHR &() VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkDispatchIndirect2InfoKHR *>( this );
+    }
+
+    operator VkDispatchIndirect2InfoKHR const *() const VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkDispatchIndirect2InfoKHR const *>( this );
+    }
+
+    operator VkDispatchIndirect2InfoKHR *() VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkDispatchIndirect2InfoKHR *>( this );
+    }
+
+#if defined( VULKAN_HPP_USE_REFLECT )
+    std::tuple<StructureType const &, void const * const &, DeviceAddressRangeKHR const &, AddressCommandFlagsKHR const &> reflect() const VULKAN_HPP_NOEXCEPT
+    {
+      return std::tie( sType, pNext, addressRange, addressFlags );
+    }
+#endif
+
+#if defined( VULKAN_HPP_HAS_SPACESHIP_OPERATOR )
+    auto operator<=>( DispatchIndirect2InfoKHR const & ) const = default;
+#else
+    bool operator==( DispatchIndirect2InfoKHR const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+#  if defined( VULKAN_HPP_USE_REFLECT )
+      return this->reflect() == rhs.reflect();
+#  else
+      return ( sType == rhs.sType ) && ( pNext == rhs.pNext ) && ( addressRange == rhs.addressRange ) && ( addressFlags == rhs.addressFlags );
+#  endif
+    }
+
+    bool operator!=( DispatchIndirect2InfoKHR const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+      return !operator==( rhs );
+    }
+#endif
+
+  public:
+    StructureType          sType        = StructureType::eDispatchIndirect2InfoKHR;
+    void const *           pNext        = {};
+    DeviceAddressRangeKHR  addressRange = {};
+    AddressCommandFlagsKHR addressFlags = {};
+  };
+
+#if 20 <= VULKAN_HPP_CPP_VERSION
+  template <>
+  struct CppType<VkDispatchIndirect2InfoKHR>
+  {
+    using Type = DispatchIndirect2InfoKHR;
+  };
+#endif
+
+  template <>
+  struct CppType<StructureType, StructureType::eDispatchIndirect2InfoKHR>
+  {
+    using Type = DispatchIndirect2InfoKHR;
+  };
+
   // wrapper struct for struct VkDispatchIndirectCommand, see https://registry.khronos.org/vulkan/specs/latest/man/html/VkDispatchIndirectCommand.html
   struct DispatchIndirectCommand
   {
@@ -57251,6 +58807,161 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
   };
 #endif
 
+  // wrapper struct for struct VkDrawIndirect2InfoKHR, see https://registry.khronos.org/vulkan/specs/latest/man/html/VkDrawIndirect2InfoKHR.html
+  struct DrawIndirect2InfoKHR
+  {
+    using NativeType = VkDrawIndirect2InfoKHR;
+
+    static bool const                                  allowDuplicate = false;
+    static VULKAN_HPP_CONST_OR_CONSTEXPR StructureType structureType  = StructureType::eDrawIndirect2InfoKHR;
+
+#if !defined( VULKAN_HPP_NO_CONSTRUCTORS ) && !defined( VULKAN_HPP_NO_STRUCT_CONSTRUCTORS )
+    VULKAN_HPP_CONSTEXPR DrawIndirect2InfoKHR( StridedDeviceAddressRangeKHR addressRange_ = {},
+                                               AddressCommandFlagsKHR       addressFlags_ = {},
+                                               uint32_t                     drawCount_    = {},
+                                               void const *                 pNext_        = nullptr ) VULKAN_HPP_NOEXCEPT
+      : pNext{ pNext_ }
+      , addressRange{ addressRange_ }
+      , addressFlags{ addressFlags_ }
+      , drawCount{ drawCount_ }
+    {
+    }
+
+    VULKAN_HPP_CONSTEXPR DrawIndirect2InfoKHR( DrawIndirect2InfoKHR const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+
+    DrawIndirect2InfoKHR( VkDrawIndirect2InfoKHR const & rhs ) VULKAN_HPP_NOEXCEPT
+      : DrawIndirect2InfoKHR( *reinterpret_cast<DrawIndirect2InfoKHR const *>( &rhs ) )
+    {
+    }
+
+    DrawIndirect2InfoKHR & operator=( DrawIndirect2InfoKHR const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+#endif /*VULKAN_HPP_NO_CONSTRUCTORS*/
+
+    DrawIndirect2InfoKHR & operator=( VkDrawIndirect2InfoKHR const & rhs ) VULKAN_HPP_NOEXCEPT
+    {
+      *this = *reinterpret_cast<DrawIndirect2InfoKHR const *>( &rhs );
+      return *this;
+    }
+
+#if !defined( VULKAN_HPP_NO_SETTERS ) && !defined( VULKAN_HPP_NO_STRUCT_SETTERS )
+    VULKAN_HPP_CONSTEXPR_14 DrawIndirect2InfoKHR & setPNext( void const * pNext_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DrawIndirect2InfoKHR && setPNext( void const * pNext_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DrawIndirect2InfoKHR & setAddressRange( StridedDeviceAddressRangeKHR const & addressRange_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      addressRange = addressRange_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DrawIndirect2InfoKHR && setAddressRange( StridedDeviceAddressRangeKHR const & addressRange_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      addressRange = addressRange_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DrawIndirect2InfoKHR & setAddressFlags( AddressCommandFlagsKHR addressFlags_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      addressFlags = addressFlags_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DrawIndirect2InfoKHR && setAddressFlags( AddressCommandFlagsKHR addressFlags_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      addressFlags = addressFlags_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DrawIndirect2InfoKHR & setDrawCount( uint32_t drawCount_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      drawCount = drawCount_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DrawIndirect2InfoKHR && setDrawCount( uint32_t drawCount_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      drawCount = drawCount_;
+      return std::move( *this );
+    }
+#endif /*VULKAN_HPP_NO_SETTERS*/
+
+    operator VkDrawIndirect2InfoKHR const &() const VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkDrawIndirect2InfoKHR const *>( this );
+    }
+
+    operator VkDrawIndirect2InfoKHR &() VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkDrawIndirect2InfoKHR *>( this );
+    }
+
+    operator VkDrawIndirect2InfoKHR const *() const VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkDrawIndirect2InfoKHR const *>( this );
+    }
+
+    operator VkDrawIndirect2InfoKHR *() VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkDrawIndirect2InfoKHR *>( this );
+    }
+
+#if defined( VULKAN_HPP_USE_REFLECT )
+    std::tuple<StructureType const &, void const * const &, StridedDeviceAddressRangeKHR const &, AddressCommandFlagsKHR const &, uint32_t const &>
+      reflect() const VULKAN_HPP_NOEXCEPT
+    {
+      return std::tie( sType, pNext, addressRange, addressFlags, drawCount );
+    }
+#endif
+
+#if defined( VULKAN_HPP_HAS_SPACESHIP_OPERATOR )
+    auto operator<=>( DrawIndirect2InfoKHR const & ) const = default;
+#else
+    bool operator==( DrawIndirect2InfoKHR const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+#  if defined( VULKAN_HPP_USE_REFLECT )
+      return this->reflect() == rhs.reflect();
+#  else
+      return ( sType == rhs.sType ) && ( pNext == rhs.pNext ) && ( addressRange == rhs.addressRange ) && ( addressFlags == rhs.addressFlags ) &&
+             ( drawCount == rhs.drawCount );
+#  endif
+    }
+
+    bool operator!=( DrawIndirect2InfoKHR const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+      return !operator==( rhs );
+    }
+#endif
+
+  public:
+    StructureType                sType        = StructureType::eDrawIndirect2InfoKHR;
+    void const *                 pNext        = {};
+    StridedDeviceAddressRangeKHR addressRange = {};
+    AddressCommandFlagsKHR       addressFlags = {};
+    uint32_t                     drawCount    = {};
+  };
+
+#if 20 <= VULKAN_HPP_CPP_VERSION
+  template <>
+  struct CppType<VkDrawIndirect2InfoKHR>
+  {
+    using Type = DrawIndirect2InfoKHR;
+  };
+#endif
+
+  template <>
+  struct CppType<StructureType, StructureType::eDrawIndirect2InfoKHR>
+  {
+    using Type = DrawIndirect2InfoKHR;
+  };
+
   // wrapper struct for struct VkDrawIndirectCommand, see https://registry.khronos.org/vulkan/specs/latest/man/html/VkDrawIndirectCommand.html
   struct DrawIndirectCommand
   {
@@ -57393,6 +59104,197 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
     using Type = DrawIndirectCommand;
   };
 #endif
+
+  // wrapper struct for struct VkDrawIndirectCount2InfoKHR, see https://registry.khronos.org/vulkan/specs/latest/man/html/VkDrawIndirectCount2InfoKHR.html
+  struct DrawIndirectCount2InfoKHR
+  {
+    using NativeType = VkDrawIndirectCount2InfoKHR;
+
+    static bool const                                  allowDuplicate = false;
+    static VULKAN_HPP_CONST_OR_CONSTEXPR StructureType structureType  = StructureType::eDrawIndirectCount2InfoKHR;
+
+#if !defined( VULKAN_HPP_NO_CONSTRUCTORS ) && !defined( VULKAN_HPP_NO_STRUCT_CONSTRUCTORS )
+    VULKAN_HPP_CONSTEXPR DrawIndirectCount2InfoKHR( StridedDeviceAddressRangeKHR addressRange_      = {},
+                                                    AddressCommandFlagsKHR       addressFlags_      = {},
+                                                    DeviceAddressRangeKHR        countAddressRange_ = {},
+                                                    AddressCommandFlagsKHR       countAddressFlags_ = {},
+                                                    uint32_t                     maxDrawCount_      = {},
+                                                    void const *                 pNext_             = nullptr ) VULKAN_HPP_NOEXCEPT
+      : pNext{ pNext_ }
+      , addressRange{ addressRange_ }
+      , addressFlags{ addressFlags_ }
+      , countAddressRange{ countAddressRange_ }
+      , countAddressFlags{ countAddressFlags_ }
+      , maxDrawCount{ maxDrawCount_ }
+    {
+    }
+
+    VULKAN_HPP_CONSTEXPR DrawIndirectCount2InfoKHR( DrawIndirectCount2InfoKHR const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+
+    DrawIndirectCount2InfoKHR( VkDrawIndirectCount2InfoKHR const & rhs ) VULKAN_HPP_NOEXCEPT
+      : DrawIndirectCount2InfoKHR( *reinterpret_cast<DrawIndirectCount2InfoKHR const *>( &rhs ) )
+    {
+    }
+
+    DrawIndirectCount2InfoKHR & operator=( DrawIndirectCount2InfoKHR const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+#endif /*VULKAN_HPP_NO_CONSTRUCTORS*/
+
+    DrawIndirectCount2InfoKHR & operator=( VkDrawIndirectCount2InfoKHR const & rhs ) VULKAN_HPP_NOEXCEPT
+    {
+      *this = *reinterpret_cast<DrawIndirectCount2InfoKHR const *>( &rhs );
+      return *this;
+    }
+
+#if !defined( VULKAN_HPP_NO_SETTERS ) && !defined( VULKAN_HPP_NO_STRUCT_SETTERS )
+    VULKAN_HPP_CONSTEXPR_14 DrawIndirectCount2InfoKHR & setPNext( void const * pNext_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DrawIndirectCount2InfoKHR && setPNext( void const * pNext_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DrawIndirectCount2InfoKHR & setAddressRange( StridedDeviceAddressRangeKHR const & addressRange_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      addressRange = addressRange_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DrawIndirectCount2InfoKHR && setAddressRange( StridedDeviceAddressRangeKHR const & addressRange_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      addressRange = addressRange_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DrawIndirectCount2InfoKHR & setAddressFlags( AddressCommandFlagsKHR addressFlags_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      addressFlags = addressFlags_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DrawIndirectCount2InfoKHR && setAddressFlags( AddressCommandFlagsKHR addressFlags_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      addressFlags = addressFlags_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DrawIndirectCount2InfoKHR & setCountAddressRange( DeviceAddressRangeKHR const & countAddressRange_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      countAddressRange = countAddressRange_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DrawIndirectCount2InfoKHR && setCountAddressRange( DeviceAddressRangeKHR const & countAddressRange_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      countAddressRange = countAddressRange_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DrawIndirectCount2InfoKHR & setCountAddressFlags( AddressCommandFlagsKHR countAddressFlags_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      countAddressFlags = countAddressFlags_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DrawIndirectCount2InfoKHR && setCountAddressFlags( AddressCommandFlagsKHR countAddressFlags_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      countAddressFlags = countAddressFlags_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DrawIndirectCount2InfoKHR & setMaxDrawCount( uint32_t maxDrawCount_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      maxDrawCount = maxDrawCount_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DrawIndirectCount2InfoKHR && setMaxDrawCount( uint32_t maxDrawCount_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      maxDrawCount = maxDrawCount_;
+      return std::move( *this );
+    }
+#endif /*VULKAN_HPP_NO_SETTERS*/
+
+    operator VkDrawIndirectCount2InfoKHR const &() const VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkDrawIndirectCount2InfoKHR const *>( this );
+    }
+
+    operator VkDrawIndirectCount2InfoKHR &() VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkDrawIndirectCount2InfoKHR *>( this );
+    }
+
+    operator VkDrawIndirectCount2InfoKHR const *() const VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkDrawIndirectCount2InfoKHR const *>( this );
+    }
+
+    operator VkDrawIndirectCount2InfoKHR *() VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkDrawIndirectCount2InfoKHR *>( this );
+    }
+
+#if defined( VULKAN_HPP_USE_REFLECT )
+    std::tuple<StructureType const &,
+               void const * const &,
+               StridedDeviceAddressRangeKHR const &,
+               AddressCommandFlagsKHR const &,
+               DeviceAddressRangeKHR const &,
+               AddressCommandFlagsKHR const &,
+               uint32_t const &>
+      reflect() const VULKAN_HPP_NOEXCEPT
+    {
+      return std::tie( sType, pNext, addressRange, addressFlags, countAddressRange, countAddressFlags, maxDrawCount );
+    }
+#endif
+
+#if defined( VULKAN_HPP_HAS_SPACESHIP_OPERATOR )
+    auto operator<=>( DrawIndirectCount2InfoKHR const & ) const = default;
+#else
+    bool operator==( DrawIndirectCount2InfoKHR const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+#  if defined( VULKAN_HPP_USE_REFLECT )
+      return this->reflect() == rhs.reflect();
+#  else
+      return ( sType == rhs.sType ) && ( pNext == rhs.pNext ) && ( addressRange == rhs.addressRange ) && ( addressFlags == rhs.addressFlags ) &&
+             ( countAddressRange == rhs.countAddressRange ) && ( countAddressFlags == rhs.countAddressFlags ) && ( maxDrawCount == rhs.maxDrawCount );
+#  endif
+    }
+
+    bool operator!=( DrawIndirectCount2InfoKHR const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+      return !operator==( rhs );
+    }
+#endif
+
+  public:
+    StructureType                sType             = StructureType::eDrawIndirectCount2InfoKHR;
+    void const *                 pNext             = {};
+    StridedDeviceAddressRangeKHR addressRange      = {};
+    AddressCommandFlagsKHR       addressFlags      = {};
+    DeviceAddressRangeKHR        countAddressRange = {};
+    AddressCommandFlagsKHR       countAddressFlags = {};
+    uint32_t                     maxDrawCount      = {};
+  };
+
+#if 20 <= VULKAN_HPP_CPP_VERSION
+  template <>
+  struct CppType<VkDrawIndirectCount2InfoKHR>
+  {
+    using Type = DrawIndirectCount2InfoKHR;
+  };
+#endif
+
+  template <>
+  struct CppType<StructureType, StructureType::eDrawIndirectCount2InfoKHR>
+  {
+    using Type = DrawIndirectCount2InfoKHR;
+  };
 
   // wrapper struct for struct VkDrawIndirectCountIndirectCommandEXT, see
   // https://registry.khronos.org/vulkan/specs/latest/man/html/VkDrawIndirectCountIndirectCommandEXT.html
@@ -86715,6 +88617,180 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
     using Type = MemoryMapPlacedInfoEXT;
   };
 
+  // wrapper struct for struct VkMemoryMarkerInfoAMD, see https://registry.khronos.org/vulkan/specs/latest/man/html/VkMemoryMarkerInfoAMD.html
+  struct MemoryMarkerInfoAMD
+  {
+    using NativeType = VkMemoryMarkerInfoAMD;
+
+    static bool const                                  allowDuplicate = false;
+    static VULKAN_HPP_CONST_OR_CONSTEXPR StructureType structureType  = StructureType::eMemoryMarkerInfoAMD;
+
+#if !defined( VULKAN_HPP_NO_CONSTRUCTORS ) && !defined( VULKAN_HPP_NO_STRUCT_CONSTRUCTORS )
+    VULKAN_HPP_CONSTEXPR MemoryMarkerInfoAMD( PipelineStageFlags2KHR stage_    = {},
+                                              DeviceAddressRangeKHR  dstRange_ = {},
+                                              AddressCommandFlagsKHR dstFlags_ = {},
+                                              uint32_t               marker_   = {},
+                                              void const *           pNext_    = nullptr ) VULKAN_HPP_NOEXCEPT
+      : pNext{ pNext_ }
+      , stage{ stage_ }
+      , dstRange{ dstRange_ }
+      , dstFlags{ dstFlags_ }
+      , marker{ marker_ }
+    {
+    }
+
+    VULKAN_HPP_CONSTEXPR MemoryMarkerInfoAMD( MemoryMarkerInfoAMD const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+
+    MemoryMarkerInfoAMD( VkMemoryMarkerInfoAMD const & rhs ) VULKAN_HPP_NOEXCEPT : MemoryMarkerInfoAMD( *reinterpret_cast<MemoryMarkerInfoAMD const *>( &rhs ) )
+    {
+    }
+
+    MemoryMarkerInfoAMD & operator=( MemoryMarkerInfoAMD const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+#endif /*VULKAN_HPP_NO_CONSTRUCTORS*/
+
+    MemoryMarkerInfoAMD & operator=( VkMemoryMarkerInfoAMD const & rhs ) VULKAN_HPP_NOEXCEPT
+    {
+      *this = *reinterpret_cast<MemoryMarkerInfoAMD const *>( &rhs );
+      return *this;
+    }
+
+#if !defined( VULKAN_HPP_NO_SETTERS ) && !defined( VULKAN_HPP_NO_STRUCT_SETTERS )
+    VULKAN_HPP_CONSTEXPR_14 MemoryMarkerInfoAMD & setPNext( void const * pNext_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 MemoryMarkerInfoAMD && setPNext( void const * pNext_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 MemoryMarkerInfoAMD & setStage( PipelineStageFlags2KHR stage_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      stage = stage_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 MemoryMarkerInfoAMD && setStage( PipelineStageFlags2KHR stage_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      stage = stage_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 MemoryMarkerInfoAMD & setDstRange( DeviceAddressRangeKHR const & dstRange_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      dstRange = dstRange_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 MemoryMarkerInfoAMD && setDstRange( DeviceAddressRangeKHR const & dstRange_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      dstRange = dstRange_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 MemoryMarkerInfoAMD & setDstFlags( AddressCommandFlagsKHR dstFlags_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      dstFlags = dstFlags_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 MemoryMarkerInfoAMD && setDstFlags( AddressCommandFlagsKHR dstFlags_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      dstFlags = dstFlags_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 MemoryMarkerInfoAMD & setMarker( uint32_t marker_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      marker = marker_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 MemoryMarkerInfoAMD && setMarker( uint32_t marker_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      marker = marker_;
+      return std::move( *this );
+    }
+#endif /*VULKAN_HPP_NO_SETTERS*/
+
+    operator VkMemoryMarkerInfoAMD const &() const VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkMemoryMarkerInfoAMD const *>( this );
+    }
+
+    operator VkMemoryMarkerInfoAMD &() VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkMemoryMarkerInfoAMD *>( this );
+    }
+
+    operator VkMemoryMarkerInfoAMD const *() const VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkMemoryMarkerInfoAMD const *>( this );
+    }
+
+    operator VkMemoryMarkerInfoAMD *() VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkMemoryMarkerInfoAMD *>( this );
+    }
+
+#if defined( VULKAN_HPP_USE_REFLECT )
+    std::tuple<StructureType const &,
+               void const * const &,
+               PipelineStageFlags2KHR const &,
+               DeviceAddressRangeKHR const &,
+               AddressCommandFlagsKHR const &,
+               uint32_t const &>
+      reflect() const VULKAN_HPP_NOEXCEPT
+    {
+      return std::tie( sType, pNext, stage, dstRange, dstFlags, marker );
+    }
+#endif
+
+#if defined( VULKAN_HPP_HAS_SPACESHIP_OPERATOR )
+    auto operator<=>( MemoryMarkerInfoAMD const & ) const = default;
+#else
+    bool operator==( MemoryMarkerInfoAMD const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+#  if defined( VULKAN_HPP_USE_REFLECT )
+      return this->reflect() == rhs.reflect();
+#  else
+      return ( sType == rhs.sType ) && ( pNext == rhs.pNext ) && ( stage == rhs.stage ) && ( dstRange == rhs.dstRange ) && ( dstFlags == rhs.dstFlags ) &&
+             ( marker == rhs.marker );
+#  endif
+    }
+
+    bool operator!=( MemoryMarkerInfoAMD const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+      return !operator==( rhs );
+    }
+#endif
+
+  public:
+    StructureType          sType    = StructureType::eMemoryMarkerInfoAMD;
+    void const *           pNext    = {};
+    PipelineStageFlags2KHR stage    = {};
+    DeviceAddressRangeKHR  dstRange = {};
+    AddressCommandFlagsKHR dstFlags = {};
+    uint32_t               marker   = {};
+  };
+
+#if 20 <= VULKAN_HPP_CPP_VERSION
+  template <>
+  struct CppType<VkMemoryMarkerInfoAMD>
+  {
+    using Type = MemoryMarkerInfoAMD;
+  };
+#endif
+
+  template <>
+  struct CppType<StructureType, StructureType::eMemoryMarkerInfoAMD>
+  {
+    using Type = MemoryMarkerInfoAMD;
+  };
+
 #if defined( VK_USE_PLATFORM_METAL_EXT )
   // wrapper struct for struct VkMemoryMetalHandlePropertiesEXT, see
   // https://registry.khronos.org/vulkan/specs/latest/man/html/VkMemoryMetalHandlePropertiesEXT.html
@@ -87060,6 +89136,402 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
   struct CppType<StructureType, StructureType::eMemoryPriorityAllocateInfoEXT>
   {
     using Type = MemoryPriorityAllocateInfoEXT;
+  };
+
+  // wrapper struct for struct VkMemoryRangeBarrierKHR, see https://registry.khronos.org/vulkan/specs/latest/man/html/VkMemoryRangeBarrierKHR.html
+  struct MemoryRangeBarrierKHR
+  {
+    using NativeType = VkMemoryRangeBarrierKHR;
+
+    static bool const                                  allowDuplicate = false;
+    static VULKAN_HPP_CONST_OR_CONSTEXPR StructureType structureType  = StructureType::eMemoryRangeBarrierKHR;
+
+#if !defined( VULKAN_HPP_NO_CONSTRUCTORS ) && !defined( VULKAN_HPP_NO_STRUCT_CONSTRUCTORS )
+    VULKAN_HPP_CONSTEXPR MemoryRangeBarrierKHR( PipelineStageFlags2    srcStageMask_        = {},
+                                                AccessFlags2           srcAccessMask_       = {},
+                                                PipelineStageFlags2    dstStageMask_        = {},
+                                                AccessFlags2           dstAccessMask_       = {},
+                                                uint32_t               srcQueueFamilyIndex_ = {},
+                                                uint32_t               dstQueueFamilyIndex_ = {},
+                                                DeviceAddressRangeKHR  addressRange_        = {},
+                                                AddressCommandFlagsKHR addressFlags_        = {},
+                                                void const *           pNext_               = nullptr ) VULKAN_HPP_NOEXCEPT
+      : pNext{ pNext_ }
+      , srcStageMask{ srcStageMask_ }
+      , srcAccessMask{ srcAccessMask_ }
+      , dstStageMask{ dstStageMask_ }
+      , dstAccessMask{ dstAccessMask_ }
+      , srcQueueFamilyIndex{ srcQueueFamilyIndex_ }
+      , dstQueueFamilyIndex{ dstQueueFamilyIndex_ }
+      , addressRange{ addressRange_ }
+      , addressFlags{ addressFlags_ }
+    {
+    }
+
+    VULKAN_HPP_CONSTEXPR MemoryRangeBarrierKHR( MemoryRangeBarrierKHR const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+
+    MemoryRangeBarrierKHR( VkMemoryRangeBarrierKHR const & rhs ) VULKAN_HPP_NOEXCEPT
+      : MemoryRangeBarrierKHR( *reinterpret_cast<MemoryRangeBarrierKHR const *>( &rhs ) )
+    {
+    }
+
+    MemoryRangeBarrierKHR & operator=( MemoryRangeBarrierKHR const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+#endif /*VULKAN_HPP_NO_CONSTRUCTORS*/
+
+    MemoryRangeBarrierKHR & operator=( VkMemoryRangeBarrierKHR const & rhs ) VULKAN_HPP_NOEXCEPT
+    {
+      *this = *reinterpret_cast<MemoryRangeBarrierKHR const *>( &rhs );
+      return *this;
+    }
+
+#if !defined( VULKAN_HPP_NO_SETTERS ) && !defined( VULKAN_HPP_NO_STRUCT_SETTERS )
+    VULKAN_HPP_CONSTEXPR_14 MemoryRangeBarrierKHR & setPNext( void const * pNext_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 MemoryRangeBarrierKHR && setPNext( void const * pNext_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 MemoryRangeBarrierKHR & setSrcStageMask( PipelineStageFlags2 srcStageMask_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      srcStageMask = srcStageMask_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 MemoryRangeBarrierKHR && setSrcStageMask( PipelineStageFlags2 srcStageMask_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      srcStageMask = srcStageMask_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 MemoryRangeBarrierKHR & setSrcAccessMask( AccessFlags2 srcAccessMask_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      srcAccessMask = srcAccessMask_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 MemoryRangeBarrierKHR && setSrcAccessMask( AccessFlags2 srcAccessMask_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      srcAccessMask = srcAccessMask_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 MemoryRangeBarrierKHR & setDstStageMask( PipelineStageFlags2 dstStageMask_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      dstStageMask = dstStageMask_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 MemoryRangeBarrierKHR && setDstStageMask( PipelineStageFlags2 dstStageMask_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      dstStageMask = dstStageMask_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 MemoryRangeBarrierKHR & setDstAccessMask( AccessFlags2 dstAccessMask_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      dstAccessMask = dstAccessMask_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 MemoryRangeBarrierKHR && setDstAccessMask( AccessFlags2 dstAccessMask_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      dstAccessMask = dstAccessMask_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 MemoryRangeBarrierKHR & setSrcQueueFamilyIndex( uint32_t srcQueueFamilyIndex_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      srcQueueFamilyIndex = srcQueueFamilyIndex_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 MemoryRangeBarrierKHR && setSrcQueueFamilyIndex( uint32_t srcQueueFamilyIndex_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      srcQueueFamilyIndex = srcQueueFamilyIndex_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 MemoryRangeBarrierKHR & setDstQueueFamilyIndex( uint32_t dstQueueFamilyIndex_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      dstQueueFamilyIndex = dstQueueFamilyIndex_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 MemoryRangeBarrierKHR && setDstQueueFamilyIndex( uint32_t dstQueueFamilyIndex_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      dstQueueFamilyIndex = dstQueueFamilyIndex_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 MemoryRangeBarrierKHR & setAddressRange( DeviceAddressRangeKHR const & addressRange_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      addressRange = addressRange_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 MemoryRangeBarrierKHR && setAddressRange( DeviceAddressRangeKHR const & addressRange_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      addressRange = addressRange_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 MemoryRangeBarrierKHR & setAddressFlags( AddressCommandFlagsKHR addressFlags_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      addressFlags = addressFlags_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 MemoryRangeBarrierKHR && setAddressFlags( AddressCommandFlagsKHR addressFlags_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      addressFlags = addressFlags_;
+      return std::move( *this );
+    }
+#endif /*VULKAN_HPP_NO_SETTERS*/
+
+    operator VkMemoryRangeBarrierKHR const &() const VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkMemoryRangeBarrierKHR const *>( this );
+    }
+
+    operator VkMemoryRangeBarrierKHR &() VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkMemoryRangeBarrierKHR *>( this );
+    }
+
+    operator VkMemoryRangeBarrierKHR const *() const VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkMemoryRangeBarrierKHR const *>( this );
+    }
+
+    operator VkMemoryRangeBarrierKHR *() VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkMemoryRangeBarrierKHR *>( this );
+    }
+
+#if defined( VULKAN_HPP_USE_REFLECT )
+    std::tuple<StructureType const &,
+               void const * const &,
+               PipelineStageFlags2 const &,
+               AccessFlags2 const &,
+               PipelineStageFlags2 const &,
+               AccessFlags2 const &,
+               uint32_t const &,
+               uint32_t const &,
+               DeviceAddressRangeKHR const &,
+               AddressCommandFlagsKHR const &>
+      reflect() const VULKAN_HPP_NOEXCEPT
+    {
+      return std::tie(
+        sType, pNext, srcStageMask, srcAccessMask, dstStageMask, dstAccessMask, srcQueueFamilyIndex, dstQueueFamilyIndex, addressRange, addressFlags );
+    }
+#endif
+
+#if defined( VULKAN_HPP_HAS_SPACESHIP_OPERATOR )
+    auto operator<=>( MemoryRangeBarrierKHR const & ) const = default;
+#else
+    bool operator==( MemoryRangeBarrierKHR const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+#  if defined( VULKAN_HPP_USE_REFLECT )
+      return this->reflect() == rhs.reflect();
+#  else
+      return ( sType == rhs.sType ) && ( pNext == rhs.pNext ) && ( srcStageMask == rhs.srcStageMask ) && ( srcAccessMask == rhs.srcAccessMask ) &&
+             ( dstStageMask == rhs.dstStageMask ) && ( dstAccessMask == rhs.dstAccessMask ) && ( srcQueueFamilyIndex == rhs.srcQueueFamilyIndex ) &&
+             ( dstQueueFamilyIndex == rhs.dstQueueFamilyIndex ) && ( addressRange == rhs.addressRange ) && ( addressFlags == rhs.addressFlags );
+#  endif
+    }
+
+    bool operator!=( MemoryRangeBarrierKHR const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+      return !operator==( rhs );
+    }
+#endif
+
+  public:
+    StructureType          sType               = StructureType::eMemoryRangeBarrierKHR;
+    void const *           pNext               = {};
+    PipelineStageFlags2    srcStageMask        = {};
+    AccessFlags2           srcAccessMask       = {};
+    PipelineStageFlags2    dstStageMask        = {};
+    AccessFlags2           dstAccessMask       = {};
+    uint32_t               srcQueueFamilyIndex = {};
+    uint32_t               dstQueueFamilyIndex = {};
+    DeviceAddressRangeKHR  addressRange        = {};
+    AddressCommandFlagsKHR addressFlags        = {};
+  };
+
+#if 20 <= VULKAN_HPP_CPP_VERSION
+  template <>
+  struct CppType<VkMemoryRangeBarrierKHR>
+  {
+    using Type = MemoryRangeBarrierKHR;
+  };
+#endif
+
+  template <>
+  struct CppType<StructureType, StructureType::eMemoryRangeBarrierKHR>
+  {
+    using Type = MemoryRangeBarrierKHR;
+  };
+
+  // wrapper struct for struct VkMemoryRangeBarriersInfoKHR, see https://registry.khronos.org/vulkan/specs/latest/man/html/VkMemoryRangeBarriersInfoKHR.html
+  struct MemoryRangeBarriersInfoKHR
+  {
+    using NativeType = VkMemoryRangeBarriersInfoKHR;
+
+    static bool const                                  allowDuplicate = false;
+    static VULKAN_HPP_CONST_OR_CONSTEXPR StructureType structureType  = StructureType::eMemoryRangeBarriersInfoKHR;
+
+#if !defined( VULKAN_HPP_NO_CONSTRUCTORS ) && !defined( VULKAN_HPP_NO_STRUCT_CONSTRUCTORS )
+    VULKAN_HPP_CONSTEXPR MemoryRangeBarriersInfoKHR( uint32_t                      memoryRangeBarrierCount_ = {},
+                                                     MemoryRangeBarrierKHR const * pMemoryRangeBarriers_    = {},
+                                                     void const *                  pNext_                   = nullptr ) VULKAN_HPP_NOEXCEPT
+      : pNext{ pNext_ }
+      , memoryRangeBarrierCount{ memoryRangeBarrierCount_ }
+      , pMemoryRangeBarriers{ pMemoryRangeBarriers_ }
+    {
+    }
+
+    VULKAN_HPP_CONSTEXPR MemoryRangeBarriersInfoKHR( MemoryRangeBarriersInfoKHR const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+
+    MemoryRangeBarriersInfoKHR( VkMemoryRangeBarriersInfoKHR const & rhs ) VULKAN_HPP_NOEXCEPT
+      : MemoryRangeBarriersInfoKHR( *reinterpret_cast<MemoryRangeBarriersInfoKHR const *>( &rhs ) )
+    {
+    }
+
+#  if !defined( VULKAN_HPP_DISABLE_ENHANCED_MODE )
+    MemoryRangeBarriersInfoKHR( ArrayProxyNoTemporaries<MemoryRangeBarrierKHR const> const & memoryRangeBarriers_, void const * pNext_ = nullptr )
+      : pNext( pNext_ ), memoryRangeBarrierCount( static_cast<uint32_t>( memoryRangeBarriers_.size() ) ), pMemoryRangeBarriers( memoryRangeBarriers_.data() )
+    {
+    }
+#  endif /*VULKAN_HPP_DISABLE_ENHANCED_MODE*/
+
+    MemoryRangeBarriersInfoKHR & operator=( MemoryRangeBarriersInfoKHR const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+#endif /*VULKAN_HPP_NO_CONSTRUCTORS*/
+
+    MemoryRangeBarriersInfoKHR & operator=( VkMemoryRangeBarriersInfoKHR const & rhs ) VULKAN_HPP_NOEXCEPT
+    {
+      *this = *reinterpret_cast<MemoryRangeBarriersInfoKHR const *>( &rhs );
+      return *this;
+    }
+
+#if !defined( VULKAN_HPP_NO_SETTERS ) && !defined( VULKAN_HPP_NO_STRUCT_SETTERS )
+    VULKAN_HPP_CONSTEXPR_14 MemoryRangeBarriersInfoKHR & setPNext( void const * pNext_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 MemoryRangeBarriersInfoKHR && setPNext( void const * pNext_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 MemoryRangeBarriersInfoKHR & setMemoryRangeBarrierCount( uint32_t memoryRangeBarrierCount_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      memoryRangeBarrierCount = memoryRangeBarrierCount_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 MemoryRangeBarriersInfoKHR && setMemoryRangeBarrierCount( uint32_t memoryRangeBarrierCount_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      memoryRangeBarrierCount = memoryRangeBarrierCount_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 MemoryRangeBarriersInfoKHR & setPMemoryRangeBarriers( MemoryRangeBarrierKHR const * pMemoryRangeBarriers_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      pMemoryRangeBarriers = pMemoryRangeBarriers_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 MemoryRangeBarriersInfoKHR && setPMemoryRangeBarriers( MemoryRangeBarrierKHR const * pMemoryRangeBarriers_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      pMemoryRangeBarriers = pMemoryRangeBarriers_;
+      return std::move( *this );
+    }
+
+#  if !defined( VULKAN_HPP_DISABLE_ENHANCED_MODE )
+    MemoryRangeBarriersInfoKHR & setMemoryRangeBarriers( ArrayProxyNoTemporaries<MemoryRangeBarrierKHR const> const & memoryRangeBarriers_ ) VULKAN_HPP_NOEXCEPT
+    {
+      memoryRangeBarrierCount = static_cast<uint32_t>( memoryRangeBarriers_.size() );
+      pMemoryRangeBarriers    = memoryRangeBarriers_.data();
+      return *this;
+    }
+#  endif /*VULKAN_HPP_DISABLE_ENHANCED_MODE*/
+#endif   /*VULKAN_HPP_NO_SETTERS*/
+
+    operator VkMemoryRangeBarriersInfoKHR const &() const VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkMemoryRangeBarriersInfoKHR const *>( this );
+    }
+
+    operator VkMemoryRangeBarriersInfoKHR &() VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkMemoryRangeBarriersInfoKHR *>( this );
+    }
+
+    operator VkMemoryRangeBarriersInfoKHR const *() const VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkMemoryRangeBarriersInfoKHR const *>( this );
+    }
+
+    operator VkMemoryRangeBarriersInfoKHR *() VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkMemoryRangeBarriersInfoKHR *>( this );
+    }
+
+#if defined( VULKAN_HPP_USE_REFLECT )
+    std::tuple<StructureType const &, void const * const &, uint32_t const &, MemoryRangeBarrierKHR const * const &> reflect() const VULKAN_HPP_NOEXCEPT
+    {
+      return std::tie( sType, pNext, memoryRangeBarrierCount, pMemoryRangeBarriers );
+    }
+#endif
+
+#if defined( VULKAN_HPP_HAS_SPACESHIP_OPERATOR )
+    auto operator<=>( MemoryRangeBarriersInfoKHR const & ) const = default;
+#else
+    bool operator==( MemoryRangeBarriersInfoKHR const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+#  if defined( VULKAN_HPP_USE_REFLECT )
+      return this->reflect() == rhs.reflect();
+#  else
+      return ( sType == rhs.sType ) && ( pNext == rhs.pNext ) && ( memoryRangeBarrierCount == rhs.memoryRangeBarrierCount ) &&
+             ( pMemoryRangeBarriers == rhs.pMemoryRangeBarriers );
+#  endif
+    }
+
+    bool operator!=( MemoryRangeBarriersInfoKHR const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+      return !operator==( rhs );
+    }
+#endif
+
+  public:
+    StructureType                 sType                   = StructureType::eMemoryRangeBarriersInfoKHR;
+    void const *                  pNext                   = {};
+    uint32_t                      memoryRangeBarrierCount = {};
+    MemoryRangeBarrierKHR const * pMemoryRangeBarriers    = {};
+  };
+
+#if 20 <= VULKAN_HPP_CPP_VERSION
+  template <>
+  struct CppType<VkMemoryRangeBarriersInfoKHR>
+  {
+    using Type = MemoryRangeBarriersInfoKHR;
+  };
+#endif
+
+  template <>
+  struct CppType<StructureType, StructureType::eMemoryRangeBarriersInfoKHR>
+  {
+    using Type = MemoryRangeBarriersInfoKHR;
   };
 
   // wrapper struct for struct VkMemoryRequirements, see https://registry.khronos.org/vulkan/specs/latest/man/html/VkMemoryRequirements.html
@@ -104503,6 +106975,130 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
   struct CppType<StructureType, StructureType::ePhysicalDeviceDescriptorSetHostMappingFeaturesVALVE>
   {
     using Type = PhysicalDeviceDescriptorSetHostMappingFeaturesVALVE;
+  };
+
+  // wrapper struct for struct VkPhysicalDeviceDeviceAddressCommandsFeaturesKHR, see
+  // https://registry.khronos.org/vulkan/specs/latest/man/html/VkPhysicalDeviceDeviceAddressCommandsFeaturesKHR.html
+  struct PhysicalDeviceDeviceAddressCommandsFeaturesKHR
+  {
+    using NativeType = VkPhysicalDeviceDeviceAddressCommandsFeaturesKHR;
+
+    static bool const                                  allowDuplicate = false;
+    static VULKAN_HPP_CONST_OR_CONSTEXPR StructureType structureType  = StructureType::ePhysicalDeviceDeviceAddressCommandsFeaturesKHR;
+
+#if !defined( VULKAN_HPP_NO_CONSTRUCTORS ) && !defined( VULKAN_HPP_NO_STRUCT_CONSTRUCTORS )
+    VULKAN_HPP_CONSTEXPR PhysicalDeviceDeviceAddressCommandsFeaturesKHR( Bool32 deviceAddressCommands_ = {}, void * pNext_ = nullptr ) VULKAN_HPP_NOEXCEPT
+      : pNext{ pNext_ }
+      , deviceAddressCommands{ deviceAddressCommands_ }
+    {
+    }
+
+    VULKAN_HPP_CONSTEXPR
+      PhysicalDeviceDeviceAddressCommandsFeaturesKHR( PhysicalDeviceDeviceAddressCommandsFeaturesKHR const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+
+    PhysicalDeviceDeviceAddressCommandsFeaturesKHR( VkPhysicalDeviceDeviceAddressCommandsFeaturesKHR const & rhs ) VULKAN_HPP_NOEXCEPT
+      : PhysicalDeviceDeviceAddressCommandsFeaturesKHR( *reinterpret_cast<PhysicalDeviceDeviceAddressCommandsFeaturesKHR const *>( &rhs ) )
+    {
+    }
+
+    PhysicalDeviceDeviceAddressCommandsFeaturesKHR & operator=( PhysicalDeviceDeviceAddressCommandsFeaturesKHR const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+#endif /*VULKAN_HPP_NO_CONSTRUCTORS*/
+
+    PhysicalDeviceDeviceAddressCommandsFeaturesKHR & operator=( VkPhysicalDeviceDeviceAddressCommandsFeaturesKHR const & rhs ) VULKAN_HPP_NOEXCEPT
+    {
+      *this = *reinterpret_cast<PhysicalDeviceDeviceAddressCommandsFeaturesKHR const *>( &rhs );
+      return *this;
+    }
+
+#if !defined( VULKAN_HPP_NO_SETTERS ) && !defined( VULKAN_HPP_NO_STRUCT_SETTERS )
+    VULKAN_HPP_CONSTEXPR_14 PhysicalDeviceDeviceAddressCommandsFeaturesKHR & setPNext( void * pNext_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 PhysicalDeviceDeviceAddressCommandsFeaturesKHR && setPNext( void * pNext_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 PhysicalDeviceDeviceAddressCommandsFeaturesKHR & setDeviceAddressCommands( Bool32 deviceAddressCommands_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      deviceAddressCommands = deviceAddressCommands_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 PhysicalDeviceDeviceAddressCommandsFeaturesKHR && setDeviceAddressCommands( Bool32 deviceAddressCommands_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      deviceAddressCommands = deviceAddressCommands_;
+      return std::move( *this );
+    }
+#endif /*VULKAN_HPP_NO_SETTERS*/
+
+    operator VkPhysicalDeviceDeviceAddressCommandsFeaturesKHR const &() const VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkPhysicalDeviceDeviceAddressCommandsFeaturesKHR const *>( this );
+    }
+
+    operator VkPhysicalDeviceDeviceAddressCommandsFeaturesKHR &() VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkPhysicalDeviceDeviceAddressCommandsFeaturesKHR *>( this );
+    }
+
+    operator VkPhysicalDeviceDeviceAddressCommandsFeaturesKHR const *() const VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkPhysicalDeviceDeviceAddressCommandsFeaturesKHR const *>( this );
+    }
+
+    operator VkPhysicalDeviceDeviceAddressCommandsFeaturesKHR *() VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkPhysicalDeviceDeviceAddressCommandsFeaturesKHR *>( this );
+    }
+
+#if defined( VULKAN_HPP_USE_REFLECT )
+    std::tuple<StructureType const &, void * const &, Bool32 const &> reflect() const VULKAN_HPP_NOEXCEPT
+    {
+      return std::tie( sType, pNext, deviceAddressCommands );
+    }
+#endif
+
+#if defined( VULKAN_HPP_HAS_SPACESHIP_OPERATOR )
+    auto operator<=>( PhysicalDeviceDeviceAddressCommandsFeaturesKHR const & ) const = default;
+#else
+    bool operator==( PhysicalDeviceDeviceAddressCommandsFeaturesKHR const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+#  if defined( VULKAN_HPP_USE_REFLECT )
+      return this->reflect() == rhs.reflect();
+#  else
+      return ( sType == rhs.sType ) && ( pNext == rhs.pNext ) && ( deviceAddressCommands == rhs.deviceAddressCommands );
+#  endif
+    }
+
+    bool operator!=( PhysicalDeviceDeviceAddressCommandsFeaturesKHR const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+      return !operator==( rhs );
+    }
+#endif
+
+  public:
+    StructureType sType                 = StructureType::ePhysicalDeviceDeviceAddressCommandsFeaturesKHR;
+    void *        pNext                 = {};
+    Bool32        deviceAddressCommands = {};
+  };
+
+#if 20 <= VULKAN_HPP_CPP_VERSION
+  template <>
+  struct CppType<VkPhysicalDeviceDeviceAddressCommandsFeaturesKHR>
+  {
+    using Type = PhysicalDeviceDeviceAddressCommandsFeaturesKHR;
+  };
+#endif
+
+  template <>
+  struct CppType<StructureType, StructureType::ePhysicalDeviceDeviceAddressCommandsFeaturesKHR>
+  {
+    using Type = PhysicalDeviceDeviceAddressCommandsFeaturesKHR;
   };
 
   // wrapper struct for struct VkPhysicalDeviceDeviceGeneratedCommandsComputeFeaturesNV, see
@@ -173453,13 +176049,13 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
       return std::move( *this );
     }
 
-    VULKAN_HPP_CONSTEXPR_14 TexelBufferDescriptorInfoEXT & setAddressRange( DeviceAddressRangeEXT const & addressRange_ ) & VULKAN_HPP_NOEXCEPT
+    VULKAN_HPP_CONSTEXPR_14 TexelBufferDescriptorInfoEXT & setAddressRange( DeviceAddressRangeEXT addressRange_ ) & VULKAN_HPP_NOEXCEPT
     {
       addressRange = addressRange_;
       return *this;
     }
 
-    VULKAN_HPP_CONSTEXPR_14 TexelBufferDescriptorInfoEXT && setAddressRange( DeviceAddressRangeEXT const & addressRange_ ) && VULKAN_HPP_NOEXCEPT
+    VULKAN_HPP_CONSTEXPR_14 TexelBufferDescriptorInfoEXT && setAddressRange( DeviceAddressRangeEXT addressRange_ ) && VULKAN_HPP_NOEXCEPT
     {
       addressRange = addressRange_;
       return std::move( *this );
