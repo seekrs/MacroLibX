@@ -2287,7 +2287,7 @@ void kvfDestroySemaphore(VkDevice device, VkSemaphore semaphore)
 				case KVF_SURFACE_METAL:
 				{
 					VkMetalSurfaceCreateInfoEXT create_info = {};
-					create_info.sType = VK_STRUCTURE_TYPE_METAL_SURFACE_CREATE_INFO_KHR;
+					create_info.sType = VK_STRUCTURE_TYPE_METAL_SURFACE_CREATE_INFO_EXT;
 					create_info.pNext = nullptr;
 					create_info.flags = 0;
 					create_info.pLayer = (CAMetalLayer*)window_handle;
