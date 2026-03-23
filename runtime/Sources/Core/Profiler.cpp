@@ -8,7 +8,6 @@ namespace mlx
 
 	void Profiler::BeginRuntimeSession()
 	{
-		std::lock_guard lock(m_mutex);
 		if(m_runtime_session_began)
 			return;
 		m_output_stream.open("./runtime_profile.mlx.json", std::ofstream::out | std::ofstream::trunc);
@@ -22,7 +21,6 @@ namespace mlx
 
 	void Profiler::AppendProfileData(ProfileResult&& result)
 	{
-		std::lock_guard lock(m_mutex);
 		auto it = m_profile_data.find(result.name);
 		if(it != m_profile_data.end())
 		{
@@ -49,7 +47,6 @@ namespace mlx
 
 	void Profiler::EndRuntimeSession()
 	{
-		std::lock_guard lock(m_mutex);
 		if(!m_runtime_session_began)
 			return;
 		for(auto& [_, pair] : m_profile_data)

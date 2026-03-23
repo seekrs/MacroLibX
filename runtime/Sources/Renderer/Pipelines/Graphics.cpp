@@ -127,6 +127,9 @@ namespace mlx
 	void GraphicPipeline::Destroy() noexcept
 	{
 		MLX_PROFILE_FUNCTION();
+		if(m_pipeline == VK_NULL_HANDLE)
+			return;
+
 		p_vertex_shader.reset();
 		p_fragment_shader.reset();
 		for(auto fb : m_framebuffers)
