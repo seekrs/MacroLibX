@@ -100,8 +100,25 @@ namespace mlx
 			info.width = 1;
 			info.height = 1;
 			window = std::make_unique<Window>(&info, true);
-			instance_extensions = window->GetRequiredVulkanInstanceExtentions();
-			#ifdef MLX_PLAT_MACOS
+			instance_extensions.push_back(VK_KHR_SURFACE_EXTENSION_NAME);
+			#ifdef VK_USE_PLATFORM_XCB_KHR
+				instance_extensions.push_back(VK_KHR_XCB_SURFACE_EXTENSION_NAME);
+			#endif
+
+			#ifdef VK_USE_PLATFORM_XLIB_KHR
+				instance_extensions.push_back(VK_KHR_XLIB_SURFACE_EXTENSION_NAME);
+			#endif
+
+			#ifdef VK_USE_PLATFORM_WAYLAND_KHR
+				 instance_extensions.push_back(VK_KHR_WAYLAND_SURFACE_EXTENSION_NAME);
+			#endif
+
+			#ifdef VK_USE_PLATFORM_WIN32_KHR
+				instance_extensions.push_back(VK_KHR_WIN32_SURFACE_EXTENSION_NAME);
+			#endif
+
+			#ifdef VK_USE_PLATFORM_METAL_EXT
+				instance_extensions.push_back(VK_EXT_METAL_SURFACE_EXTENSION_NAME);
 				instance_extensions.push_back(VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME);
 			#endif
 		}
@@ -185,6 +202,41 @@ namespace mlx
 		MLX_LOAD_FUNCTION(vkGetPhysicalDeviceSurfaceFormatsKHR);
 		MLX_LOAD_FUNCTION(vkGetPhysicalDeviceSurfacePresentModesKHR);
 		MLX_LOAD_FUNCTION(vkGetPhysicalDeviceSurfaceSupportKHR);
+		#ifdef VK_USE_PLATFORM_ANDROID_KHR
+			#ifdef VK_KHR_android_surface
+				MLX_LOAD_FUNCTION(vkCreateAndroidSurfaceKHR);
+			#endif
+		#endif
+		
+		#ifdef VK_USE_PLATFORM_XCB_KHR
+			#ifdef VK_KHR_xcb_surface
+				MLX_LOAD_FUNCTION(vkCreateXcbSurfaceKHR);
+			#endif
+		#endif
+		
+		#ifdef VK_USE_PLATFORM_XLIB_KHR
+			#ifdef VK_KHR_xlib_surface
+				MLX_LOAD_FUNCTION(vkCreateXlibSurfaceKHR);
+			#endif
+		#endif
+		
+		#ifdef VK_USE_PLATFORM_WAYLAND_KHR
+			#ifdef VK_KHR_wayland_surface
+				MLX_LOAD_FUNCTION(vkCreateWaylandSurfaceKHR);
+			#endif
+		#endif
+		
+		#ifdef VK_USE_PLATFORM_WIN32_KHR
+			#ifdef VK_KHR_win32_surface
+				MLX_LOAD_FUNCTION(vkCreateWin32SurfaceKHR);
+			#endif
+		#endif
+		
+		#ifdef VK_USE_PLATFORM_METAL_EXT
+			#ifdef VK_EXT_metal_surface
+				MLX_LOAD_FUNCTION(vkCreateMetalSurfaceEXT);
+			#endif
+		#endif
 		kvfPassInstanceVulkanFunctionPointers(&pfns);
 	}
 

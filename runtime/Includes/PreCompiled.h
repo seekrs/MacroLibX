@@ -25,12 +25,12 @@
 	#error Failed to find SDL2 headers
 #endif
 
-#if __has_include(<SDL2/SDL_vulkan.h>)
-	#include <SDL2/SDL_vulkan.h>
-#elif __has_include(<SDL_vulkan.h>)
-	#include <SDL_vulkan.h>
+#if __has_include(<SDL2/SDL_syswm.h>)
+	#include <SDL2/SDL_syswm.h>
+#elif __has_include(<SDL_syswm.h>)
+	#include <SDL_syswm.h>
 #else
-	#error Failed to find SDL2 Vulkan headers
+	#error Failed to find SDL2 SysWMinfo
 #endif
 
 #include <functional>

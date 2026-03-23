@@ -123,5 +123,41 @@
 		MLX_VULKAN_INSTANCE_FUNCTION(vkGetPhysicalDeviceSurfaceFormatsKHR)
 		MLX_VULKAN_INSTANCE_FUNCTION(vkGetPhysicalDeviceSurfacePresentModesKHR)
 		MLX_VULKAN_INSTANCE_FUNCTION(vkGetPhysicalDeviceSurfaceSupportKHR)
+
+		#ifdef VK_USE_PLATFORM_ANDROID_KHR
+			#ifdef VK_KHR_android_surface
+				MLX_VULKAN_INSTANCE_FUNCTION(vkCreateAndroidSurfaceKHR)
+			#endif
+		#endif
+		
+		#ifdef VK_USE_PLATFORM_XCB_KHR
+			#ifdef VK_KHR_xcb_surface
+				MLX_VULKAN_INSTANCE_FUNCTION(vkCreateXcbSurfaceKHR)
+			#endif
+		#endif
+		
+		#ifdef VK_USE_PLATFORM_XLIB_KHR
+			#ifdef VK_KHR_xlib_surface
+				MLX_VULKAN_INSTANCE_FUNCTION(vkCreateXlibSurfaceKHR)
+			#endif
+		#endif
+		
+		#ifdef VK_USE_PLATFORM_WAYLAND_KHR
+			#ifdef VK_KHR_wayland_surface
+				MLX_VULKAN_INSTANCE_FUNCTION(vkCreateWaylandSurfaceKHR)
+			#endif
+		#endif
+		
+		#ifdef VK_USE_PLATFORM_WIN32_KHR
+			#ifdef VK_KHR_win32_surface
+				MLX_VULKAN_INSTANCE_FUNCTION(vkCreateWin32SurfaceKHR)
+			#endif
+		#endif
+		
+		#ifdef VK_USE_PLATFORM_METAL_EXT
+			#ifdef VK_EXT_metal_surface
+				MLX_VULKAN_INSTANCE_FUNCTION(vkCreateMetalSurfaceEXT)
+			#endif
+		#endif
 	#endif
 #endif

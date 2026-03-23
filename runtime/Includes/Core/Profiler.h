@@ -47,7 +47,6 @@ namespace mlx
 
 			std::unordered_map<std::string, std::pair<std::size_t, ProfileResult>> m_profile_data;
 			std::ofstream m_output_stream;
-			std::mutex m_mutex;
 			bool m_runtime_session_began = false;
 	};
 

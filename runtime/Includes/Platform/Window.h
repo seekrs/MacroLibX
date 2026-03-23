@@ -35,7 +35,6 @@ namespace mlx
 			MLX_FORCEINLINE void GetSize(int* x, int* y) { *x = GetWidth(); *y = GetHeight(); }
 
 			MLX_FORCEINLINE VkSurfaceKHR CreateVulkanSurface(VkInstance instance) const noexcept { return SDLManager::Get().CreateVulkanSurface(p_window, instance); }
-			MLX_FORCEINLINE std::vector<const char*> GetRequiredVulkanInstanceExtentions() const noexcept { return SDLManager::Get().GetRequiredVulkanInstanceExtentions(p_window); }
 			MLX_FORCEINLINE Vec2ui GetVulkanDrawableSize() const noexcept { return SDLManager::Get().GetVulkanDrawableSize(p_window); }
 
 			[[nodiscard]] inline Handle GetRawHandle() const noexcept { return p_window; }

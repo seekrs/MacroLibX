@@ -20,7 +20,6 @@ namespace mlx
 			void SetInputBinding(std::function<void(SDL_Event*)> functor);
 
 			VkSurfaceKHR CreateVulkanSurface(Handle window, VkInstance instance) const noexcept;
-			std::vector<const char*> GetRequiredVulkanInstanceExtentions(Handle window) const noexcept;
 			Vec2ui GetVulkanDrawableSize(Handle window) const noexcept;
 			void MoveMouseOnWindow(Handle window, int x, int y) const noexcept;
 			void GetScreenSizeWindowIsOn(Handle window, int* x, int* y) const noexcept;

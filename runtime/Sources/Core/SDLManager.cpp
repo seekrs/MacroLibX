@@ -43,7 +43,7 @@ namespace mlx
 		Internal::WindowInfos* infos = new Internal::WindowInfos;
 		Verify(infos != nullptr, "SDL: window allocation failed");
 
-		std::uint32_t flags = SDL_WINDOW_VULKAN;
+		std::uint32_t flags = 0;
 		if(hidden)
 			flags |= SDL_WINDOW_HIDDEN;
 		else
@@ -88,28 +88,38 @@ namespace mlx
 
 	VkSurfaceKHR SDLManager::CreateVulkanSurface(Handle window, VkInstance instance) const noexcept
 	{
-		VkSurfaceKHR surface;
-		if(!SDL_Vulkan_CreateSurface(static_cast<Internal::WindowInfos*>(window)->window, instance, &surface))
-			FatalError("SDL: could not create a Vulkan surface; %", SDL_GetError());
-		return surface;
-	}
+		SDL_SysWMinfo info;
+		SDL_VERSION(&info.version);
+		if(SDL_GetWindowWMInfo(static_cast<Internal::WindowInfos*>(window)->window, &info) != SDL_TRUE)
+			FatalError("SDL Manager: cannot retrieve window informations");
 
-	std::vector<const char*> SDLManager::GetRequiredVulkanInstanceExtentions(Handle window) const noexcept
-	{
-		std::uint32_t count;
-		if(!SDL_Vulkan_GetInstanceExtensions(static_cast<Internal::WindowInfos*>(window)->window, &count, nullptr))
-			FatalError("SDL Manager: could not retrieve Vulkan instance extensions");
-		std::vector<const char*> extensions(count);
-		if(!SDL_Vulkan_GetInstanceExtensions(static_cast<Internal::WindowInfos*>(window)->window, &count, extensions.data()))
-			FatalError("SDL Manager: could not retrieve Vulkan instance extensions");
-		extensions.push_back(VK_KHR_SURFACE_EXTENSION_NAME);
-		return extensions;
+		switch(info.subsystem)
+		{
+			#ifdef SDL_VIDEO_DRIVER_WINDOWS
+				case SDL_SYSWM_WINDOWS: return kvfCreateSurfaceKHR(instance, KVF_SURFACE_WINDOWS, static_cast<void*>(info.info.win.hinstance), static_cast<void*>(info.info.win.window));
+			#endif
+			#ifdef SDL_VIDEO_DRIVER_X11
+				case SDL_SYSWM_X11: return kvfCreateSurfaceKHR(instance, KVF_SURFACE_XLIB, static_cast<void*>(info.info.x11.display), static_cast<void*>(&info.info.x11.window));
+			#endif
+			#ifdef SDL_VIDEO_DRIVER_COCOA
+				case SDL_SYSWM_COCOA: FatalError("SDL Manager: Vulkan surfaces over Metal are not supported yet. Please fill an issue here https://github.com/seekrs/MacroLibX/issues/new");
+			#endif
+			#ifdef SDL_VIDEO_DRIVER_WAYLAND
+				case SDL_SYSWM_WAYLAND: return kvfCreateSurfaceKHR(instance, KVF_SURFACE_WAYLAND, static_cast<void*>(info.info.wl.display), static_cast<void*>(info.info.wl.surface));
+			#endif
+			#ifdef SDL_VIDEO_DRIVER_ANDROID
+				case SDL_SYSWM_ANDROID: return kvfCreateSurfaceKHR(instance, KVF_SURFACE_ANDROID, nullptr, static_cast<void*>(info.info.android.window));
+			#endif
+
+			default : FatalError("SDL Manager: unsupported windowing system"); break;
+		}
+		return VK_NULL_HANDLE;
 	}
 
 	Vec2ui SDLManager::GetVulkanDrawableSize(Handle window) const noexcept
 	{
 		Vec2i extent;
-		SDL_Vulkan_GetDrawableSize(static_cast<Internal::WindowInfos*>(window)->window, &extent.x, &extent.y);
+		SDL_GetWindowSizeInPixels(static_cast<Internal::WindowInfos*>(window)->window, &extent.x, &extent.y);
 		return Vec2ui{ extent };
 	}
 
@@ -266,6 +276,7 @@ namespace mlx
 						case SDL_WINDOWEVENT_LEAVE: functor(MLX_WINDOW_EVENT, id, 6); break;
 						case SDL_WINDOWEVENT_FOCUS_LOST: functor(MLX_WINDOW_EVENT, id, 7); break;
 						case SDL_WINDOWEVENT_SIZE_CHANGED: functor(MLX_WINDOW_EVENT, id, 8); break;
+						case SDL_WINDOWEVENT_RESTORED: functor(MLX_WINDOW_EVENT, id, 11); break;
 
 						default : break;
 					}
@@ -284,6 +295,7 @@ namespace mlx
 	{
 		if(m_drop_sdl_responsability)
 			return;
+
 		SDL_QuitSubSystem(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS);
 		SDL_Quit();
 		s_instance = nullptr;
