@@ -119,7 +119,7 @@ namespace mlx
 	Vec2ui SDLManager::GetVulkanDrawableSize(Handle window) const noexcept
 	{
 		Vec2i extent;
-		SDL_GetWindowSizeInPixels(static_cast<Internal::WindowInfos*>(window)->window, &extent.x, &extent.y);
+		SDL_GetWindowSize(static_cast<Internal::WindowInfos*>(window)->window, &extent.x, &extent.y);
 		return Vec2ui{ extent };
 	}
 
