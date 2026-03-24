@@ -7,7 +7,6 @@ project('MacroLibX',
     'warning_level=2',
     'optimization=3',
     'cpp_std=c++20',
-    'wrap_mode=forcefallback',
   ]
 )
 
