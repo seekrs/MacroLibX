@@ -1,6 +1,6 @@
 project('MacroLibX',
   ['c', 'cpp'],
-  version : '2.3.1',
+  version : '2.3.0',
   license : 'MIT',
   meson_version : '>= 0.63.0',
   default_options : [
