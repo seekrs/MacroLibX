@@ -1,12 +1,16 @@
 project('MacroLibX',
   ['c', 'cpp'],
-  version : '2.2.4',
+  version : '2.3.1',
   license : 'MIT',
-   meson_version : '>= 1.9.0',
-  default_options : ['warning_level=2', 'optimization=3', 'cpp_std=c++20'])
+  meson_version : '>= 0.63.0',
+  default_options : [
+    'warning_level=2',
+    'optimization=3',
+    'cpp_std=c++20',
+    'wrap_mode=forcefallback',
+  ]
+)
 
-add_project_arguments('-Wno-error=', language : 'c')
-add_project_arguments('-fPIC', language : 'c')
 add_project_arguments('-DSDL_MAIN_HANDLED', language : 'c')
 
 if get_option('graphics_memory_dump')
@@ -25,15 +29,14 @@ if get_option('disable_all_safeties')
   add_project_arguments('-DDISABLE_ALL_SAFETIES', language : 'c')
 endif
 
-includes_directories = [
-  include_directories('includes'),
-  include_directories('runtime/Includes'),
-  include_directories('runtime/Sources'),
-  include_directories('third_party'),
-]
+includes_directories = include_directories(
+  'includes',
+  'runtime/Includes',
+  'runtime/Sources',
+  'third_party',
+)
 
-sources = [
-  files(
+sources = files(
     'runtime/Sources/Core/Application.cpp',
     'runtime/Sources/Core/Bridge.cpp',
     'runtime/Sources/Core/EventBus.cpp',
@@ -66,9 +69,8 @@ sources = [
     'runtime/Sources/Renderer/RenderCore.cpp',
     'runtime/Sources/Renderer/Renderer.cpp',
     'runtime/Sources/Renderer/SceneRenderer.cpp',
-    'runtime/Sources/Renderer/Swapchain.cpp'
-  )
-]
+    'runtime/Sources/Renderer/Swapchain.cpp',
+)
 
 mlx_headers = [
   'includes/mlx.h',
@@ -78,9 +80,7 @@ mlx_headers = [
 
 install_headers(mlx_headers)
 
-deps = [
-  dependency('sdl2'),
-]
+deps = dependency('sdl2')
 
 libmlx = library('mlx',
   sources,
