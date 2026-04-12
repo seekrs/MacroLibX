@@ -36388,6 +36388,227 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
   };
 #endif /*VK_USE_PLATFORM_WIN32_KHR*/
 
+  // wrapper struct for struct VkDataGraphOpticalFlowImageFormatInfoARM, see
+  // https://registry.khronos.org/vulkan/specs/latest/man/html/VkDataGraphOpticalFlowImageFormatInfoARM.html
+  struct DataGraphOpticalFlowImageFormatInfoARM
+  {
+    using NativeType = VkDataGraphOpticalFlowImageFormatInfoARM;
+
+    static bool const                                  allowDuplicate = false;
+    static VULKAN_HPP_CONST_OR_CONSTEXPR StructureType structureType  = StructureType::eDataGraphOpticalFlowImageFormatInfoARM;
+
+#if !defined( VULKAN_HPP_NO_CONSTRUCTORS ) && !defined( VULKAN_HPP_NO_STRUCT_CONSTRUCTORS )
+    VULKAN_HPP_CONSTEXPR DataGraphOpticalFlowImageFormatInfoARM( DataGraphOpticalFlowImageUsageFlagsARM usage_ = {},
+                                                                 void const *                           pNext_ = nullptr ) VULKAN_HPP_NOEXCEPT
+      : pNext{ pNext_ }
+      , usage{ usage_ }
+    {
+    }
+
+    VULKAN_HPP_CONSTEXPR DataGraphOpticalFlowImageFormatInfoARM( DataGraphOpticalFlowImageFormatInfoARM const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+
+    DataGraphOpticalFlowImageFormatInfoARM( VkDataGraphOpticalFlowImageFormatInfoARM const & rhs ) VULKAN_HPP_NOEXCEPT
+      : DataGraphOpticalFlowImageFormatInfoARM( *reinterpret_cast<DataGraphOpticalFlowImageFormatInfoARM const *>( &rhs ) )
+    {
+    }
+
+    DataGraphOpticalFlowImageFormatInfoARM & operator=( DataGraphOpticalFlowImageFormatInfoARM const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+#endif /*VULKAN_HPP_NO_CONSTRUCTORS*/
+
+    DataGraphOpticalFlowImageFormatInfoARM & operator=( VkDataGraphOpticalFlowImageFormatInfoARM const & rhs ) VULKAN_HPP_NOEXCEPT
+    {
+      *this = *reinterpret_cast<DataGraphOpticalFlowImageFormatInfoARM const *>( &rhs );
+      return *this;
+    }
+
+#if !defined( VULKAN_HPP_NO_SETTERS ) && !defined( VULKAN_HPP_NO_STRUCT_SETTERS )
+    VULKAN_HPP_CONSTEXPR_14 DataGraphOpticalFlowImageFormatInfoARM & setPNext( void const * pNext_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphOpticalFlowImageFormatInfoARM && setPNext( void const * pNext_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphOpticalFlowImageFormatInfoARM & setUsage( DataGraphOpticalFlowImageUsageFlagsARM usage_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      usage = usage_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphOpticalFlowImageFormatInfoARM && setUsage( DataGraphOpticalFlowImageUsageFlagsARM usage_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      usage = usage_;
+      return std::move( *this );
+    }
+#endif /*VULKAN_HPP_NO_SETTERS*/
+
+    operator VkDataGraphOpticalFlowImageFormatInfoARM const &() const VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkDataGraphOpticalFlowImageFormatInfoARM const *>( this );
+    }
+
+    operator VkDataGraphOpticalFlowImageFormatInfoARM &() VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkDataGraphOpticalFlowImageFormatInfoARM *>( this );
+    }
+
+    operator VkDataGraphOpticalFlowImageFormatInfoARM const *() const VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkDataGraphOpticalFlowImageFormatInfoARM const *>( this );
+    }
+
+    operator VkDataGraphOpticalFlowImageFormatInfoARM *() VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkDataGraphOpticalFlowImageFormatInfoARM *>( this );
+    }
+
+#if defined( VULKAN_HPP_USE_REFLECT )
+    std::tuple<StructureType const &, void const * const &, DataGraphOpticalFlowImageUsageFlagsARM const &> reflect() const VULKAN_HPP_NOEXCEPT
+    {
+      return std::tie( sType, pNext, usage );
+    }
+#endif
+
+#if defined( VULKAN_HPP_HAS_SPACESHIP_OPERATOR )
+    auto operator<=>( DataGraphOpticalFlowImageFormatInfoARM const & ) const = default;
+#else
+    bool operator==( DataGraphOpticalFlowImageFormatInfoARM const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+#  if defined( VULKAN_HPP_USE_REFLECT )
+      return this->reflect() == rhs.reflect();
+#  else
+      return ( sType == rhs.sType ) && ( pNext == rhs.pNext ) && ( usage == rhs.usage );
+#  endif
+    }
+
+    bool operator!=( DataGraphOpticalFlowImageFormatInfoARM const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+      return !operator==( rhs );
+    }
+#endif
+
+  public:
+    StructureType                          sType = StructureType::eDataGraphOpticalFlowImageFormatInfoARM;
+    void const *                           pNext = {};
+    DataGraphOpticalFlowImageUsageFlagsARM usage = {};
+  };
+
+#if 20 <= VULKAN_HPP_CPP_VERSION
+  template <>
+  struct CppType<VkDataGraphOpticalFlowImageFormatInfoARM>
+  {
+    using Type = DataGraphOpticalFlowImageFormatInfoARM;
+  };
+#endif
+
+  template <>
+  struct CppType<StructureType, StructureType::eDataGraphOpticalFlowImageFormatInfoARM>
+  {
+    using Type = DataGraphOpticalFlowImageFormatInfoARM;
+  };
+
+  // wrapper struct for struct VkDataGraphOpticalFlowImageFormatPropertiesARM, see
+  // https://registry.khronos.org/vulkan/specs/latest/man/html/VkDataGraphOpticalFlowImageFormatPropertiesARM.html
+  struct DataGraphOpticalFlowImageFormatPropertiesARM
+  {
+    using NativeType = VkDataGraphOpticalFlowImageFormatPropertiesARM;
+
+    static bool const                                  allowDuplicate = false;
+    static VULKAN_HPP_CONST_OR_CONSTEXPR StructureType structureType  = StructureType::eDataGraphOpticalFlowImageFormatPropertiesARM;
+
+#if !defined( VULKAN_HPP_NO_CONSTRUCTORS ) && !defined( VULKAN_HPP_NO_STRUCT_CONSTRUCTORS )
+    VULKAN_HPP_CONSTEXPR DataGraphOpticalFlowImageFormatPropertiesARM( Format format_ = Format::eUndefined, void * pNext_ = nullptr ) VULKAN_HPP_NOEXCEPT
+      : pNext{ pNext_ }
+      , format{ format_ }
+    {
+    }
+
+    VULKAN_HPP_CONSTEXPR DataGraphOpticalFlowImageFormatPropertiesARM( DataGraphOpticalFlowImageFormatPropertiesARM const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+
+    DataGraphOpticalFlowImageFormatPropertiesARM( VkDataGraphOpticalFlowImageFormatPropertiesARM const & rhs ) VULKAN_HPP_NOEXCEPT
+      : DataGraphOpticalFlowImageFormatPropertiesARM( *reinterpret_cast<DataGraphOpticalFlowImageFormatPropertiesARM const *>( &rhs ) )
+    {
+    }
+
+    DataGraphOpticalFlowImageFormatPropertiesARM & operator=( DataGraphOpticalFlowImageFormatPropertiesARM const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+#endif /*VULKAN_HPP_NO_CONSTRUCTORS*/
+
+    DataGraphOpticalFlowImageFormatPropertiesARM & operator=( VkDataGraphOpticalFlowImageFormatPropertiesARM const & rhs ) VULKAN_HPP_NOEXCEPT
+    {
+      *this = *reinterpret_cast<DataGraphOpticalFlowImageFormatPropertiesARM const *>( &rhs );
+      return *this;
+    }
+
+    operator VkDataGraphOpticalFlowImageFormatPropertiesARM const &() const VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkDataGraphOpticalFlowImageFormatPropertiesARM const *>( this );
+    }
+
+    operator VkDataGraphOpticalFlowImageFormatPropertiesARM &() VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkDataGraphOpticalFlowImageFormatPropertiesARM *>( this );
+    }
+
+    operator VkDataGraphOpticalFlowImageFormatPropertiesARM const *() const VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkDataGraphOpticalFlowImageFormatPropertiesARM const *>( this );
+    }
+
+    operator VkDataGraphOpticalFlowImageFormatPropertiesARM *() VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkDataGraphOpticalFlowImageFormatPropertiesARM *>( this );
+    }
+
+#if defined( VULKAN_HPP_USE_REFLECT )
+    std::tuple<StructureType const &, void * const &, Format const &> reflect() const VULKAN_HPP_NOEXCEPT
+    {
+      return std::tie( sType, pNext, format );
+    }
+#endif
+
+#if defined( VULKAN_HPP_HAS_SPACESHIP_OPERATOR )
+    auto operator<=>( DataGraphOpticalFlowImageFormatPropertiesARM const & ) const = default;
+#else
+    bool operator==( DataGraphOpticalFlowImageFormatPropertiesARM const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+#  if defined( VULKAN_HPP_USE_REFLECT )
+      return this->reflect() == rhs.reflect();
+#  else
+      return ( sType == rhs.sType ) && ( pNext == rhs.pNext ) && ( format == rhs.format );
+#  endif
+    }
+
+    bool operator!=( DataGraphOpticalFlowImageFormatPropertiesARM const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+      return !operator==( rhs );
+    }
+#endif
+
+  public:
+    StructureType sType  = StructureType::eDataGraphOpticalFlowImageFormatPropertiesARM;
+    void *        pNext  = {};
+    Format        format = Format::eUndefined;
+  };
+
+#if 20 <= VULKAN_HPP_CPP_VERSION
+  template <>
+  struct CppType<VkDataGraphOpticalFlowImageFormatPropertiesARM>
+  {
+    using Type = DataGraphOpticalFlowImageFormatPropertiesARM;
+  };
+#endif
+
+  template <>
+  struct CppType<StructureType, StructureType::eDataGraphOpticalFlowImageFormatPropertiesARM>
+  {
+    using Type = DataGraphOpticalFlowImageFormatPropertiesARM;
+  };
+
   // wrapper struct for struct VkPhysicalDeviceDataGraphOperationSupportARM, see
   // https://registry.khronos.org/vulkan/specs/latest/man/html/VkPhysicalDeviceDataGraphOperationSupportARM.html
   struct PhysicalDeviceDataGraphOperationSupportARM
@@ -37870,6 +38091,409 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
     using Type = DataGraphPipelineInfoARM;
   };
 
+  // wrapper struct for struct VkDataGraphPipelineOpticalFlowCreateInfoARM, see
+  // https://registry.khronos.org/vulkan/specs/latest/man/html/VkDataGraphPipelineOpticalFlowCreateInfoARM.html
+  struct DataGraphPipelineOpticalFlowCreateInfoARM
+  {
+    using NativeType = VkDataGraphPipelineOpticalFlowCreateInfoARM;
+
+    static bool const                                  allowDuplicate = false;
+    static VULKAN_HPP_CONST_OR_CONSTEXPR StructureType structureType  = StructureType::eDataGraphPipelineOpticalFlowCreateInfoARM;
+
+#if !defined( VULKAN_HPP_NO_CONSTRUCTORS ) && !defined( VULKAN_HPP_NO_STRUCT_CONSTRUCTORS )
+    VULKAN_HPP_CONSTEXPR
+      DataGraphPipelineOpticalFlowCreateInfoARM( uint32_t                                width_            = {},
+                                                 uint32_t                                height_           = {},
+                                                 Format                                  imageFormat_      = Format::eUndefined,
+                                                 Format                                  flowVectorFormat_ = Format::eUndefined,
+                                                 Format                                  costFormat_       = Format::eUndefined,
+                                                 DataGraphOpticalFlowGridSizeFlagsARM    outputGridSize_   = {},
+                                                 DataGraphOpticalFlowGridSizeFlagsARM    hintGridSize_     = {},
+                                                 DataGraphOpticalFlowPerformanceLevelARM performanceLevel_ = DataGraphOpticalFlowPerformanceLevelARM::eUnknown,
+                                                 DataGraphOpticalFlowCreateFlagsARM      flags_            = {},
+                                                 void *                                  pNext_            = nullptr ) VULKAN_HPP_NOEXCEPT
+      : pNext{ pNext_ }
+      , width{ width_ }
+      , height{ height_ }
+      , imageFormat{ imageFormat_ }
+      , flowVectorFormat{ flowVectorFormat_ }
+      , costFormat{ costFormat_ }
+      , outputGridSize{ outputGridSize_ }
+      , hintGridSize{ hintGridSize_ }
+      , performanceLevel{ performanceLevel_ }
+      , flags{ flags_ }
+    {
+    }
+
+    VULKAN_HPP_CONSTEXPR DataGraphPipelineOpticalFlowCreateInfoARM( DataGraphPipelineOpticalFlowCreateInfoARM const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+
+    DataGraphPipelineOpticalFlowCreateInfoARM( VkDataGraphPipelineOpticalFlowCreateInfoARM const & rhs ) VULKAN_HPP_NOEXCEPT
+      : DataGraphPipelineOpticalFlowCreateInfoARM( *reinterpret_cast<DataGraphPipelineOpticalFlowCreateInfoARM const *>( &rhs ) )
+    {
+    }
+
+    DataGraphPipelineOpticalFlowCreateInfoARM & operator=( DataGraphPipelineOpticalFlowCreateInfoARM const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+#endif /*VULKAN_HPP_NO_CONSTRUCTORS*/
+
+    DataGraphPipelineOpticalFlowCreateInfoARM & operator=( VkDataGraphPipelineOpticalFlowCreateInfoARM const & rhs ) VULKAN_HPP_NOEXCEPT
+    {
+      *this = *reinterpret_cast<DataGraphPipelineOpticalFlowCreateInfoARM const *>( &rhs );
+      return *this;
+    }
+
+#if !defined( VULKAN_HPP_NO_SETTERS ) && !defined( VULKAN_HPP_NO_STRUCT_SETTERS )
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineOpticalFlowCreateInfoARM & setPNext( void * pNext_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineOpticalFlowCreateInfoARM && setPNext( void * pNext_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineOpticalFlowCreateInfoARM & setWidth( uint32_t width_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      width = width_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineOpticalFlowCreateInfoARM && setWidth( uint32_t width_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      width = width_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineOpticalFlowCreateInfoARM & setHeight( uint32_t height_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      height = height_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineOpticalFlowCreateInfoARM && setHeight( uint32_t height_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      height = height_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineOpticalFlowCreateInfoARM & setImageFormat( Format imageFormat_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      imageFormat = imageFormat_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineOpticalFlowCreateInfoARM && setImageFormat( Format imageFormat_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      imageFormat = imageFormat_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineOpticalFlowCreateInfoARM & setFlowVectorFormat( Format flowVectorFormat_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      flowVectorFormat = flowVectorFormat_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineOpticalFlowCreateInfoARM && setFlowVectorFormat( Format flowVectorFormat_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      flowVectorFormat = flowVectorFormat_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineOpticalFlowCreateInfoARM & setCostFormat( Format costFormat_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      costFormat = costFormat_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineOpticalFlowCreateInfoARM && setCostFormat( Format costFormat_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      costFormat = costFormat_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineOpticalFlowCreateInfoARM & setOutputGridSize( DataGraphOpticalFlowGridSizeFlagsARM outputGridSize_ ) &
+      VULKAN_HPP_NOEXCEPT
+    {
+      outputGridSize = outputGridSize_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineOpticalFlowCreateInfoARM && setOutputGridSize( DataGraphOpticalFlowGridSizeFlagsARM outputGridSize_ ) &&
+      VULKAN_HPP_NOEXCEPT
+    {
+      outputGridSize = outputGridSize_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineOpticalFlowCreateInfoARM & setHintGridSize( DataGraphOpticalFlowGridSizeFlagsARM hintGridSize_ ) &
+      VULKAN_HPP_NOEXCEPT
+    {
+      hintGridSize = hintGridSize_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineOpticalFlowCreateInfoARM && setHintGridSize( DataGraphOpticalFlowGridSizeFlagsARM hintGridSize_ ) &&
+      VULKAN_HPP_NOEXCEPT
+    {
+      hintGridSize = hintGridSize_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineOpticalFlowCreateInfoARM & setPerformanceLevel( DataGraphOpticalFlowPerformanceLevelARM performanceLevel_ ) &
+      VULKAN_HPP_NOEXCEPT
+    {
+      performanceLevel = performanceLevel_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineOpticalFlowCreateInfoARM && setPerformanceLevel( DataGraphOpticalFlowPerformanceLevelARM performanceLevel_ ) &&
+      VULKAN_HPP_NOEXCEPT
+    {
+      performanceLevel = performanceLevel_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineOpticalFlowCreateInfoARM & setFlags( DataGraphOpticalFlowCreateFlagsARM flags_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      flags = flags_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineOpticalFlowCreateInfoARM && setFlags( DataGraphOpticalFlowCreateFlagsARM flags_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      flags = flags_;
+      return std::move( *this );
+    }
+#endif /*VULKAN_HPP_NO_SETTERS*/
+
+    operator VkDataGraphPipelineOpticalFlowCreateInfoARM const &() const VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkDataGraphPipelineOpticalFlowCreateInfoARM const *>( this );
+    }
+
+    operator VkDataGraphPipelineOpticalFlowCreateInfoARM &() VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkDataGraphPipelineOpticalFlowCreateInfoARM *>( this );
+    }
+
+    operator VkDataGraphPipelineOpticalFlowCreateInfoARM const *() const VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkDataGraphPipelineOpticalFlowCreateInfoARM const *>( this );
+    }
+
+    operator VkDataGraphPipelineOpticalFlowCreateInfoARM *() VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkDataGraphPipelineOpticalFlowCreateInfoARM *>( this );
+    }
+
+#if defined( VULKAN_HPP_USE_REFLECT )
+    std::tuple<StructureType const &,
+               void * const &,
+               uint32_t const &,
+               uint32_t const &,
+               Format const &,
+               Format const &,
+               Format const &,
+               DataGraphOpticalFlowGridSizeFlagsARM const &,
+               DataGraphOpticalFlowGridSizeFlagsARM const &,
+               DataGraphOpticalFlowPerformanceLevelARM const &,
+               DataGraphOpticalFlowCreateFlagsARM const &>
+      reflect() const VULKAN_HPP_NOEXCEPT
+    {
+      return std::tie( sType, pNext, width, height, imageFormat, flowVectorFormat, costFormat, outputGridSize, hintGridSize, performanceLevel, flags );
+    }
+#endif
+
+#if defined( VULKAN_HPP_HAS_SPACESHIP_OPERATOR )
+    auto operator<=>( DataGraphPipelineOpticalFlowCreateInfoARM const & ) const = default;
+#else
+    bool operator==( DataGraphPipelineOpticalFlowCreateInfoARM const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+#  if defined( VULKAN_HPP_USE_REFLECT )
+      return this->reflect() == rhs.reflect();
+#  else
+      return ( sType == rhs.sType ) && ( pNext == rhs.pNext ) && ( width == rhs.width ) && ( height == rhs.height ) && ( imageFormat == rhs.imageFormat ) &&
+             ( flowVectorFormat == rhs.flowVectorFormat ) && ( costFormat == rhs.costFormat ) && ( outputGridSize == rhs.outputGridSize ) &&
+             ( hintGridSize == rhs.hintGridSize ) && ( performanceLevel == rhs.performanceLevel ) && ( flags == rhs.flags );
+#  endif
+    }
+
+    bool operator!=( DataGraphPipelineOpticalFlowCreateInfoARM const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+      return !operator==( rhs );
+    }
+#endif
+
+  public:
+    StructureType                           sType            = StructureType::eDataGraphPipelineOpticalFlowCreateInfoARM;
+    void *                                  pNext            = {};
+    uint32_t                                width            = {};
+    uint32_t                                height           = {};
+    Format                                  imageFormat      = Format::eUndefined;
+    Format                                  flowVectorFormat = Format::eUndefined;
+    Format                                  costFormat       = Format::eUndefined;
+    DataGraphOpticalFlowGridSizeFlagsARM    outputGridSize   = {};
+    DataGraphOpticalFlowGridSizeFlagsARM    hintGridSize     = {};
+    DataGraphOpticalFlowPerformanceLevelARM performanceLevel = DataGraphOpticalFlowPerformanceLevelARM::eUnknown;
+    DataGraphOpticalFlowCreateFlagsARM      flags            = {};
+  };
+
+#if 20 <= VULKAN_HPP_CPP_VERSION
+  template <>
+  struct CppType<VkDataGraphPipelineOpticalFlowCreateInfoARM>
+  {
+    using Type = DataGraphPipelineOpticalFlowCreateInfoARM;
+  };
+#endif
+
+  template <>
+  struct CppType<StructureType, StructureType::eDataGraphPipelineOpticalFlowCreateInfoARM>
+  {
+    using Type = DataGraphPipelineOpticalFlowCreateInfoARM;
+  };
+
+  // wrapper struct for struct VkDataGraphPipelineOpticalFlowDispatchInfoARM, see
+  // https://registry.khronos.org/vulkan/specs/latest/man/html/VkDataGraphPipelineOpticalFlowDispatchInfoARM.html
+  struct DataGraphPipelineOpticalFlowDispatchInfoARM
+  {
+    using NativeType = VkDataGraphPipelineOpticalFlowDispatchInfoARM;
+
+    static bool const                                  allowDuplicate = false;
+    static VULKAN_HPP_CONST_OR_CONSTEXPR StructureType structureType  = StructureType::eDataGraphPipelineOpticalFlowDispatchInfoARM;
+
+#if !defined( VULKAN_HPP_NO_CONSTRUCTORS ) && !defined( VULKAN_HPP_NO_STRUCT_CONSTRUCTORS )
+    VULKAN_HPP_CONSTEXPR DataGraphPipelineOpticalFlowDispatchInfoARM( DataGraphOpticalFlowExecuteFlagsARM flags_              = {},
+                                                                      uint32_t                            meanFlowL1NormHint_ = {},
+                                                                      void *                              pNext_              = nullptr ) VULKAN_HPP_NOEXCEPT
+      : pNext{ pNext_ }
+      , flags{ flags_ }
+      , meanFlowL1NormHint{ meanFlowL1NormHint_ }
+    {
+    }
+
+    VULKAN_HPP_CONSTEXPR DataGraphPipelineOpticalFlowDispatchInfoARM( DataGraphPipelineOpticalFlowDispatchInfoARM const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+
+    DataGraphPipelineOpticalFlowDispatchInfoARM( VkDataGraphPipelineOpticalFlowDispatchInfoARM const & rhs ) VULKAN_HPP_NOEXCEPT
+      : DataGraphPipelineOpticalFlowDispatchInfoARM( *reinterpret_cast<DataGraphPipelineOpticalFlowDispatchInfoARM const *>( &rhs ) )
+    {
+    }
+
+    DataGraphPipelineOpticalFlowDispatchInfoARM & operator=( DataGraphPipelineOpticalFlowDispatchInfoARM const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+#endif /*VULKAN_HPP_NO_CONSTRUCTORS*/
+
+    DataGraphPipelineOpticalFlowDispatchInfoARM & operator=( VkDataGraphPipelineOpticalFlowDispatchInfoARM const & rhs ) VULKAN_HPP_NOEXCEPT
+    {
+      *this = *reinterpret_cast<DataGraphPipelineOpticalFlowDispatchInfoARM const *>( &rhs );
+      return *this;
+    }
+
+#if !defined( VULKAN_HPP_NO_SETTERS ) && !defined( VULKAN_HPP_NO_STRUCT_SETTERS )
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineOpticalFlowDispatchInfoARM & setPNext( void * pNext_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineOpticalFlowDispatchInfoARM && setPNext( void * pNext_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineOpticalFlowDispatchInfoARM & setFlags( DataGraphOpticalFlowExecuteFlagsARM flags_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      flags = flags_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineOpticalFlowDispatchInfoARM && setFlags( DataGraphOpticalFlowExecuteFlagsARM flags_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      flags = flags_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineOpticalFlowDispatchInfoARM & setMeanFlowL1NormHint( uint32_t meanFlowL1NormHint_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      meanFlowL1NormHint = meanFlowL1NormHint_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineOpticalFlowDispatchInfoARM && setMeanFlowL1NormHint( uint32_t meanFlowL1NormHint_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      meanFlowL1NormHint = meanFlowL1NormHint_;
+      return std::move( *this );
+    }
+#endif /*VULKAN_HPP_NO_SETTERS*/
+
+    operator VkDataGraphPipelineOpticalFlowDispatchInfoARM const &() const VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkDataGraphPipelineOpticalFlowDispatchInfoARM const *>( this );
+    }
+
+    operator VkDataGraphPipelineOpticalFlowDispatchInfoARM &() VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkDataGraphPipelineOpticalFlowDispatchInfoARM *>( this );
+    }
+
+    operator VkDataGraphPipelineOpticalFlowDispatchInfoARM const *() const VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkDataGraphPipelineOpticalFlowDispatchInfoARM const *>( this );
+    }
+
+    operator VkDataGraphPipelineOpticalFlowDispatchInfoARM *() VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkDataGraphPipelineOpticalFlowDispatchInfoARM *>( this );
+    }
+
+#if defined( VULKAN_HPP_USE_REFLECT )
+    std::tuple<StructureType const &, void * const &, DataGraphOpticalFlowExecuteFlagsARM const &, uint32_t const &> reflect() const VULKAN_HPP_NOEXCEPT
+    {
+      return std::tie( sType, pNext, flags, meanFlowL1NormHint );
+    }
+#endif
+
+#if defined( VULKAN_HPP_HAS_SPACESHIP_OPERATOR )
+    auto operator<=>( DataGraphPipelineOpticalFlowDispatchInfoARM const & ) const = default;
+#else
+    bool operator==( DataGraphPipelineOpticalFlowDispatchInfoARM const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+#  if defined( VULKAN_HPP_USE_REFLECT )
+      return this->reflect() == rhs.reflect();
+#  else
+      return ( sType == rhs.sType ) && ( pNext == rhs.pNext ) && ( flags == rhs.flags ) && ( meanFlowL1NormHint == rhs.meanFlowL1NormHint );
+#  endif
+    }
+
+    bool operator!=( DataGraphPipelineOpticalFlowDispatchInfoARM const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+      return !operator==( rhs );
+    }
+#endif
+
+  public:
+    StructureType                       sType              = StructureType::eDataGraphPipelineOpticalFlowDispatchInfoARM;
+    void *                              pNext              = {};
+    DataGraphOpticalFlowExecuteFlagsARM flags              = {};
+    uint32_t                            meanFlowL1NormHint = {};
+  };
+
+#if 20 <= VULKAN_HPP_CPP_VERSION
+  template <>
+  struct CppType<VkDataGraphPipelineOpticalFlowDispatchInfoARM>
+  {
+    using Type = DataGraphPipelineOpticalFlowDispatchInfoARM;
+  };
+#endif
+
+  template <>
+  struct CppType<StructureType, StructureType::eDataGraphPipelineOpticalFlowDispatchInfoARM>
+  {
+    using Type = DataGraphPipelineOpticalFlowDispatchInfoARM;
+  };
+
   // wrapper struct for struct VkDataGraphPipelinePropertyQueryResultARM, see
   // https://registry.khronos.org/vulkan/specs/latest/man/html/VkDataGraphPipelinePropertyQueryResultARM.html
   struct DataGraphPipelinePropertyQueryResultARM
@@ -38060,6 +38684,130 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
   struct CppType<StructureType, StructureType::eDataGraphPipelinePropertyQueryResultARM>
   {
     using Type = DataGraphPipelinePropertyQueryResultARM;
+  };
+
+  // wrapper struct for struct VkDataGraphPipelineResourceInfoImageLayoutARM, see
+  // https://registry.khronos.org/vulkan/specs/latest/man/html/VkDataGraphPipelineResourceInfoImageLayoutARM.html
+  struct DataGraphPipelineResourceInfoImageLayoutARM
+  {
+    using NativeType = VkDataGraphPipelineResourceInfoImageLayoutARM;
+
+    static bool const                                  allowDuplicate = false;
+    static VULKAN_HPP_CONST_OR_CONSTEXPR StructureType structureType  = StructureType::eDataGraphPipelineResourceInfoImageLayoutARM;
+
+#if !defined( VULKAN_HPP_NO_CONSTRUCTORS ) && !defined( VULKAN_HPP_NO_STRUCT_CONSTRUCTORS )
+    VULKAN_HPP_CONSTEXPR DataGraphPipelineResourceInfoImageLayoutARM( ImageLayout  layout_ = ImageLayout::eUndefined,
+                                                                      void const * pNext_  = nullptr ) VULKAN_HPP_NOEXCEPT
+      : pNext{ pNext_ }
+      , layout{ layout_ }
+    {
+    }
+
+    VULKAN_HPP_CONSTEXPR DataGraphPipelineResourceInfoImageLayoutARM( DataGraphPipelineResourceInfoImageLayoutARM const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+
+    DataGraphPipelineResourceInfoImageLayoutARM( VkDataGraphPipelineResourceInfoImageLayoutARM const & rhs ) VULKAN_HPP_NOEXCEPT
+      : DataGraphPipelineResourceInfoImageLayoutARM( *reinterpret_cast<DataGraphPipelineResourceInfoImageLayoutARM const *>( &rhs ) )
+    {
+    }
+
+    DataGraphPipelineResourceInfoImageLayoutARM & operator=( DataGraphPipelineResourceInfoImageLayoutARM const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+#endif /*VULKAN_HPP_NO_CONSTRUCTORS*/
+
+    DataGraphPipelineResourceInfoImageLayoutARM & operator=( VkDataGraphPipelineResourceInfoImageLayoutARM const & rhs ) VULKAN_HPP_NOEXCEPT
+    {
+      *this = *reinterpret_cast<DataGraphPipelineResourceInfoImageLayoutARM const *>( &rhs );
+      return *this;
+    }
+
+#if !defined( VULKAN_HPP_NO_SETTERS ) && !defined( VULKAN_HPP_NO_STRUCT_SETTERS )
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineResourceInfoImageLayoutARM & setPNext( void const * pNext_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineResourceInfoImageLayoutARM && setPNext( void const * pNext_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineResourceInfoImageLayoutARM & setLayout( ImageLayout layout_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      layout = layout_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineResourceInfoImageLayoutARM && setLayout( ImageLayout layout_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      layout = layout_;
+      return std::move( *this );
+    }
+#endif /*VULKAN_HPP_NO_SETTERS*/
+
+    operator VkDataGraphPipelineResourceInfoImageLayoutARM const &() const VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkDataGraphPipelineResourceInfoImageLayoutARM const *>( this );
+    }
+
+    operator VkDataGraphPipelineResourceInfoImageLayoutARM &() VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkDataGraphPipelineResourceInfoImageLayoutARM *>( this );
+    }
+
+    operator VkDataGraphPipelineResourceInfoImageLayoutARM const *() const VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkDataGraphPipelineResourceInfoImageLayoutARM const *>( this );
+    }
+
+    operator VkDataGraphPipelineResourceInfoImageLayoutARM *() VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkDataGraphPipelineResourceInfoImageLayoutARM *>( this );
+    }
+
+#if defined( VULKAN_HPP_USE_REFLECT )
+    std::tuple<StructureType const &, void const * const &, ImageLayout const &> reflect() const VULKAN_HPP_NOEXCEPT
+    {
+      return std::tie( sType, pNext, layout );
+    }
+#endif
+
+#if defined( VULKAN_HPP_HAS_SPACESHIP_OPERATOR )
+    auto operator<=>( DataGraphPipelineResourceInfoImageLayoutARM const & ) const = default;
+#else
+    bool operator==( DataGraphPipelineResourceInfoImageLayoutARM const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+#  if defined( VULKAN_HPP_USE_REFLECT )
+      return this->reflect() == rhs.reflect();
+#  else
+      return ( sType == rhs.sType ) && ( pNext == rhs.pNext ) && ( layout == rhs.layout );
+#  endif
+    }
+
+    bool operator!=( DataGraphPipelineResourceInfoImageLayoutARM const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+      return !operator==( rhs );
+    }
+#endif
+
+  public:
+    StructureType sType  = StructureType::eDataGraphPipelineResourceInfoImageLayoutARM;
+    void const *  pNext  = {};
+    ImageLayout   layout = ImageLayout::eUndefined;
+  };
+
+#if 20 <= VULKAN_HPP_CPP_VERSION
+  template <>
+  struct CppType<VkDataGraphPipelineResourceInfoImageLayoutARM>
+  {
+    using Type = DataGraphPipelineResourceInfoImageLayoutARM;
+  };
+#endif
+
+  template <>
+  struct CppType<StructureType, StructureType::eDataGraphPipelineResourceInfoImageLayoutARM>
+  {
+    using Type = DataGraphPipelineResourceInfoImageLayoutARM;
   };
 
   // wrapper struct for struct VkDataGraphPipelineSessionBindPointRequirementARM, see
@@ -38836,6 +39584,344 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
   struct CppType<StructureType, StructureType::eDataGraphPipelineShaderModuleCreateInfoARM>
   {
     using Type = DataGraphPipelineShaderModuleCreateInfoARM;
+  };
+
+  // wrapper struct for struct VkDataGraphPipelineSingleNodeConnectionARM, see
+  // https://registry.khronos.org/vulkan/specs/latest/man/html/VkDataGraphPipelineSingleNodeConnectionARM.html
+  struct DataGraphPipelineSingleNodeConnectionARM
+  {
+    using NativeType = VkDataGraphPipelineSingleNodeConnectionARM;
+
+    static bool const                                  allowDuplicate = false;
+    static VULKAN_HPP_CONST_OR_CONSTEXPR StructureType structureType  = StructureType::eDataGraphPipelineSingleNodeConnectionARM;
+
+#if !defined( VULKAN_HPP_NO_CONSTRUCTORS ) && !defined( VULKAN_HPP_NO_STRUCT_CONSTRUCTORS )
+    VULKAN_HPP_CONSTEXPR
+      DataGraphPipelineSingleNodeConnectionARM( uint32_t                               set_        = {},
+                                                uint32_t                               binding_    = {},
+                                                DataGraphPipelineNodeConnectionTypeARM connection_ = DataGraphPipelineNodeConnectionTypeARM::eOpticalFlowInput,
+                                                void *                                 pNext_      = nullptr ) VULKAN_HPP_NOEXCEPT
+      : pNext{ pNext_ }
+      , set{ set_ }
+      , binding{ binding_ }
+      , connection{ connection_ }
+    {
+    }
+
+    VULKAN_HPP_CONSTEXPR DataGraphPipelineSingleNodeConnectionARM( DataGraphPipelineSingleNodeConnectionARM const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+
+    DataGraphPipelineSingleNodeConnectionARM( VkDataGraphPipelineSingleNodeConnectionARM const & rhs ) VULKAN_HPP_NOEXCEPT
+      : DataGraphPipelineSingleNodeConnectionARM( *reinterpret_cast<DataGraphPipelineSingleNodeConnectionARM const *>( &rhs ) )
+    {
+    }
+
+    DataGraphPipelineSingleNodeConnectionARM & operator=( DataGraphPipelineSingleNodeConnectionARM const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+#endif /*VULKAN_HPP_NO_CONSTRUCTORS*/
+
+    DataGraphPipelineSingleNodeConnectionARM & operator=( VkDataGraphPipelineSingleNodeConnectionARM const & rhs ) VULKAN_HPP_NOEXCEPT
+    {
+      *this = *reinterpret_cast<DataGraphPipelineSingleNodeConnectionARM const *>( &rhs );
+      return *this;
+    }
+
+#if !defined( VULKAN_HPP_NO_SETTERS ) && !defined( VULKAN_HPP_NO_STRUCT_SETTERS )
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineSingleNodeConnectionARM & setPNext( void * pNext_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineSingleNodeConnectionARM && setPNext( void * pNext_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineSingleNodeConnectionARM & setSet( uint32_t set_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      set = set_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineSingleNodeConnectionARM && setSet( uint32_t set_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      set = set_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineSingleNodeConnectionARM & setBinding( uint32_t binding_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      binding = binding_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineSingleNodeConnectionARM && setBinding( uint32_t binding_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      binding = binding_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineSingleNodeConnectionARM & setConnection( DataGraphPipelineNodeConnectionTypeARM connection_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      connection = connection_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineSingleNodeConnectionARM && setConnection( DataGraphPipelineNodeConnectionTypeARM connection_ ) &&
+      VULKAN_HPP_NOEXCEPT
+    {
+      connection = connection_;
+      return std::move( *this );
+    }
+#endif /*VULKAN_HPP_NO_SETTERS*/
+
+    operator VkDataGraphPipelineSingleNodeConnectionARM const &() const VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkDataGraphPipelineSingleNodeConnectionARM const *>( this );
+    }
+
+    operator VkDataGraphPipelineSingleNodeConnectionARM &() VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkDataGraphPipelineSingleNodeConnectionARM *>( this );
+    }
+
+    operator VkDataGraphPipelineSingleNodeConnectionARM const *() const VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkDataGraphPipelineSingleNodeConnectionARM const *>( this );
+    }
+
+    operator VkDataGraphPipelineSingleNodeConnectionARM *() VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkDataGraphPipelineSingleNodeConnectionARM *>( this );
+    }
+
+#if defined( VULKAN_HPP_USE_REFLECT )
+    std::tuple<StructureType const &, void * const &, uint32_t const &, uint32_t const &, DataGraphPipelineNodeConnectionTypeARM const &>
+      reflect() const VULKAN_HPP_NOEXCEPT
+    {
+      return std::tie( sType, pNext, set, binding, connection );
+    }
+#endif
+
+#if defined( VULKAN_HPP_HAS_SPACESHIP_OPERATOR )
+    auto operator<=>( DataGraphPipelineSingleNodeConnectionARM const & ) const = default;
+#else
+    bool operator==( DataGraphPipelineSingleNodeConnectionARM const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+#  if defined( VULKAN_HPP_USE_REFLECT )
+      return this->reflect() == rhs.reflect();
+#  else
+      return ( sType == rhs.sType ) && ( pNext == rhs.pNext ) && ( set == rhs.set ) && ( binding == rhs.binding ) && ( connection == rhs.connection );
+#  endif
+    }
+
+    bool operator!=( DataGraphPipelineSingleNodeConnectionARM const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+      return !operator==( rhs );
+    }
+#endif
+
+  public:
+    StructureType                          sType      = StructureType::eDataGraphPipelineSingleNodeConnectionARM;
+    void *                                 pNext      = {};
+    uint32_t                               set        = {};
+    uint32_t                               binding    = {};
+    DataGraphPipelineNodeConnectionTypeARM connection = DataGraphPipelineNodeConnectionTypeARM::eOpticalFlowInput;
+  };
+
+#if 20 <= VULKAN_HPP_CPP_VERSION
+  template <>
+  struct CppType<VkDataGraphPipelineSingleNodeConnectionARM>
+  {
+    using Type = DataGraphPipelineSingleNodeConnectionARM;
+  };
+#endif
+
+  template <>
+  struct CppType<StructureType, StructureType::eDataGraphPipelineSingleNodeConnectionARM>
+  {
+    using Type = DataGraphPipelineSingleNodeConnectionARM;
+  };
+
+  // wrapper struct for struct VkDataGraphPipelineSingleNodeCreateInfoARM, see
+  // https://registry.khronos.org/vulkan/specs/latest/man/html/VkDataGraphPipelineSingleNodeCreateInfoARM.html
+  struct DataGraphPipelineSingleNodeCreateInfoARM
+  {
+    using NativeType = VkDataGraphPipelineSingleNodeCreateInfoARM;
+
+    static bool const                                  allowDuplicate = false;
+    static VULKAN_HPP_CONST_OR_CONSTEXPR StructureType structureType  = StructureType::eDataGraphPipelineSingleNodeCreateInfoARM;
+
+#if !defined( VULKAN_HPP_NO_CONSTRUCTORS ) && !defined( VULKAN_HPP_NO_STRUCT_CONSTRUCTORS )
+    VULKAN_HPP_CONSTEXPR DataGraphPipelineSingleNodeCreateInfoARM( DataGraphPipelineNodeTypeARM nodeType_        = DataGraphPipelineNodeTypeARM::eOpticalFlow,
+                                                                   uint32_t                     connectionCount_ = {},
+                                                                   DataGraphPipelineSingleNodeConnectionARM const * pConnections_ = {},
+                                                                   void *                                           pNext_ = nullptr ) VULKAN_HPP_NOEXCEPT
+      : pNext{ pNext_ }
+      , nodeType{ nodeType_ }
+      , connectionCount{ connectionCount_ }
+      , pConnections{ pConnections_ }
+    {
+    }
+
+    VULKAN_HPP_CONSTEXPR DataGraphPipelineSingleNodeCreateInfoARM( DataGraphPipelineSingleNodeCreateInfoARM const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+
+    DataGraphPipelineSingleNodeCreateInfoARM( VkDataGraphPipelineSingleNodeCreateInfoARM const & rhs ) VULKAN_HPP_NOEXCEPT
+      : DataGraphPipelineSingleNodeCreateInfoARM( *reinterpret_cast<DataGraphPipelineSingleNodeCreateInfoARM const *>( &rhs ) )
+    {
+    }
+
+#  if !defined( VULKAN_HPP_DISABLE_ENHANCED_MODE )
+    DataGraphPipelineSingleNodeCreateInfoARM( DataGraphPipelineNodeTypeARM                                                    nodeType_,
+                                              ArrayProxyNoTemporaries<DataGraphPipelineSingleNodeConnectionARM const> const & connections_,
+                                              void *                                                                          pNext_ = nullptr )
+      : pNext( pNext_ ), nodeType( nodeType_ ), connectionCount( static_cast<uint32_t>( connections_.size() ) ), pConnections( connections_.data() )
+    {
+    }
+#  endif /*VULKAN_HPP_DISABLE_ENHANCED_MODE*/
+
+    DataGraphPipelineSingleNodeCreateInfoARM & operator=( DataGraphPipelineSingleNodeCreateInfoARM const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+#endif /*VULKAN_HPP_NO_CONSTRUCTORS*/
+
+    DataGraphPipelineSingleNodeCreateInfoARM & operator=( VkDataGraphPipelineSingleNodeCreateInfoARM const & rhs ) VULKAN_HPP_NOEXCEPT
+    {
+      *this = *reinterpret_cast<DataGraphPipelineSingleNodeCreateInfoARM const *>( &rhs );
+      return *this;
+    }
+
+#if !defined( VULKAN_HPP_NO_SETTERS ) && !defined( VULKAN_HPP_NO_STRUCT_SETTERS )
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineSingleNodeCreateInfoARM & setPNext( void * pNext_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineSingleNodeCreateInfoARM && setPNext( void * pNext_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineSingleNodeCreateInfoARM & setNodeType( DataGraphPipelineNodeTypeARM nodeType_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      nodeType = nodeType_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineSingleNodeCreateInfoARM && setNodeType( DataGraphPipelineNodeTypeARM nodeType_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      nodeType = nodeType_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineSingleNodeCreateInfoARM & setConnectionCount( uint32_t connectionCount_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      connectionCount = connectionCount_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineSingleNodeCreateInfoARM && setConnectionCount( uint32_t connectionCount_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      connectionCount = connectionCount_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineSingleNodeCreateInfoARM & setPConnections( DataGraphPipelineSingleNodeConnectionARM const * pConnections_ ) &
+      VULKAN_HPP_NOEXCEPT
+    {
+      pConnections = pConnections_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 DataGraphPipelineSingleNodeCreateInfoARM && setPConnections( DataGraphPipelineSingleNodeConnectionARM const * pConnections_ ) &&
+      VULKAN_HPP_NOEXCEPT
+    {
+      pConnections = pConnections_;
+      return std::move( *this );
+    }
+
+#  if !defined( VULKAN_HPP_DISABLE_ENHANCED_MODE )
+    DataGraphPipelineSingleNodeCreateInfoARM &
+      setConnections( ArrayProxyNoTemporaries<DataGraphPipelineSingleNodeConnectionARM const> const & connections_ ) VULKAN_HPP_NOEXCEPT
+    {
+      connectionCount = static_cast<uint32_t>( connections_.size() );
+      pConnections    = connections_.data();
+      return *this;
+    }
+#  endif /*VULKAN_HPP_DISABLE_ENHANCED_MODE*/
+#endif   /*VULKAN_HPP_NO_SETTERS*/
+
+    operator VkDataGraphPipelineSingleNodeCreateInfoARM const &() const VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkDataGraphPipelineSingleNodeCreateInfoARM const *>( this );
+    }
+
+    operator VkDataGraphPipelineSingleNodeCreateInfoARM &() VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkDataGraphPipelineSingleNodeCreateInfoARM *>( this );
+    }
+
+    operator VkDataGraphPipelineSingleNodeCreateInfoARM const *() const VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkDataGraphPipelineSingleNodeCreateInfoARM const *>( this );
+    }
+
+    operator VkDataGraphPipelineSingleNodeCreateInfoARM *() VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkDataGraphPipelineSingleNodeCreateInfoARM *>( this );
+    }
+
+#if defined( VULKAN_HPP_USE_REFLECT )
+    std::tuple<StructureType const &,
+               void * const &,
+               DataGraphPipelineNodeTypeARM const &,
+               uint32_t const &,
+               DataGraphPipelineSingleNodeConnectionARM const * const &>
+      reflect() const VULKAN_HPP_NOEXCEPT
+    {
+      return std::tie( sType, pNext, nodeType, connectionCount, pConnections );
+    }
+#endif
+
+#if defined( VULKAN_HPP_HAS_SPACESHIP_OPERATOR )
+    auto operator<=>( DataGraphPipelineSingleNodeCreateInfoARM const & ) const = default;
+#else
+    bool operator==( DataGraphPipelineSingleNodeCreateInfoARM const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+#  if defined( VULKAN_HPP_USE_REFLECT )
+      return this->reflect() == rhs.reflect();
+#  else
+      return ( sType == rhs.sType ) && ( pNext == rhs.pNext ) && ( nodeType == rhs.nodeType ) && ( connectionCount == rhs.connectionCount ) &&
+             ( pConnections == rhs.pConnections );
+#  endif
+    }
+
+    bool operator!=( DataGraphPipelineSingleNodeCreateInfoARM const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+      return !operator==( rhs );
+    }
+#endif
+
+  public:
+    StructureType                                    sType           = StructureType::eDataGraphPipelineSingleNodeCreateInfoARM;
+    void *                                           pNext           = {};
+    DataGraphPipelineNodeTypeARM                     nodeType        = DataGraphPipelineNodeTypeARM::eOpticalFlow;
+    uint32_t                                         connectionCount = {};
+    DataGraphPipelineSingleNodeConnectionARM const * pConnections    = {};
+  };
+
+#if 20 <= VULKAN_HPP_CPP_VERSION
+  template <>
+  struct CppType<VkDataGraphPipelineSingleNodeCreateInfoARM>
+  {
+    using Type = DataGraphPipelineSingleNodeCreateInfoARM;
+  };
+#endif
+
+  template <>
+  struct CppType<StructureType, StructureType::eDataGraphPipelineSingleNodeCreateInfoARM>
+  {
+    using Type = DataGraphPipelineSingleNodeCreateInfoARM;
   };
 
   // wrapper struct for struct VkPhysicalDeviceDataGraphProcessingEngineARM, see
@@ -104295,6 +105381,130 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
     using Type = PhysicalDeviceDataGraphModelFeaturesQCOM;
   };
 
+  // wrapper struct for struct VkPhysicalDeviceDataGraphOpticalFlowFeaturesARM, see
+  // https://registry.khronos.org/vulkan/specs/latest/man/html/VkPhysicalDeviceDataGraphOpticalFlowFeaturesARM.html
+  struct PhysicalDeviceDataGraphOpticalFlowFeaturesARM
+  {
+    using NativeType = VkPhysicalDeviceDataGraphOpticalFlowFeaturesARM;
+
+    static bool const                                  allowDuplicate = false;
+    static VULKAN_HPP_CONST_OR_CONSTEXPR StructureType structureType  = StructureType::ePhysicalDeviceDataGraphOpticalFlowFeaturesARM;
+
+#if !defined( VULKAN_HPP_NO_CONSTRUCTORS ) && !defined( VULKAN_HPP_NO_STRUCT_CONSTRUCTORS )
+    VULKAN_HPP_CONSTEXPR PhysicalDeviceDataGraphOpticalFlowFeaturesARM( Bool32 dataGraphOpticalFlow_ = {}, void * pNext_ = nullptr ) VULKAN_HPP_NOEXCEPT
+      : pNext{ pNext_ }
+      , dataGraphOpticalFlow{ dataGraphOpticalFlow_ }
+    {
+    }
+
+    VULKAN_HPP_CONSTEXPR
+      PhysicalDeviceDataGraphOpticalFlowFeaturesARM( PhysicalDeviceDataGraphOpticalFlowFeaturesARM const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+
+    PhysicalDeviceDataGraphOpticalFlowFeaturesARM( VkPhysicalDeviceDataGraphOpticalFlowFeaturesARM const & rhs ) VULKAN_HPP_NOEXCEPT
+      : PhysicalDeviceDataGraphOpticalFlowFeaturesARM( *reinterpret_cast<PhysicalDeviceDataGraphOpticalFlowFeaturesARM const *>( &rhs ) )
+    {
+    }
+
+    PhysicalDeviceDataGraphOpticalFlowFeaturesARM & operator=( PhysicalDeviceDataGraphOpticalFlowFeaturesARM const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+#endif /*VULKAN_HPP_NO_CONSTRUCTORS*/
+
+    PhysicalDeviceDataGraphOpticalFlowFeaturesARM & operator=( VkPhysicalDeviceDataGraphOpticalFlowFeaturesARM const & rhs ) VULKAN_HPP_NOEXCEPT
+    {
+      *this = *reinterpret_cast<PhysicalDeviceDataGraphOpticalFlowFeaturesARM const *>( &rhs );
+      return *this;
+    }
+
+#if !defined( VULKAN_HPP_NO_SETTERS ) && !defined( VULKAN_HPP_NO_STRUCT_SETTERS )
+    VULKAN_HPP_CONSTEXPR_14 PhysicalDeviceDataGraphOpticalFlowFeaturesARM & setPNext( void * pNext_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 PhysicalDeviceDataGraphOpticalFlowFeaturesARM && setPNext( void * pNext_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 PhysicalDeviceDataGraphOpticalFlowFeaturesARM & setDataGraphOpticalFlow( Bool32 dataGraphOpticalFlow_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      dataGraphOpticalFlow = dataGraphOpticalFlow_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 PhysicalDeviceDataGraphOpticalFlowFeaturesARM && setDataGraphOpticalFlow( Bool32 dataGraphOpticalFlow_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      dataGraphOpticalFlow = dataGraphOpticalFlow_;
+      return std::move( *this );
+    }
+#endif /*VULKAN_HPP_NO_SETTERS*/
+
+    operator VkPhysicalDeviceDataGraphOpticalFlowFeaturesARM const &() const VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkPhysicalDeviceDataGraphOpticalFlowFeaturesARM const *>( this );
+    }
+
+    operator VkPhysicalDeviceDataGraphOpticalFlowFeaturesARM &() VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkPhysicalDeviceDataGraphOpticalFlowFeaturesARM *>( this );
+    }
+
+    operator VkPhysicalDeviceDataGraphOpticalFlowFeaturesARM const *() const VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkPhysicalDeviceDataGraphOpticalFlowFeaturesARM const *>( this );
+    }
+
+    operator VkPhysicalDeviceDataGraphOpticalFlowFeaturesARM *() VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkPhysicalDeviceDataGraphOpticalFlowFeaturesARM *>( this );
+    }
+
+#if defined( VULKAN_HPP_USE_REFLECT )
+    std::tuple<StructureType const &, void * const &, Bool32 const &> reflect() const VULKAN_HPP_NOEXCEPT
+    {
+      return std::tie( sType, pNext, dataGraphOpticalFlow );
+    }
+#endif
+
+#if defined( VULKAN_HPP_HAS_SPACESHIP_OPERATOR )
+    auto operator<=>( PhysicalDeviceDataGraphOpticalFlowFeaturesARM const & ) const = default;
+#else
+    bool operator==( PhysicalDeviceDataGraphOpticalFlowFeaturesARM const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+#  if defined( VULKAN_HPP_USE_REFLECT )
+      return this->reflect() == rhs.reflect();
+#  else
+      return ( sType == rhs.sType ) && ( pNext == rhs.pNext ) && ( dataGraphOpticalFlow == rhs.dataGraphOpticalFlow );
+#  endif
+    }
+
+    bool operator!=( PhysicalDeviceDataGraphOpticalFlowFeaturesARM const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+      return !operator==( rhs );
+    }
+#endif
+
+  public:
+    StructureType sType                = StructureType::ePhysicalDeviceDataGraphOpticalFlowFeaturesARM;
+    void *        pNext                = {};
+    Bool32        dataGraphOpticalFlow = {};
+  };
+
+#if 20 <= VULKAN_HPP_CPP_VERSION
+  template <>
+  struct CppType<VkPhysicalDeviceDataGraphOpticalFlowFeaturesARM>
+  {
+    using Type = PhysicalDeviceDataGraphOpticalFlowFeaturesARM;
+  };
+#endif
+
+  template <>
+  struct CppType<StructureType, StructureType::ePhysicalDeviceDataGraphOpticalFlowFeaturesARM>
+  {
+    using Type = PhysicalDeviceDataGraphOpticalFlowFeaturesARM;
+  };
+
   // wrapper struct for struct VkPhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV, see
   // https://registry.khronos.org/vulkan/specs/latest/man/html/VkPhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV.html
   struct PhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV
@@ -168477,6 +169687,137 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
   struct CppType<StructureType, StructureType::eQueueFamilyCheckpointPropertiesNV>
   {
     using Type = QueueFamilyCheckpointPropertiesNV;
+  };
+
+  // wrapper struct for struct VkQueueFamilyDataGraphOpticalFlowPropertiesARM, see
+  // https://registry.khronos.org/vulkan/specs/latest/man/html/VkQueueFamilyDataGraphOpticalFlowPropertiesARM.html
+  struct QueueFamilyDataGraphOpticalFlowPropertiesARM
+  {
+    using NativeType = VkQueueFamilyDataGraphOpticalFlowPropertiesARM;
+
+    static bool const                                  allowDuplicate = false;
+    static VULKAN_HPP_CONST_OR_CONSTEXPR StructureType structureType  = StructureType::eQueueFamilyDataGraphOpticalFlowPropertiesARM;
+
+#if !defined( VULKAN_HPP_NO_CONSTRUCTORS ) && !defined( VULKAN_HPP_NO_STRUCT_CONSTRUCTORS )
+    VULKAN_HPP_CONSTEXPR QueueFamilyDataGraphOpticalFlowPropertiesARM( DataGraphOpticalFlowGridSizeFlagsARM supportedOutputGridSizes_ = {},
+                                                                       DataGraphOpticalFlowGridSizeFlagsARM supportedHintGridSizes_   = {},
+                                                                       Bool32                               hintSupported_            = {},
+                                                                       Bool32                               costSupported_            = {},
+                                                                       uint32_t                             minWidth_                 = {},
+                                                                       uint32_t                             minHeight_                = {},
+                                                                       uint32_t                             maxWidth_                 = {},
+                                                                       uint32_t                             maxHeight_                = {},
+                                                                       void *                               pNext_ = nullptr ) VULKAN_HPP_NOEXCEPT
+      : pNext{ pNext_ }
+      , supportedOutputGridSizes{ supportedOutputGridSizes_ }
+      , supportedHintGridSizes{ supportedHintGridSizes_ }
+      , hintSupported{ hintSupported_ }
+      , costSupported{ costSupported_ }
+      , minWidth{ minWidth_ }
+      , minHeight{ minHeight_ }
+      , maxWidth{ maxWidth_ }
+      , maxHeight{ maxHeight_ }
+    {
+    }
+
+    VULKAN_HPP_CONSTEXPR QueueFamilyDataGraphOpticalFlowPropertiesARM( QueueFamilyDataGraphOpticalFlowPropertiesARM const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+
+    QueueFamilyDataGraphOpticalFlowPropertiesARM( VkQueueFamilyDataGraphOpticalFlowPropertiesARM const & rhs ) VULKAN_HPP_NOEXCEPT
+      : QueueFamilyDataGraphOpticalFlowPropertiesARM( *reinterpret_cast<QueueFamilyDataGraphOpticalFlowPropertiesARM const *>( &rhs ) )
+    {
+    }
+
+    QueueFamilyDataGraphOpticalFlowPropertiesARM & operator=( QueueFamilyDataGraphOpticalFlowPropertiesARM const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+#endif /*VULKAN_HPP_NO_CONSTRUCTORS*/
+
+    QueueFamilyDataGraphOpticalFlowPropertiesARM & operator=( VkQueueFamilyDataGraphOpticalFlowPropertiesARM const & rhs ) VULKAN_HPP_NOEXCEPT
+    {
+      *this = *reinterpret_cast<QueueFamilyDataGraphOpticalFlowPropertiesARM const *>( &rhs );
+      return *this;
+    }
+
+    operator VkQueueFamilyDataGraphOpticalFlowPropertiesARM const &() const VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkQueueFamilyDataGraphOpticalFlowPropertiesARM const *>( this );
+    }
+
+    operator VkQueueFamilyDataGraphOpticalFlowPropertiesARM &() VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkQueueFamilyDataGraphOpticalFlowPropertiesARM *>( this );
+    }
+
+    operator VkQueueFamilyDataGraphOpticalFlowPropertiesARM const *() const VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkQueueFamilyDataGraphOpticalFlowPropertiesARM const *>( this );
+    }
+
+    operator VkQueueFamilyDataGraphOpticalFlowPropertiesARM *() VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkQueueFamilyDataGraphOpticalFlowPropertiesARM *>( this );
+    }
+
+#if defined( VULKAN_HPP_USE_REFLECT )
+    std::tuple<StructureType const &,
+               void * const &,
+               DataGraphOpticalFlowGridSizeFlagsARM const &,
+               DataGraphOpticalFlowGridSizeFlagsARM const &,
+               Bool32 const &,
+               Bool32 const &,
+               uint32_t const &,
+               uint32_t const &,
+               uint32_t const &,
+               uint32_t const &>
+      reflect() const VULKAN_HPP_NOEXCEPT
+    {
+      return std::tie( sType, pNext, supportedOutputGridSizes, supportedHintGridSizes, hintSupported, costSupported, minWidth, minHeight, maxWidth, maxHeight );
+    }
+#endif
+
+#if defined( VULKAN_HPP_HAS_SPACESHIP_OPERATOR )
+    auto operator<=>( QueueFamilyDataGraphOpticalFlowPropertiesARM const & ) const = default;
+#else
+    bool operator==( QueueFamilyDataGraphOpticalFlowPropertiesARM const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+#  if defined( VULKAN_HPP_USE_REFLECT )
+      return this->reflect() == rhs.reflect();
+#  else
+      return ( sType == rhs.sType ) && ( pNext == rhs.pNext ) && ( supportedOutputGridSizes == rhs.supportedOutputGridSizes ) &&
+             ( supportedHintGridSizes == rhs.supportedHintGridSizes ) && ( hintSupported == rhs.hintSupported ) && ( costSupported == rhs.costSupported ) &&
+             ( minWidth == rhs.minWidth ) && ( minHeight == rhs.minHeight ) && ( maxWidth == rhs.maxWidth ) && ( maxHeight == rhs.maxHeight );
+#  endif
+    }
+
+    bool operator!=( QueueFamilyDataGraphOpticalFlowPropertiesARM const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+      return !operator==( rhs );
+    }
+#endif
+
+  public:
+    StructureType                        sType                    = StructureType::eQueueFamilyDataGraphOpticalFlowPropertiesARM;
+    void *                               pNext                    = {};
+    DataGraphOpticalFlowGridSizeFlagsARM supportedOutputGridSizes = {};
+    DataGraphOpticalFlowGridSizeFlagsARM supportedHintGridSizes   = {};
+    Bool32                               hintSupported            = {};
+    Bool32                               costSupported            = {};
+    uint32_t                             minWidth                 = {};
+    uint32_t                             minHeight                = {};
+    uint32_t                             maxWidth                 = {};
+    uint32_t                             maxHeight                = {};
+  };
+
+#if 20 <= VULKAN_HPP_CPP_VERSION
+  template <>
+  struct CppType<VkQueueFamilyDataGraphOpticalFlowPropertiesARM>
+  {
+    using Type = QueueFamilyDataGraphOpticalFlowPropertiesARM;
+  };
+#endif
+
+  template <>
+  struct CppType<StructureType, StructureType::eQueueFamilyDataGraphOpticalFlowPropertiesARM>
+  {
+    using Type = QueueFamilyDataGraphOpticalFlowPropertiesARM;
   };
 
   // wrapper struct for struct VkQueueFamilyDataGraphProcessingEnginePropertiesARM, see
