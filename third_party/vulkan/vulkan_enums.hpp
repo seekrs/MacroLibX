@@ -9376,38 +9376,6 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
     e8K   = VK_DATA_GRAPH_TOSA_LEVEL_8K_ARM
   };
 
-  //=== VK_ARM_data_graph_instruction_set_tosa ===
-
-  // wrapper class for enum VkDataGraphTOSAQualityFlagBitsARM, see
-  // https://registry.khronos.org/vulkan/specs/latest/man/html/VkDataGraphTOSAQualityFlagBitsARM.html
-  enum class DataGraphTOSAQualityFlagBitsARM : VkDataGraphTOSAQualityFlagsARM
-  {
-    eAccelerated  = VK_DATA_GRAPH_TOSA_QUALITY_ACCELERATED_ARM,
-    eConformant   = VK_DATA_GRAPH_TOSA_QUALITY_CONFORMANT_ARM,
-    eExperimental = VK_DATA_GRAPH_TOSA_QUALITY_EXPERIMENTAL_ARM,
-    eDeprecated   = VK_DATA_GRAPH_TOSA_QUALITY_DEPRECATED_ARM
-  };
-
-  // wrapper using for bitmask VkDataGraphTOSAQualityFlagsARM, see https://registry.khronos.org/vulkan/specs/latest/man/html/VkDataGraphTOSAQualityFlagsARM.html
-  using DataGraphTOSAQualityFlagsARM = Flags<DataGraphTOSAQualityFlagBitsARM>;
-
-  template <>
-  struct FlagTraits<DataGraphTOSAQualityFlagBitsARM>
-  {
-    using WrappedType                                                           = VkDataGraphTOSAQualityFlagBitsARM;
-    static VULKAN_HPP_CONST_OR_CONSTEXPR bool                         isBitmask = true;
-    static VULKAN_HPP_CONST_OR_CONSTEXPR DataGraphTOSAQualityFlagsARM allFlags =
-      DataGraphTOSAQualityFlagBitsARM::eAccelerated | DataGraphTOSAQualityFlagBitsARM::eConformant | DataGraphTOSAQualityFlagBitsARM::eExperimental |
-      DataGraphTOSAQualityFlagBitsARM::eDeprecated;
-  };
-
-  // wrapper class for enum VkDataGraphTOSALevelARM, see https://registry.khronos.org/vulkan/specs/latest/man/html/VkDataGraphTOSALevelARM.html
-  enum class DataGraphTOSALevelARM
-  {
-    eNone = VK_DATA_GRAPH_TOSA_LEVEL_NONE_ARM,
-    e8K   = VK_DATA_GRAPH_TOSA_LEVEL_8K_ARM
-  };
-
   //=== VK_KHR_video_encode_av1 ===
 
   // wrapper class for enum VkVideoEncodeAV1PredictionModeKHR, see
