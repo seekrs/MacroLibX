@@ -3189,7 +3189,7 @@ void kvfGPipelineBuilderEnableAlphaBlending(KvfGraphicsPipelineBuilder* builder)
 	builder->color_blend_attachment_state.dstColorBlendFactor = VK_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA;
 	builder->color_blend_attachment_state.colorBlendOp = VK_BLEND_OP_ADD;
 	builder->color_blend_attachment_state.srcAlphaBlendFactor = VK_BLEND_FACTOR_ONE;
-	builder->color_blend_attachment_state.dstAlphaBlendFactor = VK_BLEND_FACTOR_ZERO;
+	builder->color_blend_attachment_state.dstAlphaBlendFactor = VK_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA;
 	builder->color_blend_attachment_state.alphaBlendOp = VK_BLEND_OP_ADD;
 }
 
