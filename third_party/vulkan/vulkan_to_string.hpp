@@ -1985,6 +1985,8 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
       result += " VideoEncodeQuantizationDeltaMapKHR |";
     if ( value & FormatFeatureFlagBits2::eVideoEncodeEmphasisMapKHR )
       result += " VideoEncodeEmphasisMapKHR |";
+    if ( value & FormatFeatureFlagBits2::eSampledImageFilterLinear2DIMG )
+      result += " SampledImageFilterLinear2DIMG |";
     if ( value & FormatFeatureFlagBits2::eDepthCopyOnComputeQueueKHR )
       result += " DepthCopyOnComputeQueueKHR |";
     if ( value & FormatFeatureFlagBits2::eDepthCopyOnTransferQueueKHR )
@@ -6028,6 +6030,8 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
       case StructureType::ePhysicalDeviceLayeredApiVulkanPropertiesKHR               : return "PhysicalDeviceLayeredApiVulkanPropertiesKHR";
       case StructureType::ePhysicalDeviceShaderAtomicFloat16VectorFeaturesNV         : return "PhysicalDeviceShaderAtomicFloat16VectorFeaturesNV";
       case StructureType::ePhysicalDeviceShaderReplicatedCompositesFeaturesEXT       : return "PhysicalDeviceShaderReplicatedCompositesFeaturesEXT";
+      case StructureType::eTensorExplicitTilingFormatPropertiesARM                   : return "TensorExplicitTilingFormatPropertiesARM";
+      case StructureType::eTensorRollingBackingCreateInfoARM                         : return "TensorRollingBackingCreateInfoARM";
       case StructureType::ePhysicalDeviceShaderFloat8FeaturesEXT                     : return "PhysicalDeviceShaderFloat8FeaturesEXT";
       case StructureType::ePhysicalDeviceRayTracingValidationFeaturesNV              : return "PhysicalDeviceRayTracingValidationFeaturesNV";
       case StructureType::ePhysicalDeviceClusterAccelerationStructureFeaturesNV      : return "PhysicalDeviceClusterAccelerationStructureFeaturesNV";
@@ -6265,6 +6269,7 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
       case VendorId::eMESA    : return "MESA";
       case VendorId::ePocl    : return "Pocl";
       case VendorId::eMobileye: return "Mobileye";
+      case VendorId::eApe     : return "Ape";
       default                 : return "invalid ( " + toHexString( static_cast<uint32_t>( value ) ) + " )";
     }
   }
@@ -8227,6 +8232,7 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
       case DriverId::eVulkanScEmulationOnVulkan: return "VulkanScEmulationOnVulkan";
       case DriverId::eMesaKosmickrisp          : return "MesaKosmickrisp";
       case DriverId::eMesaGfxstream            : return "MesaGfxstream";
+      case DriverId::eApeSoft                  : return "ApeSoft";
       default                                  : return "invalid ( " + toHexString( static_cast<uint32_t>( value ) ) + " )";
     }
   }
@@ -8502,6 +8508,7 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
       case FormatFeatureFlagBits2::eCopyImageIndirectDstKHR             : return "CopyImageIndirectDstKHR";
       case FormatFeatureFlagBits2::eVideoEncodeQuantizationDeltaMapKHR  : return "VideoEncodeQuantizationDeltaMapKHR";
       case FormatFeatureFlagBits2::eVideoEncodeEmphasisMapKHR           : return "VideoEncodeEmphasisMapKHR";
+      case FormatFeatureFlagBits2::eSampledImageFilterLinear2DIMG       : return "SampledImageFilterLinear2DIMG";
       case FormatFeatureFlagBits2::eDepthCopyOnComputeQueueKHR          : return "DepthCopyOnComputeQueueKHR";
       case FormatFeatureFlagBits2::eDepthCopyOnTransferQueueKHR         : return "DepthCopyOnTransferQueueKHR";
       case FormatFeatureFlagBits2::eStencilCopyOnComputeQueueKHR        : return "StencilCopyOnComputeQueueKHR";
@@ -10879,9 +10886,14 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
   {
     switch ( value )
     {
-      case TensorTilingARM::eOptimal: return "Optimal";
-      case TensorTilingARM::eLinear : return "Linear";
-      default                       : return "invalid ( " + toHexString( static_cast<uint32_t>( value ) ) + " )";
+      case TensorTilingARM::eOptimal             : return "Optimal";
+      case TensorTilingARM::eLinear              : return "Linear";
+      case TensorTilingARM::eBrick16Wide         : return "Brick16Wide";
+      case TensorTilingARM::eBrick8Wide          : return "Brick8Wide";
+      case TensorTilingARM::eBrick4Wide          : return "Brick4Wide";
+      case TensorTilingARM::eBlockUInterleaved   : return "BlockUInterleaved";
+      case TensorTilingARM::eBlockUInterleaved64K: return "BlockUInterleaved64K";
+      default                                    : return "invalid ( " + toHexString( static_cast<uint32_t>( value ) ) + " )";
     }
   }
 

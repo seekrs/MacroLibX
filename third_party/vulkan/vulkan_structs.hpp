@@ -196745,6 +196745,131 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
     using Type = TensorDependencyInfoARM;
   };
 
+  // wrapper struct for struct VkTensorExplicitTilingFormatPropertiesARM, see
+  // https://registry.khronos.org/vulkan/specs/latest/man/html/VkTensorExplicitTilingFormatPropertiesARM.html
+  struct TensorExplicitTilingFormatPropertiesARM
+  {
+    using NativeType = VkTensorExplicitTilingFormatPropertiesARM;
+
+    static bool const                                  allowDuplicate = false;
+    static VULKAN_HPP_CONST_OR_CONSTEXPR StructureType structureType  = StructureType::eTensorExplicitTilingFormatPropertiesARM;
+
+#if !defined( VULKAN_HPP_NO_CONSTRUCTORS ) && !defined( VULKAN_HPP_NO_STRUCT_CONSTRUCTORS )
+    VULKAN_HPP_CONSTEXPR TensorExplicitTilingFormatPropertiesARM( FormatFeatureFlags2 brick16TilingTensorFeatures_   = {},
+                                                                  FormatFeatureFlags2 brick8TilingTensorFeatures_    = {},
+                                                                  FormatFeatureFlags2 brick4TilingTensorFeatures_    = {},
+                                                                  FormatFeatureFlags2 blockUTilingTensorFeatures_    = {},
+                                                                  FormatFeatureFlags2 blockU64kTilingTensorFeatures_ = {},
+                                                                  void *              pNext_                         = nullptr ) VULKAN_HPP_NOEXCEPT
+      : pNext{ pNext_ }
+      , brick16TilingTensorFeatures{ brick16TilingTensorFeatures_ }
+      , brick8TilingTensorFeatures{ brick8TilingTensorFeatures_ }
+      , brick4TilingTensorFeatures{ brick4TilingTensorFeatures_ }
+      , blockUTilingTensorFeatures{ blockUTilingTensorFeatures_ }
+      , blockU64kTilingTensorFeatures{ blockU64kTilingTensorFeatures_ }
+    {
+    }
+
+    VULKAN_HPP_CONSTEXPR TensorExplicitTilingFormatPropertiesARM( TensorExplicitTilingFormatPropertiesARM const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+
+    TensorExplicitTilingFormatPropertiesARM( VkTensorExplicitTilingFormatPropertiesARM const & rhs ) VULKAN_HPP_NOEXCEPT
+      : TensorExplicitTilingFormatPropertiesARM( *reinterpret_cast<TensorExplicitTilingFormatPropertiesARM const *>( &rhs ) )
+    {
+    }
+
+    TensorExplicitTilingFormatPropertiesARM & operator=( TensorExplicitTilingFormatPropertiesARM const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+#endif /*VULKAN_HPP_NO_CONSTRUCTORS*/
+
+    TensorExplicitTilingFormatPropertiesARM & operator=( VkTensorExplicitTilingFormatPropertiesARM const & rhs ) VULKAN_HPP_NOEXCEPT
+    {
+      *this = *reinterpret_cast<TensorExplicitTilingFormatPropertiesARM const *>( &rhs );
+      return *this;
+    }
+
+    operator VkTensorExplicitTilingFormatPropertiesARM const &() const VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkTensorExplicitTilingFormatPropertiesARM const *>( this );
+    }
+
+    operator VkTensorExplicitTilingFormatPropertiesARM &() VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkTensorExplicitTilingFormatPropertiesARM *>( this );
+    }
+
+    operator VkTensorExplicitTilingFormatPropertiesARM const *() const VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkTensorExplicitTilingFormatPropertiesARM const *>( this );
+    }
+
+    operator VkTensorExplicitTilingFormatPropertiesARM *() VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkTensorExplicitTilingFormatPropertiesARM *>( this );
+    }
+
+#if defined( VULKAN_HPP_USE_REFLECT )
+    std::tuple<StructureType const &,
+               void * const &,
+               FormatFeatureFlags2 const &,
+               FormatFeatureFlags2 const &,
+               FormatFeatureFlags2 const &,
+               FormatFeatureFlags2 const &,
+               FormatFeatureFlags2 const &>
+      reflect() const VULKAN_HPP_NOEXCEPT
+    {
+      return std::tie( sType,
+                       pNext,
+                       brick16TilingTensorFeatures,
+                       brick8TilingTensorFeatures,
+                       brick4TilingTensorFeatures,
+                       blockUTilingTensorFeatures,
+                       blockU64kTilingTensorFeatures );
+    }
+#endif
+
+#if defined( VULKAN_HPP_HAS_SPACESHIP_OPERATOR )
+    auto operator<=>( TensorExplicitTilingFormatPropertiesARM const & ) const = default;
+#else
+    bool operator==( TensorExplicitTilingFormatPropertiesARM const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+#  if defined( VULKAN_HPP_USE_REFLECT )
+      return this->reflect() == rhs.reflect();
+#  else
+      return ( sType == rhs.sType ) && ( pNext == rhs.pNext ) && ( brick16TilingTensorFeatures == rhs.brick16TilingTensorFeatures ) &&
+             ( brick8TilingTensorFeatures == rhs.brick8TilingTensorFeatures ) && ( brick4TilingTensorFeatures == rhs.brick4TilingTensorFeatures ) &&
+             ( blockUTilingTensorFeatures == rhs.blockUTilingTensorFeatures ) && ( blockU64kTilingTensorFeatures == rhs.blockU64kTilingTensorFeatures );
+#  endif
+    }
+
+    bool operator!=( TensorExplicitTilingFormatPropertiesARM const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+      return !operator==( rhs );
+    }
+#endif
+
+  public:
+    StructureType       sType                         = StructureType::eTensorExplicitTilingFormatPropertiesARM;
+    void *              pNext                         = {};
+    FormatFeatureFlags2 brick16TilingTensorFeatures   = {};
+    FormatFeatureFlags2 brick8TilingTensorFeatures    = {};
+    FormatFeatureFlags2 brick4TilingTensorFeatures    = {};
+    FormatFeatureFlags2 blockUTilingTensorFeatures    = {};
+    FormatFeatureFlags2 blockU64kTilingTensorFeatures = {};
+  };
+
+#if 20 <= VULKAN_HPP_CPP_VERSION
+  template <>
+  struct CppType<VkTensorExplicitTilingFormatPropertiesARM>
+  {
+    using Type = TensorExplicitTilingFormatPropertiesARM;
+  };
+#endif
+
+  template <>
+  struct CppType<StructureType, StructureType::eTensorExplicitTilingFormatPropertiesARM>
+  {
+    using Type = TensorExplicitTilingFormatPropertiesARM;
+  };
+
   // wrapper struct for struct VkTensorFormatPropertiesARM, see https://registry.khronos.org/vulkan/specs/latest/man/html/VkTensorFormatPropertiesARM.html
   struct TensorFormatPropertiesARM
   {
@@ -196967,6 +197092,136 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
   struct CppType<StructureType, StructureType::eTensorMemoryRequirementsInfoARM>
   {
     using Type = TensorMemoryRequirementsInfoARM;
+  };
+
+  // wrapper struct for struct VkTensorRollingBackingCreateInfoARM, see
+  // https://registry.khronos.org/vulkan/specs/latest/man/html/VkTensorRollingBackingCreateInfoARM.html
+  struct TensorRollingBackingCreateInfoARM
+  {
+    using NativeType = VkTensorRollingBackingCreateInfoARM;
+
+    static bool const                                  allowDuplicate = false;
+    static VULKAN_HPP_CONST_OR_CONSTEXPR StructureType structureType  = StructureType::eTensorRollingBackingCreateInfoARM;
+
+#if !defined( VULKAN_HPP_NO_CONSTRUCTORS ) && !defined( VULKAN_HPP_NO_STRUCT_CONSTRUCTORS )
+    VULKAN_HPP_CONSTEXPR_14
+      TensorRollingBackingCreateInfoARM( std::array<uint32_t, VK_MAX_TENSOR_CREATE_INFO_ROLLING_BACKING_WRAP_COUNT_ARM> const & wraps_ = {},
+                                         void const * pNext_ = nullptr ) VULKAN_HPP_NOEXCEPT
+      : pNext{ pNext_ }
+      , wraps{ wraps_ }
+    {
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 TensorRollingBackingCreateInfoARM( TensorRollingBackingCreateInfoARM const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+
+    TensorRollingBackingCreateInfoARM( VkTensorRollingBackingCreateInfoARM const & rhs ) VULKAN_HPP_NOEXCEPT
+      : TensorRollingBackingCreateInfoARM( *reinterpret_cast<TensorRollingBackingCreateInfoARM const *>( &rhs ) )
+    {
+    }
+
+    TensorRollingBackingCreateInfoARM & operator=( TensorRollingBackingCreateInfoARM const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+#endif /*VULKAN_HPP_NO_CONSTRUCTORS*/
+
+    TensorRollingBackingCreateInfoARM & operator=( VkTensorRollingBackingCreateInfoARM const & rhs ) VULKAN_HPP_NOEXCEPT
+    {
+      *this = *reinterpret_cast<TensorRollingBackingCreateInfoARM const *>( &rhs );
+      return *this;
+    }
+
+#if !defined( VULKAN_HPP_NO_SETTERS ) && !defined( VULKAN_HPP_NO_STRUCT_SETTERS )
+    VULKAN_HPP_CONSTEXPR_14 TensorRollingBackingCreateInfoARM & setPNext( void const * pNext_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 TensorRollingBackingCreateInfoARM && setPNext( void const * pNext_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 TensorRollingBackingCreateInfoARM &
+      setWraps( std::array<uint32_t, VK_MAX_TENSOR_CREATE_INFO_ROLLING_BACKING_WRAP_COUNT_ARM> wraps_ ) &
+      VULKAN_HPP_NOEXCEPT
+    {
+      wraps = wraps_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 TensorRollingBackingCreateInfoARM &&
+      setWraps( std::array<uint32_t, VK_MAX_TENSOR_CREATE_INFO_ROLLING_BACKING_WRAP_COUNT_ARM> wraps_ ) &&
+      VULKAN_HPP_NOEXCEPT
+    {
+      wraps = wraps_;
+      return std::move( *this );
+    }
+#endif /*VULKAN_HPP_NO_SETTERS*/
+
+    operator VkTensorRollingBackingCreateInfoARM const &() const VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkTensorRollingBackingCreateInfoARM const *>( this );
+    }
+
+    operator VkTensorRollingBackingCreateInfoARM &() VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkTensorRollingBackingCreateInfoARM *>( this );
+    }
+
+    operator VkTensorRollingBackingCreateInfoARM const *() const VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkTensorRollingBackingCreateInfoARM const *>( this );
+    }
+
+    operator VkTensorRollingBackingCreateInfoARM *() VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkTensorRollingBackingCreateInfoARM *>( this );
+    }
+
+#if defined( VULKAN_HPP_USE_REFLECT )
+    std::tuple<StructureType const &, void const * const &, ArrayWrapper1D<uint32_t, VK_MAX_TENSOR_CREATE_INFO_ROLLING_BACKING_WRAP_COUNT_ARM> const &>
+      reflect() const VULKAN_HPP_NOEXCEPT
+    {
+      return std::tie( sType, pNext, wraps );
+    }
+#endif
+
+#if defined( VULKAN_HPP_HAS_SPACESHIP_OPERATOR )
+    auto operator<=>( TensorRollingBackingCreateInfoARM const & ) const = default;
+#else
+    bool operator==( TensorRollingBackingCreateInfoARM const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+#  if defined( VULKAN_HPP_USE_REFLECT )
+      return this->reflect() == rhs.reflect();
+#  else
+      return ( sType == rhs.sType ) && ( pNext == rhs.pNext ) && ( wraps == rhs.wraps );
+#  endif
+    }
+
+    bool operator!=( TensorRollingBackingCreateInfoARM const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+      return !operator==( rhs );
+    }
+#endif
+
+  public:
+    StructureType                                                                      sType = StructureType::eTensorRollingBackingCreateInfoARM;
+    void const *                                                                       pNext = {};
+    ArrayWrapper1D<uint32_t, VK_MAX_TENSOR_CREATE_INFO_ROLLING_BACKING_WRAP_COUNT_ARM> wraps = {};
+  };
+
+#if 20 <= VULKAN_HPP_CPP_VERSION
+  template <>
+  struct CppType<VkTensorRollingBackingCreateInfoARM>
+  {
+    using Type = TensorRollingBackingCreateInfoARM;
+  };
+#endif
+
+  template <>
+  struct CppType<StructureType, StructureType::eTensorRollingBackingCreateInfoARM>
+  {
+    using Type = TensorRollingBackingCreateInfoARM;
   };
 
   // wrapper struct for struct VkTensorViewCaptureDescriptorDataInfoARM, see
