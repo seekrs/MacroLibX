@@ -9165,6 +9165,21 @@ VULKAN_HPP_STATIC_ASSERT( std::is_standard_layout<VULKAN_HPP_NAMESPACE::Physical
 VULKAN_HPP_STATIC_ASSERT( std::is_nothrow_move_constructible<VULKAN_HPP_NAMESPACE::PhysicalDeviceShaderReplicatedCompositesFeaturesEXT>::value,
                           "PhysicalDeviceShaderReplicatedCompositesFeaturesEXT is not nothrow_move_constructible!" );
 
+//=== VK_ARM_tensor_controls ===
+
+VULKAN_HPP_STATIC_ASSERT( sizeof( VULKAN_HPP_NAMESPACE::TensorRollingBackingCreateInfoARM ) == sizeof( VkTensorRollingBackingCreateInfoARM ),
+                          "struct and wrapper have different size!" );
+VULKAN_HPP_STATIC_ASSERT( std::is_standard_layout<VULKAN_HPP_NAMESPACE::TensorRollingBackingCreateInfoARM>::value, "struct wrapper is not a standard layout!" );
+VULKAN_HPP_STATIC_ASSERT( std::is_nothrow_move_constructible<VULKAN_HPP_NAMESPACE::TensorRollingBackingCreateInfoARM>::value,
+                          "TensorRollingBackingCreateInfoARM is not nothrow_move_constructible!" );
+
+VULKAN_HPP_STATIC_ASSERT( sizeof( VULKAN_HPP_NAMESPACE::TensorExplicitTilingFormatPropertiesARM ) == sizeof( VkTensorExplicitTilingFormatPropertiesARM ),
+                          "struct and wrapper have different size!" );
+VULKAN_HPP_STATIC_ASSERT( std::is_standard_layout<VULKAN_HPP_NAMESPACE::TensorExplicitTilingFormatPropertiesARM>::value,
+                          "struct wrapper is not a standard layout!" );
+VULKAN_HPP_STATIC_ASSERT( std::is_nothrow_move_constructible<VULKAN_HPP_NAMESPACE::TensorExplicitTilingFormatPropertiesARM>::value,
+                          "TensorExplicitTilingFormatPropertiesARM is not nothrow_move_constructible!" );
+
 //=== VK_EXT_shader_float8 ===
 
 VULKAN_HPP_STATIC_ASSERT( sizeof( VULKAN_HPP_NAMESPACE::PhysicalDeviceShaderFloat8FeaturesEXT ) == sizeof( VkPhysicalDeviceShaderFloat8FeaturesEXT ),
@@ -10452,6 +10467,16 @@ VULKAN_HPP_STATIC_ASSERT( std::is_standard_layout<VULKAN_HPP_NAMESPACE::SharedPr
                           "struct wrapper is not a standard layout!" );
 VULKAN_HPP_STATIC_ASSERT( std::is_nothrow_move_constructible<VULKAN_HPP_NAMESPACE::SharedPresentSurfaceCapabilities2KHR>::value,
                           "SharedPresentSurfaceCapabilities2KHR is not nothrow_move_constructible!" );
+
+//=== VK_EXT_shader_ocp_microscaling_types ===
+
+VULKAN_HPP_STATIC_ASSERT( sizeof( VULKAN_HPP_NAMESPACE::PhysicalDeviceShaderOCPMicroscalingTypesFeaturesEXT ) ==
+                            sizeof( VkPhysicalDeviceShaderOCPMicroscalingTypesFeaturesEXT ),
+                          "struct and wrapper have different size!" );
+VULKAN_HPP_STATIC_ASSERT( std::is_standard_layout<VULKAN_HPP_NAMESPACE::PhysicalDeviceShaderOCPMicroscalingTypesFeaturesEXT>::value,
+                          "struct wrapper is not a standard layout!" );
+VULKAN_HPP_STATIC_ASSERT( std::is_nothrow_move_constructible<VULKAN_HPP_NAMESPACE::PhysicalDeviceShaderOCPMicroscalingTypesFeaturesEXT>::value,
+                          "PhysicalDeviceShaderOCPMicroscalingTypesFeaturesEXT is not nothrow_move_constructible!" );
 
 //=== VK_VALVE_shader_mixed_float_dot_product ===
 
