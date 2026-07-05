@@ -1708,6 +1708,8 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
     ePhysicalDeviceLayeredApiVulkanPropertiesKHR                = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_LAYERED_API_VULKAN_PROPERTIES_KHR,
     ePhysicalDeviceShaderAtomicFloat16VectorFeaturesNV          = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SHADER_ATOMIC_FLOAT16_VECTOR_FEATURES_NV,
     ePhysicalDeviceShaderReplicatedCompositesFeaturesEXT        = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SHADER_REPLICATED_COMPOSITES_FEATURES_EXT,
+    eTensorExplicitTilingFormatPropertiesARM                    = VK_STRUCTURE_TYPE_TENSOR_EXPLICIT_TILING_FORMAT_PROPERTIES_ARM,
+    eTensorRollingBackingCreateInfoARM                          = VK_STRUCTURE_TYPE_TENSOR_ROLLING_BACKING_CREATE_INFO_ARM,
     ePhysicalDeviceShaderFloat8FeaturesEXT                      = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SHADER_FLOAT8_FEATURES_EXT,
     ePhysicalDeviceRayTracingValidationFeaturesNV               = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_RAY_TRACING_VALIDATION_FEATURES_NV,
     ePhysicalDeviceClusterAccelerationStructureFeaturesNV       = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_CLUSTER_ACCELERATION_STRUCTURE_FEATURES_NV,
@@ -1856,6 +1858,7 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
     ePhysicalDeviceExtendedFlagsFeaturesKHR                        = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_EXTENDED_FLAGS_FEATURES_KHR,
     eImageStencilUsage2CreateInfoKHR                               = VK_STRUCTURE_TYPE_IMAGE_STENCIL_USAGE_2_CREATE_INFO_KHR,
     eSharedPresentSurfaceCapabilities2KHR                          = VK_STRUCTURE_TYPE_SHARED_PRESENT_SURFACE_CAPABILITIES_2_KHR,
+    ePhysicalDeviceShaderOcpMicroscalingTypesFeaturesEXT           = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SHADER_OCP_MICROSCALING_TYPES_FEATURES_EXT,
     ePhysicalDeviceShaderMixedFloatDotProductFeaturesVALVE         = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SHADER_MIXED_FLOAT_DOT_PRODUCT_FEATURES_VALVE,
     ePhysicalDeviceThrottleHintFeaturesSEC                         = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_THROTTLE_HINT_FEATURES_SEC,
     eThrottleHintSubmitInfoSEC                                     = VK_STRUCTURE_TYPE_THROTTLE_HINT_SUBMIT_INFO_SEC,
@@ -1948,7 +1951,8 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
     eCodeplay = VK_VENDOR_ID_CODEPLAY,
     eMESA     = VK_VENDOR_ID_MESA,
     ePocl     = VK_VENDOR_ID_POCL,
-    eMobileye = VK_VENDOR_ID_MOBILEYE
+    eMobileye = VK_VENDOR_ID_MOBILEYE,
+    eApe      = VK_VENDOR_ID_APE
   };
 
   // wrapper class for enum VkFormat, see https://registry.khronos.org/vulkan/specs/latest/man/html/VkFormat.html
@@ -4900,7 +4904,8 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
     eMesaHoneykrisp             = VK_DRIVER_ID_MESA_HONEYKRISP,
     eVulkanScEmulationOnVulkan  = VK_DRIVER_ID_VULKAN_SC_EMULATION_ON_VULKAN,
     eMesaKosmickrisp            = VK_DRIVER_ID_MESA_KOSMICKRISP,
-    eMesaGfxstream              = VK_DRIVER_ID_MESA_GFXSTREAM
+    eMesaGfxstream              = VK_DRIVER_ID_MESA_GFXSTREAM,
+    eApeSoft                    = VK_DRIVER_ID_APE_SOFT
   };
 
   using DriverIdKHR = DriverId;
@@ -5415,6 +5420,7 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
     eCopyImageIndirectDstKHR              = VK_FORMAT_FEATURE_2_COPY_IMAGE_INDIRECT_DST_BIT_KHR,
     eVideoEncodeQuantizationDeltaMapKHR   = VK_FORMAT_FEATURE_2_VIDEO_ENCODE_QUANTIZATION_DELTA_MAP_BIT_KHR,
     eVideoEncodeEmphasisMapKHR            = VK_FORMAT_FEATURE_2_VIDEO_ENCODE_EMPHASIS_MAP_BIT_KHR,
+    eSampledImageFilterLinear2DIMG        = VK_FORMAT_FEATURE_2_SAMPLED_IMAGE_FILTER_LINEAR_2D_BIT_IMG,
     eDepthCopyOnComputeQueueKHR           = VK_FORMAT_FEATURE_2_DEPTH_COPY_ON_COMPUTE_QUEUE_BIT_KHR,
     eDepthCopyOnTransferQueueKHR          = VK_FORMAT_FEATURE_2_DEPTH_COPY_ON_TRANSFER_QUEUE_BIT_KHR,
     eStencilCopyOnComputeQueueKHR         = VK_FORMAT_FEATURE_2_STENCIL_COPY_ON_COMPUTE_QUEUE_BIT_KHR,
@@ -5456,10 +5462,10 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
       FormatFeatureFlagBits2::eTensorImageAliasingARM | FormatFeatureFlagBits2::eOpticalFlowImageNV | FormatFeatureFlagBits2::eOpticalFlowVectorNV |
       FormatFeatureFlagBits2::eOpticalFlowCostNV | FormatFeatureFlagBits2::eTensorDataGraphARM | FormatFeatureFlagBits2::eCopyImageIndirectDstKHR |
       FormatFeatureFlagBits2::eVideoEncodeQuantizationDeltaMapKHR | FormatFeatureFlagBits2::eVideoEncodeEmphasisMapKHR |
-      FormatFeatureFlagBits2::eDepthCopyOnComputeQueueKHR | FormatFeatureFlagBits2::eDepthCopyOnTransferQueueKHR |
-      FormatFeatureFlagBits2::eStencilCopyOnComputeQueueKHR | FormatFeatureFlagBits2::eStencilCopyOnTransferQueueKHR |
-      FormatFeatureFlagBits2::eDataGraphOpticalFlowImageARM | FormatFeatureFlagBits2::eDataGraphOpticalFlowVectorARM |
-      FormatFeatureFlagBits2::eDataGraphOpticalFlowCostARM;
+      FormatFeatureFlagBits2::eSampledImageFilterLinear2DIMG | FormatFeatureFlagBits2::eDepthCopyOnComputeQueueKHR |
+      FormatFeatureFlagBits2::eDepthCopyOnTransferQueueKHR | FormatFeatureFlagBits2::eStencilCopyOnComputeQueueKHR |
+      FormatFeatureFlagBits2::eStencilCopyOnTransferQueueKHR | FormatFeatureFlagBits2::eDataGraphOpticalFlowImageARM |
+      FormatFeatureFlagBits2::eDataGraphOpticalFlowVectorARM | FormatFeatureFlagBits2::eDataGraphOpticalFlowCostARM;
   };
 
   // wrapper class for enum VkPipelineCreationFeedbackFlagBits, see
@@ -9025,8 +9031,13 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
   // wrapper class for enum VkTensorTilingARM, see https://registry.khronos.org/vulkan/specs/latest/man/html/VkTensorTilingARM.html
   enum class TensorTilingARM
   {
-    eOptimal = VK_TENSOR_TILING_OPTIMAL_ARM,
-    eLinear  = VK_TENSOR_TILING_LINEAR_ARM
+    eOptimal              = VK_TENSOR_TILING_OPTIMAL_ARM,
+    eLinear               = VK_TENSOR_TILING_LINEAR_ARM,
+    eBrick16Wide          = VK_TENSOR_TILING_BRICK_16_WIDE_ARM,
+    eBrick8Wide           = VK_TENSOR_TILING_BRICK_8_WIDE_ARM,
+    eBrick4Wide           = VK_TENSOR_TILING_BRICK_4_WIDE_ARM,
+    eBlockUInterleaved    = VK_TENSOR_TILING_BLOCK_U_INTERLEAVED_ARM,
+    eBlockUInterleaved64K = VK_TENSOR_TILING_BLOCK_U_INTERLEAVED_64K_ARM
   };
 
   //=== VK_NV_optical_flow ===
@@ -9286,37 +9297,42 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
   // wrapper class for enum VkComponentTypeKHR, see https://registry.khronos.org/vulkan/specs/latest/man/html/VkComponentTypeKHR.html
   enum class ComponentTypeKHR
   {
-    eFloat16       = VK_COMPONENT_TYPE_FLOAT16_KHR,
-    eFloat16NV     = VK_COMPONENT_TYPE_FLOAT16_NV,
-    eFloat32       = VK_COMPONENT_TYPE_FLOAT32_KHR,
-    eFloat32NV     = VK_COMPONENT_TYPE_FLOAT32_NV,
-    eFloat64       = VK_COMPONENT_TYPE_FLOAT64_KHR,
-    eFloat64NV     = VK_COMPONENT_TYPE_FLOAT64_NV,
-    eSint8         = VK_COMPONENT_TYPE_SINT8_KHR,
-    eSint8NV       = VK_COMPONENT_TYPE_SINT8_NV,
-    eSint16        = VK_COMPONENT_TYPE_SINT16_KHR,
-    eSint16NV      = VK_COMPONENT_TYPE_SINT16_NV,
-    eSint32        = VK_COMPONENT_TYPE_SINT32_KHR,
-    eSint32NV      = VK_COMPONENT_TYPE_SINT32_NV,
-    eSint64        = VK_COMPONENT_TYPE_SINT64_KHR,
-    eSint64NV      = VK_COMPONENT_TYPE_SINT64_NV,
-    eUint8         = VK_COMPONENT_TYPE_UINT8_KHR,
-    eUint8NV       = VK_COMPONENT_TYPE_UINT8_NV,
-    eUint16        = VK_COMPONENT_TYPE_UINT16_KHR,
-    eUint16NV      = VK_COMPONENT_TYPE_UINT16_NV,
-    eUint32        = VK_COMPONENT_TYPE_UINT32_KHR,
-    eUint32NV      = VK_COMPONENT_TYPE_UINT32_NV,
-    eUint64        = VK_COMPONENT_TYPE_UINT64_KHR,
-    eUint64NV      = VK_COMPONENT_TYPE_UINT64_NV,
-    eBfloat16      = VK_COMPONENT_TYPE_BFLOAT16_KHR,
-    eSint8PackedNV = VK_COMPONENT_TYPE_SINT8_PACKED_NV,
-    eUint8PackedNV = VK_COMPONENT_TYPE_UINT8_PACKED_NV,
-    eFloat8E4M3EXT = VK_COMPONENT_TYPE_FLOAT8_E4M3_EXT,
-    eFloatE4M3     = VK_COMPONENT_TYPE_FLOAT_E4M3_NV,
-    eFloatE4M3NV   = VK_COMPONENT_TYPE_FLOAT_E4M3_NV,
-    eFloat8E5M2EXT = VK_COMPONENT_TYPE_FLOAT8_E5M2_EXT,
-    eFloatE5M2     = VK_COMPONENT_TYPE_FLOAT_E5M2_NV,
-    eFloatE5M2NV   = VK_COMPONENT_TYPE_FLOAT_E5M2_NV
+    eFloat16               = VK_COMPONENT_TYPE_FLOAT16_KHR,
+    eFloat16NV             = VK_COMPONENT_TYPE_FLOAT16_NV,
+    eFloat32               = VK_COMPONENT_TYPE_FLOAT32_KHR,
+    eFloat32NV             = VK_COMPONENT_TYPE_FLOAT32_NV,
+    eFloat64               = VK_COMPONENT_TYPE_FLOAT64_KHR,
+    eFloat64NV             = VK_COMPONENT_TYPE_FLOAT64_NV,
+    eSint8                 = VK_COMPONENT_TYPE_SINT8_KHR,
+    eSint8NV               = VK_COMPONENT_TYPE_SINT8_NV,
+    eSint16                = VK_COMPONENT_TYPE_SINT16_KHR,
+    eSint16NV              = VK_COMPONENT_TYPE_SINT16_NV,
+    eSint32                = VK_COMPONENT_TYPE_SINT32_KHR,
+    eSint32NV              = VK_COMPONENT_TYPE_SINT32_NV,
+    eSint64                = VK_COMPONENT_TYPE_SINT64_KHR,
+    eSint64NV              = VK_COMPONENT_TYPE_SINT64_NV,
+    eUint8                 = VK_COMPONENT_TYPE_UINT8_KHR,
+    eUint8NV               = VK_COMPONENT_TYPE_UINT8_NV,
+    eUint16                = VK_COMPONENT_TYPE_UINT16_KHR,
+    eUint16NV              = VK_COMPONENT_TYPE_UINT16_NV,
+    eUint32                = VK_COMPONENT_TYPE_UINT32_KHR,
+    eUint32NV              = VK_COMPONENT_TYPE_UINT32_NV,
+    eUint64                = VK_COMPONENT_TYPE_UINT64_KHR,
+    eUint64NV              = VK_COMPONENT_TYPE_UINT64_NV,
+    eBfloat16              = VK_COMPONENT_TYPE_BFLOAT16_KHR,
+    eSint8PackedNV         = VK_COMPONENT_TYPE_SINT8_PACKED_NV,
+    eUint8PackedNV         = VK_COMPONENT_TYPE_UINT8_PACKED_NV,
+    eFloat8E4M3EXT         = VK_COMPONENT_TYPE_FLOAT8_E4M3_EXT,
+    eFloatE4M3             = VK_COMPONENT_TYPE_FLOAT_E4M3_NV,
+    eFloatE4M3NV           = VK_COMPONENT_TYPE_FLOAT_E4M3_NV,
+    eFloat8E5M2EXT         = VK_COMPONENT_TYPE_FLOAT8_E5M2_EXT,
+    eFloatE5M2             = VK_COMPONENT_TYPE_FLOAT_E5M2_NV,
+    eFloatE5M2NV           = VK_COMPONENT_TYPE_FLOAT_E5M2_NV,
+    eFloat6E2M3EXT         = VK_COMPONENT_TYPE_FLOAT6_E2M3_EXT,
+    eFloat6E3M2EXT         = VK_COMPONENT_TYPE_FLOAT6_E3M2_EXT,
+    eFloat4E2M1EXT         = VK_COMPONENT_TYPE_FLOAT4_E2M1_EXT,
+    eFloat8UnsignedE8M0EXT = VK_COMPONENT_TYPE_FLOAT8_UNSIGNED_E8M0_EXT,
+    eMxint8EXT             = VK_COMPONENT_TYPE_MXINT8_EXT
   };
 
   using ComponentTypeNV = ComponentTypeKHR;

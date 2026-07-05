@@ -496,6 +496,7 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
                                                             "VK_KHR_maintenance7",
                                                             "VK_NV_shader_atomic_float16_vector",
                                                             "VK_EXT_shader_replicated_composites",
+                                                            "VK_ARM_tensor_controls",
                                                             "VK_EXT_shader_float8",
                                                             "VK_NV_ray_tracing_validation",
                                                             "VK_NV_cluster_acceleration_structure",
@@ -514,6 +515,7 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
                                                             "VK_NV_cooperative_matrix2",
                                                             "VK_ARM_pipeline_opacity_micromap",
                                                             "VK_KHR_video_encode_feedback2",
+                                                            "VK_IMG_filter_linear_2d",
 #if defined( VK_USE_PLATFORM_METAL_EXT )
                                                             "VK_EXT_external_memory_metal",
 #endif /*VK_USE_PLATFORM_METAL_EXT*/
@@ -542,6 +544,7 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
                                                             "VK_KHR_maintenance11",
                                                             "VK_EXT_shader_subgroup_partitioned",
                                                             "VK_KHR_extended_flags",
+                                                            "VK_EXT_shader_ocp_microscaling_types",
                                                             "VK_VALVE_shader_mixed_float_dot_product",
                                                             "VK_SEC_throttle_hint",
                                                             "VK_ARM_data_graph_neural_accelerator_statistics",
@@ -2950,6 +2953,11 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
               "VK_KHR_get_physical_device_properties2",
             } } },
           { "VK_VERSION_1_1", { {} } } } },
+      { "VK_ARM_tensor_controls",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_ARM_tensors",
+            } } } } },
       { "VK_EXT_shader_float8",
         { { "VK_VERSION_1_0",
             { {
@@ -3066,7 +3074,13 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
         { { "VK_VERSION_1_0",
             { {
               "VK_KHR_video_encode_queue",
-            } } } } }
+            } } } } },
+      { "VK_IMG_filter_linear_2d",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_format_feature_flags2",
+            } } },
+          { "VK_VERSION_1_3", { {} } } } }
 #if defined( VK_USE_PLATFORM_METAL_EXT )
       ,
       { "VK_EXT_external_memory_metal",
@@ -3248,6 +3262,12 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
 #endif /*VK_USE_PLATFORM_UBM_SEC*/
       ,
       { "VK_KHR_extended_flags",
+        { { "VK_VERSION_1_0",
+            { {
+              "VK_KHR_get_physical_device_properties2",
+            } } },
+          { "VK_VERSION_1_1", { {} } } } },
+      { "VK_EXT_shader_ocp_microscaling_types",
         { { "VK_VERSION_1_0",
             { {
               "VK_KHR_get_physical_device_properties2",
@@ -4239,14 +4259,14 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
            ( extension == "VK_NV_raw_access_chains" ) || ( extension == "VK_NV_external_compute_queue" ) ||
            ( extension == "VK_KHR_shader_relaxed_extended_instruction" ) || ( extension == "VK_NV_command_buffer_inheritance" ) ||
            ( extension == "VK_KHR_maintenance7" ) || ( extension == "VK_NV_shader_atomic_float16_vector" ) ||
-           ( extension == "VK_EXT_shader_replicated_composites" ) || ( extension == "VK_EXT_shader_float8" ) ||
+           ( extension == "VK_EXT_shader_replicated_composites" ) || ( extension == "VK_ARM_tensor_controls" ) || ( extension == "VK_EXT_shader_float8" ) ||
            ( extension == "VK_NV_ray_tracing_validation" ) || ( extension == "VK_NV_cluster_acceleration_structure" ) ||
            ( extension == "VK_NV_partitioned_acceleration_structure" ) || ( extension == "VK_EXT_device_generated_commands" ) ||
            ( extension == "VK_KHR_device_fault" ) || ( extension == "VK_KHR_maintenance8" ) || ( extension == "VK_MESA_image_alignment_control" ) ||
            ( extension == "VK_KHR_shader_fma" ) || ( extension == "VK_NV_push_constant_bank" ) || ( extension == "VK_EXT_ray_tracing_invocation_reorder" ) ||
            ( extension == "VK_EXT_depth_clamp_control" ) || ( extension == "VK_KHR_maintenance9" ) || ( extension == "VK_KHR_video_maintenance2" ) ||
            ( extension == "VK_HUAWEI_hdr_vivid" ) || ( extension == "VK_NV_cooperative_matrix2" ) || ( extension == "VK_ARM_pipeline_opacity_micromap" ) ||
-           ( extension == "VK_KHR_video_encode_feedback2" )
+           ( extension == "VK_KHR_video_encode_feedback2" ) || ( extension == "VK_IMG_filter_linear_2d" )
 #if defined( VK_USE_PLATFORM_METAL_EXT )
         || ( extension == "VK_EXT_external_memory_metal" )
 #endif /*VK_USE_PLATFORM_METAL_EXT*/
@@ -4260,9 +4280,9 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
            ( extension == "VK_EXT_shader_long_vector" ) || ( extension == "VK_SEC_pipeline_cache_incremental_mode" ) ||
            ( extension == "VK_EXT_shader_uniform_buffer_unsized_array" ) || ( extension == "VK_NV_compute_occupancy_priority" ) ||
            ( extension == "VK_KHR_maintenance11" ) || ( extension == "VK_EXT_shader_subgroup_partitioned" ) || ( extension == "VK_KHR_extended_flags" ) ||
-           ( extension == "VK_VALVE_shader_mixed_float_dot_product" ) || ( extension == "VK_SEC_throttle_hint" ) ||
-           ( extension == "VK_ARM_data_graph_neural_accelerator_statistics" ) || ( extension == "VK_EXT_primitive_restart_index" ) ||
-           ( extension == "VK_NV_cooperative_matrix_decode_vector" );
+           ( extension == "VK_EXT_shader_ocp_microscaling_types" ) || ( extension == "VK_VALVE_shader_mixed_float_dot_product" ) ||
+           ( extension == "VK_SEC_throttle_hint" ) || ( extension == "VK_ARM_data_graph_neural_accelerator_statistics" ) ||
+           ( extension == "VK_EXT_primitive_restart_index" ) || ( extension == "VK_NV_cooperative_matrix_decode_vector" );
   }
 
   VULKAN_HPP_INLINE VULKAN_HPP_CONSTEXPR_20 bool isInstanceExtension( std::string const & extension )

@@ -15619,6 +15619,24 @@ VULKAN_HPP_EXPORT namespace std
   };
 
   template <>
+  struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceShaderOCPMicroscalingTypesFeaturesEXT>
+  {
+    std::size_t
+      operator()( VULKAN_HPP_NAMESPACE::PhysicalDeviceShaderOCPMicroscalingTypesFeaturesEXT const & physicalDeviceShaderOCPMicroscalingTypesFeaturesEXT ) const
+      VULKAN_HPP_NOEXCEPT
+    {
+      std::size_t seed = 0;
+      VULKAN_HPP_HASH_COMBINE( seed, physicalDeviceShaderOCPMicroscalingTypesFeaturesEXT.sType );
+      VULKAN_HPP_HASH_COMBINE( seed, physicalDeviceShaderOCPMicroscalingTypesFeaturesEXT.pNext );
+      VULKAN_HPP_HASH_COMBINE( seed, physicalDeviceShaderOCPMicroscalingTypesFeaturesEXT.shaderFloat4 );
+      VULKAN_HPP_HASH_COMBINE( seed, physicalDeviceShaderOCPMicroscalingTypesFeaturesEXT.shaderFloat6 );
+      VULKAN_HPP_HASH_COMBINE( seed, physicalDeviceShaderOCPMicroscalingTypesFeaturesEXT.shaderFloat8UnsignedE8M0 );
+      VULKAN_HPP_HASH_COMBINE( seed, physicalDeviceShaderOCPMicroscalingTypesFeaturesEXT.shaderMXInt8 );
+      return seed;
+    }
+  };
+
+  template <>
   struct hash<VULKAN_HPP_NAMESPACE::PhysicalDeviceShaderObjectFeaturesEXT>
   {
     std::size_t
@@ -20550,6 +20568,24 @@ VULKAN_HPP_EXPORT namespace std
   };
 
   template <>
+  struct hash<VULKAN_HPP_NAMESPACE::TensorExplicitTilingFormatPropertiesARM>
+  {
+    std::size_t
+      operator()( VULKAN_HPP_NAMESPACE::TensorExplicitTilingFormatPropertiesARM const & tensorExplicitTilingFormatPropertiesARM ) const VULKAN_HPP_NOEXCEPT
+    {
+      std::size_t seed = 0;
+      VULKAN_HPP_HASH_COMBINE( seed, tensorExplicitTilingFormatPropertiesARM.sType );
+      VULKAN_HPP_HASH_COMBINE( seed, tensorExplicitTilingFormatPropertiesARM.pNext );
+      VULKAN_HPP_HASH_COMBINE( seed, tensorExplicitTilingFormatPropertiesARM.brick16TilingTensorFeatures );
+      VULKAN_HPP_HASH_COMBINE( seed, tensorExplicitTilingFormatPropertiesARM.brick8TilingTensorFeatures );
+      VULKAN_HPP_HASH_COMBINE( seed, tensorExplicitTilingFormatPropertiesARM.brick4TilingTensorFeatures );
+      VULKAN_HPP_HASH_COMBINE( seed, tensorExplicitTilingFormatPropertiesARM.blockUTilingTensorFeatures );
+      VULKAN_HPP_HASH_COMBINE( seed, tensorExplicitTilingFormatPropertiesARM.blockU64kTilingTensorFeatures );
+      return seed;
+    }
+  };
+
+  template <>
   struct hash<VULKAN_HPP_NAMESPACE::TensorFormatPropertiesARM>
   {
     std::size_t operator()( VULKAN_HPP_NAMESPACE::TensorFormatPropertiesARM const & tensorFormatPropertiesARM ) const VULKAN_HPP_NOEXCEPT
@@ -20572,6 +20608,22 @@ VULKAN_HPP_EXPORT namespace std
       VULKAN_HPP_HASH_COMBINE( seed, tensorMemoryRequirementsInfoARM.sType );
       VULKAN_HPP_HASH_COMBINE( seed, tensorMemoryRequirementsInfoARM.pNext );
       VULKAN_HPP_HASH_COMBINE( seed, tensorMemoryRequirementsInfoARM.tensor );
+      return seed;
+    }
+  };
+
+  template <>
+  struct hash<VULKAN_HPP_NAMESPACE::TensorRollingBackingCreateInfoARM>
+  {
+    std::size_t operator()( VULKAN_HPP_NAMESPACE::TensorRollingBackingCreateInfoARM const & tensorRollingBackingCreateInfoARM ) const VULKAN_HPP_NOEXCEPT
+    {
+      std::size_t seed = 0;
+      VULKAN_HPP_HASH_COMBINE( seed, tensorRollingBackingCreateInfoARM.sType );
+      VULKAN_HPP_HASH_COMBINE( seed, tensorRollingBackingCreateInfoARM.pNext );
+      for ( size_t i = 0; i < VK_MAX_TENSOR_CREATE_INFO_ROLLING_BACKING_WRAP_COUNT_ARM; ++i )
+      {
+        VULKAN_HPP_HASH_COMBINE( seed, tensorRollingBackingCreateInfoARM.wraps[i] );
+      }
       return seed;
     }
   };
