@@ -15,7 +15,7 @@ namespace mlx
 			Event What() const override { return Event::ResizeEventCode; }
 		};
 	}
-	
+
 	std::string VulkanFormatName(VkFormat format)
 	{
 		#define STRINGIFY(x) case x: return #x
@@ -161,7 +161,7 @@ namespace mlx
 
 		std::function<void(const EventBase&)> functor = [this](const EventBase& event)
 		{
-			if(event.What() == Event::ResizeEventCode && !m_resize)
+			if(event.What() == Event::SwapchainResizeEventCode && !m_resize)
 				m_resize = true;
 		};
 		EventBus::RegisterListener({ functor, "mlx_swapchain_" + std::to_string(reinterpret_cast<std::uintptr_t>(this)) });

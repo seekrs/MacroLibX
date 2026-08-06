@@ -19,9 +19,10 @@ namespace mlx
 
 	enum class Event
 	{
-		ResizeEventCode = 56,
-		FrameBeginEventCode = 57,
-		FatalErrorEventCode = 168,
+		ResizeEventCode = 1,
+		SwapchainResizeEventCode,
+		FrameBeginEventCode,
+		FatalErrorEventCode,
 
 		EndEnum
 	};

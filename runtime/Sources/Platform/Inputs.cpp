@@ -8,9 +8,9 @@ namespace mlx
 {
 	namespace Internal
 	{
-		struct ResizeEventBroadcast : public EventBase
+		struct SwapchainResizeEventBroadcast : public EventBase
 		{
-			Event What() const override { return Event::ResizeEventCode; }
+			Event What() const override { return Event::SwapchainResizeEventCode; }
 		};
 	}
 
@@ -23,7 +23,7 @@ namespace mlx
 			if(!m_events_hooks.contains(window_id) || m_events_hooks[window_id][event].empty())
 				return;
 			if(event == MLX_WINDOW_EVENT && code == 8)
-				EventBus::SendBroadcast(Internal::ResizeEventBroadcast{});
+				EventBus::SendBroadcast(Internal::SwapchainResizeEventBroadcast{});
 			for(const auto& hook : m_events_hooks[window_id][event])
 			{
 				if(hook.fn)
