@@ -1,7 +1,9 @@
 #include <PreCompiled.h>
 #include <Core/Fps.h>
 
+#ifndef __APPLE__
 #include <emmintrin.h>
+#endif
 
 namespace mlx
 {
@@ -20,7 +22,9 @@ namespace mlx
 			m_current_time = fps_clock::now();
 			while (m_current_time < m_target_time)
 			{
-				_mm_pause(); // reduces CPU usage on x86 without yielding
+				#ifndef __APPLE__
+					_mm_pause(); // reduces CPU usage on x86 without yielding
+				#endif
 				m_current_time = fps_clock::now();
 			}
 		}
