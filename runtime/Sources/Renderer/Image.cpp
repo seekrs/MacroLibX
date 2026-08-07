@@ -226,27 +226,34 @@ namespace mlx
 	void Texture::SetRegion(int x, int y, int w, int h, mlx_color* pixels) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
-		if(x < 0 || y < 0 || static_cast<std::uint32_t>(x) >= m_width || static_cast<std::uint32_t>(y) >= m_height)
-			return;
-		if(w < 0 || h < 0)
+		if(w < 0 || h < 0 || x < -w || y < -h
+			|| x >= static_cast<int>(m_width) || y >= static_cast<int>(m_height))
 			return;
 		if(!m_staging_buffer.has_value())
 			OpenCPUBuffer();
-		std::uint32_t end_x = std::min<std::uint32_t>(x + w, m_width), end_row = std::min<std::uint32_t>(y + h, m_height) * m_width, incr = (x + w) - end_x;
-		for(std::uint32_t i = 0, moving_x = x, row = y * m_width;; i++, moving_x++)
+		const int
+			start_x = std::max<int>(x, 0),
+			start_y = std::max<int>(y, 0),
+			start_row = start_y * m_width,
+			start_i = (start_y - y) * w + (start_x - x),
+			end_x = std::min<int>(x + w, m_width),
+			end_y = std::min<int>(y + h, m_height),
+			end_row = end_y * m_width,
+			incr = (x + w) - end_x + (start_x - x);
+		for(int i = start_i, dx = start_x, row = start_row;; i++, dx++)
 		{
-			if(moving_x >= end_x)
+			if(dx >= end_x)
 			{
 				i += incr;
-				moving_x = x;
+				dx = start_x;
 				row += m_width;
 				if(row >= end_row)
 					break;
 			}
 			if constexpr(std::endian::native == std::endian::little)
-				m_staging_buffer->GetMap<mlx_color*>()[row + moving_x] = ReverseColor(pixels[i]);
+				m_staging_buffer->GetMap<mlx_color*>()[row + dx] = ReverseColor(pixels[i]);
 			else
-				m_staging_buffer->GetMap<mlx_color*>()[row + moving_x] = pixels[i];
+				m_staging_buffer->GetMap<mlx_color*>()[row + dx] = pixels[i];
 		}
 		m_has_been_modified = true;
 	}
@@ -254,19 +261,25 @@ namespace mlx
 	void Texture::SetLinearRegion(int x, int y, std::size_t len, mlx_color* pixels) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
-		if(x < 0 || y < 0 || static_cast<std::uint32_t>(x) >= m_width || static_cast<std::uint32_t>(y) >= m_height)
+		if(x >= static_cast<int>(m_width) || y >= static_cast<int>(m_height))
 			return;
 		if(!m_staging_buffer.has_value())
 			OpenCPUBuffer();
-		std::uint32_t start = y * m_width + x, end = std::min<std::uint32_t>(len + start, m_width * m_height);
+		int
+			start = y * m_width + x,
+			dest_start = std::max<int>(start, 0),
+			src_start = dest_start - start,
+			dest_end = std::min<int>(start + len, m_width * m_height);
 		if constexpr(std::endian::native == std::endian::little)
 		{
-			for(std::size_t i = start; i < end; i++)
-				m_staging_buffer->GetMap<mlx_color*>()[i] = ReverseColor(pixels[i]);
+			for(int i = dest_start, j = src_start; i < dest_end; i++, j++)
+				m_staging_buffer->GetMap<mlx_color*>()[i] = ReverseColor(pixels[j]);
 		}
 		else
 		{
-			std::memcpy(&m_staging_buffer->GetMap<mlx_color*>()[start], pixels, end - start);
+			std::memcpy(
+				&m_staging_buffer->GetMap<mlx_color*>()[dest_start],
+				&pixels[src_start], dest_end - dest_start);
 		}
 		m_has_been_modified = true;
 	}
@@ -287,25 +300,23 @@ namespace mlx
 	void Texture::GetRegion(int x, int y, int w, int h, mlx_color* dst) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
-		if(x < 0 || y < 0 || static_cast<std::uint32_t>(x) >= m_width || static_cast<std::uint32_t>(y) >= m_height)
+		if(w < 0 || h < 0 || x < 0 || y < 0 || static_cast<std::uint32_t>(x + w) >= m_width || static_cast<std::uint32_t>(y + h) >= m_height)
 			return;
 		if(!m_staging_buffer.has_value())
 			OpenCPUBuffer();
-		std::uint32_t end_x = std::min<std::uint32_t>(x + w, m_width), end_row = std::min<std::uint32_t>(y + h, m_height) * m_width, incr = (x + w) - end_x;
-		for(std::uint32_t i = 0, moving_x = x, row = y * m_width;; i++, moving_x++)
+		for(std::uint32_t i = 0, dx = x, row = y * m_width;; i++, dx++)
 		{
-			if(moving_x >= end_x)
+			if(dx >= m_width)
 			{
-				i += incr;
-				moving_x = x;
+				dx = x;
 				row += m_width;
-				if(row >= end_row)
+				if(row >= m_height * m_width)
 					break;
 			}
 			if constexpr(std::endian::native == std::endian::little)
-				dst[i] = ReverseColor(m_staging_buffer->GetMap<mlx_color*>()[row + moving_x]);
+				dst[i] = ReverseColor(m_staging_buffer->GetMap<mlx_color*>()[row + dx]);
 			else
-				dst[i] = m_staging_buffer->GetMap<mlx_color*>()[row + moving_x];
+				dst[i] = m_staging_buffer->GetMap<mlx_color*>()[row + dx];
 		}
 	}
 
