@@ -291,11 +291,12 @@ namespace mlx
 			return;
 		if(!m_staging_buffer.has_value())
 			OpenCPUBuffer();
-		std::uint32_t end_x = std::min<std::uint32_t>(x + w, m_width), end_row = std::min<std::uint32_t>(y + h, m_height) * m_width;
+		std::uint32_t end_x = std::min<std::uint32_t>(x + w, m_width), end_row = std::min<std::uint32_t>(y + h, m_height) * m_width, incr = (x + w) - end_x;
 		for(std::uint32_t i = 0, moving_x = x, row = y * m_width;; i++, moving_x++)
 		{
 			if(moving_x >= end_x)
 			{
+				i += incr;
 				moving_x = x;
 				row += m_width;
 				if(row >= end_row)
