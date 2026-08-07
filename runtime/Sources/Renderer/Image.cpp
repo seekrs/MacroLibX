@@ -226,25 +226,34 @@ namespace mlx
 	void Texture::SetRegion(int x, int y, int w, int h, mlx_color* pixels) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
-		if(x < 0 || y < 0 || static_cast<std::uint32_t>(x) >= m_width || static_cast<std::uint32_t>(y) >= m_height)
-			return;
-		if(w < 0 || h < 0)
+		if(w < 0 || h < 0 || x < -w || y < -h
+			|| x >= static_cast<int>(m_width) || y >= static_cast<int>(m_height))
 			return;
 		if(!m_staging_buffer.has_value())
 			OpenCPUBuffer();
-		for(std::uint32_t i = 0, moving_x = x, moving_y = y;; i++, moving_x++)
+		const int
+			start_x = std::max<int>(x, 0),
+			start_y = std::max<int>(y, 0),
+			start_row = start_y * m_width,
+			start_i = (start_y - y) * w + (start_x - x),
+			end_x = std::min<int>(x + w, m_width),
+			end_y = std::min<int>(y + h, m_height),
+			end_row = end_y * m_width,
+			incr = (x + w) - end_x + (start_x - x);
+		for(int i = start_i, dx = start_x, row = start_row;; i++, dx++)
 		{
-			if(moving_x >= static_cast<std::uint32_t>(x + w) || moving_x >= m_width)
+			if(dx >= end_x)
 			{
-				moving_x = x;
-				moving_y++;
-				if(moving_y >= static_cast<std::uint32_t>(y + h) || moving_y >= m_height)
+				i += incr;
+				dx = start_x;
+				row += m_width;
+				if(row >= end_row)
 					break;
 			}
 			if constexpr(std::endian::native == std::endian::little)
-				m_staging_buffer->GetMap<mlx_color*>()[(moving_y * m_width) + moving_x] = ReverseColor(pixels[i]);
+				m_staging_buffer->GetMap<mlx_color*>()[row + dx] = ReverseColor(pixels[i]);
 			else
-				m_staging_buffer->GetMap<mlx_color*>()[(moving_y * m_width) + moving_x] = pixels[i];
+				m_staging_buffer->GetMap<mlx_color*>()[row + dx] = pixels[i];
 		}
 		m_has_been_modified = true;
 	}
@@ -252,23 +261,25 @@ namespace mlx
 	void Texture::SetLinearRegion(int x, int y, std::size_t len, mlx_color* pixels) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
-		if(x < 0 || y < 0 || static_cast<std::uint32_t>(x) >= m_width || static_cast<std::uint32_t>(y) >= m_height)
+		if(x >= static_cast<int>(m_width) || y >= static_cast<int>(m_height))
 			return;
 		if(!m_staging_buffer.has_value())
 			OpenCPUBuffer();
+		int
+			start = y * m_width + x,
+			dest_start = std::max<int>(start, 0),
+			src_start = dest_start - start,
+			dest_end = std::min<int>(start + len, m_width * m_height);
 		if constexpr(std::endian::native == std::endian::little)
 		{
-			for(std::size_t i = 0; i < len && (y * m_width) + x + i < m_width * m_height; i++)
-				m_staging_buffer->GetMap<mlx_color*>()[(y * m_width) + x + i] = ReverseColor(pixels[i]);
+			for(int i = dest_start, j = src_start; i < dest_end; i++, j++)
+				m_staging_buffer->GetMap<mlx_color*>()[i] = ReverseColor(pixels[j]);
 		}
 		else
 		{
-			std::size_t len_guard;
-			if((y * m_width + x + len) < m_width * m_height)
-				len_guard = len;
-			else
-				len_guard = len - (m_width * m_height - (y * m_width + x + len));
-			std::memcpy(&m_staging_buffer->GetMap<mlx_color*>()[(y * m_width) + x], pixels, len_guard);
+			std::memcpy(
+				&m_staging_buffer->GetMap<mlx_color*>()[dest_start],
+				&pixels[src_start], dest_end - dest_start);
 		}
 		m_has_been_modified = true;
 	}
@@ -289,23 +300,23 @@ namespace mlx
 	void Texture::GetRegion(int x, int y, int w, int h, mlx_color* dst) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
-		if(x < 0 || y < 0 || static_cast<std::uint32_t>(x) >= m_width || static_cast<std::uint32_t>(y) >= m_height)
+		if(w < 0 || h < 0 || x < 0 || y < 0 || static_cast<std::uint32_t>(x + w) >= m_width || static_cast<std::uint32_t>(y + h) >= m_height)
 			return;
 		if(!m_staging_buffer.has_value())
 			OpenCPUBuffer();
-		for(std::uint32_t i = 0, moving_x = x, moving_y = y;; i++, moving_x++)
+		for(std::uint32_t i = 0, dx = x, row = y * m_width;; i++, dx++)
 		{
-			if(moving_x >= static_cast<std::uint32_t>(x + w) || moving_x >= m_width)
+			if(dx >= m_width)
 			{
-				moving_x = x;
-				moving_y++;
-				if(moving_y >= static_cast<std::uint32_t>(y + h) || moving_y >= m_height)
+				dx = x;
+				row += m_width;
+				if(row >= m_height * m_width)
 					break;
 			}
 			if constexpr(std::endian::native == std::endian::little)
-				dst[i] = ReverseColor(m_staging_buffer->GetMap<mlx_color*>()[(moving_y * m_width) + moving_x]);
+				dst[i] = ReverseColor(m_staging_buffer->GetMap<mlx_color*>()[row + dx]);
 			else
-				dst[i] = m_staging_buffer->GetMap<mlx_color*>()[(moving_y * m_width) + moving_x];
+				dst[i] = m_staging_buffer->GetMap<mlx_color*>()[row + dx];
 		}
 	}
 
@@ -320,16 +331,8 @@ namespace mlx
 			processed_color.g = static_cast<std::uint8_t>(color.g * 255.f);
 			processed_color.b = static_cast<std::uint8_t>(color.b * 255.f);
 			processed_color.a = static_cast<std::uint8_t>(color.a * 255.f);
-			if(processed_color.r == 0 && processed_color.g == 0 && processed_color.b == 0)
-				std::memset(m_staging_buffer->GetMap(), processed_color.a, m_staging_buffer->GetSize());
-			else
-			{
-				for(std::size_t y = 0; y < m_height; y++)
-				{
-					for(std::size_t x = 0; x < m_width; x++)
-						m_staging_buffer->GetMap<mlx_color*>()[y * m_width + x] = processed_color;
-				}
-			}
+			for(std::size_t i = 0; i < m_width * m_height; i++)
+				m_staging_buffer->GetMap<mlx_color*>()[i] = processed_color;
 		}
 	}
 
