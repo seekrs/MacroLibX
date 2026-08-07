@@ -232,19 +232,21 @@ namespace mlx
 			return;
 		if(!m_staging_buffer.has_value())
 			OpenCPUBuffer();
-		for(std::uint32_t i = 0, moving_x = x, moving_y = y;; i++, moving_x++)
+		std::uint32_t end_x = std::min<std::uint32_t>(x + w, m_width), end_row = std::min<std::uint32_t>(y + h, m_height) * m_width, incr = (x + w) - end_x;
+		for(std::uint32_t i = 0, moving_x = x, row = y * m_width;; i++, moving_x++)
 		{
-			if(moving_x >= static_cast<std::uint32_t>(x + w) || moving_x >= m_width)
+			if(moving_x >= end_x)
 			{
+				i += incr;
 				moving_x = x;
-				moving_y++;
-				if(moving_y >= static_cast<std::uint32_t>(y + h) || moving_y >= m_height)
+				row += m_width;
+				if(row >= end_row)
 					break;
 			}
 			if constexpr(std::endian::native == std::endian::little)
-				m_staging_buffer->GetMap<mlx_color*>()[(moving_y * m_width) + moving_x] = ReverseColor(pixels[i]);
+				m_staging_buffer->GetMap<mlx_color*>()[row + moving_x] = ReverseColor(pixels[i]);
 			else
-				m_staging_buffer->GetMap<mlx_color*>()[(moving_y * m_width) + moving_x] = pixels[i];
+				m_staging_buffer->GetMap<mlx_color*>()[row + moving_x] = pixels[i];
 		}
 		m_has_been_modified = true;
 	}
@@ -256,19 +258,15 @@ namespace mlx
 			return;
 		if(!m_staging_buffer.has_value())
 			OpenCPUBuffer();
+		std::uint32_t start = y * m_width + x, end = std::min<std::uint32_t>(len + start, m_width * m_height);
 		if constexpr(std::endian::native == std::endian::little)
 		{
-			for(std::size_t i = 0; i < len && (y * m_width) + x + i < m_width * m_height; i++)
-				m_staging_buffer->GetMap<mlx_color*>()[(y * m_width) + x + i] = ReverseColor(pixels[i]);
+			for(std::size_t i = start; i < end; i++)
+				m_staging_buffer->GetMap<mlx_color*>()[i] = ReverseColor(pixels[i]);
 		}
 		else
 		{
-			std::size_t len_guard;
-			if((y * m_width + x + len) < m_width * m_height)
-				len_guard = len;
-			else
-				len_guard = len - (m_width * m_height - (y * m_width + x + len));
-			std::memcpy(&m_staging_buffer->GetMap<mlx_color*>()[(y * m_width) + x], pixels, len_guard);
+			std::memcpy(&m_staging_buffer->GetMap<mlx_color*>()[start], pixels, end - start);
 		}
 		m_has_been_modified = true;
 	}
@@ -293,19 +291,20 @@ namespace mlx
 			return;
 		if(!m_staging_buffer.has_value())
 			OpenCPUBuffer();
-		for(std::uint32_t i = 0, moving_x = x, moving_y = y;; i++, moving_x++)
+		std::uint32_t end_x = std::min<std::uint32_t>(x + w, m_width), end_row = std::min<std::uint32_t>(y + h, m_height) * m_width;
+		for(std::uint32_t i = 0, moving_x = x, row = y * m_width;; i++, moving_x++)
 		{
-			if(moving_x >= static_cast<std::uint32_t>(x + w) || moving_x >= m_width)
+			if(moving_x >= end_x)
 			{
 				moving_x = x;
-				moving_y++;
-				if(moving_y >= static_cast<std::uint32_t>(y + h) || moving_y >= m_height)
+				row += m_width;
+				if(row >= end_row)
 					break;
 			}
 			if constexpr(std::endian::native == std::endian::little)
-				dst[i] = ReverseColor(m_staging_buffer->GetMap<mlx_color*>()[(moving_y * m_width) + moving_x]);
+				dst[i] = ReverseColor(m_staging_buffer->GetMap<mlx_color*>()[row + moving_x]);
 			else
-				dst[i] = m_staging_buffer->GetMap<mlx_color*>()[(moving_y * m_width) + moving_x];
+				dst[i] = m_staging_buffer->GetMap<mlx_color*>()[row + moving_x];
 		}
 	}
 
@@ -320,16 +319,8 @@ namespace mlx
 			processed_color.g = static_cast<std::uint8_t>(color.g * 255.f);
 			processed_color.b = static_cast<std::uint8_t>(color.b * 255.f);
 			processed_color.a = static_cast<std::uint8_t>(color.a * 255.f);
-			if(processed_color.r == 0 && processed_color.g == 0 && processed_color.b == 0)
-				std::memset(m_staging_buffer->GetMap(), processed_color.a, m_staging_buffer->GetSize());
-			else
-			{
-				for(std::size_t y = 0; y < m_height; y++)
-				{
-					for(std::size_t x = 0; x < m_width; x++)
-						m_staging_buffer->GetMap<mlx_color*>()[y * m_width + x] = processed_color;
-				}
-			}
+			for(std::size_t i = 0; i < m_width * m_height; i++)
+				m_staging_buffer->GetMap<mlx_color*>()[i] = processed_color;
 		}
 	}
 
