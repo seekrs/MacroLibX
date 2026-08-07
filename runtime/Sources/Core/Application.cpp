@@ -8,7 +8,7 @@
 
 namespace mlx
 {
-	Application::Application() : p_mem_manager(std::make_unique<MemManager>()), p_sdl_manager(std::make_unique<SDLManager>()), m_fps(), m_in() 
+	Application::Application() : p_mem_manager(std::make_unique<MemManager>()), p_sdl_manager(std::make_unique<SDLManager>()), m_fps(), m_in()
 	{
 		MLX_PROFILE_FUNCTION();
 		std::srand(std::time(nullptr));
@@ -33,8 +33,7 @@ namespace mlx
 
 		while(m_in.IsRunning())
 		{
-			if(!m_fps.Update())
-				continue;
+			m_fps.WaitUntilNextFrame();
 
 			m_in.FetchInputs();
 
