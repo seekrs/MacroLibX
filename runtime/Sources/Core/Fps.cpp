@@ -1,30 +1,37 @@
 #include <PreCompiled.h>
 #include <Core/Fps.h>
 
+#ifndef __APPLE__
+#include <emmintrin.h>
+#endif
+
 namespace mlx
 {
 	void FpsManager::Init()
 	{
-		m_timer = static_cast<std::uint64_t>(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count());
-		m_fps_before = m_timer;
-		m_fps_now = m_timer;
+		m_current_time = fps_clock::now();
+		m_target_time = m_current_time + m_target_delta;
 	}
 
-	bool FpsManager::Update()
+	void FpsManager::WaitUntilNextFrame()
 	{
-		using namespace std::chrono_literals;
-		m_fps_now = static_cast<std::uint64_t>(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count());
-
-		if(std::chrono::duration<std::uint64_t>{m_fps_now - m_timer} >= 1s)
-			m_timer += m_fps_now;
-
-		m_fps_elapsed_time = m_fps_now - m_fps_before;
-		if(m_fps_elapsed_time >= m_ns)
+		m_current_time = fps_clock::now();
+		if(m_current_time < m_target_time)
 		{
-			m_fps_before += m_ns;
-			return true;
+			std::this_thread::sleep_until(m_target_time - m_sleep_margin);
+			m_current_time = fps_clock::now();
+			while (m_current_time < m_target_time)
+			{
+				#ifndef __APPLE__
+					_mm_pause(); // reduces CPU usage on x86 without yielding
+				#endif
+				m_current_time = fps_clock::now();
+			}
 		}
-		std::this_thread::sleep_for(std::chrono::duration<double, std::nano>(m_ns - 1));
-		return false;
+		else if (m_target_time < m_current_time - m_target_delta * 4)
+			m_target_time = m_current_time;
+		m_target_time += m_target_delta;
+		m_delta_time = m_current_time - m_last_time_record;
+		m_last_time_record = m_current_time;
 	}
 }

@@ -45,10 +45,9 @@ extern "C"
 	void mlx_set_fps_goal(mlx_context mlx, int fps)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
-		if(fps < 0)
-			mlx::Error("You cannot set a negative FPS cap (nice try)");
-		else
-			mlx->app->SetFPSCap(static_cast<std::uint32_t>(fps));
+		if(fps <= 0)
+			fps = -1;
+		mlx->app->SetFPSCap(static_cast<std::uint32_t>(fps));
 	}
 
 	void mlx_destroy_context(mlx_context mlx)
@@ -313,14 +312,14 @@ extern "C"
 			mlx::Error("Font loader: filepath is NULL");
 			return;
 		}
-		
+
 		std::filesystem::path file(filepath);
 		if (std::strcmp(filepath, "default") != 0 && !std::filesystem::exists(file))
 		{
 			mlx::Error("TTF loader: unable to find file '%'", filepath);
 			return;
 		}
-		
+
 		if(std::strcmp(filepath, "default") != 0)
 		{
 			if(file.extension() != ".ttf" && file.extension() != ".tte")
@@ -350,7 +349,7 @@ extern "C"
 			mlx::Error("Font loader: filepath is NULL");
 			return;
 		}
-		
+
 		std::filesystem::path file(filepath);
 		if (std::strcmp(filepath, "default") != 0 && !std::filesystem::exists(file))
 		{
