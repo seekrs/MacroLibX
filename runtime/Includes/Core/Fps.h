@@ -1,26 +1,30 @@
 #ifndef __MLX_FPS__
 #define __MLX_FPS__
 
+#include <chrono>
+
 namespace mlx
 {
+	typedef std::chrono::steady_clock fps_clock;
+
 	class FpsManager
 	{
 		public:
 			FpsManager() = default;
 
 			void Init();
-			bool Update();
-			inline void SetMaxFPS(std::uint32_t fps) noexcept { m_max_fps = fps; m_ns = 1000000000.0 / fps; }
+			void WaitUntilNextFrame();
+			inline void SetMaxFPS(std::uint32_t fps) noexcept { m_target_delta = fps_clock::duration(std::chrono::seconds(1)) / fps;}
 
 			~FpsManager() = default;
 
 		private:
-			double m_ns = 1000000000.0 / 1'337'000.0;
-			std::int64_t m_fps_before = 0;
-			std::int64_t m_fps_now = 0;
-			std::int64_t m_timer = 0;
-			std::uint32_t m_max_fps = 1'337'000;
-			std::uint32_t m_fps_elapsed_time = 0;
+			fps_clock::time_point m_current_time;
+			fps_clock::time_point m_target_time;
+			fps_clock::time_point m_last_time_record;
+			fps_clock::duration m_delta_time = fps_clock::duration().zero();
+			fps_clock::duration m_target_delta = fps_clock::duration().zero();
+			fps_clock::duration m_sleep_margin = std::chrono::microseconds(200);
 	};
 }
 
