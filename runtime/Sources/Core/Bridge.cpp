@@ -61,7 +61,7 @@ extern "C"
 	mlx_window mlx_new_window(mlx_context mlx, const mlx_window_create_info* info)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
-		return mlx->app->NewGraphicsSuport(info);
+		return mlx->app->NewGraphicsSupport(info);
 	}
 
 	void mlx_destroy_window(mlx_context mlx, mlx_window win)
@@ -90,6 +90,11 @@ extern "C"
 
 	void mlx_set_window_title(mlx_context mlx, mlx_window win, const char* title)
 	{
+		if (title == nullptr)
+		{
+			mlx::Error("invalid window title (NULL)");
+			return;
+		}
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		mlx::NonOwningPtr<mlx::GraphicsSupport> gs = mlx->app->GetGraphicsSupport(win);
 		if(!gs && !gs->HasWindow())

@@ -60,12 +60,17 @@ namespace mlx
 		m_fps.SetMaxFPS(fps);
 	}
 
-	mlx_window Application::NewGraphicsSuport(const mlx_window_create_info* info)
+	mlx_window Application::NewGraphicsSupport(const mlx_window_create_info* info)
 	{
 		MLX_PROFILE_FUNCTION();
 		if(!info)
 		{
 			Error("invalid window create info (NULL)");
+			return nullptr;
+		}
+		if (info->title == nullptr)
+		{
+			mlx::Error("invalid window title (NULL)");
 			return nullptr;
 		}
 
@@ -134,7 +139,7 @@ namespace mlx
 	{
 		m_hooks.emplace_back(f, param);
 	}
-	
+
 	void Application::LoopEnd() noexcept
 	{
 		m_in.Finish();
