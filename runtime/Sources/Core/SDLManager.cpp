@@ -1,3 +1,4 @@
+#include "mlx.h"
 #include <PreCompiled.h>
 #include <Core/SDLManager.h>
 #include <Core/Memory.h>
@@ -276,6 +277,7 @@ namespace mlx
 						case SDL_WINDOWEVENT_LEAVE: functor(MLX_WINDOW_EVENT, id, 6); break;
 						case SDL_WINDOWEVENT_FOCUS_LOST: functor(MLX_WINDOW_EVENT, id, 7); break;
 						case SDL_WINDOWEVENT_SIZE_CHANGED: functor(MLX_WINDOW_EVENT, id, 8); break;
+						case SDL_WINDOWEVENT_RESIZED: functor(MLX_WINDOW_EVENT, id, 9); break;
 						case SDL_WINDOWEVENT_RESTORED: functor(MLX_WINDOW_EVENT, id, 11); break;
 
 						default : break;
