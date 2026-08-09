@@ -313,7 +313,10 @@ MLX_API void mlx_on_event(mlx_context mlx, mlx_window win, mlx_event_type event,
  * @param x          X coordinate
  * @param y          Y coordinate
  * @param color      Color of the pixel
+ *
+ * WARNING: This function isn't performant, consider drawing to an image beforehand.
  */
+MLX_DEPRECATED("Use an image rather than directly communicating with the window")
 MLX_API void mlx_pixel_put(mlx_context mlx, mlx_window win, int x, int y, mlx_color color);
 
 

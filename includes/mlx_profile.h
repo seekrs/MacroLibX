@@ -83,6 +83,25 @@
 	#define MLX_API
 #endif
 
+#define MLX_NO_DEPRECATE
+#ifdef MLX_NO_DEPRECATE
+	#define MLX_DEPRECATED(msg)
+#elif defined(__has_c_attribute)
+	#if __has_c_attribute(deprecated)
+		#define MLX_DEPRECATED(msg) [[deprecated(msg)]]
+	#endif
+#endif
+
+#ifndef MLX_DEPRECATED
+	#if defined(__GNUC__) || defined(__clang__)
+		#define MLX_DEPRECATED(msg) __attribute__((deprecated(msg)))
+	#elif defined(_MSC_VER)
+		#define MLX_DEPRECATED(msg) __declspec(deprecated(msg))
+	#else
+		#define MLX_DEPRECATED(msg)
+	#endif
+#endif
+
 #if defined(__GNUC__) || (defined(__MWERKS__) && (__MWERKS__ >= 0x3000)) || (defined(__ICC) && (__ICC >= 600)) || defined(__ghs__)
 	#define MLX_FUNC_SIG __PRETTY_FUNCTION__
 #elif defined(__DMC__) && (__DMC__ >= 0x810)
