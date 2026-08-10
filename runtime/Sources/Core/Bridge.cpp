@@ -457,6 +457,15 @@ extern "C"
 		gs->PixelPutRegion(x, y, w, h, pixels);
 	}
 
+	void mlx_set_image_rectangle(mlx_context mlx, mlx_image image, int x, int y, int w, int h, mlx_color color)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::Texture> texture = mlx->app->GetTexture(image);
+		if(!texture)
+			return;
+		texture->SetRectangle(x, y, w, h, color);
+	}
+
 	void mlx_get_image_region(mlx_context mlx, mlx_image image, int x, int y, int w, int h, mlx_color* dst)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
