@@ -148,7 +148,7 @@ MLX_API void mlx_set_window_position(mlx_context mlx, mlx_window win, int x, int
  * @brief            Sets window size
  *
  * @param mlx        Internal MLX application
- * @param win        Internal window to move
+ * @param win        Internal window to resize
  * @param width      New width
  * @param height     New height
  */
@@ -158,16 +158,25 @@ MLX_API void mlx_set_window_size(mlx_context mlx, mlx_window win, int width, int
  * @brief            Sets window title
  *
  * @param mlx        Internal MLX application
- * @param win        Internal window to move
+ * @param win        Internal window to modify
  * @param title      New title
  */
 MLX_API void mlx_set_window_title(mlx_context mlx, mlx_window win, const char* title);
 
 /**
+ * @brief            Sets window icon
+ *
+ * @param mlx        Internal MLX application
+ * @param win        Internal window to modify
+ * @param image      New icon image
+ */
+MLX_API void mlx_set_window_icon(mlx_context mlx, mlx_window win, mlx_image image);
+
+/**
  * @brief            Enables/Disables window fullscreen mode
  *
  * @param mlx        Internal MLX application
- * @param win        Internal window to move
+ * @param win        Internal window to modify
  * @param enable     Switch or not to fullscreen
  */
 MLX_API void mlx_set_window_fullscreen(mlx_context mlx, mlx_window win, bool enable);
@@ -176,7 +185,7 @@ MLX_API void mlx_set_window_fullscreen(mlx_context mlx, mlx_window win, bool ena
  * @brief            Gets window position
  *
  * @param mlx        Internal MLX application
- * @param win        Internal window to move
+ * @param win        Internal window to get from
  * @param x          Pointers to get position of the window
  * @param y          Pointers to get position of the window
  */
@@ -186,7 +195,7 @@ MLX_API void mlx_get_window_position(mlx_context mlx, mlx_window win, int* x, in
  * @brief            Gets window size
  *
  * @param mlx        Internal MLX application
- * @param win        Internal window to move
+ * @param win        Internal window to get from
  * @param x          Pointers to get size of the window
  * @param y          Pointers to get size of the window
  */

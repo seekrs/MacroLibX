@@ -4,6 +4,7 @@
 #include <mlx.h>
 #include <Maths/Vec2.h>
 #include <Core/SDLManager.h>
+#include <Renderer/Image.h>
 
 namespace mlx
 {
@@ -24,6 +25,7 @@ namespace mlx
 			MLX_FORCEINLINE void SetPosition(int x, int y) { SDLManager::Get().SetWindowPosition(p_window, x, y); }
 			MLX_FORCEINLINE void SetSize(int x, int y) { SDLManager::Get().SetWindowSize(p_window, x, y); m_width = x; m_height = y; }
 			MLX_FORCEINLINE void SetTitle(std::string title) { SDLManager::Get().SetWindowTitle(p_window, title); m_name = std::move(title); }
+			MLX_FORCEINLINE void SetIcon(NonOwningPtr<Texture> texture) {SDLManager::Get().SetWindowIcon(p_window, texture); }
 			MLX_FORCEINLINE void SetFullscreen(bool enable) { SDLManager::Get().SetWindowFullscreen(p_window, enable); }
 			MLX_FORCEINLINE void SetMaxSize(int x, int y) { SDLManager::Get().SetWindowMaxSize(p_window, x, y); }
 			MLX_FORCEINLINE void SetMinSize(int x, int y) { SDLManager::Get().SetWindowMinSize(p_window, x, y); }

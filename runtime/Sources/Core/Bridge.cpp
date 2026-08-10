@@ -90,16 +90,28 @@ extern "C"
 
 	void mlx_set_window_title(mlx_context mlx, mlx_window win, const char* title)
 	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
 		if (title == nullptr)
 		{
 			mlx::Error("invalid window title (NULL)");
 			return;
 		}
-		MLX_CHECK_APPLICATION_POINTER(mlx);
 		mlx::NonOwningPtr<mlx::GraphicsSupport> gs = mlx->app->GetGraphicsSupport(win);
 		if(!gs && !gs->HasWindow())
 			return;
 		gs->GetWindow()->SetTitle(title);
+	}
+
+	void mlx_set_window_icon(mlx_context mlx, mlx_window win, mlx_image image)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::GraphicsSupport> gs = mlx->app->GetGraphicsSupport(win);
+		if(!gs && !gs->HasWindow())
+			return;
+		mlx::NonOwningPtr<mlx::Texture> texture = mlx->app->GetTexture(image);
+		if(!texture)
+			return;
+		gs->GetWindow()->SetIcon(texture);
 	}
 
 	void mlx_set_window_fullscreen(mlx_context mlx, mlx_window win, bool enable)

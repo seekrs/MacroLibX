@@ -1,3 +1,5 @@
+#include "Utils/Buffer.h"
+#include "mlx.h"
 #include <PreCompiled.h>
 #include <Renderer/Image.h>
 #include <Maths/Vec4.h>
@@ -347,6 +349,17 @@ namespace mlx
 		TransitionLayout(old_layout, cmd);
 
 		m_has_been_modified = false;
+	}
+
+	mlx_color* Texture::GetBufferCopy() noexcept
+	{
+		MLX_PROFILE_FUNCTION();
+		if(!m_staging_buffer.has_value())
+			OpenCPUBuffer();
+
+		mlx_color* dst = new mlx_color[m_width * m_height];
+		std::memcpy(dst, m_staging_buffer->GetMap<mlx_color*>(), m_width * m_height * sizeof(mlx_color));
+		return dst;
 	}
 
 	void Texture::OpenCPUBuffer()

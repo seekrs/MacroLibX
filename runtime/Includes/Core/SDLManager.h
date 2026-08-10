@@ -3,6 +3,7 @@
 
 #include <mlx.h>
 #include <Maths/Vec2.h>
+#include <Renderer/Image.h>
 
 namespace mlx
 {
@@ -26,6 +27,7 @@ namespace mlx
 			void SetWindowPosition(Handle window, int x, int y) const noexcept;
 			void SetWindowSize(Handle window, int x, int y) const noexcept;
 			void SetWindowTitle(Handle window, std::string_view title) const noexcept;
+			void SetWindowIcon(Handle window, NonOwningPtr<Texture> texture) const noexcept;
 			void SetWindowFullscreen(Handle window, bool enable) const noexcept;
 			void SetWindowMaxSize(Handle window, int x, int y) const noexcept;
 			void SetWindowMinSize(Handle window, int x, int y) const noexcept;

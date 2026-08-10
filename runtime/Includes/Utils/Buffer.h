@@ -1,6 +1,8 @@
 #ifndef __MLX_CPU_BUFFER__
 #define __MLX_CPU_BUFFER__
 
+#include <PreCompiled.h>
+
 namespace mlx
 {
 	class CPUBuffer

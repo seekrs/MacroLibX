@@ -94,6 +94,8 @@ namespace mlx
 
 			void Swap(Texture& texture) noexcept;
 
+			mlx_color* GetBufferCopy() noexcept;
+
 			// If a valid cmd buffer is passed, this function takes ownership and makes it invalid after
 			void SyncCPUBuffer(VkCommandBuffer cmd = VK_NULL_HANDLE);
 			void Update(VkCommandBuffer cmd);

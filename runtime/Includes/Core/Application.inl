@@ -70,7 +70,7 @@ namespace mlx
 		}
 		if (info->title == nullptr)
 		{
-			mlx::Error("invalid window title (NULL)");
+			Error("invalid window title (NULL)");
 			return nullptr;
 		}
 
