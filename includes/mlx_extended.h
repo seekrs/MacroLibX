@@ -153,7 +153,7 @@ MLX_API void mlx_set_image_region(mlx_context mlx, mlx_image image, int x, int y
  * @param scale_y    Scale y of the image
  * @param angle      Rotation angle of the image (clockwise)
  */
-MLX_API void mlx_put_transformed_image_to_window(mlx_context mlx, mlx_window win, mlx_image image, int x, int y, float scale_x, float scale_y, float angle);
+MLX_API void mlx_put_transformed_image_to_window(mlx_context mlx, mlx_window win, mlx_image image, float x, float y, float scale_x, float scale_y, float angle);
 
 /**
  * @brief            Get direct pointers to hidden functions

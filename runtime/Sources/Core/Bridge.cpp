@@ -458,7 +458,7 @@ extern "C"
 		texture->SetRegion(x, y, w, h, pixels);
 	}
 
-	void mlx_put_transformed_image_to_window(mlx_context mlx, mlx_window win, mlx_image image, int x, int y, float scale_x, float scale_y, float angle)
+	void mlx_put_transformed_image_to_window(mlx_context mlx, mlx_window win, mlx_image image, float x, float y, float scale_x, float scale_y, float angle)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		mlx::NonOwningPtr<mlx::GraphicsSupport> gs = mlx->app->GetGraphicsSupport(win);
