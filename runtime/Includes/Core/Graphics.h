@@ -28,7 +28,7 @@ namespace mlx
 			void PixelPutArray(int x, int y, mlx_color* color, std::size_t pixels_size) noexcept;
 			void PixelPutRegion(int x, int y, int w, int h, mlx_color* color) noexcept;
 			void StringPut(int x, int y, mlx_color color, std::string str);
-			void TexturePut(NonOwningPtr<class Texture> texture, int x, int y, float scale_x, float scale_y, float angle);
+			void TexturePut(NonOwningPtr<class Texture> texture, float x, float y, float scale_x, float scale_y, float angle);
 
 			inline void TryEraseSpritesInScene(NonOwningPtr<Texture> texture) noexcept;
 
