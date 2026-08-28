@@ -1,3 +1,5 @@
+#include "Utils/Buffer.h"
+#include "mlx.h"
 #include <PreCompiled.h>
 #include <Core/SDLManager.h>
 #include <Core/Memory.h>
@@ -56,7 +58,12 @@ namespace mlx
 		infos->window = SDL_CreateWindow(info->title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, info->width, info->height, flags);
 		if(!infos->window)
 			FatalError("SDL: unable to open a new window; %", SDL_GetError());
-		infos->icon = SDL_CreateRGBSurfaceFrom(static_cast<void*>(logo_mlx), logo_mlx_width, logo_mlx_height, 32, 4 * logo_mlx_width, Rmask(), Gmask(), Bmask(), Amask());
+
+		mlx_color* buffer = new mlx_color[logo_mlx_size];
+		std::memcpy(buffer, logo_mlx, logo_mlx_size);
+		infos->icon = SDL_CreateRGBSurfaceFrom(buffer, logo_mlx_width, logo_mlx_height, 32, logo_mlx_width * 4, Rmask(), Gmask(), Bmask(), Amask());
+		if(!infos->icon)
+			FatalError("SDL: unable to create a window icon; %", SDL_GetError());
 		SDL_SetWindowIcon(infos->window, infos->icon);
 
 		m_windows_registry.insert(infos);
@@ -74,7 +81,10 @@ namespace mlx
 		if(infos->window != nullptr)
 			SDL_DestroyWindow(infos->window);
 		if(infos->icon != nullptr)
+		{
+			delete[] reinterpret_cast<mlx_color*>(infos->icon->pixels);
 			SDL_FreeSurface(infos->icon);
+		}
 
 		m_windows_registry.erase(infos);
 		delete infos;
@@ -150,6 +160,21 @@ namespace mlx
 	void SDLManager::SetWindowTitle(Handle window, std::string_view title) const noexcept
 	{
 		SDL_SetWindowTitle(static_cast<Internal::WindowInfos*>(window)->window, title.data());
+	}
+
+	void SDLManager::SetWindowIcon(Handle window, NonOwningPtr<Texture> texture) const noexcept
+	{
+		Internal::WindowInfos* infos = static_cast<Internal::WindowInfos*>(window);
+		if(infos->icon != nullptr)
+		{
+			delete[] reinterpret_cast<mlx_color*>(infos->icon->pixels);
+			SDL_FreeSurface(infos->icon);
+		}
+
+		int width = texture->GetWidth(), height = texture->GetHeight();
+
+		infos->icon = SDL_CreateRGBSurfaceFrom(texture->GetBufferCopy(), width, height, 32, width * 4, Rmask(), Gmask(), Bmask(), Amask());
+		SDL_SetWindowIcon(infos->window, infos->icon);
 	}
 
 	void SDLManager::SetWindowFullscreen(Handle window, bool enable) const noexcept
@@ -276,6 +301,7 @@ namespace mlx
 						case SDL_WINDOWEVENT_LEAVE: functor(MLX_WINDOW_EVENT, id, 6); break;
 						case SDL_WINDOWEVENT_FOCUS_LOST: functor(MLX_WINDOW_EVENT, id, 7); break;
 						case SDL_WINDOWEVENT_SIZE_CHANGED: functor(MLX_WINDOW_EVENT, id, 8); break;
+						case SDL_WINDOWEVENT_RESIZED: functor(MLX_WINDOW_EVENT, id, 9); break;
 						case SDL_WINDOWEVENT_RESTORED: functor(MLX_WINDOW_EVENT, id, 11); break;
 
 						default : break;

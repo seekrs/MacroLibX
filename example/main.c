@@ -177,6 +177,8 @@ int main(void)
 	mlx.logo_png = mlx_new_image_from_file(mlx.mlx, "42_logo.png", &dummy, &dummy);
 	mlx.logo_jpg = mlx_new_image_from_file(mlx.mlx, "42_logo.jpg", &dummy, &dummy);
 
+	mlx_set_window_icon(mlx.mlx, mlx.win, mlx.logo_png);
+
 	mlx_pixel_put(mlx.mlx, mlx.win, 200, 10, (mlx_color){ .rgba = 0xFF00FFFF });
 	mlx_put_image_to_window(mlx.mlx, mlx.win, mlx.logo_png, 0, 0);
 
@@ -193,7 +195,7 @@ int main(void)
 	mlx_destroy_image(mlx.mlx, mlx.logo_bmp);
 	mlx_destroy_image(mlx.mlx, mlx.img);
 	mlx_destroy_window(mlx.mlx, mlx.win);
-	
+
 	mlx_destroy_context(mlx.mlx);
 
 	return 0;

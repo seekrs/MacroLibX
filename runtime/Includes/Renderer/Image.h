@@ -86,6 +86,7 @@ namespace mlx
 			void SetPixel(int x, int y, mlx_color color) noexcept;
 			void SetRegion(int x, int y, int w, int h, mlx_color* color) noexcept;
 			void SetLinearRegion(int x, int y, std::size_t len, mlx_color* color) noexcept;
+			void SetRectangle(int x, int y, int w, int h, mlx_color color) noexcept;
 			mlx_color GetPixel(int x, int y) noexcept;
 			void GetRegion(int x, int y, int w, int h, mlx_color* dst) noexcept;
 			void Clear(VkCommandBuffer cmd, Vec4f color) override;
@@ -93,6 +94,8 @@ namespace mlx
 			void Resize(std::uint32_t width, std::uint32_t height);
 
 			void Swap(Texture& texture) noexcept;
+
+			mlx_color* GetBufferCopy() noexcept;
 
 			// If a valid cmd buffer is passed, this function takes ownership and makes it invalid after
 			void SyncCPUBuffer(VkCommandBuffer cmd = VK_NULL_HANDLE);

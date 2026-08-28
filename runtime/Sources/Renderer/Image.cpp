@@ -1,3 +1,5 @@
+#include "Utils/Buffer.h"
+#include "mlx.h"
 #include <PreCompiled.h>
 #include <Renderer/Image.h>
 #include <Maths/Vec4.h>
@@ -284,6 +286,36 @@ namespace mlx
 		m_has_been_modified = true;
 	}
 
+	void Texture::SetRectangle(int x, int y, int w, int h, mlx_color color) noexcept
+	{
+		MLX_PROFILE_FUNCTION();
+		if(w < 0 || h < 0 || x < -w || y < -h
+			|| x >= static_cast<int>(m_width) || y >= static_cast<int>(m_height))
+			return;
+		if(!m_staging_buffer.has_value())
+			OpenCPUBuffer();
+		const int
+			start_x = std::max<int>(x, 0),
+			start_row = std::max<int>(y, 0) * m_width,
+			end_x = std::min<int>(x + w, m_width),
+			end_row = std::min<int>(y + h, m_height) * m_width;
+		for(int dx = start_x, row = start_row;; dx++)
+		{
+			if(dx >= end_x)
+			{
+				dx = start_x;
+				row += m_width;
+				if(row >= end_row)
+					break;
+			}
+			if constexpr(std::endian::native == std::endian::little)
+				m_staging_buffer->GetMap<mlx_color*>()[row + dx] = ReverseColor(color);
+			else
+				m_staging_buffer->GetMap<mlx_color*>()[row + dx] = color;
+		}
+		m_has_been_modified = true;
+	}
+
 	mlx_color Texture::GetPixel(int x, int y) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
@@ -347,6 +379,17 @@ namespace mlx
 		TransitionLayout(old_layout, cmd);
 
 		m_has_been_modified = false;
+	}
+
+	mlx_color* Texture::GetBufferCopy() noexcept
+	{
+		MLX_PROFILE_FUNCTION();
+		if(!m_staging_buffer.has_value())
+			OpenCPUBuffer();
+
+		mlx_color* dst = new mlx_color[m_width * m_height];
+		std::memcpy(dst, m_staging_buffer->GetMap<mlx_color*>(), m_width * m_height * sizeof(mlx_color));
+		return dst;
 	}
 
 	void Texture::OpenCPUBuffer()

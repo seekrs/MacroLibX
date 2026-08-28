@@ -61,7 +61,7 @@ extern "C"
 	mlx_window mlx_new_window(mlx_context mlx, const mlx_window_create_info* info)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
-		return mlx->app->NewGraphicsSuport(info);
+		return mlx->app->NewGraphicsSupport(info);
 	}
 
 	void mlx_destroy_window(mlx_context mlx, mlx_window win)
@@ -91,10 +91,27 @@ extern "C"
 	void mlx_set_window_title(mlx_context mlx, mlx_window win, const char* title)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
+		if (title == nullptr)
+		{
+			mlx::Error("invalid window title (NULL)");
+			return;
+		}
 		mlx::NonOwningPtr<mlx::GraphicsSupport> gs = mlx->app->GetGraphicsSupport(win);
 		if(!gs && !gs->HasWindow())
 			return;
 		gs->GetWindow()->SetTitle(title);
+	}
+
+	void mlx_set_window_icon(mlx_context mlx, mlx_window win, mlx_image image)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::GraphicsSupport> gs = mlx->app->GetGraphicsSupport(win);
+		if(!gs && !gs->HasWindow())
+			return;
+		mlx::NonOwningPtr<mlx::Texture> texture = mlx->app->GetTexture(image);
+		if(!texture)
+			return;
+		gs->GetWindow()->SetIcon(texture);
 	}
 
 	void mlx_set_window_fullscreen(mlx_context mlx, mlx_window win, bool enable)
@@ -438,6 +455,15 @@ extern "C"
 		if(!gs)
 			return;
 		gs->PixelPutRegion(x, y, w, h, pixels);
+	}
+
+	void mlx_set_image_rectangle(mlx_context mlx, mlx_image image, int x, int y, int w, int h, mlx_color color)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::Texture> texture = mlx->app->GetTexture(image);
+		if(!texture)
+			return;
+		texture->SetRectangle(x, y, w, h, color);
 	}
 
 	void mlx_get_image_region(mlx_context mlx, mlx_image image, int x, int y, int w, int h, mlx_color* dst)

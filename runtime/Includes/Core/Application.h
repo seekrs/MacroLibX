@@ -23,7 +23,7 @@ namespace mlx
 
 			inline void OnEvent(mlx_window win, int event, void(*f)(int, void*), void* param) noexcept;
 
-			inline mlx_window NewGraphicsSuport(const mlx_window_create_info* info);
+			inline mlx_window NewGraphicsSupport(const mlx_window_create_info* info);
 			inline NonOwningPtr<GraphicsSupport> GetGraphicsSupport(mlx_window win);
 			inline void DestroyGraphicsSupport(mlx_window win);
 

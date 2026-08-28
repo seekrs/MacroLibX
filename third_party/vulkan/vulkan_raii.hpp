@@ -1,5 +1,4 @@
 // Copyright 2015-2026 The Khronos Group Inc.
-//
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 //
 
@@ -415,6 +414,10 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
           vkGetPhysicalDeviceQueueFamilyDataGraphOpticalFlowImageFormatsARM = PFN_vkGetPhysicalDeviceQueueFamilyDataGraphOpticalFlowImageFormatsARM(
             vkGetInstanceProcAddr( instance, "vkGetPhysicalDeviceQueueFamilyDataGraphOpticalFlowImageFormatsARM" ) );
 
+          //=== VK_EXT_cooperative_matrix_maintenance1 ===
+          vkGetPhysicalDeviceCooperativeMatrixProperties2EXT =
+            PFN_vkGetPhysicalDeviceCooperativeMatrixProperties2EXT( vkGetInstanceProcAddr( instance, "vkGetPhysicalDeviceCooperativeMatrixProperties2EXT" ) );
+
 #  if defined( VK_USE_PLATFORM_UBM_SEC )
           //=== VK_SEC_ubm_surface ===
           vkCreateUbmSurfaceSEC = PFN_vkCreateUbmSurfaceSEC( vkGetInstanceProcAddr( instance, "vkCreateUbmSurfaceSEC" ) );
@@ -733,6 +736,9 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
 
         //=== VK_ARM_data_graph_optical_flow ===
         PFN_vkGetPhysicalDeviceQueueFamilyDataGraphOpticalFlowImageFormatsARM vkGetPhysicalDeviceQueueFamilyDataGraphOpticalFlowImageFormatsARM = 0;
+
+        //=== VK_EXT_cooperative_matrix_maintenance1 ===
+        PFN_vkGetPhysicalDeviceCooperativeMatrixProperties2EXT vkGetPhysicalDeviceCooperativeMatrixProperties2EXT = 0;
 
 #  if defined( VK_USE_PLATFORM_UBM_SEC )
         //=== VK_SEC_ubm_surface ===
@@ -1592,6 +1598,15 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
           vkCmdDispatchTileQCOM          = PFN_vkCmdDispatchTileQCOM( vkGetDeviceProcAddr( device, "vkCmdDispatchTileQCOM" ) );
           vkCmdBeginPerTileExecutionQCOM = PFN_vkCmdBeginPerTileExecutionQCOM( vkGetDeviceProcAddr( device, "vkCmdBeginPerTileExecutionQCOM" ) );
           vkCmdEndPerTileExecutionQCOM   = PFN_vkCmdEndPerTileExecutionQCOM( vkGetDeviceProcAddr( device, "vkCmdEndPerTileExecutionQCOM" ) );
+
+          //=== VK_NV_low_latency ===
+          vkSetLatencySleepModeLegacyNV   = PFN_vkSetLatencySleepModeLegacyNV( vkGetDeviceProcAddr( device, "vkSetLatencySleepModeLegacyNV" ) );
+          vkLatencySleepLegacyNV          = PFN_vkLatencySleepLegacyNV( vkGetDeviceProcAddr( device, "vkLatencySleepLegacyNV" ) );
+          vkSetLatencyMarkerLegacyNV      = PFN_vkSetLatencyMarkerLegacyNV( vkGetDeviceProcAddr( device, "vkSetLatencyMarkerLegacyNV" ) );
+          vkGetLatencyTimingsLegacyNV     = PFN_vkGetLatencyTimingsLegacyNV( vkGetDeviceProcAddr( device, "vkGetLatencyTimingsLegacyNV" ) );
+          vkQueueNotifyOutOfBandLegacyNV  = PFN_vkQueueNotifyOutOfBandLegacyNV( vkGetDeviceProcAddr( device, "vkQueueNotifyOutOfBandLegacyNV" ) );
+          vkGetSleepStatusLegacyNV        = PFN_vkGetSleepStatusLegacyNV( vkGetDeviceProcAddr( device, "vkGetSleepStatusLegacyNV" ) );
+          vkShutdownLatencyDeviceLegacyNV = PFN_vkShutdownLatencyDeviceLegacyNV( vkGetDeviceProcAddr( device, "vkShutdownLatencyDeviceLegacyNV" ) );
 
 #  if defined( VK_USE_PLATFORM_METAL_EXT )
           //=== VK_EXT_metal_objects ===
@@ -2772,6 +2787,15 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
         PFN_vkCmdDispatchTileQCOM          vkCmdDispatchTileQCOM          = 0;
         PFN_vkCmdBeginPerTileExecutionQCOM vkCmdBeginPerTileExecutionQCOM = 0;
         PFN_vkCmdEndPerTileExecutionQCOM   vkCmdEndPerTileExecutionQCOM   = 0;
+
+        //=== VK_NV_low_latency ===
+        PFN_vkSetLatencySleepModeLegacyNV   vkSetLatencySleepModeLegacyNV   = 0;
+        PFN_vkLatencySleepLegacyNV          vkLatencySleepLegacyNV          = 0;
+        PFN_vkSetLatencyMarkerLegacyNV      vkSetLatencyMarkerLegacyNV      = 0;
+        PFN_vkGetLatencyTimingsLegacyNV     vkGetLatencyTimingsLegacyNV     = 0;
+        PFN_vkQueueNotifyOutOfBandLegacyNV  vkQueueNotifyOutOfBandLegacyNV  = 0;
+        PFN_vkGetSleepStatusLegacyNV        vkGetSleepStatusLegacyNV        = 0;
+        PFN_vkShutdownLatencyDeviceLegacyNV vkShutdownLatencyDeviceLegacyNV = 0;
 
 #  if defined( VK_USE_PLATFORM_METAL_EXT )
         //=== VK_EXT_metal_objects ===
@@ -4395,6 +4419,13 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
                                                            QueueFamilyDataGraphPropertiesARM const &      queueFamilyDataGraphProperties,
                                                            DataGraphOpticalFlowImageFormatInfoARM const & opticalFlowImageFormatInfo ) const;
 
+      //=== VK_EXT_cooperative_matrix_maintenance1 ===
+
+      // wrapper function for command vkGetPhysicalDeviceCooperativeMatrixProperties2EXT, see
+      // https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceCooperativeMatrixProperties2EXT.html
+      VULKAN_HPP_NODISCARD typename ResultValueType<std::vector<CooperativeMatrixProperties2EXT>>::type
+        getCooperativeMatrixProperties2EXT( PhysicalDeviceCooperativeMatrixInfo2EXT const & cooperativeMatrixInfo ) const;
+
 #  if defined( VK_USE_PLATFORM_UBM_SEC )
       //=== VK_SEC_ubm_surface ===
 
@@ -5541,6 +5572,27 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
         createCudaFunctionNV( CudaFunctionCreateInfoNV const &    createInfo,
                               Optional<AllocationCallbacks const> allocator = nullptr ) const VULKAN_HPP_NOEXCEPT_WHEN_NO_EXCEPTIONS;
 #  endif /*VK_ENABLE_BETA_EXTENSIONS*/
+
+      //=== VK_NV_low_latency ===
+
+      // wrapper function for command vkSetLatencySleepModeLegacyNV, see
+      // https://registry.khronos.org/vulkan/specs/latest/man/html/vkSetLatencySleepModeLegacyNV.html
+      void setLatencySleepModeLegacyNV( Bool32 lowLatencyMode, Bool32 lowLatencyBoost, uint32_t minimumIntervalUs ) const VULKAN_HPP_NOEXCEPT;
+
+      // wrapper function for command vkSetLatencyMarkerLegacyNV, see https://registry.khronos.org/vulkan/specs/latest/man/html/vkSetLatencyMarkerLegacyNV.html
+      void setLatencyMarkerLegacyNV( uint64_t frameID, uint32_t marker ) const VULKAN_HPP_NOEXCEPT;
+
+      // wrapper function for command vkGetLatencyTimingsLegacyNV, see
+      // https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetLatencyTimingsLegacyNV.html
+      template <typename TimingsType>
+      VULKAN_HPP_NODISCARD TimingsType getLatencyTimingsLegacyNV() const VULKAN_HPP_NOEXCEPT;
+
+      // wrapper function for command vkGetSleepStatusLegacyNV, see https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetSleepStatusLegacyNV.html
+      VULKAN_HPP_NODISCARD Bool32 getSleepStatusLegacyNV() const VULKAN_HPP_NOEXCEPT;
+
+      // wrapper function for command vkShutdownLatencyDeviceLegacyNV, see
+      // https://registry.khronos.org/vulkan/specs/latest/man/html/vkShutdownLatencyDeviceLegacyNV.html
+      void shutdownLatencyLegacyNV() const VULKAN_HPP_NOEXCEPT;
 
 #  if defined( VK_USE_PLATFORM_METAL_EXT )
       //=== VK_EXT_metal_objects ===
@@ -13639,6 +13691,12 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
       // wrapper function for command vkQueueSetPerfHintQCOM, see https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueSetPerfHintQCOM.html
       typename ResultValueType<void>::type setPerfHintQCOM( PerfHintInfoQCOM const & perfHintInfo ) const;
 
+      //=== VK_NV_low_latency ===
+
+      // wrapper function for command vkQueueNotifyOutOfBandLegacyNV, see
+      // https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueNotifyOutOfBandLegacyNV.html
+      void notifyOutOfBandLegacyNV( uint32_t queueType ) const VULKAN_HPP_NOEXCEPT;
+
       //=== VK_KHR_synchronization2 ===
 
       // wrapper function for command vkQueueSubmit2KHR, see https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueSubmit2KHR.html
@@ -14180,6 +14238,11 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
       // wrapper function for command vkGetSemaphoreCounterValueKHR, see
       // https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetSemaphoreCounterValueKHR.html
       VULKAN_HPP_NODISCARD typename ResultValueType<uint64_t>::type getCounterValueKHR() const;
+
+      //=== VK_NV_low_latency ===
+
+      // wrapper function for command vkLatencySleepLegacyNV, see https://registry.khronos.org/vulkan/specs/latest/man/html/vkLatencySleepLegacyNV.html
+      void latencySleepLegacyNV( uint64_t value ) const VULKAN_HPP_NOEXCEPT;
 
     private:
       VULKAN_HPP_NAMESPACE::Device     m_device     = {};
@@ -25877,6 +25940,76 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
                                                      reinterpret_cast<VkPerTileEndInfoQCOM const *>( &perTileEndInfo ) );
     }
 
+    //=== VK_NV_low_latency ===
+
+    // wrapper function for command vkSetLatencySleepModeLegacyNV, see
+    // https://registry.khronos.org/vulkan/specs/latest/man/html/vkSetLatencySleepModeLegacyNV.html
+    VULKAN_HPP_INLINE void
+      Device::setLatencySleepModeLegacyNV( Bool32 lowLatencyMode, Bool32 lowLatencyBoost, uint32_t minimumIntervalUs ) const VULKAN_HPP_NOEXCEPT
+    {
+      VULKAN_HPP_ASSERT( getDispatcher()->vkSetLatencySleepModeLegacyNV && "Function <vkSetLatencySleepModeLegacyNV> requires <VK_NV_low_latency>" );
+
+      getDispatcher()->vkSetLatencySleepModeLegacyNV(
+        static_cast<VkDevice>( m_device ), static_cast<VkBool32>( lowLatencyMode ), static_cast<VkBool32>( lowLatencyBoost ), minimumIntervalUs );
+    }
+
+    // wrapper function for command vkLatencySleepLegacyNV, see https://registry.khronos.org/vulkan/specs/latest/man/html/vkLatencySleepLegacyNV.html
+    VULKAN_HPP_INLINE void Semaphore::latencySleepLegacyNV( uint64_t value ) const VULKAN_HPP_NOEXCEPT
+    {
+      VULKAN_HPP_ASSERT( getDispatcher()->vkLatencySleepLegacyNV && "Function <vkLatencySleepLegacyNV> requires <VK_NV_low_latency>" );
+
+      getDispatcher()->vkLatencySleepLegacyNV( static_cast<VkDevice>( m_device ), static_cast<VkSemaphore>( m_semaphore ), value );
+    }
+
+    // wrapper function for command vkSetLatencyMarkerLegacyNV, see https://registry.khronos.org/vulkan/specs/latest/man/html/vkSetLatencyMarkerLegacyNV.html
+    VULKAN_HPP_INLINE void Device::setLatencyMarkerLegacyNV( uint64_t frameID, uint32_t marker ) const VULKAN_HPP_NOEXCEPT
+    {
+      VULKAN_HPP_ASSERT( getDispatcher()->vkSetLatencyMarkerLegacyNV && "Function <vkSetLatencyMarkerLegacyNV> requires <VK_NV_low_latency>" );
+
+      getDispatcher()->vkSetLatencyMarkerLegacyNV( static_cast<VkDevice>( m_device ), frameID, marker );
+    }
+
+    // wrapper function for command vkGetLatencyTimingsLegacyNV, see https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetLatencyTimingsLegacyNV.html
+    template <typename TimingsType>
+    VULKAN_HPP_NODISCARD VULKAN_HPP_INLINE TimingsType Device::getLatencyTimingsLegacyNV() const VULKAN_HPP_NOEXCEPT
+    {
+      VULKAN_HPP_ASSERT( getDispatcher()->vkGetLatencyTimingsLegacyNV && "Function <vkGetLatencyTimingsLegacyNV> requires <VK_NV_low_latency>" );
+
+      TimingsType timings;
+      getDispatcher()->vkGetLatencyTimingsLegacyNV( static_cast<VkDevice>( m_device ), &timings );
+
+      return timings;
+    }
+
+    // wrapper function for command vkQueueNotifyOutOfBandLegacyNV, see
+    // https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueNotifyOutOfBandLegacyNV.html
+    VULKAN_HPP_INLINE void Queue::notifyOutOfBandLegacyNV( uint32_t queueType ) const VULKAN_HPP_NOEXCEPT
+    {
+      VULKAN_HPP_ASSERT( getDispatcher()->vkQueueNotifyOutOfBandLegacyNV && "Function <vkQueueNotifyOutOfBandLegacyNV> requires <VK_NV_low_latency>" );
+
+      getDispatcher()->vkQueueNotifyOutOfBandLegacyNV( static_cast<VkQueue>( m_queue ), queueType );
+    }
+
+    // wrapper function for command vkGetSleepStatusLegacyNV, see https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetSleepStatusLegacyNV.html
+    VULKAN_HPP_NODISCARD VULKAN_HPP_INLINE Bool32 Device::getSleepStatusLegacyNV() const VULKAN_HPP_NOEXCEPT
+    {
+      VULKAN_HPP_ASSERT( getDispatcher()->vkGetSleepStatusLegacyNV && "Function <vkGetSleepStatusLegacyNV> requires <VK_NV_low_latency>" );
+
+      Bool32 lowLatencyMode;
+      getDispatcher()->vkGetSleepStatusLegacyNV( static_cast<VkDevice>( m_device ), reinterpret_cast<VkBool32 *>( &lowLatencyMode ) );
+
+      return lowLatencyMode;
+    }
+
+    // wrapper function for command vkShutdownLatencyDeviceLegacyNV, see
+    // https://registry.khronos.org/vulkan/specs/latest/man/html/vkShutdownLatencyDeviceLegacyNV.html
+    VULKAN_HPP_INLINE void Device::shutdownLatencyLegacyNV() const VULKAN_HPP_NOEXCEPT
+    {
+      VULKAN_HPP_ASSERT( getDispatcher()->vkShutdownLatencyDeviceLegacyNV && "Function <vkShutdownLatencyDeviceLegacyNV> requires <VK_NV_low_latency>" );
+
+      getDispatcher()->vkShutdownLatencyDeviceLegacyNV( static_cast<VkDevice>( m_device ) );
+    }
+
 #  if defined( VK_USE_PLATFORM_METAL_EXT )
     //=== VK_EXT_metal_objects ===
 
@@ -29970,6 +30103,45 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
 
       getDispatcher()->vkCmdSetComputeOccupancyPriorityNV( static_cast<VkCommandBuffer>( m_commandBuffer ),
                                                            reinterpret_cast<VkComputeOccupancyPriorityParametersNV const *>( &parameters ) );
+    }
+
+    //=== VK_EXT_cooperative_matrix_maintenance1 ===
+
+    // wrapper function for command vkGetPhysicalDeviceCooperativeMatrixProperties2EXT, see
+    // https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceCooperativeMatrixProperties2EXT.html
+    VULKAN_HPP_NODISCARD VULKAN_HPP_INLINE typename ResultValueType<std::vector<CooperativeMatrixProperties2EXT>>::type
+                         PhysicalDevice::getCooperativeMatrixProperties2EXT( PhysicalDeviceCooperativeMatrixInfo2EXT const & cooperativeMatrixInfo ) const
+    {
+      VULKAN_HPP_ASSERT( getDispatcher()->vkGetPhysicalDeviceCooperativeMatrixProperties2EXT &&
+                         "Function <vkGetPhysicalDeviceCooperativeMatrixProperties2EXT> requires <VK_EXT_cooperative_matrix_maintenance1>" );
+
+      std::vector<CooperativeMatrixProperties2EXT> properties;
+      uint32_t                                     propertyCount;
+      Result                                       result;
+      do
+      {
+        result = static_cast<Result>( getDispatcher()->vkGetPhysicalDeviceCooperativeMatrixProperties2EXT(
+          static_cast<VkPhysicalDevice>( m_physicalDevice ),
+          reinterpret_cast<VkPhysicalDeviceCooperativeMatrixInfo2EXT const *>( &cooperativeMatrixInfo ),
+          &propertyCount,
+          nullptr ) );
+        if ( ( result == Result::eSuccess ) && propertyCount )
+        {
+          properties.resize( propertyCount );
+          result = static_cast<Result>( getDispatcher()->vkGetPhysicalDeviceCooperativeMatrixProperties2EXT(
+            static_cast<VkPhysicalDevice>( m_physicalDevice ),
+            reinterpret_cast<VkPhysicalDeviceCooperativeMatrixInfo2EXT const *>( &cooperativeMatrixInfo ),
+            &propertyCount,
+            reinterpret_cast<VkCooperativeMatrixProperties2EXT *>( properties.data() ) ) );
+        }
+      } while ( result == Result::eIncomplete );
+      VULKAN_HPP_NAMESPACE::detail::resultCheck( result, VULKAN_HPP_RAII_NAMESPACE_STRING "::PhysicalDevice::getCooperativeMatrixProperties2EXT" );
+      VULKAN_HPP_ASSERT( propertyCount <= properties.size() );
+      if ( propertyCount < properties.size() )
+      {
+        properties.resize( propertyCount );
+      }
+      return VULKAN_HPP_NAMESPACE::detail::createResultValueType( result, std::move( properties ) );
     }
 
 #  if defined( VK_USE_PLATFORM_UBM_SEC )

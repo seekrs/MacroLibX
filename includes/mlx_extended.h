@@ -75,7 +75,6 @@ MLX_API void mlx_restore_window(mlx_context mlx, mlx_window win);
 
         /* Pixels drawing related functions */
 
-
 /**
  * @brief            Put an array of pixels in the window
  *
@@ -85,7 +84,12 @@ MLX_API void mlx_restore_window(mlx_context mlx, mlx_window win);
  * @param y          Y coordinate
  * @param pixels     Array of pixels
  * @param pixels_number Number of pixels
+ *
+ * Note: it is responsability of the user to make sure the size of `pixels` is
+ * big enough for the given array.
+ * WARNING: This function isn't performant, consider drawing to an image beforehand.
  */
+MLX_DEPRECATED("Use an image rather than directly communicating with the window")
 MLX_API void mlx_pixel_put_array(mlx_context mlx, mlx_window win, int x, int y, mlx_color* pixels, size_t pixels_number);
 
 /**
@@ -101,13 +105,27 @@ MLX_API void mlx_pixel_put_array(mlx_context mlx, mlx_window win, int x, int y, 
  *
  * Note: it is responsability of the user to make sure the size of `pixels` is
  * big enough for the given region.
+ * WARNING: This function isn't performant, consider drawing to an image beforehand.
  */
+MLX_DEPRECATED("Use an image rather than directly communicating with the window")
 MLX_API void mlx_pixel_put_region(mlx_context mlx, mlx_window win, int x, int y, int w, int h, mlx_color* pixels);
 
 
 
         /* Images related functions */
 
+/**
+* @brief            Set image rectangle
+*
+* @param mlx        Internal MLX application
+* @param img        Internal image
+* @param x          X coordinate in the image
+* @param y          Y coordinate in the image
+* @param w          Width of the rectangle
+* @param y          Height of the rectangle
+* @param color      Color of the rectangle
+*/
+MLX_API void mlx_set_image_rectangle(mlx_context mlx, mlx_image image, int x, int y, int w, int h, mlx_color color);
 
 /**
  * @brief            Get image region
