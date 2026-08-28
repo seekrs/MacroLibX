@@ -82,7 +82,7 @@ namespace mlx
 			SDL_DestroyWindow(infos->window);
 		if(infos->icon != nullptr)
 		{
-			delete[] (mlx_color*)infos->icon->pixels;
+			delete[] reinterpret_cast<mlx_color*>(infos->icon->pixels);
 			SDL_FreeSurface(infos->icon);
 		}
 
@@ -167,7 +167,7 @@ namespace mlx
 		Internal::WindowInfos* infos = static_cast<Internal::WindowInfos*>(window);
 		if(infos->icon != nullptr)
 		{
-			delete[] (mlx_color*)infos->icon->pixels;
+			delete[] reinterpret_cast<mlx_color*>(infos->icon->pixels);
 			SDL_FreeSurface(infos->icon);
 		}
 
