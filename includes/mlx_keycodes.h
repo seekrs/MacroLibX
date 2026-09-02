@@ -140,8 +140,41 @@ typedef enum mlx_mouse_code
 	MLX_MOUSE_MIDDLE		= 2,
 	MLX_MOUSE_RIGHT			= 3,
 	MLX_MOUSE_4				= 4,
-	MLX_MOUSE_5				= 5,
+	MLX_MOUSE_5				= 5
 } mlx_mouse_code;
+
+/**
+ * @brief           Event codes for mouse scrolling
+ */
+typedef enum mlx_mouse_scroll_code
+{
+	MLX_MOUSE_SCROLL_UP			= 1,
+	MLX_MOUSE_SCROLL_DOWN		= 2,
+	MLX_MOUSE_SCROLL_RIGHT		= 3,
+	MLX_MOUSE_SCROLL_LEFT		= 4
+} mlx_mouse_scroll_code;
+
+/**
+ * @brief           Event codes for controller buttons
+ */
+typedef enum mlx_controller_code
+{
+	MLX_CONTROLLER_A				= 0,
+    MLX_CONTROLLER_B				= 1,
+    MLX_CONTROLLER_X				= 2,
+    MLX_CONTROLLER_Y				= 3,
+    MLX_CONTROLLER_BACK				= 4,
+    MLX_CONTROLLER_GUIDE			= 5,
+    MLX_CONTROLLER_START			= 6,
+    MLX_CONTROLLER_LEFTSTICK		= 7,
+    MLX_CONTROLLER_RIGHTSTICK		= 8,
+    MLX_CONTROLLER_LEFTSHOULDER		= 9,
+    MLX_CONTROLLER_RIGHTSHOULDER	= 10,
+    MLX_CONTROLLER_DPAD_UP			= 11,
+    MLX_CONTROLLER_DPAD_DOWN		= 12,
+    MLX_CONTROLLER_DPAD_LEFT		= 13,
+    MLX_CONTROLLER_DPAD_RIGHT		= 14
+} mlx_controller_code;
 
 /**
  * @brief           Event codes for window events
