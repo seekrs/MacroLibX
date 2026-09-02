@@ -17,7 +17,7 @@ namespace mlx
 
 			SDL_Window* GetRawWindow(Handle window) noexcept;
 
-			void InputsFetcher(std::function<void(mlx_event_type, int, int)> functor);
+			void InputsFetcher(std::function<void(mlx_event_type, int, int, int)> functor);
 			void SetInputBinding(std::function<void(SDL_Event*)> functor);
 
 			VkSurfaceKHR CreateVulkanSurface(Handle window, VkInstance instance) const noexcept;
@@ -45,6 +45,9 @@ namespace mlx
 			std::int32_t GetY() const noexcept;
 			std::int32_t GetXRel() const noexcept;
 			std::int32_t GetYRel() const noexcept;
+
+			bool IsValidController(int controller_id) const noexcept;
+			float GetControllerAxis(int controller_id, int axis_kind) const noexcept;
 
 			inline static bool IsInit() noexcept { return s_instance != nullptr; }
 			inline static SDLManager& Get() noexcept { return *s_instance; }

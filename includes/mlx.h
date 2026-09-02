@@ -295,7 +295,9 @@ typedef enum mlx_event_type
 	MLX_MOUSEDOWN = 2,
 	MLX_MOUSEUP = 3,
 	MLX_MOUSEWHEEL = 4,
-	MLX_WINDOW_EVENT = 5
+	MLX_WINDOW_EVENT = 5,
+	MLX_CONTROLLERDOWN = 6,
+	MLX_CONTROLLERUP = 7
 } mlx_event_type;
 
 /**

@@ -35,7 +35,7 @@ namespace mlx
 
 		//SDL_SetHintWithPriority(SDL_HINT_SHUTDOWN_DBUS_ON_QUIT, "1", SDL_HINT_OVERRIDE);
 
-		if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER) != 0)
+		if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_GAMECONTROLLER | SDL_INIT_TIMER) != 0)
 			FatalError("SDL: unable to init all subsystems; %", SDL_GetError());
 		DebugLog("SDL Manager initialized");
 	}
@@ -259,12 +259,28 @@ namespace mlx
 		return y;
 	}
 
+	bool SDLManager::IsValidController(int controller_id) const noexcept
+	{
+		return (SDL_GameControllerFromInstanceID(controller_id) != NULL);
+	}
+
+	float SDLManager::GetControllerAxis(int controller_id, int axis) const noexcept
+	{
+		SDL_GameController* controller = SDL_GameControllerFromInstanceID(controller_id);
+
+		if (!controller)
+			return 0.0;
+
+		float value = SDL_GameControllerGetAxis(controller, (SDL_GameControllerAxis)axis);
+		return std::clamp<float>(value / SDL_JOYSTICK_AXIS_MAX, -1.0, 1.0);
+	}
+
 	void SDLManager::SetInputBinding(std::function<void(SDL_Event*)> functor)
 	{
 		m_binding_hook = std::move(functor);
 	}
 
-	void SDLManager::InputsFetcher(std::function<void(mlx_event_type, int, int)> functor)
+	void SDLManager::InputsFetcher(std::function<void(mlx_event_type, int, int, int)> functor)
 	{
 		SDL_Event event;
 		while(SDL_PollEvent(&event))
@@ -272,37 +288,39 @@ namespace mlx
 			std::uint32_t id = event.window.windowID;
 			switch(event.type)
 			{
-				case SDL_KEYUP: functor(MLX_KEYUP, id, event.key.keysym.scancode); break;
-				case SDL_KEYDOWN: functor(MLX_KEYDOWN, id, event.key.keysym.scancode); break;
-				case SDL_MOUSEBUTTONUP: functor(MLX_MOUSEUP, id, event.button.button); break;
-				case SDL_MOUSEBUTTONDOWN: functor(MLX_MOUSEDOWN, id, event.button.button); break;
+				case SDL_KEYUP: functor(MLX_KEYUP, id, 0, event.key.keysym.scancode); break;
+				case SDL_KEYDOWN: functor(MLX_KEYDOWN, id, 0, event.key.keysym.scancode); break;
+				case SDL_MOUSEBUTTONUP: functor(MLX_MOUSEUP, id, event.button.which, event.button.button); break;
+				case SDL_MOUSEBUTTONDOWN: functor(MLX_MOUSEDOWN, id, event.button.which, event.button.button); break;
 				case SDL_MOUSEWHEEL:
 				{
 					if(event.wheel.y > 0) // scroll up
-						functor(MLX_MOUSEWHEEL, id, 1);
+						functor(MLX_MOUSEWHEEL, id, event.button.which, 1);
 					else if(event.wheel.y < 0) // scroll down
-						functor(MLX_MOUSEWHEEL, id, 2);
+						functor(MLX_MOUSEWHEEL, id, event.button.which, 2);
 					if(event.wheel.x > 0) // scroll right
-						functor(MLX_MOUSEWHEEL, id, 3);
+						functor(MLX_MOUSEWHEEL, id, event.button.which, 3);
 					else if(event.wheel.x < 0) // scroll left
-						functor(MLX_MOUSEWHEEL, id, 4);
+						functor(MLX_MOUSEWHEEL, id, event.button.which, 4);
 					break;
 				}
+				case SDL_CONTROLLERBUTTONUP: functor(MLX_CONTROLLERUP, id, event.cbutton.which, event.cbutton.button); break;
+				case SDL_CONTROLLERBUTTONDOWN: functor(MLX_CONTROLLERDOWN, id, event.cbutton.which, event.cbutton.button); break;
 				case SDL_WINDOWEVENT:
 				{
 					switch(event.window.event)
 					{
-						case SDL_WINDOWEVENT_CLOSE: functor(MLX_WINDOW_EVENT, id, 0); break;
-						case SDL_WINDOWEVENT_MOVED: functor(MLX_WINDOW_EVENT, id, 1); break;
-						case SDL_WINDOWEVENT_MINIMIZED: functor(MLX_WINDOW_EVENT, id, 2); break;
-						case SDL_WINDOWEVENT_MAXIMIZED: functor(MLX_WINDOW_EVENT, id, 3); break;
-						case SDL_WINDOWEVENT_ENTER: functor(MLX_WINDOW_EVENT, id, 4); break;
-						case SDL_WINDOWEVENT_FOCUS_GAINED: functor(MLX_WINDOW_EVENT, id, 5); break;
-						case SDL_WINDOWEVENT_LEAVE: functor(MLX_WINDOW_EVENT, id, 6); break;
-						case SDL_WINDOWEVENT_FOCUS_LOST: functor(MLX_WINDOW_EVENT, id, 7); break;
-						case SDL_WINDOWEVENT_SIZE_CHANGED: functor(MLX_WINDOW_EVENT, id, 8); break;
-						case SDL_WINDOWEVENT_RESIZED: functor(MLX_WINDOW_EVENT, id, 9); break;
-						case SDL_WINDOWEVENT_RESTORED: functor(MLX_WINDOW_EVENT, id, 11); break;
+						case SDL_WINDOWEVENT_CLOSE: functor(MLX_WINDOW_EVENT, id, 0, 0); break;
+						case SDL_WINDOWEVENT_MOVED: functor(MLX_WINDOW_EVENT, id, 0, 1); break;
+						case SDL_WINDOWEVENT_MINIMIZED: functor(MLX_WINDOW_EVENT, id, 0, 2); break;
+						case SDL_WINDOWEVENT_MAXIMIZED: functor(MLX_WINDOW_EVENT, id, 0, 3); break;
+						case SDL_WINDOWEVENT_ENTER: functor(MLX_WINDOW_EVENT, id, 0, 4); break;
+						case SDL_WINDOWEVENT_FOCUS_GAINED: functor(MLX_WINDOW_EVENT, id, 0, 5); break;
+						case SDL_WINDOWEVENT_LEAVE: functor(MLX_WINDOW_EVENT, id, 0, 6); break;
+						case SDL_WINDOWEVENT_FOCUS_LOST: functor(MLX_WINDOW_EVENT, id, 0, 7); break;
+						case SDL_WINDOWEVENT_SIZE_CHANGED: functor(MLX_WINDOW_EVENT, id, 0, 8); break;
+						case SDL_WINDOWEVENT_RESIZED: functor(MLX_WINDOW_EVENT, id, 0, 9); break;
+						case SDL_WINDOWEVENT_RESTORED: functor(MLX_WINDOW_EVENT, id, 0, 11); break;
 
 						default : break;
 					}
@@ -322,7 +340,7 @@ namespace mlx
 		if(m_drop_sdl_responsability)
 			return;
 
-		SDL_QuitSubSystem(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS);
+		SDL_QuitSubSystem(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS | SDL_INIT_GAMECONTROLLER);
 		SDL_Quit();
 		s_instance = nullptr;
 		DebugLog("SDL Manager uninitialized");

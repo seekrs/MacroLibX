@@ -40,11 +40,48 @@ namespace mlx
 		*y = m_in.GetY();
 	}
 
+	int Application::GetDefaultControllerId() noexcept
+	{
+		return m_in.GetDefaultControllerId();
+	}
+
+	void Application::GetControllerLeftJoystick(int controller_id, float* x, float* y) noexcept
+	{
+		*x = m_in.GetControllerAxis(controller_id, SDL_CONTROLLER_AXIS_LEFTX);
+		*y = m_in.GetControllerAxis(controller_id, SDL_CONTROLLER_AXIS_LEFTY);
+	}
+
+	void Application::GetControllerRightJoystick(int controller_id, float* x, float* y) noexcept
+	{
+		*x = m_in.GetControllerAxis(controller_id, SDL_CONTROLLER_AXIS_RIGHTX);
+		*y = m_in.GetControllerAxis(controller_id, SDL_CONTROLLER_AXIS_RIGHTY);
+	}
+
+	void Application::GetControllerLeftTrigger(int controller_id, float* force) noexcept
+	{
+		*force = m_in.GetControllerAxis(controller_id, SDL_CONTROLLER_AXIS_TRIGGERLEFT);
+	}
+
+	void Application::GetControllerRightTrigger(int controller_id, float* force) noexcept
+	{
+		*force = m_in.GetControllerAxis(controller_id, SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
+	}
+
+	void  Application::GetCurrentEventDeviceId(int* device_id) const noexcept
+	{
+		*device_id = m_in.GetCurrentEventDeviceId();
+	}
+
 	void Application::OnEvent(mlx_window win, int event, void(*f)(int, void*), void* param) noexcept
 	{
 		CHECK_WINDOW_PTR(win, );
 		if(!m_graphics[win->id]->HasWindow())
 			return;
+		if (event < 0 || event > 7)
+		{
+			Error("invalid event");
+			return;
+		}
 		m_in.OnEvent(m_graphics[win->id]->GetWindow()->GetID(), event, f, param);
 	}
 

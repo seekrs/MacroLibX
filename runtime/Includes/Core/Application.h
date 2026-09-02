@@ -18,10 +18,18 @@ namespace mlx
 			Application();
 
 			inline void GetMousePos(int* x, int* y) noexcept;
+
+			inline int GetDefaultControllerId() noexcept;
+			inline void GetControllerLeftJoystick(int controller_id, float* x, float* y) noexcept;
+			inline void GetControllerRightJoystick(int controller_id, float* x, float* y) noexcept;
+			inline void GetControllerLeftTrigger(int controller_id, float* force) noexcept;
+			inline void GetControllerRightTrigger(int controller_id, float* force) noexcept;
+
 			inline void GetScreenSize(mlx_window win, int* w, int* h) noexcept;
 			inline void SetFPSCap(std::uint32_t fps) noexcept;
 
 			inline void OnEvent(mlx_window win, int event, void(*f)(int, void*), void* param) noexcept;
+			inline void GetCurrentEventDeviceId(int* device_id) const noexcept;
 
 			inline mlx_window NewGraphicsSupport(const mlx_window_create_info* info);
 			inline NonOwningPtr<GraphicsSupport> GetGraphicsSupport(mlx_window win);

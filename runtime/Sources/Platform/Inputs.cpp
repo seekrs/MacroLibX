@@ -16,7 +16,7 @@ namespace mlx
 
 	void Inputs::FetchInputs()
 	{
-		SDLManager::Get().InputsFetcher([this](mlx_event_type event, int window_id, int code)
+		SDLManager::Get().InputsFetcher([this](mlx_event_type event, int window_id, int device_id, int code)
 		{
 			if(!m_windows.contains(window_id))
 				return;
@@ -24,12 +24,23 @@ namespace mlx
 				return;
 			if(event == MLX_WINDOW_EVENT && code == 8)
 				EventBus::SendBroadcast(Internal::SwapchainResizeEventBroadcast{});
+
+			m_event_device_id = device_id;
 			for(const auto& hook : m_events_hooks[window_id][event])
 			{
 				if(hook.fn)
 					hook.fn(code, hook.param);
 			}
+			m_event_device_id = -1;
 		});
+	}
+
+	int Inputs::GetDefaultControllerId() noexcept
+	{
+		if (!SDLManager::Get().IsValidController(m_default_controller_id))
+			m_default_controller_id += 1;
+
+		return m_default_controller_id;
 	}
 
 	std::int32_t Inputs::GetX() const noexcept
@@ -50,5 +61,10 @@ namespace mlx
 	std::int32_t Inputs::GetYRel() const noexcept
 	{
 		return SDLManager::Get().GetYRel();
+	}
+
+	float Inputs::GetControllerAxis(int controller_id, int axis_kind) const noexcept
+	{
+		return SDLManager::Get().GetControllerAxis(controller_id, axis_kind);
 	}
 }

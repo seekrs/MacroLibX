@@ -72,6 +72,55 @@ MLX_API void mlx_minimize_window(mlx_context mlx, mlx_window win);
 MLX_API void mlx_restore_window(mlx_context mlx, mlx_window win);
 
 
+        /* Events related functions */
+
+/**
+* @brief            Get the ID of the physical device that triggered the event
+*
+* @param mlx        Internal MLX application
+* @param device_id  Get device ID
+*
+* This function only works in functions registered by mlx_on_event for mouse and controller events.
+*/
+MLX_API void mlx_event_get_current_device_id(mlx_context mlx, int *device_id);
+
+/**
+* @brief            Get controller's left joystick position
+*
+* @param mlx        Internal MLX application
+* @param id         Controller ID, 0 for default
+* @param x          Get x coordinate, ranges between -1 and 1
+* @param y          Get y coordinate, ranges between -1 and 1
+*/
+MLX_API void mlx_controller_get_left_joystick(mlx_context mlx, int id, float* x, float* y);
+
+/**
+* @brief            Get controller's right joystick position
+*
+* @param mlx        Internal MLX application
+* @param id         Controller ID, 0 for default
+* @param x          Get x coordinate, ranges between -1 and 1
+* @param y          Get y coordinate, ranges between -1 and 1
+*/
+MLX_API void mlx_controller_get_right_joystick(mlx_context mlx, int id, float* x, float* y);
+
+/**
+* @brief            Get controller's left trigger force
+*
+* @param mlx        Internal MLX application
+* @param id         Controller ID, 0 for default
+* @param pression   Get trigger force, ranges between 0 and 1
+*/
+MLX_API void mlx_controller_get_left_trigger(mlx_context mlx, int id, float* force);
+
+/**
+* @brief            Get controller's right trigger force
+*
+* @param mlx        Internal MLX application
+* @param id         Controller ID, 0 for default
+* @param pression   Get trigger force, ranges between 0 and 1
+*/
+MLX_API void mlx_controller_get_right_trigger(mlx_context mlx, int id, float* force);
 
         /* Pixels drawing related functions */
 
