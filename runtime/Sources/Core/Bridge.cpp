@@ -45,7 +45,7 @@ extern "C"
 	void mlx_set_fps_goal(mlx_context mlx, int fps)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
-		if(fps <= 0)
+		if(fps < 0)
 			fps = -1;
 		mlx->app->SetFPSCap(static_cast<std::uint32_t>(fps));
 	}
