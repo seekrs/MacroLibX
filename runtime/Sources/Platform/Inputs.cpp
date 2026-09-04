@@ -64,4 +64,9 @@ namespace mlx
 	{
 		return SDLManager::Get().GetControllerAxis(controller_id, axis_kind);
 	}
+
+	void Inputs::RumbleController(int controller_id, float low_freq, float high_freq, float duration) const noexcept
+	{
+		return SDLManager::Get().RumbleController(controller_id, high_freq, low_freq, duration);
+	}
 }

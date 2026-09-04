@@ -45,9 +45,14 @@ namespace mlx
 		return m_in.GetDefaultControllerId();
 	}
 
-	float Application::GetControllerAxis(int controller_id, int axis) noexcept
+	float Application::GetControllerAxis(int controller_id, int axis) const noexcept
 	{
 		return m_in.GetControllerAxis(controller_id, axis);
+	}
+
+	void Application::RumbleController(int controller_id, float low_freq, float high_freq, float duration) const noexcept
+	{
+		return m_in.RumbleController(controller_id, low_freq, high_freq, duration);
 	}
 
 	void Application::OnEvent(mlx_window win, int event, void(*f)(int, void*), void* param) noexcept

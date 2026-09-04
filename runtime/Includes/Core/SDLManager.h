@@ -55,6 +55,7 @@ namespace mlx
 			int RemoveController(int joystick_id) noexcept;
 			void RemoveAllControllers() noexcept;
 			float GetControllerAxis(int controller_id, int axis_kind) const noexcept;
+			void RumbleController(int controller_id, float low_freq, float high_freq, float duration) const noexcept;
 
 			inline static bool IsInit() noexcept { return s_instance != nullptr; }
 			inline static SDLManager& Get() noexcept { return *s_instance; }
@@ -70,13 +71,15 @@ namespace mlx
 				EventRequest(mlx_event_type type, int code) : type(type), code(code) {};
 			};
 
+			typedef SDL_GameController* Controller;
+
 		private:
 			static SDLManager* s_instance;
 
 			std::function<void(SDL_Event*)> m_binding_hook;
 			std::unordered_set<Handle> m_windows_registry;
 			std::vector<EventRequest> m_inactive_events;
-			std::vector<SDL_GameController*> m_controllers;
+			std::vector<Controller> m_controllers;
 			int m_active_window_id = -1;
 			bool m_drop_sdl_responsability = false;
 	};

@@ -20,7 +20,8 @@ namespace mlx
 			inline void GetMousePos(int* x, int* y) noexcept;
 
 			inline int GetDefaultControllerId() noexcept;
-			inline float GetControllerAxis(int controller_id, int axis) noexcept;
+			inline float GetControllerAxis(int controller_id, int axis) const noexcept;
+			inline void RumbleController(int controller_id, float low_freq, float high_freq, float duration) const noexcept;
 
 			inline void GetScreenSize(mlx_window win, int* w, int* h) noexcept;
 			inline void SetFPSCap(std::uint32_t fps) noexcept;

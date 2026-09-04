@@ -457,6 +457,15 @@ extern "C"
 		return mlx->app->GetControllerAxis(controller_id, axis);
 	}
 
+	void mlx_controller_rumble(mlx_context mlx, int controller_id, float high_freq, float low_freq, float duration)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+
+		if (controller_id < 0)
+			controller_id = mlx->app->GetDefaultControllerId();
+		return mlx->app->RumbleController(controller_id, high_freq, low_freq, duration);
+	}
+
 	void mlx_pixel_put_array(mlx_context mlx, mlx_window win, int x, int y, mlx_color* pixels, size_t pixels_size)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);

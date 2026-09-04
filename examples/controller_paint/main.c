@@ -1,10 +1,13 @@
 
+#include <math.h>
 #include <stdio.h>
 #include <stddef.h>
 
 #include "../../includes/mlx.h"
 #include "../../includes/mlx_extended.h"
 #include "../../includes/mlx_keycodes.h"
+
+#define MAX_PLAYER_COUNT 6
 
 typedef struct {
 	float x;
@@ -19,21 +22,27 @@ typedef struct {
 mlx_context mlx;
 mlx_window win;
 mlx_image target, overlay;
+long frame = 0;
 
 mlx_color bg = {.rgba = 0xFFFFFFFF};
 mlx_color tr = {.rgba = 0x0};
-mlx_color colors[4] = {
+
+mlx_color colors[MAX_PLAYER_COUNT] = {
 	{.rgba = 0x0000FFFF},
 	{.rgba = 0xFF0000FF},
 	{.rgba = 0x00FF00FF},
 	{.rgba = 0xFFFF00FF},
+	{.rgba = 0x00FFFFFF},
+	{.rgba = 0xFF00FFFF},
 };
 
-Cursor cursors[4] = {
+Cursor cursors[MAX_PLAYER_COUNT] = {
 	{.x = 160, .y = 90},
 	{.x = 160, .y = 90},
 	{.x = 160, .y = 90},
 	{.x = 160, .y = 90},
+	{.x = 160, .y = 90},
+	{.x = 160, .y = 90}
 };
 
 void window_event(int event, void *data)
@@ -54,7 +63,7 @@ void controller_down(mlx_controller_event_code event, void *data)
 {
 	(void)data;
 
-	if (event.controller_id >= 4)
+	if (event.controller_id >= MAX_PLAYER_COUNT)
 		return;
 
 	Cursor* cursor = &cursors[event.controller_id];
@@ -78,7 +87,7 @@ void controller_up(mlx_controller_event_code event, void *data)
 {
 	(void)data;
 
-	if (event.controller_id >= 4)
+	if (event.controller_id >= MAX_PLAYER_COUNT)
 		return;
 
 	Cursor* cursor = &cursors[event.controller_id];
@@ -93,7 +102,7 @@ void controller_up(mlx_controller_event_code event, void *data)
 
 float deadzone(float f)
 {
-	if (f > -0.005 && f < 0.005)
+	if (f > -0.1 && f < 0.1)
 		return 0.0;
 	return f;
 }
@@ -102,20 +111,31 @@ void update_cursor(int i)
 {
 	Cursor* cursor = &cursors[i];
 
-	cursor->x += deadzone(mlx_controller_get_axis(mlx, i, MLX_CONTROLLER_AXIS_RIGHTX));
-	cursor->y += deadzone(mlx_controller_get_axis(mlx, i, MLX_CONTROLLER_AXIS_RIGHTY));
-	cursor->x += 0.25 * deadzone(mlx_controller_get_axis(mlx, i, MLX_CONTROLLER_AXIS_LEFTX));
-	cursor->y += 0.25 * deadzone(mlx_controller_get_axis(mlx, i, MLX_CONTROLLER_AXIS_LEFTY));
+	float dx = deadzone(mlx_controller_get_axis(mlx, i, MLX_CONTROLLER_AXIS_RIGHTX));
+	float dy = deadzone(mlx_controller_get_axis(mlx, i, MLX_CONTROLLER_AXIS_RIGHTY));
+	dx += 0.25 * deadzone(mlx_controller_get_axis(mlx, i, MLX_CONTROLLER_AXIS_LEFTX));
+	dy += 0.25 * deadzone(mlx_controller_get_axis(mlx, i, MLX_CONTROLLER_AXIS_LEFTY));
 
+	cursor->x += dx;
+	cursor->y += dy;
 	if (cursor->x < 0) cursor->x = 0;
 	if (cursor->y < 0) cursor->y = 0;
 	if (cursor->x >= 320) cursor->x = 320;
 	if (cursor->y >= 180) cursor->y = 180;
 
 	cursor->draw = 4 * deadzone(mlx_controller_get_axis(mlx, i, MLX_CONTROLLER_AXIS_TRIGGERRIGHT));
-	if (cursor->overdraw && cursor->draw < 1) cursor->draw = 1;
 	cursor->erase = 8 * deadzone(mlx_controller_get_axis(mlx, i, MLX_CONTROLLER_AXIS_TRIGGERLEFT));
+
+	if (cursor->overdraw && cursor->draw < 1) cursor->draw = 1;
 	if (cursor->overerase && cursor->erase < 1) cursor->erase = 2;
+
+	float speed = fmin(sqrt(dx * dx + dy * dy), 1.0);
+	float force = fmax(cursor->draw, cursor->erase / 2);
+
+	if ((frame % 60) == 0 && force > 1)
+		mlx_controller_rumble(mlx, i,
+			fmin(force * (speed + 0.5) / 20, 1),
+			fmin(force * (1 - speed) / 200, 1), 0.7);
 }
 
 void update(void *data)
@@ -125,7 +145,7 @@ void update(void *data)
 	mlx_clear_window(mlx, win, bg);
 	mlx_clear_image(mlx, overlay, tr);
 
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < MAX_PLAYER_COUNT; i++)
 	{
 		Cursor* cursor = &cursors[i];
 		if (!cursor->connected)
@@ -148,13 +168,14 @@ void update(void *data)
 
 	mlx_put_transformed_image_to_window(mlx, win, target, 0, 0, 4, 4, 0);
 	mlx_put_transformed_image_to_window(mlx, win, overlay, 0, 0, 4, 4, 0);
+	frame++;
 }
 
 int main(void)
 {
 	mlx = mlx_init();
 
-	mlx_set_fps_goal(mlx, 150);
+	mlx_set_fps_goal(mlx, 120);
 
 	mlx_window_create_info info = {.title = "Controller Test", .width = 1280, .height = 720};
 	win = mlx_new_window(mlx, &info);

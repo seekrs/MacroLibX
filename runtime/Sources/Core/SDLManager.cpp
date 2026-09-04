@@ -262,7 +262,7 @@ namespace mlx
 
 	int SDLManager::GetControllerIdFromSDL(int joystick_id) const noexcept
 	{
-		SDL_GameController* controller = SDL_GameControllerFromInstanceID(joystick_id);
+		Controller controller = SDL_GameControllerFromInstanceID(joystick_id);
 
 		if (!controller)
 			return -1;
@@ -283,7 +283,7 @@ namespace mlx
 	int SDLManager::GetFirstConnectedController() const noexcept
 	{
 		auto first = std::find_if(m_controllers.cbegin(), m_controllers.cend(),
-			[](SDL_GameController* ptr) { return (ptr != nullptr); });
+			[](Controller ptr) { return (ptr != nullptr); });
 		if (first == m_controllers.cend())
 			return -1;
 		return std::distance(m_controllers.cbegin(), first);
@@ -291,7 +291,7 @@ namespace mlx
 
 	int SDLManager::AddController(int device_index) noexcept
 	{
-		SDL_GameController* controller = SDL_GameControllerOpen(device_index);
+		Controller controller = SDL_GameControllerOpen(device_index);
 
 		if (!controller)
 		{
@@ -309,7 +309,11 @@ namespace mlx
 			*first_empty = controller;
 
 		int controller_id = std::distance(m_controllers.begin(), first_empty);
-		DebugLog("SDL: Connected new controller to slot %", controller_id);
+		SDL_GameControllerSetPlayerIndex(controller, controller_id);
+
+		DebugLog("SDL: Connected \"%\" to slot % %",
+			SDL_GameControllerName(controller), controller_id,
+			SDL_GameControllerHasRumble(controller)? "": "(No rumble)");
 		return controller_id;
 	}
 
@@ -323,9 +327,12 @@ namespace mlx
 			return -1;
 		}
 
+		const char* name = SDL_GameControllerName(m_controllers[controller_id]);
+
 		SDL_GameControllerClose(m_controllers[controller_id]);
 		m_controllers[controller_id] = nullptr;
-		DebugLog("SDL: Disconnected controller at slot %", controller_id);
+
+		DebugLog("SDL: Disconnected \"%\" at slot %", name, controller_id);
 		return controller_id;
 	}
 
@@ -336,11 +343,12 @@ namespace mlx
 			if (*controller_it == nullptr)
 				continue;
 
+			const char* name = SDL_GameControllerName(*controller_it);
 			SDL_GameControllerClose(*controller_it);
 			*controller_it = nullptr;
 
 			int controller_id = std::distance(m_controllers.begin(), controller_it);
-			DebugLog("SDL: Disconnected controller at slot %", controller_id);
+			DebugLog("SDL: Disconnected \"%\" at slot %", name, controller_id);
 		}
 	}
 
@@ -351,6 +359,15 @@ namespace mlx
 
 		float value = SDL_GameControllerGetAxis(m_controllers[controller_id], (SDL_GameControllerAxis)axis);
 		return std::clamp<float>(value / SDL_JOYSTICK_AXIS_MAX, -1.0, 1.0);
+	}
+
+	void SDLManager::RumbleController(int controller_id, float low_freq, float high_freq, float duration) const noexcept
+	{
+		if (!IsControllerConnected(controller_id))
+			return;
+
+		SDL_GameControllerRumble(m_controllers[controller_id],
+			low_freq * 0xFFFF, high_freq * 0xFFFF, duration * 1000);
 	}
 
 	void SDLManager::SetInputBinding(std::function<void(SDL_Event*)> functor)
@@ -386,15 +403,9 @@ namespace mlx
 		}
 
 		if (m_active_window_id == -1)
-		{
-			m_inactive_events.push_back(EventRequest(MLX_CONTROLLERUP, code));
 			m_inactive_events.push_back(EventRequest(MLX_CONTROLLERDOWN, code));
-		}
 		else
-		{
-			functor(MLX_CONTROLLERUP, m_active_window_id, code);
 			functor(MLX_CONTROLLERDOWN, m_active_window_id, code);
-		}
 	}
 
 	void SDLManager::InputsFetcher(std::function<void(mlx_event_type, int, int)> functor)

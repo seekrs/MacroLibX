@@ -93,11 +93,11 @@ typedef struct mlx_controller_event_code
 */
 typedef enum mlx_controller_axis
 {
-	MLX_CONTROLLER_AXIS_LEFTX		 = 0,
-    MLX_CONTROLLER_AXIS_LEFTY		 = 1,
-    MLX_CONTROLLER_AXIS_RIGHTX		 = 2,
-    MLX_CONTROLLER_AXIS_RIGHTY		 = 3,
-    MLX_CONTROLLER_AXIS_TRIGGERLEFT	 = 4,
+   MLX_CONTROLLER_AXIS_LEFTX         = 0,
+    MLX_CONTROLLER_AXIS_LEFTY        = 1,
+    MLX_CONTROLLER_AXIS_RIGHTX       = 2,
+    MLX_CONTROLLER_AXIS_RIGHTY       = 3,
+    MLX_CONTROLLER_AXIS_TRIGGERLEFT  = 4,
     MLX_CONTROLLER_AXIS_TRIGGERRIGHT = 5,
 } mlx_controller_axis;
 
@@ -106,11 +106,23 @@ typedef enum mlx_controller_axis
 *
 * @param mlx        Internal MLX application
 * @param id         Controller ID (-1 for default)
-* @param axis		Axis type (see enum 'mlx_controller_axis')
+* @param axis       Axis type (see enum 'mlx_controller_axis')
 *
-* @return (float)	The axis value (ranges [-1, 1] for joysticks, [0, 1] for triggers)
+* @return (float)   The axis value (ranges [-1, 1] for joysticks, [0, 1] for triggers)
 */
 MLX_API float mlx_controller_get_axis(mlx_context mlx, int id, int axis);
+
+/**
+* @brief            Rumble a controller
+*
+* @param mlx        Internal MLX application
+* @param id         Controller ID (-1 for default)
+* @param high_freq  High frequency intensity (ranges [0, 1])
+* @param low_freq   Low frequency intensity (ranges [0, 1])
+* @param duration   Duration of the rumble in seconds
+*
+*/
+MLX_API void mlx_controller_rumble(mlx_context mlx, int controller_id, float high_freq, float low_freq, float duration);
 
         /* Pixels drawing related functions */
 
