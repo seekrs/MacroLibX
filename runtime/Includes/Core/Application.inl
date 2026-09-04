@@ -88,11 +88,6 @@ namespace mlx
 			Error("invalid window create info (NULL)");
 			return nullptr;
 		}
-		if (info->title == nullptr)
-		{
-			Error("invalid window title (NULL)");
-			return nullptr;
-		}
 
 		mlx_window window;
 		try { window = new mlx_window_handler; }

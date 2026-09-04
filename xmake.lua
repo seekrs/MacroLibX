@@ -75,7 +75,7 @@ target_end()
 target("Test")
 	set_default(false)
 	set_kind("binary")
-	set_targetdir("example")
+	set_targetdir("examples/render_test")
 
 	add_linkdirs("./")
 

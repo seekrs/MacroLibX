@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   mlx_profile.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
+/*   By: maldavid <contact@kbz8.me>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 08:49:17 by maldavid          #+#    #+#             */
 /*   Updated: 2025/10/22 13:38:43 by maldavid         ###   ########.fr       */
@@ -225,7 +225,7 @@
 
 typedef void (*mlx_function)(void);
 
-#define MLX_VERSION MLX_MAKE_VERSION(2, 2, 4)
+#define MLX_VERSION MLX_MAKE_VERSION(2, 5, 0)
 #define MLX_TARGET_VULKAN_API_VERSION MLX_MAKE_VERSION(1, 0, 0)
 
 // Checking common assumptions

@@ -46,6 +46,8 @@ namespace mlx
 		Internal::WindowInfos* infos = new Internal::WindowInfos;
 		Verify(infos != nullptr, "SDL: window allocation failed");
 
+		const char* title = info->title ? info->title : "[Unnamed MLX Window]";
+
 		std::uint32_t flags = 0;
 		if(hidden)
 			flags |= SDL_WINDOW_HIDDEN;
@@ -56,7 +58,7 @@ namespace mlx
 		if(info->is_fullscreen)
 			flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 
-		infos->window = SDL_CreateWindow(info->title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, info->width, info->height, flags);
+		infos->window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, info->width, info->height, flags);
 		if(!infos->window)
 			FatalError("SDL: unable to open a new window; %", SDL_GetError());
 
