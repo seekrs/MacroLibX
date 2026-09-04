@@ -305,7 +305,7 @@ typedef enum mlx_event_type
  *
  * @param mlx        Internal MLX application
  * @param win        Internal window
- * @param event      Event type (see union on top of this file)
+ * @param event      Event type (see enum 'mlx_event_type')
  * @param f          Function to be executed
  * @param param      Parameter given to the function
  */
@@ -365,6 +365,15 @@ MLX_API mlx_image mlx_new_image_from_file(mlx_context mlx, char* filename, int* 
  * @param img        Internal image
  */
 MLX_API void mlx_destroy_image(mlx_context mlx, mlx_image image);
+
+/**
+ * @brief            Clear image
+ *
+ * @param mlx        Internal MLX application
+ * @param img        Internal image
+ * @param color      Color of the clear
+ */
+MLX_API void mlx_clear_image(mlx_context mlx, mlx_image image, mlx_color color);
 
 /**
  * @brief            Get image pixel data

@@ -272,6 +272,15 @@ extern "C"
 		mlx->app->DestroyTexture(image);
 	}
 
+	void mlx_clear_image(mlx_context mlx, mlx_image image, mlx_color color)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::Texture> texture = mlx->app->GetTexture(image);
+		if(!texture)
+			return;
+		texture->ClearBuffer(color);
+	}
+
 	mlx_color mlx_get_image_pixel(mlx_context mlx, mlx_image image, int x, int y)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
@@ -439,47 +448,13 @@ extern "C"
 		gs->GetWindow()->Restore();
 	}
 
-	void mlx_event_get_current_device_id(mlx_context mlx, int *device_id)
+	float mlx_controller_get_axis(mlx_context mlx, int controller_id, int axis)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 
-		mlx->app->GetCurrentEventDeviceId(device_id);
-	}
-
-	void mlx_controller_get_left_joystick(mlx_context mlx, int controller_id, float* x, float* y)
-	{
-		MLX_CHECK_APPLICATION_POINTER(mlx);
-
-		if (controller_id <= 0)
+		if (controller_id < 0)
 			controller_id = mlx->app->GetDefaultControllerId();
-		mlx->app->GetControllerLeftJoystick(controller_id, x, y);
-	}
-
-	void mlx_controller_get_right_joystick(mlx_context mlx, int controller_id, float* x, float* y)
-	{
-		MLX_CHECK_APPLICATION_POINTER(mlx);
-
-		if (controller_id <= 0)
-			controller_id = mlx->app->GetDefaultControllerId();
-		mlx->app->GetControllerRightJoystick(controller_id, x, y);
-	}
-
-	void mlx_controller_get_left_trigger(mlx_context mlx, int controller_id, float* force)
-	{
-		MLX_CHECK_APPLICATION_POINTER(mlx);
-
-		if (controller_id <= 0)
-			controller_id = mlx->app->GetDefaultControllerId();
-		mlx->app->GetControllerLeftTrigger(controller_id, force);
-	}
-
-	void mlx_controller_get_right_trigger(mlx_context mlx, int controller_id, float* force)
-	{
-		MLX_CHECK_APPLICATION_POINTER(mlx);
-
-		if (controller_id <= 0)
-			controller_id = mlx->app->GetDefaultControllerId();
-		mlx->app->GetControllerRightTrigger(controller_id, force);
+		return mlx->app->GetControllerAxis(controller_id, axis);
 	}
 
 	void mlx_pixel_put_array(mlx_context mlx, mlx_window win, int x, int y, mlx_color* pixels, size_t pixels_size)

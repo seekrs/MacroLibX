@@ -211,6 +211,24 @@ namespace mlx
 		Image::Destroy();
 	}
 
+	void Texture::ClearBuffer(mlx_color color) noexcept
+	{
+		MLX_PROFILE_FUNCTION();
+
+		if(!m_staging_buffer.has_value())
+			OpenCPUBuffer();
+
+		mlx_color endian_color;
+		if constexpr(std::endian::native == std::endian::little)
+			endian_color = ReverseColor(color);
+		else
+			endian_color = color;
+
+		for(std::size_t i = 0; i < m_width * m_height; i++)
+			m_staging_buffer->GetMap<mlx_color*>()[i] = endian_color;
+		m_has_been_modified = true;
+	}
+
 	void Texture::SetPixel(int x, int y, mlx_color color) noexcept
 	{
 		MLX_PROFILE_FUNCTION();

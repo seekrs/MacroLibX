@@ -83,6 +83,7 @@ namespace mlx
 			void Init(CPUBuffer pixels, std::uint32_t width, std::uint32_t height, VkFormat format, bool is_multisampled, [[maybe_unused]] std::string_view debug_name);
 			void Destroy() noexcept override;
 
+			void ClearBuffer(mlx_color color) noexcept;
 			void SetPixel(int x, int y, mlx_color color) noexcept;
 			void SetRegion(int x, int y, int w, int h, mlx_color* color) noexcept;
 			void SetLinearRegion(int x, int y, std::size_t len, mlx_color* color) noexcept;

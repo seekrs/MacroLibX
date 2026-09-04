@@ -75,52 +75,42 @@ MLX_API void mlx_restore_window(mlx_context mlx, mlx_window win);
         /* Events related functions */
 
 /**
-* @brief            Get the ID of the physical device that triggered the event
-*
-* @param mlx        Internal MLX application
-* @param device_id  Get device ID
-*
-* This function only works in functions registered by mlx_on_event for mouse and controller events.
+* @brief           Struct representing the actual data stored in the code passed to controller event handlers
 */
-MLX_API void mlx_event_get_current_device_id(mlx_context mlx, int *device_id);
+typedef struct mlx_controller_event_code
+{
+	#if MLX_BYTEORDER == MLX_LITTLE_ENDIAN
+		short button;
+		short controller_id;
+	#else
+		short controller_id;
+		short button;
+	#endif
+} mlx_controller_event_code;
 
 /**
-* @brief            Get controller's left joystick position
-*
-* @param mlx        Internal MLX application
-* @param id         Controller ID, 0 for default
-* @param x          Get x coordinate, ranges between -1 and 1
-* @param y          Get y coordinate, ranges between -1 and 1
+* @brief           Codes for polling analog controller inputs
 */
-MLX_API void mlx_controller_get_left_joystick(mlx_context mlx, int id, float* x, float* y);
+typedef enum mlx_controller_axis
+{
+	MLX_CONTROLLER_AXIS_LEFTX		 = 0,
+    MLX_CONTROLLER_AXIS_LEFTY		 = 1,
+    MLX_CONTROLLER_AXIS_RIGHTX		 = 2,
+    MLX_CONTROLLER_AXIS_RIGHTY		 = 3,
+    MLX_CONTROLLER_AXIS_TRIGGERLEFT	 = 4,
+    MLX_CONTROLLER_AXIS_TRIGGERRIGHT = 5,
+} mlx_controller_axis;
 
 /**
-* @brief            Get controller's right joystick position
+* @brief            Get a controller's analog input
 *
 * @param mlx        Internal MLX application
-* @param id         Controller ID, 0 for default
-* @param x          Get x coordinate, ranges between -1 and 1
-* @param y          Get y coordinate, ranges between -1 and 1
-*/
-MLX_API void mlx_controller_get_right_joystick(mlx_context mlx, int id, float* x, float* y);
-
-/**
-* @brief            Get controller's left trigger force
+* @param id         Controller ID (-1 for default)
+* @param axis		Axis type (see enum 'mlx_controller_axis')
 *
-* @param mlx        Internal MLX application
-* @param id         Controller ID, 0 for default
-* @param pression   Get trigger force, ranges between 0 and 1
+* @return (float)	The axis value (ranges [-1, 1] for joysticks, [0, 1] for triggers)
 */
-MLX_API void mlx_controller_get_left_trigger(mlx_context mlx, int id, float* force);
-
-/**
-* @brief            Get controller's right trigger force
-*
-* @param mlx        Internal MLX application
-* @param id         Controller ID, 0 for default
-* @param pression   Get trigger force, ranges between 0 and 1
-*/
-MLX_API void mlx_controller_get_right_trigger(mlx_context mlx, int id, float* force);
+MLX_API float mlx_controller_get_axis(mlx_context mlx, int id, int axis);
 
         /* Pixels drawing related functions */
 

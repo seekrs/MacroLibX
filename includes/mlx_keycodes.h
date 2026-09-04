@@ -155,6 +155,24 @@ typedef enum mlx_mouse_scroll_code
 } mlx_mouse_scroll_code;
 
 /**
+ * @brief           Event codes for window events
+ */
+typedef enum mlx_window_code
+{
+	MLX_WINDOW_CLOSE		= 0,
+	MLX_WINDOW_MOVED		= 1,
+	MLX_WINDOW_MINIMIZED	= 2,
+	MLX_WINDOW_MAXIMIZED	= 3,
+	MLX_WINDOW_ENTER		= 4,
+	MLX_WINDOW_FOCUS		= 5,
+	MLX_WINDOW_LEAVE		= 6,
+	MLX_WINDOW_UNFOCUS		= 7,
+	MLX_WINDOW_SIZE_CHANGED	= 8,
+	MLX_WINDOW_RESIZED		= 9,
+	MLX_WINDOW_RESTORED		= 11
+} mlx_window_code;
+
+/**
  * @brief           Event codes for controller buttons
  */
 typedef enum mlx_controller_code
@@ -173,26 +191,14 @@ typedef enum mlx_controller_code
     MLX_CONTROLLER_DPAD_UP			= 11,
     MLX_CONTROLLER_DPAD_DOWN		= 12,
     MLX_CONTROLLER_DPAD_LEFT		= 13,
-    MLX_CONTROLLER_DPAD_RIGHT		= 14
-} mlx_controller_code;
+    MLX_CONTROLLER_DPAD_RIGHT		= 14,
 
-/**
- * @brief           Event codes for window events
- */
-typedef enum mlx_window_code
-{
-	MLX_WINDOW_CLOSE		= 0,
-	MLX_WINDOW_MOVED		= 1,
-	MLX_WINDOW_MINIMIZED	= 2,
-	MLX_WINDOW_MAXIMIZED	= 3,
-	MLX_WINDOW_ENTER		= 4,
-	MLX_WINDOW_FOCUS		= 5,
-	MLX_WINDOW_LEAVE		= 6,
-	MLX_WINDOW_UNFOCUS		= 7,
-	MLX_WINDOW_SIZE_CHANGED	= 8,
-	MLX_WINDOW_RESIZED		= 9,
-	MLX_WINDOW_RESTORED		= 11
-} mlx_window_code;
+    MLX_CONTROLLER_CONNECT			= 128,
+    MLX_CONTROLLER_DISCONNECT		= 129,
+
+    MLX_CONTROLLER_KEYCODE_MASK		= 0x0000FFFF,
+    MLX_CONTROLLER_ID_MASK			= 0xFFFF0000
+} mlx_controller_code;
 
 #ifdef __cplusplus
 }

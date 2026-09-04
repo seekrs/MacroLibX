@@ -45,31 +45,9 @@ namespace mlx
 		return m_in.GetDefaultControllerId();
 	}
 
-	void Application::GetControllerLeftJoystick(int controller_id, float* x, float* y) noexcept
+	float Application::GetControllerAxis(int controller_id, int axis) noexcept
 	{
-		*x = m_in.GetControllerAxis(controller_id, SDL_CONTROLLER_AXIS_LEFTX);
-		*y = m_in.GetControllerAxis(controller_id, SDL_CONTROLLER_AXIS_LEFTY);
-	}
-
-	void Application::GetControllerRightJoystick(int controller_id, float* x, float* y) noexcept
-	{
-		*x = m_in.GetControllerAxis(controller_id, SDL_CONTROLLER_AXIS_RIGHTX);
-		*y = m_in.GetControllerAxis(controller_id, SDL_CONTROLLER_AXIS_RIGHTY);
-	}
-
-	void Application::GetControllerLeftTrigger(int controller_id, float* force) noexcept
-	{
-		*force = m_in.GetControllerAxis(controller_id, SDL_CONTROLLER_AXIS_TRIGGERLEFT);
-	}
-
-	void Application::GetControllerRightTrigger(int controller_id, float* force) noexcept
-	{
-		*force = m_in.GetControllerAxis(controller_id, SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
-	}
-
-	void  Application::GetCurrentEventDeviceId(int* device_id) const noexcept
-	{
-		*device_id = m_in.GetCurrentEventDeviceId();
+		return m_in.GetControllerAxis(controller_id, axis);
 	}
 
 	void Application::OnEvent(mlx_window win, int event, void(*f)(int, void*), void* param) noexcept

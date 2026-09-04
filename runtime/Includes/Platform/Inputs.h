@@ -25,13 +25,12 @@ namespace mlx
 
 			inline void RegisterWindow(std::shared_ptr<Window> window) { m_windows[window->GetID()] = window; }
 
-			int GetDefaultControllerId() noexcept;
-
 			std::int32_t GetX() const noexcept;
 			std::int32_t GetY() const noexcept;
 			std::int32_t GetXRel() const noexcept;
 			std::int32_t GetYRel() const noexcept;
 
+			int GetDefaultControllerId() noexcept;
 			float GetControllerAxis(int controller_id, int axis_kind) const noexcept;
 
 			inline bool IsMouseMoving() const noexcept { return GetXRel() || GetYRel(); }
@@ -39,7 +38,6 @@ namespace mlx
 			MLX_FORCEINLINE constexpr void Finish() noexcept { m_run = false; }
 			MLX_FORCEINLINE constexpr void Run() noexcept { m_run = true; }
 
-			MLX_FORCEINLINE int GetCurrentEventDeviceId() const noexcept { return m_event_device_id; }
 			inline void OnEvent(std::uint32_t id, int event, void(*f)(int, void*), void* param) noexcept
 			{
 				m_events_hooks[id][event].emplace_back(f, param);
@@ -49,9 +47,7 @@ namespace mlx
 
 		private:
 			std::unordered_map<std::uint32_t, std::shared_ptr<Window>> m_windows;
-			std::unordered_map<std::uint32_t, std::array<std::vector<Hook>, 6>> m_events_hooks;
-			int m_default_controller_id = 0;
-			int m_event_device_id = -1;
+			std::unordered_map<std::uint32_t, std::array<std::vector<Hook>, 8>> m_events_hooks;
 			bool m_run = false;
 	};
 }

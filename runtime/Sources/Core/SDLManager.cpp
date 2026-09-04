@@ -1,5 +1,6 @@
 #include "Utils/Buffer.h"
 #include "mlx.h"
+#include "mlx_keycodes.h"
 #include <PreCompiled.h>
 #include <Core/SDLManager.h>
 #include <Core/Memory.h>
@@ -35,7 +36,7 @@ namespace mlx
 
 		//SDL_SetHintWithPriority(SDL_HINT_SHUTDOWN_DBUS_ON_QUIT, "1", SDL_HINT_OVERRIDE);
 
-		if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_GAMECONTROLLER | SDL_INIT_TIMER) != 0)
+		if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER | SDL_INIT_TIMER) != 0)
 			FatalError("SDL: unable to init all subsystems; %", SDL_GetError());
 		DebugLog("SDL Manager initialized");
 	}
@@ -259,19 +260,96 @@ namespace mlx
 		return y;
 	}
 
-	bool SDLManager::IsValidController(int controller_id) const noexcept
+	int SDLManager::GetControllerIdFromSDL(int joystick_id) const noexcept
 	{
-		return (SDL_GameControllerFromInstanceID(controller_id) != NULL);
+		SDL_GameController* controller = SDL_GameControllerFromInstanceID(joystick_id);
+
+		if (!controller)
+			return -1;
+
+		auto match = std::find(m_controllers.begin(), m_controllers.end(), controller);
+		if (match == m_controllers.end())
+			return -1;
+		return std::distance(m_controllers.begin(), match);
+	}
+
+	bool SDLManager::IsControllerConnected(int controller_id) const noexcept
+	{
+		if (controller_id < 0 || controller_id >= static_cast<int>(m_controllers.size()))
+			return false;
+		return (m_controllers[controller_id] != nullptr);
+	}
+
+	int SDLManager::GetFirstConnectedController() const noexcept
+	{
+		auto first = std::find_if(m_controllers.cbegin(), m_controllers.cend(),
+			[](SDL_GameController* ptr) { return (ptr != nullptr); });
+		if (first == m_controllers.cend())
+			return -1;
+		return std::distance(m_controllers.cbegin(), first);
+	}
+
+	int SDLManager::AddController(int device_index) noexcept
+	{
+		SDL_GameController* controller = SDL_GameControllerOpen(device_index);
+
+		if (!controller)
+		{
+			Error("SDL: Unable to connect controller; %", SDL_GetError());
+			return -1;
+		}
+
+		auto first_empty = std::find(m_controllers.begin(), m_controllers.end(), nullptr);
+		if (first_empty == m_controllers.end())
+		{
+			m_controllers.push_back(controller);
+			first_empty = m_controllers.end() - 1;
+		}
+		else
+			*first_empty = controller;
+
+		int controller_id = std::distance(m_controllers.begin(), first_empty);
+		DebugLog("SDL: Connected new controller to slot %", controller_id);
+		return controller_id;
+	}
+
+	int SDLManager::RemoveController(int joystick_id) noexcept
+	{
+		int controller_id = GetControllerIdFromSDL(joystick_id);
+
+		if (controller_id == -1)
+		{
+			Error("SDL: Tried to disconnect an invalid controller");
+			return -1;
+		}
+
+		SDL_GameControllerClose(m_controllers[controller_id]);
+		m_controllers[controller_id] = nullptr;
+		DebugLog("SDL: Disconnected controller at slot %", controller_id);
+		return controller_id;
+	}
+
+	void SDLManager::RemoveAllControllers() noexcept
+	{
+		for (auto controller_it = m_controllers.begin(); controller_it != m_controllers.end(); ++controller_it)
+		{
+			if (*controller_it == nullptr)
+				continue;
+
+			SDL_GameControllerClose(*controller_it);
+			*controller_it = nullptr;
+
+			int controller_id = std::distance(m_controllers.begin(), controller_it);
+			DebugLog("SDL: Disconnected controller at slot %", controller_id);
+		}
 	}
 
 	float SDLManager::GetControllerAxis(int controller_id, int axis) const noexcept
 	{
-		SDL_GameController* controller = SDL_GameControllerFromInstanceID(controller_id);
-
-		if (!controller)
+		if (!IsControllerConnected(controller_id))
 			return 0.0;
 
-		float value = SDL_GameControllerGetAxis(controller, (SDL_GameControllerAxis)axis);
+		float value = SDL_GameControllerGetAxis(m_controllers[controller_id], (SDL_GameControllerAxis)axis);
 		return std::clamp<float>(value / SDL_JOYSTICK_AXIS_MAX, -1.0, 1.0);
 	}
 
@@ -280,52 +358,109 @@ namespace mlx
 		m_binding_hook = std::move(functor);
 	}
 
-	void SDLManager::InputsFetcher(std::function<void(mlx_event_type, int, int, int)> functor)
+	void SDLManager::SendInactiveEvents(std::function<void(mlx_event_type, int, int)> functor)
+	{
+		while (!m_inactive_events.empty())
+		{
+			EventRequest request = m_inactive_events.back();
+			functor(request.type, m_active_window_id, request.code);
+			m_inactive_events.pop_back();
+		}
+	}
+
+	#define CONTROLLER_CODE(id, code) ((id << (sizeof(short) * 8)) | code)
+
+	void SDLManager::HandleControllerDeviceEvent(std::function<void(mlx_event_type, int, int)> functor, SDL_Event event)
+	{
+		int code;
+
+		if (event.type == SDL_CONTROLLERDEVICEADDED)
+		{
+			int controller_id = AddController(event.cbutton.which);
+			code = CONTROLLER_CODE(controller_id, MLX_CONTROLLER_CONNECT);
+		}
+		else
+		{
+			int controller_id = RemoveController(event.cbutton.which);
+			code = CONTROLLER_CODE(controller_id, MLX_CONTROLLER_DISCONNECT);
+		}
+
+		if (m_active_window_id == -1)
+		{
+			m_inactive_events.push_back(EventRequest(MLX_CONTROLLERUP, code));
+			m_inactive_events.push_back(EventRequest(MLX_CONTROLLERDOWN, code));
+		}
+		else
+		{
+			functor(MLX_CONTROLLERUP, m_active_window_id, code);
+			functor(MLX_CONTROLLERDOWN, m_active_window_id, code);
+		}
+	}
+
+	void SDLManager::InputsFetcher(std::function<void(mlx_event_type, int, int)> functor)
 	{
 		SDL_Event event;
 		while(SDL_PollEvent(&event))
 		{
-			std::uint32_t id = event.window.windowID;
+			int id = event.window.windowID;
 			switch(event.type)
 			{
-				case SDL_KEYUP: functor(MLX_KEYUP, id, 0, event.key.keysym.scancode); break;
-				case SDL_KEYDOWN: functor(MLX_KEYDOWN, id, 0, event.key.keysym.scancode); break;
-				case SDL_MOUSEBUTTONUP: functor(MLX_MOUSEUP, id, event.button.which, event.button.button); break;
-				case SDL_MOUSEBUTTONDOWN: functor(MLX_MOUSEDOWN, id, event.button.which, event.button.button); break;
+				case SDL_KEYUP: functor(MLX_KEYUP, id, event.key.keysym.scancode); break;
+				case SDL_KEYDOWN: functor(MLX_KEYDOWN, id, event.key.keysym.scancode); break;
+				case SDL_MOUSEBUTTONUP: functor(MLX_MOUSEUP, id, event.button.button); break;
+				case SDL_MOUSEBUTTONDOWN: functor(MLX_MOUSEDOWN, id, event.button.button); break;
 				case SDL_MOUSEWHEEL:
 				{
 					if(event.wheel.y > 0) // scroll up
-						functor(MLX_MOUSEWHEEL, id, event.button.which, 1);
+						functor(MLX_MOUSEWHEEL, id, 1);
 					else if(event.wheel.y < 0) // scroll down
-						functor(MLX_MOUSEWHEEL, id, event.button.which, 2);
+						functor(MLX_MOUSEWHEEL, id, 2);
 					if(event.wheel.x > 0) // scroll right
-						functor(MLX_MOUSEWHEEL, id, event.button.which, 3);
+						functor(MLX_MOUSEWHEEL, id, 3);
 					else if(event.wheel.x < 0) // scroll left
-						functor(MLX_MOUSEWHEEL, id, event.button.which, 4);
+						functor(MLX_MOUSEWHEEL, id, 4);
 					break;
 				}
-				case SDL_CONTROLLERBUTTONUP: functor(MLX_CONTROLLERUP, id, event.cbutton.which, event.cbutton.button); break;
-				case SDL_CONTROLLERBUTTONDOWN: functor(MLX_CONTROLLERDOWN, id, event.cbutton.which, event.cbutton.button); break;
 				case SDL_WINDOWEVENT:
 				{
 					switch(event.window.event)
 					{
-						case SDL_WINDOWEVENT_CLOSE: functor(MLX_WINDOW_EVENT, id, 0, 0); break;
-						case SDL_WINDOWEVENT_MOVED: functor(MLX_WINDOW_EVENT, id, 0, 1); break;
-						case SDL_WINDOWEVENT_MINIMIZED: functor(MLX_WINDOW_EVENT, id, 0, 2); break;
-						case SDL_WINDOWEVENT_MAXIMIZED: functor(MLX_WINDOW_EVENT, id, 0, 3); break;
-						case SDL_WINDOWEVENT_ENTER: functor(MLX_WINDOW_EVENT, id, 0, 4); break;
-						case SDL_WINDOWEVENT_FOCUS_GAINED: functor(MLX_WINDOW_EVENT, id, 0, 5); break;
-						case SDL_WINDOWEVENT_LEAVE: functor(MLX_WINDOW_EVENT, id, 0, 6); break;
-						case SDL_WINDOWEVENT_FOCUS_LOST: functor(MLX_WINDOW_EVENT, id, 0, 7); break;
-						case SDL_WINDOWEVENT_SIZE_CHANGED: functor(MLX_WINDOW_EVENT, id, 0, 8); break;
-						case SDL_WINDOWEVENT_RESIZED: functor(MLX_WINDOW_EVENT, id, 0, 9); break;
-						case SDL_WINDOWEVENT_RESTORED: functor(MLX_WINDOW_EVENT, id, 0, 11); break;
+						case SDL_WINDOWEVENT_CLOSE: functor(MLX_WINDOW_EVENT, id, 0); break;
+						case SDL_WINDOWEVENT_MOVED: functor(MLX_WINDOW_EVENT, id, 1); break;
+						case SDL_WINDOWEVENT_MINIMIZED: functor(MLX_WINDOW_EVENT, id, 2); break;
+						case SDL_WINDOWEVENT_MAXIMIZED: functor(MLX_WINDOW_EVENT, id, 3); break;
+						case SDL_WINDOWEVENT_ENTER: functor(MLX_WINDOW_EVENT, id, 4); break;
+						case SDL_WINDOWEVENT_LEAVE: functor(MLX_WINDOW_EVENT, id, 6); break;
+						case SDL_WINDOWEVENT_SIZE_CHANGED: functor(MLX_WINDOW_EVENT, id, 8); break;
+						case SDL_WINDOWEVENT_RESIZED: functor(MLX_WINDOW_EVENT, id, 9); break;
+						case SDL_WINDOWEVENT_RESTORED: functor(MLX_WINDOW_EVENT, id, 11); break;
+
+						case SDL_WINDOWEVENT_FOCUS_GAINED:
+						{
+							m_active_window_id = id;
+							functor(MLX_WINDOW_EVENT, id, 5);
+							SendInactiveEvents(functor);
+							break;
+						}
+						case SDL_WINDOWEVENT_FOCUS_LOST:
+						{
+							if (m_active_window_id == id)
+								m_active_window_id = -1;
+							functor(MLX_WINDOW_EVENT, id, 7);
+							break;
+						}
 
 						default : break;
 					}
 					break;
 				}
+
+				case SDL_CONTROLLERBUTTONUP: functor(MLX_CONTROLLERUP, m_active_window_id, CONTROLLER_CODE(GetControllerIdFromSDL(event.cbutton.which), event.cbutton.button)); break;
+				case SDL_CONTROLLERBUTTONDOWN: functor(MLX_CONTROLLERDOWN, m_active_window_id, CONTROLLER_CODE(GetControllerIdFromSDL(event.cbutton.which), event.cbutton.button)); break;
+
+				case SDL_CONTROLLERDEVICEADDED:
+				case SDL_CONTROLLERDEVICEREMOVED:
+					HandleControllerDeviceEvent(functor, event); break;
 
 				default: break;
 			}
@@ -335,12 +470,15 @@ namespace mlx
 		}
 	}
 
+	#undef CONTROLLER_CODE
+
 	SDLManager::~SDLManager()
 	{
 		if(m_drop_sdl_responsability)
 			return;
 
-		SDL_QuitSubSystem(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS | SDL_INIT_GAMECONTROLLER);
+		RemoveAllControllers();
+		SDL_QuitSubSystem(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS | SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER);
 		SDL_Quit();
 		s_instance = nullptr;
 		DebugLog("SDL Manager uninitialized");

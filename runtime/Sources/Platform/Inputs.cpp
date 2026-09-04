@@ -1,3 +1,5 @@
+#include "mlx.h"
+#include "mlx_keycodes.h"
 #include <PreCompiled.h>
 
 #include <Platform/Inputs.h>
@@ -16,31 +18,26 @@ namespace mlx
 
 	void Inputs::FetchInputs()
 	{
-		SDLManager::Get().InputsFetcher([this](mlx_event_type event, int window_id, int device_id, int code)
+		SDLManager::Get().InputsFetcher([this](mlx_event_type event, int window_id, int code)
 		{
 			if(!m_windows.contains(window_id))
 				return;
 			if(!m_events_hooks.contains(window_id) || m_events_hooks[window_id][event].empty())
 				return;
-			if(event == MLX_WINDOW_EVENT && code == 8)
+			if(event == MLX_WINDOW_EVENT && code == MLX_WINDOW_SIZE_CHANGED)
 				EventBus::SendBroadcast(Internal::SwapchainResizeEventBroadcast{});
 
-			m_event_device_id = device_id;
 			for(const auto& hook : m_events_hooks[window_id][event])
 			{
 				if(hook.fn)
 					hook.fn(code, hook.param);
 			}
-			m_event_device_id = -1;
 		});
 	}
 
 	int Inputs::GetDefaultControllerId() noexcept
 	{
-		if (!SDLManager::Get().IsValidController(m_default_controller_id))
-			m_default_controller_id += 1;
-
-		return m_default_controller_id;
+		return SDLManager::Get().GetFirstConnectedController();
 	}
 
 	std::int32_t Inputs::GetX() const noexcept

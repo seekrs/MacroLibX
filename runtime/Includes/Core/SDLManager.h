@@ -17,8 +17,10 @@ namespace mlx
 
 			SDL_Window* GetRawWindow(Handle window) noexcept;
 
-			void InputsFetcher(std::function<void(mlx_event_type, int, int, int)> functor);
+			void InputsFetcher(std::function<void(mlx_event_type, int, int)> functor);
 			void SetInputBinding(std::function<void(SDL_Event*)> functor);
+			void SendInactiveEvents(std::function<void(mlx_event_type, int, int)> functor);
+			void HandleControllerDeviceEvent(std::function<void(mlx_event_type, int, int)> functor, SDL_Event event);
 
 			VkSurfaceKHR CreateVulkanSurface(Handle window, VkInstance instance) const noexcept;
 			Vec2ui GetVulkanDrawableSize(Handle window) const noexcept;
@@ -46,7 +48,12 @@ namespace mlx
 			std::int32_t GetXRel() const noexcept;
 			std::int32_t GetYRel() const noexcept;
 
-			bool IsValidController(int controller_id) const noexcept;
+			int GetControllerIdFromSDL(int joystick_id) const noexcept;
+			bool IsControllerConnected(int controller_id) const noexcept;
+			int GetFirstConnectedController() const noexcept;
+			int AddController(int joystick_index) noexcept;
+			int RemoveController(int joystick_id) noexcept;
+			void RemoveAllControllers() noexcept;
 			float GetControllerAxis(int controller_id, int axis_kind) const noexcept;
 
 			inline static bool IsInit() noexcept { return s_instance != nullptr; }
@@ -55,10 +62,22 @@ namespace mlx
 			~SDLManager();
 
 		private:
+			struct EventRequest
+			{
+				mlx_event_type type;
+				int code = -1;
+
+				EventRequest(mlx_event_type type, int code) : type(type), code(code) {};
+			};
+
+		private:
 			static SDLManager* s_instance;
 
 			std::function<void(SDL_Event*)> m_binding_hook;
 			std::unordered_set<Handle> m_windows_registry;
+			std::vector<EventRequest> m_inactive_events;
+			std::vector<SDL_GameController*> m_controllers;
+			int m_active_window_id = -1;
 			bool m_drop_sdl_responsability = false;
 	};
 }
