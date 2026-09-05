@@ -166,19 +166,6 @@ MLX_API void mlx_pixel_put_region(mlx_context mlx, mlx_window win, int x, int y,
         /* Images related functions */
 
 /**
-* @brief            Set image rectangle
-*
-* @param mlx        Internal MLX application
-* @param img        Internal image
-* @param x          X coordinate in the image
-* @param y          Y coordinate in the image
-* @param w          Width of the rectangle
-* @param y          Height of the rectangle
-* @param color      Color of the rectangle
-*/
-MLX_API void mlx_set_image_rectangle(mlx_context mlx, mlx_image image, int x, int y, int w, int h, mlx_color color);
-
-/**
  * @brief            Get image region
  *
  * @param mlx        Internal MLX application

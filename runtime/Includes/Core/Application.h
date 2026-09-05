@@ -33,7 +33,7 @@ namespace mlx
 			inline void DestroyGraphicsSupport(mlx_window win);
 
 			mlx_image NewTexture(int w, int h);
-			mlx_image NewStbTexture(char* file, int* w, int* h); // stb textures are image files (png, jpg, bpm, ...)
+			mlx_image NewStbTexture(const char* file, int* w, int* h); // stb textures are image files (png, jpg, bpm, ...)
 			inline NonOwningPtr<Texture> GetTexture(mlx_image image);
 			void DestroyTexture(mlx_image img);
 

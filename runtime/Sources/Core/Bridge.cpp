@@ -236,7 +236,7 @@ extern "C"
 		return mlx->app->NewTexture(width, height);
 	}
 
-	mlx_image mlx_new_image_from_file(mlx_context mlx, char* filename, int* width, int* height)
+	mlx_image mlx_new_image_from_file(mlx_context mlx, const char* filename, int* width, int* height)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		if (filename == nullptr)
@@ -309,6 +309,30 @@ extern "C"
 		if(!texture)
 			return;
 		gs->TexturePut(texture, x, y, 1.0f, 1.0f, 0.0f);
+	}
+
+	bool mlx_save_image_to_file(mlx_context mlx, mlx_image image, const char* filename)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		if (filename == nullptr)
+		{
+			mlx::Error("Image: filename is NULL");
+			return false;
+		}
+
+		std::filesystem::path file(filename);
+		std::filesystem::path ext = file.extension();
+
+		if(ext != ".png" && ext != ".jpg" && ext != ".jpeg" && ext != ".bmp" && ext != ".tga")
+		{
+			mlx::Error("Image: not a valid file format '%'", filename);
+			return false;
+		}
+
+		mlx::NonOwningPtr<mlx::Texture> texture = mlx->app->GetTexture(image);
+		if(!texture)
+			return false;
+		return texture->SaveToFile(file);
 	}
 
 	void mlx_string_put(mlx_context mlx, mlx_window win, int x, int y, mlx_color color, char* str)

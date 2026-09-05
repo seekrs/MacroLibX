@@ -22,6 +22,6 @@
 .cache/
 objs/
 build/
-example/Test
+examples/controller_paint/*.png
 subprojects/*/
 subprojects/.wraplock

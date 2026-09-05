@@ -356,13 +356,13 @@ MLX_API mlx_image mlx_new_image(mlx_context mlx, int width, int height);
  *
  * @return (mlx_image) An opaque handler to the internal image or MLX_NULL_HANDLE (0x0) in case of error
  */
-MLX_API mlx_image mlx_new_image_from_file(mlx_context mlx, char* filename, int* width, int* height);
+MLX_API mlx_image mlx_new_image_from_file(mlx_context mlx, const char* filename, int* width, int* height);
 
 /**
  * @brief            Destroys internal image
  *
  * @param mlx        Internal MLX application
- * @param img        Internal image
+ * @param image      Internal image
  */
 MLX_API void mlx_destroy_image(mlx_context mlx, mlx_image image);
 
@@ -370,7 +370,7 @@ MLX_API void mlx_destroy_image(mlx_context mlx, mlx_image image);
  * @brief            Clear image
  *
  * @param mlx        Internal MLX application
- * @param img        Internal image
+ * @param image      Internal image
  * @param color      Color of the clear
  */
 MLX_API void mlx_clear_image(mlx_context mlx, mlx_image image, mlx_color color);
@@ -379,7 +379,7 @@ MLX_API void mlx_clear_image(mlx_context mlx, mlx_image image, mlx_color color);
  * @brief            Get image pixel data
  *
  * @param mlx        Internal MLX application
- * @param img        Internal image
+ * @param image      Internal image
  * @param x          X coordinate in the image
  * @param y          Y coordinate in the image
  *
@@ -391,12 +391,25 @@ MLX_API mlx_color mlx_get_image_pixel(mlx_context mlx, mlx_image image, int x, i
  * @brief            Set image pixel data
  *
  * @param mlx        Internal MLX application
- * @param img        Internal image
+ * @param image      Internal image
  * @param x          X coordinate in the image
  * @param y          Y coordinate in the image
  * @param color      Color of the pixel to set
  */
 MLX_API void mlx_set_image_pixel(mlx_context mlx, mlx_image image, int x, int y, mlx_color color);
+
+/**
+* @brief            Set image rectangle
+*
+* @param mlx        Internal MLX application
+* @param image      Internal image
+* @param x          X coordinate in the image
+* @param y          Y coordinate in the image
+* @param w          Width of the rectangle
+* @param y          Height of the rectangle
+* @param color      Color of the rectangle
+*/
+MLX_API void mlx_set_image_rectangle(mlx_context mlx, mlx_image image, int x, int y, int w, int h, mlx_color color);
 
 /**
  * @brief            Put image to the given window
@@ -409,6 +422,16 @@ MLX_API void mlx_set_image_pixel(mlx_context mlx, mlx_image image, int x, int y,
  */
 MLX_API void mlx_put_image_to_window(mlx_context mlx, mlx_window win, mlx_image image, int x, int y);
 
+/**
+ * @brief            Saves an image to a png/jpg/bmp file
+ *
+ * @param mlx        Internal MLX application
+ * @param image      Internal image to save
+ * @param filename   Path to the file
+ *
+ * @return (bool) true on success, false otherwise
+ */
+MLX_API bool mlx_save_image_to_file(mlx_context mlx, mlx_image image, const char* filename);
 
 
         /* Strings drawing related functions */

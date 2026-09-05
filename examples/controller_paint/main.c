@@ -79,6 +79,9 @@ void controller_down(mlx_controller_event_code event, void *data)
 		case MLX_CONTROLLER_DPAD_DOWN: cursor->y += 1; break;
 		case MLX_CONTROLLER_DPAD_LEFT: cursor->x -= 1; break;
 		case MLX_CONTROLLER_DPAD_RIGHT: cursor->x += 1; break;
+		case MLX_CONTROLLER_START:
+			mlx_save_image_to_file(mlx, target, "masterpiece.png");
+			break;
 	}
 	//printf("Controller Down: %i:%i\n", event.controller_id, event.button);
 }
@@ -160,7 +163,7 @@ void update(void *data)
 		else if (cursor->erase)
 			mlx_set_image_rectangle(mlx, target,
 				cursor->x - cursor->erase / 2, cursor->y - cursor->erase / 2,
-				cursor->erase,  cursor->erase, bg);
+				cursor->erase,  cursor->erase, tr);
 
 		mlx_set_image_pixel(mlx, overlay, cursor->x - 0.5, cursor->y - 0.5,
 			(mlx_color){.rgba = (colors[i].rgba & ~0xFF) | 0x80});

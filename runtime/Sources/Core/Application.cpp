@@ -69,7 +69,7 @@ namespace mlx
 		return image;
 	}
 
-	mlx_image Application::NewStbTexture(char* file, int* w, int* h)
+	mlx_image Application::NewStbTexture(const char* file, int* w, int* h)
 	{
 		MLX_PROFILE_FUNCTION();
 

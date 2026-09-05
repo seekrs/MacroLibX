@@ -24,6 +24,25 @@
 	#include <stb_image.h>
 #endif
 
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+
+#define STBIW_ASSERT(x) (mlx::Assert(x, "internal stb assertion " #x))
+#define STBIW_MALLOC(x) (mlx::MemManager::Malloc(x))
+#define STBIW_REALLOC(p, x) (mlx::MemManager::Realloc(p, x))
+#define STBIW_FREE(x) (mlx::MemManager::Free(x))
+
+#if defined(MLX_COMPILER_GCC)
+	#pragma GCC diagnostic push
+	#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+		#include <stb_image_write.h>
+	#pragma GCC diagnostic pop
+#elif defined(MLX_COMPILER_CLANG)
+	#pragma clang diagnostic push
+	#pragma clang diagnostic ignored "-Wmissing-field-initializers"
+		#include <stb_image_write.h>
+	#pragma clang diagnostic pop
+#endif
+
 namespace mlx
 {
 	MLX_FORCEINLINE mlx_color ReverseColor(mlx_color color)
@@ -209,6 +228,23 @@ namespace mlx
 		if(m_staging_buffer.has_value())
 			m_staging_buffer->Destroy();
 		Image::Destroy();
+	}
+
+	bool Texture::SaveToFile(const std::filesystem::path& file)
+	{
+		MLX_PROFILE_FUNCTION();
+
+		std::filesystem::path ext = file.extension();
+
+		if (ext == ".png")
+			return stbi_write_png(file.c_str(), m_width, m_height, STBI_rgb_alpha, m_staging_buffer->GetMap<void*>(), m_width * 4);
+		if (ext == ".jpg" || ext == ".jpeg")
+			return stbi_write_jpg(file.c_str(), m_width, m_height, STBI_rgb_alpha, m_staging_buffer->GetMap<void*>(), 70);
+		if (ext == ".bmp")
+			return stbi_write_bmp(file.c_str(), m_width, m_height, STBI_rgb_alpha, m_staging_buffer->GetMap<void*>());
+		if (ext == ".tga")
+			return stbi_write_tga(file.c_str(), m_width, m_height, STBI_rgb_alpha, m_staging_buffer->GetMap<void*>());
+		return false;
 	}
 
 	void Texture::ClearBuffer(mlx_color color) noexcept
