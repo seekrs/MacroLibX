@@ -20,6 +20,7 @@ namespace mlx
 			void InputsFetcher(std::function<void(mlx_event_type, int, int)> functor);
 			void SetInputBinding(std::function<void(SDL_Event*)> functor);
 			void SendInactiveEvents(std::function<void(mlx_event_type, int, int)> functor);
+			void HandleTextInputEvent(std::function<void(mlx_event_type, int, int)> functor, SDL_Event event);
 			void HandleControllerDeviceEvent(std::function<void(mlx_event_type, int, int)> functor, SDL_Event event);
 
 			VkSurfaceKHR CreateVulkanSurface(Handle window, VkInstance instance) const noexcept;

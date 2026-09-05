@@ -103,6 +103,14 @@ void controller_up(mlx_controller_event_code event, void *data)
 	//printf("Controller Up: %i:%i\n", event.controller_id, event.button);
 }
 
+void text(int cp, void* data)
+{
+	(void)data;
+
+	char *ccp = (char *)&cp;
+	//printf("Text '%s' = %x\n", ccp, cp);
+}
+
 float deadzone(float f)
 {
 	if (f > -0.1 && f < 0.1)
@@ -190,6 +198,7 @@ int main(void)
 	mlx_on_event(mlx, win, MLX_KEYDOWN, key_down, NULL);
 	mlx_on_event(mlx, win, MLX_CONTROLLERDOWN, (void(*)(int, void*))controller_down, NULL);
 	mlx_on_event(mlx, win, MLX_CONTROLLERUP, (void(*)(int, void*))controller_up, NULL);
+	mlx_on_event(mlx, win, MLX_TEXTINPUT, (void(*)(int, void*))text, NULL);
 
 	mlx_add_loop_hook(mlx, update, NULL);
 	mlx_loop(mlx);

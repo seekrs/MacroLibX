@@ -6,6 +6,7 @@
 #include <Core/Memory.h>
 #include <Embedded/IconMlx.h>
 #include <Utils/Bits.h>
+#include <string>
 
 namespace mlx
 {
@@ -38,6 +39,9 @@ namespace mlx
 
 		if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER | SDL_INIT_TIMER) != 0)
 			FatalError("SDL: unable to init all subsystems; %", SDL_GetError());
+
+		SDL_StartTextInput();
+
 		DebugLog("SDL Manager initialized");
 	}
 
@@ -387,6 +391,37 @@ namespace mlx
 		}
 	}
 
+	void SDLManager::HandleTextInputEvent(std::function<void(mlx_event_type, int, int)> functor, SDL_Event event)
+	{
+		int id = event.window.windowID;
+		const char* str = event.text.text;
+
+		while (*str)
+		{
+			int cp = static_cast<unsigned char>(str[0]);
+			int cplen = 1;
+
+			if (cp >= 0x80)
+			{
+				if ((cp & 0xE0) == 0xC0)
+					cplen = 2;
+				else if ((cp & 0xF0) == 0xE0)
+					cplen = 3;
+				else if ((cp & 0xF8) == 0xF0)
+					cplen = 4;
+				for (int i = 1; i < cplen; i++)
+				{
+					if constexpr(std::endian::native == std::endian::little)
+						cp |= ((str[i] & 0x3F) | 0x80) << (8 * i);
+					else
+						cp = (cp << 8) | (str[i] & 0x3F) | 0x80;
+				}
+			}
+			functor(MLX_TEXTINPUT, id, cp);
+			str += cplen;
+		}
+	}
+
 	#define CONTROLLER_CODE(id, code) ((id << (sizeof(short) * 8)) | code)
 
 	void SDLManager::HandleControllerDeviceEvent(std::function<void(mlx_event_type, int, int)> functor, SDL_Event event)
@@ -468,6 +503,8 @@ namespace mlx
 					break;
 				}
 
+				case SDL_TEXTINPUT: HandleTextInputEvent(functor, event); break;
+
 				case SDL_CONTROLLERBUTTONUP: functor(MLX_CONTROLLERUP, m_active_window_id, CONTROLLER_CODE(GetControllerIdFromSDL(event.cbutton.which), event.cbutton.button)); break;
 				case SDL_CONTROLLERBUTTONDOWN: functor(MLX_CONTROLLERDOWN, m_active_window_id, CONTROLLER_CODE(GetControllerIdFromSDL(event.cbutton.which), event.cbutton.button)); break;
 
@@ -491,6 +528,7 @@ namespace mlx
 			return;
 
 		RemoveAllControllers();
+		SDL_StopTextInput();
 		SDL_QuitSubSystem(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS | SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER);
 		SDL_Quit();
 		s_instance = nullptr;

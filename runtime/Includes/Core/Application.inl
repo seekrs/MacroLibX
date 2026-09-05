@@ -60,7 +60,7 @@ namespace mlx
 		CHECK_WINDOW_PTR(win, );
 		if(!m_graphics[win->id]->HasWindow())
 			return;
-		if (event < 0 || event > 7)
+		if (event < 0 || event > 8)
 		{
 			Error("invalid event");
 			return;

@@ -48,7 +48,7 @@ namespace mlx
 
 		private:
 			std::unordered_map<std::uint32_t, std::shared_ptr<Window>> m_windows;
-			std::unordered_map<std::uint32_t, std::array<std::vector<Hook>, 8>> m_events_hooks;
+			std::unordered_map<std::uint32_t, std::array<std::vector<Hook>, 9>> m_events_hooks;
 			bool m_run = false;
 	};
 }
