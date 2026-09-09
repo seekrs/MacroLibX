@@ -393,33 +393,13 @@ namespace mlx
 
 	void SDLManager::HandleTextInputEvent(std::function<void(mlx_event_type, int, int)> functor, SDL_Event event)
 	{
-		int id = event.window.windowID;
-		const char* str = event.text.text;
+		const int id = event.window.windowID;
+		std::string str = event.text.text;
 
-		while (*str)
-		{
-			int cp = static_cast<unsigned char>(str[0]);
-			int cplen = 1;
-
-			if (cp >= 0x80)
-			{
-				if ((cp & 0xE0) == 0xC0)
-					cplen = 2;
-				else if ((cp & 0xF0) == 0xE0)
-					cplen = 3;
-				else if ((cp & 0xF8) == 0xF0)
-					cplen = 4;
-				for (int i = 1; i < cplen; i++)
-				{
-					if constexpr(std::endian::native == std::endian::little)
-						cp |= ((str[i] & 0x3F) | 0x80) << (8 * i);
-					else
-						cp = (cp << 8) | (str[i] & 0x3F) | 0x80;
-				}
-			}
-			functor(MLX_TEXTINPUT, id, cp);
-			str += cplen;
-		}
+		for (auto it = str.cbegin(); it < str.cend(); ++it)
+			functor(MLX_TEXTINPUT, id, static_cast<unsigned char>(*it));
+		if (str.length() < SDL_TEXTINPUTEVENT_TEXT_SIZE)
+			functor(MLX_TEXTINPUT, id, static_cast<unsigned char>('\0'));
 	}
 
 	#define CONTROLLER_CODE(id, code) ((id << (sizeof(short) * 8)) | code)

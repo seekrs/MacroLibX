@@ -93,7 +93,7 @@ typedef struct mlx_controller_event_code
 */
 typedef enum mlx_controller_axis
 {
-   MLX_CONTROLLER_AXIS_LEFTX         = 0,
+    MLX_CONTROLLER_AXIS_LEFTX        = 0,
     MLX_CONTROLLER_AXIS_LEFTY        = 1,
     MLX_CONTROLLER_AXIS_RIGHTX       = 2,
     MLX_CONTROLLER_AXIS_RIGHTY       = 3,

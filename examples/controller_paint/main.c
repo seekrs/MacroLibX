@@ -1,4 +1,5 @@
 
+#include <ctype.h>
 #include <math.h>
 #include <stdio.h>
 #include <stddef.h>
@@ -103,12 +104,25 @@ void controller_up(mlx_controller_event_code event, void *data)
 	//printf("Controller Up: %i:%i\n", event.controller_id, event.button);
 }
 
-void text(int cp, void* data)
+void text(int c, void* data)
 {
 	(void)data;
+	return;
 
-	char *ccp = (char *)&cp;
-	//printf("Text '%s' = %x\n", ccp, cp);
+	static char cs[5] = {};
+	static int i = 0;
+
+	if ((c < 128 || c >= 192) && i > 0)
+	{
+		printf("Text '%s'\n", cs);
+		while (i)
+			cs[i--] = 0;
+	}
+
+	if (c >= 128)
+		cs[i++] = c;
+	else if (isprint(c))
+		printf("Text '%c'\n", c);
 }
 
 float deadzone(float f)

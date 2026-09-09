@@ -298,7 +298,7 @@ typedef enum mlx_event_type
 	MLX_WINDOW_EVENT    = 5,
 	MLX_CONTROLLERDOWN  = 6,
 	MLX_CONTROLLERUP    = 7,
-	MLX_TEXTINPUT       = 8
+	MLX_TEXTINPUT		= 8,
 } mlx_event_type;
 
 /**
@@ -311,7 +311,6 @@ typedef enum mlx_event_type
  * @param param      Parameter given to the function
  */
 MLX_API void mlx_on_event(mlx_context mlx, mlx_window win, mlx_event_type event, void(*f)(int, void*), void* param);
-
 
 
         /* Pixels drawing related functions */
