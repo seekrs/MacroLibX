@@ -93,11 +93,15 @@ void update_mouse()
 	mlx_mouse_get_pos(mlx, &x, &y);
 	slider_hover = -1;
 
-	if (x < 220 || x > 620)
-		return;
+	int slider = (y * 7) / 290;
 
-	int slider = y * 8 / 360;
+	if (x < 220 || x > 620 || slider < 0 || slider >= 7) {
+		mlx_mouse_set_icon(mlx, MLX_MOUSE_ICON_ARROW);
+		return;
+	}
+
 	slider_hover = slider;
+	mlx_mouse_set_icon(mlx, MLX_MOUSE_ICON_SIZEWE);
 
 	if (mouse && slider_hover == slider_select)
 		sliders[slider] = (x - 220) / 400.0;
@@ -164,9 +168,9 @@ void update(void *data)
 		char val[32];
 
 		snprintf(val, 32, "%s [%.2f]", labels[i], slider_values[i]);
-		mlx_string_put(mlx, win, 20, 30 + i * 40, (mlx_color){.rgba = 0xEEEEEEFF}, val);
+		mlx_string_put(mlx, win, 20, 30 + i * 40, (mlx_color){.rgba = 0xAAAABBFF}, val);
 	}
-	mlx_string_put(mlx, win, 20, 310, (mlx_color){.rgba = 0xEEEEEEFF}, labels[7]);
+	mlx_string_put(mlx, win, 20, 310, (mlx_color){.rgba = 0xAAAABBFF}, labels[7]);
 }
 
 int main(void)

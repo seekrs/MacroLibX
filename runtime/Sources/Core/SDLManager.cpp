@@ -241,6 +241,20 @@ namespace mlx
 		SDL_ShowCursor(SDL_ENABLE);
 	}
 
+	void SDLManager::SetCursorIcon(int icon) noexcept
+	{
+		if (icon < 0 || icon >= SDL_NUM_SYSTEM_CURSORS)
+			return;
+		SDL_Cursor* cursor = SDL_CreateSystemCursor(static_cast<SDL_SystemCursor>(icon));
+		if (!cursor)
+			return;
+
+		if (m_cursor)
+			SDL_FreeCursor(m_cursor);
+		m_cursor = cursor;
+		SDL_SetCursor(m_cursor);
+	}
+
 	std::int32_t SDLManager::GetX() const noexcept
 	{
 		int dummy;
@@ -621,6 +635,8 @@ namespace mlx
 		CheckAudioAllocs();
 		SDL_CloseAudioDevice(m_audio_device);
 		SDL_StopTextInput();
+		if (m_cursor)
+			SDL_FreeCursor(m_cursor);
 		SDL_QuitSubSystem(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS | SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER | SDL_INIT_AUDIO);
 		SDL_Quit();
 		s_instance = nullptr;

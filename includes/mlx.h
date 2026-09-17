@@ -267,6 +267,33 @@ MLX_API void mlx_mouse_show(mlx_context mlx);
 MLX_API void mlx_mouse_hide(mlx_context mlx);
 
 /**
+* @brief           System cursor icons
+*/
+typedef enum mlx_cursor_icon
+{
+	MLX_MOUSE_ICON_ARROW,
+	MLX_MOUSE_ICON_IBEAM,
+	MLX_MOUSE_ICON_WAIT,
+	MLX_MOUSE_ICON_CROSSHAIR,
+	MLX_MOUSE_ICON_WAITARROW,
+	MLX_MOUSE_ICON_SIZENWSE,
+	MLX_MOUSE_ICON_SIZENESW,
+	MLX_MOUSE_ICON_SIZEWE,
+	MLX_MOUSE_ICON_SIZENS,
+	MLX_MOUSE_ICON_SIZEALL,
+	MLX_MOUSE_ICON_NO,
+	MLX_MOUSE_ICON_HAND,
+} mlx_cursor_icon;
+
+/**
+* @brief            Changes the cursor's icon
+*
+* @param mlx        Internal MLX application
+* @param icon       The new cursor icon id
+*/
+MLX_API void mlx_mouse_set_icon(mlx_context mlx, mlx_cursor_icon icon);
+
+/**
  * @brief            Moves cursor to givent position
  *
  * @param mlx        Internal MLX application

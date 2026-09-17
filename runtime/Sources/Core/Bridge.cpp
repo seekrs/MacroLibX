@@ -195,6 +195,13 @@ extern "C"
 		mlx::SDLManager::HideCursor();
 	}
 
+	void mlx_mouse_set_icon(mlx_context mlx, mlx_cursor_icon icon)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+
+		mlx::SDLManager::Get().SetCursorIcon(icon);
+	}
+
 	void mlx_mouse_move(mlx_context mlx, mlx_window win, int x, int y)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
@@ -297,6 +304,15 @@ extern "C"
 		if(!texture)
 			return;
 		texture->SetPixel(x, y, color);
+	}
+
+	void mlx_set_image_rectangle(mlx_context mlx, mlx_image image, int x, int y, int w, int h, mlx_color color)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::Texture> texture = mlx->app->GetTexture(image);
+		if(!texture)
+			return;
+		texture->SetRectangle(x, y, w, h, color);
 	}
 
 	void mlx_put_image_to_window(mlx_context mlx, mlx_window win, mlx_image image, int x, int y)
@@ -472,7 +488,7 @@ extern "C"
 		gs->GetWindow()->Restore();
 	}
 
-	float mlx_controller_get_axis(mlx_context mlx, int controller_id, int axis)
+	float mlx_controller_get_axis(mlx_context mlx, int controller_id, mlx_controller_axis axis)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 
@@ -506,15 +522,6 @@ extern "C"
 		if(!gs)
 			return;
 		gs->PixelPutRegion(x, y, w, h, pixels);
-	}
-
-	void mlx_set_image_rectangle(mlx_context mlx, mlx_image image, int x, int y, int w, int h, mlx_color color)
-	{
-		MLX_CHECK_APPLICATION_POINTER(mlx);
-		mlx::NonOwningPtr<mlx::Texture> texture = mlx->app->GetTexture(image);
-		if(!texture)
-			return;
-		texture->SetRectangle(x, y, w, h, color);
 	}
 
 	void mlx_get_image_region(mlx_context mlx, mlx_image image, int x, int y, int w, int h, mlx_color* dst)

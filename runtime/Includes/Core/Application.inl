@@ -1,4 +1,5 @@
 #pragma once
+#include "Core/SDLManager.h"
 #include <Core/Application.h>
 #include <Core/Handles.h>
 #include <Embedded/DogicaTTF.h>

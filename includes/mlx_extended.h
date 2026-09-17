@@ -84,7 +84,6 @@ MLX_API void mlx_minimize_window(mlx_context mlx, mlx_window win);
  */
 MLX_API void mlx_restore_window(mlx_context mlx, mlx_window win);
 
-
         /* Events related functions */
 
 /**
@@ -123,7 +122,7 @@ typedef enum mlx_controller_axis
 *
 * @return (float)   The axis value (ranges [-1, 1] for joysticks, [0, 1] for triggers)
 */
-MLX_API float mlx_controller_get_axis(mlx_context mlx, int id, int axis);
+MLX_API float mlx_controller_get_axis(mlx_context mlx, int id, mlx_controller_axis axis);
 
 /**
 * @brief            Rumble a controller
@@ -133,7 +132,6 @@ MLX_API float mlx_controller_get_axis(mlx_context mlx, int id, int axis);
 * @param high_freq  High frequency intensity (ranges [0, 1])
 * @param low_freq   Low frequency intensity (ranges [0, 1])
 * @param duration   Duration of the rumble in seconds
-*
 */
 MLX_API void mlx_controller_rumble(mlx_context mlx, int controller_id, float high_freq, float low_freq, float duration);
 

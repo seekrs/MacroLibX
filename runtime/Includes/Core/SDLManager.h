@@ -45,6 +45,7 @@ namespace mlx
 
 			static void HideCursor() noexcept;
 			static void ShowCursor() noexcept;
+			void SetCursorIcon(int icon) noexcept;
 
 			std::int32_t GetX() const noexcept;
 			std::int32_t GetY() const noexcept;
@@ -105,6 +106,7 @@ namespace mlx
 			std::unordered_set<Sound*> m_sounds;
 			SDL_AudioDeviceID m_audio_device;
 			SDL_AudioSpec m_audio_device_spec;
+			SDL_Cursor* m_cursor = nullptr;
 			int m_active_window_id = -1;
 			bool m_drop_sdl_responsability = false;
 	};
