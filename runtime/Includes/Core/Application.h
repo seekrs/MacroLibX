@@ -9,6 +9,7 @@
 #include <Core/Fps.h>
 #include <Graphics/Font.h>
 #include <Graphics/Mesh.h>
+#include <mlx_extended.h>
 
 namespace mlx
 {
@@ -32,10 +33,17 @@ namespace mlx
 			inline NonOwningPtr<GraphicsSupport> GetGraphicsSupport(mlx_window win);
 			inline void DestroyGraphicsSupport(mlx_window win);
 
-			mlx_image NewTexture(int w, int h);
-			mlx_image NewStbTexture(const char* file, int* w, int* h); // stb textures are image files (png, jpg, bpm, ...)
-			inline NonOwningPtr<Texture> GetTexture(mlx_image image);
-			void DestroyTexture(mlx_image img);
+			mlx_image NewTexture(int w, int h) noexcept;
+			mlx_image NewStbTexture(const char* file, int* w, int* h) noexcept;
+			inline NonOwningPtr<Texture> GetTexture(mlx_image image) noexcept;
+			void DestroyTexture(mlx_image img) noexcept;
+
+			mlx_sound NewSoundFromWAV(const char* file, float* duration) noexcept;
+			inline NonOwningPtr<Sound> GetSound(mlx_sound sound) noexcept;
+			void DestroySound(mlx_sound sound) noexcept;
+			mlx_channel NewAudioChannel() noexcept;
+			inline NonOwningPtr<AudioChannel> GetAudioChannel(mlx_channel channel) noexcept;
+			void DestroyAudioChannel(mlx_channel channel) noexcept;
 
 			inline void AddLoopHook(void(*f)(void*), void* param);
 			inline void LoopEnd() noexcept;

@@ -1,12 +1,8 @@
-#include "Utils/Buffer.h"
-#include "mlx.h"
-#include "mlx_keycodes.h"
 #include <PreCompiled.h>
 #include <Core/SDLManager.h>
-#include <Core/Memory.h>
 #include <Embedded/IconMlx.h>
 #include <Utils/Bits.h>
-#include <string>
+#include <mlx_keycodes.h>
 
 namespace mlx
 {
@@ -37,10 +33,21 @@ namespace mlx
 
 		//SDL_SetHintWithPriority(SDL_HINT_SHUTDOWN_DBUS_ON_QUIT, "1", SDL_HINT_OVERRIDE);
 
-		if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER | SDL_INIT_TIMER) != 0)
+		if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER | SDL_INIT_TIMER | SDL_INIT_AUDIO) != 0)
 			FatalError("SDL: unable to init all subsystems; %", SDL_GetError());
 
-		SDL_StartTextInput();
+		SDL_AudioSpec	desired{
+			.freq = 44100,
+			.format = AUDIO_S16LSB,
+			.channels = 2, .samples = 2048,
+			.callback = SDLManager::AudioCallback,
+		};
+		m_audio_device = SDL_OpenAudioDevice(nullptr, 0, &desired, &m_audio_device_spec, 0);
+		if (m_audio_device == 0)
+			FatalError("SDL: unable to init audio device; %", SDL_GetError());
+		SDL_PauseAudioDevice(m_audio_device, 0);
+
+	    SDL_StartTextInput();
 
 		DebugLog("SDL Manager initialized");
 	}
@@ -502,14 +509,119 @@ namespace mlx
 
 	#undef CONTROLLER_CODE
 
+	#define BYTES_PER_FRAME(spec)	(SDL_AUDIO_BITSIZE(spec.format) / 8 * spec.channels)
+
+	Sound* SDLManager::CreateSoundFromWAV(const char* path, float* duration) noexcept
+	{
+		SDL_AudioSpec	wav_spec;
+		uint8_t*		wav_buffer = nullptr;
+		uint32_t		wav_length = 0;
+
+		if (!SDL_LoadWAV(path, &wav_spec, &wav_buffer, &wav_length)) {
+			Error("SDL: unable to create a new sound; %", SDL_GetError());
+			return nullptr;
+		}
+
+		SDL_AudioCVT cvt;
+		int result = SDL_BuildAudioCVT(&cvt, wav_spec.format, wav_spec.channels, wav_spec.freq,
+			m_audio_device_spec.format, m_audio_device_spec.channels, m_audio_device_spec.freq);
+		if (result < 0) {
+			SDL_FreeWAV(wav_buffer);
+			Error("SDL: unable to create a new sound; %", SDL_GetError());
+			return nullptr;
+		}
+
+		auto data = std::make_shared<std::vector<uint8_t>>();
+		if (result == 0) {
+			data->assign(wav_buffer, wav_buffer + wav_length);
+		} else {
+			std::vector<uint8_t> cvt_buffer(wav_length * cvt.len_mult);
+			std::memcpy(cvt_buffer.data(), wav_buffer, wav_length);
+			cvt.buf = cvt_buffer.data();
+			cvt.len = wav_length;
+
+			if (SDL_ConvertAudio(&cvt) != 0) {
+				SDL_FreeWAV(wav_buffer);
+				Error("SDL: unable to create a new sound; %", SDL_GetError());
+				return nullptr;
+			}
+			cvt_buffer.resize(static_cast<size_t>(cvt.len_cvt));
+			*data = std::move(cvt_buffer);
+		}
+		SDL_FreeWAV(wav_buffer);
+
+		uint32_t frame_count = data->size() / BYTES_PER_FRAME(m_audio_device_spec);
+		if (duration)
+			*duration = static_cast<float>(frame_count) / m_audio_device_spec.freq;
+		Sound* sound = new Sound(std::move(data), frame_count);
+		m_sounds.insert(sound);
+		return sound;
+	}
+
+	void SDLManager::DestroySound(Sound* sound) noexcept
+	{
+		if (!SoundExists(sound)) {
+			Error("trying to destroy an unregistered sound");
+			return;
+		}
+		m_sounds.erase(sound);
+	}
+
+	AudioChannel* SDLManager::CreateAudioChannel() noexcept
+	{
+		AudioChannel* channel = new AudioChannel;
+		AudioDeviceLock lock;
+
+		m_audio_channels.insert(channel);
+		return channel;
+	}
+
+	void SDLManager::DestroyAudioChannel(AudioChannel* channel) noexcept
+	{
+		if (!AudioChannelExists(channel)) {
+			Error("trying to destroy an unregistered audio channel");
+			return;
+		}
+		AudioDeviceLock lock;
+		m_audio_channels.erase(channel);
+	}
+
+	void SDLManager::AudioCallback(void* /*userdata*/, Uint8* stream, int len) noexcept
+	{
+		SDL_AudioSpec spec = s_instance->m_audio_device_spec;
+		int out_channels = spec.channels;
+		int out_frames = len / BYTES_PER_FRAME(spec);
+		int total_samples = out_frames * out_channels;
+
+		static thread_local std::vector<int32_t> accum;
+		accum.assign(total_samples, 0);
+
+		for (AudioChannel* ch : s_instance->m_audio_channels)
+			ch->MixInto(accum.data(), out_frames, out_channels);
+
+		int16_t* out = reinterpret_cast<int16_t*>(stream);
+		for (int i = 0; i < total_samples; ++i)
+			out[i] = static_cast<int16_t>(std::clamp(accum[i], -32768, 32767));
+	}
+
+	void SDLManager::CheckAudioAllocs() const noexcept
+	{
+		size_t	audio_allocs = m_sounds.size() + m_audio_channels.size();
+
+		if (audio_allocs > 0)
+			Error("Audio Manager: some user-dependant allocations were not freed before ending the application (% active allocations). You may have not destroyed all the MLX resources you've created", audio_allocs);
+	}
+
 	SDLManager::~SDLManager()
 	{
 		if(m_drop_sdl_responsability)
 			return;
 
 		RemoveAllControllers();
+		CheckAudioAllocs();
+		SDL_CloseAudioDevice(m_audio_device);
 		SDL_StopTextInput();
-		SDL_QuitSubSystem(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS | SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER);
+		SDL_QuitSubSystem(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS | SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER | SDL_INIT_AUDIO);
 		SDL_Quit();
 		s_instance = nullptr;
 		DebugLog("SDL Manager uninitialized");

@@ -22,14 +22,40 @@
 			Error("invalid image handle (NULL)"); \
 			return retval; \
 		} \
-		else if(!m_image_registry.IsTextureKnown(image->texture)) \
+		else if(!m_image_registry.IsTextureKnown(img->texture)) \
 		{ \
 			Error("invalid image handle"); \
+			return retval; \
+		} else {}
+
+	#define CHECK_SOUND_PTR(snd, retval) \
+	if(snd == nullptr) \
+		{ \
+			Error("invalid sound handle (NULL)"); \
+			return retval; \
+		} \
+	else if(!SDLManager::Get().SoundExists(snd->sound.Get())) \
+		{ \
+			Error("invalid sound handle"); \
+			return retval; \
+		} else {}
+
+	#define CHECK_CHANNEL_PTR(ch, retval) \
+		if(ch == nullptr) \
+		{ \
+			Error("invalid audio channel handle (NULL)"); \
+			return retval; \
+		} \
+		else if(!SDLManager::Get().AudioChannelExists(ch->channel.Get())) \
+		{ \
+			Error("invalid audio channel handle"); \
 			return retval; \
 		} else {}
 #else
 	#define CHECK_WINDOW_PTR(win, retval)
 	#define CHECK_IMAGE_PTR(img, retval)
+	#define CHECK_SOUND_PTR(snd, retval)
+	#define CHECK_CHANNEL_PTR(ch, retval)
 #endif
 
 namespace mlx
@@ -138,7 +164,7 @@ namespace mlx
 		}
 	}
 
-	NonOwningPtr<Texture> Application::GetTexture(mlx_image image)
+	NonOwningPtr<Texture> Application::GetTexture(mlx_image image) noexcept
 	{
 		CHECK_IMAGE_PTR(image, nullptr);
 		NonOwningPtr<Texture> texture = image->texture;
@@ -148,6 +174,25 @@ namespace mlx
 			return nullptr;
 		}
 		return texture;
+	}
+
+	NonOwningPtr<Sound> Application::GetSound(mlx_sound handle) noexcept
+	{
+		CHECK_SOUND_PTR(handle, nullptr);
+		NonOwningPtr<Sound> sound = handle->sound;
+		if(!sound->IsValid())
+		{
+			Error("trying to use an invalid sound");
+			return nullptr;
+		}
+		return sound;
+	}
+
+	NonOwningPtr<AudioChannel> Application::GetAudioChannel(mlx_channel handle) noexcept
+	{
+		CHECK_CHANNEL_PTR(handle, nullptr);
+		NonOwningPtr<AudioChannel> channel = handle->channel;
+		return channel;
 	}
 
 	void Application::AddLoopHook(void(*f)(void*), void* param)

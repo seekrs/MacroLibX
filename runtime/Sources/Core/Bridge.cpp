@@ -547,6 +547,121 @@ extern "C"
 		gs->TexturePut(texture, x, y, scale_x, scale_y, angle);
 	}
 
+	mlx_channel mlx_new_audio_channel(mlx_context mlx)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+
+		return mlx->app->NewAudioChannel();
+	}
+
+	void mlx_pause_channel(mlx_context mlx, mlx_channel channel)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::AudioChannel> audio_channel = mlx->app->GetAudioChannel(channel);
+		if (!audio_channel)
+			return;
+		audio_channel->Pause();
+	}
+
+	void mlx_resume_channel(mlx_context mlx, mlx_channel channel)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::AudioChannel> audio_channel = mlx->app->GetAudioChannel(channel);
+		if (!audio_channel)
+			return;
+		audio_channel->Resume();
+	}
+
+	float mlx_get_channel_playback_position(mlx_context mlx, mlx_channel channel)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::AudioChannel> audio_channel = mlx->app->GetAudioChannel(channel);
+		if (!audio_channel)
+			return -1.0;
+		return audio_channel->GetPlaybackPosition();
+	}
+
+	void mlx_set_channel_volume(mlx_context mlx, mlx_channel channel, float left, float right)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::AudioChannel> audio_channel = mlx->app->GetAudioChannel(channel);
+		if (!audio_channel)
+			return;
+		audio_channel->SetVolume(left, right);
+	}
+
+	void mlx_set_channel_speed(mlx_context mlx, mlx_channel channel, float speed)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::AudioChannel> audio_channel = mlx->app->GetAudioChannel(channel);
+		if (!audio_channel)
+			return;
+		audio_channel->SetSpeed(speed);
+	}
+
+	void mlx_destroy_audio_channel(mlx_context mlx, mlx_channel handle)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx->app->DestroyAudioChannel(handle);
+	}
+
+	mlx_sound mlx_new_sound_from_wav(mlx_context mlx, char* filename, float* duration)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+
+		if (filename == nullptr)
+		{
+			mlx::Error("Sound loader: filename is NULL");
+			return nullptr;
+		}
+		std::filesystem::path file(filename);
+		if(file.extension() != ".wav")
+		{
+			mlx::Error("Sound loader: not a wav file '%'", filename);
+			return nullptr;
+		}
+		{
+			std::ifstream stream(file, std::ios::binary);
+			if(!stream.is_open())
+			{
+				mlx::Error("Sound loader: failed to open file '%'", filename);
+				return nullptr;
+			}
+		}
+		return mlx->app->NewSoundFromWAV(filename, duration);
+	}
+
+	void mlx_play_sound(mlx_context mlx, mlx_channel channel, mlx_sound sound)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::AudioChannel> audio_channel = mlx->app->GetAudioChannel(channel);
+		if (!audio_channel)
+			return;
+		mlx::NonOwningPtr<mlx::Sound> snd = mlx->app->GetSound(sound);
+		if (!snd)
+			return;
+		audio_channel->Play(snd.Get(), 0, -1, false);
+	}
+
+	void mlx_play_sound_ex(mlx_context mlx, mlx_channel channel, mlx_sound sound, float start, float end, bool loop)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::AudioChannel> audio_channel = mlx->app->GetAudioChannel(channel);
+		if (!audio_channel)
+			return;
+		mlx::NonOwningPtr<mlx::Sound> snd = mlx->app->GetSound(sound);
+		if (!snd)
+			return;
+		audio_channel->Play(snd.Get(), start, end, loop);
+	}
+
+	void mlx_destroy_sound(mlx_context mlx, mlx_sound sound)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+
+		mlx->app->DestroySound(sound);
+	}
+
 	// Hidden bindings
 
 	VkInstance mlx_get_vk_instance(mlx_context mlx)

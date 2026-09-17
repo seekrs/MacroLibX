@@ -23,6 +23,19 @@
 extern "C" {
 #endif
 
+        /* MLX extended types */
+
+
+/**
+ * @brief           Opaque handle that represents a MLX audio channel
+ */
+MLX_DEFINE_HANDLE(mlx_channel);
+
+/**
+ * @brief           Opaque handle that represents a MLX sound
+ */
+MLX_DEFINE_HANDLE(mlx_sound);
+
 
         /* Window related functions */
 
@@ -210,6 +223,112 @@ MLX_API void mlx_set_image_region(mlx_context mlx, mlx_image image, int x, int y
  * @param angle      Rotation angle of the image (clockwise)
  */
 MLX_API void mlx_put_transformed_image_to_window(mlx_context mlx, mlx_window win, mlx_image image, float x, float y, float scale_x, float scale_y, float angle);
+
+        /* Sound related functions */
+
+/**
+* @brief            Creates a new audio channel
+*
+* @param mlx        Internal MLX application
+*
+* @return (mlx_channel) An opaque handler to the internal MLX audio channel or MLX_NULL_HANDLE (0x0) in case of error
+*/
+MLX_API mlx_channel mlx_new_audio_channel(mlx_context mlx);
+
+/**
+* @brief            Pauses the sound playing in the given audio channel
+*
+* @param mlx        Internal MLX application
+* @param channel    Internal audio channel
+*/
+MLX_API void mlx_pause_channel(mlx_context mlx, mlx_channel channel);
+
+/**
+* @brief            Resumes the sound paused in the given audio channel
+*
+* @param mlx        Internal MLX application
+* @param channel    Internal audio channel
+*/
+MLX_API void mlx_resume_channel(mlx_context mlx, mlx_channel channel);
+
+/**
+* @brief            Get the playback position of the sount in the given audio channel
+*
+* @param mlx        Internal MLX application
+* @param channel    Internal audio channel
+*
+* @return (float) The time in seconds from the beginning of the sound in the channel
+*/
+MLX_API float mlx_get_channel_playback_position(mlx_context mlx, mlx_channel channel);
+
+/**
+* @brief            Sets the volume of an audio channel
+*
+* @param mlx        Internal MLX application
+* @param channel    Internal audio channel
+* @param left       Volume at the left ear (1 = default)
+* @param right      Volume at the right ear (1 = default)
+*/
+MLX_API void mlx_set_channel_volume(mlx_context mlx, mlx_channel channel, float left, float right);
+
+/**
+* @brief            Sets the playback speed of an audio channel
+*
+* @param mlx        Internal MLX application
+* @param channel    Internal audio channel
+* @param speed      Speed ratio of the channel, this will also affect the sound's pitch
+*/
+MLX_API void mlx_set_channel_speed(mlx_context mlx, mlx_channel channel, float speed);
+
+/**
+* @brief            Destroys internal audio channel
+*
+* @param mlx        Internal MLX application
+* @param channel    Internal audio channel
+*/
+MLX_API void mlx_destroy_audio_channel(mlx_context mlx, mlx_channel channel);
+
+/**
+* @brief            Creates a new sound from a wav file
+*
+* @param mlx        Internal MLX application
+* @param path       Path to the wav file
+* @param duration   Set to the duration of the sound in seconds
+*
+* @return (mlx_sound) An opaque handler to the internal MLX sound or MLX_NULL_HANDLE (0x0) in case of error
+*/
+MLX_API mlx_sound mlx_new_sound_from_wav(mlx_context mlx, char* path, float* duration);
+
+/**
+* @brief            Loads and plays a sound in an audio channel
+*
+* @param mlx        Internal MLX application
+* @param channel    Internal audio channel
+* @param sound      Internal sound handle
+*/
+MLX_API void mlx_play_sound(mlx_context mlx, mlx_channel channel, mlx_sound sound);
+
+/**
+* @brief            Loads and plays a sound in an audio channel
+*
+* @param mlx        Internal MLX application
+* @param channel    Internal audio channel
+* @param sound      Internal sound handle
+* @param start      Seconds from which to start playing the sound
+* @param end        Seconds from which to stop playing the sound
+* @param loop       Should the sound start again after ending
+*
+* Negative time values (including -0.0) will be set relative to the end of the sound
+*/
+MLX_API void mlx_play_sound_ex(mlx_context mlx, mlx_channel channel, mlx_sound sound, float start, float end, bool loop);
+
+/**
+* @brief            Destroys internal sound handle
+*
+* @param mlx        Internal MLX application
+* @param sound      Internal sound handle
+*/
+MLX_API void mlx_destroy_sound(mlx_context mlx, mlx_sound sound);
 
 /**
  * @brief            Get direct pointers to hidden functions
