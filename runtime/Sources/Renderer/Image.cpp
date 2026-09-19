@@ -237,15 +237,17 @@ namespace mlx
 		MLX_PROFILE_FUNCTION();
 
 		std::filesystem::path ext = file.extension();
+		std::u8string file8 = file.u8string();
+		const char* file_c = reinterpret_cast<const char *>(file8.c_str());
 
 		if (ext == ".png")
-			return stbi_write_png(file.c_str(), m_width, m_height, STBI_rgb_alpha, m_staging_buffer->GetMap<void*>(), m_width * 4);
+			return stbi_write_png(file_c, m_width, m_height, STBI_rgb_alpha, m_staging_buffer->GetMap<void*>(), m_width * 4);
 		if (ext == ".jpg" || ext == ".jpeg")
-			return stbi_write_jpg(file.c_str(), m_width, m_height, STBI_rgb_alpha, m_staging_buffer->GetMap<void*>(), 70);
+			return stbi_write_jpg(file_c, m_width, m_height, STBI_rgb_alpha, m_staging_buffer->GetMap<void*>(), 70);
 		if (ext == ".bmp")
-			return stbi_write_bmp(file.c_str(), m_width, m_height, STBI_rgb_alpha, m_staging_buffer->GetMap<void*>());
+			return stbi_write_bmp(file_c, m_width, m_height, STBI_rgb_alpha, m_staging_buffer->GetMap<void*>());
 		if (ext == ".tga")
-			return stbi_write_tga(file.c_str(), m_width, m_height, STBI_rgb_alpha, m_staging_buffer->GetMap<void*>());
+			return stbi_write_tga(file_c, m_width, m_height, STBI_rgb_alpha, m_staging_buffer->GetMap<void*>());
 		return false;
 	}
 
