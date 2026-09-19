@@ -8,9 +8,20 @@ namespace mlx
 		public:
 			ImageRegistry() = default;
 
-			inline void RegisterTexture(NonOwningPtr<class Texture> texture);
-			inline void UnregisterTexture(NonOwningPtr<class Texture> texture);
-			inline bool IsTextureKnown(NonOwningPtr<class Texture> texture);
+			inline void RegisterTexture(NonOwningPtr<class Texture> texture)
+			{
+				m_textures_registry.insert(texture);
+			}
+
+			inline void UnregisterTexture(NonOwningPtr<class Texture> texture)
+			{
+				m_textures_registry.erase(texture);
+			}
+
+			inline bool IsTextureKnown(NonOwningPtr<class Texture> texture)
+			{
+				return m_textures_registry.find(texture) != m_textures_registry.end();
+			}
 
 			~ImageRegistry() = default;
 
@@ -18,7 +29,5 @@ namespace mlx
 			std::unordered_set<NonOwningPtr<class Texture>> m_textures_registry;
 	};
 }
-
-#include <Core/ImagesRegistry.inl>
 
 #endif

@@ -267,6 +267,33 @@ MLX_API void mlx_mouse_show(mlx_context mlx);
 MLX_API void mlx_mouse_hide(mlx_context mlx);
 
 /**
+* @brief           System cursor icons
+*/
+typedef enum mlx_cursor_icon
+{
+	MLX_MOUSE_ICON_ARROW,
+	MLX_MOUSE_ICON_IBEAM,
+	MLX_MOUSE_ICON_WAIT,
+	MLX_MOUSE_ICON_CROSSHAIR,
+	MLX_MOUSE_ICON_WAITARROW,
+	MLX_MOUSE_ICON_SIZENWSE,
+	MLX_MOUSE_ICON_SIZENESW,
+	MLX_MOUSE_ICON_SIZEWE,
+	MLX_MOUSE_ICON_SIZENS,
+	MLX_MOUSE_ICON_SIZEALL,
+	MLX_MOUSE_ICON_NO,
+	MLX_MOUSE_ICON_HAND,
+} mlx_cursor_icon;
+
+/**
+* @brief            Changes the cursor's icon
+*
+* @param mlx        Internal MLX application
+* @param icon       The new cursor icon id
+*/
+MLX_API void mlx_mouse_set_icon(mlx_context mlx, mlx_cursor_icon icon);
+
+/**
  * @brief            Moves cursor to givent position
  *
  * @param mlx        Internal MLX application
@@ -290,12 +317,15 @@ MLX_API void mlx_mouse_get_pos(mlx_context mlx, int* x, int* y);
  */
 typedef enum mlx_event_type
 {
-	MLX_KEYDOWN = 0,
-	MLX_KEYUP = 1,
-	MLX_MOUSEDOWN = 2,
-	MLX_MOUSEUP = 3,
-	MLX_MOUSEWHEEL = 4,
-	MLX_WINDOW_EVENT = 5
+	MLX_KEYDOWN         = 0,
+	MLX_KEYUP           = 1,
+	MLX_MOUSEDOWN       = 2,
+	MLX_MOUSEUP         = 3,
+	MLX_MOUSEWHEEL      = 4,
+	MLX_WINDOW_EVENT    = 5,
+	MLX_CONTROLLERDOWN  = 6,
+	MLX_CONTROLLERUP    = 7,
+	MLX_TEXTINPUT		= 8,
 } mlx_event_type;
 
 /**
@@ -303,12 +333,11 @@ typedef enum mlx_event_type
  *
  * @param mlx        Internal MLX application
  * @param win        Internal window
- * @param event      Event type (see union on top of this file)
+ * @param event      Event type (see enum 'mlx_event_type')
  * @param f          Function to be executed
  * @param param      Parameter given to the function
  */
 MLX_API void mlx_on_event(mlx_context mlx, mlx_window win, mlx_event_type event, void(*f)(int, void*), void* param);
-
 
 
         /* Pixels drawing related functions */
@@ -354,21 +383,30 @@ MLX_API mlx_image mlx_new_image(mlx_context mlx, int width, int height);
  *
  * @return (mlx_image) An opaque handler to the internal image or MLX_NULL_HANDLE (0x0) in case of error
  */
-MLX_API mlx_image mlx_new_image_from_file(mlx_context mlx, char* filename, int* width, int* height);
+MLX_API mlx_image mlx_new_image_from_file(mlx_context mlx, const char* filename, int* width, int* height);
 
 /**
  * @brief            Destroys internal image
  *
  * @param mlx        Internal MLX application
- * @param img        Internal image
+ * @param image      Internal image
  */
 MLX_API void mlx_destroy_image(mlx_context mlx, mlx_image image);
+
+/**
+ * @brief            Clear image
+ *
+ * @param mlx        Internal MLX application
+ * @param image      Internal image
+ * @param color      Color of the clear
+ */
+MLX_API void mlx_clear_image(mlx_context mlx, mlx_image image, mlx_color color);
 
 /**
  * @brief            Get image pixel data
  *
  * @param mlx        Internal MLX application
- * @param img        Internal image
+ * @param image      Internal image
  * @param x          X coordinate in the image
  * @param y          Y coordinate in the image
  *
@@ -380,12 +418,25 @@ MLX_API mlx_color mlx_get_image_pixel(mlx_context mlx, mlx_image image, int x, i
  * @brief            Set image pixel data
  *
  * @param mlx        Internal MLX application
- * @param img        Internal image
+ * @param image      Internal image
  * @param x          X coordinate in the image
  * @param y          Y coordinate in the image
  * @param color      Color of the pixel to set
  */
 MLX_API void mlx_set_image_pixel(mlx_context mlx, mlx_image image, int x, int y, mlx_color color);
+
+/**
+* @brief            Set image rectangle
+*
+* @param mlx        Internal MLX application
+* @param image      Internal image
+* @param x          X coordinate in the image
+* @param y          Y coordinate in the image
+* @param w          Width of the rectangle
+* @param y          Height of the rectangle
+* @param color      Color of the rectangle
+*/
+MLX_API void mlx_set_image_rectangle(mlx_context mlx, mlx_image image, int x, int y, int w, int h, mlx_color color);
 
 /**
  * @brief            Put image to the given window
@@ -398,6 +449,16 @@ MLX_API void mlx_set_image_pixel(mlx_context mlx, mlx_image image, int x, int y,
  */
 MLX_API void mlx_put_image_to_window(mlx_context mlx, mlx_window win, mlx_image image, int x, int y);
 
+/**
+ * @brief            Saves an image to a png/jpg/bmp file
+ *
+ * @param mlx        Internal MLX application
+ * @param image      Internal image to save
+ * @param filename   Path to the file
+ *
+ * @return (bool) true on success, false otherwise
+ */
+MLX_API bool mlx_save_image_to_file(mlx_context mlx, mlx_image image, const char* filename);
 
 
         /* Strings drawing related functions */

@@ -5,6 +5,7 @@
 #include <Renderer/RenderCore.h>
 #include <Core/Memory.h>
 #include <Core/EventBus.h>
+#include <mlx_extended.h>
 
 namespace mlx
 {
@@ -52,7 +53,7 @@ namespace mlx
 		RenderCore::Get().WaitDeviceIdle();
 	}
 
-	mlx_image Application::NewTexture(int w, int h)
+	mlx_image Application::NewTexture(int w, int h) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
 
@@ -69,7 +70,7 @@ namespace mlx
 		return image;
 	}
 
-	mlx_image Application::NewStbTexture(char* file, int* w, int* h)
+	mlx_image Application::NewStbTexture(const char* file, int* w, int* h) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
 
@@ -85,15 +86,12 @@ namespace mlx
 		return image;
 	}
 
-	void Application::DestroyTexture(mlx_image image)
+	void Application::DestroyTexture(mlx_image image) noexcept
 	{
 		MLX_PROFILE_FUNCTION();
+		CHECK_IMAGE_PTR(image,);
+
 		RenderCore::Get().WaitDeviceIdle();
-		if(!m_image_registry.IsTextureKnown(image->texture))
-		{
-			Error("invalid image handle");
-			return;
-		}
 
 		Texture* texture = image->texture.Get();
 		if(!texture->IsInit())
@@ -108,6 +106,52 @@ namespace mlx
 		}
 		delete texture;
 		delete image;
+	}
+
+	mlx_sound Application::NewSoundFromWAV(const char* file, float* duration) noexcept
+	{
+		MLX_PROFILE_FUNCTION();
+
+		mlx_sound handle;
+		try { handle = new mlx_sound_handler; }
+		catch(...) { return nullptr; }
+
+		Sound* sound = SDLManager::Get().CreateSoundFromWAV(file, duration);
+		if(sound == nullptr)
+			return nullptr;
+		handle->sound = sound;
+		return handle;
+	}
+
+	void Application::DestroySound(mlx_sound handle) noexcept
+	{
+		MLX_PROFILE_FUNCTION();
+
+		SDLManager::Get().DestroySound(handle->sound.Get());
+		delete handle;
+	}
+
+	mlx_channel Application::NewAudioChannel() noexcept
+	{
+		MLX_PROFILE_FUNCTION();
+
+		mlx_channel handle;
+		try { handle = new mlx_channel_handler; }
+		catch(...) { return nullptr; }
+
+		AudioChannel* channel = SDLManager::Get().CreateAudioChannel();
+		if(channel == nullptr)
+			return nullptr;
+		handle->channel = channel;
+		return handle;
+	}
+
+	void Application::DestroyAudioChannel(mlx_channel handle) noexcept
+	{
+		MLX_PROFILE_FUNCTION();
+
+		SDLManager::Get().DestroyAudioChannel(handle->channel.Get());
+		delete handle;
 	}
 
 	Application::~Application()

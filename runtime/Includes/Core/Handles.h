@@ -17,6 +17,16 @@ extern "C"
 	{
 		mlx::NonOwningPtr<mlx::Texture> texture;
 	};
+
+	struct mlx_channel_handler
+	{
+		mlx::NonOwningPtr<mlx::AudioChannel> channel;
+	};
+
+	struct mlx_sound_handler
+	{
+		mlx::NonOwningPtr<mlx::Sound> sound;
+	};
 }
 
 #endif

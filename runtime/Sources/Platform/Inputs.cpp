@@ -1,3 +1,5 @@
+#include "mlx.h"
+#include "mlx_keycodes.h"
 #include <PreCompiled.h>
 
 #include <Platform/Inputs.h>
@@ -22,14 +24,20 @@ namespace mlx
 				return;
 			if(!m_events_hooks.contains(window_id) || m_events_hooks[window_id][event].empty())
 				return;
-			if(event == MLX_WINDOW_EVENT && code == 8)
+			if(event == MLX_WINDOW_EVENT && code == MLX_WINDOW_SIZE_CHANGED)
 				EventBus::SendBroadcast(Internal::SwapchainResizeEventBroadcast{});
+
 			for(const auto& hook : m_events_hooks[window_id][event])
 			{
 				if(hook.fn)
 					hook.fn(code, hook.param);
 			}
 		});
+	}
+
+	int Inputs::GetDefaultControllerId() noexcept
+	{
+		return SDLManager::Get().GetFirstConnectedController();
 	}
 
 	std::int32_t Inputs::GetX() const noexcept
@@ -50,5 +58,15 @@ namespace mlx
 	std::int32_t Inputs::GetYRel() const noexcept
 	{
 		return SDLManager::Get().GetYRel();
+	}
+
+	float Inputs::GetControllerAxis(int controller_id, int axis_kind) const noexcept
+	{
+		return SDLManager::Get().GetControllerAxis(controller_id, axis_kind);
+	}
+
+	void Inputs::RumbleController(int controller_id, float low_freq, float high_freq, float duration) const noexcept
+	{
+		return SDLManager::Get().RumbleController(controller_id, high_freq, low_freq, duration);
 	}
 }

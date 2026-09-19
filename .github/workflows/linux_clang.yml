@@ -32,8 +32,8 @@ jobs:
 
     # Build the lib
     - name: Build MacroLibX
-      run: make -j && make fclean && make debug 
+      run: make -j && make fclean && make debug
 
-    # Build the example
-    - name: Build Example
-      run: cd example && bash ./build.sh
+    # Build the examples
+    - name: Build Examples
+      run: cd examples/render_test && bash build.sh && cd ../controller_paint && bash build.sh

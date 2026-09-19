@@ -24,6 +24,27 @@
 	#include <stb_image.h>
 #endif
 
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+
+#define STBIW_ASSERT(x) (mlx::Assert(x, "internal stb assertion " #x))
+#define STBIW_MALLOC(x) (mlx::MemManager::Malloc(x))
+#define STBIW_REALLOC(p, x) (mlx::MemManager::Realloc(p, x))
+#define STBIW_FREE(x) (mlx::MemManager::Free(x))
+
+#if defined(MLX_COMPILER_GCC)
+	#pragma GCC diagnostic push
+	#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+		#include <stb_image_write.h>
+	#pragma GCC diagnostic pop
+#elif defined(MLX_COMPILER_CLANG)
+	#pragma clang diagnostic push
+	#pragma clang diagnostic ignored "-Wmissing-field-initializers"
+		#include <stb_image_write.h>
+	#pragma clang diagnostic pop
+#else
+	#include <stb_image_write.h>
+#endif
+
 namespace mlx
 {
 	MLX_FORCEINLINE mlx_color ReverseColor(mlx_color color)
@@ -209,6 +230,43 @@ namespace mlx
 		if(m_staging_buffer.has_value())
 			m_staging_buffer->Destroy();
 		Image::Destroy();
+	}
+
+	bool Texture::SaveToFile(const std::filesystem::path& file)
+	{
+		MLX_PROFILE_FUNCTION();
+
+		std::filesystem::path ext = file.extension();
+		std::u8string file8 = file.u8string();
+		const char* file_c = reinterpret_cast<const char *>(file8.c_str());
+
+		if (ext == ".png")
+			return stbi_write_png(file_c, m_width, m_height, STBI_rgb_alpha, m_staging_buffer->GetMap<void*>(), m_width * 4);
+		if (ext == ".jpg" || ext == ".jpeg")
+			return stbi_write_jpg(file_c, m_width, m_height, STBI_rgb_alpha, m_staging_buffer->GetMap<void*>(), 70);
+		if (ext == ".bmp")
+			return stbi_write_bmp(file_c, m_width, m_height, STBI_rgb_alpha, m_staging_buffer->GetMap<void*>());
+		if (ext == ".tga")
+			return stbi_write_tga(file_c, m_width, m_height, STBI_rgb_alpha, m_staging_buffer->GetMap<void*>());
+		return false;
+	}
+
+	void Texture::ClearBuffer(mlx_color color) noexcept
+	{
+		MLX_PROFILE_FUNCTION();
+
+		if(!m_staging_buffer.has_value())
+			OpenCPUBuffer();
+
+		mlx_color endian_color;
+		if constexpr(std::endian::native == std::endian::little)
+			endian_color = ReverseColor(color);
+		else
+			endian_color = color;
+
+		for(std::size_t i = 0; i < m_width * m_height; i++)
+			m_staging_buffer->GetMap<mlx_color*>()[i] = endian_color;
+		m_has_been_modified = true;
 	}
 
 	void Texture::SetPixel(int x, int y, mlx_color color) noexcept

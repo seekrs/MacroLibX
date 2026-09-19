@@ -1,4 +1,5 @@
 #pragma once
+#include "Core/SDLManager.h"
 #include <Core/Application.h>
 #include <Core/Handles.h>
 #include <Embedded/DogicaTTF.h>
@@ -22,14 +23,40 @@
 			Error("invalid image handle (NULL)"); \
 			return retval; \
 		} \
-		else if(!m_image_registry.IsTextureKnown(image->texture)) \
+		else if(!m_image_registry.IsTextureKnown(img->texture)) \
 		{ \
 			Error("invalid image handle"); \
+			return retval; \
+		} else {}
+
+	#define CHECK_SOUND_PTR(snd, retval) \
+	if(snd == nullptr) \
+		{ \
+			Error("invalid sound handle (NULL)"); \
+			return retval; \
+		} \
+	else if(!SDLManager::Get().SoundExists(snd->sound.Get())) \
+		{ \
+			Error("invalid sound handle"); \
+			return retval; \
+		} else {}
+
+	#define CHECK_CHANNEL_PTR(ch, retval) \
+		if(ch == nullptr) \
+		{ \
+			Error("invalid audio channel handle (NULL)"); \
+			return retval; \
+		} \
+		else if(!SDLManager::Get().AudioChannelExists(ch->channel.Get())) \
+		{ \
+			Error("invalid audio channel handle"); \
 			return retval; \
 		} else {}
 #else
 	#define CHECK_WINDOW_PTR(win, retval)
 	#define CHECK_IMAGE_PTR(img, retval)
+	#define CHECK_SOUND_PTR(snd, retval)
+	#define CHECK_CHANNEL_PTR(ch, retval)
 #endif
 
 namespace mlx
@@ -40,11 +67,31 @@ namespace mlx
 		*y = m_in.GetY();
 	}
 
+	int Application::GetDefaultControllerId() noexcept
+	{
+		return m_in.GetDefaultControllerId();
+	}
+
+	float Application::GetControllerAxis(int controller_id, int axis) const noexcept
+	{
+		return m_in.GetControllerAxis(controller_id, axis);
+	}
+
+	void Application::RumbleController(int controller_id, float low_freq, float high_freq, float duration) const noexcept
+	{
+		return m_in.RumbleController(controller_id, low_freq, high_freq, duration);
+	}
+
 	void Application::OnEvent(mlx_window win, int event, void(*f)(int, void*), void* param) noexcept
 	{
 		CHECK_WINDOW_PTR(win, );
 		if(!m_graphics[win->id]->HasWindow())
 			return;
+		if (event < 0 || event > 8)
+		{
+			Error("invalid event");
+			return;
+		}
 		m_in.OnEvent(m_graphics[win->id]->GetWindow()->GetID(), event, f, param);
 	}
 
@@ -66,11 +113,6 @@ namespace mlx
 		if(!info)
 		{
 			Error("invalid window create info (NULL)");
-			return nullptr;
-		}
-		if (info->title == nullptr)
-		{
-			Error("invalid window title (NULL)");
 			return nullptr;
 		}
 
@@ -123,7 +165,7 @@ namespace mlx
 		}
 	}
 
-	NonOwningPtr<Texture> Application::GetTexture(mlx_image image)
+	NonOwningPtr<Texture> Application::GetTexture(mlx_image image) noexcept
 	{
 		CHECK_IMAGE_PTR(image, nullptr);
 		NonOwningPtr<Texture> texture = image->texture;
@@ -133,6 +175,25 @@ namespace mlx
 			return nullptr;
 		}
 		return texture;
+	}
+
+	NonOwningPtr<Sound> Application::GetSound(mlx_sound handle) noexcept
+	{
+		CHECK_SOUND_PTR(handle, nullptr);
+		NonOwningPtr<Sound> sound = handle->sound;
+		if(!sound->IsValid())
+		{
+			Error("trying to use an invalid sound");
+			return nullptr;
+		}
+		return sound;
+	}
+
+	NonOwningPtr<AudioChannel> Application::GetAudioChannel(mlx_channel handle) noexcept
+	{
+		CHECK_CHANNEL_PTR(handle, nullptr);
+		NonOwningPtr<AudioChannel> channel = handle->channel;
+		return channel;
 	}
 
 	void Application::AddLoopHook(void(*f)(void*), void* param)

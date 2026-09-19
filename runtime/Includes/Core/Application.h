@@ -9,6 +9,7 @@
 #include <Core/Fps.h>
 #include <Graphics/Font.h>
 #include <Graphics/Mesh.h>
+#include <mlx_extended.h>
 
 namespace mlx
 {
@@ -18,6 +19,11 @@ namespace mlx
 			Application();
 
 			inline void GetMousePos(int* x, int* y) noexcept;
+
+			inline int GetDefaultControllerId() noexcept;
+			inline float GetControllerAxis(int controller_id, int axis) const noexcept;
+			inline void RumbleController(int controller_id, float low_freq, float high_freq, float duration) const noexcept;
+
 			inline void GetScreenSize(mlx_window win, int* w, int* h) noexcept;
 			inline void SetFPSCap(std::uint32_t fps) noexcept;
 
@@ -27,10 +33,17 @@ namespace mlx
 			inline NonOwningPtr<GraphicsSupport> GetGraphicsSupport(mlx_window win);
 			inline void DestroyGraphicsSupport(mlx_window win);
 
-			mlx_image NewTexture(int w, int h);
-			mlx_image NewStbTexture(char* file, int* w, int* h); // stb textures are image files (png, jpg, bpm, ...)
-			inline NonOwningPtr<Texture> GetTexture(mlx_image image);
-			void DestroyTexture(mlx_image img);
+			mlx_image NewTexture(int w, int h) noexcept;
+			mlx_image NewStbTexture(const char* file, int* w, int* h) noexcept;
+			inline NonOwningPtr<Texture> GetTexture(mlx_image image) noexcept;
+			void DestroyTexture(mlx_image img) noexcept;
+
+			mlx_sound NewSoundFromWAV(const char* file, float* duration) noexcept;
+			inline NonOwningPtr<Sound> GetSound(mlx_sound sound) noexcept;
+			void DestroySound(mlx_sound sound) noexcept;
+			mlx_channel NewAudioChannel() noexcept;
+			inline NonOwningPtr<AudioChannel> GetAudioChannel(mlx_channel channel) noexcept;
+			void DestroyAudioChannel(mlx_channel channel) noexcept;
 
 			inline void AddLoopHook(void(*f)(void*), void* param);
 			inline void LoopEnd() noexcept;
