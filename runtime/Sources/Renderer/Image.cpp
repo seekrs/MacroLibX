@@ -41,6 +41,8 @@
 	#pragma clang diagnostic ignored "-Wmissing-field-initializers"
 		#include <stb_image_write.h>
 	#pragma clang diagnostic pop
+#else
+	#include <stb_image_write.h>
 #endif
 
 namespace mlx
