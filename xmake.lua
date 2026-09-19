@@ -81,7 +81,7 @@ target("Test")
 
 	add_deps("mlx")
 
-	add_files("example/main.c", { languages = "c99" })
+	add_files("examples/render_test/main.c", { languages = "c99" })
 
 	add_defines("SDL_MAIN_HANDLED")
 

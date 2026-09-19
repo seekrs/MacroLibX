@@ -37,6 +37,7 @@ includes_directories = include_directories(
 
 sources = files(
     'runtime/Sources/Core/Application.cpp',
+    'runtime/Sources/Core/Audio.cpp',
     'runtime/Sources/Core/Bridge.cpp',
     'runtime/Sources/Core/EventBus.cpp',
     'runtime/Sources/Core/EventListener.cpp',
@@ -102,5 +103,5 @@ pkg_mod.generate(
   name : 'mlx',
   description : 'MacroLibX Library',
   version : meson.project_version(),
-  subdirs : ['.'], 
+  subdirs : ['.'],
 )
