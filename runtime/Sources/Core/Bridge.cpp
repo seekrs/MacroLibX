@@ -45,7 +45,7 @@ extern "C"
 	void mlx_set_fps_goal(mlx_context mlx, int fps)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
-		if(fps <= 0)
+		if(fps < 0)
 			fps = -1;
 		mlx->app->SetFPSCap(static_cast<std::uint32_t>(fps));
 	}
@@ -195,6 +195,13 @@ extern "C"
 		mlx::SDLManager::HideCursor();
 	}
 
+	void mlx_mouse_set_icon(mlx_context mlx, mlx_cursor_icon icon)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+
+		mlx::SDLManager::Get().SetCursorIcon(icon);
+	}
+
 	void mlx_mouse_move(mlx_context mlx, mlx_window win, int x, int y)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
@@ -236,7 +243,7 @@ extern "C"
 		return mlx->app->NewTexture(width, height);
 	}
 
-	mlx_image mlx_new_image_from_file(mlx_context mlx, char* filename, int* width, int* height)
+	mlx_image mlx_new_image_from_file(mlx_context mlx, const char* filename, int* width, int* height)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
 		if (filename == nullptr)
@@ -272,6 +279,15 @@ extern "C"
 		mlx->app->DestroyTexture(image);
 	}
 
+	void mlx_clear_image(mlx_context mlx, mlx_image image, mlx_color color)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::Texture> texture = mlx->app->GetTexture(image);
+		if(!texture)
+			return;
+		texture->ClearBuffer(color);
+	}
+
 	mlx_color mlx_get_image_pixel(mlx_context mlx, mlx_image image, int x, int y)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
@@ -290,6 +306,15 @@ extern "C"
 		texture->SetPixel(x, y, color);
 	}
 
+	void mlx_set_image_rectangle(mlx_context mlx, mlx_image image, int x, int y, int w, int h, mlx_color color)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::Texture> texture = mlx->app->GetTexture(image);
+		if(!texture)
+			return;
+		texture->SetRectangle(x, y, w, h, color);
+	}
+
 	void mlx_put_image_to_window(mlx_context mlx, mlx_window win, mlx_image image, int x, int y)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
@@ -300,6 +325,30 @@ extern "C"
 		if(!texture)
 			return;
 		gs->TexturePut(texture, x, y, 1.0f, 1.0f, 0.0f);
+	}
+
+	bool mlx_save_image_to_file(mlx_context mlx, mlx_image image, const char* filename)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		if (filename == nullptr)
+		{
+			mlx::Error("Image: filename is NULL");
+			return false;
+		}
+
+		std::filesystem::path file(filename);
+		std::filesystem::path ext = file.extension();
+
+		if(ext != ".png" && ext != ".jpg" && ext != ".jpeg" && ext != ".bmp" && ext != ".tga")
+		{
+			mlx::Error("Image: not a valid file format '%'", filename);
+			return false;
+		}
+
+		mlx::NonOwningPtr<mlx::Texture> texture = mlx->app->GetTexture(image);
+		if(!texture)
+			return false;
+		return texture->SaveToFile(file);
 	}
 
 	void mlx_string_put(mlx_context mlx, mlx_window win, int x, int y, mlx_color color, char* str)
@@ -439,6 +488,24 @@ extern "C"
 		gs->GetWindow()->Restore();
 	}
 
+	float mlx_controller_get_axis(mlx_context mlx, int controller_id, mlx_controller_axis axis)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+
+		if (controller_id < 0)
+			controller_id = mlx->app->GetDefaultControllerId();
+		return mlx->app->GetControllerAxis(controller_id, axis);
+	}
+
+	void mlx_controller_rumble(mlx_context mlx, int controller_id, float high_freq, float low_freq, float duration)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+
+		if (controller_id < 0)
+			controller_id = mlx->app->GetDefaultControllerId();
+		return mlx->app->RumbleController(controller_id, high_freq, low_freq, duration);
+	}
+
 	void mlx_pixel_put_array(mlx_context mlx, mlx_window win, int x, int y, mlx_color* pixels, size_t pixels_size)
 	{
 		MLX_CHECK_APPLICATION_POINTER(mlx);
@@ -455,15 +522,6 @@ extern "C"
 		if(!gs)
 			return;
 		gs->PixelPutRegion(x, y, w, h, pixels);
-	}
-
-	void mlx_set_image_rectangle(mlx_context mlx, mlx_image image, int x, int y, int w, int h, mlx_color color)
-	{
-		MLX_CHECK_APPLICATION_POINTER(mlx);
-		mlx::NonOwningPtr<mlx::Texture> texture = mlx->app->GetTexture(image);
-		if(!texture)
-			return;
-		texture->SetRectangle(x, y, w, h, color);
 	}
 
 	void mlx_get_image_region(mlx_context mlx, mlx_image image, int x, int y, int w, int h, mlx_color* dst)
@@ -494,6 +552,121 @@ extern "C"
 		if(!texture)
 			return;
 		gs->TexturePut(texture, x, y, scale_x, scale_y, angle);
+	}
+
+	mlx_channel mlx_new_audio_channel(mlx_context mlx)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+
+		return mlx->app->NewAudioChannel();
+	}
+
+	void mlx_pause_channel(mlx_context mlx, mlx_channel channel)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::AudioChannel> audio_channel = mlx->app->GetAudioChannel(channel);
+		if (!audio_channel)
+			return;
+		audio_channel->Pause();
+	}
+
+	void mlx_resume_channel(mlx_context mlx, mlx_channel channel)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::AudioChannel> audio_channel = mlx->app->GetAudioChannel(channel);
+		if (!audio_channel)
+			return;
+		audio_channel->Resume();
+	}
+
+	float mlx_get_channel_playback_position(mlx_context mlx, mlx_channel channel)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::AudioChannel> audio_channel = mlx->app->GetAudioChannel(channel);
+		if (!audio_channel)
+			return -1.0;
+		return audio_channel->GetPlaybackPosition();
+	}
+
+	void mlx_set_channel_volume(mlx_context mlx, mlx_channel channel, float left, float right)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::AudioChannel> audio_channel = mlx->app->GetAudioChannel(channel);
+		if (!audio_channel)
+			return;
+		audio_channel->SetVolume(left, right);
+	}
+
+	void mlx_set_channel_speed(mlx_context mlx, mlx_channel channel, float speed)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::AudioChannel> audio_channel = mlx->app->GetAudioChannel(channel);
+		if (!audio_channel)
+			return;
+		audio_channel->SetSpeed(speed);
+	}
+
+	void mlx_destroy_audio_channel(mlx_context mlx, mlx_channel handle)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx->app->DestroyAudioChannel(handle);
+	}
+
+	mlx_sound mlx_new_sound_from_wav(mlx_context mlx, char* filename, float* duration)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+
+		if (filename == nullptr)
+		{
+			mlx::Error("Sound loader: filename is NULL");
+			return nullptr;
+		}
+		std::filesystem::path file(filename);
+		if(file.extension() != ".wav")
+		{
+			mlx::Error("Sound loader: not a wav file '%'", filename);
+			return nullptr;
+		}
+		{
+			std::ifstream stream(file, std::ios::binary);
+			if(!stream.is_open())
+			{
+				mlx::Error("Sound loader: failed to open file '%'", filename);
+				return nullptr;
+			}
+		}
+		return mlx->app->NewSoundFromWAV(filename, duration);
+	}
+
+	void mlx_play_sound(mlx_context mlx, mlx_channel channel, mlx_sound sound)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::AudioChannel> audio_channel = mlx->app->GetAudioChannel(channel);
+		if (!audio_channel)
+			return;
+		mlx::NonOwningPtr<mlx::Sound> snd = mlx->app->GetSound(sound);
+		if (!snd)
+			return;
+		audio_channel->Play(snd.Get(), 0, -1, false);
+	}
+
+	void mlx_play_sound_ex(mlx_context mlx, mlx_channel channel, mlx_sound sound, float start, float end, bool loop)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+		mlx::NonOwningPtr<mlx::AudioChannel> audio_channel = mlx->app->GetAudioChannel(channel);
+		if (!audio_channel)
+			return;
+		mlx::NonOwningPtr<mlx::Sound> snd = mlx->app->GetSound(sound);
+		if (!snd)
+			return;
+		audio_channel->Play(snd.Get(), start, end, loop);
+	}
+
+	void mlx_destroy_sound(mlx_context mlx, mlx_sound sound)
+	{
+		MLX_CHECK_APPLICATION_POINTER(mlx);
+
+		mlx->app->DestroySound(sound);
 	}
 
 	// Hidden bindings

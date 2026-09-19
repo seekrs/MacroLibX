@@ -30,6 +30,10 @@ namespace mlx
 			std::int32_t GetXRel() const noexcept;
 			std::int32_t GetYRel() const noexcept;
 
+			int GetDefaultControllerId() noexcept;
+			float GetControllerAxis(int controller_id, int axis_kind) const noexcept;
+			void RumbleController(int controller_id, float low_freq, float high_freq, float duration) const noexcept;
+
 			inline bool IsMouseMoving() const noexcept { return GetXRel() || GetYRel(); }
 			MLX_FORCEINLINE bool IsRunning() const noexcept { return m_run; }
 			MLX_FORCEINLINE constexpr void Finish() noexcept { m_run = false; }
@@ -44,7 +48,7 @@ namespace mlx
 
 		private:
 			std::unordered_map<std::uint32_t, std::shared_ptr<Window>> m_windows;
-			std::unordered_map<std::uint32_t, std::array<std::vector<Hook>, 6>> m_events_hooks;
+			std::unordered_map<std::uint32_t, std::array<std::vector<Hook>, 9>> m_events_hooks;
 			bool m_run = false;
 	};
 }

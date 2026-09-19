@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <math.h>
-#include "../includes/mlx.h"
-#include "../includes/mlx_extended.h"
+#include "../../includes/mlx.h"
+#include "../../includes/mlx_extended.h"
 
 typedef struct
 {

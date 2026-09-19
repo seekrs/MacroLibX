@@ -140,8 +140,19 @@ typedef enum mlx_mouse_code
 	MLX_MOUSE_MIDDLE		= 2,
 	MLX_MOUSE_RIGHT			= 3,
 	MLX_MOUSE_4				= 4,
-	MLX_MOUSE_5				= 5,
+	MLX_MOUSE_5				= 5
 } mlx_mouse_code;
+
+/**
+ * @brief           Event codes for mouse scrolling
+ */
+typedef enum mlx_mouse_scroll_code
+{
+	MLX_MOUSE_SCROLL_UP			= 1,
+	MLX_MOUSE_SCROLL_DOWN		= 2,
+	MLX_MOUSE_SCROLL_RIGHT		= 3,
+	MLX_MOUSE_SCROLL_LEFT		= 4
+} mlx_mouse_scroll_code;
 
 /**
  * @brief           Event codes for window events
@@ -160,6 +171,39 @@ typedef enum mlx_window_code
 	MLX_WINDOW_RESIZED		= 9,
 	MLX_WINDOW_RESTORED		= 11
 } mlx_window_code;
+
+/**
+ * @brief           Event codes for controller buttons
+ */
+typedef enum mlx_controller_code
+{
+	MLX_CONTROLLER_A				= 0,
+    MLX_CONTROLLER_B				= 1,
+    MLX_CONTROLLER_X				= 2,
+    MLX_CONTROLLER_Y				= 3,
+    MLX_CONTROLLER_BACK				= 4,
+    MLX_CONTROLLER_GUIDE			= 5,
+    MLX_CONTROLLER_START			= 6,
+    MLX_CONTROLLER_LEFTSTICK		= 7,
+    MLX_CONTROLLER_RIGHTSTICK		= 8,
+    MLX_CONTROLLER_LEFTSHOULDER		= 9,
+    MLX_CONTROLLER_RIGHTSHOULDER	= 10,
+    MLX_CONTROLLER_DPAD_UP			= 11,
+    MLX_CONTROLLER_DPAD_DOWN		= 12,
+    MLX_CONTROLLER_DPAD_LEFT		= 13,
+    MLX_CONTROLLER_DPAD_RIGHT		= 14,
+
+    MLX_CONTROLLER_PADDLE1			= 16,
+    MLX_CONTROLLER_PADDLE2			= 17,
+    MLX_CONTROLLER_PADDLE3			= 18,
+    MLX_CONTROLLER_PADDLE4			= 19,
+
+    MLX_CONTROLLER_CONNECT			= 128,
+    MLX_CONTROLLER_DISCONNECT		= 129,
+
+    MLX_CONTROLLER_KEYCODE_MASK		= 0x0000FFFF,
+    MLX_CONTROLLER_ID_MASK			= 0xFFFF0000
+} mlx_controller_code;
 
 #ifdef __cplusplus
 }

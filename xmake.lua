@@ -75,13 +75,13 @@ target_end()
 target("Test")
 	set_default(false)
 	set_kind("binary")
-	set_targetdir("example")
+	set_targetdir("examples/render_test")
 
 	add_linkdirs("./")
 
 	add_deps("mlx")
 
-	add_files("example/main.c", { languages = "c99" })
+	add_files("examples/render_test/main.c", { languages = "c99" })
 
 	add_defines("SDL_MAIN_HANDLED")
 
