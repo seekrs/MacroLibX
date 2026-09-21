@@ -25,7 +25,7 @@ namespace mlx
 		m_buffer = sound->m_data;
 		m_start = start_frame;
 		m_end = end_frame;
-		m_position = start_frame;
+		m_position = (m_speed > 0) ? start_frame : end_frame - 1e-6;
 		m_looping = loop;
 		m_paused = false;
 	}
