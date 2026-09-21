@@ -647,7 +647,7 @@ extern "C"
 		mlx::NonOwningPtr<mlx::Sound> snd = mlx->app->GetSound(sound);
 		if (!snd)
 			return;
-		audio_channel->Play(snd.Get(), 0, -1, false);
+		audio_channel->Play(snd.Get(), 0.0, -0.0, false);
 	}
 
 	void mlx_play_sound_ex(mlx_context mlx, mlx_channel channel, mlx_sound sound, float start, float end, bool loop)

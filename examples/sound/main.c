@@ -48,8 +48,9 @@ void key_down(int key, void *data)
 	(void)data;
 	if (key == MLX_KEY_ESCAPE)
 		mlx_loop_end(mlx);
-	else if (key == MLX_KEY_SPACE)
+	else if (key == MLX_KEY_SPACE) {
 		mlx_play_sound_ex(mlx, fx_ch, fx, slider_values[5], slider_values[6], false);
+	}
 	else if (key == MLX_KEY_Z)
 		mlx_pause_channel(mlx, fx_ch);
 	else if (key == MLX_KEY_X)
