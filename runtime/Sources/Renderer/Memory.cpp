@@ -108,7 +108,10 @@ namespace mlx
 			#endif
 			vmaSetAllocationName(m_allocator, allocation, name);
 		}
-		DebugLog("Graphics Allocator: created new image '%'", name);
+		if(name != nullptr)
+			DebugLog("Graphics Allocator: created new image '%'", name);
+		else
+			DebugLog("Graphics Allocator: created new image");
 		m_active_images_allocations++;
 		return allocation;
 	}
