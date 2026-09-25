@@ -19265,6 +19265,130 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
 
   using BufferCopy2KHR = BufferCopy2;
 
+  // wrapper struct for struct VkBufferDeviceAddressAlignmentAllocateInfoVALVE, see
+  // https://registry.khronos.org/vulkan/specs/latest/man/html/VkBufferDeviceAddressAlignmentAllocateInfoVALVE.html
+  struct BufferDeviceAddressAlignmentAllocateInfoVALVE
+  {
+    using NativeType = VkBufferDeviceAddressAlignmentAllocateInfoVALVE;
+
+    static bool const                                  allowDuplicate = false;
+    static VULKAN_HPP_CONST_OR_CONSTEXPR StructureType structureType  = StructureType::eBufferDeviceAddressAlignmentAllocateInfoVALVE;
+
+#if !defined( VULKAN_HPP_NO_CONSTRUCTORS ) && !defined( VULKAN_HPP_NO_STRUCT_CONSTRUCTORS )
+    VULKAN_HPP_CONSTEXPR BufferDeviceAddressAlignmentAllocateInfoVALVE( uint32_t alignment_ = {}, void * pNext_ = nullptr ) VULKAN_HPP_NOEXCEPT
+      : pNext{ pNext_ }
+      , alignment{ alignment_ }
+    {
+    }
+
+    VULKAN_HPP_CONSTEXPR
+      BufferDeviceAddressAlignmentAllocateInfoVALVE( BufferDeviceAddressAlignmentAllocateInfoVALVE const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+
+    BufferDeviceAddressAlignmentAllocateInfoVALVE( VkBufferDeviceAddressAlignmentAllocateInfoVALVE const & rhs ) VULKAN_HPP_NOEXCEPT
+      : BufferDeviceAddressAlignmentAllocateInfoVALVE( *reinterpret_cast<BufferDeviceAddressAlignmentAllocateInfoVALVE const *>( &rhs ) )
+    {
+    }
+
+    BufferDeviceAddressAlignmentAllocateInfoVALVE & operator=( BufferDeviceAddressAlignmentAllocateInfoVALVE const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+#endif /*VULKAN_HPP_NO_CONSTRUCTORS*/
+
+    BufferDeviceAddressAlignmentAllocateInfoVALVE & operator=( VkBufferDeviceAddressAlignmentAllocateInfoVALVE const & rhs ) VULKAN_HPP_NOEXCEPT
+    {
+      *this = *reinterpret_cast<BufferDeviceAddressAlignmentAllocateInfoVALVE const *>( &rhs );
+      return *this;
+    }
+
+#if !defined( VULKAN_HPP_NO_SETTERS ) && !defined( VULKAN_HPP_NO_STRUCT_SETTERS )
+    VULKAN_HPP_CONSTEXPR_14 BufferDeviceAddressAlignmentAllocateInfoVALVE & setPNext( void * pNext_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 BufferDeviceAddressAlignmentAllocateInfoVALVE && setPNext( void * pNext_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 BufferDeviceAddressAlignmentAllocateInfoVALVE & setAlignment( uint32_t alignment_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      alignment = alignment_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 BufferDeviceAddressAlignmentAllocateInfoVALVE && setAlignment( uint32_t alignment_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      alignment = alignment_;
+      return std::move( *this );
+    }
+#endif /*VULKAN_HPP_NO_SETTERS*/
+
+    operator VkBufferDeviceAddressAlignmentAllocateInfoVALVE const &() const VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkBufferDeviceAddressAlignmentAllocateInfoVALVE const *>( this );
+    }
+
+    operator VkBufferDeviceAddressAlignmentAllocateInfoVALVE &() VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkBufferDeviceAddressAlignmentAllocateInfoVALVE *>( this );
+    }
+
+    operator VkBufferDeviceAddressAlignmentAllocateInfoVALVE const *() const VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkBufferDeviceAddressAlignmentAllocateInfoVALVE const *>( this );
+    }
+
+    operator VkBufferDeviceAddressAlignmentAllocateInfoVALVE *() VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkBufferDeviceAddressAlignmentAllocateInfoVALVE *>( this );
+    }
+
+#if defined( VULKAN_HPP_USE_REFLECT )
+    std::tuple<StructureType const &, void * const &, uint32_t const &> reflect() const VULKAN_HPP_NOEXCEPT
+    {
+      return std::tie( sType, pNext, alignment );
+    }
+#endif
+
+#if defined( VULKAN_HPP_HAS_SPACESHIP_OPERATOR )
+    auto operator<=>( BufferDeviceAddressAlignmentAllocateInfoVALVE const & ) const = default;
+#else
+    bool operator==( BufferDeviceAddressAlignmentAllocateInfoVALVE const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+#  if defined( VULKAN_HPP_USE_REFLECT )
+      return this->reflect() == rhs.reflect();
+#  else
+      return ( sType == rhs.sType ) && ( pNext == rhs.pNext ) && ( alignment == rhs.alignment );
+#  endif
+    }
+
+    bool operator!=( BufferDeviceAddressAlignmentAllocateInfoVALVE const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+      return !operator==( rhs );
+    }
+#endif
+
+  public:
+    StructureType sType     = StructureType::eBufferDeviceAddressAlignmentAllocateInfoVALVE;
+    void *        pNext     = {};
+    uint32_t      alignment = {};
+  };
+
+#if 20 <= VULKAN_HPP_CPP_VERSION
+  template <>
+  struct CppType<VkBufferDeviceAddressAlignmentAllocateInfoVALVE>
+  {
+    using Type = BufferDeviceAddressAlignmentAllocateInfoVALVE;
+  };
+#endif
+
+  template <>
+  struct CppType<StructureType, StructureType::eBufferDeviceAddressAlignmentAllocateInfoVALVE>
+  {
+    using Type = BufferDeviceAddressAlignmentAllocateInfoVALVE;
+  };
+
   // wrapper struct for struct VkBufferDeviceAddressCreateInfoEXT, see
   // https://registry.khronos.org/vulkan/specs/latest/man/html/VkBufferDeviceAddressCreateInfoEXT.html
   struct BufferDeviceAddressCreateInfoEXT
@@ -56665,6 +56789,7 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
     using Type = DeviceOrHostAddressConstAMDX;
   };
 #  endif
+
 #endif /*VK_ENABLE_BETA_EXTENSIONS*/
 
   // wrapper struct for struct VkDevicePipelineBinaryInternalCacheControlKHR, see
@@ -103207,6 +103332,272 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
     using Type = PhysicalDeviceBorderColorSwizzleFeaturesEXT;
   };
 
+  // wrapper struct for struct VkPhysicalDeviceBufferDeviceAddressAllocationAlignmentFeaturesVALVE, see
+  // https://registry.khronos.org/vulkan/specs/latest/man/html/VkPhysicalDeviceBufferDeviceAddressAllocationAlignmentFeaturesVALVE.html
+  struct PhysicalDeviceBufferDeviceAddressAllocationAlignmentFeaturesVALVE
+  {
+    using NativeType = VkPhysicalDeviceBufferDeviceAddressAllocationAlignmentFeaturesVALVE;
+
+    static bool const                                  allowDuplicate = false;
+    static VULKAN_HPP_CONST_OR_CONSTEXPR StructureType structureType  = StructureType::ePhysicalDeviceBufferDeviceAddressAllocationAlignmentFeaturesVALVE;
+
+#if !defined( VULKAN_HPP_NO_CONSTRUCTORS ) && !defined( VULKAN_HPP_NO_STRUCT_CONSTRUCTORS )
+    VULKAN_HPP_CONSTEXPR PhysicalDeviceBufferDeviceAddressAllocationAlignmentFeaturesVALVE( Bool32 bufferDeviceAddressAllocationAlignment_ = {},
+                                                                                            void * pNext_ = nullptr ) VULKAN_HPP_NOEXCEPT
+      : pNext{ pNext_ }
+      , bufferDeviceAddressAllocationAlignment{ bufferDeviceAddressAllocationAlignment_ }
+    {
+    }
+
+    VULKAN_HPP_CONSTEXPR PhysicalDeviceBufferDeviceAddressAllocationAlignmentFeaturesVALVE(
+      PhysicalDeviceBufferDeviceAddressAllocationAlignmentFeaturesVALVE const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+
+    PhysicalDeviceBufferDeviceAddressAllocationAlignmentFeaturesVALVE( VkPhysicalDeviceBufferDeviceAddressAllocationAlignmentFeaturesVALVE const & rhs )
+      VULKAN_HPP_NOEXCEPT
+      : PhysicalDeviceBufferDeviceAddressAllocationAlignmentFeaturesVALVE(
+          *reinterpret_cast<PhysicalDeviceBufferDeviceAddressAllocationAlignmentFeaturesVALVE const *>( &rhs ) )
+    {
+    }
+
+    PhysicalDeviceBufferDeviceAddressAllocationAlignmentFeaturesVALVE &
+      operator=( PhysicalDeviceBufferDeviceAddressAllocationAlignmentFeaturesVALVE const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+#endif /*VULKAN_HPP_NO_CONSTRUCTORS*/
+
+    PhysicalDeviceBufferDeviceAddressAllocationAlignmentFeaturesVALVE &
+      operator=( VkPhysicalDeviceBufferDeviceAddressAllocationAlignmentFeaturesVALVE const & rhs ) VULKAN_HPP_NOEXCEPT
+    {
+      *this = *reinterpret_cast<PhysicalDeviceBufferDeviceAddressAllocationAlignmentFeaturesVALVE const *>( &rhs );
+      return *this;
+    }
+
+#if !defined( VULKAN_HPP_NO_SETTERS ) && !defined( VULKAN_HPP_NO_STRUCT_SETTERS )
+    VULKAN_HPP_CONSTEXPR_14 PhysicalDeviceBufferDeviceAddressAllocationAlignmentFeaturesVALVE & setPNext( void * pNext_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 PhysicalDeviceBufferDeviceAddressAllocationAlignmentFeaturesVALVE && setPNext( void * pNext_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 PhysicalDeviceBufferDeviceAddressAllocationAlignmentFeaturesVALVE &
+      setBufferDeviceAddressAllocationAlignment( Bool32 bufferDeviceAddressAllocationAlignment_ ) &
+      VULKAN_HPP_NOEXCEPT
+    {
+      bufferDeviceAddressAllocationAlignment = bufferDeviceAddressAllocationAlignment_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 PhysicalDeviceBufferDeviceAddressAllocationAlignmentFeaturesVALVE &&
+      setBufferDeviceAddressAllocationAlignment( Bool32 bufferDeviceAddressAllocationAlignment_ ) &&
+      VULKAN_HPP_NOEXCEPT
+    {
+      bufferDeviceAddressAllocationAlignment = bufferDeviceAddressAllocationAlignment_;
+      return std::move( *this );
+    }
+#endif /*VULKAN_HPP_NO_SETTERS*/
+
+    operator VkPhysicalDeviceBufferDeviceAddressAllocationAlignmentFeaturesVALVE const &() const VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkPhysicalDeviceBufferDeviceAddressAllocationAlignmentFeaturesVALVE const *>( this );
+    }
+
+    operator VkPhysicalDeviceBufferDeviceAddressAllocationAlignmentFeaturesVALVE &() VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkPhysicalDeviceBufferDeviceAddressAllocationAlignmentFeaturesVALVE *>( this );
+    }
+
+    operator VkPhysicalDeviceBufferDeviceAddressAllocationAlignmentFeaturesVALVE const *() const VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkPhysicalDeviceBufferDeviceAddressAllocationAlignmentFeaturesVALVE const *>( this );
+    }
+
+    operator VkPhysicalDeviceBufferDeviceAddressAllocationAlignmentFeaturesVALVE *() VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkPhysicalDeviceBufferDeviceAddressAllocationAlignmentFeaturesVALVE *>( this );
+    }
+
+#if defined( VULKAN_HPP_USE_REFLECT )
+    std::tuple<StructureType const &, void * const &, Bool32 const &> reflect() const VULKAN_HPP_NOEXCEPT
+    {
+      return std::tie( sType, pNext, bufferDeviceAddressAllocationAlignment );
+    }
+#endif
+
+#if defined( VULKAN_HPP_HAS_SPACESHIP_OPERATOR )
+    auto operator<=>( PhysicalDeviceBufferDeviceAddressAllocationAlignmentFeaturesVALVE const & ) const = default;
+#else
+    bool operator==( PhysicalDeviceBufferDeviceAddressAllocationAlignmentFeaturesVALVE const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+#  if defined( VULKAN_HPP_USE_REFLECT )
+      return this->reflect() == rhs.reflect();
+#  else
+      return ( sType == rhs.sType ) && ( pNext == rhs.pNext ) && ( bufferDeviceAddressAllocationAlignment == rhs.bufferDeviceAddressAllocationAlignment );
+#  endif
+    }
+
+    bool operator!=( PhysicalDeviceBufferDeviceAddressAllocationAlignmentFeaturesVALVE const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+      return !operator==( rhs );
+    }
+#endif
+
+  public:
+    StructureType sType                                  = StructureType::ePhysicalDeviceBufferDeviceAddressAllocationAlignmentFeaturesVALVE;
+    void *        pNext                                  = {};
+    Bool32        bufferDeviceAddressAllocationAlignment = {};
+  };
+
+#if 20 <= VULKAN_HPP_CPP_VERSION
+  template <>
+  struct CppType<VkPhysicalDeviceBufferDeviceAddressAllocationAlignmentFeaturesVALVE>
+  {
+    using Type = PhysicalDeviceBufferDeviceAddressAllocationAlignmentFeaturesVALVE;
+  };
+#endif
+
+  template <>
+  struct CppType<StructureType, StructureType::ePhysicalDeviceBufferDeviceAddressAllocationAlignmentFeaturesVALVE>
+  {
+    using Type = PhysicalDeviceBufferDeviceAddressAllocationAlignmentFeaturesVALVE;
+  };
+
+  // wrapper struct for struct VkPhysicalDeviceBufferDeviceAddressAllocationAlignmentPropertiesVALVE, see
+  // https://registry.khronos.org/vulkan/specs/latest/man/html/VkPhysicalDeviceBufferDeviceAddressAllocationAlignmentPropertiesVALVE.html
+  struct PhysicalDeviceBufferDeviceAddressAllocationAlignmentPropertiesVALVE
+  {
+    using NativeType = VkPhysicalDeviceBufferDeviceAddressAllocationAlignmentPropertiesVALVE;
+
+    static bool const                                  allowDuplicate = false;
+    static VULKAN_HPP_CONST_OR_CONSTEXPR StructureType structureType  = StructureType::ePhysicalDeviceBufferDeviceAddressAllocationAlignmentPropertiesVALVE;
+
+#if !defined( VULKAN_HPP_NO_CONSTRUCTORS ) && !defined( VULKAN_HPP_NO_STRUCT_CONSTRUCTORS )
+    VULKAN_HPP_CONSTEXPR PhysicalDeviceBufferDeviceAddressAllocationAlignmentPropertiesVALVE( uint32_t maxBufferDeviceAddressAllocationAlignment_ = {},
+                                                                                              void *   pNext_ = nullptr ) VULKAN_HPP_NOEXCEPT
+      : pNext{ pNext_ }
+      , maxBufferDeviceAddressAllocationAlignment{ maxBufferDeviceAddressAllocationAlignment_ }
+    {
+    }
+
+    VULKAN_HPP_CONSTEXPR PhysicalDeviceBufferDeviceAddressAllocationAlignmentPropertiesVALVE(
+      PhysicalDeviceBufferDeviceAddressAllocationAlignmentPropertiesVALVE const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+
+    PhysicalDeviceBufferDeviceAddressAllocationAlignmentPropertiesVALVE( VkPhysicalDeviceBufferDeviceAddressAllocationAlignmentPropertiesVALVE const & rhs )
+      VULKAN_HPP_NOEXCEPT
+      : PhysicalDeviceBufferDeviceAddressAllocationAlignmentPropertiesVALVE(
+          *reinterpret_cast<PhysicalDeviceBufferDeviceAddressAllocationAlignmentPropertiesVALVE const *>( &rhs ) )
+    {
+    }
+
+    PhysicalDeviceBufferDeviceAddressAllocationAlignmentPropertiesVALVE &
+      operator=( PhysicalDeviceBufferDeviceAddressAllocationAlignmentPropertiesVALVE const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+#endif /*VULKAN_HPP_NO_CONSTRUCTORS*/
+
+    PhysicalDeviceBufferDeviceAddressAllocationAlignmentPropertiesVALVE &
+      operator=( VkPhysicalDeviceBufferDeviceAddressAllocationAlignmentPropertiesVALVE const & rhs ) VULKAN_HPP_NOEXCEPT
+    {
+      *this = *reinterpret_cast<PhysicalDeviceBufferDeviceAddressAllocationAlignmentPropertiesVALVE const *>( &rhs );
+      return *this;
+    }
+
+#if !defined( VULKAN_HPP_NO_SETTERS ) && !defined( VULKAN_HPP_NO_STRUCT_SETTERS )
+    VULKAN_HPP_CONSTEXPR_14 PhysicalDeviceBufferDeviceAddressAllocationAlignmentPropertiesVALVE & setPNext( void * pNext_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 PhysicalDeviceBufferDeviceAddressAllocationAlignmentPropertiesVALVE && setPNext( void * pNext_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 PhysicalDeviceBufferDeviceAddressAllocationAlignmentPropertiesVALVE &
+      setMaxBufferDeviceAddressAllocationAlignment( uint32_t maxBufferDeviceAddressAllocationAlignment_ ) &
+      VULKAN_HPP_NOEXCEPT
+    {
+      maxBufferDeviceAddressAllocationAlignment = maxBufferDeviceAddressAllocationAlignment_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 PhysicalDeviceBufferDeviceAddressAllocationAlignmentPropertiesVALVE &&
+      setMaxBufferDeviceAddressAllocationAlignment( uint32_t maxBufferDeviceAddressAllocationAlignment_ ) &&
+      VULKAN_HPP_NOEXCEPT
+    {
+      maxBufferDeviceAddressAllocationAlignment = maxBufferDeviceAddressAllocationAlignment_;
+      return std::move( *this );
+    }
+#endif /*VULKAN_HPP_NO_SETTERS*/
+
+    operator VkPhysicalDeviceBufferDeviceAddressAllocationAlignmentPropertiesVALVE const &() const VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkPhysicalDeviceBufferDeviceAddressAllocationAlignmentPropertiesVALVE const *>( this );
+    }
+
+    operator VkPhysicalDeviceBufferDeviceAddressAllocationAlignmentPropertiesVALVE &() VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkPhysicalDeviceBufferDeviceAddressAllocationAlignmentPropertiesVALVE *>( this );
+    }
+
+    operator VkPhysicalDeviceBufferDeviceAddressAllocationAlignmentPropertiesVALVE const *() const VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkPhysicalDeviceBufferDeviceAddressAllocationAlignmentPropertiesVALVE const *>( this );
+    }
+
+    operator VkPhysicalDeviceBufferDeviceAddressAllocationAlignmentPropertiesVALVE *() VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkPhysicalDeviceBufferDeviceAddressAllocationAlignmentPropertiesVALVE *>( this );
+    }
+
+#if defined( VULKAN_HPP_USE_REFLECT )
+    std::tuple<StructureType const &, void * const &, uint32_t const &> reflect() const VULKAN_HPP_NOEXCEPT
+    {
+      return std::tie( sType, pNext, maxBufferDeviceAddressAllocationAlignment );
+    }
+#endif
+
+#if defined( VULKAN_HPP_HAS_SPACESHIP_OPERATOR )
+    auto operator<=>( PhysicalDeviceBufferDeviceAddressAllocationAlignmentPropertiesVALVE const & ) const = default;
+#else
+    bool operator==( PhysicalDeviceBufferDeviceAddressAllocationAlignmentPropertiesVALVE const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+#  if defined( VULKAN_HPP_USE_REFLECT )
+      return this->reflect() == rhs.reflect();
+#  else
+      return ( sType == rhs.sType ) && ( pNext == rhs.pNext ) && ( maxBufferDeviceAddressAllocationAlignment == rhs.maxBufferDeviceAddressAllocationAlignment );
+#  endif
+    }
+
+    bool operator!=( PhysicalDeviceBufferDeviceAddressAllocationAlignmentPropertiesVALVE const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+      return !operator==( rhs );
+    }
+#endif
+
+  public:
+    StructureType sType                                     = StructureType::ePhysicalDeviceBufferDeviceAddressAllocationAlignmentPropertiesVALVE;
+    void *        pNext                                     = {};
+    uint32_t      maxBufferDeviceAddressAllocationAlignment = {};
+  };
+
+#if 20 <= VULKAN_HPP_CPP_VERSION
+  template <>
+  struct CppType<VkPhysicalDeviceBufferDeviceAddressAllocationAlignmentPropertiesVALVE>
+  {
+    using Type = PhysicalDeviceBufferDeviceAddressAllocationAlignmentPropertiesVALVE;
+  };
+#endif
+
+  template <>
+  struct CppType<StructureType, StructureType::ePhysicalDeviceBufferDeviceAddressAllocationAlignmentPropertiesVALVE>
+  {
+    using Type = PhysicalDeviceBufferDeviceAddressAllocationAlignmentPropertiesVALVE;
+  };
+
   // wrapper struct for struct VkPhysicalDeviceBufferDeviceAddressFeatures, see
   // https://registry.khronos.org/vulkan/specs/latest/man/html/VkPhysicalDeviceBufferDeviceAddressFeatures.html
   struct PhysicalDeviceBufferDeviceAddressFeatures
@@ -124825,6 +125216,111 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
   using PhysicalDeviceIndexTypeUint8FeaturesEXT = PhysicalDeviceIndexTypeUint8Features;
   using PhysicalDeviceIndexTypeUint8FeaturesKHR = PhysicalDeviceIndexTypeUint8Features;
 
+  // wrapper struct for struct VkPhysicalDeviceInfoPropertiesINTEL, see
+  // https://registry.khronos.org/vulkan/specs/latest/man/html/VkPhysicalDeviceInfoPropertiesINTEL.html
+  struct PhysicalDeviceInfoPropertiesINTEL
+  {
+    using NativeType = VkPhysicalDeviceInfoPropertiesINTEL;
+
+    static bool const                                  allowDuplicate = false;
+    static VULKAN_HPP_CONST_OR_CONSTEXPR StructureType structureType  = StructureType::ePhysicalDeviceInfoPropertiesINTEL;
+
+#if !defined( VULKAN_HPP_NO_CONSTRUCTORS ) && !defined( VULKAN_HPP_NO_STRUCT_CONSTRUCTORS )
+    VULKAN_HPP_CONSTEXPR PhysicalDeviceInfoPropertiesINTEL( uint32_t deviceIpVersionArch_     = {},
+                                                            uint32_t deviceIpVersionRelease_  = {},
+                                                            uint32_t deviceIpVersionRevision_ = {},
+                                                            void *   pNext_                   = nullptr ) VULKAN_HPP_NOEXCEPT
+      : pNext{ pNext_ }
+      , deviceIpVersionArch{ deviceIpVersionArch_ }
+      , deviceIpVersionRelease{ deviceIpVersionRelease_ }
+      , deviceIpVersionRevision{ deviceIpVersionRevision_ }
+    {
+    }
+
+    VULKAN_HPP_CONSTEXPR PhysicalDeviceInfoPropertiesINTEL( PhysicalDeviceInfoPropertiesINTEL const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+
+    PhysicalDeviceInfoPropertiesINTEL( VkPhysicalDeviceInfoPropertiesINTEL const & rhs ) VULKAN_HPP_NOEXCEPT
+      : PhysicalDeviceInfoPropertiesINTEL( *reinterpret_cast<PhysicalDeviceInfoPropertiesINTEL const *>( &rhs ) )
+    {
+    }
+
+    PhysicalDeviceInfoPropertiesINTEL & operator=( PhysicalDeviceInfoPropertiesINTEL const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+#endif /*VULKAN_HPP_NO_CONSTRUCTORS*/
+
+    PhysicalDeviceInfoPropertiesINTEL & operator=( VkPhysicalDeviceInfoPropertiesINTEL const & rhs ) VULKAN_HPP_NOEXCEPT
+    {
+      *this = *reinterpret_cast<PhysicalDeviceInfoPropertiesINTEL const *>( &rhs );
+      return *this;
+    }
+
+    operator VkPhysicalDeviceInfoPropertiesINTEL const &() const VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkPhysicalDeviceInfoPropertiesINTEL const *>( this );
+    }
+
+    operator VkPhysicalDeviceInfoPropertiesINTEL &() VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkPhysicalDeviceInfoPropertiesINTEL *>( this );
+    }
+
+    operator VkPhysicalDeviceInfoPropertiesINTEL const *() const VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkPhysicalDeviceInfoPropertiesINTEL const *>( this );
+    }
+
+    operator VkPhysicalDeviceInfoPropertiesINTEL *() VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkPhysicalDeviceInfoPropertiesINTEL *>( this );
+    }
+
+#if defined( VULKAN_HPP_USE_REFLECT )
+    std::tuple<StructureType const &, void * const &, uint32_t const &, uint32_t const &, uint32_t const &> reflect() const VULKAN_HPP_NOEXCEPT
+    {
+      return std::tie( sType, pNext, deviceIpVersionArch, deviceIpVersionRelease, deviceIpVersionRevision );
+    }
+#endif
+
+#if defined( VULKAN_HPP_HAS_SPACESHIP_OPERATOR )
+    auto operator<=>( PhysicalDeviceInfoPropertiesINTEL const & ) const = default;
+#else
+    bool operator==( PhysicalDeviceInfoPropertiesINTEL const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+#  if defined( VULKAN_HPP_USE_REFLECT )
+      return this->reflect() == rhs.reflect();
+#  else
+      return ( sType == rhs.sType ) && ( pNext == rhs.pNext ) && ( deviceIpVersionArch == rhs.deviceIpVersionArch ) &&
+             ( deviceIpVersionRelease == rhs.deviceIpVersionRelease ) && ( deviceIpVersionRevision == rhs.deviceIpVersionRevision );
+#  endif
+    }
+
+    bool operator!=( PhysicalDeviceInfoPropertiesINTEL const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+      return !operator==( rhs );
+    }
+#endif
+
+  public:
+    StructureType sType                   = StructureType::ePhysicalDeviceInfoPropertiesINTEL;
+    void *        pNext                   = {};
+    uint32_t      deviceIpVersionArch     = {};
+    uint32_t      deviceIpVersionRelease  = {};
+    uint32_t      deviceIpVersionRevision = {};
+  };
+
+#if 20 <= VULKAN_HPP_CPP_VERSION
+  template <>
+  struct CppType<VkPhysicalDeviceInfoPropertiesINTEL>
+  {
+    using Type = PhysicalDeviceInfoPropertiesINTEL;
+  };
+#endif
+
+  template <>
+  struct CppType<StructureType, StructureType::ePhysicalDeviceInfoPropertiesINTEL>
+  {
+    using Type = PhysicalDeviceInfoPropertiesINTEL;
+  };
+
   // wrapper struct for struct VkPhysicalDeviceInheritedViewportScissorFeaturesNV, see
   // https://registry.khronos.org/vulkan/specs/latest/man/html/VkPhysicalDeviceInheritedViewportScissorFeaturesNV.html
   struct PhysicalDeviceInheritedViewportScissorFeaturesNV
@@ -135291,17 +135787,17 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
     using Type = PhysicalDevicePipelineExecutablePropertiesFeaturesKHR;
   };
 
-  // wrapper struct for struct VkPhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT, see
-  // https://registry.khronos.org/vulkan/specs/latest/man/html/VkPhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT.html
-  struct PhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT
+  // wrapper struct for struct VkPhysicalDevicePipelineLibraryGroupHandlesFeaturesKHR, see
+  // https://registry.khronos.org/vulkan/specs/latest/man/html/VkPhysicalDevicePipelineLibraryGroupHandlesFeaturesKHR.html
+  struct PhysicalDevicePipelineLibraryGroupHandlesFeaturesKHR
   {
-    using NativeType = VkPhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT;
+    using NativeType = VkPhysicalDevicePipelineLibraryGroupHandlesFeaturesKHR;
 
     static bool const                                  allowDuplicate = false;
-    static VULKAN_HPP_CONST_OR_CONSTEXPR StructureType structureType  = StructureType::ePhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT;
+    static VULKAN_HPP_CONST_OR_CONSTEXPR StructureType structureType  = StructureType::ePhysicalDevicePipelineLibraryGroupHandlesFeaturesKHR;
 
 #if !defined( VULKAN_HPP_NO_CONSTRUCTORS ) && !defined( VULKAN_HPP_NO_STRUCT_CONSTRUCTORS )
-    VULKAN_HPP_CONSTEXPR PhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT( Bool32 pipelineLibraryGroupHandles_ = {},
+    VULKAN_HPP_CONSTEXPR PhysicalDevicePipelineLibraryGroupHandlesFeaturesKHR( Bool32 pipelineLibraryGroupHandles_ = {},
                                                                                void * pNext_                       = nullptr ) VULKAN_HPP_NOEXCEPT
       : pNext{ pNext_ }
       , pipelineLibraryGroupHandles{ pipelineLibraryGroupHandles_ }
@@ -135309,44 +135805,44 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
     }
 
     VULKAN_HPP_CONSTEXPR
-      PhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT( PhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+      PhysicalDevicePipelineLibraryGroupHandlesFeaturesKHR( PhysicalDevicePipelineLibraryGroupHandlesFeaturesKHR const & rhs ) VULKAN_HPP_NOEXCEPT = default;
 
-    PhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT( VkPhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT const & rhs ) VULKAN_HPP_NOEXCEPT
-      : PhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT( *reinterpret_cast<PhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT const *>( &rhs ) )
+    PhysicalDevicePipelineLibraryGroupHandlesFeaturesKHR( VkPhysicalDevicePipelineLibraryGroupHandlesFeaturesKHR const & rhs ) VULKAN_HPP_NOEXCEPT
+      : PhysicalDevicePipelineLibraryGroupHandlesFeaturesKHR( *reinterpret_cast<PhysicalDevicePipelineLibraryGroupHandlesFeaturesKHR const *>( &rhs ) )
     {
     }
 
-    PhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT &
-      operator=( PhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+    PhysicalDevicePipelineLibraryGroupHandlesFeaturesKHR &
+      operator=( PhysicalDevicePipelineLibraryGroupHandlesFeaturesKHR const & rhs ) VULKAN_HPP_NOEXCEPT = default;
 #endif /*VULKAN_HPP_NO_CONSTRUCTORS*/
 
-    PhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT & operator=( VkPhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT const & rhs ) VULKAN_HPP_NOEXCEPT
+    PhysicalDevicePipelineLibraryGroupHandlesFeaturesKHR & operator=( VkPhysicalDevicePipelineLibraryGroupHandlesFeaturesKHR const & rhs ) VULKAN_HPP_NOEXCEPT
     {
-      *this = *reinterpret_cast<PhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT const *>( &rhs );
+      *this = *reinterpret_cast<PhysicalDevicePipelineLibraryGroupHandlesFeaturesKHR const *>( &rhs );
       return *this;
     }
 
 #if !defined( VULKAN_HPP_NO_SETTERS ) && !defined( VULKAN_HPP_NO_STRUCT_SETTERS )
-    VULKAN_HPP_CONSTEXPR_14 PhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT & setPNext( void * pNext_ ) & VULKAN_HPP_NOEXCEPT
+    VULKAN_HPP_CONSTEXPR_14 PhysicalDevicePipelineLibraryGroupHandlesFeaturesKHR & setPNext( void * pNext_ ) & VULKAN_HPP_NOEXCEPT
     {
       pNext = pNext_;
       return *this;
     }
 
-    VULKAN_HPP_CONSTEXPR_14 PhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT && setPNext( void * pNext_ ) && VULKAN_HPP_NOEXCEPT
+    VULKAN_HPP_CONSTEXPR_14 PhysicalDevicePipelineLibraryGroupHandlesFeaturesKHR && setPNext( void * pNext_ ) && VULKAN_HPP_NOEXCEPT
     {
       pNext = pNext_;
       return std::move( *this );
     }
 
-    VULKAN_HPP_CONSTEXPR_14 PhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT & setPipelineLibraryGroupHandles( Bool32 pipelineLibraryGroupHandles_ ) &
+    VULKAN_HPP_CONSTEXPR_14 PhysicalDevicePipelineLibraryGroupHandlesFeaturesKHR & setPipelineLibraryGroupHandles( Bool32 pipelineLibraryGroupHandles_ ) &
       VULKAN_HPP_NOEXCEPT
     {
       pipelineLibraryGroupHandles = pipelineLibraryGroupHandles_;
       return *this;
     }
 
-    VULKAN_HPP_CONSTEXPR_14 PhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT && setPipelineLibraryGroupHandles( Bool32 pipelineLibraryGroupHandles_ ) &&
+    VULKAN_HPP_CONSTEXPR_14 PhysicalDevicePipelineLibraryGroupHandlesFeaturesKHR && setPipelineLibraryGroupHandles( Bool32 pipelineLibraryGroupHandles_ ) &&
       VULKAN_HPP_NOEXCEPT
     {
       pipelineLibraryGroupHandles = pipelineLibraryGroupHandles_;
@@ -135354,24 +135850,24 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
     }
 #endif /*VULKAN_HPP_NO_SETTERS*/
 
-    operator VkPhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT const &() const VULKAN_HPP_NOEXCEPT
+    operator VkPhysicalDevicePipelineLibraryGroupHandlesFeaturesKHR const &() const VULKAN_HPP_NOEXCEPT
     {
-      return *reinterpret_cast<VkPhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT const *>( this );
+      return *reinterpret_cast<VkPhysicalDevicePipelineLibraryGroupHandlesFeaturesKHR const *>( this );
     }
 
-    operator VkPhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT &() VULKAN_HPP_NOEXCEPT
+    operator VkPhysicalDevicePipelineLibraryGroupHandlesFeaturesKHR &() VULKAN_HPP_NOEXCEPT
     {
-      return *reinterpret_cast<VkPhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT *>( this );
+      return *reinterpret_cast<VkPhysicalDevicePipelineLibraryGroupHandlesFeaturesKHR *>( this );
     }
 
-    operator VkPhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT const *() const VULKAN_HPP_NOEXCEPT
+    operator VkPhysicalDevicePipelineLibraryGroupHandlesFeaturesKHR const *() const VULKAN_HPP_NOEXCEPT
     {
-      return reinterpret_cast<VkPhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT const *>( this );
+      return reinterpret_cast<VkPhysicalDevicePipelineLibraryGroupHandlesFeaturesKHR const *>( this );
     }
 
-    operator VkPhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT *() VULKAN_HPP_NOEXCEPT
+    operator VkPhysicalDevicePipelineLibraryGroupHandlesFeaturesKHR *() VULKAN_HPP_NOEXCEPT
     {
-      return reinterpret_cast<VkPhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT *>( this );
+      return reinterpret_cast<VkPhysicalDevicePipelineLibraryGroupHandlesFeaturesKHR *>( this );
     }
 
 #if defined( VULKAN_HPP_USE_REFLECT )
@@ -135382,9 +135878,9 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
 #endif
 
 #if defined( VULKAN_HPP_HAS_SPACESHIP_OPERATOR )
-    auto operator<=>( PhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT const & ) const = default;
+    auto operator<=>( PhysicalDevicePipelineLibraryGroupHandlesFeaturesKHR const & ) const = default;
 #else
-    bool operator==( PhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT const & rhs ) const VULKAN_HPP_NOEXCEPT
+    bool operator==( PhysicalDevicePipelineLibraryGroupHandlesFeaturesKHR const & rhs ) const VULKAN_HPP_NOEXCEPT
     {
 #  if defined( VULKAN_HPP_USE_REFLECT )
       return this->reflect() == rhs.reflect();
@@ -135393,31 +135889,33 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
 #  endif
     }
 
-    bool operator!=( PhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT const & rhs ) const VULKAN_HPP_NOEXCEPT
+    bool operator!=( PhysicalDevicePipelineLibraryGroupHandlesFeaturesKHR const & rhs ) const VULKAN_HPP_NOEXCEPT
     {
       return !operator==( rhs );
     }
 #endif
 
   public:
-    StructureType sType                       = StructureType::ePhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT;
+    StructureType sType                       = StructureType::ePhysicalDevicePipelineLibraryGroupHandlesFeaturesKHR;
     void *        pNext                       = {};
     Bool32        pipelineLibraryGroupHandles = {};
   };
 
 #if 20 <= VULKAN_HPP_CPP_VERSION
   template <>
-  struct CppType<VkPhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT>
+  struct CppType<VkPhysicalDevicePipelineLibraryGroupHandlesFeaturesKHR>
   {
-    using Type = PhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT;
+    using Type = PhysicalDevicePipelineLibraryGroupHandlesFeaturesKHR;
   };
 #endif
 
   template <>
-  struct CppType<StructureType, StructureType::ePhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT>
+  struct CppType<StructureType, StructureType::ePhysicalDevicePipelineLibraryGroupHandlesFeaturesKHR>
   {
-    using Type = PhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT;
+    using Type = PhysicalDevicePipelineLibraryGroupHandlesFeaturesKHR;
   };
+
+  using PhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT = PhysicalDevicePipelineLibraryGroupHandlesFeaturesKHR;
 
   // wrapper struct for struct VkPhysicalDevicePipelineOpacityMicromapFeaturesARM, see
   // https://registry.khronos.org/vulkan/specs/latest/man/html/VkPhysicalDevicePipelineOpacityMicromapFeaturesARM.html
@@ -138089,6 +138587,130 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
   struct CppType<StructureType, StructureType::ePhysicalDevicePrimitivesGeneratedQueryFeaturesEXT>
   {
     using Type = PhysicalDevicePrimitivesGeneratedQueryFeaturesEXT;
+  };
+
+  // wrapper struct for struct VkPhysicalDevicePrivateDataBaseHandleFeaturesNV, see
+  // https://registry.khronos.org/vulkan/specs/latest/man/html/VkPhysicalDevicePrivateDataBaseHandleFeaturesNV.html
+  struct PhysicalDevicePrivateDataBaseHandleFeaturesNV
+  {
+    using NativeType = VkPhysicalDevicePrivateDataBaseHandleFeaturesNV;
+
+    static bool const                                  allowDuplicate = false;
+    static VULKAN_HPP_CONST_OR_CONSTEXPR StructureType structureType  = StructureType::ePhysicalDevicePrivateDataBaseHandleFeaturesNV;
+
+#if !defined( VULKAN_HPP_NO_CONSTRUCTORS ) && !defined( VULKAN_HPP_NO_STRUCT_CONSTRUCTORS )
+    VULKAN_HPP_CONSTEXPR PhysicalDevicePrivateDataBaseHandleFeaturesNV( Bool32 privateDataBaseHandle_ = {}, void * pNext_ = nullptr ) VULKAN_HPP_NOEXCEPT
+      : pNext{ pNext_ }
+      , privateDataBaseHandle{ privateDataBaseHandle_ }
+    {
+    }
+
+    VULKAN_HPP_CONSTEXPR
+      PhysicalDevicePrivateDataBaseHandleFeaturesNV( PhysicalDevicePrivateDataBaseHandleFeaturesNV const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+
+    PhysicalDevicePrivateDataBaseHandleFeaturesNV( VkPhysicalDevicePrivateDataBaseHandleFeaturesNV const & rhs ) VULKAN_HPP_NOEXCEPT
+      : PhysicalDevicePrivateDataBaseHandleFeaturesNV( *reinterpret_cast<PhysicalDevicePrivateDataBaseHandleFeaturesNV const *>( &rhs ) )
+    {
+    }
+
+    PhysicalDevicePrivateDataBaseHandleFeaturesNV & operator=( PhysicalDevicePrivateDataBaseHandleFeaturesNV const & rhs ) VULKAN_HPP_NOEXCEPT = default;
+#endif /*VULKAN_HPP_NO_CONSTRUCTORS*/
+
+    PhysicalDevicePrivateDataBaseHandleFeaturesNV & operator=( VkPhysicalDevicePrivateDataBaseHandleFeaturesNV const & rhs ) VULKAN_HPP_NOEXCEPT
+    {
+      *this = *reinterpret_cast<PhysicalDevicePrivateDataBaseHandleFeaturesNV const *>( &rhs );
+      return *this;
+    }
+
+#if !defined( VULKAN_HPP_NO_SETTERS ) && !defined( VULKAN_HPP_NO_STRUCT_SETTERS )
+    VULKAN_HPP_CONSTEXPR_14 PhysicalDevicePrivateDataBaseHandleFeaturesNV & setPNext( void * pNext_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 PhysicalDevicePrivateDataBaseHandleFeaturesNV && setPNext( void * pNext_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      pNext = pNext_;
+      return std::move( *this );
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 PhysicalDevicePrivateDataBaseHandleFeaturesNV & setPrivateDataBaseHandle( Bool32 privateDataBaseHandle_ ) & VULKAN_HPP_NOEXCEPT
+    {
+      privateDataBaseHandle = privateDataBaseHandle_;
+      return *this;
+    }
+
+    VULKAN_HPP_CONSTEXPR_14 PhysicalDevicePrivateDataBaseHandleFeaturesNV && setPrivateDataBaseHandle( Bool32 privateDataBaseHandle_ ) && VULKAN_HPP_NOEXCEPT
+    {
+      privateDataBaseHandle = privateDataBaseHandle_;
+      return std::move( *this );
+    }
+#endif /*VULKAN_HPP_NO_SETTERS*/
+
+    operator VkPhysicalDevicePrivateDataBaseHandleFeaturesNV const &() const VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkPhysicalDevicePrivateDataBaseHandleFeaturesNV const *>( this );
+    }
+
+    operator VkPhysicalDevicePrivateDataBaseHandleFeaturesNV &() VULKAN_HPP_NOEXCEPT
+    {
+      return *reinterpret_cast<VkPhysicalDevicePrivateDataBaseHandleFeaturesNV *>( this );
+    }
+
+    operator VkPhysicalDevicePrivateDataBaseHandleFeaturesNV const *() const VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkPhysicalDevicePrivateDataBaseHandleFeaturesNV const *>( this );
+    }
+
+    operator VkPhysicalDevicePrivateDataBaseHandleFeaturesNV *() VULKAN_HPP_NOEXCEPT
+    {
+      return reinterpret_cast<VkPhysicalDevicePrivateDataBaseHandleFeaturesNV *>( this );
+    }
+
+#if defined( VULKAN_HPP_USE_REFLECT )
+    std::tuple<StructureType const &, void * const &, Bool32 const &> reflect() const VULKAN_HPP_NOEXCEPT
+    {
+      return std::tie( sType, pNext, privateDataBaseHandle );
+    }
+#endif
+
+#if defined( VULKAN_HPP_HAS_SPACESHIP_OPERATOR )
+    auto operator<=>( PhysicalDevicePrivateDataBaseHandleFeaturesNV const & ) const = default;
+#else
+    bool operator==( PhysicalDevicePrivateDataBaseHandleFeaturesNV const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+#  if defined( VULKAN_HPP_USE_REFLECT )
+      return this->reflect() == rhs.reflect();
+#  else
+      return ( sType == rhs.sType ) && ( pNext == rhs.pNext ) && ( privateDataBaseHandle == rhs.privateDataBaseHandle );
+#  endif
+    }
+
+    bool operator!=( PhysicalDevicePrivateDataBaseHandleFeaturesNV const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+      return !operator==( rhs );
+    }
+#endif
+
+  public:
+    StructureType sType                 = StructureType::ePhysicalDevicePrivateDataBaseHandleFeaturesNV;
+    void *        pNext                 = {};
+    Bool32        privateDataBaseHandle = {};
+  };
+
+#if 20 <= VULKAN_HPP_CPP_VERSION
+  template <>
+  struct CppType<VkPhysicalDevicePrivateDataBaseHandleFeaturesNV>
+  {
+    using Type = PhysicalDevicePrivateDataBaseHandleFeaturesNV;
+  };
+#endif
+
+  template <>
+  struct CppType<StructureType, StructureType::ePhysicalDevicePrivateDataBaseHandleFeaturesNV>
+  {
+    using Type = PhysicalDevicePrivateDataBaseHandleFeaturesNV;
   };
 
   // wrapper struct for struct VkPhysicalDevicePrivateDataFeatures, see
@@ -162440,6 +163062,15 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
     {
     }
 
+#  if !defined( VULKAN_HPP_DISABLE_ENHANCED_MODE )
+    PipelineBinaryKeyKHR( VULKAN_HPP_NAMESPACE::ArrayProxy<uint8_t> const & key_, void * pNext_ = nullptr )
+      : pNext( pNext_ ), keySize( ( std::min )( static_cast<uint32_t>( key_.size() ), VK_MAX_PIPELINE_BINARY_KEY_SIZE_KHR ) )
+    {
+      VULKAN_HPP_ASSERT( key_.size() < VK_MAX_PIPELINE_BINARY_KEY_SIZE_KHR );
+      memcpy( key, key_.data(), keySize * sizeof( uint8_t ) );
+    }
+#  endif /*VULKAN_HPP_DISABLE_ENHANCED_MODE*/
+
     PipelineBinaryKeyKHR & operator=( PipelineBinaryKeyKHR const & rhs ) VULKAN_HPP_NOEXCEPT = default;
 #endif /*VULKAN_HPP_NO_CONSTRUCTORS*/
 
@@ -162485,7 +163116,17 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
       key = key_;
       return std::move( *this );
     }
-#endif /*VULKAN_HPP_NO_SETTERS*/
+
+#  if !defined( VULKAN_HPP_DISABLE_ENHANCED_MODE )
+    PipelineBinaryKeyKHR & setKey( VULKAN_HPP_NAMESPACE::ArrayProxy<uint8_t> const & key_ ) VULKAN_HPP_NOEXCEPT
+    {
+      VULKAN_HPP_ASSERT( key_.size() <= VK_MAX_PIPELINE_BINARY_KEY_SIZE_KHR );
+      keySize = ( std::min )( static_cast<uint32_t>( key_.size() ), VK_MAX_PIPELINE_BINARY_KEY_SIZE_KHR );
+      memcpy( key, key_.data(), keySize );
+      return *this;
+    }
+#  endif /*VULKAN_HPP_DISABLE_ENHANCED_MODE*/
+#endif   /*VULKAN_HPP_NO_SETTERS*/
 
     operator VkPipelineBinaryKeyKHR const &() const VULKAN_HPP_NOEXCEPT
     {
@@ -162516,22 +163157,33 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
 #endif
 
 #if defined( VULKAN_HPP_HAS_SPACESHIP_OPERATOR )
-    auto operator<=>( PipelineBinaryKeyKHR const & ) const = default;
-#else
+    std::strong_ordering operator<=>( PipelineBinaryKeyKHR const & rhs ) const VULKAN_HPP_NOEXCEPT
+    {
+      if ( auto cmp = sType <=> rhs.sType; cmp != 0 )
+        return cmp;
+      if ( auto cmp = pNext <=> rhs.pNext; cmp != 0 )
+        return cmp;
+      if ( auto cmp = keySize <=> rhs.keySize; cmp != 0 )
+        return cmp;
+      for ( size_t i = 0; i < keySize; ++i )
+      {
+        if ( auto cmp = key[i] <=> rhs.key[i]; cmp != 0 )
+          return cmp;
+      }
+
+      return std::strong_ordering::equivalent;
+    }
+#endif
+
     bool operator==( PipelineBinaryKeyKHR const & rhs ) const VULKAN_HPP_NOEXCEPT
     {
-#  if defined( VULKAN_HPP_USE_REFLECT )
-      return this->reflect() == rhs.reflect();
-#  else
-      return ( sType == rhs.sType ) && ( pNext == rhs.pNext ) && ( keySize == rhs.keySize ) && ( key == rhs.key );
-#  endif
+      return ( sType == rhs.sType ) && ( pNext == rhs.pNext ) && ( keySize == rhs.keySize ) && ( memcmp( key, rhs.key, keySize * sizeof( uint8_t ) ) == 0 );
     }
 
     bool operator!=( PipelineBinaryKeyKHR const & rhs ) const VULKAN_HPP_NOEXCEPT
     {
       return !operator==( rhs );
     }
-#endif
 
   public:
     StructureType                                                sType   = StructureType::ePipelineBinaryKeyKHR;
