@@ -22,6 +22,11 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
     static VULKAN_HPP_CONST_OR_CONSTEXPR bool isBitmask = false;
   };
 
+#if 20 <= VULKAN_HPP_CPP_VERSION
+  template <typename T>
+  concept Bitmask = FlagTraits<T>::isBitmask;
+#endif
+
   template <typename BitType>
   class Flags
   {
@@ -142,85 +147,101 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
 
 #if !defined( VULKAN_HPP_HAS_SPACESHIP_OPERATOR )
   // relational operators only needed for pre C++20
-  template <typename BitType>
-  VULKAN_HPP_CONSTEXPR bool operator<( BitType bit, Flags<BitType> const & flags ) VULKAN_HPP_NOEXCEPT
+  template <typename T>
+  VULKAN_HPP_CONSTEXPR bool operator<( T bit, Flags<T> const & flags ) VULKAN_HPP_NOEXCEPT
   {
     return flags.operator>( bit );
   }
 
-  template <typename BitType>
-  VULKAN_HPP_CONSTEXPR bool operator<=( BitType bit, Flags<BitType> const & flags ) VULKAN_HPP_NOEXCEPT
+  template <typename T>
+  VULKAN_HPP_CONSTEXPR bool operator<=( T bit, Flags<T> const & flags ) VULKAN_HPP_NOEXCEPT
   {
     return flags.operator>=( bit );
   }
 
-  template <typename BitType>
-  VULKAN_HPP_CONSTEXPR bool operator>( BitType bit, Flags<BitType> const & flags ) VULKAN_HPP_NOEXCEPT
+  template <typename T>
+  VULKAN_HPP_CONSTEXPR bool operator>( T bit, Flags<T> const & flags ) VULKAN_HPP_NOEXCEPT
   {
     return flags.operator<( bit );
   }
 
-  template <typename BitType>
-  VULKAN_HPP_CONSTEXPR bool operator>=( BitType bit, Flags<BitType> const & flags ) VULKAN_HPP_NOEXCEPT
+  template <typename T>
+  VULKAN_HPP_CONSTEXPR bool operator>=( T bit, Flags<T> const & flags ) VULKAN_HPP_NOEXCEPT
   {
     return flags.operator<=( bit );
   }
 
-  template <typename BitType>
-  VULKAN_HPP_CONSTEXPR bool operator==( BitType bit, Flags<BitType> const & flags ) VULKAN_HPP_NOEXCEPT
+  template <typename T>
+  VULKAN_HPP_CONSTEXPR bool operator==( T bit, Flags<T> const & flags ) VULKAN_HPP_NOEXCEPT
   {
     return flags.operator==( bit );
   }
 
-  template <typename BitType>
-  VULKAN_HPP_CONSTEXPR bool operator!=( BitType bit, Flags<BitType> const & flags ) VULKAN_HPP_NOEXCEPT
+  template <typename T>
+  VULKAN_HPP_CONSTEXPR bool operator!=( T bit, Flags<T> const & flags ) VULKAN_HPP_NOEXCEPT
   {
     return flags.operator!=( bit );
   }
 #endif
 
   // bitwise operators
-  template <typename BitType>
-  VULKAN_HPP_CONSTEXPR Flags<BitType> operator&( BitType bit, Flags<BitType> const & flags ) VULKAN_HPP_NOEXCEPT
+  template <typename T>
+  VULKAN_HPP_CONSTEXPR Flags<T> operator&( T bit, Flags<T> const & flags ) VULKAN_HPP_NOEXCEPT
   {
     return flags.operator&( bit );
   }
 
-  template <typename BitType>
-  VULKAN_HPP_CONSTEXPR Flags<BitType> operator|( BitType bit, Flags<BitType> const & flags ) VULKAN_HPP_NOEXCEPT
+  template <typename T>
+  VULKAN_HPP_CONSTEXPR Flags<T> operator|( T bit, Flags<T> const & flags ) VULKAN_HPP_NOEXCEPT
   {
     return flags.operator|( bit );
   }
 
-  template <typename BitType>
-  VULKAN_HPP_CONSTEXPR Flags<BitType> operator^( BitType bit, Flags<BitType> const & flags ) VULKAN_HPP_NOEXCEPT
+  template <typename T>
+  VULKAN_HPP_CONSTEXPR Flags<T> operator^( T bit, Flags<T> const & flags ) VULKAN_HPP_NOEXCEPT
   {
     return flags.operator^( bit );
   }
 
-  // bitwise operators on BitType
-  template <typename BitType, typename std::enable_if<FlagTraits<BitType>::isBitmask, bool>::type = true>
-  VULKAN_HPP_INLINE VULKAN_HPP_CONSTEXPR Flags<BitType> operator&( BitType lhs, BitType rhs ) VULKAN_HPP_NOEXCEPT
+// bitwise operators on BitType T
+#if VULKAN_HPP_CPP_VERSION < 20
+  template <typename T, typename std::enable_if<FlagTraits<T>::isBitmask, bool>::type = true>
+#else
+  template <Bitmask T>
+#endif
+  VULKAN_HPP_INLINE VULKAN_HPP_CONSTEXPR Flags<T> operator&( T lhs, T rhs ) VULKAN_HPP_NOEXCEPT
   {
-    return Flags<BitType>( lhs ) & rhs;
+    return Flags<T>( lhs ) & rhs;
   }
 
-  template <typename BitType, typename std::enable_if<FlagTraits<BitType>::isBitmask, bool>::type = true>
-  VULKAN_HPP_INLINE VULKAN_HPP_CONSTEXPR Flags<BitType> operator|( BitType lhs, BitType rhs ) VULKAN_HPP_NOEXCEPT
+#if VULKAN_HPP_CPP_VERSION < 20
+  template <typename T, typename std::enable_if<FlagTraits<T>::isBitmask, bool>::type = true>
+#else
+  template <Bitmask T>
+#endif
+  VULKAN_HPP_INLINE VULKAN_HPP_CONSTEXPR Flags<T> operator|( T lhs, T rhs ) VULKAN_HPP_NOEXCEPT
   {
-    return Flags<BitType>( lhs ) | rhs;
+    return Flags<T>( lhs ) | rhs;
   }
 
-  template <typename BitType, typename std::enable_if<FlagTraits<BitType>::isBitmask, bool>::type = true>
-  VULKAN_HPP_INLINE VULKAN_HPP_CONSTEXPR Flags<BitType> operator^( BitType lhs, BitType rhs ) VULKAN_HPP_NOEXCEPT
+#if VULKAN_HPP_CPP_VERSION < 20
+  template <typename T, typename std::enable_if<FlagTraits<T>::isBitmask, bool>::type = true>
+#else
+  template <Bitmask T>
+#endif
+  VULKAN_HPP_INLINE VULKAN_HPP_CONSTEXPR Flags<T> operator^( T lhs, T rhs ) VULKAN_HPP_NOEXCEPT
   {
-    return Flags<BitType>( lhs ) ^ rhs;
+    return Flags<T>( lhs ) ^ rhs;
   }
 
-  template <typename BitType, typename std::enable_if<FlagTraits<BitType>::isBitmask, bool>::type = true>
-  VULKAN_HPP_INLINE VULKAN_HPP_CONSTEXPR Flags<BitType> operator~( BitType bit ) VULKAN_HPP_NOEXCEPT
+#if VULKAN_HPP_CPP_VERSION < 20
+  template <typename T, typename std::enable_if<FlagTraits<T>::isBitmask, bool>::type = true>
+#else
+  template <Bitmask T>
+#endif
+  VULKAN_HPP_INLINE VULKAN_HPP_CONSTEXPR Flags<T> operator~( T bit ) VULKAN_HPP_NOEXCEPT
   {
-    return ~( Flags<BitType>( bit ) );
+    return ~( Flags<T>( bit ) );
   }
 
   //=============
@@ -1573,7 +1594,6 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
     eLayerSettingsCreateInfoEXT                                   = VK_STRUCTURE_TYPE_LAYER_SETTINGS_CREATE_INFO_EXT,
     ePhysicalDeviceShaderCoreBuiltinsFeaturesARM                  = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SHADER_CORE_BUILTINS_FEATURES_ARM,
     ePhysicalDeviceShaderCoreBuiltinsPropertiesARM                = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SHADER_CORE_BUILTINS_PROPERTIES_ARM,
-    ePhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT         = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PIPELINE_LIBRARY_GROUP_HANDLES_FEATURES_EXT,
     ePhysicalDeviceDynamicRenderingUnusedAttachmentsFeaturesEXT   = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DYNAMIC_RENDERING_UNUSED_ATTACHMENTS_FEATURES_EXT,
     ePhysicalDeviceInternallySynchronizedQueuesFeaturesKHR        = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_INTERNALLY_SYNCHRONIZED_QUEUES_FEATURES_KHR,
     eLatencySleepModeInfoNV                                       = VK_STRUCTURE_TYPE_LATENCY_SLEEP_MODE_INFO_NV,
@@ -1845,6 +1865,8 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
     ePhysicalDeviceShaderUniformBufferUnsizedArrayFeaturesEXT = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SHADER_UNIFORM_BUFFER_UNSIZED_ARRAY_FEATURES_EXT,
     eComputeOccupancyPriorityParametersNV                     = VK_STRUCTURE_TYPE_COMPUTE_OCCUPANCY_PRIORITY_PARAMETERS_NV,
     ePhysicalDeviceComputeOccupancyPriorityFeaturesNV         = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_COMPUTE_OCCUPANCY_PRIORITY_FEATURES_NV,
+    ePhysicalDevicePipelineLibraryGroupHandlesFeaturesKHR     = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PIPELINE_LIBRARY_GROUP_HANDLES_FEATURES_KHR,
+    ePhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT     = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PIPELINE_LIBRARY_GROUP_HANDLES_FEATURES_EXT,
     ePhysicalDeviceMaintenance11FeaturesKHR                   = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_MAINTENANCE_11_FEATURES_KHR,
     eQueueFamilyOptimalImageTransferGranularityPropertiesKHR  = VK_STRUCTURE_TYPE_QUEUE_FAMILY_OPTIMAL_IMAGE_TRANSFER_GRANULARITY_PROPERTIES_KHR,
     ePhysicalDeviceCooperativeMatrixMaintenance1FeaturesEXT   = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_COOPERATIVE_MATRIX_MAINTENANCE_1_FEATURES_EXT,
@@ -1861,6 +1883,7 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
     ePhysicalDeviceExtendedFlagsFeaturesKHR                        = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_EXTENDED_FLAGS_FEATURES_KHR,
     eImageStencilUsage2CreateInfoKHR                               = VK_STRUCTURE_TYPE_IMAGE_STENCIL_USAGE_2_CREATE_INFO_KHR,
     eSharedPresentSurfaceCapabilities2KHR                          = VK_STRUCTURE_TYPE_SHARED_PRESENT_SURFACE_CAPABILITIES_2_KHR,
+    ePhysicalDeviceCooperativeMatrixLayoutsFeaturesARM             = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_COOPERATIVE_MATRIX_LAYOUTS_FEATURES_ARM,
     ePhysicalDeviceShaderOcpMicroscalingTypesFeaturesEXT           = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SHADER_OCP_MICROSCALING_TYPES_FEATURES_EXT,
     ePhysicalDeviceShaderMixedFloatDotProductFeaturesVALVE         = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SHADER_MIXED_FLOAT_DOT_PRODUCT_FEATURES_VALVE,
     ePhysicalDeviceThrottleHintFeaturesSEC                         = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_THROTTLE_HINT_FEATURES_SEC,
@@ -1869,9 +1892,21 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
     eDataGraphPipelineSessionNeuralStatisticsCreateInfoARM         = VK_STRUCTURE_TYPE_DATA_GRAPH_PIPELINE_SESSION_NEURAL_STATISTICS_CREATE_INFO_ARM,
     ePhysicalDeviceDataGraphNeuralAcceleratorStatisticsFeaturesARM = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DATA_GRAPH_NEURAL_ACCELERATOR_STATISTICS_FEATURES_ARM,
     ePhysicalDevicePrimitiveRestartIndexFeaturesEXT                = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PRIMITIVE_RESTART_INDEX_FEATURES_EXT,
+    ePhysicalDeviceMaintenance12FeaturesKHR                        = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_MAINTENANCE_12_FEATURES_KHR,
+    ePhysicalDeviceMaintenance12PropertiesKHR                      = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_MAINTENANCE_12_PROPERTIES_KHR,
     ePhysicalDeviceImageTilingControlFeaturesEXT                   = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_IMAGE_TILING_CONTROL_FEATURES_EXT,
     eImageTilingControlCreateInfoEXT                               = VK_STRUCTURE_TYPE_IMAGE_TILING_CONTROL_CREATE_INFO_EXT,
-    ePhysicalDeviceCooperativeMatrixDecodeVectorFeaturesNV         = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_COOPERATIVE_MATRIX_DECODE_VECTOR_FEATURES_NV
+    ePhysicalDeviceCooperativeMatrixDecodeVectorFeaturesNV         = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_COOPERATIVE_MATRIX_DECODE_VECTOR_FEATURES_NV,
+    ePhysicalDevicePrivateDataBaseHandleFeaturesNV                 = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PRIVATE_DATA_BASE_HANDLE_FEATURES_NV,
+    ePhysicalDeviceInfoPropertiesINTEL                             = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_INFO_PROPERTIES_INTEL,
+    ePhysicalDeviceBufferDeviceAddressAllocationAlignmentFeaturesVALVE =
+      VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_BUFFER_DEVICE_ADDRESS_ALLOCATION_ALIGNMENT_FEATURES_VALVE,
+    ePhysicalDeviceBufferDeviceAddressAllocationAlignmentPropertiesVALVE =
+      VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_BUFFER_DEVICE_ADDRESS_ALLOCATION_ALIGNMENT_PROPERTIES_VALVE,
+    eBufferDeviceAddressAlignmentAllocateInfoVALVE = VK_STRUCTURE_TYPE_BUFFER_DEVICE_ADDRESS_ALIGNMENT_ALLOCATE_INFO_VALVE,
+    ePhysicalDeviceHdrSmpteSt209450FeaturesGOOGLE  = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_HDR_SMPTE_ST_209450_FEATURES_GOOGLE,
+    eHdrSmpteSt209450GOOGLE                        = VK_STRUCTURE_TYPE_HDR_SMPTE_ST_209450_GOOGLE,
+    eSurfaceCapabilitiesHdrSmpteSt209450GOOGLE     = VK_STRUCTURE_TYPE_SURFACE_CAPABILITIES_HDR_SMPTE_ST_209450_GOOGLE
   };
 
   // wrapper class for enum VkObjectType, see https://registry.khronos.org/vulkan/specs/latest/man/html/VkObjectType.html
@@ -1957,7 +1992,8 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
     eMESA     = VK_VENDOR_ID_MESA,
     ePocl     = VK_VENDOR_ID_POCL,
     eMobileye = VK_VENDOR_ID_MOBILEYE,
-    eApe      = VK_VENDOR_ID_APE
+    eApe      = VK_VENDOR_ID_APE,
+    eAPEX     = VK_VENDOR_ID_APEX
   };
 
   // wrapper class for enum VkFormat, see https://registry.khronos.org/vulkan/specs/latest/man/html/VkFormat.html
@@ -4911,7 +4947,11 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
     eMesaKosmickrisp            = VK_DRIVER_ID_MESA_KOSMICKRISP,
     eMesaGfxstream              = VK_DRIVER_ID_MESA_GFXSTREAM,
     eApeSoft                    = VK_DRIVER_ID_APE_SOFT,
-    eReserved31                 = VK_DRIVER_ID_RESERVED_31
+    eReserved31                 = VK_DRIVER_ID_RESERVED_31,
+    eAPEX                       = VK_DRIVER_ID_APEX,
+    eNikki                      = VK_DRIVER_ID_NIKKI,
+    eMomoten                    = VK_DRIVER_ID_MOMOTEN,
+    eAuroraBorealis             = VK_DRIVER_ID_AURORA_BOREALIS
   };
 
   using DriverIdKHR = DriverId;
@@ -5078,8 +5118,10 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
       ToolPurposeFlagBits::eModifyingFeatures | ToolPurposeFlagBits::eDebugReportingEXT | ToolPurposeFlagBits::eDebugMarkersEXT;
   };
 
+  // wrapper class for enum VkPrivateDataSlotCreateFlagBits, see https://registry.khronos.org/vulkan/specs/latest/man/html/VkPrivateDataSlotCreateFlagBits.html
   enum class PrivateDataSlotCreateFlagBits : VkPrivateDataSlotCreateFlags
   {
+    eBaseObjectHandleNV = VK_PRIVATE_DATA_SLOT_CREATE_BASE_OBJECT_HANDLE_BIT_NV
   };
 
   using PrivateDataSlotCreateFlagBitsEXT = PrivateDataSlotCreateFlagBits;
@@ -5091,8 +5133,9 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
   template <>
   struct FlagTraits<PrivateDataSlotCreateFlagBits>
   {
+    using WrappedType                                                         = VkPrivateDataSlotCreateFlagBits;
     static VULKAN_HPP_CONST_OR_CONSTEXPR bool                       isBitmask = true;
-    static VULKAN_HPP_CONST_OR_CONSTEXPR PrivateDataSlotCreateFlags allFlags  = {};
+    static VULKAN_HPP_CONST_OR_CONSTEXPR PrivateDataSlotCreateFlags allFlags  = PrivateDataSlotCreateFlagBits::eBaseObjectHandleNV;
   };
 
   // wrapper class for enum VkPipelineStageFlagBits2, see https://registry.khronos.org/vulkan/specs/latest/man/html/VkPipelineStageFlagBits2.html
@@ -10666,6 +10709,16 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
     eDefault        = VK_IMAGE_TILING_CONTROL_DEFAULT_EXT,
     eMinSize        = VK_IMAGE_TILING_CONTROL_MIN_SIZE_EXT,
     eMaxPerformance = VK_IMAGE_TILING_CONTROL_MAX_PERFORMANCE_EXT
+  };
+
+  //=== VK_GOOGLE_hdr_smpte_st_209450_metadata ===
+
+  // wrapper class for enum VkHdrSmpteSt209450PowerPreferenceGOOGLE, see
+  // https://registry.khronos.org/vulkan/specs/latest/man/html/VkHdrSmpteSt209450PowerPreferenceGOOGLE.html
+  enum class HdrSmpteSt209450PowerPreferenceGOOGLE
+  {
+    eColorAccuracy = VK_HDR_SMPTE_ST_209450_POWER_PREFERENCE_COLOR_ACCURACY_GOOGLE,
+    eLowPower      = VK_HDR_SMPTE_ST_209450_POWER_PREFERENCE_LOW_POWER_GOOGLE
   };
 
   //===========================================================

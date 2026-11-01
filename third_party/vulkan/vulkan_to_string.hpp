@@ -1650,9 +1650,17 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
     return result;
   }
 
-  VULKAN_HPP_INLINE VULKAN_HPP_CONSTEXPR_20 std::string to_string( PrivateDataSlotCreateFlags )
+  VULKAN_HPP_INLINE std::string to_string( PrivateDataSlotCreateFlags value )
   {
-    return "{}";
+    std::string result = "{";
+    if ( value & PrivateDataSlotCreateFlagBits::eBaseObjectHandleNV )
+      result += " BaseObjectHandleNV |";
+
+    if ( result.size() > 1 )
+      result.back() = '}';
+    else
+      result = "{}";
+    return result;
   }
 
   VULKAN_HPP_INLINE std::string to_string( PipelineStageFlags2 value )
@@ -5915,7 +5923,6 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
       case StructureType::eLayerSettingsCreateInfoEXT                                  : return "LayerSettingsCreateInfoEXT";
       case StructureType::ePhysicalDeviceShaderCoreBuiltinsFeaturesARM                 : return "PhysicalDeviceShaderCoreBuiltinsFeaturesARM";
       case StructureType::ePhysicalDeviceShaderCoreBuiltinsPropertiesARM               : return "PhysicalDeviceShaderCoreBuiltinsPropertiesARM";
-      case StructureType::ePhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT        : return "PhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT";
       case StructureType::ePhysicalDeviceDynamicRenderingUnusedAttachmentsFeaturesEXT  : return "PhysicalDeviceDynamicRenderingUnusedAttachmentsFeaturesEXT";
       case StructureType::ePhysicalDeviceInternallySynchronizedQueuesFeaturesKHR       : return "PhysicalDeviceInternallySynchronizedQueuesFeaturesKHR";
       case StructureType::eLatencySleepModeInfoNV                                      : return "LatencySleepModeInfoNV";
@@ -6174,6 +6181,7 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
       case StructureType::ePhysicalDeviceShaderUniformBufferUnsizedArrayFeaturesEXT: return "PhysicalDeviceShaderUniformBufferUnsizedArrayFeaturesEXT";
       case StructureType::eComputeOccupancyPriorityParametersNV                    : return "ComputeOccupancyPriorityParametersNV";
       case StructureType::ePhysicalDeviceComputeOccupancyPriorityFeaturesNV        : return "PhysicalDeviceComputeOccupancyPriorityFeaturesNV";
+      case StructureType::ePhysicalDevicePipelineLibraryGroupHandlesFeaturesKHR    : return "PhysicalDevicePipelineLibraryGroupHandlesFeaturesKHR";
       case StructureType::ePhysicalDeviceMaintenance11FeaturesKHR                  : return "PhysicalDeviceMaintenance11FeaturesKHR";
       case StructureType::eQueueFamilyOptimalImageTransferGranularityPropertiesKHR : return "QueueFamilyOptimalImageTransferGranularityPropertiesKHR";
       case StructureType::ePhysicalDeviceCooperativeMatrixMaintenance1FeaturesEXT  : return "PhysicalDeviceCooperativeMatrixMaintenance1FeaturesEXT";
@@ -6190,6 +6198,7 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
       case StructureType::ePhysicalDeviceExtendedFlagsFeaturesKHR               : return "PhysicalDeviceExtendedFlagsFeaturesKHR";
       case StructureType::eImageStencilUsage2CreateInfoKHR                      : return "ImageStencilUsage2CreateInfoKHR";
       case StructureType::eSharedPresentSurfaceCapabilities2KHR                 : return "SharedPresentSurfaceCapabilities2KHR";
+      case StructureType::ePhysicalDeviceCooperativeMatrixLayoutsFeaturesARM    : return "PhysicalDeviceCooperativeMatrixLayoutsFeaturesARM";
       case StructureType::ePhysicalDeviceShaderOcpMicroscalingTypesFeaturesEXT  : return "PhysicalDeviceShaderOcpMicroscalingTypesFeaturesEXT";
       case StructureType::ePhysicalDeviceShaderMixedFloatDotProductFeaturesVALVE: return "PhysicalDeviceShaderMixedFloatDotProductFeaturesVALVE";
       case StructureType::ePhysicalDeviceThrottleHintFeaturesSEC                : return "PhysicalDeviceThrottleHintFeaturesSEC";
@@ -6199,10 +6208,22 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
       case StructureType::ePhysicalDeviceDataGraphNeuralAcceleratorStatisticsFeaturesARM:
         return "PhysicalDeviceDataGraphNeuralAcceleratorStatisticsFeaturesARM";
       case StructureType::ePhysicalDevicePrimitiveRestartIndexFeaturesEXT       : return "PhysicalDevicePrimitiveRestartIndexFeaturesEXT";
+      case StructureType::ePhysicalDeviceMaintenance12FeaturesKHR               : return "PhysicalDeviceMaintenance12FeaturesKHR";
+      case StructureType::ePhysicalDeviceMaintenance12PropertiesKHR             : return "PhysicalDeviceMaintenance12PropertiesKHR";
       case StructureType::ePhysicalDeviceImageTilingControlFeaturesEXT          : return "PhysicalDeviceImageTilingControlFeaturesEXT";
       case StructureType::eImageTilingControlCreateInfoEXT                      : return "ImageTilingControlCreateInfoEXT";
       case StructureType::ePhysicalDeviceCooperativeMatrixDecodeVectorFeaturesNV: return "PhysicalDeviceCooperativeMatrixDecodeVectorFeaturesNV";
-      default                                                                   : return "invalid ( " + toHexString( static_cast<uint32_t>( value ) ) + " )";
+      case StructureType::ePhysicalDevicePrivateDataBaseHandleFeaturesNV        : return "PhysicalDevicePrivateDataBaseHandleFeaturesNV";
+      case StructureType::ePhysicalDeviceInfoPropertiesINTEL                    : return "PhysicalDeviceInfoPropertiesINTEL";
+      case StructureType::ePhysicalDeviceBufferDeviceAddressAllocationAlignmentFeaturesVALVE:
+        return "PhysicalDeviceBufferDeviceAddressAllocationAlignmentFeaturesVALVE";
+      case StructureType::ePhysicalDeviceBufferDeviceAddressAllocationAlignmentPropertiesVALVE:
+        return "PhysicalDeviceBufferDeviceAddressAllocationAlignmentPropertiesVALVE";
+      case StructureType::eBufferDeviceAddressAlignmentAllocateInfoVALVE: return "BufferDeviceAddressAlignmentAllocateInfoVALVE";
+      case StructureType::ePhysicalDeviceHdrSmpteSt209450FeaturesGOOGLE : return "PhysicalDeviceHdrSmpteSt209450FeaturesGOOGLE";
+      case StructureType::eHdrSmpteSt209450GOOGLE                       : return "HdrSmpteSt209450GOOGLE";
+      case StructureType::eSurfaceCapabilitiesHdrSmpteSt209450GOOGLE    : return "SurfaceCapabilitiesHdrSmpteSt209450GOOGLE";
+      default                                                           : return "invalid ( " + toHexString( static_cast<uint32_t>( value ) ) + " )";
     }
   }
 
@@ -6291,6 +6312,7 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
       case VendorId::ePocl    : return "Pocl";
       case VendorId::eMobileye: return "Mobileye";
       case VendorId::eApe     : return "Ape";
+      case VendorId::eAPEX    : return "APEX";
       default                 : return "invalid ( " + toHexString( static_cast<uint32_t>( value ) ) + " )";
     }
   }
@@ -8255,6 +8277,10 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
       case DriverId::eMesaGfxstream            : return "MesaGfxstream";
       case DriverId::eApeSoft                  : return "ApeSoft";
       case DriverId::eReserved31               : return "Reserved31";
+      case DriverId::eAPEX                     : return "APEX";
+      case DriverId::eNikki                    : return "Nikki";
+      case DriverId::eMomoten                  : return "Momoten";
+      case DriverId::eAuroraBorealis           : return "AuroraBorealis";
       default                                  : return "invalid ( " + toHexString( static_cast<uint32_t>( value ) ) + " )";
     }
   }
@@ -8347,9 +8373,13 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
     }
   }
 
-  VULKAN_HPP_INLINE VULKAN_HPP_CONSTEXPR_20 std::string to_string( PrivateDataSlotCreateFlagBits )
+  VULKAN_HPP_INLINE VULKAN_HPP_CONSTEXPR_20 std::string to_string( PrivateDataSlotCreateFlagBits value )
   {
-    return "(void)";
+    switch ( value )
+    {
+      case PrivateDataSlotCreateFlagBits::eBaseObjectHandleNV: return "BaseObjectHandleNV";
+      default                                                : return "invalid ( " + toHexString( static_cast<uint32_t>( value ) ) + " )";
+    }
   }
 
   VULKAN_HPP_INLINE VULKAN_HPP_CONSTEXPR_20 std::string to_string( PipelineStageFlagBits2 value )
@@ -12059,6 +12089,18 @@ VULKAN_HPP_EXPORT namespace VULKAN_HPP_NAMESPACE
       case ImageTilingControlEXT::eMinSize       : return "MinSize";
       case ImageTilingControlEXT::eMaxPerformance: return "MaxPerformance";
       default                                    : return "invalid ( " + toHexString( static_cast<uint32_t>( value ) ) + " )";
+    }
+  }
+
+  //=== VK_GOOGLE_hdr_smpte_st_209450_metadata ===
+
+  VULKAN_HPP_INLINE VULKAN_HPP_CONSTEXPR_20 std::string to_string( HdrSmpteSt209450PowerPreferenceGOOGLE value )
+  {
+    switch ( value )
+    {
+      case HdrSmpteSt209450PowerPreferenceGOOGLE::eColorAccuracy: return "ColorAccuracy";
+      case HdrSmpteSt209450PowerPreferenceGOOGLE::eLowPower     : return "LowPower";
+      default                                                   : return "invalid ( " + toHexString( static_cast<uint32_t>( value ) ) + " )";
     }
   }
 
